@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 
 import {
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
-  GENERAL_APPLICATION_CONFIRM_URL,
+  GA_COSC_CONFIRM_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
 } from 'routes/urls';
@@ -73,6 +73,6 @@ coscCheckAnswersController.post(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: App
 }) as RequestHandler);
 
 function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number,genAppId: string ): string {
-  return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
+  return constructResponseUrlWithIdParams(claimId, GA_COSC_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
 }
 export default coscCheckAnswersController;

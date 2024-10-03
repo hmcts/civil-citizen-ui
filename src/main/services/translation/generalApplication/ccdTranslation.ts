@@ -259,16 +259,12 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
   };
 };
 
-export const translateDraftCoScApplicationToCCD = (
+export const translateCoScApplicationToCCD = (
   application: GeneralApplication,
 ): CCDGeneralApplication => {
   return {
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
     generalAppRespondentAgreement: toCCDRespondentAgreement(application.agreementFromOtherParty),
-    generalAppEvidenceDocument: toCCDEvidenceDocuments(
-      application.wantToUploadDocuments,
-      application.uploadEvidenceForApplication,
-    ),
     certOfSC: toCCDCertOfSC(application.certificateOfSatisfactionOrCancellation, application.uploadEvidenceForApplication),
     generalAppStatementOfTruth: toCCDStatementOfTruth(
       application.statementOfTruth,

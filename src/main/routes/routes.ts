@@ -426,6 +426,8 @@ import askProofOfDebtPaymentGuidanceController
   from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
 import defendantFinalPaymentDateController from 'routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
 import coscCheckAnswersController from 'routes/features/generalApplication/certOfSorC/checkAnswersController';
+import submitCoScApplicationConfirmationController
+  from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 
 export default [
   homeController,
@@ -769,4 +771,5 @@ export default [
   defendantFinalPaymentDateController,
   debtPaymentEvidenceController,
   coscCheckAnswersController,
+  submitCoScApplicationConfirmationController,
 ];

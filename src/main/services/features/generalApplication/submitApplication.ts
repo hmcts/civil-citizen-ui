@@ -1,6 +1,9 @@
 import {AppRequest} from 'common/models/AppRequest';
 import config from 'config';
-import {translateDraftApplicationToCCD, translateDraftCoScApplicationToCCD} from 'services/translation/generalApplication/ccdTranslation';
+import {
+  translateCoScApplicationToCCD,
+  translateDraftApplicationToCCD,
+} from 'services/translation/generalApplication/ccdTranslation';
 import {getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import { Claim } from 'common/models/claim';
@@ -28,12 +31,9 @@ export const submitCoScApplication = async (req: AppRequest): Promise<Claim> => 
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    //hearing details
-    //hasAgreed
-    //isPartOfNationalRollout featuretoggle flag
-
+    //dummuy value
     claim.generalApplication.agreementFromOtherParty = YesNo.NO;
-    const ccdApplication = translateDraftCoScApplicationToCCD(claim.generalApplication);
+    const ccdApplication = translateCoScApplicationToCCD(claim.generalApplication);
     console.log('ccdApplication----------------');
     console.log(ccdApplication);
     return await civilServiceClient.submitInitiateGeneralApplicationEvent(claimId, ccdApplication, req);

@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_CHECK_ANSWERS_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
+import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -11,7 +11,7 @@ import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import { getCoScSummarySections } from 'services/features/generalApplication/checkAnswers/checkAnswersService';
-import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {submitCoScApplication} from 'services/features/generalApplication/submitApplication';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -23,7 +23,7 @@ jest.mock('modules/draft-store/courtLocationCache');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockedSummaryRows = getCoScSummarySections as jest.Mock;
-const mockSubmitApplication = submitApplication as jest.Mock;
+const mockSubmitApplication = submitCoScApplication as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
@@ -76,21 +76,6 @@ describe('General Application - Check your answers', () => {
           expect(res.status).toBe(302);
         });
     });
-
-/*    it('should redirect to confirmation page if adjourn hearing and more than 14 days', async () => {
-      const now = new Date();
-      const futureDate = new Date(now);
-      futureDate.setDate(now.getDate() + 16);
-      mockClaim.caseProgressionHearing = new CaseProgressionHearing();
-      mockClaim.caseProgressionHearing.hearingDate = futureDate;
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });*/
 
     it('should show error message if statement of truth not completed', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);

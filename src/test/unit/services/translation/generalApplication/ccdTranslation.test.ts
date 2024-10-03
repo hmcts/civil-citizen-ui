@@ -2,6 +2,7 @@ import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import {
   toCcdGeneralApplicationWithResponse,
   translateDraftApplicationToCCD,
+  translateCoScApplicationToCCD,
 } from 'services/translation/generalApplication/ccdTranslation';
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
 import {
@@ -33,6 +34,14 @@ import { GaResponse } from 'common/models/generalApplication/response/gaResponse
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { CCDRespondToApplication } from 'common/models/gaEvents/eventDto';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
+import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {
+  CertificateOfSatisfactionOrCancellation,
+} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {StatementOfTruthForm} from "models/generalApplication/statementOfTruthForm";
 
 describe('translate draft application to ccd', () => {
   it('should translate application types to ccd', () => {
@@ -292,6 +301,50 @@ describe('translate draft application to ccd', () => {
           respondentDebtorOffer: undefined,
         } as CcdGARespondentDebtorOfferGAspec,
       });
+    });
+  });
+
+  describe('translateCoScApplicationToCCD', () => {
+    it('should translate cosc application type to ccd', () => {
+      //Given
+      const application = new GeneralApplication();
+      application.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID),
+      ];
+      application.agreementFromOtherParty = YesNo.NO;
+      application.statementOfTruth = new StatementOfTruthForm(true, 'Defendant');
+
+      //When
+      const ccdGeneralApplication = translateCoScApplicationToCCD(application);
+      //Then
+      expect(ccdGeneralApplication.generalAppType).toEqual({
+        types: [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID],
+      });
+      expect(ccdGeneralApplication.generalAppStatementOfTruth).not.toBeNull()
+    });
+
+    it('should translate certificateOfSatisfactionOrCancellation to CCD', () => {
+      //Given
+      const application = new GeneralApplication();
+      application.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID),
+      ];
+      application.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
+      application.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '06', '12');
+      application.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UPLOAD_EVIDENCE);
+      application.uploadEvidenceForApplication = [new UploadGAFiles()];
+      application.uploadEvidenceForApplication[0].caseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: 'test.pdf',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      //When
+      const ccdGeneralApplication = translateCoScApplicationToCCD(application);
+      //Then
+      expect(ccdGeneralApplication.certOfSC).not.toBeNull();
     });
   });
 });

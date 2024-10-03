@@ -10,6 +10,7 @@ import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPa
 import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {DebtPaymentEvidence} from "models/generalApplication/debtPaymentEvidence";
 
 jest.mock('modules/utilityService');
 jest.mock('modules/draft-store/draftStoreService');
@@ -25,6 +26,7 @@ mockClaim.generalApplication = new GeneralApplication();
 mockClaim.generalApplication.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
 
 const mockDefendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '01', '01');
+const mockDebtPaymentEvidence = new DebtPaymentEvidence('UPLOAD_EVIDENCE', null);
 
 describe('Certification of satisfaction or Cancellation service', () => {
   describe('get Certificate of satisfaction', () => {
@@ -88,6 +90,18 @@ describe('Certification of satisfaction or Cancellation service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith(undefined, expectedResult);
 
+    });
+
+    it('should save debtPaymentEvidence data successfully when certificateOfSatisfactionOrCancellation exist', async () => {
+      //Given
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockForm = new GenericForm(mockDebtPaymentEvidence);
+      mockClaim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = mockDebtPaymentEvidence;
+      mockGetClaimByID.mockReturnValue(mockClaim);
+      //When
+      await saveCertificateOfSatisfactionOrCancellation(mockReq, mockForm.model, 'debtPaymentEvidence');
+      //Then
+      expect(spySave).toHaveBeenCalledWith(undefined, mockClaim);
     });
 
     it('should thrown an error', async () => {
