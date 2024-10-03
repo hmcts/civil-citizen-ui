@@ -617,6 +617,7 @@ class CreateClaim {
     I.fillField(paths.fields.claim_amount_amount_1, totalAmount);
     I.click('Add another row');
     this.clickNextAction(paths.buttons.save_and_continue);
+    await this.answerClaimInterest(claimInterestFlag, standardInterest);
     await this.answerHWf(selectHWF);
     await I.waitForContent('Total claim amount', 60);
     this.clickNextAction(paths.buttons.save_and_continue);
@@ -643,12 +644,12 @@ class CreateClaim {
         I.fillField(paths.options.interest_to_applied, 10);
         I.fillField(paths.options.interest_reason, 'calculate interest for the different time periods');
         this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('Continue to claim interest after you submit your claim', 60);
-        I.click(paths.options.yes);
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('How much do you want to continue claiming', 60);
-        I.click(paths.options.claim_specific_interest_after_submission);
-        I.fillField(paths.options.daily_interest_amount, '2');
+        // I.waitForContent('Continue to claim interest after you submit your claim', 60);
+        // I.click(paths.options.yes);
+        // this.clickNextAction(paths.buttons.save_and_continue);
+        // I.waitForContent('How much do you want to continue claiming', 60);
+        // I.click(paths.options.claim_specific_interest_after_submission);
+        // I.fillField(paths.options.daily_interest_amount, '2');
       }
     } else {
       I.click(paths.options.no);
