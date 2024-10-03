@@ -617,7 +617,6 @@ class CreateClaim {
     I.fillField(paths.fields.claim_amount_amount_1, totalAmount);
     I.click('Add another row');
     this.clickNextAction(paths.buttons.save_and_continue);
-    await this.answerClaimInterest(claimInterestFlag, standardInterest);
     await this.answerHWf(selectHWF);
     await I.waitForContent('Total claim amount', 60);
     this.clickNextAction(paths.buttons.save_and_continue);
