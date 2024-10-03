@@ -2,7 +2,7 @@ import { Claim } from 'common/models/claim';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
-import {ApplicationResponse} from "models/generalApplication/applicationResponse";
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string, appResponse?: ApplicationResponse) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
