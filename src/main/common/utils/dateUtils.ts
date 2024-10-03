@@ -68,12 +68,6 @@ export const addDaysToDate = (date: Date, value: number) => {
   return updatedDate;
 };
 
-export const subtractDaysFromDate = (date: Date, value: number) => {
-  const updatedDate = new Date(date);
-  updatedDate.setDate(updatedDate.getDate() - value);
-  return updatedDate;
-};
-
 export const getDOBforAgeFromCurrentTime = (age: number): Date => {
   const referenceDate = new Date();
   referenceDate.setFullYear(referenceDate.getFullYear() - age);
