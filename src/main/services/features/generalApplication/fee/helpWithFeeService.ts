@@ -46,7 +46,6 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
-      deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
