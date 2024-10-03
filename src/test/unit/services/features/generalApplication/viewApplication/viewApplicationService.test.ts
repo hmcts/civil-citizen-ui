@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments, getGeneralOrder, getHearingNotice,
+  getCourtDocuments, getDraftDocument, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
   getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
@@ -318,6 +318,20 @@ describe('View Application service', () => {
       );
       const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument,expectedDocument]);
       expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array if there is applicant documents with no draft', async () => {
+      //given
+
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.gaDraftDocument= null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDraftDocument(application, 'en');
+      //Then
+      expect(result.length).toEqual(0);
     });
 
     it('should get data array if there is only addl Respondent documents', async () => {
