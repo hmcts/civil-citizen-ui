@@ -1,5 +1,5 @@
 module.exports = {
-  rejectAllDisputeAllWithIndividual: (totalClaimAmount) => {
+  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language) => {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
@@ -45,7 +45,7 @@ module.exports = {
           respondent1DQHearingSupportLip: {
             supportRequirementLip: 'No',
           },
-          respondent1ResponseLanguage: 'ENGLISH',
+          respondent1ResponseLanguage: language,
         },
         detailsOfWhyDoesYouDisputeTheClaim: 'Testreason',
         specClaimResponseTimelineList: 'MANUAL',
@@ -62,8 +62,8 @@ module.exports = {
         specDefendant1SelfEmploymentDetails: {},
         respondToClaimAdmitPartUnemployedLRspec: {},
         respondent1DQLanguage: {
-          court: 'ENGLISH',
-          documents: 'ENGLISH',
+          court: language,
+          documents: language,
         },
         respondent1DQVulnerabilityQuestions: {
           vulnerabilityAdjustmentsRequired: 'No',
