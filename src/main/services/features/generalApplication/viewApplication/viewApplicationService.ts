@@ -118,13 +118,11 @@ const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: strin
   return addlnDocInfoArray;
 };
 
-export const getDraftDocument = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getDraftDocument =  (applicationResponse: ApplicationResponse, lang: string) => {
   const generalAppDraftDocs = applicationResponse?.case_data?.gaDraftDocument;
   let gaDraftDocInfoArray : DocumentInformation[] = [];
   if(generalAppDraftDocs) {
-    gaDraftDocInfoArray = generalAppDraftDocs.sort((item1,item2) => {
-      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
-    }).map(gaDraftDocument => {
+    gaDraftDocInfoArray = generalAppDraftDocs.map(gaDraftDocument => {
       return setUpDocumentLinkObject(gaDraftDocument?.value?.documentLink, gaDraftDocument?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT');
     });
   }
