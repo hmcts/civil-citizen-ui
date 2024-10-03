@@ -162,5 +162,8 @@ export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM
 }
 
 export const  isAfter4PM = (startDate: Date) => {
-  return startDate.getHours() > 15;
-}
+  if (startDate) {
+    return new Date(startDate).getHours() > 15;
+  }
+  return false;
+};
