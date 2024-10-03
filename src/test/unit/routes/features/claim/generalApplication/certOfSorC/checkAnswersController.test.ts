@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
+import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_COSC_CONFIRM_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -101,7 +101,7 @@ describe('General Application - Check your answers', () => {
         .post(GA_CHECK_YOUR_ANSWERS_COSC_URL)
         .send({signed: 'yes', name: 'Mr Defendant'})
         .expect((res) => {
-          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?appFee=250&id=123456');
+          expect(res.header.location).toBe(GA_COSC_CONFIRM_URL + '?appFee=250&id=123456');
           expect(res.status).toBe(302);
         });
     });
