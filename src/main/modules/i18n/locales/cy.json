@@ -2950,7 +2950,7 @@
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
         "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
-        "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
+        "DO_YOU_NEED": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais? (dewisol)?",
         "FIND_OUT": "Find out how to",
         "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
         "IF_YOU_NEED": "If you need a sign language or language interpreter",
@@ -2985,7 +2985,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
-        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+        "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais? (dewisol)"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
