@@ -22,7 +22,7 @@ import {
 import {
   CcdGaDraftDocument,
   CcdGeneralOrderDocument,
-  CcdHearingDocument, CcdHearingNoticeDocument
+  CcdHearingDocument, CcdHearingNoticeDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
