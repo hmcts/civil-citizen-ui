@@ -41,7 +41,7 @@ import {
   CertificateOfSatisfactionOrCancellation,
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {StatementOfTruthForm} from "models/generalApplication/statementOfTruthForm";
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 
 describe('translate draft application to ccd', () => {
   it('should translate application types to ccd', () => {
@@ -320,7 +320,7 @@ describe('translate draft application to ccd', () => {
       expect(ccdGeneralApplication.generalAppType).toEqual({
         types: [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID],
       });
-      expect(ccdGeneralApplication.generalAppStatementOfTruth).not.toBeNull()
+      expect(ccdGeneralApplication.generalAppStatementOfTruth).not.toBeNull();
     });
 
     it('should translate certificateOfSatisfactionOrCancellation to CCD', () => {

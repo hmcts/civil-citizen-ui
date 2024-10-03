@@ -10,7 +10,7 @@ import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPa
 import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {DebtPaymentEvidence} from "models/generalApplication/debtPaymentEvidence";
+import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 
 jest.mock('modules/utilityService');
 jest.mock('modules/draft-store/draftStoreService');

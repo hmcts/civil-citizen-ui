@@ -1,6 +1,6 @@
 import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 import {
-  CcdGeneralApplicationEvidenceDocument
+  CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 
 export interface CcdGeneralApplicationCertOfSC {

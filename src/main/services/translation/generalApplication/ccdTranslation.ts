@@ -42,7 +42,7 @@ import { exhaustiveMatchingGuard } from 'services/genericService';
 import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {
-  CertificateOfSatisfactionOrCancellation
+  CertificateOfSatisfactionOrCancellation,
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 
