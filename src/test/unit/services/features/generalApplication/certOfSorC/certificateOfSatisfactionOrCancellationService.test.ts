@@ -26,7 +26,7 @@ mockClaim.generalApplication = new GeneralApplication();
 mockClaim.generalApplication.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
 
 const mockDefendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '01', '01');
-const mockDebtPaymentEvidence = new DebtPaymentEvidence('UPLOAD_EVIDENCE', null);
+const mockDebtPaymentEvidence = new DebtPaymentEvidence('UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL', null);
 
 describe('Certification of satisfaction or Cancellation service', () => {
   describe('get Certificate of satisfaction', () => {

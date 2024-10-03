@@ -31,11 +31,9 @@ export const submitCoScApplication = async (req: AppRequest): Promise<Claim> => 
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    //dummuy value
+    //dummuy value for cosc app
     claim.generalApplication.agreementFromOtherParty = YesNo.NO;
     const ccdApplication = translateCoScApplicationToCCD(claim.generalApplication);
-    console.log('ccdApplication----------------');
-    console.log(ccdApplication);
     return await civilServiceClient.submitInitiateGeneralApplicationEvent(claimId, ccdApplication, req);
   } catch (err) {
     logger.error(err);
