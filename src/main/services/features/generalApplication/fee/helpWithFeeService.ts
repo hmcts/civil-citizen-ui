@@ -9,7 +9,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {deleteDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
