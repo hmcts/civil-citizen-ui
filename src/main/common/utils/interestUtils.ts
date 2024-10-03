@@ -3,10 +3,8 @@ import {YesNo} from 'form/models/yesNo';
 import {
   addDaysToDate,
   formatDateToFullDate,
-  getNumberOfDaysBetweenTwoDays,
-  isAfterFourPM,
-  subtractDaysFromDate,
-} from './dateUtils';
+  getNumberOfDaysBetweenTwoDays, isAfter4PM,
+  } from './dateUtils';
 import {InterestClaimFromType} from 'form/models/claimDetails';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -67,21 +65,26 @@ export const calculateInterestToDate = (claim: Claim): number => {
   }
   else if (claim.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST) {
     const interestPercent = getInterestRate(claim);
-    const currentDate = new Date();
+    let interestEndDate = new Date();
     let interestStartDate;
     const startDate = getInterestStartDate(claim);
 
     if (claim.isInterestFromClaimSubmitDate()) {
-      interestStartDate = isAfterFourPM(currentDate) ? addDaysToDate(startDate, 1) : startDate;
-    } else if (claim.isInterestFromASpecificDate() && claim.isInterestEndDateUntilSubmitDate() || claim.isInterestEndDateUntilJudgmentDate()) {
-      interestStartDate = isAfterFourPM(currentDate) ? subtractDaysFromDate(startDate, 1) : startDate;
-
+      interestStartDate = isAfter4PM(startDate) ? addDaysToDate(startDate, 1) : startDate;
+    } else if (claim.isInterestFromASpecificDate()) {
+      interestStartDate = startDate;
+      if (claim.isInterestEndDateUntilSubmitDate()) {
+        const endDate = claim.submittedDate ?? new Date();
+        interestEndDate = isAfter4PM(endDate) ? addDaysToDate(endDate, 1): endDate;
+      } else {
+        interestEndDate = isAfter4PM(interestEndDate) ? addDaysToDate(interestEndDate, 1) : interestEndDate;
+      }
     }
     const interest = calculateInterest(
       claim.totalClaimAmount,
       interestPercent,
       interestStartDate,
-      new Date(),
+      interestEndDate,
     );
 
     return (Math.round(interest * 100) / 100);
@@ -91,7 +94,7 @@ export const calculateInterestToDate = (claim: Claim): number => {
 };
 
 export const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
-  const days = Math.abs(getNumberOfDaysBetweenTwoDays(startDate, endDate));
+  const days = Math.abs(getNumberOfDaysBetweenTwoDays(startDate, endDate)) + 1;
   const interestForPerYear = amount * (interest / 100);
   const interestForPerDay = (interestForPerYear / 365).toFixed(2);
   return Number(interestForPerDay) * days;

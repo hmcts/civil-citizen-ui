@@ -161,6 +161,6 @@ export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM
   return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }
 
-export const isAfterFourPM = (startDate: Date) => {
-  return isPastDeadline(startDate);
-};
+export const  isAfter4PM = (startDate: Date) => {
+  return startDate.getHours() > 15;
+}
