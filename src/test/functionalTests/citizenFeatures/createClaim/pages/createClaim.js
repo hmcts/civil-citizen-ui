@@ -643,7 +643,7 @@ class CreateClaim {
         I.waitForContent('What is the total interest for your claim', 60);
         I.fillField(paths.options.interest_to_applied, 10);
         I.fillField(paths.options.interest_reason, 'calculate interest for the different time periods');
-        this.clickNextAction(paths.buttons.save_and_continue);
+        // this.clickNextAction(paths.buttons.save_and_continue);
         // I.waitForContent('Continue to claim interest after you submit your claim', 60);
         // I.click(paths.options.yes);
         // this.clickNextAction(paths.buttons.save_and_continue);
