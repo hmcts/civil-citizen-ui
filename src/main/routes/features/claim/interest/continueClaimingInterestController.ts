@@ -40,7 +40,7 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (a
       renderView(form, res);
     } else {
       await saveInterest(caseId, form.model.option as YesNo, 'continueClaimingInterest');
-        res.redirect(CLAIM_HELP_WITH_FEES_URL);
+      res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
     next(error);
