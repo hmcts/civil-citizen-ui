@@ -2809,6 +2809,7 @@
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
         "CHANGE_HEARING": "Change a hearing date",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
         "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
         "MORE_TIME": "More time to do what is required by a court order",
         "NOT_ON_LIST": "Court to do something that's not on this list",
@@ -2818,8 +2819,7 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment",
-        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt"
+        "VARY_JUDGMENT": "Vary a judgment"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
