@@ -9,7 +9,6 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
-import {t} from 'i18next';
 import {Claim} from 'models/claim';
 import {
   UnavailableDatePeriodGaHearing,
@@ -17,7 +16,7 @@ import {
 } from 'models/generalApplication/unavailableDatesGaHearing';
 import {getUnavailableDatesForHearingForm} from 'services/features/generalApplication/unavailableHearingDatesService';
 import {
-  getRespondToApplicationCaption,
+  getRespondToApplicationCaption, getUnavailableHearingDateCaption,
   saveRespondentUnavailableDates,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
@@ -34,7 +33,8 @@ async function renderView(claim: Claim, form: GenericForm<UnavailableDatesGaHear
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE') });
+  const headingTitle = getUnavailableHearingDateCaption(lang);
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle });
 }
 
 unavailableHearingDatesResponseController.get(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
