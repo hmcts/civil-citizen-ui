@@ -6,7 +6,6 @@ import request from 'supertest';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_CONTINUE_CLAIMING_URL,
-  CLAIM_INTEREST_HOW_MUCH_URL,
 } from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -65,7 +64,7 @@ describe('Continue Claiming Interest page', () => {
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_INTEREST_HOW_MUCH_URL);
+          expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES_URL);
         });
     });
 

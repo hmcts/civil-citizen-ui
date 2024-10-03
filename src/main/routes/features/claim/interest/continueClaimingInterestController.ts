@@ -4,7 +4,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   CLAIM_HELP_WITH_FEES_URL,
   CLAIM_INTEREST_CONTINUE_CLAIMING_URL,
-  CLAIM_INTEREST_HOW_MUCH_URL,
+  //CLAIM_INTEREST_HOW_MUCH_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
@@ -40,8 +40,6 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (a
       renderView(form, res);
     } else {
       await saveInterest(caseId, form.model.option as YesNo, 'continueClaimingInterest');
-      (form.model.option === YesNo.YES) ?
-        res.redirect(CLAIM_INTEREST_HOW_MUCH_URL) :
         res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
