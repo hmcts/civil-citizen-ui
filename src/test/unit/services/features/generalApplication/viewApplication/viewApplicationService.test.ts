@@ -334,6 +334,18 @@ describe('View Application service', () => {
       expect(result.length).toEqual(0);
     });
 
+    it('should get empty data array if there is no casedata for draft', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data = null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDraftDocument(application, 'en');
+      //Then
+      expect(result.length).toEqual(0);
+    });
+
     it('should get data array if there is only addl Respondent documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
