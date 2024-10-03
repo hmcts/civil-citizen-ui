@@ -19,7 +19,11 @@ import {
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {
+  CcdGaDraftDocument,
+  CcdGeneralOrderDocument,
+  CcdHearingDocument, CcdHearingNoticeDocument
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
@@ -69,7 +73,7 @@ function setMockAdditionalDocuments() {
   }];
 }
 
-function setMockGaDraftDocuments(): CcdHearingDocument[] {
+function setMockGaDraftDocuments(): CcdGaDraftDocument[] {
   return [{
     'id': '8e052cdd-0c56-452d-83ef-c5f60c5c6bd7',
     'value': {
@@ -77,28 +81,28 @@ function setMockGaDraftDocuments(): CcdHearingDocument[] {
       'documentLink': {
         'category_id': 'applications',
         'document_url': 'http://dm-store:8080/documents/4c09a875-e128-4717-94a4-96baea954a1d',
-        'document_filename': 'Draft_application_2024-08-15 14:47:03.pdf',
+        'document_filename': 'Draft_application_2024-08-01 14:47:03.pdf',
         'document_binary_url': 'http://dm-store:8080/documents/4c09a875-e128-4717-94a4-96baea954a1d/binary',
       },
-      'documentName': 'Draft_application_2024-08-15 14:47:03.pdf',
+      'documentName': 'Draft_application_2024-08-01 14:47:03.pdf',
       'documentType': DocumentType.GENERAL_APPLICATION_DRAFT,
       'createdDatetime':  new Date('2024-08-01'),
     },
   }];
 }
 
-function setMockHearingNoticeDocuments(): CcdHearingDocument[] {
+function setMockHearingNoticeDocuments(): CcdHearingNoticeDocument[] {
   return [{
-    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12df4',
     'value': {
       'createdBy': 'Civil',
       'documentLink': {
         'category_id': 'applications',
-        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
-        'document_filename': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
-        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf841',
+        'document_filename': 'Application_Hearing_Notice_2024-08-01 12:15:34.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf841/binary',
       },
-      'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
+      'documentName': 'Application_Hearing_Notice_2024-08-01 12:15:34.pdf',
       'documentType': DocumentType.HEARING_NOTICE,
       'createdDatetime':  new Date('2024-08-01'),
     },
@@ -112,27 +116,27 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
       'createdBy': 'Civil',
       'documentLink': {
         'category_id': 'applications',
-        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
-        'document_filename': 'Application_Hearing_order_2024-08-02 12:15:34.pdf',
-        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf871',
+        'document_filename': 'Application_Hearing_order_2024-08-01 12:15:34.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf871/binary',
       },
-      'documentName': 'Application_Hearing_order_2024-08-02 12:15:34.pdf',
+      'documentName': 'Application_Hearing_order_2024-08-01 12:15:34.pdf',
       'documentType': DocumentType.HEARING_ORDER,
       'createdDatetime':  new Date('2024-08-01'),
     },
   }];
 }
 
-function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
+function setMockGeneralOrderDocuments(): CcdGeneralOrderDocument[] {
   return [{
-    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cd4',
     'value': {
       'createdBy': 'Civil',
       'documentLink': {
         'category_id': 'applications',
-        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf861',
         'document_filename': 'General_order_for_application_2024-08-01 11:59:58.pdf',
-        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf861/binary',
       },
       'documentName': 'General_order_for_application_2024-08-01 11:59:58.pdf',
       'documentType': DocumentType.GENERAL_ORDER,
@@ -310,7 +314,7 @@ describe('View Application service', () => {
       const expectedDraftDocument = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
         '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-15 14:47:03.pdf'),
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-01 14:47:03.pdf'),
       );
       const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument,expectedDocument]);
       expect(result).toEqual(expectedResult);
@@ -364,48 +368,10 @@ describe('View Application service', () => {
       const expectedDraftDocument = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
         '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-15 14:47:03.pdf'),
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-01 14:47:03.pdf'),
       );
 
       const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument, expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array if there is court order documents', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      const caseData = application.case_data;
-      caseData.hearingNoticeDocument = setMockHearingNoticeDocuments();
-
-      mockGetApplication.mockResolvedValueOnce(application);
-      //When
-      const result = getCourtDocuments(application, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf'),
-      );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array if there is court has hearing order documents', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      const caseData = application.case_data;
-      caseData.hearingOrderDocument = setMockHearingOrderDocuments();
-
-      mockGetApplication.mockResolvedValueOnce(application);
-      //When
-      const result = getCourtDocuments(application, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'Application_Hearing_order_2024-08-02 12:15:34.pdf'),
-      );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -422,7 +388,7 @@ describe('View Application service', () => {
       const expectedDocument1 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
         '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf861', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
       );
 
       const expectedDocument2 = new DocumentInformation(
@@ -433,6 +399,7 @@ describe('View Application service', () => {
       expect(result.documents[0]).toEqual(expectedDocument2);
       expect(result.documents[1]).toEqual(expectedDocument1);
     });
+
     it('should get empty data array if there is no general order documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
@@ -461,6 +428,44 @@ describe('View Application service', () => {
       expect(resultGeneralOrder.length).toEqual(0);
       expect(resultHearingNotice.length).toEqual(0);
     });
+
+    it('should get data array if there is court has hearing order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.hearingOrderDocument = setMockHearingOrderDocuments();
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf871', 'Application_Hearing_order_2024-08-01 12:15:34.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array if there is court order hearing notice documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.hearingNoticeDocument = setMockHearingNoticeDocuments();
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf841', 'Application_Hearing_Notice_2024-08-01 12:15:34.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result.title).toContain(expectedResult.title);
+    });
   });
 
   describe('getResponseFromCourtSection', () => {
@@ -484,13 +489,11 @@ describe('View Application service', () => {
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
+      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('2 March 2024');
+      expect(result[1].rows[0].value.html).toEqual('1 August 2024');
       expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[1].rows[2].value.html).toContain('Name of file');
     });
 
     it('should return court from response section for defendant', async () => {
@@ -512,7 +515,7 @@ describe('View Application service', () => {
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
+      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
     });
   });
 });

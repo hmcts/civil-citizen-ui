@@ -20,6 +20,7 @@ import {
   CcdHearingDocument,
   CcdGeneralOrderDocument,
   CcdGaDraftDocument,
+  CcdHearingNoticeDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
@@ -71,7 +72,7 @@ export interface CCDApplication extends ApplicationUpdate {
   parentClaimantIsApplicant: YesNoUpperCamelCase;
   judicialDecision: JudicialDecision;
   hearingOrderDocument? : CcdHearingDocument[];
-  hearingNoticeDocument? : CcdHearingDocument[];
+  hearingNoticeDocument? : CcdHearingNoticeDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   generalOrderDocument? : CcdGeneralOrderDocument[];
