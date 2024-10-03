@@ -127,9 +127,9 @@ describe('Interest Utils', () => {
   it('calculateInterestToDate from claim submit date', () => {
     //Given
     const claim = new Claim();
-    claim.totalClaimAmount = 6000;
+    claim.totalClaimAmount = 1000;
     claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 3, 10, 45,0);
+    claim.submittedDate = new Date(2024, 9, 3, 17, 45,0);
     claim.interest.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
 
     claim.interest.sameRateInterestSelection = {
@@ -148,12 +148,12 @@ describe('Interest Utils', () => {
   it('calculateInterestToDate from specific date till claim submit date', () => {
     //Given
     const claim = new Claim();
-    claim.totalClaimAmount = 6000;
+    claim.totalClaimAmount = 1000;
     claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 3, 10, 45,0);
+    claim.submittedDate = new Date(2024, 10, 3, 17, 45,0);
     claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
 
-    const startDate = new Date(2024, 8, 30);
+    const startDate = new Date(2024, 10, 1);
     claim.interest.interestStartDate = new InterestStartDate(
       startDate.getDate().toString(),
       (startDate.getMonth() + 1).toString(),
@@ -169,7 +169,7 @@ describe('Interest Utils', () => {
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(5.28);
+    expect(result).toEqual(0.88);
   });
 
   it('calculateInterestToDate from specific date till claim submit date when claim submitted after 4pm', () => {
@@ -204,7 +204,7 @@ describe('Interest Utils', () => {
     const claim = new Claim();
     claim.totalClaimAmount = 6000;
     claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 3, 10,0,0);
+    claim.submittedDate = new Date(2024, 9, 2 ,10,0,0);
     claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
 
     const startDate = new Date(2024, 8, 30, 10,0,0);
