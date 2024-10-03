@@ -76,7 +76,7 @@ describe('Interest Utils', () => {
     const result = calculateInterest(amount, interest, startDate, endDate);
 
     //Then
-    expect(result).toEqual(527.96);
+    expect(result).toEqual(525.99);
   });
 
   it('getInterestStartDate should return new Date if InterestClaimFromType is FROM_CLAIM_SUBMIT_DATE', () => {
@@ -124,7 +124,28 @@ describe('Interest Utils', () => {
     expect(result).toEqual(200);
   });
 
-  it('calculateInterestToDate should return correct interest to date when SAME_RATE_INTEREST selected', () => {
+  it('calculateInterestToDate from claim submit date', () => {
+    //Given
+    const claim = new Claim();
+    claim.totalClaimAmount = 6000;
+    claim.interest = new Interest();
+    claim.submittedDate = new Date(2024, 9, 3, 10, 45,0);
+    claim.interest.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+
+    claim.interest.sameRateInterestSelection = {
+      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
+    };
+    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+    claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+
+    //When
+    const result = calculateInterestToDate(claim);
+
+    //Then
+    expect(result).toEqual(0);
+  });
+
+  it('calculateInterestToDate from specific date till claim submit date', () => {
     //Given
     const claim = new Claim();
     claim.totalClaimAmount = 6000;
