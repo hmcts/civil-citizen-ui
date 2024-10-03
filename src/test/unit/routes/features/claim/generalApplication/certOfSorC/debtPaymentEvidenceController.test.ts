@@ -79,7 +79,7 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
     it('should return error on page for no details written', async () => {
       await request(app)
         .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: debtPaymentOptions.NO_EVIDENCE})
+        .send({debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.UNABLE_TO_PROVIDE_EVIDENCE);
@@ -90,7 +90,7 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
 
       await request(app)
         .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: debtPaymentOptions.UPLOAD_EVIDENCE})
+        .send({debtPaymentOption: debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', claim.id));
@@ -101,7 +101,7 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
 
       await request(app)
         .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: debtPaymentOptions.NO_EVIDENCE, provideDetails: 'some evidence'})
+        .send({debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT, provideDetails: 'some evidence'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(GA_CHECK_YOUR_ANSWERS_COSC_URL.replace(':id', claim.id));

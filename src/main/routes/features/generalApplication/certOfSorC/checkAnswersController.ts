@@ -30,7 +30,8 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const summaryRows = getCoScSummarySections(claimId, claim, lang);
   const headerTitle = 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT';
 
-  const backLinkUrl = claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence?.debtPaymentOption === debtPaymentOptions.NO_EVIDENCE
+  const backLinkUrl =
+    claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence?.debtPaymentOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT
     ? constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL)
     : constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_COSC_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });

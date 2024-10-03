@@ -123,7 +123,7 @@ describe('Check Answers service', () => {
       ];
       generalApplication.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
       generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '07', '12');
-      generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UPLOAD_EVIDENCE);
+      generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL);
       generalApplication.uploadEvidenceForApplication = [new UploadGAFiles()];
       generalApplication.uploadEvidenceForApplication[0].caseDocument = {
         createdBy: '',
@@ -145,7 +145,7 @@ describe('Check Answers service', () => {
 
     it('should give correct row count for multiple application types', () => {
       claim.generalApplication.uploadEvidenceForApplication = null;
-      claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.NO_EVIDENCE, 'testing');
+      claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT, 'testing');
       const result = getCoScSummarySections('12345', claim, 'en');
       expect(result).toHaveLength(2);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');

@@ -331,7 +331,7 @@ describe('translate draft application to ccd', () => {
       ];
       application.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
       application.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '06', '12');
-      application.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UPLOAD_EVIDENCE);
+      application.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL);
       application.uploadEvidenceForApplication = [new UploadGAFiles()];
       application.uploadEvidenceForApplication[0].caseDocument = {
         createdBy: '',

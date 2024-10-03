@@ -305,7 +305,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
   let rowValue: string;
   if(claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence) {
     const evidenceOption = claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption;
-    if(evidenceOption === debtPaymentOptions.NO_EVIDENCE) {
+    if(evidenceOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
       rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
                         ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
 
@@ -325,9 +325,9 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
 
 function getEvidencePaymentOption(evidenceOption: string) : string {
   switch(evidenceOption) {
-    case debtPaymentOptions.UPLOAD_EVIDENCE :
+    case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
       return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL';
-    case debtPaymentOptions.MADE_FULL_PAYMENT :
+    case debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT :
       return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT';
     default: return undefined;
   }

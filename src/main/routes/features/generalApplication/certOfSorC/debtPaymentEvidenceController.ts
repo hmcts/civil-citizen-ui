@@ -57,7 +57,7 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
       } else {
         await saveCertificateOfSatisfactionOrCancellation(req, form.model, 'debtPaymentEvidence');
         switch (form.model.debtPaymentOption) {
-          case debtPaymentOptions.NO_EVIDENCE:
+          case debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT:
             nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_YOUR_ANSWERS_COSC_URL);
             break;
           default:
