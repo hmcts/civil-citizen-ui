@@ -2634,7 +2634,7 @@
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
         "RESPOND_TO_MULTIPLE": "Respond to an application",
-        "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
+        "TITLE": "Mae’r partïon eraill wedi dweud eich bod wedi cytuno i’r gorchymyn maent wedi gwneud cais amdano. A yw hyn yn gywir?"
       },
       "APPLICATION_COSTS": {
         "ADJOURN_HEARING": "Newid dyddiad gwrandawiad",
@@ -2648,7 +2648,7 @@
         "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
         "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
-        "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
+        "SET_ASIDE_JUDGEMENT": "roi dyfarniad o’r naill du (ei ddileu)",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
         "SUMMARY_JUDGMENT": "the court to make a summary judgment",
@@ -2695,7 +2695,7 @@
         "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
         "INFORM_OTHER_PARTIES": "A ydych chi eisiau i’r llys hysbysu’r partïon eraill?",
         "NAME": "Name",
-        "NEED_ADJUSTMENTS": "A oes arnoch angen addasiadau neu gymorth i allu mynychu gwrandawiad?",
+        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
         "NONE": "None",
         "PARTIES_AGREED": "A yw’r partïon eraill wedi cytuno?",
         "PREFERRED_COURT_LOCATION": "Lleoliad llys a ffafrir",
@@ -2713,7 +2713,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
-        "PREFERRED_LOCATION": "Preferred location",
+        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
@@ -2776,7 +2776,7 @@
         "JUDGE_WILL_CONSIDER_SUMMARY_JUDGMENT": "A judge will consider your application to make an order. The order that a judge would usually make for a summary judgment is in the box below.",
         "MENTION_DATE": "mention the date that the document was submitted",
         "MORE_TIME_HINT_TEXT": "The time by which I must [specify what needs to be done] be extended to [enter the date you can do this by].",
-        "SET_ASIDE_JUDGEMENT_HINT_TEXT": "The judgment made against me is removed.",
+        "SET_ASIDE_JUDGEMENT_HINT_TEXT": "Bod y dyfarniad a wnaed yn fy erbyn yn cael ei ddileu.",
         "SHOULD_EXPLAIN": "You should explain which order and which parts of it you'd like to be reconsidered. You'll be able to explain your reasons on the next screen.",
         "SHOULD_EXPLAIN_PENALTY": "You should explain what penalty you're asking for relief from. For example, if you missed a deadline to provide documents to the court, or if the court made an order giving you a penalty.",
         "SHOULD_EXPLAIN_PROCEEDS_IN_HERITAGE": "You should explain what order you want the judge to make. You'll be able to explain your reasons on the next screen.",
@@ -2806,7 +2806,7 @@
         "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
+        "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
@@ -2922,7 +2922,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
         "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
         "RECONSIDER_ORDER": "Ailystyried gorchymyn",
-        "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
+        "SET_ASIDE_JUDGMENT": "roi dyfarniad o’r naill du (ei ddileu)",
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "Amrywio dyfarniad"
       },
@@ -3175,10 +3175,10 @@
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
         "RESPONSE": {
-          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
           "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
-          "TITLE": "Response from the other parties",
-          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+          "TITLE": "Ymateb gan y partïon eraill",
+          "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
@@ -3186,7 +3186,7 @@
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "REQUEST_MORE_INFO": "Request for more information",
-        "REVIEW": "RAdolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
+        "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
           "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
           "TITLE": "Statws"
