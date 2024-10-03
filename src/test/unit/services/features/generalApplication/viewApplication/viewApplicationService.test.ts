@@ -424,13 +424,14 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
       );
-      expect(result.documents[2]).toEqual(expectedDocument1);
+
       const expectedDocument2 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
+        '2 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'General_order_for_application_2024-08-02 11:59:58.pdf'),
       );
-      expect(result.documents[1]).toEqual(expectedDocument2);
+      expect(result.documents[0]).toEqual(expectedDocument2);
+      expect(result.documents[1]).toEqual(expectedDocument1);
     });
     it('should get empty data array if there is no general order documents', async () => {
       //given
