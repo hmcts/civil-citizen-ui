@@ -106,13 +106,10 @@ export const calculateInterest = (amount: number, interest: number, startDate: D
 export const getInterestData = (claim: Claim, lang: string) => {
   let interestStrtDate = getInterestStartDate(claim);
   const interestEndDate1 = getInterestEndDate(claim);
-  let endDate;
   if (claim.isInterestFromClaimSubmitDate()) {
     interestStrtDate = isAfter4PM(interestStrtDate) ? addDaysToDate(interestStrtDate, 1) : interestStrtDate;
-    endDate = isAfter4PM(interestEndDate1) ? addDaysToDate(interestEndDate1, 1) : interestEndDate1;
-  } else {
-    endDate = isAfter4PM(interestEndDate1) ? addDaysToDate(interestEndDate1, 2) : addDaysToDate(interestEndDate1, 1);
   }
+  const endDate = isAfter4PM(interestEndDate1) ? addDaysToDate(interestEndDate1, 2) : addDaysToDate(interestEndDate1, 1);
   const numberOfDays = Math.abs(getNumberOfDaysBetweenTwoDays(interestStrtDate, endDate));
   const interestStartDate = formatDateToFullDate(interestStrtDate, getLng(lang));
   const interestToDate = calculateInterestToDate(claim).toFixed(2);
