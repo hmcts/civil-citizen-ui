@@ -204,7 +204,7 @@ describe('translate draft claim to ccd version', () => {
     const ccdClaim = translateClaimantResponseDJToCCD(claim);
 
     // then
-    expect(ccdClaim.repaymentSuggestion).toEqual('100');
+    expect(ccdClaim.repaymentSuggestion).toEqual('10000');
   });
 
   it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', () => {

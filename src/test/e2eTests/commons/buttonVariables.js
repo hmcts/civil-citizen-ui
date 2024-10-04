@@ -6,6 +6,9 @@ const buttonType = Object.freeze({
   SUBMIT_CLAIM: 'Submit claim',
   SUBMIT_RESPONSE: 'Submit Response',
   CONTINUE_WITHOUT_AN_EXPERT:'Continue without an expert',
+  START_NOW:'Start now',
+  SUBMIT: 'Submit',
+
 });
 
 module.exports = {

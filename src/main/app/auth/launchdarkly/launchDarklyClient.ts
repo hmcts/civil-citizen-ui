@@ -15,6 +15,7 @@ const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
+const IS_COSC_ENABLED = 'isCoSCEnabled';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -100,15 +101,21 @@ export async function isMintiEnabled(): Promise<boolean> {
   return await getFlagValue(MINTI) as boolean;
 }
 
+export async function isCoSCEnabled(): Promise<boolean> {
+  return await getFlagValue(IS_COSC_ENABLED) as boolean;
+}
+
 export async function isJudgmentOnlineLive(): Promise<boolean> {
   return await getFlagValue(IS_JUDGMENT_ONLINE_LIVE) as boolean;
 }
 
-export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
+export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  return await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
+  const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  return cuiR2Flag && dashboardEnabledForR2Cases;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
@@ -120,7 +127,7 @@ export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
   return carmFlag && carmApplicable;
 }
 
-export async function  isMintiEnabledForCase(date: Date): Promise<boolean> {
+export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();

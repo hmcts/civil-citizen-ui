@@ -26,14 +26,20 @@
     {% set object = '' %}
     {% if  content.data.variables %}
       {% set object = content.data.variables %}
-      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h3>
+      <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
     {% else %}
-      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
+      <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SUBTITLE %}
-    <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
+     {% set object = '' %}
+     {% if  content.data.variables %}
+       {% set object = content.data.variables %}
+       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
+     {% else %}
+       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
+     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}

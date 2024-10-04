@@ -3,13 +3,17 @@ import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {generalApplicationDocumentIdExtractor} from 'common/utils/stringUtils';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -37,7 +41,7 @@ export const addApplicationTypesRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
         rows.push(
           summaryRow(
@@ -69,8 +73,8 @@ export const addApplicationTypesAndDescriptionRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
-        const applicationTypeDescription = selectedApplicationTypeDescription[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+        const applicationTypeDescription = getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION);
 
         rows.push(
           summaryRow(
@@ -147,7 +151,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
     rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
     rowValue += '<ul class="no-list-style">';
     application.case_data.gaAddlDoc.forEach(uploadGAFile => {
-      rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', generalApplicationDocumentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
+      rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', documentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
 
     });
     rowValue += '</ul>';
