@@ -643,6 +643,7 @@ class CreateClaim {
         I.waitForContent('What is the total interest for your claim', 60);
         I.fillField(paths.options.interest_to_applied, 10);
         I.fillField(paths.options.interest_reason, 'calculate interest for the different time periods');
+        // TODO: Uncomment this once below pages are enabled in claim creation disabled as part of CIV-15490
         // this.clickNextAction(paths.buttons.save_and_continue);
         // I.waitForContent('Continue to claim interest after you submit your claim', 60);
         // I.click(paths.options.yes);
