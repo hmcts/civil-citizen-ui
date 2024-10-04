@@ -6,6 +6,12 @@ const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
+import {createDraftClaimInStoreWithExpiryTime} from 'modules/draft-store/draftStoreService';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 interface IdTokenJwtPayload {
   uid: string;
@@ -40,6 +46,11 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
     if(!req.cookies['eligibilityCompleted']){
       const MILLISECONDS_IN_1_HOUR = 3600000;
       res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
+    }
+
+    if (!caseData?.isDraftClaim()) {
+      await createDraftClaimInStoreWithExpiryTime(userId);
+      await civilServiceClient.createDashboard(<AppRequest> req);
     }
 
     const claimData = Object.assign(new Claim(), claimWithSubmittedDate);
