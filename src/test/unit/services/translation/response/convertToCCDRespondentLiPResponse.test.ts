@@ -12,6 +12,9 @@ import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {YesNo} from 'common/form/models/yesNo';
 import {ClaimDetails} from 'common/form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
+import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 
 const setUpUndefinedDQExtraDetails = () : CCDDQExtraDetails => {
   return {
@@ -66,6 +69,14 @@ const addressCCD: CCDAddress = {
   PostTown: 'london',
 };
 
+const evidenceConfirmDetails: CCDEvidenceConfirmDetails = {
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'test@test.com',
+  phone: '600000000',
+  jobTitle: 'Doctor',
+}
+
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
     //Given
@@ -82,12 +93,16 @@ describe('translate cui fields to CCD model', () => {
     input.respondent1.partyDetails.contactPerson = 'Example contactPerson';
     input.respondent1.partyDetails.postToThisAddress = 'yes';
     input.respondent1.partyDetails.correspondenceAddress = new Address('line 1', 'line 2', 'line 3', 'london', 'SW1A 2AA' );
+    input.directionQuestionnaire = new DirectionQuestionnaire();
+    input.directionQuestionnaire.confirmYourDetailsEvidence = new ConfirmYourDetailsEvidence('John', 'Doe',
+      'test@test.com', 600000000, 'Doctor');
 
     const expected : CCDRespondentLiPResponse = {
       respondent1MediationLiPResponse: undefined,
       respondent1DQHearingSupportLip: setUpUndefinedDQHearingSupport(),
       respondent1DQExtraDetails: setUpUndefinedDQExtraDetails(),
       respondent1LiPContactPerson: 'Example contactPerson',
+      respondent1DQEvidenceConfirmDetails: evidenceConfirmDetails,
       respondent1LiPCorrespondenceAddress: addressCCD,
     };
     //When
