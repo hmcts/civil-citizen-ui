@@ -31,6 +31,7 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT, (async funct
   const redirectUrl = await getDashboardNotificationRedirectUrl(req.params.locationName, claimId, <AppRequest>req);
 
   res.redirect(redirectUrl);
+
 }) as RequestHandler);
 
 notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, (async function(req, res, next){
