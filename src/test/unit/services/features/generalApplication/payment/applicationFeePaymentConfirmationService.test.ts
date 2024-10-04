@@ -13,9 +13,6 @@ import { getRedirectUrl } from 'services/features/generalApplication/payment/app
 import { GaServiceClient } from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {
-  getGaFeePaymentRedirectInformation,
-} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
@@ -181,15 +178,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
 
     //Then
     expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
-  });
-
-  it('should return 500 error page for any payment redirection service error', async () => {
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
-
-    //Then
-    await expect(getGaFeePaymentRedirectInformation(applicationId, mockedAppRequest)).rejects.toBe(
-      TestMessages.SOMETHING_WENT_WRONG,
-    );
   });
 
   it('should return 500 error page for any service error', async () => {

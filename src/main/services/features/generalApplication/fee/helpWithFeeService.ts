@@ -9,7 +9,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
@@ -45,7 +45,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
-      await saveDraftClaim(claim.id, claim, true);
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
