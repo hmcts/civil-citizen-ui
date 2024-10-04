@@ -15,7 +15,6 @@ import { InterestClaimOptionsType } from 'form/models/claim/interest/interestCla
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
-import {isAfter4PM} from 'common/utils/dateUtils';
 
 describe('Interest Utils', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockResponse));
