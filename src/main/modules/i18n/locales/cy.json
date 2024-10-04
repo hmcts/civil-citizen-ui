@@ -2,7 +2,7 @@
   "COMMON": {
     "HOME": "Hafan",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
-    "UPLOAD_FILE": "Llwytho ffeil i fyny",
+    "UPLOAD_FILE": "Uwchlwytho ffeil",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
@@ -70,6 +70,7 @@
     "YEARS": "Blwyddyn",
     "YES": "Oes",
     "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
+    "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Confirm you've paid a judgment debt",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -77,6 +78,7 @@
       "POSTCODE": "Cod post",
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
+    "IF_NECESSARY_DOCUMENTS": "Os bydd angen, bydd yr holl ddogfennau sy’n ymwneud â’r cais hwn, gan gynnwys unrhyw ymateb gan y llys, yn cael eu cyfieithu. Byddwch yn cael eich hysbysu pan fydd y rhain ar gael.",
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ôl",
@@ -958,7 +960,7 @@
         "ACCEPTED_PARTIALLY": "Bydd rhywfaint o'r ffi yn cael ei thalu, ond bydd angen i chi dalu'r balans sy'n weddill. Gallwch dalu dros y ffôn.",
         "CONTINUE_APPLICATION": "Ydych chi eisiau parhau i wneud cais am Help i Dalu Ffioedd?",
         "ELIGIBILITY": "Nid yw gwneud cais am help i dalu ffioedd yn gwarantu na fydd rhaid i chi dalu’r ffi. Bydd angen i chi fodloni’r ",
-        "ELIGIBILITY_LINK": "meini prawf cymhwysedd (yn agor mewn tab newydd).",
+        "ELIGIBILITY_LINK": "meini prawf cymhwysedd (yn agor mewn tab newydd)",
         "HEARING_FEE": "Ffi’r Gwrandawiad",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r Gwrandawiad yw: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Ar ôl i chi wneud cais am help i dalu ffioedd, dylech gael penderfyniad gan Wasanaeth Llysoedd a Thribiwnlysoedd EF (GLlTEF) o fewn 5 i 10 diwrnod gwaith.",
@@ -968,15 +970,15 @@
       },
       "REFERENCE_NUMBER": {
         "TITLE_YES": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
-        "SUBTITLE_YES": "Dim ond os gwnaethoch gais am Help i Dalu Ffioedd y bydd gennych chi gyfeirnod.’ Peidiwch â rhoi rhif sydd eisoes wedi'i ddefnyddio ar gyfer cais blaenorol.",
+        "SUBTITLE_YES": "Dim ond os gwnaethoch gais am Help i Dalu Ffioedd y bydd gennych chi gyfeirnod. Peidiwch â rhoi rhif sydd eisoes wedi'i ddefnyddio ar gyfer cais blaenorol.",
         "HINT_YES" : "Er enghraifft, HWF-A1B-23C",
         "TITLE_NO": "Y camau nesaf",
         "PARAGRAPH_NO": "Mae’n rhaid i chi wneud cais am Help i Dalu Ffioedd cyn i chi gyflwyno’ch cais.",
         "QUESTION_TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
         "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
         "LIST_ITEMS": {
-          "FIRST": "Ewch ",
-          "FIRST_LINK": "i ‘gwneud cais am help i dalu ffioedd’ (yn agor mewn tab newydd).",
+          "FIRST": "Ewch i",
+          "FIRST_LINK": "gwneud cais am help i dalu ffioedd (yn agor mewn tab newydd)",
           "SECOND": "Pan ofynnir i chi nodi rhif llys neu dribiwnlys, rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
           "THIRD": "Cwblhewch y cais am help i dalu ffioedd.",
           "FOURTH": "Dychwelwch yma i'ch cyfrif hawliadau am arian ar-lein.",
@@ -1483,7 +1485,7 @@
         "APPLY_TO_COURT_BEFORE": "Gan fod y bwndel wedi'i greu erbyn hyn, bydd yn rhaid i chi",
         "APPLY_TO_COURT_LINK": "wneud cais i'r llys",
         "APPLY_TO_COURT_AFTER": "os ydych chi am i unrhyw ddogfennau newydd rydych chi'n eu huwchlwytho gael eu defnyddio yn eich treial neu'ch gwrandawiad.",
-        "NEW_DOCUMENT_NOT_INCLUDED": "Ni fydd unrhyw ddogfennau newydd yr ydych yn eu llwytho yn cael eu cynnwys yn y prif bwndel. Byddant yn cael eu rhestru ar wahân isod ac o dan 'Dogfennau'.",
+        "NEW_DOCUMENT_NOT_INCLUDED": "Ni fydd unrhyw ddogfennau newydd yr ydych yn eu llwytho yn cael eu cynnwys yn y prif fwndel. Byddant yn cael eu rhestru ar wahân isod ac o dan 'Dogfennau'.",
         "BUNDLE_HEADER": "Bwndel y Treial",
         "CREATED_DATE_HEADER": "Crëwyd ar",
         "HEARING_DATE_HEADER": "Dyddiad y gwrandawiad",
@@ -1491,7 +1493,7 @@
         "DATE_UPLOADED": "Dyddiad uwchlwytho",
         "DOCUMENT_NAME": "Enw’r ddogfen",
         "DOCUMENT": "Dogfen",
-        "UPLOADED_AFTER_DOCUMENTS_BELOW": "Mae'r dogfennau a restrir isod wedi'u llwytho ers i'r bwndel treial gael ei greu.",
+        "UPLOADED_AFTER_DOCUMENTS_BELOW": "Mae'r dogfennau a restrir isod wedi'u llwytho ers i fwndel y treial gael ei greu.",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Dogfennau a uwchlwythwyd gan yr hawlydd",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Dogfennau a uwchlwythwyd gan y diffynnydd"
       },
@@ -1736,7 +1738,9 @@
     },
     "CLAIMANT_SETTLE_DATE": {
       "PAGE_TITLE": "Pryd wnaethoch chi setlo gyda'r diffynnydd?",
-      "TITLE": "Pryd wnaethoch chi setlo gyda'r diffynnydd?"
+      "TITLE": "Pryd wnaethoch chi setlo gyda'r diffynnydd?",
+      "PLEASE_NOTE": "Please note that the defendant has 19 days from the date of settlement to notify the court of any objection.",
+      "ADDITIONALLY": "Additionally, all matters in dispute have been agreed, meaning that no further court orders will be issued."
     },
     "CLAIMANT_RESPONSE_DEBT_WHEN_START": {
       "DATE_START_OPTIONAL": "Dyma'r dyddiad y dechreuodd, nid y dyddiad y cawsoch hysbysiad amdano (dewisol).",
@@ -2130,7 +2134,7 @@
         "HELP_FEES": "Help i dalu ffioedd",
         "I_WANT_TO": "Rwyf eisiau...",
         "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
-        "TELL_US_ENDED": "Dywedwch wrthym eich bod wedi dod â’r hawliad i ben",
+        "TELL_US_SETTLED": "Dweud wrthym eich bod wedi setlo’r hawliad",
         "VIEW_ALL_APPLICATIONS": "View all existing applications",
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
@@ -2641,8 +2645,9 @@
         "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
         "MAKE_AN_APPLICATION": "Make an application",
         "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
-        "PROCEEDS_IN_HERITAGE": "the court to do something else",
+        "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
+        "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
@@ -2719,6 +2724,22 @@
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
+      "DEBT_PAYMENT": {
+        "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
+        "YOU_WILL_NEED_EVIDENCE": "You’ll need to provide evidence that you’ve paid the debt.",
+        "CONFIRMATION_OF_MONEY": "This should be confirmation from the person or business you owed money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "IF_CANNOT_PROVIDE_EVIDENCE": "If you cannot provide evidence, you can explain that below. The court will ask the person or business you owed money if they’ve been paid. If they do not respond within a month, the public register will be updated and a certificate issued.",
+        "DO_YOU_WANT_PROVIDE_EVIDENCE": "Do you want to provide evidence of the debt payment?",
+        "UPLOAD_EVIDENCE": "I want to upload evidence that this debt has been paid in full",
+        "MADE_FULL_PAYMENT": "I made full payment to the court",
+        "NO_EVIDENCE": "I am unable to provide evidence of full payment",
+        "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
+        "PROVIDE_DETAILS": "Provide details",
+        "OR": "or"
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
@@ -2797,7 +2818,8 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment"
+        "VARY_JUDGMENT": "Vary a judgment",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -2835,7 +2857,9 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order.",
-        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date."
+        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date.",
+        "CONFIRM_YOU_PAID": "Confirm you've paid a judgment (CCJ) debt",
+        "CONFIRM_YOU_PAID_DESCRIPTION": "If you've paid the debt from a county court judgment (CCJ) in full, you can ask the court for proof of payment to share with banks, lenders and credit reference agencies. This is called requesting a certificate of cancellation or satisfaction."
       },
       "SUMMARY": {
         "APP_REQUESTED": "An application is a request for a change to the case.",
@@ -3057,7 +3081,7 @@
         "PAGE_TITLE": "Provide more information to the court",
         "TITLE": "Provide more information to the court",
         "TEXT_INPUT": "Enter the information requested by the court",
-        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs.",
         "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
@@ -3099,7 +3123,10 @@
         "PAY_FEE_BUTTON": "Pay application fee",
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
-        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
+        "COSC_PAY_FEE": "Pay the fee",
+        "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -3147,7 +3174,12 @@
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
-        "RESPONSE": "Response from the other parties",
+        "RESPONSE": {
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "TITLE": "Response from the other parties",
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+        },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
@@ -3167,6 +3199,32 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
+      },
+      "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
+        "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
+        "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
+        "HELP_WITH_FEE": "help with fees.",
+        "PARA_TITLE_1": "If you paid within a month of the judgment",
+        "PARA_3": "A certificate of cancellation can be requested if you have evidence that you paid the debt within one month of the date of judgment. This means the debt will be removed from the public register.",
+        "PARA_TITLE_2": "If you paid after one month from the judgment",
+        "PARA_4": "A certificate of satisfaction can be requested if the debt is paid after one month. The entry will remain on the public register for 6 years but will be marked 'satisfied'.",
+        "PARA_TITLE_3": "What evidence is needed?",
+        "PARA_5": "You must provide evidence that the debt has been paid in full. This should be confirmation from the person or business you owned money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "PARA_TITLE_4": "Agreement from the person or business owed money",
+        "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
+        "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
+        "PARA_TITLE_5": "Do you need to update your details?",
+        "PARA_8": "If you need to update your details from the judgment, you will need to ",
+        "COMPLETE_FORM_N443": "complete a form N443."
+      },
+      "FINAL_DEFENDANT_PAYMENT_DATE": {
+        "TITLE": "When was the final payment?",
+        "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
+        "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+        "FORM_HEADER_1" : "Enter the date of the final payment"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3254,7 +3312,7 @@
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
             "LINK_BEFORE": "Os ydych ar incwm isel, os nad oes gennych lawer o gynilion neu os ydych yn hawlio budd-daliadau, efallai y gallwch gael ",
-            "LINK_TEXT": "help i dalu ffioedd (agor mewn tab newydd).",
+            "LINK_TEXT": "help i dalu ffioedd (agor mewn tab newydd)",
             "PARAGRAPH": "Os ydych yn bodloni'r meini prawf, efallai y cewch gymorth i dalu rhywfaint neu'r cyfan o'r ffi.",
             "QUESTION_TITLE": "Ydych chi eisiau gwneud cais am help i dalu ffioedd?",
             "TITLE": "Talu ffi’r gwrandawiad"
@@ -3302,7 +3360,7 @@
         },
         "PAY_HEARING_FEE": {
           "APPLY_HELP_WITH_FEES": {
-            "LINK":"Gwneud cais am Help i Dalu Ffioedd (yn agor mewn tab newydd)",
+            "LINK":"Gwneud cais am Help i Dalu Ffioedd (yn agor mewn ffenestr newydd)",
             "PAGE_TITLE": "Help i Dalu Ffioedd",
             "PARAGRAPH_IF": "Os oes gennych gyfeirnod help i dalu ffioedd yn barod ar gyfer ffi cychwyn yr hawliad neu unrhyw ffioedd gwneud cais, ni ddylech ddefnyddio’r cyfeirnod hwnnw ar gyfer y cais hwn.",
             "PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais am help i dalu ffioedd newydd a fydd yn rhoi cyfeirnod newydd i chi.  Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
@@ -3471,7 +3529,7 @@
       "WITNESS_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn y mae eich tyst am ei ddweud wrth y llys",
       "WITNESS_SUMMARY": "Crynodeb tyst",
       "WITNESS_SUMMARY_HINT": "Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o'r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae'n rhaid i chi wneud cais i'r llys i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid gwneud hyn cyn y dyddiad cau. Defnyddiwch ",
-      "WITNESS_SUMMARY_HINT_URL": "ffurflen N244 ‘rhybudd cyflwyno cais'",
+      "WITNESS_SUMMARY_HINT_URL": "ffurflen N244 ‘rhybudd cyflwyno cais' (yn agor mewn tab newydd)",
       "YOUR_STATEMENT": "Eich datganiad chi",
       "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn yr ydych am ei ddweud wrth y llys"
     },
@@ -4365,11 +4423,12 @@
       "THE_TRIAL_OR": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y treial. Os ydych eisiau i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi wneud cais i’r llys."
     },
     "HAS_ANYTHING_CHANGED": {
+      "PAGE_TITLE": "A oes unrhyw beth wedi newid",
       "FINALISE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?",
       "YOU_CAN": "Gallwch wirio eich atebion blaenorol yn yr ",
-      "DIRECTIONS": "holiadur cyfarwyddiadau.",
+      "DIRECTIONS": "holiadur cyfarwyddiadau",
       "WHAT_SUPPORT": "Pa gymorth sydd ei angen arnoch chi, eich arbenigwyr neu dystion?",
       "FOR_EXAMPLE": "Er enghraifft, mae tyst angen ystafell llys heb risiau."
     },
@@ -4425,7 +4484,7 @@
       "RESPOND_TO_DEFENCE": "Respond to defence",
       "SEALED_CLAIM": "Ffurflen Hawlio wedi'i selio",
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
-      "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddo Safonol",
+      "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddiadau Safonol",
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio"
@@ -4529,7 +4588,7 @@
       "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>Os oes angen i chi wneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. </strong>Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais. Bydd dolen i wneud cais yn ymddangos unwaith y byddwch wedi cwblhau trefniadau eich treial.</p><p class=\"govuk-body\">Os byddwch yn gwneud cais, nodwch y bydd y treial yn mynd yn ei flaen fel y cynlluniwyd nes bydd y cais yn cael ei adolygu gan farnwr a bod gorchymyn wedi ei wneud yn newid dyddiad y treial.</p>",
       "HEARING_ADJUSTMENTS_AND_DURATION": "Addasiadau a hyd y treial",
       "YOU_WILL_BE_ASKED": "Gofynnir i chi nodi a oes unrhyw newidiadau i’r cymorth neu’r addasiadau a nodwyd gennych yn flaenorol yn eich ",
-      "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau.",
+      "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau",
       "YOU_SHOULD_REVIEW": "Dylech adolygu hyn i weld a yw eich amgylchiadau wedi newid.",
       "WE_WILL_REMIND_YOU": "Byddwn yn eich atgoffa o’r amser a neilltuwyd ar gyfer y treial. Os ydych yn teimlo nad oes angen cymaint â hynny o amser, gallwch nodi pam yn y blwch 'gwybodaeth arall'.",
       "IF_YOU_FEEL_THAT": "Os ydych yn teimlo bod arnoch angen mwy o amser, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.",
@@ -4549,10 +4608,10 @@
         "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y treial.",
         "MAKE_AN_APPLICATION": "wneud cais",
         "IF_YOU_WANT_THE_DATE_OF_THE_HEARING": "Os ydych am i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi",
-        "TO_THE_COURT_AND_PAY": "i’r llys a thalu’r ffi briodol.",
+        "TO_THE_COURT_AND_PAY": "i’r llys cyn gynted â phosibl a thalu’r ffi briodol.",
         "YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud bod yr achos hwn yn barod ar gyfer treial",
         "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "Os oes unrhyw newidiadau i’r trefniadau rhwng nawr a dyddiad y treial, bydd angen i chi",
-        "AS_SOON_AS_POSSIBLE_AND_PAY": "i’r llys a thalu’r ffi briodol.",
+        "AS_SOON_AS_POSSIBLE_AND_PAY": "i’r llys cyn gynted â phosibl a thalu’r ffi briodol.",
         "YOU_WILL_NEED_TO_PHONE": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y treial, bydd angen i chi ffonio 0300 303 5174."
       }
     },
@@ -4566,7 +4625,7 @@
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
         "TITLE_CLAIM_FEE": "Confirmation of your claim fee payment",
-        "CONFIRMATION_TITLE.HEARING": "Mae eich ceisiadau am help i dalu ffioedd gwrandawiad’ yn gyflawn",
+        "CONFIRMATION_TITLE.HEARING": "Mae eich cais am help i dalu ffioedd gwrandawiad yn gyflawn",
         "REFERENCE_NUMBER": "Eich cyfeirnod yw ",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_RECEIVE": "Byddwch yn cael penderfyniad ar eich cais o fewn 5 i 10 diwrnod gwaith."
@@ -4600,6 +4659,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
+    "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
     "FRC_BAND_AGREED": "Nodwch a yw’r band cymhlethdod wedi cael ei gytuno â’r partïon eraill",
     "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod rydych chi'n credu y mae'r hawliad hwn yn berthnasol iddo",
@@ -5048,6 +5109,7 @@
     "VALID_REAL_MONTH": "Rhaid i fis y dyddiad fod yn fis dilys",
     "VALID_REAL_YEAR": "Rhaid i flwyddyn y dyddiad fod yn flwyddyn ddilys",
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
+    "VALID_DATE_NOT_IN_THE_FUTURE": "Date of the final payment must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
@@ -5063,6 +5125,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
@@ -5093,6 +5156,7 @@
         "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
-    }
+    },
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
   }
 }

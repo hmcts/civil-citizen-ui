@@ -26,14 +26,20 @@
     {% set object = '' %}
     {% if  content.data.variables %}
       {% set object = content.data.variables %}
-      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h3>
+      <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
     {% else %}
-      <h3 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
+      <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SUBTITLE %}
-    <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
+     {% set object = '' %}
+     {% if  content.data.variables %}
+       {% set object = content.data.variables %}
+       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
+     {% else %}
+       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
+     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LEAD_PARAGRAPH %}
@@ -125,6 +131,22 @@
          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
       {% else %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+      {% endif %}
+      {{ t(content.data.textAfter) }}
+    </p>
+    <p class="govuk-body-s mid-grey">{{ t(content.data.subtitle) }}</p>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.FULL_STOP_LINK %}
+    <p class="govuk-body govuk-!-margin-bottom-1">{{ t(content.data.textBefore) }}
+      {% set object = '' %}
+      {% if content.data.variables %}
+        {% set object = content.data.variables %}
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>.
+        {% elif  content.data.externalLink %}
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>.
+      {% else %}
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
       {% endif %}
       {{ t(content.data.textAfter) }}
     </p>

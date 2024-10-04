@@ -33,5 +33,5 @@ Scenario('Citizen Claimant perform evidence upload and trial arrangements',  asy
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();*/
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
 
