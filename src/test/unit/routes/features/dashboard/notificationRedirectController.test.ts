@@ -13,6 +13,7 @@ import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import * as StringUtils from 'common/utils/stringUtils';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {CaseState} from 'form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -95,6 +96,38 @@ describe('Notification Redirect Controller - Get', () => {
       .expect((res: Response) => {
         expect(res.status).toBe(302);
         expect(res.text).toBe('Found. Redirecting to https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960');
+      });
+  });
+
+  it('Render error page when click pay hearing fee notification - case offline', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    const offlineCaseData = {
+      ...civilClaimResponseMock.case_data,
+      ccdState: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
+    };
+    const data = Object.assign(claim, offlineCaseData);
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'PAY_HEARING_FEE_URL')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toMatch(/<h1 class="govuk-heading-xl">Something went wrong<\/h1>/);
+        expect(res.text).toMatch(/<p class="govuk-body">Sorry, we had some technical problems during your last operation. Please try again later.<\/p>/);
       });
   });
 

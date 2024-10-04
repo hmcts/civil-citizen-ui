@@ -16,6 +16,7 @@ import {YesNo} from 'form/models/yesNo';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -30,7 +31,6 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT, (async funct
   const redirectUrl = await getDashboardNotificationRedirectUrl(req.params.locationName, claimId, <AppRequest>req);
 
   res.redirect(redirectUrl);
-
 }) as RequestHandler);
 
 notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, (async function(req, res, next){
@@ -61,6 +61,9 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
       break;
     case 'PAY_HEARING_FEE_URL':
+      if (claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM) {
+        throw Error('Case offline');
+      }
       await saveDraftClaim(generateRedisKey(req), claim, true);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
       break;
