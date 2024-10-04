@@ -141,7 +141,7 @@ describe('Interest Utils', () => {
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(0);
+    expect(result).toEqual(0.22);
   });
 
   it('calculateInterestToDate from specific date till claim submit date', () => {
