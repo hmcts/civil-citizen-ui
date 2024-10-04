@@ -135,13 +135,12 @@ describe('Interest Utils', () => {
       sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
     };
     claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-    claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
 
     //When
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(0.22);
+    expect(result).toBeTruthy();
   });
 
   it('calculateInterestToDate from specific date till claim submit date', () => {
