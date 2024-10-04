@@ -75,7 +75,7 @@ const evidenceConfirmDetails: CCDEvidenceConfirmDetails = {
   email: 'test@test.com',
   phone: '600000000',
   jobTitle: 'Doctor',
-}
+};
 
 describe('translate cui fields to CCD model', () => {
   it('should return undefined if it is undefined', () => {
