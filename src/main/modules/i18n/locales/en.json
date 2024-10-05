@@ -4291,7 +4291,9 @@
       "TITLE": "Try the new online service",
       "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
       "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service.",
-      "CLAIM_INTEREST": "<u><b>Claiming interest:</u></b> You can only use this service if any claim for interest is made at the same rate and from the same date.To claim interest at different rates or for different periods of time, you should issue your claim on paper.  More information on how to do this can be found at <a class='govuk-link' href='https://www.gov.uk/make-court-claim-for-money/make-claim' target='_blank'> Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)</a>"
+      "CLAIM_TITLE": "Claiming interest:",
+      "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)",
+      "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date.To claim interest at different rates or for different periods of time, you should issue your claim on paper.  More information on how to do this can be found at MAKE_A_CLAIM"
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Add another person",
