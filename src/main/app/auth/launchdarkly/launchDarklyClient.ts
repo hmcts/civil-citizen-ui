@@ -110,7 +110,13 @@ export async function isJudgmentOnlineLive(): Promise<boolean> {
 }
 
 export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
-  return true;
+  const {DateTime} = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const dateIsoString = date ? new Date(date).toISOString() : new Date().toISOString();
+  const epoch = DateTime.fromISO(dateIsoString, {zone: systemTimeZone}).toSeconds();
+  const todayDateIsoString = new Date().toISOString();
+  const todayDateSeconds = DateTime.fromISO(todayDateIsoString, {zone: systemTimeZone}).toSeconds()
+  return epoch >= todayDateSeconds;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
