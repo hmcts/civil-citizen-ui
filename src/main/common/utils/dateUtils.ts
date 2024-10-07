@@ -68,12 +68,6 @@ export const addDaysToDate = (date: Date, value: number) => {
   return updatedDate;
 };
 
-export const subtractDaysFromDate = (date: Date, value: number) => {
-  const updatedDate = new Date(date);
-  updatedDate.setDate(updatedDate.getDate() - value);
-  return updatedDate;
-};
-
 export const getDOBforAgeFromCurrentTime = (age: number): Date => {
   const referenceDate = new Date();
   referenceDate.setFullYear(referenceDate.getFullYear() - age);
@@ -161,6 +155,9 @@ export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM
   return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }
 
-export const isAfterFourPM = (startDate: Date) => {
-  return isPastDeadline(startDate);
+export const  isAfter4PM = (startDate: Date) => {
+  if (startDate) {
+    return new Date(startDate).getHours() > 15;
+  }
+  return false;
 };
