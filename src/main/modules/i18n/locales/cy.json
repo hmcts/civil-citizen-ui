@@ -2592,7 +2592,7 @@
       },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
-        "ENTER_AMOUNT": "Enter the amount in £",
+        "ENTER_AMOUNT": "Swm mewn £",
         "N245": "N245 form",
         "N245_AFTER": " that they completed. You should read this before responding.",
         "N245_BEFORE": "The defendant's offer will be set out in the ",
@@ -4929,7 +4929,7 @@
     "SIGNER_NAME_TOO_LONG": "Rydych wedi defnyddio gormod o nodau",
     "SIGNER_ROLE_REQUIRED": "Rhowch rôl yr unigolyn sy'n llofnodi'r datganiad",
     "SOMETHING_WENT_WRONG": "Aeth rhywbeth o'i le",
-    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
+    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir ar y ffurflen hon yn wir",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Dewiswch ydw os ydych eisiau gofyn am gael cynnal y gwrandawiad mewn llys penodol",
       "SELECT_COURT_LOCATION": "Dewiswch lys"
