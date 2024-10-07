@@ -73,7 +73,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       generalApplicationId = req.params.appId;
     }
     claim.paymentSyncError = true;
-    await saveDraftClaim(claim.id, claim, true);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };
