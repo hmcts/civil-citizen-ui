@@ -11,9 +11,6 @@ import { saveFirstContactData } from 'services/firstcontact/firstcontactService'
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 
-const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('claimReferenceController');
-
 const claimReferenceController = Router();
 const claimReferenceViewPath = 'features/public/firstContact/claim-reference';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -35,8 +32,6 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Re
       req.session = saveFirstContactData(req.session as AppSession, {claimReference: req.body.claimReferenceValue});
       if (req.body.claimReferenceValue?.includes('MC')) {
         const results = await civilServiceClient.isDefendantLinked(req.body.claimReferenceValue);
-        logger.info(`isDefendantLinked linked: ${results.linked}`);
-        logger.info(`isDefendantLinked isOcmcCase: ${results.isOcmcCase}`);
         if (results.linked) {
           return res.redirect((results.isOcmcCase ? ocmcBaseUrl : '') + DASHBOARD_URL);
         }
