@@ -2941,7 +2941,7 @@
         "TITLE": "General application payment fee confirmation",
         "WHAT_HAPPENS_NEXT_PARA_1": "Os ydych wedi dewis i hysbysu’r partïon eraill neu wedi cytuno ar y cais, bydd ganddynt 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
         "WHAT_HAPPENS_NEXT_PARA_2": "Efallai y bydd rhaid i chi fynychu gwrandawiad fel bod barnwr yn gallu ystyried eich cais gyda chi a’r partïon eraill a phenderfynu ar y camau nesaf.",
-        "WHAT_HAPPENS_NEXT_PARA_3": "Fe gewch hysbysiad yn rhoi gwybod i chi os bydd gwrandawiad cais wedi’i drefnu.",
+        "WHAT_HAPPENS_NEXT_PARA_3": "Fe gewch hysbysiad yn rhoi gwybod i chi os bydd gwrandawiad wedi’i drefnu.",
         "WHAT_HAPPENS_NEXT_PARA_4": "Os ydych wedi gwneud cais i newid dyddiad gwrandawiad, bydd y treial neu’r gwrandawiad yn mynd ymlaen ar y dyddiad gwreiddiol fel y cynlluniwyd, oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y gwrandawiad.",
         "WHAT_HAPPENS_NEXT_PARA_5": "Mae gan y partïon eraill 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
         "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
@@ -4290,10 +4290,7 @@
       "PAGE_TITLE": "Rhowch gynnig ar y gwasanaeth ar-lein newydd",
       "TITLE": "Rhowch gynnig ar y gwasanaeth ar-lein newydd",
       "WE_ARE_BUILDING": "Rydym yn datblygu gwasanaeth newydd. Mae dyluniadau gwahanol yn cael eu profi a'u newid yn seiliedig ar adborth gan ddefnyddwyr.",
-      "YOU_WILL_BE_ASKED": "Gofynnir rhai cwestiynau i chi wirio eich bod yn gymwys i ddefnyddio'r gwasanaeth hwn.",
-      "CLAIM_TITLE": "Claiming interest:",
-      "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)",
-      "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date.To claim interest at different rates or for different periods of time, you should issue your claim on paper.  More information on how to do this can be found at MAKE_A_CLAIM"
+      "YOU_WILL_BE_ASKED": "Gofynnir rhai cwestiynau i chi wirio eich bod yn gymwys i ddefnyddio'r gwasanaeth hwn."
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Ychwanegu unigolyn arall",
@@ -5119,7 +5116,7 @@
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
       "ACCEPT_DEFENDANT_OFFER": {
-        "ERROR_ACCEPT": "Mae arnoch angen dweud wrthym os ydych yn derbyn cynnig y diffynnydd. Dewiswch opsiwn: Ydw neu Nac ydw",
+        "ERROR_ACCEPT": "Mae arnoch angen dweud wrthym os ydych yn derbyn cynnig y diffynnydd. Dewiswch opsiwn Ydw neu Nac ydw",
         "ERROR_CHOOSE": "Mae arnoch angen cynnig cynllun talu. Dewiswch un ai rhandaliadau bob mis neu talu'n llawn erbyn dyddiad penodol.",
         "ERROR_NOT_ACCEPT": "Mae arnoch angen dweud wrthym pam nad ydych yn derbyn cynnig y diffynnydd.",
         "ERROR_INSTALMENT": "Mae arnoch angen nodi'r swm arfaethedig ar gyfer rhandaliadau misol.",
@@ -5143,7 +5140,7 @@
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
-      "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn Ydw neu Nac ydw",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
