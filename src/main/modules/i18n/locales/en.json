@@ -5041,6 +5041,7 @@
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
+    "VALID_FOUR_DIGIT_YEAR_V2": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",
     "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
