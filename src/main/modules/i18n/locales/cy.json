@@ -4929,7 +4929,7 @@
     "SIGNER_NAME_TOO_LONG": "Rydych wedi defnyddio gormod o nodau",
     "SIGNER_ROLE_REQUIRED": "Rhowch rôl yr unigolyn sy'n llofnodi'r datganiad",
     "SOMETHING_WENT_WRONG": "Aeth rhywbeth o'i le",
-    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir ar y ffurflen hon yn wir",
+    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Dewiswch ydw os ydych eisiau gofyn am gael cynnal y gwrandawiad mewn llys penodol",
       "SELECT_COURT_LOCATION": "Dewiswch lys"
