@@ -2810,7 +2810,7 @@
         "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
+        "CANCEL_JUDGMENT": "Rhoi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
         "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
