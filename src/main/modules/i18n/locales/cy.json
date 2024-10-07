@@ -2588,7 +2588,7 @@
     },
     "GENERAL_APPLICATION": {
       "COMMON": {
-        "MAKE_AN_APPLICATION": "Make an application"
+        "MAKE_AN_APPLICATION": "Gwneud cais"
       },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
@@ -2706,6 +2706,7 @@
           "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen hon yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad gwirionedd hwn. "
         },
+        "TITLE": "Gwirio eich atebion",
         "UPLOAD_DOCUMENTS": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?",
         "WHAT_ORDER": "Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?",
         "WHY_PREFER": "Pam fyddai'n well gennych y math hwn o wrandawiad?",
@@ -2851,7 +2852,7 @@
         "ASK_STRIKE_OUT_DESCRIPTION": "This application should only be made if you believe that a document uploaded by the other parties, such as their defence, should be struck out as it has no real prospect of success.",
         "ASK_VARY_JUDGMENT": "Ask to vary a judgment",
         "ASK_VARY_JUDGMENT_DESCRIPTION": "For example, if you want to request to pay a judgment amount in instalments or make a change to instalments you've already agreed. This application is usually made by defendants. Your payment offer will be presented to the other parties who can accept or reject it. If you're a defendant selecting this application, you'll need to upload an N245 form.",
-        "CAPTION": "Gwneud cais",
+        "CAPTION": "Make an application",
         "NEED_MULTIPLE_APPLICATIONS": "If you need to make multiple applications, you'll have the option to add another application later on.",
         "OTHER": "Other applications",
         "SELECT_APPLICATION": "Select the application you want and click continue.",
