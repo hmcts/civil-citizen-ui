@@ -110,7 +110,7 @@
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
       "CLAIM_FEE": "Ffi’r hawliad",
-      "APPLICATION_FEE": "Ffi gwneud cais",
+      "APPLICATION_FEE": "Y ffi gwneud cais",
       "ADDITIONAL_APPLICATION_FEE" : "Ffi Cais Ychwanegol"
     },
     "CHECKBOX_FIELDS": {
@@ -2597,7 +2597,7 @@
         "N245_AFTER": " maen nhw wedi’i llenwi. Dylech ddarllen manylion y cynnig cyn ymateb.",
         "N245_BEFORE": "Bydd cynnig y diffynnydd wedi’i bennu yn y ",
         "PROPOSE_IN_FULL": "Rwy’n cynnig talu’n llawn erbyn dyddiad penodol",
-        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        "PROPOSE_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig bob mis",
         "PROPOSED_SET_DATE": "Dyddiad penodol arfaethedig",
         "THE_COURT": "Bydd y llys yn gwneud gorchymyn am y taliad a awgrymwyd gan y diffynnydd.",
@@ -2938,13 +2938,13 @@
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "Os bydd y barnwr yn cytuno na ddylid hysbysu’r partïon eraill, ni fydd y partïon eraill yn gallu ymateb i’r cais cyn i’r barnwr wneud penderfyniad.",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "Os ydych wedi dewis peidio â hysbysu’r partïon eraill",
         "PAYMENT_SUMMARY_TITLE": "Crynodeb o’r taliad",
-        "TITLE": "General application payment fee confirmation",
+        "TITLE": "Cadarnhad - taliad am gais cyffredinol",
         "WHAT_HAPPENS_NEXT_PARA_1": "Os ydych wedi dewis i hysbysu’r partïon eraill neu wedi cytuno ar y cais, bydd ganddynt 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
         "WHAT_HAPPENS_NEXT_PARA_2": "Efallai y bydd rhaid i chi fynychu gwrandawiad fel bod barnwr yn gallu ystyried eich cais gyda chi a’r partïon eraill a phenderfynu ar y camau nesaf.",
         "WHAT_HAPPENS_NEXT_PARA_3": "Fe gewch hysbysiad yn rhoi gwybod i chi os bydd gwrandawiad wedi’i drefnu.",
         "WHAT_HAPPENS_NEXT_PARA_4": "Os ydych wedi gwneud cais i newid dyddiad gwrandawiad, bydd y treial neu’r gwrandawiad yn mynd ymlaen ar y dyddiad gwreiddiol fel y cynlluniwyd, oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y gwrandawiad.",
         "WHAT_HAPPENS_NEXT_PARA_5": "Mae gan y partïon eraill 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
-        "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
+        "WHAT_HAPPENS_NEXT_PARA_6": "Mae’n bosibl y bydd gofyn i chi fynychu gwrandawiad fel y gall y barnwr ystyried eich cais gyda chi a’r partïon eraill a phenderfynu beth ddylai’r camau nesaf fod.",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
@@ -3754,7 +3754,7 @@
         "PAYMENT_IS": "Cyfeirnod eich taliad yw",
         "PAYMENT_SUMMARY": "Crynodeb o’r taliad.",
         "CONFIRMATION": "Byddwch yn cael e-bost cadarnhau yn yr awr nesaf.",
-        "PAYMENT_FOR": "Taliad ar gyfer",
+        "PAYMENT_FOR": "Taliad am",
         "TOTAL_AMOUNT": "Cyfanswm"
       },
       "UNSUCCESSFUL": {
@@ -5038,6 +5038,7 @@
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "Rhaid i chi ddewis o leiaf un math o ddogfen",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
+    "VALID_FOUR_DIGIT_YEAR_V2": "Rhowch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INSTALMENT_AMOUNT": "Ni all swm y rhandaliad fod yn fwy na, neu'n hafal â'r swm hawlio",
