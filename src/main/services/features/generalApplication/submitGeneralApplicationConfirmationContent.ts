@@ -26,7 +26,7 @@ export const getGeneralApplicationConfirmationContent = (async (claimId: string,
       .build();
   } else {
     return new PageSectionBuilder()
-      .addTitle('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT')
+      .addTitle('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.WHAT_NEXT')
       .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.APPLICATION_SAVE', {applicationFee})
       .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.UNTIL_PAY_FEE')
       .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.APPLY_HELP_WITH_FEES')
