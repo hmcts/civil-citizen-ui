@@ -9,7 +9,7 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 
 export const getGaFeePaymentRedirectInformation = async (claimId: string, req: AppRequest, language: string): Promise<PaymentInformation> => {
   console.log('GA Service', language);
-  return await gaServiceClient.getGaFeePaymentRedirectInformation(claimId, req);
+  return await gaServiceClient.getGaFeePaymentRedirectInformation(claimId, req, language);
 
 };
 
