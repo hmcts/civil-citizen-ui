@@ -34,7 +34,7 @@ export const saveCertificateOfSatisfactionOrCancellation = async (req: Request, 
     const resetClaim = resetPaymentEvidenceData(claim, propertyName);
     resetClaim.generalApplication.certificateOfSatisfactionOrCancellation[propertyName] = value;
 
-    await saveDraftClaim(redisKey, claim);
+    await saveDraftClaim(redisKey, resetClaim);
   } catch (error) {
     logger.error(error);
     throw error;
