@@ -21,7 +21,7 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
+// import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
