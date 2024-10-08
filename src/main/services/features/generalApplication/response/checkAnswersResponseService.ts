@@ -1,4 +1,4 @@
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
 import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
@@ -160,6 +160,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         .filter((key: keyof HearingSupport) => !!hearingSupport[key].selected)
         .map(key => listItemCaption(`PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.${getCaption(key as SupportType)}`))
         .join('');
+      const noSupport = yesNoFormatter(YesNo.NO);
       return selectedHtml
         ? [row(
           'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
@@ -167,7 +168,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
           GA_RESPONSE_HEARING_SUPPORT_URL)]
         : [row(
           'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          YesNoUpperCamelCase.NO,
+          noSupport,
           GA_RESPONSE_HEARING_SUPPORT_URL)];
     } else {
       return [];
