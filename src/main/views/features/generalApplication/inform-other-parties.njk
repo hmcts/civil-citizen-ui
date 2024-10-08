@@ -34,7 +34,7 @@
               }) }}
             {% endset %}
 
-            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SHOULD_COURT_INFORM_PARTIES'), form, t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SELECTING_MULTIPLE_APPLICATIONS'),{noHtml:noHtml}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SHOULD_COURT_INFORM_PARTIES'), form, t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SELECTING_MULTIPLE_APPLICATIONS'),{noHtml:noHtml, yes:'COMMON.VARIATION_6.YES', no: 'COMMON.VARIATION_6.NO'}) }}
             <div class="govuk-button-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.CONTINUE')
