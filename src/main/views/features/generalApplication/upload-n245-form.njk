@@ -42,7 +42,7 @@
                 }) }}
     </div>
     {% if documentName %}
-      <h2 class="govuk-heading-m">Uploaded files</h2>
+      <h2 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOADED_FILES')}}</h2>
       <div class="govuk-section-break--s govuk-section-break--visible"></div>
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
@@ -51,7 +51,7 @@
           </dt>
           <dd class="govuk-summary-list__actions">
             <a class="govuk-link" href="{{ currentUrl }}?action=REMOVE_DOC">
-              Remove document<span class="govuk-visually-hidden">
+              {{t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.REMOVE_DOCUMENT')}}<span class="govuk-visually-hidden">
                 {{ documentName }}</span>
             </a>
           </dd>
