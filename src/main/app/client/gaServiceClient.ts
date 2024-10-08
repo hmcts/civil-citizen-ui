@@ -82,8 +82,8 @@ export class GaServiceClient {
   async getGaFeePaymentRedirectInformation(claimId: string, req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const lng = 'en';
-      console.log('LANGUAGE: ', lng);
+      // const lng = language ? language : 'en';
+      // console.log('LANGUAGE: ', lng);
       const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId), '', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {

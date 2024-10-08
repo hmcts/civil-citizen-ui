@@ -21,7 +21,7 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-// import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
+import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
@@ -43,8 +43,8 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
 
     if (applyHelpWithFees.option === YesNo.NO) {
-      // const language = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
-      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      const language = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
+      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req, language);
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
