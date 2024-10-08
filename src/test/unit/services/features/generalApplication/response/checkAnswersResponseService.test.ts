@@ -766,7 +766,7 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
         },
         'value': {
-          'html': 'No',
+          'html': 'COMMON.VARIATION.NO',
         },
         'actions': {
           'items': [
