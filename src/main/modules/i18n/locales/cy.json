@@ -89,7 +89,7 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
-      "PAY_APPLICATION_FEE": "Pay application fee",
+      "PAY_APPLICATION_FEE": "Talu’r ffi gwneud cais",
       "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
@@ -352,6 +352,10 @@
     "VARIATION_6": {
       "YES": "Dylai",
       "NO": "Na ddylai"
+    },
+    "VARIATION_7": {
+      "YES": "Oes",
+      "NO": "Nac oes"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -958,23 +962,23 @@
     },
     "APPLY_HELP_WITH_FEES": {
       "START": {
-        "ACCEPTED_FULLY_TITLE": "Os derbynnir eich cais am help i dalu ffioedd",
+        "ACCEPTED_FULLY_TITLE": "Os bydd eich cais am help i dalu ffioedd yn cael ei dderbyn",
         "ACCEPTED_FULLY": "Bydd eich ffi yn cael ei thalu’n llawn ac ni fydd angen i chi wneud taliad.",
-        "ACCEPTED_PARTIALLY_TITLE": "Os derbynnir eich cais am help i dalu ffioedd yn rhannol",
-        "ACCEPTED_PARTIALLY": "Bydd rhywfaint o'r ffi yn cael ei thalu, ond bydd angen i chi dalu'r balans sy'n weddill. Gallwch dalu dros y ffôn.",
+        "ACCEPTED_PARTIALLY_TITLE": "Os bydd eich cais am help i dalu ffioedd yn cael ei dderbyn yn rhannol",
+        "ACCEPTED_PARTIALLY": "Bydd rhywfaint o’r ffi yn cael ei thalu, ond bydd angen i chi dalu’r balans sy’n weddill. Gallwch dalu dros y ffôn.",
         "CONTINUE_APPLICATION": "Ydych chi eisiau parhau i wneud cais am Help i Dalu Ffioedd?",
-        "ELIGIBILITY": "Nid yw gwneud cais am help i dalu ffioedd yn gwarantu na fydd rhaid i chi dalu’r ffi. Bydd angen i chi fodloni’r ",
-        "ELIGIBILITY_LINK": "meini prawf cymhwysedd (yn agor mewn tab newydd)",
+        "ELIGIBILITY": "Nid yw gwneud cais am help i dalu ffioedd yn gwarantu y bydd eich ffi yn cael ei thalu. Bydd angen i chi fodloni’r meini prawf cymhwysedd ",
+        "ELIGIBILITY_LINK": "(yn agor mewn tab newydd).",
         "HEARING_FEE": "Ffi’r Gwrandawiad",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r Gwrandawiad yw: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Ar ôl i chi wneud cais am help i dalu ffioedd, dylech gael penderfyniad gan Wasanaeth Llysoedd a Thribiwnlysoedd EF (GLlTEF) o fewn 5 i 10 diwrnod gwaith.",
-        "REJECTED_TITLE": "Os gwrthodir eich cais am help i dalu ffioedd",
-        "REJECTED": "Bydd angen i chi dalu’r balans llawn. Gallwch wneud taliad ar-lein gyda cherdyn, neu dalu dros y ffôn.",
+        "REJECTED_TITLE": "Os caiff eich cais am help i dalu ffioedd ei wrthod",
+        "REJECTED": "Bydd angen i chi dalu’r balans yn llawn. Gallwch wneud taliad ar-lein gyda cherdyn, neu dalu dros y ffôn.",
         "TITLE" : "Help i Dalu Ffioedd"
       },
       "REFERENCE_NUMBER": {
         "TITLE_YES": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
-        "SUBTITLE_YES": "Dim ond os gwnaethoch gais am Help i Dalu Ffioedd y bydd gennych chi gyfeirnod. Peidiwch â rhoi rhif sydd eisoes wedi'i ddefnyddio ar gyfer cais blaenorol.",
+        "SUBTITLE_YES": "Dim ond os gwnaethoch gais am Help i Dalu Ffioedd y bydd gennych chi gyfeirnod. Peidiwch â chyflwyno rhif sydd eisoes wedi'i ddefnyddio ar gyfer cais blaenorol.",
         "HINT_YES" : "Er enghraifft, HWF-A1B-23C",
         "TITLE_NO": "Y camau nesaf",
         "PARAGRAPH_NO": "Mae’n rhaid i chi wneud cais am Help i Dalu Ffioedd cyn i chi gyflwyno’ch cais.",
@@ -2645,7 +2649,7 @@
         "AMEND_A_STMT_OF_CASE": "make a change to your claim or defence",
         "HEARING_LESS_THAN": "If the hearing date is less than 14 days away or you have not agreed to it in advance with the other party, the fee above applies.",
         "HEARING_MORE_THAN": "If the hearing date is more than 14 days away from the date you make this application and you have agreed to this with the other party, you will not need to pay the fee. If you add another application you'll still have to pay the fee for this additional application.",
-        "EXTEND_TIME": "extend time",
+        "EXTEND_TIME": "Estyniad o amser",
         "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
         "MAKE_AN_APPLICATION": "Gwneud cais",
         "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
@@ -2746,8 +2750,8 @@
         "OR": "or"
       },
       "PAY_ADDITIONAL_FEE": {
-        "HEADING": "Additional application fee",
-        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
+        "HEADING": "Ffi gwneud cais ychwanegol",
+        "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi gwneud cais ychwanegol."
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -2866,42 +2870,58 @@
         "CONFIRM_YOU_PAID_DESCRIPTION": "If you've paid the debt from a county court judgment (CCJ) in full, you can ask the court for proof of payment to share with banks, lenders and credit reference agencies. This is called requesting a certificate of cancellation or satisfaction."
       },
       "SUMMARY": {
-        "APP_REQUESTED": "An application is a request for a change to the case.",
-        "APPLICATION": "Application",
-        "APPLICATION_ID": "Application ID",
-        "APPLICATION_TYPE": "Application type",
-        "COMPLETE": "Complete",
-        "DETAILS": "Details",
-        "IN_PROGRESS": "In progress",
-        "MY_APPLICATIONS": "My applications",
-        "STATUS": "Status",
-        "APPLICATION_STATUS": "Application Status",
-        "STATES": {
-          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
-          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
-          "APPLICATION_ADD_PAYMENT": "Awaiting additional payment",
-          "APPLICATION_CLOSED": "Application closed",
-          "APPLICATION_DISMISSED": "Application dismissed",
-          "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
-          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application submitted - Awaiting Judicial decision",
-          "AWAITING_ADDITIONAL_INFORMATION": "Awaiting additional information",
-          "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
-          "AWAITING_DIRECTIONS_ORDER_DOCS": "Awaiting directions order document",
-          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
-          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting written representations",
-          "HEARING_SCHEDULED": "Hearing Scheduled",
-          "LISTING_FOR_A_HEARING": "Listing for a hearing",
-          "ORDER_MADE": "Order made",
-          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
-          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
-          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
+        "APP_REQUESTED": "Cais yw gofyn am newid i’r achos.",
+        "APPLICATION": "Cais",
+        "APPLICATION_ID": "Rhif adnabod y cais",
+        "APPLICATION_TYPE": "Math o gais",
+        "APPLICATION_TYPE_CCD": {
+          "ADJOURN_HEARING": "Gohirio gwrandawiad",
+          "AMEND_A_STMT_OF_CASE": "Diwygio datganiad achos",
+          "EXTEND_TIME": "Estyniad o amser",
+          "OTHER": "Arall",
+          "OTHER_OPTION": "Opsiwn arall",
+          "RELIEF_FROM_SANCTIONS": "Rhyddhad o sancsiynau",
+          "SET_ASIDE_JUDGEMENT":"Rhoi dyfarniad o’r naill du",
+          "SETTLE_BY_CONSENT": "Setlo drwy gydsyniad",
+          "STAY_THE_CLAIM": "Atal yr hawliad",
+          "STRIKE_OUT": "Dileu",
+          "SUMMARY_JUDGMENT": "Dyfarniad Diannod",
+          "UNLESS_ORDER": "Gorchymyn Oni fydd",
+          "VARY_ORDER": "Amrywio gorchymyn",
+          "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Amrywio telerau talu dyfarniad"
         },
-        "SUBMITTED_ON": "Submitted on",
-        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
-        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "COMPLETE": "Cwblhawyd",
+        "DETAILS": "Manylion",
+        "IN_PROGRESS": "Yn mynd rhagddo",
+        "MY_APPLICATIONS": "My applications",
+        "STATUS": "Statws",
+        "APPLICATION_STATUS": "Statws y cais",
+        "STATES": {
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Amser Ychwanegol ar gyfer Ymateb Wedi Dod i Ben",
+          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Amser Ychwanegol ar gyfer Ymateb Wedi’i Roi",
+          "APPLICATION_ADD_PAYMENT": "Aros am daliad ychwanegol",
+          "APPLICATION_CLOSED": "Cais wedi’i gau",
+          "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
+          "APPLICATION_PAYMENT_FAILED": "Taliad am y Cais yn Aflwyddiannus",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Cais wedi’i gyflwyno - yn aros am benderfyniad barnwrol",
+          "AWAITING_ADDITIONAL_INFORMATION": "Aros am wybodaeth ychwanegol",
+          "AWAITING_APPLICATION_PAYMENT": "Aros am Daliad am y Cais",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Aros am ddogfen gorchymyn cyfarwyddiadau",
+          "AWAITING_RESPONDENT_RESPONSE": "Aros am Ymateb yr Atebydd",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Aros am sylwadau ysgrifenedig",
+          "HEARING_SCHEDULED": "Gwrandawiad wedi’i Drefnu",
+          "LISTING_FOR_A_HEARING": "Rhestru ar gyfer gwrandawiad",
+          "ORDER_MADE": "Gorchymyn wedi’i wneud",
+          "PENDING_APPLICATION_ISSUED": "Cychwyn Cais Cyffredinol yn yr Arfaeth",
+          "PROCEEDS_IN_HERITAGE": "Parhau yn y cyflwr etifeddiaeth",
+          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Ymateb i’r barnwr ynghylch Sylwadau Ysgrifenedig"
+        },
+        "SUBMITTED_ON": "Cyflwynwyd ar",
+        "THE_STATUS_CHANGE": "Bydd statws cais yn newid wrth iddo symud yn ei flaen.  Mae cais gyda statws ‘I’w wneud’ yn golygu bod arnoch angen gweithredu. Er enghraifft, talu'r ffi gwneud cais neu ymateb.",
+        "THESE_ARE_APPS": "Dyma’r ceisiadau sydd wedi’u gwneud gennych chi neu’r partïon eraill. Y ‘partïon eraill’ yw’r ochr arall neu’r ochrau eraill sy’n rhan o’ch hawliad.",
         "TITLE": "Pob cais",
-        "TO_DO": "To Do",
-        "VIEW_APPLICATION": "View application"
+        "TO_DO": "I’w wneud",
+        "VIEW_APPLICATION": "Gweld cais"
       },
       "INFORM_OTHER_PARTIES": {
         "COURT_SEND_OTHER_PARTIES": "Fel arfer bydd y llys yn anfon copi o’ch cais at y partïon eraill i roi cyfle iddynt ymateb iddo.",
@@ -3135,23 +3155,23 @@
         "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
       },
       "APPLY_HELP_WITH_FEE": {
-        "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "APPLICATION_FEE_PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys. Rhowch ‘ffi cais’ ac yna esboniad byr, er enghraifft ‘ffi gwneud cais am gais i roi dyfarniad o'r naill du' (canslo).",
         "CONTENT_PAGE_TITLE": "Apply for help with fees",
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
-        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
-        "CONFIRMATION_ADDITIONAL_TITLE": "Your application for help with the additional application fee is complete",
-        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
-        "HEADING": "Application fee",
+        "CONFIRMATION_TITLE": "Mae eich cais am help i dalu'r ffi gwneud cais wedi’i gwblhau",
+        "CONFIRMATION_ADDITIONAL_TITLE": "Mae eich cais am help i dalu'r ffi gwneud cais ychwanegol wedi’i gwblhau",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r cais yw: £{{ feeAmount }}</span>",
+        "HEADING": "Ffi gwneud cais",
         "REFERENCE_NUMBER": {
           "LIST_ITEMS": {
-            "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
-            "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
+            "APPLICATION_FEE_SECOND": "Pan ofynnir i chi nodi rhif llys neu dribiwnlys, rhowch ‘ffi gwneud cais ac yna esboniad byr, er enghraifft ‘ffi gwneud cais am gais i roi dyfarniad o'r naill du' (canslo).",
+            "APPLICATION_FEE_FIFTH": "Cwblhewch y taliad ffi gwneud cais am Help i Dalu Ffioedd trwy roi eich cyfeirnod help i dalu ffioedd."
           },
           "PAGE_TITLE": "Do you have a help with fees reference number?",
-          "TITLE": "Do you have a help with fees reference number?"
+          "TITLE": "A oes gennych gyfeirnod Help i Dalu Ffioedd?"
         },
-        "TITLE": "Help with fees",
+        "TITLE": "Help i Dalu Ffioedd",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
@@ -3194,8 +3214,8 @@
         "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Awaiting other parties response",
-          "TITLE": "Status"
+          "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
@@ -3368,8 +3388,8 @@
           "APPLY_HELP_WITH_FEES": {
             "LINK":"Gwneud cais am Help i Dalu Ffioedd (yn agor mewn ffenestr newydd)",
             "PAGE_TITLE": "Help i Dalu Ffioedd",
-            "PARAGRAPH_IF": "Os oes gennych gyfeirnod help i dalu ffioedd yn barod ar gyfer ffi cychwyn yr hawliad neu unrhyw ffioedd gwneud cais, ni ddylech ddefnyddio’r cyfeirnod hwnnw ar gyfer y cais hwn.",
-            "PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais am help i dalu ffioedd newydd a fydd yn rhoi cyfeirnod newydd i chi.  Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
+            "PARAGRAPH_IF": "Os oes gennych gyfeirnod Help i Dalu Ffioedd yn barod ar gyfer ffi cychwyn yr hawliad neu ffi gwrandawiad, ni ddylech ddefnyddio'r cyfeirnod hwnnw ar gyfer y cais hwn.",
+            "PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais am Help i Dalu Ffioedd newydd a fydd yn rhoi cyfeirnod newydd i chi. Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
             "PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys.  Rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
             "PARAGRAPH_ONCE": "Unwaith y byddwch wedi gwneud eich cais, dychwelwch i'r dudalen hon a chliciwch ar ‘parhau’ i symud ymlaen.",
             "TITLE": "Gwneud cais am help i dalu ffioedd"
@@ -4635,7 +4655,7 @@
         "TITLE": "Confirmation of your hearing fee payment",
         "TITLE_CLAIM_FEE": "Confirmation of your claim fee payment",
         "CONFIRMATION_TITLE.HEARING": "Mae eich cais am help i dalu ffioedd gwrandawiad yn gyflawn",
-        "REFERENCE_NUMBER": "Eich cyfeirnod yw ",
+        "REFERENCE_NUMBER": "Eich cyfeirnod",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_RECEIVE": "Byddwch yn cael penderfyniad ar eich cais o fewn 5 i 10 diwrnod gwaith."
       }
@@ -5095,6 +5115,7 @@
     "VALID_YES_NO_SELECTION_VARIATION_2": "Dewiswch Ydw neu Nac ydw, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_OPTION2": "Dewiswch Oes neu Nac oes, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_UPPER": "Dewiswch Oes neu Nac oes",
+    "VALID_YES_NO_SELECTION_ALT": "Dewiswch Ydw neu Nac ydw",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "Rhaid i chi nodi y math o ddogfen",
     "VALID_ENTER_YOUR_NAME": "Mae’n rhaid ichi nodi eich enw",
     "VALID_ENTER_WITNESS_NAME": "Rhaid i chi nodi enw’r tyst",
