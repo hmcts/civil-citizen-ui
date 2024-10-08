@@ -348,6 +348,10 @@
     "VARIATION_5": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_6": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -2809,6 +2813,7 @@
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
         "CHANGE_HEARING": "Change a hearing date",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
         "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
         "MORE_TIME": "More time to do what is required by a court order",
         "NOT_ON_LIST": "Court to do something that's not on this list",
@@ -2818,8 +2823,7 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment",
-        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt"
+        "VARY_JUDGMENT": "Vary a judgment"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -3019,9 +3023,11 @@
         "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
         "PAGE_TITLE": "Upload N245",
         "PRINT_THE_FORM": "print the form, complete it by hand, scan or take a photo of it and then upload it here.",
+        "REMOVE_DOCUMENT": "Remove document",
         "SAVE_THE_FORM": "When you save and upload your completed form, make sure:",
         "TITLE": "Upload N245 form",
         "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
+        "UPLOADED_FILES": "Uploaded files",
         "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
       },
       "UPLOAD_MORE_INFO_DOCUMENTS": {
@@ -4290,7 +4296,10 @@
       "PAGE_TITLE": "Try the new online service",
       "TITLE": "Try the new online service",
       "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
-      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
+      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service.",
+      "CLAIM_TITLE": "Claiming interest:",
+      "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)",
+      "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date.To claim interest at different rates or for different periods of time, you should issue your claim on paper.  More information on how to do this can be found at MAKE_A_CLAIM"
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Add another person",
