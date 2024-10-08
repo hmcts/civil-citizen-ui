@@ -3131,7 +3131,8 @@
         "UNTIL_PAY_FEE": "Hyd nes y byddwch yn talu'r ffi gwneud cais, ni fydd y cais yn cael ei anfon at y partïon eraill nac yn cael ei ystyried gan farnwr.",
         "COSC_PAY_FEE": "Pay the fee",
         "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
-        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post.",
+        "WHAT_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -4322,12 +4323,12 @@
     "UNAVAILABLE_DATES_FOR_HEARING": {
       "ADD_ANOTHER_DATE": "Ychwanegu dyddiad neu gyfnod arall o amser",
       "CONTENT": "Dim ond dyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiad llys arall, neu wyliau rydych eisoes wedi'u trefnu",
-      "FROM": "O",
+      "FROM": "Oddi wrth",
       "LONGER_PERIOD": "Cyfnod hirach o amser",
       "PAGE_TITLE": "Dyddiadau lle nad ydych ar gael i fynd i wrandawiad",
       "SINGLE_DATE": "Dyddiad unigol",
       "TITLE": "Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu'ch tystion fynd i wrandawiad",
-      "TO": "I"
+      "TO": "At"
     },
     "UNDER_18": {
       "ABLE_TO_GET_ADVICE": "Efallai y gallwch gael cyngor am y ffurflen hawlio gan",
