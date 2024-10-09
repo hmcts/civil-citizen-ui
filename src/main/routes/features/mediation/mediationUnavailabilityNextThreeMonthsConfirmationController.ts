@@ -26,8 +26,8 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
   const pageText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TEXT`, {lng: lang});
   const pageHintText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_HINT_TEXT`, {lng: lang});
   const variation = {
-    yes : 'COMMON.VARIATION_7.YES',
-    no: 'COMMON.VARIATION_7.NO',
+    yes : 'COMMON.VARIATION_8.YES',
+    no: 'COMMON.VARIATION_8.NO',
   };
   res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText, variation, isCarm: true});
 };
