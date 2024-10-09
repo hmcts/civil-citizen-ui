@@ -84,6 +84,7 @@ import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
+import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -176,9 +177,13 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  generalOrderDocClaimant?: SystemGeneratedCaseDocuments[];
+  generalOrderDocRespondentSol?: SystemGeneratedCaseDocuments[];
   claimType?: string;
   paymentSyncError?: boolean;
   responseClaimTrack?: string;
+  generalApplications?: ClaimGeneralApplication[];
+  joIsLiveJudgmentExists?: GenericYesNo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -319,6 +324,10 @@ export class Claim {
 
   isInterestEndDateUntilSubmitDate(): boolean {
     return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+  }
+
+  isInterestEndDateUntilJudgmentDate(): boolean {
+    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
   }
 
   isInterestClaimOptionExists(): boolean {
@@ -880,6 +889,10 @@ export class Claim {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
   }
 
+  hasClaimBeenDismissed() {
+    return this.ccdState === CaseState.CASE_DISMISSED;
+  }
+
   hasMediationSuccessful() {
     return this.ccdState === CaseState.CASE_STAYED && !!this.mediationAgreement;
   }
@@ -966,6 +979,10 @@ export class Claim {
     const parts = claimId.match(/.{1,4}/g);
     const claimId_new = parts.join('-');
     return claimId_new;
+  }
+
+  isDefendant() {
+    return this.caseRole === CaseRole.RESPONDENTSOLICITORONE || this.caseRole === CaseRole.RESPONDENTSOLICITORTWO || this.caseRole === CaseRole.DEFENDANT;
   }
 
   isClaimant() {

@@ -24,6 +24,8 @@ export interface EventDto {
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
+  id?: string;
+  value?: CCDGaValue;
   generalAppType?: CcdGeneralApplicationTypes;
   generalAppRespondentAgreement?: CcdGeneralApplicationRespondentAgreement;
   generalAppInformOtherParty?: CcdGeneralApplicationInformOtherParty;
@@ -38,6 +40,7 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppDirOrderUpload?: CcdGeneralApplicationEvidenceDocument[];
   uploadDocument?: AdditionalDocuments[];
   generalAppWrittenRepUpload?: CcdGeneralApplicationEvidenceDocument[];
+  generalAppSubmittedDateGAspec?: Date
 }
 interface DocumentDetails {
   document_url: string;
@@ -61,6 +64,12 @@ export interface CCDGaHelpWithFees {
 
 }
 
+export interface CCDGaValue {
+  caseLink?: CaseLink;
+  parentClaimantIsApplicant?: YesNoUpperCamelCase;
+  generalAppSubmittedDateGAspec?: Date;
+}
+
 export type CCDRespondToApplication = {
   hearingDetailsResp: CcdGeneralApplicationHearingDetails,
   gaRespondentDebtorOffer: CcdGARespondentDebtorOfferGAspec,
@@ -68,4 +77,5 @@ export type CCDRespondToApplication = {
   generalAppRespondConsentReason?: string,
   generalAppRespondReason?: string,
   generalAppRespondent1Representative?: { hasAgreed?: YesNoUpperCamelCase },
+  generalAppRespondDocument?: CcdGeneralApplicationEvidenceDocument[];
 }

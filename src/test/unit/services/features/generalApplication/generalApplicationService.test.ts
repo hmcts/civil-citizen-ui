@@ -1,13 +1,14 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
+  deleteGAFromClaimsByUserId,
   getApplicationIndex,
   getApplicationStatus,
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -38,11 +39,7 @@ import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
-} from 'routes/urls';
+import {CANCEL_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -265,7 +262,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
@@ -280,7 +277,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
 
     it('should return defendant dashboard url when user is defendent', async () => {
@@ -295,7 +292,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
   });
 
@@ -521,6 +518,29 @@ describe('General Application service', () => {
       const error : ValidationError = errors[0];
       expect(errors.length).toBe(1);
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
+    });
+  });
+
+  describe('Validate CCEJ is selected only if Active Judgment is there', () => {
+    it('should return error message if active Judgment absent', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
+      const body = {
+        optionOther: 'test',
+        option: 'testOption',
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['ccjApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT');
     });
   });
 
@@ -768,7 +788,11 @@ describe('Save Accept defendant offer', () => {
       const mockGetDraft = getDraftGARespondentResponse as jest.Mock;
       const mockSaveDraft = saveDraftGARespondentResponse as jest.Mock;
       mockGetDraft.mockResolvedValue(new GaResponse());
-      await saveApplicationTypesToGaResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, '12345', [ApplicationTypeOption.STAY_THE_CLAIM]);
+      await saveApplicationTypesToGaResponse(true, '12345', [ApplicationTypeOption.STAY_THE_CLAIM], {
+        generalAppUrgency: YesNoUpperCamelCase.YES,
+        reasonsForUrgency: '',
+        urgentAppConsiderationDate: '2025-10-10',
+      });
       expect(mockSaveDraft).toHaveBeenCalled();
     });
   });
@@ -1008,6 +1032,21 @@ describe('Should get the application index', () => {
     expect(result).toEqual(-1);
   });
 
+  describe('deleteGAFromClaimsByUserId', () => {
+    it('should delete GAs by user id', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.findClaimIdsbyUserId as jest.Mock;
+      mockSaveClaim.mockImplementation(async () => {
+        return ['123', '234'];
+      });
+      const spy = jest.spyOn(draftStoreService, 'deleteFieldDraftClaimFromStore').mockImplementation();
+      //When
+      await deleteGAFromClaimsByUserId('123');
+      //Then
+      expect(spy).toBeCalledTimes(2);
+    });
+  });
+
   it('should return applicant view Application url when claimant is applicant and cliamant is viewing', async () => {
     const applicationResponse: ApplicationResponse = {
       case_data: {
@@ -1140,4 +1179,24 @@ describe('Should get the application index', () => {
     expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
   });
 
+});
+
+describe('should check if the application type on the case is "Confirm CCJ debt paid"', () => {
+  it.each`
+      selectedApplicationTypes                                                      | expectedOutput
+      ${[]}                                                                         | ${false}
+      ${undefined}                                                                  | ${false}
+      ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${false}
+      ${[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]}                              | ${true}
+    `('should return $expectedOutput when selected type is $selectedApplicationTypes',
+    ({ selectedApplicationTypes, expectedOutput}) => {
+      //When
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      if (selectedApplicationTypes) {
+        claim.generalApplication.applicationTypes = selectedApplicationTypes.map((at: ApplicationTypeOption) => new ApplicationType(at));
+      }
+      //Then
+      expect(isConfirmYouPaidCCJAppType(claim)).toEqual(expectedOutput);
+    });
 });

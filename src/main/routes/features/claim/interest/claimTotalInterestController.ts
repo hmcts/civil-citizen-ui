@@ -1,5 +1,5 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
-import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
+import {CLAIM_HELP_WITH_FEES_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {TotalInterest} from 'form/models/interest/totalInterest';
@@ -31,7 +31,7 @@ claimTotalInterestController.post(CLAIM_INTEREST_TOTAL_URL, (async (req: AppRequ
     } else {
       const appRequest = <AppRequest>req;
       await saveInterest(appRequest.session?.user?.id, form.model, propertyName);
-      res.redirect(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
+      res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
     next(error);

@@ -13,7 +13,10 @@ import {toCUIPartialAdmission, toCUIRepaymentPlanFrequency} from './convertToCUI
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
-import {toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
+import {
+  toCUIGenericYesNo,
+  toCUIYesNo,
+} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   toCUICCJRequest,
@@ -32,7 +35,12 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantR
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
-import { ApplicationTypeOption, GeneralApplicationTypesDisplayFromCCD } from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationTypeOption,
+  selectedApplicationTypeByOptions,
+} from 'common/models/generalApplication/applicationType';
+import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -103,6 +111,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantResponse.applicant1DefenceResponseDocumentSpec = ccdClaim.applicant1DefenceResponseDocumentSpec;
   claim.claimType = ccdClaim.claimType;
   claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
+  claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
+  claim.joIsLiveJudgmentExists = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
   return claim;
 };
 
@@ -170,6 +180,20 @@ function toCUIRespondentGADetails(respondentSolGaAppDetails: RespondentSolGaAppD
   });
 }
 
+function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralApplication[]): ClaimGeneralApplication[] {
+  const claimGeneralApplications: ClaimGeneralApplication[] = [];
+  ccdClaimGeneralApplications?.forEach(ccdGa => {
+    const claimGa = new ClaimGeneralApplication();
+    claimGa.id = ccdGa.id;
+    claimGa.value = new ClaimGeneralApplicationValue();
+    claimGa.value.caseLink = ccdGa.value?.caseLink;
+    claimGa.value.parentClaimantIsApplicant = toCUIYesNo(ccdGa.value?.parentClaimantIsApplicant);
+    claimGa.value.generalAppSubmittedDateGAspec = ccdGa.value?.generalAppSubmittedDateGAspec;
+    claimGeneralApplications.push(claimGa);
+  });
+  return claimGeneralApplications;
+}
+
 const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
-  return (Object.keys(GeneralApplicationTypesDisplayFromCCD) as Array<keyof typeof GeneralApplicationTypesDisplayFromCCD>).find(key => GeneralApplicationTypesDisplayFromCCD[key] === displayValue) as ApplicationTypeOption | undefined;
-};
+  return (Object.keys(selectedApplicationTypeByOptions) as Array<keyof typeof selectedApplicationTypeByOptions>)
+    .find(key => selectedApplicationTypeByOptions[key]?.[2] === displayValue) as ApplicationTypeOption | undefined;};

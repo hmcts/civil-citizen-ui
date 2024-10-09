@@ -27,6 +27,7 @@ module.exports = {
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
     dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi:  'https://idam-api.aat.platform.hmcts.net',
+    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-3591-civil-service.preview.platform.hmcts.net',*/
     manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
@@ -87,9 +88,17 @@ module.exports = {
     email: 'civil-admin@mailnesia.com',
     type: 'admin',
   },
+  //For users info refer - https://tools.hmcts.net/confluence/display/CHMC/Civil+Hearings+Management+JO+Test+Data+Requirements+-+for+Key+Journeys
   judgeUserWithRegionId1: {
     password: judgeDefaultPassword,
-    email: '4917924EMP-@ejudiciary.net',
+    email: 'DJ.Amy.Powell@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
+  judgeUserWithRegionId2: {
+    password: judgeDefaultPassword,
+    email: 'DJ.Angel.Morgan@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',
@@ -103,6 +112,13 @@ module.exports = {
   },
   hearingCenterAdminWithRegionId1: {
     email: 'hearing_center_admin_reg1@justice.gov.uk',
+    password: defaultPassword,
+    type: 'hearing-center-admin',
+    roleCategory: 'ADMIN',
+    regionId: '1',
+  },
+  hearingCenterAdminWithRegionId2: {
+    email: 'hearing_center_admin_reg2@justice.gov.uk',
     password: defaultPassword,
     type: 'hearing-center-admin',
     roleCategory: 'ADMIN',
@@ -154,8 +170,10 @@ module.exports = {
     updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
     partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
     fullRemission: 'FULL_REMISSION_HWF',
+    noRemission: 'NO_REMISSION',
     invalidHWFRef: 'INVALID_HWF_REFERENCE',
     moreInfoHWF: 'MORE_INFORMATION_HWF',
+    feePayOutcome: 'FEE_PAYMENT_OUTCOME',
   },
   defenceType: {
     admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',
