@@ -6,7 +6,7 @@ import {AppRequest} from 'models/AppRequest';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {Claim} from 'models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('defendantFinalPaymentDateService');
+const logger = Logger.getLogger('certificateOfSatisfactionOrCancellationService');
 
 export const getCertificateOfSatisfactionOrCancellation = async (req: Request): Promise<CertificateOfSatisfactionOrCancellation> => {
   try {
@@ -31,7 +31,7 @@ export const saveCertificateOfSatisfactionOrCancellation = async (req: Request, 
     if (!claim.generalApplication.certificateOfSatisfactionOrCancellation) {
       claim.generalApplication.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
     }
-    const resetClaim = resetPaymentEvidenceData(claim,propertyName);
+    const resetClaim = resetPaymentEvidenceData(claim, propertyName);
     resetClaim.generalApplication.certificateOfSatisfactionOrCancellation[propertyName] = value;
 
     await saveDraftClaim(redisKey, resetClaim);

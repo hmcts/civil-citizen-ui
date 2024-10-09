@@ -55,6 +55,9 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
       } else {
+        if (req.body.debtPaymentOption !== debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
+          form.model.provideDetails = '';
+        }
         await saveCertificateOfSatisfactionOrCancellation(req, form.model, 'debtPaymentEvidence');
         switch (form.model.debtPaymentOption) {
           case debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT:
