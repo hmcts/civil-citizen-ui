@@ -10,6 +10,8 @@ import {
 import { draftClaim } from '../../../../../main/modules/draft-store/draftClaimCache';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 describe('createDraftClaim Router', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -18,6 +20,8 @@ describe('createDraftClaim Router', () => {
 
   beforeAll(() => {
     nock(idamUrl).post('/o/token').reply(200, { id_token: citizenRoleToken });
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
   });
 
   describe('on GET', () => {
