@@ -352,6 +352,10 @@
     "VARIATION_6": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "VARIATION_7": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -5111,6 +5115,7 @@
     "VALID_YES_NO_SELECTION_VARIATION_2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_OPTION2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
+    "VALID_YES_NO_SELECTION_ALT": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_YOUR_NAME": "You must enter your name",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
