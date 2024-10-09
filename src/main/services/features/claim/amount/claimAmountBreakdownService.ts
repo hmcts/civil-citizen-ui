@@ -26,7 +26,7 @@ export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBre
     const claim = await getCaseDataFromStore(claimantId);
     claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row) => {
       totalClaimAmount = totalClaimAmount + row.amount;
-      return convertFormToJson(row)
+      return convertFormToJson(row);
     });
     claim.totalClaimAmount = totalClaimAmount;
     await saveDraftClaim(claimantId, claim);
