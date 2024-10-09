@@ -79,12 +79,10 @@ export class GaServiceClient {
     }
   }
 
-  async getGaFeePaymentRedirectInformation(claimId: string, req: AppRequest, language: string): Promise<PaymentInformation> {
+  async getGaFeePaymentRedirectInformation(claimId: string, req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const lng = language === 'cy' ? language : 'En';
-      console.log('LANGUAGE: ', lng);
-      const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId), {language: lng}, config);
+      const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment redirect information');

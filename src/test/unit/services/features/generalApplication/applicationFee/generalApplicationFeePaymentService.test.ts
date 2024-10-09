@@ -20,7 +20,7 @@ describe('General Application Fee Payment Service Service', () => {
       };
       jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
       //when
-      const actualPaymentRedirectInformation = await getGaFeePaymentRedirectInformation(claimId, mockedAppRequest, 'en');
+      const actualPaymentRedirectInformation = await getGaFeePaymentRedirectInformation(claimId, mockedAppRequest);
 
       //Then
       expect(actualPaymentRedirectInformation).toBe(mockHearingFeePaymentRedirectInfo);
@@ -30,7 +30,7 @@ describe('General Application Fee Payment Service Service', () => {
       jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
 
       //Then
-      await expect(getGaFeePaymentRedirectInformation(claimId, mockedAppRequest, 'en')).rejects.toBe(
+      await expect(getGaFeePaymentRedirectInformation(claimId, mockedAppRequest)).rejects.toBe(
         TestMessages.SOMETHING_WENT_WRONG,
       );
     });
