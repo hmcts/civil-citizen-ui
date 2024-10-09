@@ -19,7 +19,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument,
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -77,6 +77,12 @@ module.exports = {
     console.log('End of performCaseHearingFeeUnpaid()');
   },
 
+  triggerTrialArrangementsNotifications: async (user, caseId) => {
+    console.log('This is inside triggerTrialArrangements() : ' + caseId);
+    await triggerTrialArrangements(caseId);
+    console.log('End of triggerTrialArrangements()');
+  },
+
   waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
   },
@@ -98,7 +104,11 @@ module.exports = {
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForFinishedBusinessProcess(caseId);
-    await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    if (claimType === 'FastTrack') {
+      await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    } else {
+      await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
+    }
     console.log('End of performEvidenceUpload()');
   },
 
@@ -127,6 +137,16 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performTrialArrangements()');
+  },
+
+  performTrialArrangementsCitizen: async (user, caseId) => {
+    console.log('This is inside performTrialArrangementsCitizen() : ' + caseId);
+    eventName = 'TRIAL_READINESS';
+    const payload = createATrialArrangement.createATrialArrangementRespondentLip();
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performTrialArrangementsCitizen()');
   },
 
   performAnAssistedOrder: async (user, caseId) => {
@@ -175,6 +195,9 @@ module.exports = {
       totalClaimAmount = '26000';
     } else if (claimType === 'Multi') {
       totalClaimAmount = '150000';
+    } else if (claimType === 'SmallClaimsThousand') {
+      console.log('SmallClaim of 1000 pounds...');
+      totalClaimAmount = '1000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
@@ -328,6 +351,9 @@ module.exports = {
     } else if (claimType === 'Multi') {
       console.log('Multi track claim...');
       totalClaimAmount = '150000';
+    } else if (claimType === 'SmallClaimsThousand') {
+      console.log('SmallClaim of 1000 pounds...');
+      totalClaimAmount = '1000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';

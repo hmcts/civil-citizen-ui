@@ -208,12 +208,38 @@ module.exports = {
     };
   },
 
+  otherSideTrialArrangements: () => {
+    return {
+      title: 'The other side has confirmed their trial arrangements',
+      content: 'You can view the arrangements that they\'ve confirmed.',
+      nextSteps: 'view the arrangements that they\'ve confirmed',
+    };
+  },
+
+  //Notice.AAA6.CP.Trial Arrangements.Required
+  confirmTrialArrangements: (dueDate) => {
+    return {
+      title: 'Confirm your trial arrangements',
+      content: `You must confirm your trial arrangements by ${dueDate}. This means that you'll need to confirm if the case is ready for trial or not. You'll also need to confirm whether circumstances have changed since you completed the directions questionnaire. Refer to the questionnaire you submitted if you're not sure what you previously said.`,
+      nextSteps: 'confirm your trial arrangements',
+    };
+  },
+
   //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
       title: 'An order has been made',
       content: 'The judge has made an order on your claim.',
       nextSteps: 'View the order',
+    };
+  },
+
+  //Notice.AAA6.CP.Bundle.Ready
+  bundleReady: () => {
+    return {
+      title: 'The bundle is ready to view',
+      content: 'The bundle contains all the documents that will be referred to at the hearing. Review the bundle to ensure that the information is accurate.',
+      nextSteps: 'Review the bundle',
     };
   },
 
@@ -227,10 +253,10 @@ module.exports = {
   },
 
   //Notice.AAA6.CP.HearingDocuments.Upload
-  uploadDocuments: () => {
+  uploadDocuments: (statedPosition) => {
     return {
       title: 'Upload documents',
-      content: 'You can upload and submit documents to support your claim. Follow the instructions set out in the directions order. Any documents submitted after the deadlines in the directions order may not be considered by the judge.',
+      content: `You can upload and submit documents to support your ${statedPosition}. Follow the instructions set out in the directions order. Any documents submitted after the deadlines in the directions order may not be considered by the judge.`,
       nextSteps: 'upload and submit documents',
       nextSteps2: 'directions order',
     };

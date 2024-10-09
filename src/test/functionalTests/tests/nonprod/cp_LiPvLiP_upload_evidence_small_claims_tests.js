@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-const {DateUtilsComponent} = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
+const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const StringUtilsComponent = require('../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
@@ -11,7 +11,7 @@ const {uploadHearingDocuments, viewDocuments} = require('../../specClaimHelpers/
 
 const claimType = 'SmallClaims';
 const partyType = 'LiPvLiP';
-let claimRef,caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
+let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
 Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims');
 
@@ -35,16 +35,18 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     if (isDashboardServiceEnabled) {
+      // claimant checks notifications for orders and upload docs
       notification = orderMade();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
-      notification = uploadDocuments();
+      notification = uploadDocuments('claim');
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
     formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
-    uploadDate = DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
+    uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
+    //claimant uploads documents
     await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£1,500', uploadDate);
     if (isDashboardServiceEnabled) {
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);

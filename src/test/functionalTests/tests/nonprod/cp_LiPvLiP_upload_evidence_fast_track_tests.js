@@ -39,7 +39,7 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
-      notification = uploadDocuments();
+      notification = uploadDocuments('claim');
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }

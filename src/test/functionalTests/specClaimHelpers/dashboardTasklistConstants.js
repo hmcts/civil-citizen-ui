@@ -28,10 +28,11 @@ module.exports = {
     };
   },
 
-  addTrialArrangements: () => {
+  addTrialArrangements: (deadline) => {
     return {
       locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'Add the trial arrangements\')]]',
       title: 'Add the trial arrangements',
+      deadline: `Deadline is 12am on ${deadline}`,
     };
   },
 
@@ -39,6 +40,13 @@ module.exports = {
     return {
       locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'View orders and notices\')]]',
       title: 'View orders and notices',
+    };
+  },
+
+  viewTheBundle: () => {
+    return {
+      locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'View the bundle\')]]',
+      title: 'View the bundle',
     };
   },
 

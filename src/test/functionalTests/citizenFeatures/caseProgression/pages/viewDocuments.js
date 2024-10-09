@@ -13,7 +13,7 @@ class ViewDocuments {
     I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, dateUploaded, claimType) {
+  verifyPageContent(caseNumber, claimAmount, dateUploaded, claimType, partyType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
@@ -24,7 +24,7 @@ class ViewDocuments {
     }
     this.verifyClaimantWitnessEvidenceSection(dateUploaded, claimType);
     this.verifyDefendantWitnessEvidenceSection(dateUploaded, claimType);
-    this.verifyClaimantExpertEvidenceSection(dateUploaded, claimType);
+    this.verifyClaimantExpertEvidenceSection(dateUploaded, claimType, partyType);
     this.verifyDefendantExpertEvidenceSection(dateUploaded, claimType);
     this.verifyClaimantHearingDocumentsSection(dateUploaded, claimType);
     this.verifyDefendantHearingDocumentsSection(dateUploaded, claimType);
@@ -119,7 +119,7 @@ class ViewDocuments {
     }
   }
 
-  verifyClaimantExpertEvidenceSection(dateUploaded, claimType) {
+  verifyClaimantExpertEvidenceSection(dateUploaded, claimType, partyType) {
     I.see('Claimant expert evidence', 'span');
     const jointStatementLocator = '//div[@class=\'govuk-grid-row\'][div[contains(text(), \'Joint statement of experts\')]]';
     I.see('Joint statement of experts', jointStatementLocator);
@@ -136,14 +136,22 @@ class ViewDocuments {
     if (claimType === 'FastTrack') {
       const claimantAnswersQuestionsAskedLocator = '//div[@class=\'govuk-grid-row\'][div[contains(text(), \'Claimant answers to questions asked by other party\')]]';
       I.see('Claimant answers to questions asked by other party', claimantAnswersQuestionsAskedLocator);
-      I.seeElement('//a[.=\'Answers for Expert 2 Sir John Doe Answers for Expert Document Name 2.txt\']', claimantAnswersQuestionsAskedLocator);
-      I.seeElement('//a[.=\'Answers for Expert 1 Sir John Doe Answers for Expert Document Name 1.txt\']', claimantAnswersQuestionsAskedLocator);
+      if (partyType === 'LiPvLiP'){
+        I.seeElement('//a[.=\'Answers for Expert 2 Sir John Doe Answers for Expert Document Name 2.txt\']', claimantAnswersQuestionsAskedLocator);
+        I.seeElement('//a[.=\'Answers for Expert 1 Sir John Doe Answers for Expert Document Name 1.txt\']', claimantAnswersQuestionsAskedLocator);
+      } else {
+        I.seeElement('//a[.=\'Ep Other party Question.pdf\']', claimantAnswersQuestionsAskedLocator);
+      }
       I.see('Date uploaded [' + dateUploaded + ']', claimantAnswersQuestionsAskedLocator);
 
       const claimantQuestionsForOtherPartyLocator = '//div[@class=\'govuk-grid-column-one-half govuk-body\' and contains(text(), "Claimant questions for other party\'s expert or joint expert")]';
       I.see('Claimant questions for other party\'s expert or joint expert', claimantQuestionsForOtherPartyLocator);
-      I.seeElement('//a[.=\'Questions for Expert 2 Sir John Doe Questions for Expert Document Name 2.txt\']', claimantQuestionsForOtherPartyLocator);
-      I.seeElement('//a[.=\'Questions for Expert 1 Sir John Doe Questions for Expert Document Name 1.jpeg\']', claimantQuestionsForOtherPartyLocator);
+      if (partyType === 'LiPvLiP'){
+        I.seeElement('//a[.=\'Questions for Expert 2 Sir John Doe Questions for Expert Document Name 2.txt\']', claimantQuestionsForOtherPartyLocator);
+        I.seeElement('//a[.=\'Questions for Expert 1 Sir John Doe Questions for Expert Document Name 1.jpeg\']', claimantQuestionsForOtherPartyLocator);
+      } else {
+        I.seeElement('//a[.=\'testing Party Document.pdf\']', claimantAnswersQuestionsAskedLocator);
+      }
       I.see('Date uploaded [' + dateUploaded + ']', claimantQuestionsForOtherPartyLocator);
     }
   }

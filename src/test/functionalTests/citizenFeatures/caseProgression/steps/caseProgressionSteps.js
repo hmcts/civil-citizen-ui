@@ -74,9 +74,9 @@ class CaseProgressionSteps {
       } else {
         claimAmount = '£1,500.00';
       }
-      viewDocumentsPage.verifyPageContent(claimRef, claimAmount, dateUploaded, claimType);
-      viewDocumentsPage.nextAction('Close and return to case overview');
-    } else if (partyType !== 'LiPvLiP') {
+      await viewDocumentsPage.verifyPageContent(claimRef, claimAmount, dateUploaded, claimType, partyType);
+      await viewDocumentsPage.nextAction('Close and return to case overview');
+    } else {
       documentsTab.verifyLatestUpdatePageContent(claimType);
     }
   }

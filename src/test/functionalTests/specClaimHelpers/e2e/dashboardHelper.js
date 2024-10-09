@@ -8,8 +8,9 @@ const selectors = {
 };
 
 module.exports = {
-  verifyNotificationTitleAndContent: async (claimNumber = '', title, content) => {
-    if (claimNumber && claimNumber != '') {
+  verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef) => {
+    const currentUrl = await I.grabCurrentUrl();
+    if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
