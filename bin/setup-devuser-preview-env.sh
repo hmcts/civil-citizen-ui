@@ -14,14 +14,15 @@ echo "Importing Camunda definitions"
 ./bin/pull-latest-camunda-files.sh ${camundaBranch}
 ./bin/pull-latest-dmn-files.sh ${dmnBranch}
 ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
+rm -rf $(pwd)/civil-bpmn
 
 echo "Importing CCD definitions"
 ./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" ${ccdBranch}
+rm -rf $(pwd)/ccd-definition
 ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch}
+rm -rf $(pwd)/ga-ccd-definition
 
-rm -rf $(pwd)/ccd-definitions
 rm -rf $(pwd)/build/ccd-development-config
-rm -rf $(pwd)/civil-bpmn
 
 echo "ENV variables set for devuser-preview environment."
 echo "XUI_URL: $XUI_WEBAPP_URL"
