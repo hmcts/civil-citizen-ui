@@ -1106,7 +1106,7 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
       "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
-      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu'n onest ei fod yn wir.",
       "CLAIM_INTEREST": "Hawlio llog",
       "CLAIMANT_INTENT_PAGE_TITLE": "Bwriad yr Hawlydd - gwirio eich atebion",
       "COMPLETION_DATE_CYA": "Dyddiad cwblhau",
@@ -2693,26 +2693,27 @@
         "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?"
       },
       "CHECK_YOUR_ANSWER": {
-        "APPLICATION_TYPE": "Application type",
-        "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau yn ôl?",
-        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
-        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
-        "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
-        "NAME": "Name",
-        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
-        "NONE": "None",
-        "PARTIES_AGREED": "Have the other parties agreed?",
-        "PREFERRED_COURT_LOCATION": "Preferred court location",
-        "PREFERRED_EMAIL": "Preferred email",
-        "PREFERRED_TELEPHONE": "Y rhif ffôn a ffafrir",
+        "APPLICATION_TYPE": "Math o gais",
+        "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
+        "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
+        "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
+        "INFORM_OTHER_PARTIES": "A ydych chi eisiau i’r llys hysbysu’r partïon eraill?",
+        "NAME": "Enw",
+        "NEED_ADJUSTMENTS": "Ydych chi angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad?",
+        "NONE": "Dim",
+        "PARTIES_AGREED": "A yw’r partïon eraill wedi cytuno?",
+        "PREFERRED_COURT_LOCATION": "Lleoliad llys a ffafrir",
+        "PREFERRED_EMAIL": "Cyfeiriad e-bost a ffafrir",
+        "PREFERRED_TELEPHONE": "Rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
-          "APPLICATION": "The information on this page forms your application.",
-          "CHECKBOX": "I believe that the facts stated in this form are true.",
-          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+          "APPLICATION": "Mae’r wybodaeth sydd ar y dudalen hon yn ffurfio eich cais.",
+          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen hon yn wir.",
+          "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad gwirionedd hwn. "
         },
-        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "TITLE": "Gwirio eich atebion",
+        "UPLOAD_DOCUMENTS": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?",
         "WHAT_ORDER": "Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?",
-        "WHY_PREFER": "Why would you prefer this type of hearing?",
+        "WHY_PREFER": "Pam fyddai'n well gennych y math hwn o wrandawiad?",
         "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?"
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
@@ -3033,7 +3034,7 @@
       "UPLOAD_MORE_INFO_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
         "PAGE_TITLE": "Request for more information",
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
         "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
@@ -3131,8 +3132,7 @@
         "UNTIL_PAY_FEE": "Hyd nes y byddwch yn talu'r ffi gwneud cais, ni fydd y cais yn cael ei anfon at y partïon eraill nac yn cael ei ystyried gan farnwr.",
         "COSC_PAY_FEE": "Pay the fee",
         "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
-        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post.",
-        "WHAT_NEXT": "Beth fydd yn digwydd nesaf"
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
