@@ -24,7 +24,7 @@ const content = {
     cy: 'wneud cais',
   },
   canView: {
-    en: 'You can view your and the other party’s trial arrangements under',
+    en: 'You can view your and the other party\'s trial arrangements under Orders and notices in the case details.',
     cy: 'Gallwch weld trefniadau eich treial chi a’r parti arall o dan',
   },
   caseDetails: {
@@ -32,11 +32,11 @@ const content = {
     cy: 'yn adran manylion yr achos.',
   },
   toCourt: {
-    en: 'to the court and pay the appropriate fee.',
+    en: 'as soon as possible and pay the appropriate fee.',
     cy: 'i’r llys a thalu’r ffi briodol.',
   },
   accessibility: {
-    en: 'For any changes to accessibility requirements between now and the trial  hearing date you will need to call 0300 123 7050.',
+    en: 'For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050.',
     cy: 'Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y gwrandawiad, bydd angen i chi ffonio 0300 303 5174.',
   },
   saidYes: {
@@ -45,7 +45,7 @@ const content = {
       cy: 'Rydych wedi dweud bod yr achos hwn yn barod ar gyfer treial',
     },
     anyChanges: {
-      en: 'If there are any changes to the arrangements between now and the trial date you will need to',
+      en: 'If there are any changes to the arrangements between now and the trial date you will need to make an application as soon as possible and pay the appropriate fee.',
       cy: 'Os oes unrhyw newidiadau i’r trefniadau rhwng nawr a dyddiad y treial, bydd angen i chi',
     },
   },
@@ -75,37 +75,36 @@ class CheckYourAnswers {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
+  verifyPageContent(readyForTrial) {
     this.checkPageFullyLoaded();
-    this.verifyHeadingDetails();
-    this.verifyConfirmationSectionContent();
+    this.verifyHeadingDetails(readyForTrial);
+    this.verifyConfirmationSectionContent(readyForTrial);
     contactUs.verifyContactUs();
   }
 
   verifyHeadingDetails(readyForTrial) {
-    if (readyForTrial==='no'){
+    if (readyForTrial==='No'){
       I.see(content.saidNo.title[language], 'h1');
     }
-    if (readyForTrial==='yes'){
+    if (readyForTrial==='Yes'){
       I.see(content.saidYes.title[language], 'h1');
     }
   }
 
   verifyConfirmationSectionContent(readyForTrial) {
     I.see(content.whatNext[language]);
-    if (readyForTrial==='no') {
+    if (readyForTrial==='No') {
       I.see(content.saidNo.asPlanned[language]);
       I.see(content.saidNo.wantChange[language]);
+      I.see('For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.');
     }
-    if (readyForTrial==='yes'){
+    if (readyForTrial==='Yes'){
       I.see(content.saidYes.anyChanges[language]);
+      I.see(content.accessibility[language]);
     }
-    I.see(content.toCourt[language]);
-    I.see(content.accessibility[language]);
     I.seeElement(`//a[.='${content.makeApplication[language]}']`);
     I.see(content.canView[language]);
     I.seeElement(`//a[.='${content.orderNotices[language]}']`);
-    I.see(content.caseDetails[language]);
   }
 }
 

@@ -8,13 +8,14 @@ const selectors = {
 };
 
 module.exports = {
-  verifyNotificationTitleAndContent: async (claimNumber = '', title, content) => {
-    if (claimNumber && claimNumber != '') {
+  verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef) => {
+    const currentUrl = await I.grabCurrentUrl();
+    if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
     console.log('Title to be verified ..', title);
-    //await I.waitForContent(title);
+    await I.waitForContent(title);
     await I.waitForVisible(selectors.titleClass, 60);
     await I.waitForVisible(selectors.contentClass, 60);
     if (Array.isArray(content)) {
@@ -45,9 +46,13 @@ module.exports = {
     await I.see(status, locator);
     if (isLinkFlag === true) {
       I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
+    } else {
+      I.dontSeeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
     }
     if (isDeadlinePresent === true) {
       await I.see(deadline, locator);
+    } else {
+      I.dontSee(deadline, locator);
     }
   },
 };
