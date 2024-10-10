@@ -68,7 +68,7 @@ export const addOtherPartiesAgreedRow = (claimId: string, claim: Claim, lang: st
   if (claim.generalApplication?.agreementFromOtherParty) {
     const partiesAgreed = (claim.generalApplication?.agreementFromOtherParty === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng}),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng}),
         constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), changeLabel()),
     );
   }
@@ -82,7 +82,7 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
   if (claim.generalApplication?.informOtherParties) {
     const informOtherParties = (claim.generalApplication?.informOtherParties.option === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng}),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION_2.${informOtherParties}`, {lng}),
         constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL), changeLabel()),
     );
   }
@@ -96,7 +96,7 @@ export const addAskForCostsRow = (claimId: string, claim: Claim, lang: string): 
   if (claim.generalApplication?.applicationCosts) {
     const askForCosts = (claim.generalApplication?.applicationCosts === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ASK_FOR_COSTS', {lng}), t(`COMMON.VARIATION.${askForCosts}`, {lng}),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ASK_FOR_COSTS', {lng}), t(`COMMON.VARIATION_2.${askForCosts}`, {lng}),
         constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL), changeLabel()),
     );
   }
@@ -143,14 +143,14 @@ export const addDocumentUploadRow = (claimId: string, claim: Claim, lang: string
     const href = `${constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL)}`;
     let rowValue: string;
     if (claim.generalApplication.wantToUploadDocuments === YesNo.YES) {
-      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
       rowValue += '<ul class="no-list-style">';
       claim.generalApplication.uploadEvidenceForApplication.forEach(uploadGAFile => {
         rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
       });
       rowValue += '</ul>';
     } else {
-      rowValue = t('COMMON.VARIATION.NO', {lng});
+      rowValue = t('COMMON.VARIATION_2.NO', {lng});
     }
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
