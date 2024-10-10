@@ -23,7 +23,7 @@ const renderView = (form: GenericForm<GenericYesNoCarmContactPersonConfirmation>
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyContactPerson: partyContactPerson });
-  res.render(contactNameMediationConfirmationViewPath, { form, pageTitle, pageText });
+  res.render(contactNameMediationConfirmationViewPath, { form, pageTitle, pageText, isCarm: true});
 };
 
 const getPartyContactPerson = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
