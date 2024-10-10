@@ -45,7 +45,7 @@ telephoneMediationController.get(TELEPHONE_MEDIATION_URL, (async (req, res, next
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
-    res.render(availabilityForMediationViewPath, {telephoneMediationContent:telephoneMediationContent(lang, claim.isClaimant())});
+    res.render(availabilityForMediationViewPath, {telephoneMediationContent:telephoneMediationContent(lang, claim.isClaimant()), isCarm: true});
   } catch (error) {
     next(error);
   }
