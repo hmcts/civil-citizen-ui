@@ -13,7 +13,7 @@
   {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC.TITLE') }}
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
-    {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
+    {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </div>
