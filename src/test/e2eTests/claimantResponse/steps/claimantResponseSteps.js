@@ -2,6 +2,7 @@ const I = actor();
 const {clickButton} = require('../../commons/clickButton');
 const {buttonType} = require('../../commons/buttonVariables');
 const {resetScenarios} = require('../../../functionalTests/specClaimHelpers/api/wiremock');
+const {date} = require('../../../functionalTests/specClaimHelpers/api/dataHelper');
 
 const paths = {
   links: {
@@ -40,9 +41,10 @@ const paths = {
   },
 };
 
-const day = 10;
-const month = 10;
-const year = 2024;
+const dateNow = date(35).split('-'); //format is yyyy-mm-dd
+const day = dateNow[2];
+const month = dateNow[1];
+const year = dateNow[0];
 
 class ClaimantResponseSteps {
   viewDefendantResponse(caseId, includesRepaymentPlan) {
