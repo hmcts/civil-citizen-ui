@@ -38,6 +38,23 @@ export enum ApplicationTypeOption {
   CONFIRM_CCJ_DEBT_PAID = 'CONFIRM_CCJ_DEBT_PAID',
 }
 
+export enum ApplicationTypeOptionCcd {
+  STRIKE_OUT = 'Strike out',
+  SUMMARY_JUDGMENT = 'Summary judgment',
+  STAY_THE_CLAIM = 'Stay the claim',
+  EXTEND_TIME = 'Extend time',
+  AMEND_A_STMT_OF_CASE = 'Amend a statement of case',
+  RELIEF_FROM_SANCTIONS = 'Relief from sanctions',
+  SET_ASIDE_JUDGEMENT = 'Set aside judgment',
+  SETTLE_BY_CONSENT = 'Settle by consent',
+  VARY_ORDER = 'Vary order',
+  ADJOURN_HEARING = 'Adjourn a hearing',
+  UNLESS_ORDER = 'Unless order',
+  OTHER_OPTION = 'Other option',
+  OTHER = 'Other',
+  VARY_PAYMENT_TERMS_OF_JUDGMENT = 'Vary payment terms of judgment',
+}
+
 export const LinKFromValues = {
   start: 'start',
   addAnotherApp: 'addAnotherApp',

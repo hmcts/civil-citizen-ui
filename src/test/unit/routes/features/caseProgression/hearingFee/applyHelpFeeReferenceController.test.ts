@@ -98,7 +98,7 @@ describe('Apply for help with fees', () => {
         .send({})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_ALT'));
         });
     });
 
