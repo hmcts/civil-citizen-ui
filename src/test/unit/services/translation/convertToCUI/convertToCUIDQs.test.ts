@@ -21,6 +21,7 @@ import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/d
 import {
   HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
+import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 
 describe('translate CCDDQ to CUI DQ model', () => {
   it('should return undefined if ccdClaim doesnt exist', () => {
@@ -39,11 +40,26 @@ describe('translate CCDDQ to CUI DQ model', () => {
         respondent1DQExtraDetails: {
           giveEvidenceYourSelf: YesNoUpperCamelCase.YES,
         },
+        respondent1DQEvidenceConfirmDetails : {
+          firstName: 'Gordon',
+          lastName: 'Ramsay',
+          email: 'abc@def.ghi',
+          phone: '7788994455',
+          jobTitle: 'Chef',
+        },
       },
     };
+
+    const confirmDetails: ConfirmYourDetailsEvidence = new ConfirmYourDetailsEvidence();
+    confirmDetails.firstName = 'Gordon';
+    confirmDetails.lastName = 'Ramsay';
+    confirmDetails.emailAddress = 'abc@def.ghi';
+    confirmDetails.phoneNumber = 7788994455;
+    confirmDetails.jobTitle = 'Chef';
+
     //When
     const output = toCUIDQs(input);
-    const expected : DirectionQuestionnaire = new DirectionQuestionnaire(new GenericYesNo(YesNo.YES), new Hearing(), undefined, new Experts());
+    const expected : DirectionQuestionnaire = new DirectionQuestionnaire(new GenericYesNo(YesNo.YES), new Hearing(), undefined, new Experts(), undefined, undefined, confirmDetails);
     //Then
     expect(output).toEqual(expected);
   });
