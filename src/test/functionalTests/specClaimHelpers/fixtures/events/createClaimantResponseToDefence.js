@@ -82,7 +82,6 @@ module.exports = {
         respondentResponseIsSame: null,
         defendantSingleResponseToBothClaimants: null,
         respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-        defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
         showResponseOneVOneFlag: 'ONE_V_ONE_FULL_DEFENCE',
         applicant1DefenceResponseDocumentSpec: null,
         applicant1DQFileDirectionsQuestionnaire: {
