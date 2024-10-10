@@ -9,7 +9,7 @@
                     <form method="post" novalidate>
                         {{ csrfProtection(csrf) }}
                         <span class="govuk-caption-l">{{ t(applicationType) }}</span>
-                        {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.DO_YOU_ADD_ANOTHER_APPLICATION'), form, t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.ADDITIONAL_FEE')) }}
+                        {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.DO_YOU_ADD_ANOTHER_APPLICATION'), form, t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.ADDITIONAL_FEE'), {yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
                         <div class="govuk-button-group">
                             {{ addButton(t, 'CONTINUE', cancelUrl) }}
                         </div>
