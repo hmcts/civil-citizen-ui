@@ -89,8 +89,8 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Ewch yn ôl a rhowch gynnig arall arni",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
-      "PAY_APPLICATION_FEE": "Talu ffi ychwanegol",
-      "RESPOND_TO_APPLICATION": "Respond to application",
+      "PAY_APPLICATION_FEE": "Talu’r ffi gwneud cais",
+      "RESPOND_TO_APPLICATION": "Ymateb i’r cais",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
@@ -2638,7 +2638,7 @@
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
         "RESPOND_TO_MULTIPLE": "Ymateb i gais",
-        "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
+        "TITLE": "Mae’r partïon eraill wedi dweud eich bod wedi cytuno i’r gorchymyn maent wedi gwneud cais amdano. A yw hyn yn gywir?"
       },
       "APPLICATION_COSTS": {
         "ADJOURN_HEARING": "newid dyddiad gwrandawiad",
@@ -2718,7 +2718,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
-        "PREFERRED_LOCATION": "Preferred location",
+        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
@@ -2868,14 +2868,14 @@
       },
       "SUMMARY": {
         "APP_REQUESTED": "An application is a request for a change to the case.",
-        "APPLICATION": "Application",
+        "APPLICATION": "Cais",
         "APPLICATION_ID": "Application ID",
-        "APPLICATION_TYPE": "Application type",
+        "APPLICATION_TYPE": "Math o gais",
         "COMPLETE": "Complete",
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
         "MY_APPLICATIONS": "My applications",
-        "STATUS": "Status",
+        "STATUS": "Statws",
         "APPLICATION_STATUS": "Application Status",
         "STATES": {
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
@@ -2884,7 +2884,7 @@
           "APPLICATION_CLOSED": "Application closed",
           "APPLICATION_DISMISSED": "Application dismissed",
           "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
-          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application submitted - Awaiting Judicial decision",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Cais wedi’i gyflwyno - Aros am benderfyniad barnwrol",
           "AWAITING_ADDITIONAL_INFORMATION": "Awaiting additional information",
           "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
           "AWAITING_DIRECTIONS_ORDER_DOCS": "Awaiting directions order document",
@@ -3059,7 +3059,7 @@
         "PREFERRED_TELEPHONE_NUMBER": "Y rhif ffôn a ffafrir",
         "TITLE": "Manylion cyswllt"
       },
-      "ORDER_FOR_COSTS": " Order for costs",
+      "ORDER_FOR_COSTS": "Gorchymyn o ran costau",
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Cliciwch ar ‘ymateb i’r cais’ i roi gwybod i’r llys p’un a ydych yn cytuno â’u cais neu beidio.",
         "HEADER": "Ymateb i gais",
@@ -3079,10 +3079,10 @@
         "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       },
       "RESPONDENT_VIEW_APPLICATION": {
-        "APPLICATION_TYPE_AND_DESC": "Application type and description",
-        "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
-        "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
-        "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
+        "APPLICATION_TYPE_AND_DESC": "Math o gais a disgrifiad ohono",
+        "SUMMERY_MESSAGE1" : "Dyma’r cais y mae’r partïon eraill wedi’i wneud.",
+        "SUMMERY_MESSAGE2" : "Bydd eu hymatebion i ‘Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?’ a ‘Pam ydych chi’n gwneud cais am y gorchymyn hwn?’ yn esbonio’r newid maen nhw wedi gwneud cais amdano a pham. Bydd dolen i adolygu unrhyw ddogfennau maen nhw wedi uwchlwytho.",
+        "SUMMERY_MESSAGE3" : "Unwaith y byddwch wedi adolygu eu cais, cliciwch ar ‘ymateb i gais’ isod. Fe ofynnir i chi p’un a ydych yn cytuno â’u cais neu beidio."
       },
       "RESPONDENT_UPLOAD_OPTION": {
         "PAGE_TITLE": "Provide more information to the court",
@@ -3157,11 +3157,11 @@
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
-        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "ADDITIONAL_SECTIONS": "Gall fod adrannau ychwanegol sy’n cynnwys o wybodaeth, fel yr ymateb gan y llys.",
         "APPLICANTS_DOCUMENTS": "Applicant's documents",
-        "APPLICATION": "Application",
+        "APPLICATION": "Cais",
         "APPLICATION_APPROVE_EDIT": "Application approved or edited",
-        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "APPLICATION_DETAILS": "Manylion y cais a gyflwynwyd gan y ceisydd.",
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
@@ -3172,9 +3172,9 @@
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
-        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
+        "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hearing Notice",
-        "HEARING_NOTICE_DESC" : "There is a hearing notice",
+        "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
         "HEARING_ORDER" : "Hearing Order",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "GENERAL_ORDER" : "General Order",
@@ -3183,10 +3183,10 @@
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
         "RESPONSE": {
-          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
           "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
-          "TITLE": "Response from the other parties",
-          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+          "TITLE": "Ymateb gan y partïon eraill",
+          "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
@@ -3194,19 +3194,19 @@
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "REQUEST_MORE_INFO": "Request for more information",
-        "REVIEW": "Review the application together with any response that has been received.",
+        "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Awaiting other parties response",
-          "TITLE": "Status"
+          "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
+          "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
-        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
-        "TITLE": "Application {{applicationIndex}}",
+        "SUBMITTED": "Os bu i chi gyflwyno’r cais i wneud newid i’ch achos, yna chi yw’r ‘ceisydd’. Y ‘partïon eraill’ yw’r ochr arall neu’r ochrau eraill sy’n rhan o’ch hawliad.",
+        "TITLE": "Cais {{applicationIndex}}",
         "TYPE_RESPONSE": "Type of response",
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
-        "UPLOAD_DOCUMENTS_1": "You can also ",
-        "UPLOAD_DOCUMENTS_2": "upload additional documents",
-        "UPLOAD_DOCUMENTS_3": " if you need to."
+        "UPLOAD_DOCUMENTS_1": "Gallwch hefyd ",
+        "UPLOAD_DOCUMENTS_2": "uwchlwytho dogfennau ychwanegol",
+        "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
