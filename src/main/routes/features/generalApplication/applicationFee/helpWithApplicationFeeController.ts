@@ -18,7 +18,7 @@ import {
   getApplicationIndex,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
@@ -30,11 +30,11 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form) {
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     const claim: Claim = await getClaimById(claimId, req, true);
-    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees?.option));
+    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees?.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(claim.id, claim);
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     }
   }
   let backLinkUrl;
@@ -67,7 +67,7 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
+    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, lng);
