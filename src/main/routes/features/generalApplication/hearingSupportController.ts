@@ -13,7 +13,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const hearingSupportController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingSupport>, res: Response): Promise<void> {
+async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingSupport>, res: Response, lng: string): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL);
   res.render(viewPath, {
@@ -21,16 +21,17 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<Heari
     cancelUrl,
     backLinkUrl,
     headerTitle: getDynamicHeaderForMultipleApplications(claim),
-    headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
+    headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE', {lng}) });
 }
 
 hearingSupportController.get(GA_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const hearingSupport = claim.generalApplication?.hearingSupport || new HearingSupport([]);
     const form = new GenericForm(hearingSupport);
-    await renderView(claimId, claim, form, res);
+    await renderView(claimId, claim, form, res, lng);
   } catch (error) {
     next(error);
   }
@@ -38,6 +39,7 @@ hearingSupportController.get(GA_HEARING_SUPPORT_URL, (async (req: AppRequest, re
 
 hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -47,7 +49,7 @@ hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | 
     const form = new GenericForm(hearingSupport);
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(claimId, claim, form, res);
+      await renderView(claimId, claim, form, res, lng);
     } else {
       await saveHearingSupport(redisKey, hearingSupport);
       res.redirect(constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL));
