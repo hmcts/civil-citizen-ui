@@ -82,7 +82,7 @@ export class GaServiceClient {
   async getGaFeePaymentRedirectInformation(claimId: string, req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
+      const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId), '', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment redirect information');
@@ -133,10 +133,16 @@ export class GaServiceClient {
   async getApplicationsByCaseId(caseId: string, req: AppRequest): Promise<ApplicationResponse[]> {
     const config = this.getConfig(req);
     try {
+      let applications: ApplicationResponse[] = [];
       const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
-      return response.data?.cases?.sort((a: any, b: any) => {
+      const sort = response.data?.cases?.sort((a: any, b: any) => {
         return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
       });
+      applications = sort.map((application: ApplicationResponse) => {
+        const caseData = Object.assign(new Application(), application.case_data);
+        return new ApplicationResponse(application.id, caseData, application.state, application.last_modified, application.created_date);
+      });
+      return applications;
     } catch (err) {
       logger.error('Error when getApplicationsByCaseId', err);
       throw err;
