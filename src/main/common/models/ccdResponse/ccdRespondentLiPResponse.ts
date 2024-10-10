@@ -2,6 +2,7 @@ import {CCDMediation} from 'models/ccdResponse/ccdMediation';
 import {CCDDQExtraDetails} from 'models/ccdResponse/ccdDQExtraDetails';
 import {CCDHearingSupport} from 'models/ccdResponse/ccdHearingSupport';
 import {CCDAddress} from 'models/ccdResponse/ccdAddress';
+import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 
 export interface CCDRespondentLiPResponse {
   timelineComment?: string;
@@ -12,6 +13,7 @@ export interface CCDRespondentLiPResponse {
   respondent1LiPContactPerson?: string,
   respondent1LiPCorrespondenceAddress?: CCDAddress,
   respondent1ResponseLanguage?: CCDRespondentResponseLanguage;
+  respondent1DQEvidenceConfirmDetails?: CCDEvidenceConfirmDetails;
 }
 
 export enum CCDRespondentResponseLanguage {
