@@ -40,6 +40,11 @@ import { convertToPenceFromStringToString } from '../claim/moneyConversation';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { exhaustiveMatchingGuard } from 'services/genericService';
 import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {
+  CertificateOfSatisfactionOrCancellation,
+} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -252,6 +257,43 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement,
     generalAppRespondDocument: response.wantToUploadDocuments === YesNo.YES ? translateCUItoCCD(response.uploadEvidenceDocuments) : undefined,
   };
+};
 
+export const translateCoScApplicationToCCD = (
+  application: GeneralApplication,
+): CCDGeneralApplication => {
+  return {
+    generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
+    generalAppRespondentAgreement: toCCDRespondentAgreement(application.agreementFromOtherParty),
+    certOfSC: toCCDCertOfSC(application.certificateOfSatisfactionOrCancellation, application.uploadEvidenceForApplication),
+    generalAppStatementOfTruth: toCCDStatementOfTruth(
+      application.statementOfTruth,
+    ),
+  };
+};
+
+const toCCDCoScEvidenceDocuments = (evidenceOption: string, uploadDocuments: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
+  return (evidenceOption == debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL || evidenceOption == debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT)
+    ? uploadDocuments?.map(uploadDocument => {
+      return {
+        value: {
+          document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
+          document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
+          document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
+          category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
+        },
+      };
+    })
+    : undefined;
+};
+
+const toCCDCertOfSC = (certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationCertOfSC => {
+  return (certificateOfSatisfactionOrCancellation)
+    ? {
+      defendantFinalPaymentDate: certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate.date,
+      debtPaymentEvidence: certificateOfSatisfactionOrCancellation.debtPaymentEvidence,
+      proofOfDebtDoc: toCCDCoScEvidenceDocuments(certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption, uploadDocuments),
+    }
+    : undefined;
 };
 
