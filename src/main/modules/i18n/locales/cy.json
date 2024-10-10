@@ -4328,7 +4328,7 @@
       "PAGE_TITLE": "Dyddiadau lle nad ydych ar gael i fynd i wrandawiad",
       "SINGLE_DATE": "Dyddiad unigol",
       "TITLE": "Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu'ch tystion fynd i wrandawiad",
-      "TO": "I"
+      "TO": "Tan"
     },
     "UNDER_18": {
       "ABLE_TO_GET_ADVICE": "Efallai y gallwch gael cyngor am y ffurflen hawlio gan",
@@ -4777,7 +4777,7 @@
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Mae'n rhaid i’r dyddiad nad yw ar gael tan fod yn heddiw neu yn y dyfodol",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Rhaid i'r dyddiad nad ydych ar gael fod heddiw neu yn y dyfodol",
     "GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Rhaid i'r dyddiad nad ydych ar gael fod heddiw neu yn y dyfodol",
-    "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Rhaid i'r dyddiad nad ydych ar gael ohono fod heddiw neu yn y dyfodol",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Rhaid i'r dyddiad pan nad ydych ar gael o fod yn heddiw neu'n ddyddiad yn y dyfodol",
     "GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Rhaid i'r dyddiad pan nad ydych ar gael o fod yn heddiw neu'n ddyddiad yn y dyfodol",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Y dyddiad nad ydych ar gael iddo fod heddiw neu yn y dyfodol",
     "GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Y dyddiad nad ydych ar gael iddo fod heddiw neu yn y dyfodol",
@@ -4998,7 +4998,7 @@
     "TOWN_CITY_TOO_MANY_JO": "Ni ddylai tref neu ddinas fod yn hirach na 35 o nodau",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_IS_A_PROBLEM": "Mae yna broblem",
-    "THERE_WAS_A_PROBLEM": "Roedd yna broblem",
+    "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu teipiwch y cyfeiriad.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "ADDRESS_LINE_TOO_MANY_CORRESPONDENCE": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 50 o nodau",
