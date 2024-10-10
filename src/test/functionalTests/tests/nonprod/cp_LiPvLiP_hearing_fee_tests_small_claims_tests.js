@@ -15,7 +15,7 @@ const claimAmount = '£1,500';
 const feeAmount = '123';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims @testing');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
