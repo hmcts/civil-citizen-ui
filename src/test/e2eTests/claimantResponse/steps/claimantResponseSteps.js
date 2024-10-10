@@ -41,10 +41,10 @@ const paths = {
   },
 };
 
-const dateNow = date(35);
-const day = dateNow.getDate();
-const month = dateNow.getMonth();
-const year = dateNow.getFullYear();
+const dateNow = date(35).split('-'); //format is yyyy-mm-dd
+const day = dateNow[2];
+const month = dateNow[1];
+const year = dateNow[0];
 
 class ClaimantResponseSteps {
   viewDefendantResponse(caseId, includesRepaymentPlan) {
