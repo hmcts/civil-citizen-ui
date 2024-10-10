@@ -920,6 +920,8 @@ describe('Civil Service Client', () => {
         'descriptionCy': 'description_cy',
         'notificationAction': undefined,
         'timeToLive': undefined,
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -935,6 +937,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -950,6 +954,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -965,6 +971,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -980,6 +988,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(200000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -995,6 +1005,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User 2',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
     ];
     const mockNotificationInfoExpected = [
@@ -1006,6 +1018,8 @@ describe('Civil Service Client', () => {
         'descriptionCy': 'description_cy',
         'notificationAction': undefined,
         'timeToLive': undefined,
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1021,6 +1035,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1036,6 +1052,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(200000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1051,6 +1069,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User 2',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
     ];
     const mockGaNotificationInfo = {
@@ -1063,6 +1083,8 @@ describe('Civil Service Client', () => {
           'descriptionCy': 'description_cy',
           'notificationAction': undefined,
           'timeToLive': undefined,
+          'createdAt': 'createdAt',
+          'deadline': 'deadline',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1078,6 +1100,8 @@ describe('Civil Service Client', () => {
             'createdBy': 'Test User',
             'createdAt': new Date(100000),
           },
+          'createdAt': 'createdAt',
+          'deadline': 'deadline',
         },
       ],
       '456': [
@@ -1095,6 +1119,8 @@ describe('Civil Service Client', () => {
             'createdBy': 'Test User',
             'createdAt': new Date(100000),
           },
+          'createdAt': 'createdAt',
+          'deadline': 'deadline',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1110,6 +1136,8 @@ describe('Civil Service Client', () => {
             'createdBy': 'Test User',
             'createdAt': new Date(100000),
           },
+          'createdAt': 'createdAt',
+          'deadline': 'deadline',
         },
       ],
     };
@@ -1122,6 +1150,8 @@ describe('Civil Service Client', () => {
         'descriptionCy': 'description_cy',
         'notificationAction': undefined,
         'timeToLive': undefined,
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1137,6 +1167,8 @@ describe('Civil Service Client', () => {
           'createdBy': 'Test User',
           'createdAt': new Date(100000),
         },
+        'createdAt': 'createdAt',
+        'deadline': 'deadline',
       },
     ];
 

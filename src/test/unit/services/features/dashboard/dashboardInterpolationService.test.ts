@@ -36,7 +36,7 @@ describe('dashboardInterpolationService', () => {
     claim.id = '123';
     const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
-    const dashboardNotification = new DashboardNotification('456', '', '', '', '', '', undefined, undefined);
+    const dashboardNotification = new DashboardNotification('456', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
     const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123',dashboardNotification);
     const textExpectedRedirect = '/notification/456/redirect/VIEW_ORDERS_AND_NOTICES/123';
@@ -185,7 +185,7 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/case-progression/apply-help-with-fees/start';
 
@@ -196,7 +196,7 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{PAY_HEARING_FEE_URL_REDIRECT}';
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/notification/1234/redirect/PAY_HEARING_FEE_URL/123';
@@ -211,7 +211,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{VIEW_ORDERS_AND_NOTICES}';
     const params: Map<string, object> = new Map<string, object>();
     params.set('orderDocument', undefined);
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-orders-and-notices';
@@ -223,7 +223,7 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}';
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/evidence-upload-documents';
@@ -265,7 +265,7 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{VIEW_MEDIATION_DOCUMENTS}';
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const textExpected = '/case/123/mediation/view-mediation-documents';
@@ -281,7 +281,7 @@ describe('dashboardInterpolationService', () => {
     claim.caseRole = CaseRole.CLAIMANT;
     const textToReplaceUrl = '{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}';
     const params: Map<string, object> = new Map<string, object>();
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
@@ -297,7 +297,7 @@ describe('dashboardInterpolationService', () => {
     claim.caseRole = CaseRole.DEFENDANT;
     const textToReplaceUrl = '{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}';
     const params: Map<string, object> = new Map<string, object>();
-    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
