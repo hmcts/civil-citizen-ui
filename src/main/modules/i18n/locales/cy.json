@@ -86,10 +86,10 @@
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
-      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
+      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Ewch yn ôl a rhowch gynnig arall arni",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
-      "PAY_APPLICATION_FEE": "Pay application fee",
+      "PAY_APPLICATION_FEE": "Talu ffi ychwanegol",
       "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
@@ -105,13 +105,13 @@
       "START_NOW": "Dechrau nawr",
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
       "CLAIM_FEE": "Ffi’r hawliad",
-      "APPLICATION_FEE": "Application fee",
-      "ADDITIONAL_APPLICATION_FEE" : "Additional application fee"
+      "APPLICATION_FEE": "Y ffi gwneud cais",
+      "ADDITIONAL_APPLICATION_FEE" : "Ffi Cais Ychwanegol"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -2595,19 +2595,19 @@
         "MAKE_AN_APPLICATION": "Gwneud cais"
       },
       "ACCEPT_DEFENDANT_OFFER": {
-        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
-        "ENTER_AMOUNT": "Enter the amount in £",
-        "N245": "N245 form",
-        "N245_AFTER": " that they completed. You should read this before responding.",
-        "N245_BEFORE": "The defendant's offer will be set out in the ",
-        "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
-        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
-        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
-        "PROPOSED_SET_DATE": "Proposed set date",
-        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
-        "TITLE": "Do you accept the defendant's offer?",
-        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
-        "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
+        "ACCEPT_ISNTALMENTS": "Byddaf yn derbyn rhandaliadau penodol bob mis",
+        "ENTER_AMOUNT": "Nodwch y swm mewn £",
+        "N245": "ffurflen N245",
+        "N245_AFTER": " maen nhw wedi’i llenwi. Dylech ddarllen manylion y cynnig cyn ymateb.",
+        "N245_BEFORE": "Bydd cynnig y diffynnydd wedi’i bennu yn y ",
+        "PROPOSE_IN_FULL": "Rwy’n cynnig talu’n llawn erbyn dyddiad penodol",
+        "PROPOSE_PAYMENT_PLAN": "Cynllun talu arfaethedig",
+        "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig bob mis",
+        "PROPOSED_SET_DATE": "Dyddiad penodol arfaethedig",
+        "THE_COURT": "Bydd y llys yn gwneud gorchymyn am y taliad a awgrymwyd gan y diffynnydd.",
+        "TITLE": "Ydych chi'n derbyn cynnig y diffynnydd?",
+        "WHY_NOT_ACCEPT": "Pam nad ydych yn derbyn cynnig y diffynnydd?",
+        "WHY_NOT_ACCEPT_2": "Pam nad ydych yn derbyn cynnig y diffynnydd?"
       },
       "ADDITIONAL_DOCUMENTS": {
         "ADDITIONAL_DOCUMENTS_CAPTION": "Upload additional documents",
@@ -2637,7 +2637,7 @@
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
-        "RESPOND_TO_MULTIPLE": "Respond to an application",
+        "RESPOND_TO_MULTIPLE": "Ymateb i gais",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
       "APPLICATION_COSTS": {
@@ -2719,9 +2719,9 @@
         "CLAIM_REFERENCE": "Claim reference: ",
         "PREFERRED_LOCATION": "Preferred location",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
-        "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
+        "PROPOSED_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
-        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "RESPOND_TO_AN_APPLICATION": "Ymateb i gais",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your response to the application.",
           "CHECKBOX": "I believe that the facts stated in this response form are true.",
@@ -2796,15 +2796,15 @@
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
       },
       "PAYMENT_UNSUCCESSFUL": {
-        "CONTACT_YOUR_BANK": "Contact your bank for more details. No money has been taken from your account.",
+        "CONTACT_YOUR_BANK": "Cysylltwch â’ch banc i gael mwy o fanylion. Nid oes unrhyw arian wedi ei gymryd o’ch cyfrif.",
         "TITLE": "Unsuccessful payment",
-        "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
+        "YOUR_PAYMENT_HAS_FAILED": "Mae eich taliad wedi methu"
       },
       "RESPONSE_CONFIRMATION": {
         "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
         "CLOSE_AND_RETURN": "Close and return to case details",
         "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
-        "NEXT_STEPS": "What happens next",
+        "NEXT_STEPS": "Beth fydd yn digwydd nesaf",
         "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
         "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
         "TITLE": "You've responded to the application"
@@ -2936,20 +2936,20 @@
         "TITLE": "Application hearing arrangements"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
-        "ACCOUNT_NOT_UPDATED": "Your payment was successful but your account might not have been updated yet. Try refreshing your account later on.",
-        "APPLICATION_SUBMITTED": "Application Submitted",
-        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
-        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",
-        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "If you've chosen not to inform the other parties",
-        "PAYMENT_SUMMARY_TITLE": "Payment Summary",
-        "TITLE": "General application payment fee confirmation",
-        "WHAT_HAPPENS_NEXT_PARA_1": "If you chosen to inform the other parties or agreed the application, they will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
-        "WHAT_HAPPENS_NEXT_PARA_2": "You may be required to attend an application hearing so that a judge can consider your application with you and the other parties and decide what the next steps should be.",
-        "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
-        "WHAT_HAPPENS_NEXT_PARA_4": "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
-        "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
-        "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
-        "WHAT_HAPPENS_NEXT": "What happens next"
+        "ACCOUNT_NOT_UPDATED": "Roedd eich taliad yn llwyddiannus ond efallai na fydd eich cyfrif wedi’i ddiweddaru eto. Edrychwch ar eich cyfrif eto yn nes ymlaen.",
+        "APPLICATION_SUBMITTED": "Cais wedi'i gyflwyno",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "Os nad ydych wedi darparu rheswm dilys, gall y barnwr orchymyn y dylai’r partïon eraill gael eu hysbysu. Os bydd hyn yn digwydd, bydd arnoch angen talu ffi ychwanegol ac efallai bydd oedi gyda’ch cais hefyd.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "Os bydd y barnwr yn cytuno na ddylid hysbysu’r partïon eraill, ni fydd y partïon eraill yn gallu ymateb i’r cais cyn i’r barnwr wneud penderfyniad.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "Os ydych wedi dewis peidio â hysbysu’r partïon eraill",
+        "PAYMENT_SUMMARY_TITLE": "Crynodeb o’r taliad",
+        "TITLE": "Cadarnhad - taliad am gais cyffredinol",
+        "WHAT_HAPPENS_NEXT_PARA_1": "Os ydych wedi dewis i hysbysu’r partïon eraill neu wedi cytuno ar y cais, bydd ganddynt 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
+        "WHAT_HAPPENS_NEXT_PARA_2": "Efallai y bydd rhaid i chi fynychu gwrandawiad fel bod barnwr yn gallu ystyried eich cais gyda chi a’r partïon eraill a phenderfynu ar y camau nesaf.",
+        "WHAT_HAPPENS_NEXT_PARA_3": "Fe gewch hysbysiad yn rhoi gwybod i chi os bydd gwrandawiad wedi’i drefnu.",
+        "WHAT_HAPPENS_NEXT_PARA_4": "Os ydych wedi gwneud cais i newid dyddiad gwrandawiad, bydd y treial neu’r gwrandawiad yn mynd ymlaen ar y dyddiad gwreiddiol fel y cynlluniwyd, oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y gwrandawiad.",
+        "WHAT_HAPPENS_NEXT_PARA_5": "Mae gan y partïon eraill 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
+        "WHAT_HAPPENS_NEXT_PARA_6": "Mae’n bosibl y bydd gofyn i chi fynychu gwrandawiad fel y gall y barnwr ystyried eich cais gyda chi a’r partïon eraill a phenderfynu beth ddylai’r camau nesaf fod.",
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
@@ -3006,7 +3006,7 @@
       "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "COURT_DOCUMENT": "court document",
         "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
         "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
@@ -3033,7 +3033,7 @@
       "UPLOAD_MORE_INFO_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "PAGE_TITLE": "Request for more information",
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
         "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
@@ -3060,16 +3060,16 @@
       },
       "ORDER_FOR_COSTS": " Order for costs",
       "RESPONDENT_INFORMATION": {
-        "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
-        "HEADER": "Respond to an application",
-        "INCLUDE_APPLICATION": "They will have included information about what change they'd like and why in their application. They may have also uploaded documents to support their request.",
-        "OTHER_PARTY_REQUEST": "The other parties have requested a change to the case. The 'other parties' are the other side or sides involved in your claim.",
-        "PAGE_TITLE": "Respond to a request for a change to the case",
-        "REQUEST_BY_APPLICATION": "They requested a change by making an application.",
-        "REVIEW_APPLICATION": "Review their application and any documents that they've uploaded on the next screen",
-        "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
-        "TITLE": "Respond to a request for a change to the case",
-        "WHAT_TO_DO_NEXT": "What to do next"
+        "CLICK_RESPOND": "Cliciwch ar ‘ymateb i’r cais’ i roi gwybod i’r llys p’un a ydych yn cytuno â’u cais neu beidio.",
+        "HEADER": "Ymateb i gais",
+        "INCLUDE_APPLICATION": "Byddant wedi cynnwys gwybodaeth am y newid maen nhw eisiau a'r rheswm pam yn eu cais. Efallai byddant hefyd wedi uwchlwytho dogfennau i gefnogi eu cais.",
+        "OTHER_PARTY_REQUEST": "Mae’r partïon eraill wedi gwneud cais i wneud newid i’r achos. Y ‘partïon eraill’ yw’r ochr arall neu’r ochrau eraill sy’n rhan o’ch hawliad.",
+        "PAGE_TITLE": "Ymateb i gais i wneud newid i’r achos",
+        "REQUEST_BY_APPLICATION": "Bu iddynt wneud cais am newid trwy gyflwyno cais.",
+        "REVIEW_APPLICATION": "Adolygwch eu cais ac unrhyw ddogfennau maen nhw wedi’u huwchlwytho ar y sgrin nesaf",
+        "SENT_TO_JUDGE": "Yna bydd eu cais nhw a’ch ymateb chi yn cael eu hanfon at farnwr.",
+        "TITLE": "Ymateb i gais i wneud newid i’r achos",
+        "WHAT_TO_DO_NEXT": "Beth i'w wneud nesaf"
       },
       "RESPONDENT_AGREEMENT": {
         "DISAGREE_EXPLANATION": "Explain why you disagree with the application",
@@ -3126,7 +3126,7 @@
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
-        "PAY_FEE_BUTTON": "Pay application fee",
+        "PAY_FEE_BUTTON": "Talu ffi ychwanegol",
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
@@ -3142,7 +3142,7 @@
         "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
         "CONFIRMATION_ADDITIONAL_TITLE": "Your application for help with the additional application fee is complete",
         "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
-        "HEADING": "Application fee",
+        "HEADING": "Ffi gwneud cais",
         "REFERENCE_NUMBER": {
           "LIST_ITEMS": {
             "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -3152,7 +3152,7 @@
           "TITLE": "Do you have a help with fees reference number?"
         },
         "TITLE": "Help with fees",
-        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_TITLE": "Talu ffi ychwanegol",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
@@ -3760,7 +3760,7 @@
         "PAYMENT_IS": "Cyfeirnod eich taliad yw",
         "PAYMENT_SUMMARY": "Crynodeb o’r taliad.",
         "CONFIRMATION": "Byddwch yn cael e-bost cadarnhau yn yr awr nesaf.",
-        "PAYMENT_FOR": "Taliad ar gyfer",
+        "PAYMENT_FOR": "Taliad am",
         "TOTAL_AMOUNT": "Cyfanswm"
       },
       "UNSUCCESSFUL": {
@@ -5047,6 +5047,7 @@
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "Rhaid i chi ddewis o leiaf un math o ddogfen",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
+    "VALID_FOUR_DIGIT_YEAR_V2": "Rhowch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INSTALMENT_AMOUNT": "Ni all swm y rhandaliad fod yn fwy na, neu'n hafal â'r swm hawlio",
@@ -5125,11 +5126,11 @@
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
       "ACCEPT_DEFENDANT_OFFER": {
-        "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
-        "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
-        "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
-        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
-        "FUTURE_DATE": "You need to enter a date in the future."
+        "ERROR_ACCEPT": "Mae arnoch angen dweud wrthym os ydych yn derbyn cynnig y diffynnydd. Dewiswch opsiwn Ydw neu Nac ydw",
+        "ERROR_CHOOSE": "Mae arnoch angen cynnig cynllun talu. Dewiswch un ai rhandaliadau bob mis neu talu'n llawn erbyn dyddiad penodol.",
+        "ERROR_NOT_ACCEPT": "Mae arnoch angen dweud wrthym pam nad ydych yn derbyn cynnig y diffynnydd.",
+        "ERROR_INSTALMENT": "Mae arnoch angen nodi'r swm arfaethedig ar gyfer rhandaliadau misol.",
+        "FUTURE_DATE": "Mae arnoch angen nodi dyddiad yn y dyfodol."
       },
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "Ni allwch ddewis \"Gofyn i roi dyfarniad o’r neilltu (ei ddileu)\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
@@ -5149,6 +5150,7 @@
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
+      "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn Ydw neu Nac ydw",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
