@@ -1,7 +1,8 @@
 {
   "COMMON": {
     "HOME": "Hafan",
-    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
+    "HOME_CARM": "Tudalen gartref",
+    "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Uwchlwytho ffeil",
     "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
@@ -15,6 +16,7 @@
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
     "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
     "CASE_NUMBER_PARAM": "Rhif yr achos: {{ claimId }}",
+    "CASE_NUMBER_PARAM_CARM": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -47,7 +49,7 @@
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "TELEPHONE_MEDIATION": "Cyfryngu dros y ffôn",
     "AVAILABILITY_FOR_MEDIATION": "Pryd rydych ar gael ar gyfer cyfryngu",
-    "MEDIATION": "Mediation",
+    "MEDIATION": "Cyfryngu",
     "GIVE_DETAILS": "Rhowch fanylion os gwelwch yn dda",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
@@ -139,9 +141,11 @@
       "CALL_CHARGES": "Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)",
       "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
+      "OPENING_HOURS_CARM": "Dydd Llun i ddydd Iau 9am – 5pm, dydd Gwener 9am – 4.30pm.",
       "RESPONSE_DELAY": "Byddwn yn cysylltu â chi o fewn 10 diwrnod.",
       "TITLE": "Cysylltu â ni am gymorth",
       "TELEPHONE": "Ffôn",
+      "TELEPHONE_CARM": "Rhif ffôn",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
@@ -171,7 +175,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl={{ pageTitle }}' target='_blank'>adborth <span class='govuk-visually-hidden'>(yn agor mewn tab newydd)</span></a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>adborth (agor mewn ffenestr newydd)</a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -352,6 +356,14 @@
     "VARIATION_6": {
       "YES": "Dylai",
       "NO": "Na ddylai"
+    },
+    "VARIATION_7": {
+      "YES": "Gallai",
+      "NO": "Na allai"
+    },
+    "VARIATION_8": {
+      "YES": "Oes",
+      "NO": "Nac oes"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -849,13 +861,13 @@
       "P_71": "unrhyw atebolrwydd arall na ellir ei eithrio neu ei gyfyngu dan y gyfraith berthnasol"
     },
     "VIEW_MEDIATION_DOCUMENTS": {
-      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
-      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
-      "PAGE_TITLE": "View mediation documents"
+      "CLAIMANT_TABLE_TITLE": "Dogfennau cyfryngu’r Hawlydd",
+      "DEFENDANT_TABLE_TITLE": "Dogfennau cyfryngu’r Diffynnydd",
+      "PAGE_TITLE": "Gweld dogfennau cyfryngu"
     },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
-      "PAGE_TITLE": "View mediation settlement agreement",
-      "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
+      "PAGE_TITLE": "Gweld cytundeb setlo o ran cyfryngu",
+      "DOCUMENT_TABLE_TITLE": "Cytundeb setlo o ran cyfryngu"
     },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
@@ -905,7 +917,7 @@
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
-      "PAGE_TEXT": "Nodwch rif ffôn amgen"
+      "PAGE_TEXT": "Nodwch rif ffôn arall"
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
@@ -916,11 +928,11 @@
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
       "PAGE_TEXT": "A oes unrhyw ddyddiadau yn y 3 mis nesaf lle na allwch fynychu apwyntiad cyfryngu?",
-      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
+      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi eu trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
     },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
-      "PAGE_TEXT": "Nodwch gyfeiriad e-bost amgen"
+      "PAGE_TEXT": "Nodwch gyfeiriad e-bost arall"
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
@@ -4797,6 +4809,7 @@
     "CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad ydych ar gael fod cyn y dyddiad pan nad ydych ar gael i",
     "GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i'r dyddiad pan nad ydych ar gael o fod cyn y dyddiad pan nad ydych ar gael tan",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
+    "ENTER_VALID_EMAIL_CARM": "Nodwch gyfeiriad e-bost arall",
     "ENTER_VALID_EMAIL_EVIDENCE": "Rhowch gyfeiriad e-bost yn y fformat cywir, fel name@example.com",
     "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
     "ENTER_VALID_SECURITY_CODE": "Rhowch god diogelwch dilys",
@@ -4900,6 +4913,7 @@
     "PAGE_NOT_FOUND": "Heb Ddod o Hyd i’r Dudalen",
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
+    "PHONE_NUMBER_REQUIRED_CARM": "Nodwch rif ffôn arall",
     "RATE_CHOOSE_ONE": "Dewis cyfradd llog",
     "RATE_CORRECT_THE_ONE_ENTERED": "Y gyfradd gywir rydych chi wedi'i nodi",
     "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
@@ -5086,8 +5100,10 @@
     "VALID_YES_NO_OPTION_VARIATION_2": "Dewiswch opsiwn: Ydw neu Nac ydw",
     "VALID_YES_NO_OPTION_VARIATION_4": "Dewiswch opsiwn: Ydy neu Nac ydy",
     "VALID_YES_NO_OPTION_DO_NADDO": "Dewiswch opsiwn: Do neu Naddo",
-    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Dewisiwch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_CARM_OES_NAC_OES": "Dewisiwch opsiwn: Oes neu Nac oes",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
+    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Dewisiwch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_GALLAI_NA_ALLAI": "Dewisiwch opsiwn: Gallai neu Na allai",
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Dewiswch Oes neu Nac oes",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
