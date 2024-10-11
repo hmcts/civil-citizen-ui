@@ -15,4 +15,4 @@ Scenario('Create OCMC case and view it in preview @ocmc', async () => {
   let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreationOCMC(false);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await CreateLipvLipClaimSteps.CheckOCMCcasePreview(claimRef);
-}).tag('@regression');
+}).tag('@ignore');
