@@ -13,7 +13,7 @@ import {decode} from 'punycode';
 import {ApplicationState} from 'common/models/generalApplication/applicationSummary';
 import {ApplicationResponse, JudicialDecisionOptions} from 'common/models/generalApplication/applicationResponse';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {ApplicationTypeOption} from "models/generalApplication/applicationType";
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
