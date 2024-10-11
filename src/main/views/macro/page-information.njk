@@ -1,6 +1,10 @@
-{% macro pageInformation(t,pageCaption, pageTitle, claimId, claimAmount ) %}
+{% macro pageInformation(t,pageCaption, pageTitle, claimId, claimAmount, isCarm=False) %}
     <span class="govuk-caption-l">{{ t(pageCaption)}}</span>
     <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
-    <p class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM', {claimId: claimId}) }}</p>
+    {% if isCarm %}
+      <p class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM_CARM', {claimId: claimId}) }}</p>
+    {% else %}
+      <p class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM', {claimId: claimId}) }}</p>
+    {% endif %}
     <p class="govuk-body-l">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmount | currencyFormat(claimAmount)}) }}</p>
 {% endmacro %}
