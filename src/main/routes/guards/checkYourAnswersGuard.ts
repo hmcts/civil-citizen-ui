@@ -3,7 +3,7 @@ import {Task} from 'models/taskList/task';
 import {outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
-import {BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL, DASHBOARD_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
