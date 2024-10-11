@@ -11,7 +11,7 @@ accessibilityStatementController.get(ACCESSIBILITY_STATEMENT_URL, async (req, re
     accessibilityStatementViewPath,
     {
       dashboardUrl: DASHBOARD_URL,
-      carmEnabled: carmEnabled
+      carmEnabled: carmEnabled,
     },
   );
 });
