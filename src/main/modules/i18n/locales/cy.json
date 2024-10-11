@@ -5012,7 +5012,7 @@
     "TOWN_CITY_TOO_MANY_JO": "Ni ddylai tref neu ddinas fod yn hirach na 35 o nodau",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_IS_A_PROBLEM": "Mae yna broblem",
-    "THERE_WAS_A_PROBLEM": "Roedd problem",
+    "THERE_WAS_A_PROBLEM": "Roedd yna broblem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu teipiwch y cyfeiriad.",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "ADDRESS_LINE_TOO_MANY_CORRESPONDENCE": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 50 o nodau",
