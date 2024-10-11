@@ -6,6 +6,7 @@ const CreateLipvLipClaimSteps  = require('../../citizenFeatures/createClaim/step
 // eslint-disable-next-line no-unused-vars
 let claimRef;
 
+// After CUI R2 release, OCMC tests are not needed to run in the pipeline. Hence added the ignore tag.
 Feature('Create Lip v Lip claim -  Full Admit and pay Immediately');
 
 Scenario('Create OCMC case and view it in preview @ocmc', async () => {
