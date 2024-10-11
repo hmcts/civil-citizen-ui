@@ -110,6 +110,8 @@ export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang:
 export const addInformOtherPartiesRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
+  console.log(application);
+
   if (application.case_data.generalAppInformOtherParty && !otherPartiesAgreed(application)) {
     const informOtherParties = (application.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(

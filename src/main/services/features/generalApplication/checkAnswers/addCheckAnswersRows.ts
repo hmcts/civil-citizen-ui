@@ -79,6 +79,7 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
+  console.log(claim.generalApplication);
   if (claim.generalApplication?.informOtherParties) {
     const informOtherParties = (claim.generalApplication?.informOtherParties.option === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
