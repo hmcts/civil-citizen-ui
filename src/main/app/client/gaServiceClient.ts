@@ -133,16 +133,10 @@ export class GaServiceClient {
   async getApplicationsByCaseId(caseId: string, req: AppRequest): Promise<ApplicationResponse[]> {
     const config = this.getConfig(req);
     try {
-      let applications: ApplicationResponse[] = [];
       const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
-      const sort = response.data?.cases?.sort((a: any, b: any) => {
+      return response.data?.cases?.sort((a: any, b: any) => {
         return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
       });
-      applications = sort.map((application: ApplicationResponse) => {
-        const caseData = Object.assign(new Application(), application.case_data);
-        return new ApplicationResponse(application.id, caseData, application.state, application.last_modified, application.created_date);
-      });
-      return applications;
     } catch (err) {
       logger.error('Error when getApplicationsByCaseId', err);
       throw err;
