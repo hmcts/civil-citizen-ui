@@ -23,7 +23,7 @@ const renderView = (form: GenericForm<AlternativeTelephone>, res: Response, req:
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang});
-  res.render(alternativeTelephoneMediationViewPath, {form, pageTitle, pageText});
+  res.render(alternativeTelephoneMediationViewPath, {form, pageTitle, pageText, isCarm: true});
 };
 
 alternativeTelephoneMediationController.get(MEDIATION_ALTERNATIVE_PHONE_URL, (async (req, res, next: NextFunction) => {
