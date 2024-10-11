@@ -4,7 +4,6 @@ module.exports = {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
         respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-        defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
         respondToClaimAdmitPartLRspec: {},
         responseClaimMediationSpecRequired: 'No',
         specAoSApplicantCorrespondenceAddressRequired: 'No',
