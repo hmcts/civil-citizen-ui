@@ -236,10 +236,10 @@ If you want to clean up the environment just run:
 npx @hmcts/dev-env@latest --delete
 ```
 
-To run the specialised charts, where you can get Work Allocation for instance, run:
+To run the specialised charts, where you can get Elasticsearch for instance, run:
 
 ```shell
-npx @hmcts/dev-env@latest --template values.enableWA.preview.template.yaml && ./bin/setup-devuser-preview-env.sh
+npx @hmcts/dev-env@latest --template values.elasticsearch.preview.template.yaml && ./bin/setup-devuser-preview-env.sh
 ```
 
 ## License

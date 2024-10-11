@@ -24,17 +24,26 @@
   {% endif %}
 {% endmacro %}
 
-{% macro contactUsForHelp(t, widget, open) %}
+{% macro contactUsForHelp(t, widget, open, isCarm=False) %}
   {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
   {% set Email = t('COMMON.EMAIL') %}
-  {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') %}
+  {% if isCarm %}
+    {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE_CARM') %}
+  {% else %}
+    {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') %}
+  {% endif %}
   {% set contactocmc = 'contactocmc@justice.gov.uk' %}
   {% set responseDelay = t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') %}
   {% set webChat = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT') %}
   {% set webChatClosed = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT_CLOSED') %}
   {% set webChatUnavailable = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT_UNAVAILABLE') %}
   {% set callCharges = t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') %}
-  {% set openingHours = t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') %}
+  {% if isCarm %}
+    {% set openingHours = t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS_CARM') %}
+  {% else %}
+    {% set openingHours = t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') %}
+  {% endif %}
+
   {% set content = '' %}
   {% set emailWidget = _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','') %}
   {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank') %}
