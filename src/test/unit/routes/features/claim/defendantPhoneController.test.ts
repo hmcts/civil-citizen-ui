@@ -92,7 +92,7 @@ describe('Completing Claim', () => {
     it('should accept input with trailing whitespaces', async () => {
       await request(app)
         .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: '023 456 789 1'})
+        .send({telephoneNumber: '023 456 7891'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
