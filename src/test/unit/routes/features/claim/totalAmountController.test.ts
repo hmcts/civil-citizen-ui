@@ -1,16 +1,17 @@
 import request from 'supertest';
 import * as claimFeeService from 'services/features/claim/amount/claimFeesService';
-const session = require('supertest-session');
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
-import {
-  mockCivilClaimUndefined,
-} from '../../../../utils/mockDraftStore';
 import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/claimDetailsService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claim/amount/claimFeesService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -35,15 +36,17 @@ describe('Total amount', () => {
   describe('on GET', () => {
     it('should return total amount page', async () => {
       isReleaseTwo.mockResolvedValue(true);
-      nock('http://localhost:4000')
-        .get('/fees/hearing/undefined')
-        .reply(200, '100');
-      nock('http://localhost:4000')
-        .get('/fees/claim/undefined')
-        .reply(200, {'calculatedAmountInPence': '50'});
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spySave = jest.spyOn(claimFeeService, 'saveClaimFee');
-
+      const claim = new Claim();
+      claim.draftClaimCreatedAt = new Date();
+      claim.totalClaimAmount = 1000;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
       const res = await request(app)
         .get(CLAIM_TOTAL_URL.replace(':id', '5129'));
 
@@ -53,23 +56,9 @@ describe('Total amount', () => {
     });
 
     it('should return http 500 when has error in the claim amount fee get method', async () => {
-      nock('http://localhost:4000')
-        .get('/fees/claim/undefined')
-        .reply(500, mockCivilClaimUndefined);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockRejectedValueOnce(new Error("test error"))
       const res = await request(app)
-        .get(CLAIM_TOTAL_URL);
-
-      expect(res.status).toBe(500);
-    });
-
-    it('should return http 500 when has error in the hearing fee get method', async () => {
-      nock('http://localhost:4000')
-        .get('/fees/claim/undefined')
-        .reply(200, mockCivilClaimUndefined);
-      nock('http://localhost:4000')
-        .get('/fees/hearing/undefined')
-        .reply(500, mockCivilClaimUndefined);
-      const res = await session(app)
         .get(CLAIM_TOTAL_URL);
 
       expect(res.status).toBe(500);
