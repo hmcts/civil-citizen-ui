@@ -40,7 +40,7 @@ export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBre
 const convertFormToJson = (form: ClaimAmountRow): ClaimAmountBreakup =>{
   return {
     value:{
-      claimAmount: form.amount.toString(),
+      claimAmount: form.amount.toFixed(2),
       claimReason: form.reason,
     },
   };
