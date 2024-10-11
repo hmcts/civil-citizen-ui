@@ -1,18 +1,19 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import { app } from '../../../../../../main/app';
-import { GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { t } from 'i18next';
-import { Claim } from 'models/claim';
-import { isGaForLipsEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { GaServiceClient } from 'client/gaServiceClient';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { decode } from 'punycode';
-import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
-import { ApplicationResponse, JudicialDecisionOptions } from 'common/models/generalApplication/applicationResponse';
+import {app} from '../../../../../../main/app';
+import {GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
+import {Claim} from 'models/claim';
+import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {decode} from 'punycode';
+import {ApplicationState} from 'common/models/generalApplication/applicationSummary';
+import {ApplicationResponse, JudicialDecisionOptions} from 'common/models/generalApplication/applicationResponse';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {ApplicationTypeOption} from "models/generalApplication/applicationType";
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -36,7 +37,9 @@ describe('General Application - Application costs', () => {
       id: '1234567890',
       case_data: {
         applicationTypes: 'Adjourn a hearing',
-        generalAppType: null,
+        generalAppType: {
+          types: [ApplicationTypeOption.ADJOURN_HEARING],
+        },
         generalAppRespondentAgreement: null,
         generalAppInformOtherParty: null,
         generalAppAskForCosts: null,
