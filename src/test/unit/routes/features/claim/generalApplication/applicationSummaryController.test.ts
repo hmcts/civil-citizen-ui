@@ -1,17 +1,17 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../main/app';
-import {GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {Claim} from 'models/claim';
-import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {GaServiceClient} from 'client/gaServiceClient';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {decode} from 'punycode';
-import {ApplicationState} from 'common/models/generalApplication/applicationSummary';
-import {ApplicationResponse, JudicialDecisionOptions} from 'common/models/generalApplication/applicationResponse';
+import { app } from '../../../../../../main/app';
+import { GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import { t } from 'i18next';
+import { Claim } from 'models/claim';
+import { isGaForLipsEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { GaServiceClient } from 'client/gaServiceClient';
+import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import { decode } from 'punycode';
+import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
+import { ApplicationResponse, JudicialDecisionOptions } from 'common/models/generalApplication/applicationResponse';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
