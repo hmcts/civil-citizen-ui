@@ -21,7 +21,7 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
       claim.applicant1.emailAddress = new Email(user.email);
       await saveDraftClaim(claimId, claim);
     }
-    let ccdClaim = translateDraftClaimToCCDR2(claim, req);
+    const ccdClaim = translateDraftClaimToCCDR2(claim, req);
     return await civilServiceClient.submitDraftClaim(ccdClaim, req);
   } catch (err) {
     logger.error(err);
