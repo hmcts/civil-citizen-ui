@@ -105,9 +105,9 @@
       "SUBMIT_RESPONSE_PAYMENT": "Cyflwyno a symud ymlaen i'r adran dalu (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
       "START_NOW": "Dechrau nawr",
-      "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
+      "UPLOAD_ADDITIONAL_DOCUMENTS": "Uwchlwytho dogfennau ychwanegol",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -2622,13 +2622,13 @@
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
       "ADDITIONAL_DOCUMENTS": {
-        "ADDITIONAL_DOCUMENTS_CAPTION": "Upload additional documents",
-        "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
-        "ADDITIONAL_DOCUMENTS_ROW2": "Before you upload the document you will need to describe the type of document you are uploading, for example, Bundle, witness statement or costs schedule.",
+        "ADDITIONAL_DOCUMENTS_CAPTION": "Uwchlwytho dogfennau ychwanegol",
+        "ADDITIONAL_DOCUMENTS_ROW1": "Dylech ond uwchlwytho dogfennau sy’n berthnasol i’ch cais, er enghraifft, os yw’r barnwr wedi gorchymyn gwrandawiad ac wedi'ch cyfarwyddo i ddarparu dogfennau cyn hyn.",
+        "ADDITIONAL_DOCUMENTS_ROW2": "Cyn i chi uwchlwytho’r ddogfen bydd angen i chi ddisgrifio’r math o ddogfen rydych chi’n ei huwchlwytho, er enghraifft, Bwndel, datganiad tyst neu atodlen gostau.",
         "JUDGE_WILL_REVIEW": "A judge will review the additional documents that you’ve uploaded. You’ll receive an update with their decision or next steps.",
-        "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice receipt, email, text message, photo, social media message",
-        "TYPE_OF_DOCUMENT": "Type of document",
-        "UPLOAD_DOCUMENTS_TITLE": "Upload documents",
+        "TYPE_OF_DOCUMENT_HINT": "Er enghraifft, contract, derbynneb anfoneb, e-bost, neges testun, llun, neges ar y cyfryngau cymdeithasol",
+        "TYPE_OF_DOCUMENT": "Math o ddogfen",
+        "UPLOAD_DOCUMENTS_TITLE": "Uwchlwytho dogfennau",
         "UPLOADED_ADDITIONAL_DOCS": "You've uploaded additional documents"
       },
       "ADDITIONAL_FEE": {
@@ -2816,7 +2816,7 @@
         "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
         "CLOSE_AND_RETURN": "Close and return to case details",
         "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
-        "NEXT_STEPS": "What happens next",
+        "NEXT_STEPS": "Beth fydd yn digwydd nesaf",
         "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
         "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
         "TITLE": "You've responded to the application"
@@ -2961,7 +2961,7 @@
         "WHAT_HAPPENS_NEXT_PARA_4": "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
         "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
         "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
-        "WHAT_HAPPENS_NEXT": "What happens next"
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
@@ -3004,9 +3004,9 @@
         "TITLE": "Do you want to upload documents to support your application? (Optional)"
       },
       "UPLOAD_DOCUMENTS": {
-        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
-        "MSG1": "You should only upload documents that are relevant to your application.",
+        "MSG1": "Dim ond dogfennau sy’n berthnasol i’ch cais y dylech eu huwchlwytho.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
         "REMOVE_DOC": "Dileu dogfen",
         "TITLE": "Upload documents to support your application"
@@ -3023,7 +3023,7 @@
         "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
         "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
         "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
-        "PAGE_TITLE": "Upload additional documents"
+        "PAGE_TITLE": "Uwchlwytho dogfennau ychwanegol"
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"llenwi ffurflen N245",
@@ -3043,15 +3043,15 @@
         "WAYS_TO_COMPLETE": "Mae dwy ffordd i lenwi’r ffurflen: Gallwch naill ai:"
       },
       "UPLOAD_MORE_INFO_DOCUMENTS": {
-        "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
-        "PAGE_TITLE": "Request for more information",
-        "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
-        "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
+        "CONFIRMATION_PAGE_TITLE": "Rydych wedi cyflwyno’r wybodaeth",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "Bydd barnwr yn ystyried yr wybodaeth a ddarparwyd gennych. Byddwch yn cael diweddariad gyda’u penderfyniad neu’r camau nesaf.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+        "PAGE_TITLE": "Cais am fwy o wybodaeth",
+        "PAGE_TITLE_TO_UPLOAD": "Uwchlwytho dogfennau ychwanegol",
+        "UPLOAD_DOC_CYA_TITLE": "Dogfennau wedi’u huwchlwytho"
       },
       "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
-        "PAGE_TITLE": "Request for written representation"
+        "PAGE_TITLE": "Cais am sylwadau ysgrifenedig"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
@@ -3096,21 +3096,21 @@
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
       },
       "RESPONDENT_UPLOAD_OPTION": {
-        "PAGE_TITLE": "Provide more information to the court",
-        "TITLE": "Provide more information to the court",
-        "TEXT_INPUT": "Enter the information requested by the court",
-        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs.",
-        "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
-        "CONTENT_2_1": "If you're not sure what to write, refer to the ",
-        "CONTENT_2_2": "court document",
-        "CONTENT_2_3": " that sets out the information that the court has requested from you.",
-        "OPTION": "Do you want to upload documents to support your response? (Optional)",
-        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
-        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
+        "PAGE_TITLE": "Rhoi mwy o wybodaeth i'r llys",
+        "TITLE": "Rhoi mwy o wybodaeth i'r llys",
+        "TEXT_INPUT": "Rhowch yr wybodaeth y gofynnir amdani gan y llys",
+        "TEXT_INPUT_HINT": "Ysgrifennwch mewn brawddegau a pharagraffau byr. Ni fydd unrhyw destun a roddwch yn cael ei gyfieithu i'r Gymraeg.",
+        "CONTENT_1": "Mae gennych yr opsiwn i fewnbynnu’r wybodaeth y mae’r llys wedi gofyn amdani neu uwchlwytho dogfennau sy’n cynnwys yr wybodaeth y gofynnwyd amdani.",
+        "CONTENT_2_1": "Os nad ydych yn siŵr beth i’w ysgrifennu, cyfeiriwch at ",
+        "CONTENT_2_2": "y ddogfen",
+        "CONTENT_2_3": " llys sy’n nodi’r wybodaeth y mae’r llys wedi gofyn amdani gennych.",
+        "OPTION": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi'ch ymateb? (Dewisol)",
+        "WRITTEN_REP_CONTENT_1": "Datganiadau ysgrifenedig yw sylwadau ysgrifenedig sy’n esbonio’ch achos neu’ch cais i’r llys.",
+        "WRITTEN_REP_CONTENT_1_2": "Gallwch naill ai ysgrifennu'r wybodaeth y gofynnwyd amdani yn y blwch isod neu uwchlwytho dogfennau sy'n ei chynnwys."
       },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",
-        "TITLE": "Do you want to upload documents to support your response? (Optional)"
+        "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi'ch ymateb? (Dewisol)"
       },
       "HEARING_PREFERENCE": {
         "TITLE": "Application hearing preferences",
@@ -3118,7 +3118,7 @@
         "CONTENT_2": "This hearing is only to discuss the application."
       },
       "RESPONDENT_UPLOAD_DOCUMENTS": {
-        "TITLE": "Upload documents",
+        "TITLE": "Uwchlwytho dogfennau",
         "MSG1": "You should only upload documents that are relevant to your application response."
       },
       "UNAVAILABLE_HEARING_DATES": {
@@ -3199,11 +3199,11 @@
           "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
-        "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
+        "REQUEST_WRITTEN_REPRESENTATION": "Cais am sylwadau ysgrifenedig",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
-        "REQUEST_MORE_INFO": "Request for more information",
+        "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -3215,7 +3215,7 @@
         "TYPE_RESPONSE": "Type of response",
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
-        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_2": "Uwchlwytho dogfennau ychwanegol",
         "UPLOAD_DOCUMENTS_3": " if you need to."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
@@ -5171,15 +5171,15 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
-      "UPLOAD_ONE_FILE": "You need to upload at least one file.",
+      "UPLOAD_ONE_FILE": "Mae angen i chi uwchlwytho o leiaf un ffeil.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
       "RESPONDENT_UPLOAD_OPTION": {
-        "EMPTY_OPTION": "You need to either enter the information requested in the box or select Yes to upload documents to support your response.",
-        "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
-        "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
+        "EMPTY_OPTION": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb.",
+        "EMPTY_OPTION_TEXT": "Mae angen i chi ddweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich ymateb. Dewiswch opsiwn: Ydw neu Nac ydw.",
+        "ERROR_INPUT": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb."
       }
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made."
