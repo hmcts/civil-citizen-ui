@@ -539,39 +539,3 @@ export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
   const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
   return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
 };
-
-// export const translateApplicationType = (applicationType: string, lng: string) => {
-//
-//   switch (applicationType) {
-//     case ApplicationTypeOptionCcd.ADJOURN_HEARING:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.ADJOURN_HEARING', {lng});
-//     case ApplicationTypeOptionCcd.AMEND_A_STMT_OF_CASE:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.AMEND_A_STMT_OF_CASE', {lng});
-//     case ApplicationTypeOptionCcd.EXTEND_TIME:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.EXTEND_TIME', {lng});
-//     case ApplicationTypeOptionCcd.OTHER:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.OTHER', {lng});
-//     case ApplicationTypeOptionCcd.OTHER_OPTION:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.OTHER_OPTION', {lng});
-//     case ApplicationTypeOptionCcd.RELIEF_FROM_SANCTIONS:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.RELIEF_FROM_SANCTIONS', {lng});
-//     case ApplicationTypeOptionCcd.SET_ASIDE_JUDGEMENT:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.SET_ASIDE_JUDGEMENT', {lng});
-//     case ApplicationTypeOptionCcd.SETTLE_BY_CONSENT:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.SETTLE_BY_CONSENT', {lng});
-//     case ApplicationTypeOptionCcd.STAY_THE_CLAIM:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.STAY_THE_CLAIM', {lng});
-//     case ApplicationTypeOptionCcd.STRIKE_OUT:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.STRIKE_OUT', {lng});
-//     case ApplicationTypeOptionCcd.SUMMARY_JUDGMENT:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.SUMMARY_JUDGMENT', {lng});
-//     case ApplicationTypeOptionCcd.UNLESS_ORDER:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.UNLESS_ORDER', {lng});
-//     case ApplicationTypeOptionCcd.VARY_ORDER:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER', {lng});
-//     case ApplicationTypeOptionCcd.VARY_PAYMENT_TERMS_OF_JUDGMENT:
-//       return t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_PAYMENT_TERMS_OF_JUDGMENT', {lng});
-//     default:
-//       return undefined;
-//   }
-// };
