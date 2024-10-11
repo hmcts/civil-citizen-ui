@@ -57,7 +57,7 @@ describe('Total amount', () => {
 
     it('should return http 500 when has error in the claim amount fee get method', async () => {
       jest
-        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockRejectedValueOnce(new Error("test error"))
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockRejectedValueOnce(new Error('test error'));
       const res = await request(app)
         .get(CLAIM_TOTAL_URL);
 
