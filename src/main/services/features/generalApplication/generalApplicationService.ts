@@ -7,10 +7,7 @@ import {
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
-  ApplicationTypeOption,
-  // ApplicationTypeOptionCcd,
-  ApplicationTypeOptionSelection,
-  getApplicationTypeOptionByTypeAndDescription,
+  ApplicationTypeOption, ApplicationTypeOptionSelection, getApplicationTypeOptionByTypeAndDescription,
 
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
