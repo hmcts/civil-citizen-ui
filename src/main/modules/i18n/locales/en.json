@@ -1,6 +1,7 @@
 {
   "COMMON": {
     "HOME": "Home",
+    "HOME_CARM": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "UPLOAD_FILE_LABEL":"Upload a file",
@@ -15,6 +16,7 @@
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "CASE_NUMBER_PARAM": "Case number: {{ claimId }}",
+    "CASE_NUMBER_PARAM_CARM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -139,9 +141,11 @@
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
       "EMAIL": "Email",
       "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "OPENING_HOURS_CARM": "Monday to Friday, 8.30am to 5pm.",
       "RESPONSE_DELAY": "We'll get back to you within 10 days",
       "TITLE": "Contact us for help",
       "TELEPHONE": "Telephone",
+      "TELEPHONE_CARM": "Telephone",
       "WEB_CHAT": "Web chat",
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
@@ -171,7 +175,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
-      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback?pageurl={{ pageTitle }}' target='_blank'>feedback <span class='govuk-visually-hidden'>(opens in a new tab)</span></a> will help us to improve it.",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>feedback (opens in a new window)</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -346,6 +350,18 @@
       "NO": "No"
     },
     "VARIATION_5": {
+      "YES": "Yes",
+      "NO": "No"
+    },
+    "VARIATION_6": {
+      "YES": "Yes",
+      "NO": "No"
+    },
+    "VARIATION_7": {
+      "YES": "Yes",
+      "NO": "No"
+    },
+    "VARIATION_8": {
       "YES": "Yes",
       "NO": "No"
     }
@@ -2824,6 +2840,7 @@
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
         "CHANGE_HEARING": "Change a hearing date",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
         "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
         "MORE_TIME": "More time to do what is required by a court order",
         "NOT_ON_LIST": "Court to do something that's not on this list",
@@ -2833,8 +2850,7 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment",
-        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt"
+        "VARY_JUDGMENT": "Vary a judgment"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -3034,9 +3050,11 @@
         "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
         "PAGE_TITLE": "Upload N245",
         "PRINT_THE_FORM": "print the form, complete it by hand, scan or take a photo of it and then upload it here.",
+        "REMOVE_DOCUMENT": "Remove document",
         "SAVE_THE_FORM": "When you save and upload your completed form, make sure:",
         "TITLE": "Upload N245 form",
         "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
+        "UPLOADED_FILES": "Uploaded files",
         "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
       },
       "UPLOAD_MORE_INFO_DOCUMENTS": {
@@ -4305,7 +4323,10 @@
       "PAGE_TITLE": "Try the new online service",
       "TITLE": "Try the new online service",
       "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
-      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
+      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service.",
+      "CLAIM_TITLE": "Claiming interest:",
+      "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)",
+      "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date.To claim interest at different rates or for different periods of time, you should issue your claim on paper.  More information on how to do this can be found at MAKE_A_CLAIM"
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Add another person",
@@ -4803,6 +4824,7 @@
     "CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date you are unavailable from must be before the date you are unavailable to",
     "GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date you are unavailable from must be before the date you are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
+    "ENTER_VALID_EMAIL_CARM": "Enter a valid email address",
     "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
@@ -4906,6 +4928,7 @@
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "PHONE_NUMBER_REQUIRED_CARM": "Please enter a phone number",
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
@@ -5092,8 +5115,10 @@
     "VALID_YES_NO_OPTION_VARIATION_2": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_VARIATION_4": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_DO_NADDO": "Choose option: Yes or No",
-    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_OES_NAC_OES": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_GALLAI_NA_ALLAI": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
