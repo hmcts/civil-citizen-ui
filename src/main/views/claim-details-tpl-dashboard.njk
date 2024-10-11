@@ -45,7 +45,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ headerComponent(t, user) }}
 {% endblock %}
 
-{% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces})  %}
+{% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces if pageTitle else 'cui' }) %}
+
 {% block beforeContent %}
 
 {{ govukPhaseBanner({
@@ -61,7 +62,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ govukBreadcrumbs({
     items: [
       {
-        text: t('COMMON.HOME'),
+        text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME'),
         href: dashboardUrl
       },
       {
@@ -74,7 +75,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {{ govukBreadcrumbs({
       items: [
         {
-          text: t('COMMON.HOME')
+          text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')
         }
       ]
     }) }}
