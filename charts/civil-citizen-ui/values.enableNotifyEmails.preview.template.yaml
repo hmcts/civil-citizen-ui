@@ -198,7 +198,7 @@ civil-general-applications:
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-general-applications.preview.platform.hmcts.net/service-request-update
-      TESTING_SUPPORT_ENABLED: false
+      TESTING_SUPPORT_ENABLED: true
       POLLING_EVENT_EMITTER_ENABLED: false
       CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       DOCUMENT_MANAGEMENT_SECURED: true
