@@ -313,6 +313,7 @@ describe('translate draft application to ccd', () => {
       ];
       application.agreementFromOtherParty = YesNo.NO;
       application.statementOfTruth = new StatementOfTruthForm(true, 'Defendant');
+      application.informOtherParties = new InformOtherParties('No','');
 
       //When
       const ccdGeneralApplication = translateCoScApplicationToCCD(application);
@@ -321,6 +322,7 @@ describe('translate draft application to ccd', () => {
         types: [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID],
       });
       expect(ccdGeneralApplication.generalAppStatementOfTruth).not.toBeNull();
+      expect(ccdGeneralApplication.generalAppInformOtherParty).not.toBeNull();
     });
 
     it('should translate certificateOfSatisfactionOrCancellation to CCD', () => {
