@@ -43,7 +43,7 @@ function maskLastFour(str: string) {
 
 function maskEmail(email: string) {
   if (email) {
-    const [localPart, domain] = email.split("@");
+    const [localPart, domain] = email.split('@');
     const maskedLocal = localPart[0] + '*'?.repeat(localPart.length - 1);
     return maskedLocal + '@' + domain;
   }
