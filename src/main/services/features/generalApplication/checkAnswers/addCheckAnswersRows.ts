@@ -86,6 +86,11 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng}),
         constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL), changeLabel()),
     );
+    if (informOtherParties === YesNoUpperCase.NO) {
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties)
+      );
+    }
   }
   return rows;
 };
