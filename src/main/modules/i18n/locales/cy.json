@@ -107,7 +107,7 @@
       "START_NOW": "Dechrau nawr",
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -2707,15 +2707,15 @@
       "CHECK_YOUR_ANSWER": {
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau yn ôl?",
-        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
-        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
+        "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir gennych",
+        "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
         "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
         "NAME": "Name",
-        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
+        "NEED_ADJUSTMENTS": "Ydych chi angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad?",
         "NONE": "None",
         "PARTIES_AGREED": "Have the other parties agreed?",
-        "PREFERRED_COURT_LOCATION": "Preferred court location",
-        "PREFERRED_EMAIL": "Preferred email",
+        "PREFERRED_COURT_LOCATION": "Lleoliad llys a ffafrir",
+        "PREFERRED_EMAIL": "Cyfeiriad e-bost a ffafrir",
         "PREFERRED_TELEPHONE": "Y rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your application.",
@@ -2724,12 +2724,12 @@
         },
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
-        "WHY_PREFER": "Why would you prefer this type of hearing?",
+        "WHY_PREFER": "Pam fyddai'n well gennych y math hwn o wrandawiad?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
-        "PREFERRED_LOCATION": "Preferred location",
+        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
@@ -2974,11 +2974,11 @@
         "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
         "SELECT_ALL_THAT_APPLY": "Select all that apply",
         "SUPPORT": {
-          "HEARING_LOOP": "Hearing loop",
-          "LANGUAGE_INTERPRETER": "Language interpreter",
-          "OTHER": "Other support",
-          "SIGN_LANGUAGE_INTERPRETER": "Sign language interpreter",
-          "STEP_FREE_ACCESS": "Step-free access",
+          "HEARING_LOOP": "Dolen glyw",
+          "LANGUAGE_INTERPRETER": "Cyfieithydd ar y pryd",
+          "OTHER": "Cymorth arall",
+          "SIGN_LANGUAGE_INTERPRETER": "Dehonglydd iaith arwyddion",
+          "STEP_FREE_ACCESS": "Mynediad heb ddefnyddio grisiau",
           "WHAT_LANGUAGE": "What language do you need an interpreter for?",
           "WHAT_SIGN_LANGUAGE": "What type of sign language do you need an interpreter for?",
           "WHAT_OTHER": "What other support do you need?"
@@ -3056,14 +3056,14 @@
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
           "PERSON_AT_COURT": "In person at the court",
-          "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "TELEPHONE": "Dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",
         "TITLE": "Application hearing arrangements",
         "WHAT_TYPE_OF_HEARING_PREFER": "What type of hearing would you prefer?",
-        "WHY_PREFER_HEARING_TYPE": "Why would you prefer this type of hearing?"
+        "WHY_PREFER_HEARING_TYPE": "Pam fyddai'n well gennych y math hwn o wrandawiad?"
       },
       "HEARING_CONTACT_DETAILS": {
         "PREFERRED_EMAIL_ADDRESS": "Cyfeiriad e-bost a ffafrir",
@@ -3184,7 +3184,7 @@
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
-        "HEARING_NOTICE_DESC" : "There is a hearing notice",
+        "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
         "HEARING_ORDER" : "Hearing Order",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "GENERAL_ORDER" : "General Order",
@@ -3193,9 +3193,9 @@
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
         "RESPONSE": {
-          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
           "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
-          "TITLE": "Response from the other parties",
+          "TITLE": "Ymateb gan y partïon eraill",
           "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
@@ -3204,7 +3204,7 @@
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "REQUEST_MORE_INFO": "Request for more information",
-        "REVIEW": "Review the application together with any response that has been received.",
+        "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
           "TITLE": "Status"
@@ -3212,7 +3212,7 @@
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
-        "TYPE_RESPONSE": "Type of response",
+        "TYPE_RESPONSE": "Math o ymateb",
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
