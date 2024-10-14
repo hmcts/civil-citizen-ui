@@ -39,7 +39,7 @@ describe('ClaimFeeMakePaymentAgain Service', () => {
     //Then
     expect(actualPaymentRedirectUrl).toBe(mockClaimFeePaymentRedirectInfo.nextUrl);
     expect(mockClaim.claimDetails.claimFeePayment).toEqual(mockClaimFeePaymentRedirectInfo);
-  })
+  });
 
   it('should return 500 error page for any service error', async () => {
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
