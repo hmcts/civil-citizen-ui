@@ -22,7 +22,7 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
       await saveDraftClaim(claimId, claim);
     }
     const ccdClaim = translateDraftClaimToCCDR2(claim, req);
-    logger.info('masked party no')
+    logger.info('masked party no');
     logger.info(maskLastFour(ccdClaim.applicant1.partyPhone));
     logger.info(maskLastFour(ccdClaim.respondent1.partyPhone));
     logger.info(maskEmail(ccdClaim.applicant1.partyEmail));
@@ -43,8 +43,8 @@ function maskLastFour(str: string) {
 
 function maskEmail(email: string) {
   if (email) {
-    const [localPart, domain] = email?.split("@");
-    const maskedLocal = localPart[0] + "*"?.repeat(localPart.length - 1);
-    return maskedLocal + "@" + domain;
+    const [localPart, domain] = email.split("@");
+    const maskedLocal = localPart[0] + '*'?.repeat(localPart.length - 1);
+    return maskedLocal + '@' + domain;
   }
 }
