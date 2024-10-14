@@ -4382,6 +4382,7 @@
       "SUBTITLE": "Fformatau derbyniol ar gyfer cyflwyno dogfennau",
       "TITLE": "Uwchlwytho dogfennau",
       "TYPE_OF_DOCUMENT": "Math o ddogfen",
+      "UPLOADED_FILES": "Ffeiliau wedi’u huwchlwytho",
       "UPLOAD": "Uwchlwytho ffeil",
       "TYPE_OF_DOCUMENT_EXAMPLE": "Er enghraifft, contract, anfoneb, derbyneb, e-bost, neges destun, llun, neges ar y cyfryngau cymdeithasol",
       "DOCUMENT_ISSUE_DATE": "Dyddiad cyhoeddi’r ddogfen neu ddyddiad anfon y neges",
@@ -5169,7 +5170,7 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
       },
-      "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
+      "TYPE_OF_DOC": "Mae angen i chi ddweud wrthym pa fath o ddogfen rydych yn ei huwchlwytho.",
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
       "UPLOAD_ONE_FILE": "Mae angen i chi uwchlwytho o leiaf un ffeil.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",

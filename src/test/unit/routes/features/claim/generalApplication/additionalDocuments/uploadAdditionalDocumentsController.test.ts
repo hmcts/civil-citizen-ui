@@ -106,7 +106,7 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
       expect(generateRedisKey).toHaveBeenCalledWith(expect.anything());
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-      expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
+      expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, undefined);
       expect(res.text).toContain('Type of document');
       expect(res.text).toContain('test');
     });

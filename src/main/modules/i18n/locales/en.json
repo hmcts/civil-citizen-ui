@@ -4382,6 +4382,7 @@
       "SUBTITLE": "Acceptable documents formats",
       "TITLE": "Upload documents",
       "TYPE_OF_DOCUMENT": "Type of document",
+      "UPLOADED_FILES": "Uploaded document",
       "UPLOAD": "Upload a file",
       "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
       "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
