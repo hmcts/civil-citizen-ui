@@ -28,6 +28,7 @@ module.exports = {
     dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi:  'https://idam-api.aat.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-3591-civil-service.preview.platform.hmcts.net',*/
+    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
     manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
@@ -90,7 +91,14 @@ module.exports = {
   //For users info refer - https://tools.hmcts.net/confluence/display/CHMC/Civil+Hearings+Management+JO+Test+Data+Requirements+-+for+Key+Journeys
   judgeUserWithRegionId1: {
     password: judgeDefaultPassword,
-    email: '4917924EMP-@ejudiciary.net',
+    email: 'DJ.Amy.Powell@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
+  judgeUserWithRegionId2: {
+    password: judgeDefaultPassword,
+    email: 'DJ.Angel.Morgan@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',

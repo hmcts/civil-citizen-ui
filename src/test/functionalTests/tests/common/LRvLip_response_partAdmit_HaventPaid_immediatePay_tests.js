@@ -16,7 +16,7 @@ let securityCode;
 
 Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims');
 
-Before(async ({api, I}) => {
+Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
