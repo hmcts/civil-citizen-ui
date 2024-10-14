@@ -23,9 +23,6 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
     try {
       const firstContact = getFirstContactData(req.session);
       const claimId = firstContact?.claimId;
-      if (!claimId) {
-        return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
-      }
       const claim: Claim = await getClaimById(claimId, req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 

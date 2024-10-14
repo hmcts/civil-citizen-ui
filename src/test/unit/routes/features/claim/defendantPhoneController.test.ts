@@ -68,15 +68,6 @@ describe('Completing Claim', () => {
         });
     });
 
-    it('should accept input with trailing whitespaces', async () => {
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: PHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-
     it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -95,6 +86,15 @@ describe('Completing Claim', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
+        });
+    });
+
+    it('should accept input with trailing whitespaces', async () => {
+      await request(app)
+        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
+        .send({telephoneNumber: '023 456 789 1'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
         });
     });
 
