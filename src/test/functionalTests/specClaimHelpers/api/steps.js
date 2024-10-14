@@ -9,6 +9,7 @@ const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantR
 const rejectAllClaimantResponseCarm = require('../fixtures/events/rejectAllClaimantResponseCarm.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
+const createRequestForReconsideration = require('../fixtures/events/createRequestForReconsideration');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
@@ -19,7 +20,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -149,6 +150,17 @@ module.exports = {
     console.log('End of performTrialArrangementsCitizen()');
   },
 
+  performRequestForReconsideration: async (user, caseId) => {
+    console.log('This is inside performRequestForReconsideration() : ' + caseId);
+    eventName = 'REQUEST_FOR_RECONSIDERATION';
+    const payload = createRequestForReconsideration.createATrialArrangement();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
+    console.log('End of performRequestForReconsideration()');
+  },
+
   performAnAssistedOrder: async (user, caseId) => {
     console.log('This is inside performAnAssistedOrder() : ' + caseId);
     eventName = 'GENERATE_DIRECTIONS_ORDER';
@@ -176,7 +188,13 @@ module.exports = {
     console.log('This is inside performCaseProgressedToSDO : ' + caseId);
     eventName = 'CREATE_SDO';
     const document = await uploadDocument();
-    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
+    let payload;
+    if (claimType === 'SmallClaimsThousand') {
+      payload = caseProgressionToSDOState.SDOpayloadForLA();
+    } else{
+      payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
+    }
+    console.log('this is the payloadddd ' + JSON.stringify(payload));
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForFinishedBusinessProcess(caseId);
@@ -351,9 +369,6 @@ module.exports = {
     } else if (claimType === 'Multi') {
       console.log('Multi track claim...');
       totalClaimAmount = '150000';
-    } else if (claimType === 'SmallClaimsThousand') {
-      console.log('SmallClaim of 1000 pounds...');
-      totalClaimAmount = '1000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';

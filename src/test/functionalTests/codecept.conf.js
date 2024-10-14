@@ -1,41 +1,39 @@
 /* eslint-disable no-unused-vars */
 const testConfig = require('../config.js');
-// const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
-// const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
+const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
+const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 let startTime;
 exports.config = {
-  // bootstrapAll: async () => {
-  //   startTime = new Date();
-  //   console.log(`Starting the tests at ${startTime}`);
-  // },
-  // teardownAll: async () => {
-  //   const endTime = new Date();
-  //   const executionTime = (endTime - startTime) / 1000; // in seconds
-  //   console.log(`Finished the tests at ${endTime}`);
-  //   console.log(`Total execution time: ${executionTime} seconds`);
-  // },
-  // async teardown() {
-  //   console.log('Current worker has finished running tests so we should clean up the user roles');
-  //   await unAssignAllUsers();
-  //   await deleteAllIdamTestUsers();
-  // },
-  // tests: process.env.ENVIRONMENT == 'aat' ?
-  //   [ '../functionalTests/tests/prod/**/*.js',
-  //     '../functionalTests/tests/common/**/*.js',
-  //     '../e2eTests/tests/**/*.js'] :
-  //   [ '../functionalTests/tests/nonprod/**/*.js',
-  //     '../functionalTests/tests/common/**/*.js',
-  //     '../e2eTests/tests/**/*.js'],
-  // tests: '../functionalTests/tests/common/LRvLip_response_rejectAll_DisputeAll_tests.js',
-  tests: '../functionalTests/tests/nonprod/cp_latest_update_case_struck_out_fast_track_tests.js',
+  bootstrapAll: async () => {
+    startTime = new Date();
+    console.log(`Starting the tests at ${startTime}`);
+  },
+  teardownAll: async () => {
+    const endTime = new Date();
+    const executionTime = (endTime - startTime) / 1000; // in seconds
+    console.log(`Finished the tests at ${endTime}`);
+    console.log(`Total execution time: ${executionTime} seconds`);
+  },
+  async teardown() {
+    console.log('Current worker has finished running tests so we should clean up the user roles');
+    await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
+  },
+  tests: process.env.ENVIRONMENT == 'aat' ?
+    [ '../functionalTests/tests/prod/**/*.js',
+      '../functionalTests/tests/common/**/*.js',
+      '../e2eTests/tests/**/*.js'] :
+    [ '../functionalTests/tests/nonprod/**/*.js',
+      '../functionalTests/tests/common/**/*.js',
+      '../e2eTests/tests/**/*.js'],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: true,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       browser: 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',

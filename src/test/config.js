@@ -27,7 +27,6 @@ module.exports = {
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
     dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi:  'https://idam-api.aat.platform.hmcts.net',
-    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-3591-civil-service.preview.platform.hmcts.net',*/
     manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
@@ -69,13 +68,13 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
-    email:'civiluatclaimant@gmail.com',
-    // email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    //email:'civilmoneyclaimsdemo@gmail.com',
+    email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: 'citizen1.user@gmail.com',
+    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
@@ -91,19 +90,7 @@ module.exports = {
   //For users info refer - https://tools.hmcts.net/confluence/display/CHMC/Civil+Hearings+Management+JO+Test+Data+Requirements+-+for+Key+Journeys
   judgeUserWithRegionId1: {
     password: judgeDefaultPassword,
-    email: 'DJ.Amy.Powell@ejudiciary.net',
-    type: 'judge',
-    roleCategory: 'JUDICIAL',
-    regionId: '1',
-  },
-  legalAdvisor: {
-    password: defaultPassword,
-    email: 'civil-admin@mailnesia.com',
-    type: 'legal operations',
-  },
-  judgeUserWithRegionId2: {
-    password: judgeDefaultPassword,
-    email: 'DJ.Angel.Morgan@ejudiciary.net',
+    email: '4917924EMP-@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',

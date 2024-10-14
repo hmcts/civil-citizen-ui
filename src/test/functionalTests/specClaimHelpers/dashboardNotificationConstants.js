@@ -234,6 +234,33 @@ module.exports = {
     };
   },
 
+  orderMadeLA: (deadline) => {
+    return {
+      title: 'An order has been made on this claim',
+      content: `You need to carefully read and review this order. If you don't agree with something in the order you can ask the court to review it. You can only do this once. You will have to provide details about what changes you want made and these will be reviewed by a judge. This must be done before ${deadline}.`,
+      nextSteps: 'ask the court to review it',
+    };
+  },
+
+  reviewRequested: (deadline) => {
+    return {
+      title: 'Review has been requested',
+      content: `A review of an order has been requested by the other parties. You can view their request and add comments of your own by ${deadline}. A judge will review the request and your comments and you will be contacted if the judge makes a new order. Continue doing what the current order asks of you unless you're informed a judge has made a new order.`,
+      nextSteps: 'add comments of your own',
+    };
+  },
+
+  commentMadeOnRequest: () => {
+    return {
+      title: 'Comment made on your request',
+      content: ['The other parties have made a comment on your request to review an order.',
+        'Review has been requested',
+        'A review of an order has been requested by the other parties. You can view their request and/or comments.',
+        'A judge will review the request and comments and you will be contacted if the judge makes a new order. Continue doing what the current order asks of you unless you\'re informed a judge has made a new order.'],
+      nextSteps: 'view their request and/or comments',
+    };
+  },
+
   //Notice.AAA6.CP.Bundle.Ready
   bundleReady: () => {
     return {

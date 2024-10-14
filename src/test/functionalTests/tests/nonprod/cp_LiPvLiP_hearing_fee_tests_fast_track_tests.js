@@ -15,11 +15,11 @@ const claimAmount = '£15,000';
 const feeAmount = '545';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track @testing');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
+    fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
     hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
     hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -41,45 +41,45 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       notification = hearingScheduled(hearingDate);
-      // await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-      // await I.click(notification.nextSteps);
-      // await ResponseSteps.SignOut();
-      // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-      // await I.click(claimNumber);
-      // await I.dontSee(notification.title);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+      await I.click(claimNumber);
+      await I.dontSee(notification.title);
       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-      // taskListItem = viewHearings();
-      // await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      // taskListItem = payTheHearingFee(hearingFeeDueDate);
-      // await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
+      taskListItem = viewHearings();
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+      taskListItem = payTheHearingFee(hearingFeeDueDate);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
       await I.click(notification.nextSteps2);
     }
     formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
     await api.waitForFinishedBusinessProcess();
-    // if (isDashboardServiceEnabled) {
-    //   taskListItem = payTheHearingFee(hearingFeeDueDate);
-    //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
-    // }
+    if (isDashboardServiceEnabled) {
+      taskListItem = payTheHearingFee(hearingFeeDueDate);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
+    }
   }
 }).tag('@regression-cp');
 
-// Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
-//   if (['preview', 'demo'].includes(config.runningEnv)) {
-//     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-//     if (isDashboardServiceEnabled) {
-//       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-//       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-//       await I.click(notification.nextSteps);
-//     }
-//     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
-//     await api.waitForFinishedBusinessProcess();
-//     if (isDashboardServiceEnabled) {
-//       taskListItem = payTheHearingFee(hearingFeeDueDate);
-//       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
-//       notification = hearingFeePaidFull();
-//       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-//     }
-//   }
-// }).tag('@regression-cp');
+Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (isDashboardServiceEnabled) {
+      notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+    await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+    await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      taskListItem = payTheHearingFee(hearingFeeDueDate);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
+      notification = hearingFeePaidFull();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+  }
+}).tag('@regression-cp');
