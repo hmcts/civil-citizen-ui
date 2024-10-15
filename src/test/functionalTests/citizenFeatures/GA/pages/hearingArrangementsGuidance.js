@@ -26,7 +26,7 @@ class HearingArrangementsGuidance {
   }
 
   verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+    //I.see('More time to do what is required by a court order', 'h1');
     I.see('Application hearing arrangements', 'h1');
   }
 

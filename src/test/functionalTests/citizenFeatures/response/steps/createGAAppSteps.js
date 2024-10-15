@@ -125,6 +125,108 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
   }
+
+  async askToChangeHearingDateGA(caseRef, parties, informOtherParty = false) {
+    const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
+    const applicationType = 'Change a hearing date';
+    await I.waitForContent('Contact the court to request a change to my case', 60);
+    await I.click('Contact the court to request a change to my case');
+    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Ask to change a hearing date');
+    await applicationTypePage.nextAction('Continue');
+
+    if (informOtherParty) {
+      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.nextAction('Yes');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+    } else {
+      //title problem
+      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.nextAction('No');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+
+      //title problem
+      await informOtherPartiesPage.verifyPageContent();
+      await informOtherPartiesPage.selectAndVerifyDontInformOption();
+    }
+
+    //verification page below needs specific application type details
+    await applicationCostsPage.verifyPageContent();
+    await applicationCostsPage.nextAction('Start now');
+    
+    //same problem as above
+    await claimApplicationCostPage.verifyPageContent();
+    await claimApplicationCostPage.selectAndVerifyYesOption();
+    await claimApplicationCostPage.nextAction('Continue');
+
+    //and again plus others
+    await orderJudgePage.verifyPageContent();
+    await orderJudgePage.fillTextBox('Test order');
+    await orderJudgePage.nextAction('Continue');
+
+    //title problem again plus others
+    await requestingReasonPage.verifyPageContent();
+    await requestingReasonPage.fillTextBox('Test order');
+    await requestingReasonPage.nextAction('Continue');
+
+    //title again
+    await addAnotherApplicationPage.verifyPageContent();
+    await addAnotherApplicationPage.nextAction('No');
+    await addAnotherApplicationPage.nextAction('Continue');
+
+    //title
+    await wantToUploadDocumentsPage.verifyPageContent();
+    await wantToUploadDocumentsPage.nextAction('No');
+    await wantToUploadDocumentsPage.nextAction('Continue');
+
+    //title
+    await hearingArrangementsGuidancePage.verifyPageContent();
+    await hearingArrangementsGuidancePage.nextAction('Continue');
+
+    //title
+    await hearingArrangementPage.verifyPageContent();
+    await hearingArrangementPage.nextAction('In person at the court');
+    //do we want to use birmingham not barnet?
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.nextAction('Continue');
+
+    //title
+    await hearingContactDetailsPage.verifyPageContent();
+    await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
+    await hearingContactDetailsPage.nextAction('Continue');
+
+    //title
+    await unavailableDatesPage.verifyPageContent();
+    await unavailableDatesPage.nextAction('Continue');
+
+    //title
+    await hearingSupportPage.verifyPageContent();
+    await hearingSupportPage.nextAction('Continue');
+
+    //fee amount needs parameterisation
+    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.nextAction('Continue');
+
+    //only this one has application type parameterised - should application type be defined at top of application though?
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.checkAndSign();
+    await checkAndSendPage.nextAction('Submit');
+
+    //fee amount
+    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.nextAction('Pay application fee');
+
+    I.wait(5);
+
+    await applyHelpFeeSelectionPage.verifyPageContent();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    //fee amount
+    await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
+    govPay.confirmPayment();
+  }
 }
 
 module.exports = new createGAAppSteps();

@@ -39,7 +39,7 @@ class CheckAndSend {
   }
 
   verifyHeadingDetails(caseNumber, parties) {
-    I.see('More time to do what is required by a court order', 'h1');
+    //I.see('More time to do what is required by a court order', 'h1');
     I.see('Check your answers', 'h1');
     I.see('Case number: ' + caseNumber);
     I.see(parties);

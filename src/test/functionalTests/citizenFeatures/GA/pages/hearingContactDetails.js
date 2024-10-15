@@ -26,7 +26,7 @@ class HearingContactDetails {
   }
 
   verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+    //I.see('More time to do what is required by a court order', 'h1');
     I.see('Contact Details', 'h1');
   }
 

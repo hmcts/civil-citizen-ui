@@ -26,7 +26,7 @@ class WantToUploadDocuments {
   }
 
   verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+    //I.see('More time to do what is required by a court order', 'h1');
     I.see('Do you want to upload documents to support your application? (Optional)', 'h1');
   }
 

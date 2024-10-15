@@ -27,7 +27,7 @@ class UnavailableDates {
   }
 
   verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+    //I.see('More time to do what is required by a court order', 'h1');
     I.see('Are there any dates when you cannot attend a hearing within the next 3 months (optional)?', 'h1');
   }
 

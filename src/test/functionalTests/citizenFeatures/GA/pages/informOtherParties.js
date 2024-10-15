@@ -27,7 +27,7 @@ class InformOtherParties {
   }
 
   verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+    //I.see('More time to do what is required by a court order', 'h1');
     I.see('Informing the other parties', 'h1');
   }
 

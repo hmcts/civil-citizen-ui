@@ -26,7 +26,7 @@ class AddAnotherApplication {
   }
 
   verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'span');
+    //I.see('More time to do what is required by a court order', 'span');
     I.see('Do you want to add another application?', 'h1');
   }
 

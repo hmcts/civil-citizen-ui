@@ -26,8 +26,8 @@ class AgreementFromOtherParty {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicaionType) {
+    I.see(applicaiontType, 'h1');
     I.see('Application from the other parties', 'h1');
   }
 
