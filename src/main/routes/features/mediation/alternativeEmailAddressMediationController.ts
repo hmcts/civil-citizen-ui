@@ -23,7 +23,7 @@ const renderView = (form: GenericForm<AlternativeEmailAddress>, res: Response, r
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang});
-  res.render(alternativeEmailAddressMediationViewPath, {form, pageTitle, pageText});
+  res.render(alternativeEmailAddressMediationViewPath, {form, pageTitle, pageText, isCarm: true});
 };
 
 alternativeEmailAddressMediationController.get(MEDIATION_ALTERNATIVE_EMAIL_URL, (async (req, res, next: NextFunction) => {
