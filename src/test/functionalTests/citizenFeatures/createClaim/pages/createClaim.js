@@ -349,7 +349,11 @@ class CreateClaim {
     I.see('Claim fee');
     I.see('£115');
     I.see('Total claim amount');
-    I.see('£1635.33');
+    if (claimInterestFlag === true) {
+      I.see('£1635.33');
+    }else{
+      I.see('£1635');
+    }
     I.see('If you settle out of court', 'h3');
     I.see('We won’t refund your claim fee.');
     I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
