@@ -8,14 +8,14 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ClaimFeeMakePaymentAgainService');
 
 export const getRedirectUrl = async (claimId: string,  req: AppRequest): Promise<string> => {
-  try{
+  try {
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
-    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const redisKey = generateRedisKey(req);
+    const claim = await getCaseDataFromStore(redisKey);
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-    await saveDraftClaim(claim.id, claim, true);
+    await saveDraftClaim(redisKey, claim, true);
     return paymentRedirectInformation?.nextUrl;
-  }
-  catch (error) {
+  } catch (error) {
     logger.error(error);
     throw error;
   }

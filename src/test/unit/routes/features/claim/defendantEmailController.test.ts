@@ -91,6 +91,28 @@ describe('Completing Claim', () => {
         });
     });
 
+    it('should return error on input too long', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CLAIM_DEFENDANT_EMAIL_URL)
+        .send({emailAddress: 'thisislongerthanfortycharacters@gmail.com'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_VALID_EMAIL);
+        });
+    });
+
+    it('should return error on invalid email domain', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CLAIM_DEFENDANT_EMAIL_URL)
+        .send({emailAddress: 'underscoreindomain@gmail_.com'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_VALID_EMAIL);
+        });
+    });
+
     it('should return status 500 when there is error', async () => {
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
