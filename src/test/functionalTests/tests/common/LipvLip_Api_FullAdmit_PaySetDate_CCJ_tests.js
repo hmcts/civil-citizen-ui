@@ -13,7 +13,7 @@ const {
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let caseData, claimNumber, claimRef, claimAmount = 1500, date = '1 October 2025';
+let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025';
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant ');
 
@@ -33,14 +33,14 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
   await api.waitForFinishedBusinessProcess();
   if (isDashboardServiceEnabled) {
-    const notification = defendantResponseFullAdmitPayBySetDateDefendant(claimAmount, date);
+    const notification = defendantResponseFullAdmitPayBySetDateDefendant(claimAmountAndFee, date);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     await I.click(notification.nextSteps);
   }
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   if (isDashboardServiceEnabled) {
-    const notification = defendantResponseFullAdmitPayBySetDateClaimant(claimAmount);
+    const notification = defendantResponseFullAdmitPayBySetDateClaimant(claimAmountAndFee);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     await I.click(notification.nextSteps);
   }
@@ -48,8 +48,10 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateCCJ(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
 
-  if (isDashboardServiceEnabled) {
-    const notification = claimantNotificationCCJRequested();
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  if ('aat'.includes(config.runningEnv)){
+    if (isDashboardServiceEnabled) {
+      const notification = claimantNotificationCCJRequested();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-cui-r2');

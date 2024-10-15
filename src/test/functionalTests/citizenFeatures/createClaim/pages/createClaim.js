@@ -343,13 +343,13 @@ class CreateClaim {
     I.see('£1520.00');
     if (claimInterestFlag === true) {
       I.see('Interest to date');
-      I.see('£0');
+      I.see('£0.33');
       I.seeElement(paths.links.how_is_interest_calculated);
     }
     I.see('Claim fee');
     I.see('£115');
     I.see('Total claim amount');
-    I.see('£1635.00');
+    I.see('£1635.33');
     I.see('If you settle out of court', 'h3');
     I.see('We won’t refund your claim fee.');
     I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
