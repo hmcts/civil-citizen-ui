@@ -111,6 +111,52 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(res.text).toContain('test');
     });
 
+    it('should render the upload additional documents page with correct welsh data', async () => {
+      const redisKey = 'redis-key';
+      const cancelUrl = '/cancel-url';
+      const formattedSummaryList = {
+        title: '',
+        summaryList: {
+          rows: [
+            {
+              key: {
+                text: 'Type of document',
+              },
+              value: {
+                html: 'test',
+              },
+            },
+            {
+              key: {
+                text: 'n245form.pdf',
+              },
+              value: {
+                html: '',
+              },
+              actions: {
+                items: [
+                  {
+                    href: '/case/1720536503257495/general-application/1720536653906339/upload-additional-documents?indexId=1',
+                    text: 'Remove document',
+                    visuallyHiddenText: 'n245form.pdf',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      };
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
+      (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
+      (getSummaryList as jest.Mock).mockReturnValue(formattedSummaryList);
+
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({lang: 'cy'});
+
+      expect(res.status).toBe(200);
+      expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, 'cy');
+    });
+
     it('should remove the selected doc from the store', async () => {
 
       const additionalDocument = new UploadAdditionalDocument();
