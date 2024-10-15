@@ -6,7 +6,7 @@ const cButtons = require('../../../../../commonComponents/cButtons');
 const fields ={
   firstName : 'input[id="firstName"]',
   lastName: 'input[id="lastName"]',
-  email:'input[id="lastName"]',
+  email:'input[id="emailAddress"]',
   telephone: 'input[id="phoneNumber"]',
   jobTitle: 'input[id="jobTitle"]',
 };
@@ -32,7 +32,7 @@ const inputs = {
 class ConfirmYourDetails {
 
   async enterYourDetails() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.fillField(fields.firstName, 'John');
