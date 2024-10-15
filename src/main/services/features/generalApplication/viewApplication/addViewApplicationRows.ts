@@ -120,7 +120,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
         summaryRow(
           t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
           application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
-        )
+        ),
       );
     }
   }
