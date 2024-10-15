@@ -78,10 +78,10 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
       notification = hearingFeePaidFull();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+      taskListItem = payTheHearingFee(hearingFeeDueDate);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
     }
   }
 }).tag('@regression-cp');

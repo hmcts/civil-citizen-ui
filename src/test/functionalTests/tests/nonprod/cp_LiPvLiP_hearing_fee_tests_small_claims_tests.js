@@ -59,6 +59,8 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
+      await I.amOnPage('/dashboard');
+      await I.click(claimNumber);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
     }
@@ -78,10 +80,10 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     if (isDashboardServiceEnabled) {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
-      taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
       notification = hearingFeePaidFull();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+      taskListItem = payTheHearingFee(hearingFeeDueDate);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
     }
   }
 }).tag('@regression-cp');
