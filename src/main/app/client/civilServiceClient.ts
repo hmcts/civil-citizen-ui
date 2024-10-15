@@ -61,6 +61,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {DefendantLinkStatus} from 'models/DefendantLinkStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -192,6 +193,9 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
+      logger.info('Before Round off ' + amount);
+      amount = roundOffTwoDecimals(amount);
+      logger.info('After Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {

@@ -53,7 +53,7 @@ class Response {
     I.see('We\'ll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.', 'p.govuk-body');
     I.see('Use numbers only, for example, 01632960001.', 'div.govuk-hint');
     I.seeElement('input[id="telephoneNumber"]');
-    I.fillField('#telephoneNumber', '0123456789');
+    I.fillField('#telephoneNumber', '07557777890');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/response/task-list');

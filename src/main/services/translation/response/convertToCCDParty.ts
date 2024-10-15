@@ -12,7 +12,7 @@ export const toCCDParty = (party: Party): CCDParty => {
     individualTitle: party?.type === PartyType.INDIVIDUAL ? party?.partyDetails?.title : undefined,
     organisationName: party?.type === PartyType.ORGANISATION ? party?.partyDetails?.partyName : undefined,
     partyEmail: party?.emailAddress?.emailAddress,
-    partyPhone: party?.partyPhone?.phone,
+    partyPhone: party?.partyPhone?.phone?.replace(/\s/g, ''),
     primaryAddress: toCCDAddress(party?.partyDetails?.primaryAddress),
     soleTraderDateOfBirth: party?.type === PartyType.SOLE_TRADER ? getStringDate(party) : null,
     soleTraderFirstName: party?.type === PartyType.SOLE_TRADER ? party?.partyDetails?.firstName : undefined,

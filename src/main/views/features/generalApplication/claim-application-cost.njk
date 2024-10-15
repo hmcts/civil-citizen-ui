@@ -30,7 +30,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
              <div class="govuk-form-group">
-                {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK'), form, '', {yesHtml:yesHtml}) }}
+                {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK'), form, '', {yesHtml:yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             </div>
             <div class="govuk-button-group">
               {{ govukButton({
