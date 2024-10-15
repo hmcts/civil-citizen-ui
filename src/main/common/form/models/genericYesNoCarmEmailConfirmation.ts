@@ -2,7 +2,7 @@ import {IsDefined} from 'class-validator';
 import {ValidationArgs} from './genericForm';
 
 const generateErrorMessage = (messageName: string): string => {
-  return messageName ? messageName : 'ERRORS.VALID_YES_NO_OPTION_CARM_IE_NEU_NA';
+  return messageName ? messageName : 'ERRORS.VALID_YES_NO_OPTION_GALLAI_NA_ALLAI';
 };
 
 const withMessage = (buildErrorFn: (messageName: string) => string) => {
