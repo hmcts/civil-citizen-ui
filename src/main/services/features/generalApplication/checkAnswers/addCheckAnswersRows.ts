@@ -79,7 +79,6 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
-  console.log(claim.generalApplication);
   if (claim.generalApplication?.informOtherParties) {
     const informOtherParties = (claim.generalApplication?.informOtherParties.option === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
@@ -88,7 +87,10 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
     );
     if (informOtherParties === YesNoUpperCase.NO) {
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties)
+        summaryRow(
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
+          claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties,
+        )
       );
     }
   }
