@@ -13,6 +13,10 @@ const saveCourtLocationsToCache = async (courLocations: CourtLocation[]) => {
   }
 };
 
+const deleteCourtLocationsFromCache = async () => {
+  await app.locals.draftStoreClient.del(courtLocationKey);
+};
+
 const getCourtLocationsFromCache = async (): Promise<CourtLocation[]> => {
   try{
     const data = await app.locals.draftStoreClient.get(courtLocationKey);
@@ -29,4 +33,5 @@ const getCourtLocationsFromCache = async (): Promise<CourtLocation[]> => {
 export {
   getCourtLocationsFromCache,
   saveCourtLocationsToCache,
+  deleteCourtLocationsFromCache,
 };
