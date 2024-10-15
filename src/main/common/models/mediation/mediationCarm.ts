@@ -5,7 +5,6 @@ import {AlternativeContactPerson} from 'form/models/mediation/alternativeContact
 import {GenericYesNoCarmContactPersonConfirmation} from 'form/models/genericYesNoCarmContactPersonConfirmation';
 import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {GenericYesNoCarmIeNeuNa} from 'form/models/genericYesNoCarmIeNeuNa';
 
 export class MediationCarm {
   isMediationContactNameCorrect?: GenericYesNoCarmContactPersonConfirmation;
@@ -14,7 +13,7 @@ export class MediationCarm {
   alternativeMediationEmail?: AlternativeEmailAddress;
   isMediationPhoneCorrect?: GenericYesNo;
   alternativeMediationTelephone?: AlternativeTelephone;
-  hasUnavailabilityNextThreeMonths?: GenericYesNoCarmIeNeuNa;
+  hasUnavailabilityNextThreeMonths?: GenericYesNo;
   unavailableDatesForMediation?: UnavailableDatesMediation;
   hasTelephoneMeditationAccessed?: boolean;
   hasAvailabilityMediationFinished?: boolean;
@@ -22,7 +21,7 @@ export class MediationCarm {
   constructor(isMediationContactNameCorrect?: GenericYesNoCarmContactPersonConfirmation, alternativeMediationContactPerson?: AlternativeContactPerson,
     isMediationEmailCorrect?: GenericYesNoCarmEmailConfirmation, alternativeMediationEmail?: AlternativeEmailAddress,
     isMediationPhoneCorrect?: GenericYesNo, alternativeMediationTelephone?: AlternativeTelephone,
-    hasUnavailabilityNextThreeMonths?: GenericYesNoCarmIeNeuNa, unavailableDatesForMediation?: UnavailableDatesMediation,
+    hasUnavailabilityNextThreeMonths?: GenericYesNo, unavailableDatesForMediation?: UnavailableDatesMediation,
     hasTelephoneMeditationAccessed?: boolean, hasAvailabilityMediationFinished?: boolean) {
     this.isMediationContactNameCorrect = isMediationContactNameCorrect;
     this.alternativeMediationContactPerson = alternativeMediationContactPerson;
