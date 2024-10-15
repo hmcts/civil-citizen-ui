@@ -1,4 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
+import validator from 'validator';
 
 /**
  * Validate emails
@@ -14,7 +15,7 @@ export class EmailValidator implements ValidatorConstraintInterface {
     if (!value) {
       return true;
     }
-    if (value?.length > this.EMAIL_MAX_LENGTH) {
+    if (value?.length > this.EMAIL_MAX_LENGTH || !validator.isEmail(value)) {
       return false;
     }
     return emailPattern.test(value);
