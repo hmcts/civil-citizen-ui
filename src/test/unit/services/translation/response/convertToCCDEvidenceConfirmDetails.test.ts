@@ -37,4 +37,26 @@ describe('translate DQ confirm details for evidence CCD model', () => {
     //then
     expect(actual).toEqual(expected);
   });
+
+  it('should return values if data exist - no phone number',() => {
+    //given
+    claim.directionQuestionnaire.confirmYourDetailsEvidence = {
+      firstName: 'Ted',
+      lastName: 'Ned',
+      emailAddress: 'ted@ned.ed',
+      jobTitle: 'Person',
+    };
+
+    const expected: CCDEvidenceConfirmDetails = {
+      firstName: 'Ted',
+      lastName: 'Ned',
+      email: 'ted@ned.ed',
+      jobTitle: 'Person',
+    };
+
+    //When
+    const actual = convertToCCDEvidenceConfirmDetails(claim.directionQuestionnaire.confirmYourDetailsEvidence);
+    //then
+    expect(actual).toEqual(expected);
+  });
 });
