@@ -141,67 +141,57 @@ class createGAAppSteps {
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
     } else {
-      //title problem
-      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
 
-      //title problem
-      await informOtherPartiesPage.verifyPageContent();
+      await informOtherPartiesPage.verifyPageContent(applicationType);
       await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
 
     //verification page below needs specific application type details
-    await applicationCostsPage.verifyPageContent();
+    await applicationCostsPage.verifyPageContent(applicationType);
     await applicationCostsPage.nextAction('Start now');
     
-    //same problem as above
-    await claimApplicationCostPage.verifyPageContent();
+    await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
 
-    //and again plus others
-    await orderJudgePage.verifyPageContent();
+    //text problems still
+    await orderJudgePage.verifyPageContent(applicationType);
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
 
-    //title problem again plus others
-    await requestingReasonPage.verifyPageContent();
+    //text probs still
+    await requestingReasonPage.verifyPageContent(applicationType);
     await requestingReasonPage.fillTextBox('Test order');
     await requestingReasonPage.nextAction('Continue');
 
-    //title again
-    await addAnotherApplicationPage.verifyPageContent();
+    await addAnotherApplicationPage.verifyPageContent(applicationType);
     await addAnotherApplicationPage.nextAction('No');
     await addAnotherApplicationPage.nextAction('Continue');
 
-    //title
-    await wantToUploadDocumentsPage.verifyPageContent();
+    await wantToUploadDocumentsPage.verifyPageContent(applicationType);
     await wantToUploadDocumentsPage.nextAction('No');
     await wantToUploadDocumentsPage.nextAction('Continue');
 
-    //title
-    await hearingArrangementsGuidancePage.verifyPageContent();
+    await hearingArrangementsGuidancePage.verifyPageContent(applicationType);
     await hearingArrangementsGuidancePage.nextAction('Continue');
 
-    //title
-    await hearingArrangementPage.verifyPageContent();
+    await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
     //do we want to use birmingham not barnet?
     await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
     await hearingArrangementPage.nextAction('Continue');
 
-    //title
-    await hearingContactDetailsPage.verifyPageContent();
+    await hearingContactDetailsPage.verifyPageContent(applicationType);
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
-    //title
-    await unavailableDatesPage.verifyPageContent();
+    await unavailableDatesPage.verifyPageContent(applicationType);
     await unavailableDatesPage.nextAction('Continue');
 
-    //title
-    await hearingSupportPage.verifyPageContent();
+    await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
 
     //fee amount needs parameterisation

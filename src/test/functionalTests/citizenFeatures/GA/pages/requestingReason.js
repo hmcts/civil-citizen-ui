@@ -13,10 +13,10 @@ class RequestingReason {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     await this.verifyPageText();
     contactUs.verifyContactUs();
   }
@@ -25,8 +25,8 @@ class RequestingReason {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    //I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'h1');
     I.see('Why are you requesting this order?', 'h1');
   }
 

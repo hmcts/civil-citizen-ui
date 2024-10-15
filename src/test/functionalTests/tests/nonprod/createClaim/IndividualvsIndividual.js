@@ -45,11 +45,11 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
     await createGAAppSteps.askToChangeHearingDateGA(caseRef, 'Mr Claimant person v mr defendant person');
-    // console.log('Creating GA app as defendant');
-    // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    // await I.amOnPage('/dashboard');
-    // await I.click(claimNumber);
-    // await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
+    console.log('Creating GA app as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askToChangeHearingDateGA(caseRef, 'Mr Claimant person v mr defendant person');
   }
 });
 
