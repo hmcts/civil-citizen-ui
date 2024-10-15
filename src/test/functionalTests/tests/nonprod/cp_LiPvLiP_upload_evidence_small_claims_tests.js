@@ -37,11 +37,11 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
     if (isDashboardServiceEnabled) {
       // claimant checks notifications for orders and upload docs
       notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
       notification = uploadDocuments('claim');
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await I.click(notification.nextSteps);
     }
     formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);

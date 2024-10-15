@@ -42,7 +42,7 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
       //defendant adds a comment to the claimant's request
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
       notification = reviewRequested(deadline);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await I.click(notification.nextSteps);
       await RequestForReconsideraionSteps.initiateAddYourComments(formattedCaseId, claimAmount, 'Test Inc');
       taskListItem = ordersAndNotices();
@@ -63,13 +63,13 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
     if (isDashboardServiceEnabled) {
       //defendant performs request for reconsideration
       notification = orderMadeLA(deadline);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await I.click(notification.nextSteps);
       await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'undefined undefined undefined', deadline);
       //defendant checks claimant's comment
       await api.performRequestForReconsideration(config.applicantSolicitorUser, claimRef);
       notification = commentMadeOnRequest();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = ordersAndNotices();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       await I.click(taskListItem.title);

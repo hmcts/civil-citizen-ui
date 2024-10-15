@@ -34,12 +34,12 @@ Scenario('Small Claims LiPvLiP case is struck out due to hearing fee not being p
       //Claimant verifies dashboard
       await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       const notification = claimStruckOut();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       //Defendant verifies dashboard
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 

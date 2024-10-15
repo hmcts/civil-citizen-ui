@@ -34,14 +34,14 @@ Scenario('Fast Track LiPvLiP case is struck out due to hearing fee not being pai
       //Claimant verifies dashboard
       await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       const notification = claimStruckOut();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = addTrialArrangements();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       //Defendant verifies dashboard
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = addTrialArrangements();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       taskListItem = uploadHearingDocuments();

@@ -33,7 +33,7 @@ Scenario('Case progression journey - Fast Track - Claimant and Defendant verify 
       //Claimant verifies dashboard
       await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = ordersAndNotices();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       await I.click(notification.nextSteps);
@@ -43,7 +43,7 @@ Scenario('Case progression journey - Fast Track - Claimant and Defendant verify 
       //Defendant verifies dashboard
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
       notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = ordersAndNotices();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       await I.click(notification.nextSteps);

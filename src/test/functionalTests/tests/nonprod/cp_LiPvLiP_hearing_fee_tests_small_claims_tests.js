@@ -22,7 +22,7 @@ Before(async ({api}) => {
     fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
     hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
     hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -41,14 +41,14 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       notification = hearingScheduled(hearingDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await I.click(notification.nextSteps);
       await ResponseSteps.SignOut();
       await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       await I.click(claimNumber);
       await I.dontSee(notification.title);
       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = viewHearings();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
@@ -70,7 +70,7 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await I.click(notification.nextSteps);
     }
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
@@ -79,7 +79,7 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
       notification = hearingFeePaidFull();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     }
   }
 }).tag('@regression-cp');
