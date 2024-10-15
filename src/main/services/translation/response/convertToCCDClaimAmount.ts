@@ -9,7 +9,7 @@ export const toCCDClaimAmount = (claimAmountBreakup: ClaimAmountBreakup[]): CCDC
     const ccdClaimAmountBreakup: CCDClaimAmountBreakup = {
       id: index.toString(),
       value: {
-        claimAmount: convertToPenceFromString(item.value.claimAmount).toString(),
+        claimAmount: convertToPenceFromString(item.value.claimAmount).toFixed(0),
         claimReason: item.value.claimReason,
       },
     };

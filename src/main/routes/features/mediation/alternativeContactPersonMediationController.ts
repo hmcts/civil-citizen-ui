@@ -23,7 +23,7 @@ const renderView = (form: GenericForm<AlternativeContactPerson>, res: Response, 
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_CONTACT_PERSON_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang});
-  res.render(alternativeContactPersonMediationViewPath, {form, pageTitle, pageText});
+  res.render(alternativeContactPersonMediationViewPath, {form, pageTitle, pageText, isCarm: true});
 };
 
 alternativeContactPersonMediationController.get(MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL, (async (req, res, next: NextFunction) => {
