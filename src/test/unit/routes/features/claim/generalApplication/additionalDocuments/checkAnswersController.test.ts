@@ -51,7 +51,7 @@ describe('General Application - additional docs check answer controller ', () =>
       expect(res.status).toBe(200);
       expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
+      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, undefined);
       expect(res.text).toContain('Check your answers');
     });
 
