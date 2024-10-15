@@ -15,7 +15,6 @@ import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {GenericYesNoCarmIeNeuNa} from 'form/models/genericYesNoCarmIeNeuNa';
 
 const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const mediationUnavailabilityNextThreeMonthsConfirmationController = Router();
@@ -26,14 +25,18 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
   const pageTitle = `${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TEXT`, {lng: lang});
   const pageHintText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_HINT_TEXT`, {lng: lang});
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText});
+  const variation = {
+    yes : 'COMMON.VARIATION_8.YES',
+    no: 'COMMON.VARIATION_8.NO',
+  };
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText, variation, isCarm: true});
 };
 
 mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const mediation = await getMediationCarm(redisKey);
-    const form = new GenericForm(new GenericYesNoCarmIeNeuNa(mediation.hasUnavailabilityNextThreeMonths?.option));
+    const form = new GenericForm(new GenericYesNo(mediation.hasUnavailabilityNextThreeMonths?.option));
     renderView(form, res, req);
   } catch (error) {
     next(error);
@@ -43,7 +46,7 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_
 mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const optionSelected = req.body.option;
-    const form = new GenericForm(new GenericYesNoCarmIeNeuNa(optionSelected));
+    const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.VALID_YES_NO_OPTION_CARM_OES_NAC_OES'));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);
