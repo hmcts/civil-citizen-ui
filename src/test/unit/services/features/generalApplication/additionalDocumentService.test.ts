@@ -107,10 +107,10 @@ describe('Additional Documents Service', () => {
       const claimId = '1';
       const gaId = '2';
 
-      const result = getSummaryList(additionalDocumentsList, claimId, gaId);
+      const result = getSummaryList(additionalDocumentsList, claimId, gaId, undefined);
 
       expect(result.summaryList.rows).toHaveLength(4);
-      expect(result.summaryList.rows[0]).toEqual(summaryRow('Type of document', 'Type1'));
+      expect(result.summaryList.rows[0]).toEqual(summaryRow('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', 'Type1'));
       expect(result.summaryList.rows[1]).toEqual(summaryRow('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
     });
   });
