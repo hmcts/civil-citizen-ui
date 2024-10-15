@@ -22,6 +22,7 @@ import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/state
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {FormValidationError} from 'form/validationErrors/formValidationError';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
@@ -58,16 +59,22 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
   });
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+  let form;
+  let claim;
+  let userId;
+  let lang;
+  let isCarmEnabled;
+
   try {
 
-    const userId = (<AppRequest>req).session?.user?.id;
+    userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(userId);
-    const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
+    lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    claim = await getCaseDataFromStore(userId);
+    isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
-    const form = new GenericForm((req.body.type === 'qualified')
+    form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
       : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
 
@@ -92,7 +99,26 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       }
     }
   } catch (error) {
-    next(error);
+    if (error.response) {
+
+      const fieldErrorMessages: FormValidationError[] = error.response.data.details.field_errors
+        .map((e:any) => new FormValidationError(new FormValidationError({
+          target: e.id,
+          value: e.message,
+          constraints: {
+            additionalApplicationError : e.message,
+          },
+          property: e.id,
+        }), e.id));
+
+      form.errors = fieldErrorMessages;
+      renderView(res, form, claim, userId, lang, isCarmEnabled);
+
+    } else {
+      res.status(500).json({
+        errors: [error.message],
+      });
+    }
   }
 });
 
