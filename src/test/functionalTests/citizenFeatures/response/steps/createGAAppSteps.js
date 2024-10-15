@@ -45,6 +45,7 @@ class createGAAppSteps {
 
   async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
+    const applicationType = 'More time to do what is required by a court order';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -53,63 +54,63 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Continue');
 
     if (informOtherParty) {
-      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
     } else {
-      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
 
-      await informOtherPartiesPage.verifyPageContent();
+      await informOtherPartiesPage.verifyPageContent(applicationType);
       await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
 
-    await applicationCostsPage.verifyPageContent();
+    await applicationCostsPage.verifyPageContent(applicationType);
     await applicationCostsPage.nextAction('Start now');
 
-    await claimApplicationCostPage.verifyPageContent();
+    await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
 
-    await orderJudgePage.verifyPageContent();
+    await orderJudgePage.verifyPageContent(applicationType);
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
 
-    await requestingReasonPage.verifyPageContent();
+    await requestingReasonPage.verifyPageContent(applicationType);
     await requestingReasonPage.fillTextBox('Test order');
     await requestingReasonPage.nextAction('Continue');
 
-    await addAnotherApplicationPage.verifyPageContent();
+    await addAnotherApplicationPage.verifyPageContent(applicationType);
     await addAnotherApplicationPage.nextAction('No');
     await addAnotherApplicationPage.nextAction('Continue');
 
-    await wantToUploadDocumentsPage.verifyPageContent();
+    await wantToUploadDocumentsPage.verifyPageContent(applicationType);
     await wantToUploadDocumentsPage.nextAction('No');
     await wantToUploadDocumentsPage.nextAction('Continue');
 
-    await hearingArrangementsGuidancePage.verifyPageContent();
+    await hearingArrangementsGuidancePage.verifyPageContent(applicationType);
     await hearingArrangementsGuidancePage.nextAction('Continue');
 
-    await hearingArrangementPage.verifyPageContent();
+    await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
     await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
     await hearingArrangementPage.nextAction('Continue');
 
-    await hearingContactDetailsPage.verifyPageContent();
+    await hearingContactDetailsPage.verifyPageContent(applicationType);
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
-    await unavailableDatesPage.verifyPageContent();
+    await unavailableDatesPage.verifyPageContent(applicationType);
     await unavailableDatesPage.nextAction('Continue');
 
-    await hearingSupportPage.verifyPageContent();
+    await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
 
     await payingForApplicationPage.checkPageFullyLoaded();
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, 'More time to do what is required by a court order');
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
@@ -137,7 +138,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Continue');
 
     if (informOtherParty) {
-      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
     } else {
