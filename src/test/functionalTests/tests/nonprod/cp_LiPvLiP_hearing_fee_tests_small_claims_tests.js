@@ -76,6 +76,8 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
+      await I.amOnPage('/dashboard');
+      await I.click(claimNumber);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
       notification = hearingFeePaidFull();

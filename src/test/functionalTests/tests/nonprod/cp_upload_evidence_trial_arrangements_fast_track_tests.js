@@ -67,6 +67,8 @@ Scenario('Fast Track Response with RejectAll and DisputeAll - both parties uploa
       //defendant completes trial arrangements
       await TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, formattedCaseId, '£15,000', trialArrangementsDueDate, 'Yes', partyType);
       await TrialArrangementSteps.verifyTrialArrangementsMade('Yes');
+      await I.amOnPage('/dashboard');
+      await I.click(claimNumber);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
     }
   }

@@ -194,7 +194,6 @@ module.exports = {
     } else{
       payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
     }
-    console.log('this is the payloadddd ' + JSON.stringify(payload));
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForFinishedBusinessProcess(caseId);
