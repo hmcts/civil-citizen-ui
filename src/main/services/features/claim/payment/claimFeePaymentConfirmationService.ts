@@ -19,18 +19,21 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
     const redisClaimId = generateRedisKey(req);
+    logger.info('claim id ' + redisClaimId);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
+    logger.info('claim fee payment  info ' + paymentInfo);
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
-
+    logger.info('payment status ' + paymentInfo);
     if(paymentStatus.status === success) {
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
       deleteDraftClaimFromStore(redisClaimId);
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
-
-    return paymentStatus.errorDescription !== paymentCancelledByUser ?
-      PAY_CLAIM_FEE_UNSUCCESSFUL_URL  : DASHBOARD_URL;
+    const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
+      PAY_CLAIM_FEE_UNSUCCESSFUL_URL : DASHBOARD_URL;
+    logger.info('redirectingUrl if payment is not success' + redirectingUrl);
+    return redirectingUrl;
   }
   catch (error) {
     logger.error(error);
