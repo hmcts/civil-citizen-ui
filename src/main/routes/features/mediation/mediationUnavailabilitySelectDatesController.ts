@@ -27,7 +27,7 @@ const renderView = (form: GenericForm<UnavailableDates>, res: Response, req: Req
     text1: t(`${MEDIATION_UNAVAILABILITY_SELECT_DATES_PAGE}PAGE_HINT_TEXT1`, {lng: lang}),
     text2: t(`${MEDIATION_UNAVAILABILITY_SELECT_DATES_PAGE}PAGE_HINT_TEXT2`, {lng: lang}),
   };
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHint});
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHint, isCarm: true});
 };
 
 mediationUnavailabilitySelectDatesController.get(MEDIATION_UNAVAILABLE_SELECT_DATES_URL, (async (req, res, next: NextFunction) => {
