@@ -2,6 +2,7 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-st
 import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from '../../../../common/form/models/claim/amount/claimAmountRow';
 import {ClaimAmountBreakup} from '../../../../common/form/models/claimDetails';
+import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
@@ -28,7 +29,7 @@ export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBre
       totalClaimAmount = totalClaimAmount + row.amount;
       return convertFormToJson(row);
     });
-    claim.totalClaimAmount = totalClaimAmount;
+    claim.totalClaimAmount = roundOffTwoDecimals(totalClaimAmount);
     await saveDraftClaim(claimantId, claim);
   }catch(error){
     logger.error(error);
@@ -39,7 +40,7 @@ export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBre
 const convertFormToJson = (form: ClaimAmountRow): ClaimAmountBreakup =>{
   return {
     value:{
-      claimAmount: form.amount.toString(),
+      claimAmount: form.amount.toFixed(2),
       claimReason: form.reason,
     },
   };

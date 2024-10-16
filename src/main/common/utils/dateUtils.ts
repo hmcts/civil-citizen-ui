@@ -161,3 +161,7 @@ export const  isAfter4PM = (startDate: Date) => {
   }
   return false;
 };
+
+export const roundOffTwoDecimals = (amount: number) => {
+  return Math.round((amount + Number.EPSILON) * 100) / 100;
+};
