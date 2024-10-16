@@ -47,11 +47,6 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const hearingSupportHtml = (supportRequirementItems: CcdSupportRequirement[]): string => {
-
-    // FOR THESE 3 options we have texts 
-    // case CcdSupportRequirement.LANGUAGE_INTERPRETER: return 'LANGUAGE_INTERPRETER';
-    // case CcdSupportRequirement.SIGN_INTERPRETER: return 'SIGN_LANGUAGE_INTERPRETER';
-    // case CcdSupportRequirement.OTHER_SUPPORT: return 'OTHER';
     const supportCaption = (supportItem: CcdSupportRequirement): string => {
       switch (supportItem) {
         case CcdSupportRequirement.DISABLED_ACCESS: return 'STEP_FREE_ACCESS';
@@ -69,7 +64,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
         .join('');
 
     return (supportRequirementItems?.length > 0)
-      ? `<ul class="no-list-style">${html()} test </ul>`
+      ? `<ul class="no-list-style">${html()}</ul>`
       : undefined;
   };
 

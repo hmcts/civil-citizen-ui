@@ -1,5 +1,4 @@
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-// import { SupportType } from 'common/models/generalApplication/hearingSupport';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
@@ -16,7 +15,6 @@ import {
   GA_RESPONSE_HEARING_SUPPORT_URL,
   GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
 } from 'routes/urls';
-// import { exhaustiveMatchingGuard } from 'services/genericService';
 
 export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
 
