@@ -72,7 +72,7 @@
     "YEARS": "Blwyddyn",
     "YES": "Oes",
     "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
-    "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Confirm you've paid a judgment debt",
+    "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Cadarnhewch eich bod wedi talu dyled dyfarniad",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -1118,7 +1118,7 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
       "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
-      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu'n onest ei fod yn wir.",
       "CLAIM_INTEREST": "Hawlio llog",
       "CLAIMANT_INTENT_PAGE_TITLE": "Bwriad yr Hawlydd - gwirio eich atebion",
       "COMPLETION_DATE_CYA": "Dyddiad cwblhau",
@@ -2710,7 +2710,7 @@
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
         "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
         "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
-        "NAME": "Name",
+        "NAME": "Enw",
         "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
         "NONE": "None",
         "PARTIES_AGREED": "Have the other parties agreed?",
@@ -2718,19 +2718,19 @@
         "PREFERRED_EMAIL": "Preferred email",
         "PREFERRED_TELEPHONE": "Y rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
-          "APPLICATION": "The information on this page forms your application.",
-          "CHECKBOX": "I believe that the facts stated in this form are true.",
-          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+          "APPLICATION": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich cais.",
+          "CHECKBOX": "Rwy'n credu bod y ffeithiau a nodir yn y ffurf hon yn wir.",
+          "WHEN_SATISFIED": "Pan fyddwch yn fodlon bod eich atebion yn gywir, dylech dicio'r blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad o wirionedd hwn."
         },
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?",
         "COSC": {
-          "UPLOAD_DOCUMENTS": "Uploaded Evidence",
-          "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "No - I am unable to provide evidence of full payment",
-          "UPLOAD_EVIDENCE_PAID_IN_FULL": "Yes - I want to upload evidence that this debt has been paid in full",
-          "HAS_DEBT_BEEN_PAID_TO_COURT": "Yes - full payment has been made to the court"
+          "UPLOAD_DOCUMENTS": "Llwytho tystiolaeth",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "Nac ydw - Ni allaf ddarparu tystiolaeth o daliad llawn",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL": "Ydw - Rwyf eisiau llwytho tystiolaeth bod y ddyled hon wedi'i thalu'n llawn",
+          "HAS_DEBT_BEEN_PAID_TO_COURT": "Ydw - full payment has been made to the court"
         }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
@@ -2748,20 +2748,20 @@
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
       },
       "DEBT_PAYMENT": {
-        "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
-        "YOU_WILL_NEED_EVIDENCE": "You’ll need to provide evidence that you’ve paid the debt.",
-        "CONFIRMATION_OF_MONEY": "This should be confirmation from the person or business you owed money, which shows the:",
-        "DATE_OF_PAYMENT": "date of payment",
-        "AMOUNT_PAID": "amount paid",
-        "CASE_NUMBER": "case number",
-        "IF_CANNOT_PROVIDE_EVIDENCE": "If you cannot provide evidence, you can explain that below. The court will ask the person or business you owed money if they’ve been paid. If they do not respond within a month, the public register will be updated and a certificate issued.",
-        "DO_YOU_WANT_PROVIDE_EVIDENCE": "Do you want to provide evidence of the debt payment?",
-        "UPLOAD_EVIDENCE": "I want to upload evidence that this debt has been paid in full",
-        "MADE_FULL_PAYMENT": "I made full payment to the court",
-        "NO_EVIDENCE": "I am unable to provide evidence of full payment",
-        "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
+        "DO_YOU_HAVE_EVIDENCE": "A oes gennych dystiolaeth o'r taliad dyled?",
+        "YOU_WILL_NEED_EVIDENCE": "Bydd angen i chi ddarparu tystiolaeth eich bod wedi talu'r ddyled.",
+        "CONFIRMATION_OF_MONEY": "Dylai hyn fod yn gadarnhad gan yr unigolyn neu'r busnes yr oedd arnoch chi arian iddynt sy'n dangos:",
+        "DATE_OF_PAYMENT": "dyddiad y taliad",
+        "AMOUNT_PAID": "y swm a dalwyd",
+        "CASE_NUMBER": "rhif yr achos",
+        "IF_CANNOT_PROVIDE_EVIDENCE": "Os na allwch ddarparu tystiolaeth, gallwch esbonio hynny isod. Bydd y llys yn gofyn i'r unigolyn neu'r busnes yr oedd arnoch chi arian iddynt os ydyn nhw wedi cael eu talu. Os na fyddant yn ymateb o fewn mis, bydd y gofrestr gyhoeddus yn cael ei diweddaru a bydd tystysgrif yn cael ei chyhoeddi.",
+        "DO_YOU_WANT_PROVIDE_EVIDENCE": "Ydych chi eisiau darparu tystiolaeth o'r taliad dyled?",
+        "UPLOAD_EVIDENCE": "Rwyf eisiau llwytho tystiolaeth bod y ddyled hon wedi'i thalu'n llawn",
+        "MADE_FULL_PAYMENT": "Rwyf wedi talu'n llawn i'r llys",
+        "NO_EVIDENCE": "Ni allaf ddarparu tystiolaeth o daliad llawn",
+        "GIVE_DETAILS": "Rhowch fanylion isod o'r hyn rydych wedi'i wneud i gael tystiolaeth a pham nad ydych yn gallu ei darparu",
         "PROVIDE_DETAILS": "Provide details",
-        "OR": "or"
+        "OR": "neu"
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
@@ -2831,7 +2831,7 @@
         "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
-        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
+        "CONFIRM_YOU_PAID_CCJ": "Cadarnhewch eich bod wedi talu dyled dyfarniad",
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
         "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol gan orchymyn llys",
         "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i gynnwys yn y rhestr hon",
@@ -2880,8 +2880,8 @@
         "TITLE": "Dewiswch gais",
         "WHEN_YOU_REQUEST": "Pan fyddwch yn gofyn am newid i’ch achos, neu’n cysylltu â’r llys i gymryd cam penodol, gelwir hyn yn gwneud ‘cais’ i’r llys am orchymyn.",
         "ASK_MORE_TIME_DESCRIPTION": "Er enghraifft, gofyn i’r terfyn amser ar gyfer uwchlwytho dogfennau cyn treial neu wrandawiad gael ei ymestyn. Bydd arnoch angen darparu rheswm dilys dros beidio â bodloni’r terfyn amser gwreiddiol.  Gellir ond gwneud y cais cyn i’r terfyn amser gwreiddiol basio.  Gelwir hyn hefyd yn gais i ymestyn amser. Yn hytrach na gwneud cais, gallwch gael cytundeb ysgrifenedig gan y partïon eraill i gael mwy o amser i wneud yr hyn sy’n ofynnol gan y llys. I wneud hyn, rhaid i’r cais am estyniad amser fod am gyfnod o lai na 28 diwrnod ac ni ddylai effeithio ar ddyddiad y gwrandawiad.",
-        "CONFIRM_YOU_PAID": "Confirm you've paid a judgment (CCJ) debt",
-        "CONFIRM_YOU_PAID_DESCRIPTION": "If you've paid the debt from a county court judgment (CCJ) in full, you can ask the court for proof of payment to share with banks, lenders and credit reference agencies. This is called requesting a certificate of cancellation or satisfaction."
+        "CONFIRM_YOU_PAID": "Cadarnhewch eich bod wedi talu dyled dyfarniad (CCJ)",
+        "CONFIRM_YOU_PAID_DESCRIPTION": "Os ydych wedi talu'r ddyled o ddyfarniad llys sirol (CCJ) yn llawn, gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau, benthycwyr ac asiantaethau archwilio credyd. Gelwir hyn yn gais am dystysgrif canslo neu dystysgrif diwallu."
       },
       "SUMMARY": {
         "APP_REQUESTED": "An application is a request for a change to the case.",
@@ -3140,17 +3140,17 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
-        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
-        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
-        "PAGE_TITLE": "Application created",
+        "APPLICATION_SAVE": "Mae eich cais wedi'i arbed, ond mae angen i chi dalu'r ffi gwneud cais o £{{ applicationFee }}.",
+        "APPLY_HELP_WITH_FEES": "Bydd gennych yr opsiwn i wneud cais am help i dalu ffioedd unwaith y byddwch wedi clicio ar 'Talu’r ffi gwneud cais'.",
+        "CONFIRMATION_TEXT": "Mae angen i chi dalu'r ffi gwneud cais i gyflwyno'r cais",
+        "PAGE_TITLE": "Cais wedi'i greu",
         "PAY_FEE_BUTTON": "Pay application fee",
         "RETURN_CASE_DETAILS": "Close and return to case details",
-        "TITLE": "Application created",
+        "TITLE": "Cais wedi'i greu",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
-        "COSC_PAY_FEE": "Pay the fee",
-        "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
-        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
+        "COSC_PAY_FEE": "Talu'r ffi",
+        "COSC_APPLICATION_SUBMITTED": "Unwaith y bydd eich cais wedi'i gyflwyno, bydd y llys yn gofyn i'r unigolyn neu'r busnes yr oedd arnoch arian iddynt gadarnhau eu bod wedi cael eu talu. Os byddant yn cytuno neu ddim yn ymateb o fewn mis, bydd y gofrestr gyhoeddus yn cael ei diweddaru a bydd tystysgrif yn cael ei chyhoeddi.",
+        "COSC_APPLICATION_SUBMITTED_NEXT": "Os nad yw'r unigolyn neu'r busnes yr oedd arnoch arian iddynt yn cytuno, bydd yr achos hwn yn symud all-lein a bydd y cais yn cael ei ystyried gan farnwr rhanbarth. Bydd unrhyw ddiweddariadau pellach yn digwydd drwy'r post."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -3225,30 +3225,39 @@
         "UPLOAD_DOCUMENTS_3": " if you need to."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
-        "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
-        "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
-        "HELP_WITH_FEE": "help with fees.",
-        "PARA_TITLE_1": "If you paid within a month of the judgment",
-        "PARA_3": "A certificate of cancellation can be requested if you have evidence that you paid the debt within one month of the date of judgment. This means the debt will be removed from the public register.",
-        "PARA_TITLE_2": "If you paid after one month from the judgment",
-        "PARA_4": "A certificate of satisfaction can be requested if the debt is paid after one month. The entry will remain on the public register for 6 years but will be marked 'satisfied'.",
-        "PARA_TITLE_3": "What evidence is needed?",
-        "PARA_5": "You must provide evidence that the debt has been paid in full. This should be confirmation from the person or business you owned money, which shows the:",
-        "DATE_OF_PAYMENT": "date of payment",
-        "AMOUNT_PAID": "amount paid",
-        "CASE_NUMBER": "case number",
-        "PARA_TITLE_4": "Agreement from the person or business owed money",
-        "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
-        "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
-        "PARA_TITLE_5": "Do you need to update your details?",
-        "PARA_8": "If you need to update your details from the judgment, you will need to ",
-        "COMPLETE_FORM_N443": "complete a form N443."
+        "PARA_1": "Os ydych wedi talu'r ddyled o ddyfarniad y llys sirol (CCJ), gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau ac asiantaethau archwilio credyd. Gelwir hyn hefyd yn gais am dystysgrif canslo neu dystysgrif diwallu.",
+        "PARA_2": "Ffi’r llys am hyn yw £{{ applicationFee }}. Bydd angen talu'r ffi hon unwaith y byddwch wedi cyflwyno eich cais. Gwiriwch a allwch gael ",
+        "HELP_WITH_FEE": "help i dalu ffioedd.",
+        "PARA_TITLE_1": "Os ydych wedi talu o fewn mis i'r dyfarniad",
+        "PARA_3": "Gellir gofyn am dystysgrif canslo os oes gennych dystiolaeth eich bod wedi talu'r ddyled o fewn mis i ddyddiad y dyfarniad. Mae hyn yn golygu y bydd y ddyled yn cael ei thynnu oddi ar y gofrestr gyhoeddus.",
+        "PARA_TITLE_2": "Os taloch ar ôl un mis o'r dyfarniad",
+        "PARA_4": "Gellir gofyn am dystysgrif bodlonrwydd os telir y ddyled ar ôl mis. Bydd y cofnod yn aros ar y gofrestr gyhoeddus am 6 blynedd ond bydd yn cael ei farcio fel 'bodlonwyd'.",
+        "PARA_TITLE_3": "Pa dystiolaeth sydd ei hangen?",
+        "PARA_5": "Rhaid i chi ddarparu tystiolaeth bod y ddyled wedi'i thalu'n llawn. Dylai hyn fod yn gadarnhad gan yr unigolyn neu'r busnes yr oedd arnoch chi arian iddynt, sy'n dangos:",
+        "DATE_OF_PAYMENT": "dyddiad y taliad",
+        "AMOUNT_PAID": "y swm a dalwyd",
+        "CASE_NUMBER": "rhif yr ac",
+        "PARA_TITLE_4": "Cytundeb gan yr unigolyn neu'r busnes yr oedd arnoch chi arian iddynt",
+        "PARA_6": "Unwaith y byddwch wedi gwneud cais, bydd y llys yn gofyn i'r unigolyn neu'r busnes yr oedd arnoch chi arian iddynt os ydynt wedi cael eu talu. Os na fyddant yn ymateb o fewn mis, bydd y gofrestr gyhoeddus yn cael ei diweddaru a bydd tystysgrif yn cael ei chyhoeddi.",
+        "PARA_7": "Os nad yw'r unigolyn neu'r busnes yr oedd arnoch arian iddynt yn cytuno, bydd yr achos hwn yn symud all-lein a bydd y cais yn cael ei ystyried gan farnwr rhanbarth.",
+        "PARA_TITLE_5": "Diweddaru'ch manylion",
+        "PARA_8": "Os yw'ch enw neu'ch cyfeiriad wedi newid ers cyhoeddi'r dyfarniad (CCJ), efallai y byddwch eisiau eu diweddaru cyn gwneud cais i gadarnhau eich bod wedi gwneud taliad dyled.",
+        "PARA_TITLE_6": "Newid eich cyfeiriad",
+        "PARA_9": "Bydd angen i chi ffonio'r llys lle cyhoeddwyd eich dyfarniad i ddiweddaru'r cyfeiriad sydd gennym ar eich cyfer. Gallwch ddod o hyd i enw'r llys ar ochr dde uchaf ",
+        "PARA_9_1": "y dyfarniad.",
+        "PARA_9_2": " Yna gallwch",
+        "PARA_9_3": "chwilio am fanylion cyswllt y llys.",
+        "PARA_9_4": " Bydd hyn yn cael ei ddiweddaru ar unwaith a gallwch barhau â'ch cais.",
+        "PARA_TITLE_7": "Newid eich enw",
+        "PARA_10": "Os yw'ch enw wedi newid ers y dyfarniad ac yr hoffech chi ddiweddaru hynny, bydd angen i chi wneud ",
+        "PARA_10_1": "cais cyffredinol.",
+        "PARA_10_2": " Bydd angen i chi aros i'r newid gael ei gwblhau cyn y gallwch barhau â'ch cais"
       },
       "FINAL_DEFENDANT_PAYMENT_DATE": {
-        "TITLE": "When was the final payment?",
-        "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
+        "TITLE": "Pryd oedd y taliad terfynol?",
+        "PARAGRAPH_TEXT_1" : "Mae angen i ni wybod hyn i ganslo'r ddyled os gwnaethoch dalu o fewn mis neu ei dangos fel un sydd wedi’i diwallu os gwnaethoch dalu ar ôl mis.",
         "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
-        "FORM_HEADER_1" : "Enter the date of the final payment"
+        "FORM_HEADER_1" : "Nodwch ddyddiad y taliad terfynol"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
