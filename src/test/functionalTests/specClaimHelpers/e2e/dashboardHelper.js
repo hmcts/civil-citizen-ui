@@ -54,5 +54,21 @@ module.exports = {
     } else {
       I.dontSee(deadline, locator);
     }
+    const tasklistLocator = `//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`;
+    if (isLinkFlag === true) {
+      const linkExists = await I.waitForVisible(tasklistLocator, 1).then(() => true).catch(() => false);
+      if (linkExists) {
+        I.seeElement(tasklistLocator);  // The element is found, so we assert it.
+      } else {
+        console.log(`This failed because the tasklist "${tasklist}" is not a link`);
+      }
+    } else {
+      const linkDoesNotExist = await I.waitForInvisible(tasklistLocator, 1).then(() => true).catch(() => false);
+      if (linkDoesNotExist) {
+        I.dontSeeElement(tasklistLocator);  // The element is not found, so we assert its absence.
+      } else {
+        console.log(`This failed because the tasklist "${tasklist}" is a link`);
+      }
+    }
   },
 };

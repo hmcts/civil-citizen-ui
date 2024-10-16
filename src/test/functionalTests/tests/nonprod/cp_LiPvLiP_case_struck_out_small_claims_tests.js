@@ -42,7 +42,6 @@ Scenario('Small Claims LiPvLiP case is struck out due to hearing fee not being p
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = uploadHearingDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-
     }
   }
 }).tag('@regression-cp');
