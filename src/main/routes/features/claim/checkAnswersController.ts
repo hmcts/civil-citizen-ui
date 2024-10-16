@@ -14,20 +14,19 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {GenericForm} from 'common/form/models/genericForm';
-import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNo} from 'common/form/models/yesNo';
 import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {Party} from 'models/party';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+function renderView(res: Response, form: GenericForm<any>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
   const signatureType = form.model?.type;
@@ -67,15 +66,23 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
-    const form = new GenericForm((req.body.type === 'qualified')
-      ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
-      : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
+    //form = new GenericForm((req.body.type === 'qualified')
+    //  ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
+    //  : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
 
+    const validateFields = new ValidatePhoneAndEmail();
+    validateFields.qualifiedStatementOfTruthClaimIssue = (req.body.type === 'qualified')
+      ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
+      : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue);
+    validateFields.applicant = claim.applicant1;
+    const form = new GenericForm(validateFields);
     await form.validate();
-    if (form.hasErrors()) {
+    if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
-    } else {
-      await saveStatementOfTruth(userId, form.model);
+    }
+    else {
+      //validate
+      await saveStatementOfTruth(userId, form.model.qualifiedStatementOfTruthClaimIssue);
       const submittedClaim = await submitClaim(<AppRequest>req);
       res.clearCookie('eligibilityCompleted');
       res.clearCookie('eligibility');
@@ -97,3 +104,8 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 });
 
 export default claimCheckAnswersController;
+
+class ValidatePhoneAndEmail {
+  qualifiedStatementOfTruthClaimIssue?: StatementOfTruthFormClaimIssue | QualifiedStatementOfTruthClaimIssue ;
+  applicant?: Party;
+}
