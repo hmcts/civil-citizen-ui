@@ -332,9 +332,9 @@ module.exports = {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
       content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'When a judge has made a decision, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe',
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
       nextSteps2: 'View your response',
     };
   },
