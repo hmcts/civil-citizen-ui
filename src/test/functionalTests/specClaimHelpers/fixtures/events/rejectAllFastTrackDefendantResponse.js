@@ -4,7 +4,6 @@ module.exports = {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
         'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
-        'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
         'respondToClaimAdmitPartLRspec': {
 
         },
@@ -97,8 +96,8 @@ module.exports = {
 
         },
         'respondent1DQLanguage': {
-          'court': 'WELSH',
-          'documents': 'WELSH',
+          'court': 'ENGLISH',
+          'documents': 'ENGLISH',
         },
         'respondent1DQVulnerabilityQuestions': {
           'vulnerabilityAdjustmentsRequired': 'No',
@@ -247,8 +246,8 @@ module.exports = {
 
           ],
           'caseLocation': {
-            'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
-            'baseLocation': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            'region': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            'baseLocation': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         'respondent1DQWitnesses': {
@@ -406,8 +405,8 @@ module.exports = {
 
           ],
           'caseLocation': {
-            'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
-            'baseLocation': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            'region': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            'baseLocation': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         'respondent1DQWitnesses': {

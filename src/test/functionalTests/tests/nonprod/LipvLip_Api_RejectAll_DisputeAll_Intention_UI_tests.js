@@ -25,7 +25,7 @@ Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll 
     // await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(claimRef, claimNumber);
     // await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
 
 Scenario.skip('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -41,4 +41,4 @@ Scenario.skip('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectA
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAll(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});

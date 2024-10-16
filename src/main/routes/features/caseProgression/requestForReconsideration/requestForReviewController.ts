@@ -16,7 +16,6 @@ import {
   getRequestForReviewContent,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewContent';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 
 const requestForReviewViewPath = 'features/caseProgression/requestForReconsideration/request-for-review.njk';
@@ -25,7 +24,7 @@ const requestForReviewController = Router();
 requestForReviewController.get(REQUEST_FOR_RECONSIDERATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getRequestForReviewForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {
@@ -41,10 +40,11 @@ requestForReviewController.post(REQUEST_FOR_RECONSIDERATION_URL,(async (req, res
     }
     const form = new GenericForm(new RequestForReviewForm(textArea));
     const claimId = req.params.id;
-    const claim: Claim = await getCaseDataFromStore(req.params.id);
+    const claim: Claim = await getClaimById(claimId, req,true);
     const dqPropertyName = getNameRequestForReconsideration(claim);
-    await saveCaseProgression(claimId, form.model, dqPropertyName);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_CYA_URL));
+    await saveCaseProgression(req, form.model, dqPropertyName);
+
+    res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_CYA_URL));
   } catch (error) {
     next(error);
   }

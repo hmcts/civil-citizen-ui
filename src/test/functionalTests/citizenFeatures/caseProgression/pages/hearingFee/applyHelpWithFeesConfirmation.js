@@ -23,9 +23,9 @@ class ApplyHelpWithFeesConfirmation {
   }
 
   verifyPageText() {
-    I.see('What happens next', 'h3');
+    I.see('What happens next', 'h2');
     I.see('You\'ll receive a decision on your application within 5 to 10 working days.');
-    I.see('Close and return to case overview');
+    I.see('Go to your account');
   }
 }
 

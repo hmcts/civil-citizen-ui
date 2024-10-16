@@ -14,7 +14,7 @@ const claimAmount = '£15,000';
 const feeAmount = '545';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track @testing');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -51,17 +51,17 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
       taskListItem = viewHearings();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline, claimNumber);
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline, claimNumber);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
 
 Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -75,7 +75,7 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false, 'noDeadline', claimNumber);
       notification = hearingFeePaidFull();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }

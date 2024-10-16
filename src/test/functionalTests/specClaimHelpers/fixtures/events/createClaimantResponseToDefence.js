@@ -39,6 +39,7 @@ module.exports = {
             PostTown: 'TestCity',
             PostCode: 'IG61JD',
           },
+          partyID: 'a6c257c6-d05a-45',
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
@@ -81,7 +82,6 @@ module.exports = {
         respondentResponseIsSame: null,
         defendantSingleResponseToBothClaimants: null,
         respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-        defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
         showResponseOneVOneFlag: 'ONE_V_ONE_FULL_DEFENCE',
         applicant1DefenceResponseDocumentSpec: null,
         applicant1DQFileDirectionsQuestionnaire: {
@@ -136,12 +136,12 @@ module.exports = {
           responseCourtLocations: {
             value: {
               code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-              label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
+              label: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
             },
             list_items: [
               {
                 code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-                label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
+                label: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
               },
             ],
           },
@@ -216,8 +216,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'test',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         applicant1DQWitnesses: {
@@ -337,8 +337,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'reasons',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         applicant1DQWitnesses: {

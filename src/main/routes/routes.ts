@@ -389,6 +389,7 @@ import gaAdditionalDocCheckAnswerController from './features/generalApplication/
 import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import applicationResponseSummaryController from './features/generalApplication/response/applicationResponseSummaryController';
 import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
 import payAdditionalFeeController from 'routes/features/generalApplication/additionalFee/payAdditionalFeeController';
 import requestForReviewCommentsController
@@ -415,6 +416,15 @@ import gaDirectionOrderCheckAnswersController from './features/generalApplicatio
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
 import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
 import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
+import respondAddInfoController
+  from 'routes/features/generalApplication/additionalInfoUpload/respondController';
+import respondWrittenRepController
+  from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
+import debtPaymentEvidenceController
+  from 'routes/features/generalApplication/certOfSorC/debtPaymentEvidenceController';
+import askProofOfDebtPaymentGuidanceController
+  from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
+import defendantFinalPaymentDateController from 'routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
 
 export default [
   homeController,
@@ -732,6 +742,7 @@ export default [
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
   applicationSummaryController,
+  applicationResponseSummaryController,
   additionalFeeController,
   payAdditionalFeeController,
   requestForReviewCommentsController,
@@ -740,6 +751,7 @@ export default [
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  respondAddInfoController,
   uploadAdditionalDocumentsController,
   gaAdditionalDocCheckAnswerController,
   additionalDocSubmittedController,
@@ -751,4 +763,8 @@ export default [
   directionOrderSubmittedConfirmationController,
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
+  respondWrittenRepController,
+  askProofOfDebtPaymentGuidanceController,
+  defendantFinalPaymentDateController,
+  debtPaymentEvidenceController,
 ];

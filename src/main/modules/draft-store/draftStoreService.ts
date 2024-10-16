@@ -7,6 +7,8 @@ import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 import {AppRequest} from 'common/models/AppRequest';
+import {getClaimById} from 'modules/utilityService';
+import {Request} from 'express';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -43,7 +45,6 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
-  claim.id = civilClaimResponse?.id;
   return claim;
 };
 
@@ -85,6 +86,14 @@ export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Cla
   }
 };
 
+export const updateFieldDraftClaimFromStore = async (claimId: string, req: Request, propertyName: string, newValue: string): Promise<void> => {
+  const claim = await getClaimById(claimId, req, true);
+  const redisKey = generateRedisKey(<AppRequest>req);
+  claim[propertyName] = newValue;
+  await saveDraftClaim(redisKey, claim);
+
+};
+
 export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   const draftClaim = createNewCivilClaimResponse(claimId);
   const creationTime = new Date();
@@ -104,3 +113,12 @@ export function generateRedisKey(req: AppRequest) {
 export function generateRedisKeyForGA(req: AppRequest) {
   return req.params.appId + req.session.user?.id;
 }
+
+export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {
+  try {
+    return await app.locals.draftStoreClient.keys('*' + userId);
+  } catch (error) {
+    logger.error('Failed to find claim IDs by userId', error);
+    throw error;
+  }
+};

@@ -53,7 +53,7 @@ export const getTopElements = (claim:Claim): ClaimSummarySection[] => {
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE')
-    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify( claim.id)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claim.id)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addInsetText('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_FULL')
     .build();
@@ -72,7 +72,7 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
   let existingUploadDocuments: UploadDocuments;
   const caseProgression = new CaseProgression();
   let updatedCcdClaim = {} as CCDClaim;
-  const oldClaim = await civilServiceClient.retrieveClaimDetails(claim.id, req);
+  const oldClaim = await civilServiceClient.retrieveClaimDetails(req.params.id, req);
 
   if(claim.isClaimant())
   {
@@ -80,13 +80,13 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
     existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
     caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
-    return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, claim.id, updatedCcdClaim, req);
+    return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, req.params.id, updatedCcdClaim, req);
   } else {
     newUploadDocuments = claim.caseProgression.defendantDocuments;
     existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
     caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
-    return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, claim.id, updatedCcdClaim, req);
+    return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, req.params.id, updatedCcdClaim, req);
   }
 };
 

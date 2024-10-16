@@ -19,17 +19,22 @@ module.exports = {
     await I.waitForVisible(selectors.contentClass, 60);
     if (Array.isArray(content)) {
       for (let i = 0; i < content.length; i++) {
-        //await I.see(content[i]);
+        await I.see(content[i]);
         console.log('content to be verified ..', content[i]);
       }
     } else {
-      //await I.see(content);
+      await I.see(content);
       console.log('content to be verified ..', content);
     }
   },
 
-  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline) => {
+  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline, claimNumber = '') => {
     //Step to check if status is already updated, if not it will refresh the page
+    if (claimNumber && claimNumber != '') {
+      await I.amOnPage('/dashboard');
+      await I.click(claimNumber);
+    }
+    await I.waitForVisible(selectors.titleClass, 60);
     const actualStatus = await I.grabTextFrom(locator);
     if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
       await I.wait(3);
