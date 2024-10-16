@@ -20,7 +20,8 @@ import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/state
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {Party} from 'models/party';
+
+import {DefendantEmail} from "form/models/claim/yourDetails/defendantEmail";
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
@@ -66,36 +67,35 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
-    //form = new GenericForm((req.body.type === 'qualified')
-    //  ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
-    //  : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
-
-    const validateFields = new ValidatePhoneAndEmail();
-    validateFields.qualifiedStatementOfTruthClaimIssue = (req.body.type === 'qualified')
+    const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
-      : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue);
-    validateFields.applicant = claim.applicant1;
-    const form = new GenericForm(validateFields);
+      : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
     await form.validate();
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
-    }
-    else {
-      //validate
-      await saveStatementOfTruth(userId, form.model.qualifiedStatementOfTruthClaimIssue);
-      const submittedClaim = await submitClaim(<AppRequest>req);
-      res.clearCookie('eligibilityCompleted');
-      res.clearCookie('eligibility');
-      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-        //TODO Will be implemented after integration ready
-        //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
-        //res.redirect(paymentUrlWithId);
-        await deleteDraftClaimFromStore(userId);
-        res.clearCookie('eligibilityCompleted');
-        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    } else {
+      const validateFields = new ValidatePhoneAndEmail();
+      validateFields.defendantEmail = new DefendantEmail('xx@xx_.com');
+      const validateFieldsForm = new GenericForm(validateFields);
+      await validateFieldsForm.validate();
+      if (validateFieldsForm.hasErrors()) {
+        renderView(res, validateFieldsForm, claim, userId, lang, isCarmEnabled);
       } else {
-        await deleteDraftClaimFromStore(userId);
-        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+        await saveStatementOfTruth(userId, form.model);
+        const submittedClaim = await submitClaim(<AppRequest>req);
+        res.clearCookie('eligibilityCompleted');
+        res.clearCookie('eligibility');
+        if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+          //TODO Will be implemented after integration ready
+          //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
+          //res.redirect(paymentUrlWithId);
+          await deleteDraftClaimFromStore(userId);
+          res.clearCookie('eligibilityCompleted');
+          res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+        } else {
+          await deleteDraftClaimFromStore(userId);
+          res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+        }
       }
     }
   } catch (error) {
@@ -106,6 +106,5 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 export default claimCheckAnswersController;
 
 class ValidatePhoneAndEmail {
-  qualifiedStatementOfTruthClaimIssue?: StatementOfTruthFormClaimIssue | QualifiedStatementOfTruthClaimIssue ;
-  applicant?: Party;
+  defendantEmail?: DefendantEmail;
 }
