@@ -90,6 +90,8 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
         summaryRow(
           t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
           claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties,
+          constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL), 
+          changeLabel()
         ),
       );
     }
