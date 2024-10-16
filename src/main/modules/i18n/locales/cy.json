@@ -2124,7 +2124,6 @@
         "DEFAULT_JUDGEMENT_ISSUED_STATUS": "The claimant has requested a County Court Judgment (CCJ) against you on {{ defaultJudgementIssuedDate }}",
         "DOCUMENTS_BEING_TRANSLATED": "Mae’r dogfennau yn cael eu cyfieithu.",
         "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
-        "MORE_DETAILS_REQUIRED": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
         "MEDIATION_UNSUCCESSFUL": "Nid oedd y cyfryngu yn llwyddiannus.",
         "MEDIATION_SUCCESSFUL": "Cytunodd y ddau ohonoch i setlo’r anghydfod drwy gyfryngu.",
         "NO_RESPONSE_ON_TIME": "Ymateb i hawliad: {{ numberOfDays }} diwrnod yn weddill.",
