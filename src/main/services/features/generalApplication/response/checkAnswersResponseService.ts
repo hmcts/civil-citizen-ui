@@ -141,10 +141,10 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
   const hearingSupportSection = (): SummaryRow[] => {
     const hearingSupport = gaResponse?.hearingSupport;
-    const emptyHearingSupport = Object.values(hearingSupport).every(item => item.selected === false);
+    const isHearingSupportEmpty = gaResponse?.hearingSupport ? Object.values(hearingSupport).every(item => item.selected === false) : true;
     if (hearingSupport) {
       let selectedHtml = null;
-      if (!emptyHearingSupport) {
+      if (!isHearingSupportEmpty) {
         selectedHtml = '<ul class="no-list-style">';
         if (hearingSupport.stepFreeAccess?.selected) {
           selectedHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng})}</li>`;
@@ -166,7 +166,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       return selectedHtml
         ? [row(
           'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          `<ul class="no-list-style">${selectedHtml}</ul>`,
+          selectedHtml,
           GA_RESPONSE_HEARING_SUPPORT_URL)]
         : [row(
           'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
