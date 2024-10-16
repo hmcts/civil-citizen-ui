@@ -75,10 +75,18 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 
     await form.validate();
     //TOD
-    form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors); // eamil claimant
-    form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors); // def
-    form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.applicant1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_CLAIMANT')), form.errors); // eamil claimant
-    form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors); // def
+    if (claim.applicant1?.emailAddress?.emailAddress) {
+      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
+    }
+    if (claim.respondent1?.emailAddress?.emailAddress) {
+      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
+    }
+    if (claim.applicant1?.partyPhone?.phone) {
+      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.applicant1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_CLAIMANT')), form.errors);
+    }
+    if (claim.respondent1?.partyPhone?.phone) {
+      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
+    }
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
     } else {
