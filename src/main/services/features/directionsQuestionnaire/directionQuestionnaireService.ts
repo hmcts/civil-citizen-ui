@@ -90,7 +90,12 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
 const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<ConfirmYourDetailsEvidence> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    const directionQuestionnaire: any = claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
+    let directionQuestionnaire: any;
+    if (claim.isClaimantIntentionPending()) {
+      directionQuestionnaire = claim.claimantResponse?.directionQuestionnaire ? claim.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
+    } else {
+      directionQuestionnaire = claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
+    }
     if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
       return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
     } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
