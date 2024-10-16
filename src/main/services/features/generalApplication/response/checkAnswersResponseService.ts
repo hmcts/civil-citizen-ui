@@ -163,10 +163,10 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       return selectedHtml
         ? [row(
           'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          `<ul class="no-list-style">${selectedHtml}</ul>`,
+          `'B' +  <ul class="no-list-style">${selectedHtml}</ul>`,
           GA_RESPONSE_HEARING_SUPPORT_URL)]
         : [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          'C' +  'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           YesNoUpperCamelCase.NO,
           GA_RESPONSE_HEARING_SUPPORT_URL)];
     } else {

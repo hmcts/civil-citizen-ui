@@ -228,6 +228,7 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
 export const addHearingSupportRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
+  // const textInfo = 
   if (application.case_data.generalAppHearingDetails.SupportRequirement) {
     let supportHtml = '<ul class="no-list-style">';
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.DISABLED_ACCESS)) {
@@ -249,6 +250,15 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
+    );
+    rows.push(
+      summaryRow(null, application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage),
+    );
+    rows.push(
+      summaryRow(null, application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage),
+    );
+    rows.push(
+      summaryRow(null, application.case_data.generalAppHearingDetails.SupportRequirementOther),
     );
   }
   return rows;

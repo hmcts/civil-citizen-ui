@@ -252,7 +252,7 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
     }
     supportHtml += '</ul>';
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
+      summaryRow('D' + t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng}),
         constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), changeLabel()),
     );
