@@ -141,40 +141,24 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
   const hearingSupportSection = (): SummaryRow[] => {
     const hearingSupport = gaResponse?.hearingSupport;
-    const isHearingSupportEmpty = gaResponse?.hearingSupport ? Object.values(hearingSupport).every(item => item.selected === false) : true;
-    if (hearingSupport) {
-      let selectedHtml = null;
-      if (!isHearingSupportEmpty) {
-        selectedHtml = '<ul class="no-list-style">';
-        if (hearingSupport.stepFreeAccess?.selected) {
-          selectedHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng})}</li>`;
-        }
-        if (hearingSupport.hearingLoop?.selected) {
-          selectedHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
-        }
-        if (hearingSupport.signLanguageInterpreter?.selected) {
-          selectedHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} (${hearingSupport.signLanguageInterpreter.content})</li>`;
-        }
-        if (hearingSupport.languageInterpreter?.selected) {
-          selectedHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} (${hearingSupport.languageInterpreter.content})</li>`;
-        }
-        if (hearingSupport.otherSupport?.selected) {
-          selectedHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} (${hearingSupport.otherSupport.content})</li>`;
-        }
-        selectedHtml += '</ul>';
-      }
-      return selectedHtml
-        ? [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          selectedHtml,
-          GA_RESPONSE_HEARING_SUPPORT_URL)]
-        : [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          YesNoUpperCamelCase.NO,
-          GA_RESPONSE_HEARING_SUPPORT_URL)];
-    } else {
-      return [];
-    }
+    if (!hearingSupport) return [];
+  
+    const supportOptions = [
+      { selected: hearingSupport.stepFreeAccess?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS' },
+      { selected: hearingSupport.hearingLoop?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP' },
+      { selected: hearingSupport.signLanguageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', content: hearingSupport.signLanguageInterpreter?.content },
+      { selected: hearingSupport.languageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', content: hearingSupport.languageInterpreter?.content },
+      { selected: hearingSupport.otherSupport?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', content: hearingSupport.otherSupport?.content }
+    ];
+  
+    const selectedHtml = supportOptions
+      .filter(option => option.selected)
+      .map(option => `<li>${t(option.text, { lng })}${option.content ? ` (${option.content})` : ''}</li>`)
+      .join('');
+  
+    const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : YesNoUpperCamelCase.NO;
+  
+    return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', resultHtml, GA_RESPONSE_HEARING_SUPPORT_URL)];
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);
