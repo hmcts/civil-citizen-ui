@@ -173,6 +173,7 @@ export class Nunjucks {
     app.use((req:AppRequest, res, next) => {
       res.locals.pagePath = req.path;
       req.cookies.nonceValue = nonceValue;
+      req.cookies.nonceDataLayer = nonceDataLayer;
       res.locals.user=req.session.user;
       next();
     });
