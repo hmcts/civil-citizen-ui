@@ -82,6 +82,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           iWantToLinks,
           helpSupportTitle,
           helpSupportLinks,
+          lang,
         },
       );
     } else {
