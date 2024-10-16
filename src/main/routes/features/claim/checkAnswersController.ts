@@ -99,14 +99,12 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       }
     }
   } catch (error) {
-    if (error.response) {
+    if (error.response.data.exception === 'uk.gov.hmcts.ccd.endpoint.exceptions.CaseValidationException') {
 
       const fieldErrorMessages: FormValidationError[] = error.response.data.details.field_errors
         .map((e:any) => new FormValidationError(new FormValidationError({
-          target: e.id,
-          value: e.message,
           constraints: {
-            additionalApplicationError : e.message,
+            isInvalid : e.message,
           },
           property: e.id,
         }), e.id));
