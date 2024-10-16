@@ -148,7 +148,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       { selected: hearingSupport.hearingLoop?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP' },
       { selected: hearingSupport.signLanguageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', content: hearingSupport.signLanguageInterpreter?.content },
       { selected: hearingSupport.languageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', content: hearingSupport.languageInterpreter?.content },
-      { selected: hearingSupport.otherSupport?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', content: hearingSupport.otherSupport?.content }
+      { selected: hearingSupport.otherSupport?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', content: hearingSupport.otherSupport?.content },
     ];
   
     const selectedHtml = supportOptions
