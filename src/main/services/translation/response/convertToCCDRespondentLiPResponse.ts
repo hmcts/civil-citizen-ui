@@ -6,6 +6,7 @@ import {CCDRespondentLiPResponse, CCDRespondentResponseLanguage} from 'models/cc
 import {toCCDAddress} from 'services/translation/response/convertToCCDAddress';
 import {YesNo} from 'form/models/yesNo';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {convertToCCDEvidenceConfirmDetails} from 'services/translation/response/convertToCCDEvidenceConfirmDetails';
 
 export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPResponse => {
   return {
@@ -19,6 +20,7 @@ export const toCCDRespondentLiPResponse = (claim: Claim): CCDRespondentLiPRespon
     respondent1LiPContactPerson: claim.respondent1?.partyDetails?.contactPerson,
     respondent1LiPCorrespondenceAddress: claim.respondent1?.partyDetails?.postToThisAddress === YesNo.YES ? toCCDAddress(claim.respondent1?.partyDetails?.correspondenceAddress) : undefined,
     respondent1ResponseLanguage: toCCDRespondentResponseLanguage(claim.claimBilingualLanguagePreference),
+    respondent1DQEvidenceConfirmDetails: convertToCCDEvidenceConfirmDetails(claim.directionQuestionnaire?.confirmYourDetailsEvidence),
   };
 };
 
