@@ -20,8 +20,10 @@ import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/state
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
-
-import {DefendantEmail} from "form/models/claim/yourDetails/defendantEmail";
+import {ValidationError, Validator} from 'class-validator';
+import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
+import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
+const validator = new Validator();
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
@@ -70,32 +72,30 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
       : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
+
     await form.validate();
+    //TOD
+    form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'claimant email')), form.errors); // eamil claimant
+    form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'applicant email')),form.errors); // def
+    form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.applicant1.partyPhone.phone, 'claimant phone')),form.errors); // eamil claimant
+    form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'defendant phone')), form.errors); // def
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
     } else {
-      const validateFields = new ValidatePhoneAndEmail();
-      validateFields.defendantEmail = new DefendantEmail('xx@xx_.com');
-      const validateFieldsForm = new GenericForm(validateFields);
-      await validateFieldsForm.validate();
-      if (validateFieldsForm.hasErrors()) {
-        renderView(res, validateFieldsForm, claim, userId, lang, isCarmEnabled);
-      } else {
-        await saveStatementOfTruth(userId, form.model);
-        const submittedClaim = await submitClaim(<AppRequest>req);
+      await saveStatementOfTruth(userId, form.model);
+      const submittedClaim = await submitClaim(<AppRequest>req);
+      res.clearCookie('eligibilityCompleted');
+      res.clearCookie('eligibility');
+      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+        //TODO Will be implemented after integration ready
+        //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
+        //res.redirect(paymentUrlWithId);
+        await deleteDraftClaimFromStore(userId);
         res.clearCookie('eligibilityCompleted');
-        res.clearCookie('eligibility');
-        if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-          //TODO Will be implemented after integration ready
-          //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
-          //res.redirect(paymentUrlWithId);
-          await deleteDraftClaimFromStore(userId);
-          res.clearCookie('eligibilityCompleted');
-          res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
-        } else {
-          await deleteDraftClaimFromStore(userId);
-          res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
-        }
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+      } else {
+        await deleteDraftClaimFromStore(userId);
+        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
   } catch (error) {
@@ -105,6 +105,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 
 export default claimCheckAnswersController;
 
-class ValidatePhoneAndEmail {
-  defendantEmail?: DefendantEmail;
-}
+const validateFields = (genericForm: GenericForm<any>, formErrors: ValidationError[]): ValidationError[] => {
+  return [...formErrors, ...validator.validateSync(genericForm.model)];
+};
