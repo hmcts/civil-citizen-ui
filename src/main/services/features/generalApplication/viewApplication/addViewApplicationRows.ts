@@ -238,27 +238,18 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
       supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.SIGN_INTERPRETER)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} (${application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage})</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.LANGUAGE_INTERPRETER)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} (${application.case_data.generalAppHearingDetails.SupportRequirementLanguageInterpreter})</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.OTHER_SUPPORT)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} (${application.case_data.generalAppHearingDetails.SupportRequirementOther})</li>`;
     }
     supportHtml += '</ul>';
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
-    );
-    rows.push(
-      summaryRow(null, application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage),
-    );
-    rows.push(
-      summaryRow(null, application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage),
-    );
-    rows.push(
-      summaryRow(null, application.case_data.generalAppHearingDetails.SupportRequirementOther),
     );
   }
   return rows;
