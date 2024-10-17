@@ -1,4 +1,4 @@
-{% macro externalLink(t, text, href, newWindow, translated, newWindowHidden) %}
+{% macro externalLink(t, text, href, newWindow, translated, newWindowHidden, isCarm=False) %}
   {% if href %}
   <a class="govuk-link" href={{ href }} target="_blank" rel="noreferrer noopener">
     {% if translated %}
@@ -7,9 +7,13 @@
      {{ t(text) }}
     {% endif %}
     {% if newWindowHidden %}
-      <span class="govuk-visually-hidden">{{ t('COMMON.OPENS_IN_NEW_TAB') }}</span> 
+      <span class="govuk-visually-hidden">{{ t('COMMON.OPENS_IN_NEW_TAB') }}</span>
     {% endif %}
-    {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.OPENS_IN_A_NEW_WINDOW') if newWindow }}
+    {% if isCarm %}
+      {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.OPENS_IN_A_NEW_WINDOW_CARM') if newWindow }}
+    {% else %}
+      {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.OPENS_IN_A_NEW_WINDOW') if newWindow }}
+    {% endif %}
   </a>
   {% else %}
 <p class="govuk-body">
