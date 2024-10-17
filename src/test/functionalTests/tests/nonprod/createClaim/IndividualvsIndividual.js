@@ -13,7 +13,7 @@ const createGAAppSteps = require('../../../citizenFeatures/response/steps/create
 
 Feature('Create Lip v Lip claim - Individual vs Individual @claimCreation').tag('@regression-r2');
 
-Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time) @debug', async ({I, api}) => {
+Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     claimInterestFlag = false;
@@ -44,12 +44,12 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askToChangeHearingDateGA(caseRef, 'Mr Claimant person v mr defendant person');
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
     console.log('Creating GA app as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askToChangeHearingDateGA(caseRef, 'Mr Claimant person v mr defendant person');
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
   }
 });
 

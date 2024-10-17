@@ -43,6 +43,98 @@ const applyHelpFeeSelectionPage = new ApplyHelpFeeSelection();
 
 class createGAAppSteps {
 
+  async askCourtToReconsiderAnOrderGA(caseRef, parties, informOtherParty = false) {
+    //Vary order
+    const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
+    const applicationType = 'Reconsider an order';
+    await I.waitForContent('Contact the court to request a change to my case', 60);
+    await I.click('Contact the court to request a change to my case');
+    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Ask the court to reconsider an order');
+    await applicationTypePage.nextAction('Continue');
+
+    if (informOtherParty) {
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
+      await agreementFromOtherPartyPage.nextAction('Yes');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+    } else {
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
+      await agreementFromOtherPartyPage.nextAction('No');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+
+      await informOtherPartiesPage.verifyPageContent(applicationType);
+      await informOtherPartiesPage.selectAndVerifyDontInformOption();
+    }
+
+    //verification page below needs specific application type details
+    await applicationCostsPage.verifyPageContent(applicationType);
+    await applicationCostsPage.nextAction('Start now');
+    
+    await claimApplicationCostPage.verifyPageContent(applicationType);
+    await claimApplicationCostPage.selectAndVerifyYesOption();
+    await claimApplicationCostPage.nextAction('Continue');
+
+    //text problems still
+    await orderJudgePage.verifyPageContent(applicationType);
+    await orderJudgePage.fillTextBox('Test order');
+    await orderJudgePage.nextAction('Continue');
+
+    //text probs still
+    await requestingReasonPage.verifyPageContent(applicationType);
+    await requestingReasonPage.fillTextBox('Test order');
+    await requestingReasonPage.nextAction('Continue');
+
+    await addAnotherApplicationPage.verifyPageContent(applicationType);
+    await addAnotherApplicationPage.nextAction('No');
+    await addAnotherApplicationPage.nextAction('Continue');
+
+    await wantToUploadDocumentsPage.verifyPageContent(applicationType);
+    await wantToUploadDocumentsPage.nextAction('No');
+    await wantToUploadDocumentsPage.nextAction('Continue');
+
+    await hearingArrangementsGuidancePage.verifyPageContent(applicationType);
+    await hearingArrangementsGuidancePage.nextAction('Continue');
+
+    await hearingArrangementPage.verifyPageContent(applicationType);
+    await hearingArrangementPage.nextAction('In person at the court');
+    //do we want to use birmingham not barnet?
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.nextAction('Continue');
+
+    await hearingContactDetailsPage.verifyPageContent(applicationType);
+    await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
+    await hearingContactDetailsPage.nextAction('Continue');
+
+    await unavailableDatesPage.verifyPageContent(applicationType);
+    await unavailableDatesPage.nextAction('Continue');
+
+    await hearingSupportPage.verifyPageContent(applicationType);
+    await hearingSupportPage.nextAction('Continue');
+
+    //fee amount needs parameterisation
+    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.nextAction('Continue');
+
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.checkAndSign();
+    await checkAndSendPage.nextAction('Submit');
+
+    //fee amount
+    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.nextAction('Pay application fee');
+
+    I.wait(5);
+
+    await applyHelpFeeSelectionPage.verifyPageContent();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    //fee amount
+    await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
+    govPay.confirmPayment();
+  }
+
   async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'More time to do what is required by a court order';
