@@ -1136,7 +1136,7 @@
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
       "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
       "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
-      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu'n onest ei fod yn wir.",
       "CLAIM_INTEREST": "Hawlio llog",
       "CLAIMANT_INTENT_PAGE_TITLE": "Bwriad yr Hawlydd - gwirio eich atebion",
       "COMPLETION_DATE_CYA": "Dyddiad cwblhau",
@@ -2723,27 +2723,28 @@
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
       "CHECK_YOUR_ANSWER": {
-        "APPLICATION_TYPE": "Application type",
-        "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau yn ôl?",
-        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
-        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
-        "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
-        "NAME": "Name",
-        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
-        "NONE": "None",
-        "PARTIES_AGREED": "Have the other parties agreed?",
-        "PREFERRED_COURT_LOCATION": "Preferred court location",
-        "PREFERRED_EMAIL": "Preferred email",
-        "PREFERRED_TELEPHONE": "Y rhif ffôn a ffafrir",
+        "APPLICATION_TYPE": "Math o gais",
+        "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
+        "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
+        "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
+        "INFORM_OTHER_PARTIES": "A ydych chi eisiau i’r llys hysbysu’r partïon eraill?",
+        "NAME": "Enw",
+        "NEED_ADJUSTMENTS": "Ydych chi angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad?",
+        "NONE": "Dim",
+        "PARTIES_AGREED": "A yw’r partïon eraill wedi cytuno?",
+        "PREFERRED_COURT_LOCATION": "Lleoliad llys a ffafrir",
+        "PREFERRED_EMAIL": "Cyfeiriad e-bost a ffafrir",
+        "PREFERRED_TELEPHONE": "Rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
-          "APPLICATION": "The information on this page forms your application.",
-          "CHECKBOX": "I believe that the facts stated in this form are true.",
-          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+          "APPLICATION": "Mae’r wybodaeth sydd ar y dudalen hon yn ffurfio eich cais.",
+          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen hon yn wir.",
+          "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad gwirionedd hwn. "
         },
-        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
-        "WHAT_ORDER": "What order do you want the judge to make?",
-        "WHY_PREFER": "Why would you prefer this type of hearing?",
-        "WHY_REQUESTING": "Why are you requesting this order?"
+        "TITLE": "Gwirio eich atebion",
+        "UPLOAD_DOCUMENTS": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?",
+        "WHAT_ORDER": "Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?",
+        "WHY_PREFER": "Pam fyddai'n well gennych y math hwn o wrandawiad?",
+        "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?"
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
@@ -2840,7 +2841,7 @@
         "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
+        "CANCEL_JUDGMENT": "Rhoi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
         "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
@@ -2849,8 +2850,8 @@
         "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i gynnwys yn y rhestr hon",
         "PAUSE": "Y llys i oedi hawliad",
         "RECONSIDER": "Ailystyried gorchymyn",
-        "RELIEF_PENALTY": "Rhyddhad o gosb rydych wedi’i chael gan y llys",
-        "SETTLING": "Llys i wneud gorchymyn i setlo'r hawliad drwy gydsyniad",
+        "RELIEF_PENALTY": "\tRhyddhad o gosb rydych wedi’i chael gan y llys",
+        "SETTLING": "Setlo’r hawliad trwy gydsyniad",
         "STRIKE_OUT": "Y llys i ddileu achos y partïon eraill yn gyfan gwbl, neu ddileu rhan ohono, heb gynnal treial",
         "SUMMARY_JUDGMENT": "Y llys i wneud dyfarniad diannod mewn achos",
         "VARY_JUDGMENT": "Amrywio dyfarniad"
@@ -2992,11 +2993,11 @@
         "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
         "SELECT_ALL_THAT_APPLY": "Select all that apply",
         "SUPPORT": {
-          "HEARING_LOOP": "Hearing loop",
-          "LANGUAGE_INTERPRETER": "Language interpreter",
-          "OTHER": "Other support",
-          "SIGN_LANGUAGE_INTERPRETER": "Sign language interpreter",
-          "STEP_FREE_ACCESS": "Step-free access",
+          "HEARING_LOOP": "Dolen glyw",
+          "LANGUAGE_INTERPRETER": "Cyfieithydd ar y pryd",
+          "OTHER": "Cymorth arall",
+          "SIGN_LANGUAGE_INTERPRETER": "Dehonglydd iaith arwyddion",
+          "STEP_FREE_ACCESS": "Mynediad heb ddefnyddio grisiau",
           "WHAT_LANGUAGE": "What language do you need an interpreter for?",
           "WHAT_SIGN_LANGUAGE": "What type of sign language do you need an interpreter for?",
           "WHAT_OTHER": "What other support do you need?"
@@ -3073,9 +3074,9 @@
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
-          "PERSON_AT_COURT": "In person at the court",
-          "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
+          "TELEPHONE": "Dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",
