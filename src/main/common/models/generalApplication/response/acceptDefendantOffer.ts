@@ -28,7 +28,7 @@ export class AcceptDefendantOffer {
 
   @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
   @Min(1872,{message:'ERRORS.VALID_YEAR'})
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR_V2'})
     year: number;
 
   @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
