@@ -4,6 +4,7 @@ import {
   addAskForCostsRow, addHearingContactDetailsRows, addHearingArrangementsRows, addHearingSupportRows,
   addInformOtherPartiesRow, addOrderJudgeRows,
   addOtherPartiesAgreedRow, addRequestingReasonRows, addUnavailableDatesRows, addDocumentUploadRow,
+  addFinalPaymentDateRows, addCoScDocumentUploadRow, addHasEvidenceOfDebtPaymentRow,
 } from './addCheckAnswersRows';
 import {SummaryRow} from 'models/summaryList/summaryList';
 
@@ -25,4 +26,16 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string ): Sum
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string ): SummaryRow[] => {
   return buildSummarySections(claimId, claim, lang);
+};
+
+const buildCoScSummarySections = (claimId: string, claim: Claim, lang: string ): SummaryRow[] => {
+  return [
+    ...addFinalPaymentDateRows(claimId, claim, lang),
+    ...addHasEvidenceOfDebtPaymentRow(claimId, claim, lang),
+    ...addCoScDocumentUploadRow(claimId, claim, lang),
+  ];
+};
+
+export const getCoScSummarySections = (claimId: string, claim: Claim, lang?: string ): SummaryRow[] => {
+  return buildCoScSummarySections(claimId, claim, lang);
 };
