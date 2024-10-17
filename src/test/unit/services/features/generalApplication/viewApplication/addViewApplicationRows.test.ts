@@ -67,7 +67,7 @@ describe('addViewApplicatiosRows', () => {
         '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li>',
       );
       expect(result[0].value.html).toContain(
-        `<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'ASL'-</li>`,
+        "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'ASL'-</li>",
       );
     });
 
@@ -89,10 +89,10 @@ describe('addViewApplicatiosRows', () => {
 
       expect(result).toHaveLength(1);
       expect(result[0].value.html).toContain(
-        `<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER - 'Spanish'-</li>`,
+        "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER - 'Spanish'-</li>",
       );
       expect(result[0].value.html).toContain(
-        `<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER - 'Wheelchair assistance'-</li>`,
+        "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER - 'Wheelchair assistance'-</li>",
       );
     });
 
