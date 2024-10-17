@@ -4,14 +4,14 @@ import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 export class DebtPaymentEvidence {
   @IsDefined({message: 'ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'})
   @IsIn(Object.values(debtPaymentOptions), {message: 'ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'})
-    evidence?: string;
+    debtPaymentOption?: string;
 
-  @ValidateIf(o => o.evidence === debtPaymentOptions.NO_EVIDENCE)
+  @ValidateIf(o => o.debtPaymentOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT)
   @IsNotEmpty({message: 'ERRORS.UNABLE_TO_PROVIDE_EVIDENCE'})
     provideDetails?: string;
 
-  constructor(evidence?: string, provideDetails?: string) {
-    this.evidence = evidence;
+  constructor(debtPaymentOption?: string, provideDetails?: string) {
+    this.debtPaymentOption = debtPaymentOption;
     this.provideDetails = provideDetails;
   }
 }
