@@ -3248,6 +3248,7 @@ __metadata:
 "@types/uuid@npm:^10.0.0":
   version: 10.0.0
   resolution: "@types/uuid@npm:10.0.0"
+  checksum: e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
   languageName: node
   linkType: hard
 
@@ -9093,17 +9094,17 @@ __metadata:
   linkType: hard
 
 "launchdarkly-node-server-sdk@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "launchdarkly-node-server-sdk@npm:7.0.1"
+  version: 7.0.4
+  resolution: "launchdarkly-node-server-sdk@npm:7.0.4"
   dependencies:
     async: ^3.2.4
     launchdarkly-eventsource: 1.4.4
     lru-cache: ^6.0.0
     node-cache: ^5.1.0
-    semver: ^7.3.0
+    semver: ^7.5.4
     tunnel: 0.0.6
     uuid: ^8.3.2
-  checksum: 83a24c6157088c19dbe31c7e3369a852a9cc24336778790f173869a0a3f29ed74e6babe9f31e7672ef6a374b5f7880c3c4dc6d9d1eefbf67239d15747491ea2e
+  checksum: d201e12c13e03e63cac31056fdcf03ecb257427adeb12329017f488b654fbfe7ee9bcae069617f7052e22445e860ff1c9bd911b7a6371c2f0f71a52b4fde8b76
   languageName: node
   linkType: hard
 
