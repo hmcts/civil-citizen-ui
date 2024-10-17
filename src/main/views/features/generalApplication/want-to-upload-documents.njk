@@ -14,7 +14,7 @@
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.MSG1') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', '') }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             <div class="govuk-button-group">
               {{ addButton(t, 'CONTINUE', cancelUrl) }}
             </div>
