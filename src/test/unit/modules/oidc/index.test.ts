@@ -165,14 +165,14 @@ describe('OIDC middleware', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
-        })
-    })
+        });
+    });
     it('should store original url in local if user details expired', async () => {
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(SIGN_IN_URL);
       });
       expect(app.locals.paymentConfirmationUrl).toBe(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
-    })
-  })
+    });
+  });
 });

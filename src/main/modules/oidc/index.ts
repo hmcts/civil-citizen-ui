@@ -27,7 +27,7 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
 const isPaymentConfirmationUrl = (req: Request): boolean => {
   const paymentUrls = ['/hearing-payment-confirmation', '/claim-issued-payment-confirmation'];
   return paymentUrls.some(url => req.originalUrl.startsWith(url));
-}
+};
 
 const requestIsForClaimIssueTaskList = (req: Request): boolean => {
   return req.originalUrl.startsWith(CLAIMANT_TASK_LIST_URL);
