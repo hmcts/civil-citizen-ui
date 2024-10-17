@@ -13,10 +13,10 @@ class HearingSupport {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     this.verifyPageText();
     await this.verifyOptions();
     contactUs.verifyContactUs();
@@ -26,8 +26,8 @@ class HearingSupport {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'h1');
     I.see('Adjustments or support to attend a hearing', 'h1');
   }
 
