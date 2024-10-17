@@ -27,6 +27,7 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
     const redisKey = generateRedisKey(req);
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
 
     if (req.session?.fileUpload) {
       const parsedData = JSON.parse(req?.session?.fileUpload);
@@ -39,7 +40,7 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
     }
     const cancelUrl = await getCancelUrl(id, claim);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(id,gaId, GA_VIEW_APPLICATION_URL);
-    const formattedSummary = getSummaryList(gaDetails.uploadAdditionalDocuments, id, gaId);
+    const formattedSummary = getSummaryList(gaDetails.uploadAdditionalDocuments, id, gaId, lng);
     res.render(viewPath, { cancelUrl, backLinkUrl, form, formattedSummary });
   } catch (err) {
     next(err);
