@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../main/app';
 import {
   ASSIGN_CLAIM_URL,
-  CALLBACK_URL, CLAIMANT_TASK_LIST_URL, DASHBOARD_URL,
+  CALLBACK_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID, CLAIMANT_TASK_LIST_URL, DASHBOARD_URL,
   FIRST_CONTACT_SIGNPOSTING_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL, UNAUTHORISED_URL,
@@ -150,6 +150,29 @@ describe('OIDC middleware', () => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(DASHBOARD_URL);
         });
+    });
+  });
+
+  describe('should redirect back to payment confirmation url after login', () => {
+    it('should redirect back to payment confirmation url after login', async () => {
+      userDetails.roles = ['citizen'];
+      app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
+      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
+      mockGetUserDetails.mockReturnValue(userDetails);
+      mockGetSessionIssueTime.mockReturnValue(1234);
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
+        });
+    });
+    it('should store original url in local if user details expired', async () => {
+      await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(SIGN_IN_URL);
+      });
+      expect(app.locals.paymentConfirmationUrl).toBe(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
     });
   });
 });
