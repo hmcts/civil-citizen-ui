@@ -18,7 +18,7 @@ jest.mock('../../../../../../../main/services/features/generalApplication/feeDet
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.VARY_ORDER));
+mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
 
 describe('General Application - ask proof of debt payment guidance', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
