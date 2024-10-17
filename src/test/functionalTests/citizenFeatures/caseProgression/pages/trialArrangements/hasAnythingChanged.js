@@ -43,7 +43,7 @@ const content ={
       cy: 'Gallwch wirio eich atebion blaenorol yn yr',
     },
     directionsQuestionnaire: {
-      en: 'directions questionnaire.',
+      en: 'directions questionnaire',
       cy: 'holiadur cyfarwyddiadau.',
     },
     whatSupport: {
@@ -67,12 +67,23 @@ class HasAnythingChanged {
     I.click(nextAction);
   }
 
-  verifyPageContent(languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyHasAnythingChangedSectionContent();
     contactUs.verifyContactUs();
+  }
+
+  verifyBreadcrumbs() {
+    I.see('Back', '//a[@class="govuk-back-link"]');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyHeadingDetails() {
@@ -82,7 +93,7 @@ class HasAnythingChanged {
   }
 
   verifyHasAnythingChangedSectionContent() {
-    I.see(content.anythingChanged.title[language],'h3');
+    I.see(content.anythingChanged.title[language],'h2');
     I.see(content.anythingChanged.previousAnswers[language]);
     I.seeElement(`//a[.='${content.anythingChanged.directionsQuestionnaire[language]}']`);
     I.see(content.button.yes[language]);
@@ -93,7 +104,7 @@ class HasAnythingChanged {
     I.click('//input[@id=\'option\']');
     I.see(content.anythingChanged.whatSupport[language]);
     I.see(content.anythingChanged.example[language]);
-    I.fillField('textArea','Autoation Test execution of Trial Arrangeents...%$£');
+    I.fillField('textArea','Automation Test execution of Trial Arrangements...%$£');
   }
 }
 
