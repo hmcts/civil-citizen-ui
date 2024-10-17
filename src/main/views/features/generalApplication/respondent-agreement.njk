@@ -10,7 +10,7 @@
 {{ headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' ) }}
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
-    
+
     {% set noHtml %}
       {{ govukTextarea({
         name: "reasonForDisagreement",
@@ -25,9 +25,9 @@
       }) }}
     {% endset %}
 
-    {{ yesNoRadioButton(t, 'option', 'option', '', 
-          form, 
-          t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TEXT_REVIEW'),{noHtml:noHtml}) }}
+    {{ yesNoRadioButton(t, 'option', 'option', '',
+          form,
+          t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TEXT_REVIEW'),{noHtml:noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
     {{ addButton(t, 'CONTINUE', cancelUrl) }}
   </form>
 {% endblock %}

@@ -9,10 +9,10 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
-import {t} from 'i18next';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {
+  getHearingSupportCaption,
   getRespondToApplicationCaption,
   saveRespondentHearingSupport,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
@@ -30,7 +30,8 @@ async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericFor
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
+  const headingTitle = getHearingSupportCaption(lang);
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle });
 }
 
 hearingSupportResponseController.get(GA_RESPONSE_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
