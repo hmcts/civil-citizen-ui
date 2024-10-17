@@ -2124,7 +2124,6 @@
         "DEFAULT_JUDGEMENT_ISSUED_STATUS": "The claimant has requested a County Court Judgment (CCJ) against you on {{ defaultJudgementIssuedDate }}",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
-        "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
         "MEDIATION_UNSUCCESSFUL": "Mediation was unsuccessful.",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation.",
         "NO_RESPONSE_ON_TIME": "Respond to claim: {{ numberOfDays }} days remaining.",
