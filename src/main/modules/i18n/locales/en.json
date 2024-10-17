@@ -2685,7 +2685,7 @@
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
-        "SUMMARY_JUDGMENT": "the court to make a summary judgment",
+        "SUMMARY_JUDGEMENT": "the court to make a summary judgment",
         "STAY_THE_CLAIM": "the court to pause a claim",
         "TITLE": "Application costs",
         "TO_APPLY": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}.",

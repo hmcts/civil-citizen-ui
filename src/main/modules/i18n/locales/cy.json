@@ -2685,7 +2685,7 @@
         "SET_ASIDE_JUDGEMENT": "rhoi dyfarniad o’r naill du (ei ddileu)",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "y llys i ddileu achos y partïon eraill i gyd neu ran ohono",
-        "SUMMARY_JUDGMENT": "y llys i wneud dyfarniad diannod",
+        "SUMMARY_JUDGEMENT": "y llys i wneud dyfarniad diannod",
         "STAY_THE_CLAIM": "y llys i oedi hawliad",
         "TITLE": "Costau’r cais",
         "TO_APPLY": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}.",
