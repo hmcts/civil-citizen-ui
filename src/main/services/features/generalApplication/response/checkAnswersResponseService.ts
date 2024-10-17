@@ -153,7 +153,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   
     const selectedHtml = supportOptions
       .filter(option => option.selected)
-      .map(option => `<li>${t(option.text, { lng })}${option.content ? ` (${option.content})` : ''}</li>`)
+      .map(option => `<li>${t(option.text, { lng })}${option.content ? ` - '${option.content}'-` : ''}</li>`)
       .join('');
   
     const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : YesNoUpperCamelCase.NO;
