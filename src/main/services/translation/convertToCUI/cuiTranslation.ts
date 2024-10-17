@@ -194,6 +194,6 @@ function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralAp
   return claimGeneralApplications;
 }
 
-const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
+export const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
   return (Object.keys(selectedApplicationTypeByOptions) as Array<keyof typeof selectedApplicationTypeByOptions>)
     .find(key => selectedApplicationTypeByOptions[key]?.[2] === displayValue) as ApplicationTypeOption | undefined;};
