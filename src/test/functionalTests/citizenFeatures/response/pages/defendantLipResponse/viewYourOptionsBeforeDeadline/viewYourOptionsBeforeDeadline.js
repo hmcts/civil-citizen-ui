@@ -68,7 +68,7 @@ class ViewYourOptionsBeforeDeadline {
         await I.click(fields.iHaveAlreadyAgreedMoretime);
         await I.click('Save and continue');
         await I.see('You have already agreed to more time to respond','h1');
-        await I.see('Enter the respond date you have agreed with Test Inc\'s legal representative');
+        await I.see('Enter the respond date you have agreed with the other party or their legal representative');
         await I.fillField(fields.day, extendedDay );
         await I.fillField(fields.month, extendedMonth);
         await I.fillField(fields.year, extendedYear);
@@ -117,7 +117,7 @@ class ViewYourOptionsBeforeDeadline {
         await I.click(fields.iHaveAlreadyAgreedMoretime);
         await I.click('Save and continue');
         await I.see('You have already agreed to more time to respond','h1');
-        await I.see('Enter the respond date you have agreed with Test Inc\'s legal representative');
+        await I.see('Enter the respond date you have agreed with the other party or their legal representative');
         await I.click(buttons.saveAndContinue);
         await I.see('There was a problem');
         await I.see('Enter the agreed response date');
