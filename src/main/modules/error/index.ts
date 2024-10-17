@@ -1,9 +1,7 @@
 import express, {Application} from 'express';
-import {AxiosError} from 'axios';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('errorHandler');
 import {HTTPError} from '../../HttpError';
-import config from 'config';
 
 const env = process.env.NODE_ENV || 'development';
 export class ErrorHandler {
@@ -19,14 +17,6 @@ export class ErrorHandler {
       const errorMessage = err.message || 'Internal Server Error';
       logger.error(`${err.stack || errorMessage}`);
 
-      if ((err as AxiosError)?.response?.status === 401) {
-        const loginUrl: string = config.get('services.idam.authorizationURL');
-        const clientId: string = config.get('services.idam.clientID');
-        const redirectUri: string = config.get('services.idam.callbackURL');
-        const scope: string = config.get('services.idam.scope');
-        const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + scope;
-        return res.redirect(idamUrlLogin);
-      }
       // set locals, only providing error in development
       res.locals.message = errorMessage;
       res.locals.error = env === 'development' ? err : {};
