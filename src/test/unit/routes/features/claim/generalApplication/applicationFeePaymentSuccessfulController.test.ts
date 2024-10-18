@@ -57,7 +57,18 @@ describe('Claim fee payment confirmation', () => {
         gaAddlDoc: undefined,
         generalAppHearingDetails: undefined,
         generalAppStatementOfTruth: undefined,
-        generalAppPBADetails: undefined,
+        generalAppPBADetails: {
+          fee: undefined,
+          paymentDetails: {
+            status: 'SUCCESS',
+            reference: 'REF-123-123',
+          },
+          additionalPaymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          serviceRequestReference: undefined,
+        },
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
         judicialDecision: undefined,
