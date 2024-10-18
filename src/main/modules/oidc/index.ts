@@ -24,6 +24,11 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
 };
 
+const isPaymentConfirmationUrl = (req: Request): boolean => {
+  const paymentUrls = ['/hearing-payment-confirmation', '/claim-issued-payment-confirmation'];
+  return paymentUrls.some(url => req.originalUrl.startsWith(url));
+};
+
 const requestIsForClaimIssueTaskList = (req: Request): boolean => {
   return req.originalUrl.startsWith(CLAIMANT_TASK_LIST_URL);
 };
@@ -87,11 +92,11 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
-        
+
         const responseData = await getOidcResponse(redirectUri, req.query.code);
         req.session.user = app.locals.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
-        
+
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
@@ -100,6 +105,11 @@ export class OidcMiddleware {
           req.session.claimIssueTasklist = undefined;
           app.locals.claimIssueTasklist = undefined;
           return res.redirect(CLAIMANT_TASK_LIST_URL);
+        }
+        if (app.locals.paymentConfirmationUrl) {
+          const paymentConfirmationUrl = app.locals.paymentConfirmationUrl;
+          app.locals.paymentConfirmationUrl = '';
+          return res.redirect(paymentConfirmationUrl);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
@@ -134,11 +144,11 @@ export class OidcMiddleware {
         }
       }
       if (
-        requestIsForPinAndPost(req) || 
-        requestIsForDownloadPdf(req) || 
-        isEligibilityPage(req.originalUrl) || 
-        isMakeClaimPage(req.originalUrl) || 
-        isTestingSupportDraftUrl(req.originalUrl) || 
+        requestIsForPinAndPost(req) ||
+        requestIsForDownloadPdf(req) ||
+        isEligibilityPage(req.originalUrl) ||
+        isMakeClaimPage(req.originalUrl) ||
+        isTestingSupportDraftUrl(req.originalUrl) ||
         isAccessibilityStatementPage(req.originalUrl) ||
         isContactUsPage(req.originalUrl) ||
         isTermAndConditionsPage(req.originalUrl) ||
@@ -151,6 +161,9 @@ export class OidcMiddleware {
       }
       if (requestIsForClaimIssueTaskList(req) ) {
         app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
+      }
+      if (isPaymentConfirmationUrl(req)) {
+        app.locals.paymentConfirmationUrl = req.originalUrl;
       }
       return res.redirect(SIGN_IN_URL);
     });
