@@ -64,23 +64,34 @@ const content = {
 class CheckYourAnswers {
 
   checkPageFullyLoaded () {
-    I.waitForElement(`//a[.='${content.button.cancel}']`);
+    I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
   }
 
   nextAction (nextAction) {
     I.click(nextAction);
   }
 
-  verifyPageContent(languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyCheckYourAnswersContent();
     contactUs.verifyContactUs();
   }
 
+  verifyBreadcrumbs() {
+    I.see('Back', '//a[@class="govuk-back-link"]');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
+  }
+
   verifyHeadingDetails() {
-    I.see(content.heading.title[language], 'h1');
+    I.see('Check your answers', 'h1');
     I.see(content.heading.number[language]);
     I.see(content.heading.amount[language]);
   }
@@ -94,9 +105,9 @@ class CheckYourAnswers {
     }
     I.see(content.anyChange.title[language]);
     I.see(content.anyChange.yes[language]);
-    I.see('Autoation Test execution of Trial Arrangeents...%$£');
+    I.see('Automation Test execution of Trial Arrangements...%$£');
     I.see(content.otherInfo.title[language]);
-    I.see('Autoation Testing for Other Information of the Trial Arrangement Section......%$£^');
+    I.see('Automation Testing for Other Information of the Trial Arrangement Section......%$£^');
   }
 }
 

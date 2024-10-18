@@ -91,19 +91,31 @@ class UploadYourDocumentsIntroduction {
     I.click(nextAction);
   }
 
-  verifyPageContent(languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyUploadDocumentSectionContent();
     this.verifyDeadlinesForUploadingDocumentsContent();
+    this.verifyBeforeYouUploadYourDocumentsContent();
     contactUs.verifyContactUs();
   }
 
+  verifyBreadcrumbs() {
+    I.see('Home', 'li');
+    I.see('Upload your documents', 'li');
+  }
+
   verifyHeadingDetails() {
+    I.see('Hearing', 'span');
     I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.caseNumber[language]);
-    I.see(content.heading.claimAmount[language]);
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 
   verifyUploadDocumentSectionContent() {
@@ -113,7 +125,7 @@ class UploadYourDocumentsIntroduction {
   }
 
   verifyDeadlinesForUploadingDocumentsContent() {
-    I.see(content.deadlinesForUploadSection.title[language],'h3');
+    I.see(content.deadlinesForUploadSection.title[language],'h2');
     I.see(content.deadlinesForUploadSection.checkTheOrder[language]);
     I.see(content.deadlinesForUploadSection.afterDeadline[language]);
     I.seeElement(`//a[contains(.,'${content.deadlinesForUploadSection.applyToCourt[language]}')]`);
@@ -122,7 +134,7 @@ class UploadYourDocumentsIntroduction {
   }
 
   verifyBeforeYouUploadYourDocumentsContent() {
-    I.see(content.beforeYouUpload.title[language],'h3');
+    I.see(content.beforeYouUpload.title[language],'h2');
     I.see(content.beforeYouUpload.giveName[language]);
     I.see(content.beforeYouUpload.documentMustBe[language]);
   }

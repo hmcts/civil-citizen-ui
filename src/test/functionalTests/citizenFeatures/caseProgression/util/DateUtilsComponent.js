@@ -5,10 +5,6 @@ class DateUtilsComponent {
     return currentTime;
   }
 
-  static formatClaimReferenceToAUIDisplayFormat(claimReference) {
-    return claimReference.toString().replace(/\d{4}(?=.)/g, '$& ');
-  }
-
   static rollDateToCertainWeeks(numWeeks) {
     let currentDate = new Date();
     return new Date(currentDate.setDate(currentDate.getDate() + numWeeks * 7));
@@ -150,6 +146,13 @@ class DateUtilsComponent {
     let providedDate = new Date(inputDate);
     let pastDate = new Date(providedDate.setDate(providedDate.getDate() - 28));
     return this.formatDateToSpecifiedDateFormat(pastDate);
+  }
+
+  static formatDateToDDMMYYYY(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 }
 
