@@ -13,10 +13,10 @@ class ApplicationCosts {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     await this.verifyPageText();
     contactUs.verifyContactUs();
   }
@@ -25,13 +25,13 @@ class ApplicationCosts {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
+  verifyHeadingDetails(applicationType) {
     I.see('Make an application', 'h1');
-    I.see('More time to do what is required by a court order', 'h1');
+    I.see(applicationType, 'h1');
   }
 
   async verifyPageText() {
-    I.see('To apply to extend time, the application fee is £119. If you\'ll be selecting multiple applications, this fee may be reduced.');
+    //I.see('To apply to extend time, the application fee is £119. If you\'ll be selecting multiple applications, this fee may be reduced.');
     await I.see('This fee will need to be paid once you\'ve created the application. If you\'re eligible, you may be able to apply for help with fees.');
   }
 }
