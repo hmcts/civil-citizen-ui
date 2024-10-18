@@ -399,3 +399,4 @@ export const TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT = '/testing-support/toggleFlag/:k
 export const GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL =`${BASE_COSC_URL}/ask-proof-of-debt-payment-guidance`;
 export const GA_UPLOAD_DOCUMENTS_COSC_URL =`${BASE_COSC_URL}/upload-documents`;
 export const COSC_FINAL_PAYMENT_DATE_URL = `${BASE_COSC_URL}/final-payment-date`;
+export const GA_COSC_CONFIRM_URL = `${BASE_COSC_URL}/submit-general-application-confirmation`;
