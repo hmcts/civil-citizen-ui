@@ -17,6 +17,7 @@ import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDa
 import {Party} from 'models/party';
 import {Email} from 'models/Email';
 import {PartyPhone} from 'models/PartyPhone';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -164,6 +165,12 @@ describe('Claim - Check answers', () => {
     const spyClearcookie = jest.spyOn(app.response, 'clearCookie');
 
     it('should return errors when form is incomplete', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.applicant1 = new Party();
@@ -174,6 +181,7 @@ describe('Claim - Check answers', () => {
         claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.totalClaimAmount = 1000
         claim.claimDetails.helpWithFees.option = YesNo.NO;
         return claim;
       });
@@ -204,6 +212,11 @@ describe('Claim - Check answers', () => {
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.NO;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        }
         return claim;
       });
       const data = {signed: ''};
@@ -227,6 +240,11 @@ describe('Claim - Check answers', () => {
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.YES;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        }
         return claim;
       });
       const data = {signed: ''};
@@ -255,6 +273,11 @@ describe('Claim - Check answers', () => {
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.YES;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        }
         return claim;
       });
       const data = {
@@ -287,6 +310,11 @@ describe('Claim - Check answers', () => {
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.NO;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        }
         return claim;
       });
       const data = {
