@@ -155,7 +155,7 @@
       {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245', externalURLs.formN245Url, false) }}
       {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_AFTER') }}
     </p>
-    {{ yesNoRadioButton(t, 'option', 'option', null, form, null, {yesHtml: yesHtml, noHtml: noHtml}) }}
+    {{ yesNoRadioButton(t, 'option', 'option', null, form, null, {yesHtml: yesHtml, noHtml: noHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
     <div class="govuk-button-group">
         {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </div>
