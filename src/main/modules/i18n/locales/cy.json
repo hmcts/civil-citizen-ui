@@ -2748,7 +2748,7 @@
           "UPLOAD_DOCUMENTS": "Llwytho tystiolaeth",
           "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "Nac ydw - Ni allaf ddarparu tystiolaeth o daliad llawn",
           "UPLOAD_EVIDENCE_PAID_IN_FULL": "Ydw - Rwyf eisiau llwytho tystiolaeth bod y ddyled hon wedi'i thalu'n llawn",
-          "HAS_DEBT_BEEN_PAID_TO_COURT": "Ydw - full payment has been made to the court"
+          "HAS_DEBT_BEEN_PAID_TO_COURT": "Ydw - Rwyf wedi talu'n llawn i'r llys"
         }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
@@ -2778,7 +2778,7 @@
         "MADE_FULL_PAYMENT": "Rwyf wedi talu'n llawn i'r llys",
         "NO_EVIDENCE": "Ni allaf ddarparu tystiolaeth o daliad llawn",
         "GIVE_DETAILS": "Rhowch fanylion isod o'r hyn rydych wedi'i wneud i gael tystiolaeth a pham nad ydych yn gallu ei darparu",
-        "PROVIDE_DETAILS": "Provide details",
+        "PROVIDE_DETAILS": "Rhowch fanylion",
         "OR": "neu"
       },
       "PAY_ADDITIONAL_FEE": {
@@ -3028,12 +3028,13 @@
         "TITLE": "Do you want to upload documents to support your application? (Optional)"
       },
       "UPLOAD_DOCUMENTS": {
-        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLX/XLXM (Excel), PPT/PPTX (Power Point), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
-        "MSG1": "You should only upload documents that are relevant to your application.",
-        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "MSG1": "Dim ond dogfennau sy’n berthnasol i’ch cais y dylech eu huwchlwytho.",
+        "NAME_DOCUMENT": "Cyn i chi uwchlwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft ‘Llythyr apwyntiad ysbyty’.",
         "REMOVE_DOC": "Dileu dogfen",
-        "TITLE": "Upload documents to support your application"
+        "TITLE": "Uwchlwythwch ddogfennau i gefnogi eich cais",
+        "UPLOAD_A_FILE": "Llwytho ffeil"
       },
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
@@ -4714,8 +4715,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
-    "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
-    "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
+    "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
+    "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
     "FRC_BAND_AGREED": "Nodwch a yw’r band cymhlethdod wedi cael ei gytuno â’r partïon eraill",
     "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod rydych chi'n credu y mae'r hawliad hwn yn berthnasol iddo",
@@ -5172,7 +5173,7 @@
     "VALID_REAL_MONTH": "Rhaid i fis y dyddiad fod yn fis dilys",
     "VALID_REAL_YEAR": "Rhaid i flwyddyn y dyddiad fod yn flwyddyn ddilys",
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
-    "VALID_DATE_NOT_IN_THE_FUTURE": "Date of the final payment must be today or in the past",
+    "VALID_DATE_NOT_IN_THE_FUTURE": "Rhaid i ddyddiad y taliad terfynol fod heddiw neu yn y gorffennol",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
@@ -5209,7 +5210,7 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
-      "UPLOAD_ONE_FILE": "You need to upload at least one file.",
+      "UPLOAD_ONE_FILE": "Rhaid ichi uwchlwytho o leiaf un ffeil.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
@@ -5220,6 +5221,6 @@
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
     },
-    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
   }
 }
