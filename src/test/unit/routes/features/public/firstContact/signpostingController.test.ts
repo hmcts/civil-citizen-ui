@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import {
   FIRST_CONTACT_SIGNPOSTING_URL,
 } from 'routes/urls';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
