@@ -181,7 +181,7 @@ describe('Claim - Check answers', () => {
         claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.totalClaimAmount = 1000
+        claim.totalClaimAmount = 1000;
         claim.claimDetails.helpWithFees.option = YesNo.NO;
         return claim;
       });
@@ -216,7 +216,7 @@ describe('Claim - Check answers', () => {
           calculatedAmountInPence: 1000,
           code: 'FEE202',
           version: 1,
-        }
+        };
         return claim;
       });
       const data = {signed: ''};
@@ -244,7 +244,7 @@ describe('Claim - Check answers', () => {
           calculatedAmountInPence: 1000,
           code: 'FEE202',
           version: 1,
-        }
+        };
         return claim;
       });
       const data = {signed: ''};
@@ -277,7 +277,7 @@ describe('Claim - Check answers', () => {
           calculatedAmountInPence: 1000,
           code: 'FEE202',
           version: 1,
-        }
+        };
         return claim;
       });
       const data = {
@@ -314,7 +314,7 @@ describe('Claim - Check answers', () => {
           calculatedAmountInPence: 1000,
           code: 'FEE202',
           version: 1,
-        }
+        };
         return claim;
       });
       const data = {
