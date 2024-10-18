@@ -14,20 +14,22 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {GenericForm} from 'common/form/models/genericForm';
-import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
-import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNo} from 'common/form/models/yesNo';
 import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {ValidationError, Validator} from 'class-validator';
+import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
+import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
+const validator = new Validator();
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+function renderView(res: Response, form: GenericForm<any>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
   const signatureType = form.model?.type;
@@ -72,7 +74,20 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
 
     await form.validate();
-    if (form.hasErrors()) {
+    //TOD
+    if (claim.applicant1?.emailAddress?.emailAddress) {
+      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
+    }
+    if (claim.respondent1?.emailAddress?.emailAddress) {
+      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
+    }
+    if (claim.applicant1?.partyPhone?.phone) {
+      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.applicant1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_CLAIMANT')), form.errors);
+    }
+    if (claim.respondent1?.partyPhone?.phone) {
+      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
+    }
+    if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
     } else {
       await saveStatementOfTruth(userId, form.model);
@@ -97,3 +112,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 });
 
 export default claimCheckAnswersController;
+
+const validateFields = (genericForm: GenericForm<any>, formErrors: ValidationError[]): ValidationError[] => {
+  return [...formErrors, ...validator.validateSync(genericForm.model)];
+};
