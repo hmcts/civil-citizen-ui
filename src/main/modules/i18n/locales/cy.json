@@ -2744,7 +2744,13 @@
         "UPLOAD_DOCUMENTS": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?",
         "WHAT_ORDER": "Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?",
         "WHY_PREFER": "Pam fyddai'n well gennych y math hwn o wrandawiad?",
-        "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?"
+        "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?",
+        "COSC": {
+          "UPLOAD_DOCUMENTS": "Uploaded Evidence",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "No - I am unable to provide evidence of full payment",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL": "Yes - I want to upload evidence that this debt has been paid in full",
+          "HAS_DEBT_BEEN_PAID_TO_COURT": "Yes - full payment has been made to the court"
+        }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",

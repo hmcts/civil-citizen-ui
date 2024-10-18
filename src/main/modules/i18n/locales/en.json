@@ -2744,7 +2744,13 @@
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
-        "WHY_REQUESTING": "Why are you requesting this order?"
+        "WHY_REQUESTING": "Why are you requesting this order?",
+        "COSC": {
+          "UPLOAD_DOCUMENTS": "Uploaded Evidence",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "No - I am unable to provide evidence of full payment",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL": "Yes - I want to upload evidence that this debt has been paid in full",
+          "HAS_DEBT_BEEN_PAID_TO_COURT": "Yes - full payment has been made to the court"
+        }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",

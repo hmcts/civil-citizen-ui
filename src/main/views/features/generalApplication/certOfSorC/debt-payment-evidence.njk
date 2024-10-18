@@ -48,9 +48,9 @@
             {% endset %}
 
             {{ govukRadios({
-              idPrefix: "evidence",
-              name: "evidence",
-              value: form.model.evidence,
+              idPrefix: "debtPaymentOption",
+              name: "debtPaymentOption",
+              value: form.model.debtPaymentOption,
               fieldset: {
                 legend: {
                   text: t("PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE"),
@@ -60,22 +60,22 @@
               },
               items: [
                   {
-                    value: DebtPaymentOptions.UPLOAD_EVIDENCE,
-                    text: t(DebtPaymentOptions.UPLOAD_EVIDENCE),
-                    checked: form.model.evidence === DebtPaymentOptions.UPLOAD_EVIDENCE
+                    value: DebtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL,
+                    text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.UPLOAD_EVIDENCE'),
+                    checked: form.model.debtPaymentOption === DebtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL
                   },
                   {
-                    value: DebtPaymentOptions.MADE_FULL_PAYMENT,
-                    text: t(DebtPaymentOptions.MADE_FULL_PAYMENT),
-                    checked: form.model.evidence === DebtPaymentOptions.MADE_FULL_PAYMENT
+                    value: DebtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT,
+                    text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.MADE_FULL_PAYMENT'),
+                    checked: form.model.debtPaymentOption === DebtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT
                   },
                   {
                     divider: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.OR')
                   },
                   {
-                    value: DebtPaymentOptions.NO_EVIDENCE,
-                    text: t(DebtPaymentOptions.NO_EVIDENCE),
-                    checked: form.model.evidence === DebtPaymentOptions.NO_EVIDENCE,
+                    value: DebtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT,
+                    text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.NO_EVIDENCE'),
+                    checked: form.model.debtPaymentOption === DebtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT,
                     hint: {
                           text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.GIVE_DETAILS')
                         },
@@ -85,8 +85,8 @@
                   }
                 ],
                 errorMessage: {
-                  text: t(form.errorFor('evidence'))
-                } if form.hasFieldError('evidence')
+                  text: t(form.errorFor('debtPaymentOption'))
+                } if form.hasFieldError('debtPaymentOption')
             }) }}
 
             <div class="form-group">
