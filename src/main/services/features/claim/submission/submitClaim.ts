@@ -17,7 +17,7 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
     const claimId = (<AppRequest>req).session.user?.id;
     const user = (<AppRequest>req).session.user;
     const claim = await getCaseDataFromStore(claimId);
-    logger.info('claim fee from cya ' + claim.claimFee.calculatedAmountInPence);
+    logger.info('claim fee from cya ' + claim.claimFee?.calculatedAmountInPence);
     if (claim.applicant1) {
       claim.applicant1.emailAddress = new Email(user.email);
       await saveDraftClaim(claimId, claim);
