@@ -23,8 +23,13 @@ import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyC
 import {ValidationError, Validator} from 'class-validator';
 import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 const validator = new Validator();
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
@@ -86,6 +91,10 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     }
     if (claim.respondent1?.partyPhone?.phone) {
       form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
+    }
+    if (!claim?.claimFee?.calculatedAmountInPence) {
+      const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount, req as AppRequest);
+      await saveClaimFee(userId, claimFeeData);
     }
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);

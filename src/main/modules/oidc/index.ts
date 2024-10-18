@@ -20,6 +20,9 @@ import {
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('IDAMlogs');
+
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
 };
@@ -96,7 +99,7 @@ export class OidcMiddleware {
         const responseData = await getOidcResponse(redirectUri, req.query.code);
         req.session.user = app.locals.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
-
+        logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
@@ -162,7 +165,9 @@ export class OidcMiddleware {
       if (requestIsForClaimIssueTaskList(req) ) {
         app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
       }
+      logger.info('redirecting url ', req.originalUrl);
       if (isPaymentConfirmationUrl(req)) {
+        logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
         app.locals.paymentConfirmationUrl = req.originalUrl;
       }
       return res.redirect(SIGN_IN_URL);
