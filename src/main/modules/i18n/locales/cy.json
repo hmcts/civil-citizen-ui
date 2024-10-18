@@ -1,7 +1,8 @@
 {
   "COMMON": {
     "HOME": "Hafan",
-    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
+    "HOME_CARM": "Tudalen gartref",
+    "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Uwchlwytho ffeil",
     "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
@@ -15,6 +16,7 @@
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
     "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
     "CASE_NUMBER_PARAM": "Rhif yr achos: {{ claimId }}",
+    "CASE_NUMBER_PARAM_CARM": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -47,7 +49,7 @@
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "TELEPHONE_MEDIATION": "Cyfryngu dros y ffôn",
     "AVAILABILITY_FOR_MEDIATION": "Pryd rydych ar gael ar gyfer cyfryngu",
-    "MEDIATION": "Mediation",
+    "MEDIATION": "Cyfryngu",
     "GIVE_DETAILS": "Rhowch fanylion os gwelwch yn dda",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
@@ -139,9 +141,11 @@
       "CALL_CHARGES": "Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)",
       "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
+      "OPENING_HOURS_CARM": "Dydd Llun i ddydd Iau 9am – 5pm, dydd Gwener 9am – 4.30pm.",
       "RESPONSE_DELAY": "Byddwn yn cysylltu â chi o fewn 10 diwrnod.",
       "TITLE": "Cysylltu â ni am gymorth",
       "TELEPHONE": "Ffôn",
+      "TELEPHONE_CARM": "Rhif ffôn",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
@@ -171,7 +175,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl={{ pageTitle }}' target='_blank'>adborth <span class='govuk-visually-hidden'>(yn agor mewn tab newydd)</span></a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>adborth (agor mewn ffenestr newydd)</a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -352,6 +356,14 @@
     "VARIATION_6": {
       "YES": "Dylai",
       "NO": "Na ddylai"
+    },
+    "VARIATION_7": {
+      "YES": "Gallai",
+      "NO": "Na allai"
+    },
+    "VARIATION_8": {
+      "YES": "Oes",
+      "NO": "Nac oes"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -594,6 +606,7 @@
       "PARAGRAPH_AS_1": "Mae’r datganiad hygyrchedd hwn yn berthnasol i ",
       "PARAGRAPH_AS_1_LINK": "https://www.moneyclaims.service.gov.uk/",
       "PARAGRAPH_AS_2": "Mae'r gwasanaeth hwn yn eich galluogi i wneud cais am arian yn erbyn unigolyn neu sefydliad.",
+      "PARAGRAPH_AS_2_CARM": "Mae’r gwasanaeth hwn yn eich galluogi i wneud hawliad am arian yn erbyn unigolyn neu sefydliad am £25,000 neu lai.",
       "PARAGRAPH_AS_3": "Gwasanaeth Llysoedd a Thribiwnlysoedd EF (GLlTEF) sy’n gyfrifol am y wefan hon. Rydym eisiau i gymaint o bobl â phosibl allu defnyddio’r wefan hon. Er enghraifft, dylech allu:",
       "PARAGRAPH_AS_4": "newid y lliwiau, y lefelau cyferbyniad a’r ffontiau",
       "PARAGRAPH_AS_5": "gwneud y testun hyd at 300% yn fwy heb iddo ddiflannu oddi ar y sgrin",
@@ -617,26 +630,43 @@
       "PARAGRAPH_ENFORCEMENT_3": "cysylltwch â’r Gwasanaeth Cynghori a Chefnogi Cydraddoldeb (EASS)",
       "PARAGRAPH_FEEDBACK_1": "Adborth a gwybodaeth gyswllt",
       "PARAGRAPH_FEEDBACK_2": "Os ydych angen gwybodaeth sydd ar y wefan hon mewn fformat arall megis ar ffurf PDF hygyrch, print bras, fformat hawdd ei ddeall, recordiad sain neu braille:",
+      "PARAGRAPH_FEEDBACK_3": "Os ydych chi’n bwriadu ymweld â’n swyddfa ac angen cefnogaeth, megis dehonglydd Iaith Arwyddion Prydain (BSL) neu angen cymorth gyda'n dolenni sain, cysylltwch â ni ymlaen llaw.",
+      "PARAGRAPH_FEEDBACK_4": "Rydym hefyd yn cynnig gwasanaeth cyfnewid negeseuon testun ar gyfer pobl fyddar, pobl sydd â nam ar eu clyw a phobl sydd â nam ar eu lleferydd.",
+      "PARAGRAPH_FEEDBACK_5": "Ar gyfer ymweliadau wyneb yn wyneb neu os ydych angen gwybodaeth sydd ar y wefan hon mewn fformat arall megis ar ffurf PDF hygyrch, print bras, fformat hawdd ei ddeall, recordiad sain neu Braille, cysylltwch ag:",
       "PARAGRAPH_HOW_1": "Pa mor hygyrch yw'r wefan hon",
       "PARAGRAPH_HOW_2": "Gwyddwn nad yw rhai rhannau o’r gwasanaeth hwn yn gwbl hygyrch:",
+      "PARAGRAPH_HOW_2_CARM": "Gwyddwn nad yw rhai rhannau o’r gwasanaeth hwn yn gwbl hygyrch. Mae’r gwasanaeth digidol hwn yn hygyrch ac yn bodloni safon WCAG 2.2 AA. Fodd bynnag, nid yw rhai nodweddion yn hygyrch oherwydd:",
       "PARAGRAPH_HOW_3": "Nid yw negeseuon gwall yn benodol i'r maes lle gwnaed y gwall.",
+      "PARAGRAPH_HOW_4": "Nid yw’r drefn tabio ar rai tudalennau yn cyd-fynd â’r drefn weledol.",
+      "PARAGRAPH_HOW_5": "Nid yw’r ddolen adborth yn nodi’n glir y bydd yn agor mewn tab arall",
       "PARAGRAPH_IMPROVE_1": "Beth rydym yn ei wneud i wella hygyrchedd",
       "PARAGRAPH_IMPROVE_2": "Rydym yn cynnal profion hygyrchedd awtomataidd yn barhaus fel rhan o'n harferion datblygu. Mae hyn yn ein helpu i ddatrys problemau cyn i ni lansio tudalennau neu nodweddion newydd.",
       "PARAGRAPH_IMPROVE_3": "Bydd y wefan hon hefyd yn cael ei phrofi gan y Ganolfan Hygyrchedd Digidol (DAC) diwedd 2024.",
+      "PARAGRAPH_IMPROVE_4": "Rydym yn bwriadu datrys y problemau hyn erbyn dechrau 2025.",
+      "PARAGRAPH_IMPROVE_5": "Rydym yn cynnal profion hygyrchedd awtomataidd yn barhaus fel rhan o'n harferion datblygu. Mae hyn yn ein helpu i ddatrys problemau cyn i ni lansio tudalennau neu nodweddion newydd.",
+      "PARAGRAPH_IMPROVE_6": "Bydd y wefan hon hefyd yn cael ei phrofi gan y Ganolfan Hygyrchedd Digidol (DAC) ddiwedd 2024.",
       "PARAGRAPH_NON_ACCESIBLE_1": "Cynnwys anhygyrch",
       "PARAGRAPH_NON_ACCESIBLE_2": "Mae’r cynnwys a restrir isod yn anhygyrch am y rhesymau canlynol.",
       "PARAGRAPH_NON_ACCESIBLE_3": "Anghydymffurfio â’r rheoliadau hygyrchedd",
       "PARAGRAPH_NON_ACCESIBLE_5": "Efallai y bydd defnyddwyr darllenwyr sgrin yn cael anhawster i lywio negeseuon gwall gan nad yw rhai negeseuon gwall yn benodol i’r maes lle gwnaed y gwall. Nid yw hyn yn bodloni maen prawf llwyddiant Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) fersiwn 2.2 [3.3.1] (Adnabod Gwallau). Rydym yn bwriadu datrys hyn erbyn diwedd 2024.",
+      "PARAGRAPH_NON_ACCESIBLE_6": "Efallai y bydd defnyddwyr darllenwyr sgrin yn cael anhawster i lywio negeseuon gwall gan nad yw rhai negeseuon gwall yn benodol i’r maes lle gwnaed y gwall. Nid yw hyn yn bodloni maen prawf llwyddiant WCAG 2.2 [3.3.1 (adnabod gwallau).",
+      "PARAGRAPH_NON_ACCESIBLE_7": "Efallai y bydd defnyddwyr darllenwyr sgrin / bysellfwrdd yn cael problem gyda llywio’r sgrin lle mae’n ofynnol iddynt ddarparu dyddiadau nad ydynt ar gael gan nad yw’r botwm ‘remove’ yn weledol ond mae'n ymddangos yn y drefn tabio. Nid yw hyn yn bodloni maen prawf llwyddiant WCAG 2.4.2 (Gorchymyn Ffocws).",
+      "PARAGRAPH_NON_ACCESIBLE_8": "Mae agor y ddolen 'adborth' yn achosi i ddefnyddwyr symud i dab newydd heb rybudd. Gall hyn fod yn ddryslyd i ddefnyddwyr darllenydd sgrin nad ydynt efallai'n ymwybodol eu bod wedi symud i dab newydd. Nid yw hyn yn bodloni maen prawf llwyddiant WCAG 2.4.6 (Pwrpas y Ddolen (Y cyd-destun).",
       "PARAGRAPH_PREPARATION_1": "Paratoi’r datganiad hygyrchedd hwn",
       "PARAGRAPH_PREPARATION_2": "Cafodd y datganiad hwn ei baratoi ar 24 Mai 2024. Cafodd ei adolygu ddiwethaf ar 15 Mawrth 2024.",
+      "PARAGRAPH_PREPARATION_3": "Cafodd y datganiad hwn ei baratoi ar 15 Mawrth 2024.  Cafodd ei adolygu ddiwethaf ar 8 Hydref 2024.",
       "PARAGRAPH_REPORTING_1": "Riportio problemau hygyrchedd gyda'r wefan hon",
       "PARAGRAPH_REPORTING_2": "Rydym wastad yn ceisio gwella hygyrchedd y wefan hon. Os byddwch yn canfod unrhyw broblemau nad ydynt wedi’u cynnwys ar y dudalen hon, neu’n credu nad ydym yn bodloni’r gofynion o ran hygyrchedd, cysylltwch â:",
+      "PARAGRAPH_REPORTING_3": "Rydym wastad yn ceisio gwella hygyrchedd y wefan hon. Os byddwch yn cael unrhyw broblemau nad ydynt wedi’u cynnwys ar y dudalen hon, neu’n credu nad ydym yn bodloni’r gofynion o ran hygyrchedd, cysylltwch â ni a gadewch i ni wybod.",
+      "PARAGRAPH_REPORTING_4": "Byddwn yn ystyried eich cais ac yn ymateb o fewn 10 diwrnod.",
       "PARAGRAPH_TECHNICAL_1": "Gwybodaeth dechnegol am hygyrchedd y wefan hon",
       "PARAGRAPH_TECHNICAL_2": "Mae GLlTEF wedi ymrwymo i sicrhau bod ei wefannau yn hygyrch, a hynny yn unol â Rheoliadau Hygyrchedd Cyrff y Sector Gyhoeddus (Gwefannau a Rhaglenni Symudol) (Rhif 2) 2018.",
       "PARAGRAPH_TESTED_1": "Sut rydym wedi profi’r wefan hon",
       "PARAGRAPH_TESTED_2": "Profwyd y wefan hon yn fewnol gan Dîm Hygyrchedd GLlTEF i weld a yw’n cydymffurfio â’r Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) fersiwn 2.2 lefel A a lefel AA.",
       "PARAGRAPH_TESTED_3": "Rydym yn cynnal profion hygyrchedd awtomataidd yn barhaus fel rhan o'n harferion datblygu. Mae hyn yn ein helpu i ddatrys problemau cyn i ni lansio tudalennau neu nodweddion newydd.",
       "PARAGRAPH_TESTED_4": "Bydd y wefan hon hefyd yn cael ei phrofi gan y Ganolfan Hygyrchedd Digidol (DAC) diwedd 2024.",
+      "PARAGRAPH_TESTED_5": "Profwyd y wefan hon yn fewnol gan Dîm Hygyrchedd GLlTEF i weld a yw’n cydymffurfio â’r Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) fersiwn 2.2 lefel A a lefel AA.",
+      "PARAGRAPH_TESTED_6": "Bu inni hefyd gynnal profion hygyrchedd awtomataidd yn barhaus fel rhan o'n harferion datblygu.",
       "TELEPHONE": "0300 303 5174",
       "TELEPHONE_TITLE": "Rhif ffôn",
       "TITLE": "Datganiad hygyrchedd ar gyfer y gwasanaeth Hawliadau am Arian yn y Llys Sifil Ar-lein"
@@ -849,13 +879,13 @@
       "P_71": "unrhyw atebolrwydd arall na ellir ei eithrio neu ei gyfyngu dan y gyfraith berthnasol"
     },
     "VIEW_MEDIATION_DOCUMENTS": {
-      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
-      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
-      "PAGE_TITLE": "View mediation documents"
+      "CLAIMANT_TABLE_TITLE": "Dogfennau cyfryngu’r Hawlydd",
+      "DEFENDANT_TABLE_TITLE": "Dogfennau cyfryngu’r Diffynnydd",
+      "PAGE_TITLE": "Gweld dogfennau cyfryngu"
     },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
-      "PAGE_TITLE": "View mediation settlement agreement",
-      "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
+      "PAGE_TITLE": "Gweld cytundeb setlo o ran cyfryngu",
+      "DOCUMENT_TABLE_TITLE": "Cytundeb setlo o ran cyfryngu"
     },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
@@ -905,7 +935,7 @@
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
       "PAGE_TITLE": "Alternative Telephone",
-      "PAGE_TEXT": "Nodwch rif ffôn amgen"
+      "PAGE_TEXT": "Nodwch rif ffôn arall"
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
@@ -916,11 +946,11 @@
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
       "PAGE_TEXT": "A oes unrhyw ddyddiadau yn y 3 mis nesaf lle na allwch fynychu apwyntiad cyfryngu?",
-      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
+      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi eu trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
     },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
-      "PAGE_TEXT": "Nodwch gyfeiriad e-bost amgen"
+      "PAGE_TEXT": "Nodwch gyfeiriad e-bost arall"
     },
     "MEDIATION_PHONE_CONFIRMATION": {
       "PAGE_TITLE": "Mediation telephone confirmation",
@@ -2713,7 +2743,13 @@
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
-        "WHY_REQUESTING": "Why are you requesting this order?"
+        "WHY_REQUESTING": "Why are you requesting this order?",
+        "COSC": {
+          "UPLOAD_DOCUMENTS": "Uploaded Evidence",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "No - I am unable to provide evidence of full payment",
+          "UPLOAD_EVIDENCE_PAID_IN_FULL": "Yes - I want to upload evidence that this debt has been paid in full",
+          "HAS_DEBT_BEEN_PAID_TO_COURT": "Yes - full payment has been made to the court"
+        }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
@@ -3675,6 +3711,7 @@
       },
       "N1_PAPER_FORM": "Ffurflen bapur N1",
       "OPENS_IN_A_NEW_WINDOW": "(agor mewn ffenestr newydd)",
+      "OPENS_IN_A_NEW_WINDOW_CARM": "(yn agor mewn ffenestr newydd)",
       "PAGE_TITLE": "Ni allwch ddefnyddio'r gwasanaeth hwn",
       "TENANCY_DEPOSIT": {
         "GET": "Cael",
@@ -4721,6 +4758,10 @@
       "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
       "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
     },
+    "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
+    "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
+    "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
+    "ENTER_VALID_CONTACT_DEFENDANT": "Enter valid contact for defendant",
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
@@ -4797,6 +4838,7 @@
     "CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad ydych ar gael fod cyn y dyddiad pan nad ydych ar gael i",
     "GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i’r dyddiad nad ydych ar gael fod cyn y dyddiad pan nad ydych ar gael i",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
+    "ENTER_VALID_EMAIL_CARM": "Nodwch gyfeiriad e-bost arall",
     "ENTER_VALID_EMAIL_EVIDENCE": "Rhowch gyfeiriad e-bost yn y fformat cywir, fel name@example.com",
     "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
     "ENTER_VALID_SECURITY_CODE": "Rhowch god diogelwch dilys",
@@ -4900,6 +4942,7 @@
     "PAGE_NOT_FOUND": "Heb Ddod o Hyd i’r Dudalen",
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
     "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
+    "PHONE_NUMBER_REQUIRED_CARM": "Nodwch rif ffôn arall",
     "RATE_CHOOSE_ONE": "Dewis cyfradd llog",
     "RATE_CORRECT_THE_ONE_ENTERED": "Y gyfradd gywir rydych chi wedi'i nodi",
     "RATE_EXPLAIN_CLAIMING_IT": "Nid ydych wedi esbonio pam eich bod yn hawlio'r gyfradd hon",
@@ -5086,8 +5129,10 @@
     "VALID_YES_NO_OPTION_VARIATION_2": "Dewiswch opsiwn: Ydw neu Nac ydw",
     "VALID_YES_NO_OPTION_VARIATION_4": "Dewiswch opsiwn: Ydy neu Nac ydy",
     "VALID_YES_NO_OPTION_DO_NADDO": "Dewiswch opsiwn: Do neu Naddo",
-    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Dewisiwch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_CARM_OES_NAC_OES": "Dewisiwch opsiwn: Oes neu Nac oes",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
+    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Dewisiwch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_GALLAI_NA_ALLAI": "Dewisiwch opsiwn: Gallai neu Na allai",
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Dewiswch Oes neu Nac oes",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
