@@ -2743,13 +2743,13 @@
         "UPLOAD_DOCUMENTS": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?",
         "WHAT_ORDER": "Pa orchymyn ydych chi eisiau i'r barnwr ei wneud?",
         "WHY_PREFER": "Pam fyddai'n well gennych y math hwn o wrandawiad?",
-        "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?"
+        "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?",
         "COSC": {
           "UPLOAD_DOCUMENTS": "Uploaded Evidence",
           "UPLOAD_EVIDENCE_PAID_IN_FULL_NO": "No - I am unable to provide evidence of full payment",
           "UPLOAD_EVIDENCE_PAID_IN_FULL": "Yes - I want to upload evidence that this debt has been paid in full",
           "HAS_DEBT_BEEN_PAID_TO_COURT": "Yes - full payment has been made to the court"
-        },
+        }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
@@ -2846,7 +2846,7 @@
         "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
+        "CANCEL_JUDGMENT": "Roi dyfarniad o'r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
         "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
@@ -2962,7 +2962,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"Os byddwch yn dewis sawl cais, bydd yr ateb hwn yn berthnasol i bob un ohonynt.",
         "PAY_APPLICATION_FEE": "Bydd rhaid i chi dalu ffi i wneud cais",
         "RECONSIDER_ORDER": "ailystyried gorchymyn",
-        "SET_ASIDE_JUDGMENT": "roi dyfarniad o’r naill du (ei ddileu)",
+        "SET_ASIDE_JUDGMENT": "roi dyfarniad o'r naill du (ei ddileu)",
         "TITLE": "Cais gan y partïon eraill",
         "VARY_JUDGMENT": "amrywio dyfarniad"
       },
