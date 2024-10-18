@@ -152,6 +152,9 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('functionalTest:preview') {
+    sh """
+      cat test-results/functional/*.html > test-results/functional/AllTestResults.html
+    """
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
