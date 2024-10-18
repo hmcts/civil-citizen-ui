@@ -18,7 +18,7 @@ import {
   getApplicationIndex,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
@@ -34,7 +34,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(claim.id, claim);
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     }
   }
   let backLinkUrl;
