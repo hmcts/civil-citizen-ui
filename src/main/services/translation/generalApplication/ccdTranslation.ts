@@ -269,6 +269,11 @@ export const translateCoScApplicationToCCD = (
     generalAppStatementOfTruth: toCCDStatementOfTruth(
       application.statementOfTruth,
     ),
+    generalAppInformOtherParty: toCCDInformOtherParty(
+      application.applicationTypes,
+      application.agreementFromOtherParty,
+      application.informOtherParties,
+    ),
   };
 };
 
