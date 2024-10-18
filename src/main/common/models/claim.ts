@@ -786,9 +786,9 @@ export class Claim {
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.title) {
-        return `${party.partyDetails.title} ${party.partyDetails.firstName} ${party.partyDetails.lastName}`;
+        return `${party.partyDetails?.title} ${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
       } else {
-        return `${party.partyDetails.firstName} ${party.partyDetails.lastName}`;
+        return `${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
       }
     }
     return party?.partyDetails?.partyName;
