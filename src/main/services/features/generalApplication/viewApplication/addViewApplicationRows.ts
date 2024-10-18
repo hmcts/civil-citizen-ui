@@ -101,7 +101,7 @@ export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang:
   if (application.case_data.generalAppRespondentAgreement) {
     const partiesAgreed = otherPartiesAgreed(application) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng})),
     );
   }
   return rows;
@@ -148,7 +148,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
   const rows: SummaryRow[] = [];
   let rowValue: string;
   if (application.case_data.gaAddlDoc) {
-    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
     rowValue += '<ul class="no-list-style">';
     application.case_data.gaAddlDoc.forEach(uploadGAFile => {
       rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', documentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
@@ -157,7 +157,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
     rowValue += '</ul>';
 
   } else {
-    rowValue = t('COMMON.VARIATION.NO', {lng});
+    rowValue = t('COMMON.VARIATION_2.NO', {lng});
   }
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue),
