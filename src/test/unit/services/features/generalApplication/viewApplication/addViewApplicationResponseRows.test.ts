@@ -23,7 +23,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.NO'},
+        value: {html: 'COMMON.VARIATION_2.NO'},
       }]);
     });
 
@@ -38,7 +38,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.YES'},
+        value: {html: 'COMMON.VARIATION_2.YES'},
       }]);
     });
 
@@ -64,7 +64,7 @@ describe('addViewApplicationResponseRows', () => {
       };
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST' },
-        value: { html: 'COMMON.VARIATION.YES' },
+        value: { html: 'COMMON.VARIATION_2.YES' },
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
         value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT' },
@@ -106,7 +106,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.YES'},
+        value: {html: 'COMMON.VARIATION_2.YES'},
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
         value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
@@ -129,7 +129,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.YES'},
+        value: {html: 'COMMON.VARIATION_2.YES'},
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},
         value: {html: '<ul class="no-list-style">'

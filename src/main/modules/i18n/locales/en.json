@@ -3182,7 +3182,7 @@
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
-        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "There is a hearing notice",
         "HEARING_ORDER" : "Hearing Order",
@@ -3194,7 +3194,7 @@
         "READ_RESPONSE": "Read the response",
         "RESPONSE": {
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
-          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "OTHER_PARTIES_RESPONSE": "The other parties' response to the application.",
           "TITLE": "Response from the other parties",
           "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
         },

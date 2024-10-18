@@ -79,7 +79,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
   const listItemCaption = (caption: string) => `<li>${t(caption, {lng})}</li>`;
 
-  const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
+  const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION_2.${yesNo.toUpperCase()}`, {lng});
 
   return response
     ? [gaRespondentDebtorOfferSection(),
