@@ -9,7 +9,7 @@
 {% from "../../../macro/button.njk" import addButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, pageTitle) }}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE') }}
 {% endblock %}
 
 {% set hint = t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FOR_EXAMPLE', {nextDate: nextMonth.getDate(), nextMonth: nextMonth.getMonth() + 1,nextYear: nextMonth.getFullYear()}) %}
@@ -35,7 +35,7 @@
           </span>
       {% call govukFieldset({
         legend: {
-          text: t(title),
+          text: t("PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE"),
           classes: "govuk-fieldset__legend--l",
           isPageHeading: true
         }
