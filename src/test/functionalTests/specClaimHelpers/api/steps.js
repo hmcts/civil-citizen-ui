@@ -237,7 +237,7 @@ module.exports = {
     console.log('End of submitHwfEventForUser()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType, manualPIP) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
@@ -271,8 +271,8 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
     await waitForFinishedBusinessProcess(caseId);
-    
-    if (manualPIP !== 'yes') {
+
+    if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
     }
     //await waitForFinishedBusinessProcess(caseId);
