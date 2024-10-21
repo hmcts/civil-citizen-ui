@@ -9,7 +9,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {deleteDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
@@ -45,8 +45,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
-      await saveDraftClaim(claim.id, claim, true);
-      deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
@@ -74,7 +73,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       generalApplicationId = req.params.appId;
     }
     claim.paymentSyncError = true;
-    await saveDraftClaim(claim.id, claim, true);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };
