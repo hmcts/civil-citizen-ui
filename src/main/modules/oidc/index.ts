@@ -99,6 +99,7 @@ export class OidcMiddleware {
         const responseData = await getOidcResponse(redirectUri, req.query.code);
         req.session.user = app.locals.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
+        
         logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
