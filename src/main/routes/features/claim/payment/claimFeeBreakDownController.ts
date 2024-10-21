@@ -51,12 +51,11 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      let claim = await getCaseDataFromStore(redisKey);
+      const claim = await getCaseDataFromStore(redisKey);
       claim.claimDetails.claimFeePayment = paymentRedirectInformation;
       logger.info('redis key before saving the payment ' + redisKey);
+      logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference);
       await saveDraftClaim(redisKey, claim, true);
-      claim = await getCaseDataFromStore(redisKey);
-      logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference)
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
