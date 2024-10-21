@@ -27,6 +27,8 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
       gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), isAdditionalFee, withoutFee,
         shouldDisplaySyncWarning(applicationResponse), lng),
       gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(await getCancelUrl(claimId, claim)),
+      noCrumbs: true,
+      pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
     });
 }
 
