@@ -97,7 +97,7 @@ const content = {
       cy: 'Gofynnir i chi nodi a oes unrhyw newidiadau i’r cymorth neu’r addasiadau a nodwyd gennych yn flaenorol yn eich',
     },
     directionsQuestionnaire: {
-      en: 'directions questionnaire.',
+      en: 'directions questionnaire',
       cy: 'holiadur cyfarwyddiadau.',
     },
     ShouldReview: {
@@ -143,28 +143,41 @@ class TrialArrangementsIntroduction {
     I.click(nextAction);
   }
 
-  verifyPageContent(languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, deadline, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
-    this.verifyHeadingDetails();
+    this.verifyBreadcrumbs();
+    this.verifyHeadingDetails(deadline);
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyIsTheCaseReadyForTrialSectionContent();
     this.verifyTrialAdjustmentsAndDurationSectionContent();
     this.verifyOtherSectionContent();
     contactUs.verifyContactUs();
   }
 
-  verifyHeadingDetails() {
+  verifyBreadcrumbs() {
+    I.see('Home', '//li[@class=\'govuk-breadcrumbs__list-item\']');
+    I.see('Finalise your trial arrangements', '//li[@class=\'govuk-breadcrumbs__list-item\']');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
+  }
+
+  verifyHeadingDetails(deadline) {
     I.see(content.heading.title[language], 'h1');
     I.see(content.heading.number[language]);
     I.see(content.heading.amount[language]);
     I.see(content.heading.until[language]);
+    I.see(deadline);
     I.see(content.heading.provideInfo[language]);
     I.see(content.heading.youShould[language]);
     I.see(content.heading.proceed[language]);
   }
 
   verifyIsTheCaseReadyForTrialSectionContent() {
-    I.see(content.isCaseReady.title[language],'h3');
+    I.see(content.isCaseReady.title[language],'h2');
     I.see(content.isCaseReady.askConfirmation[language]);
     I.see(content.isCaseReady.actionTaken[language]);
     I.seeElement(`//a[.='${content.isCaseReady.directionsOrder[language]}']`);
@@ -179,9 +192,9 @@ class TrialArrangementsIntroduction {
   }
 
   verifyTrialAdjustmentsAndDurationSectionContent() {
-    I.see(content.duration.title[language],'h3');
+    I.see(content.duration.title[language],'h2');
     I.see(content.duration.specifyChange[language]);
-    I.seeElement(`//a[.='${content.duration.directionsQuestionnaire[language]}.']`);
+    I.seeElement(`//a[.='${content.duration.directionsQuestionnaire[language]}']`);
     I.see(content.duration.ShouldReview[language]);
     I.see(content.duration.timeAllocated[language]);
     I.see(content.duration.moreRequired[language]);
@@ -190,7 +203,7 @@ class TrialArrangementsIntroduction {
   }
 
   verifyOtherSectionContent() {
-    I.see(content.other.title[language],'h3');
+    I.see(content.other.title[language],'h2');
     I.see(content.other.text[language]);
   }
 }

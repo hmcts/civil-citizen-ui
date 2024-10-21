@@ -63,7 +63,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
     taskListItem = viewMediationDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
     taskListItem = viewMediationSettlementAgreement();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 
@@ -74,9 +74,9 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
     const defNotificationAfterUpload = mediationUnsuccessfulClaimant1NonAttendance();
     await verifyNotificationTitleAndContent(claimNumber, defNotificationAfterUpload.title, defNotificationAfterUpload.content);
     taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
     taskListItem = viewMediationSettlementAgreement();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 
@@ -84,7 +84,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
     const notificationAfterDefUpload = mediationUnsuccessfulNOTClaimant1NonContactable();
     await verifyNotificationTitleAndContent(claimNumber, notificationAfterDefUpload.title, notificationAfterDefUpload.content);
     taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     taskListItem = uploadMediationDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
     taskListItem = viewMediationSettlementAgreement();
@@ -154,7 +154,7 @@ Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
     taskListItem = uploadMediationDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
     taskListItem = viewMediationSettlementAgreement();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
 
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const defNotification = mediationSuccessful();
@@ -164,6 +164,6 @@ Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
     taskListItem = uploadMediationDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
     taskListItem = viewMediationSettlementAgreement();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
 });

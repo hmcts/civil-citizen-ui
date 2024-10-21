@@ -5,7 +5,6 @@ module.exports = {
       'caseDataUpdate': {
         'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
         'respondToClaimAdmitPartLRspec': {
-
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
