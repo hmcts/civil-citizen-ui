@@ -39,7 +39,6 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
       paymentSyncError,
     });
   } catch (error) {
-    logger.info('error on claim fee breakup on get request ' + JSON.stringify(error));
     next(error);
   }
 })as RequestHandler);
@@ -61,7 +60,6 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
-    logger.info('error on claim fee breakup on post request ' + JSON.stringify(error));
     next(error);
   }
 }) as RequestHandler);
