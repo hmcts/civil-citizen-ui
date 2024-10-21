@@ -59,6 +59,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
+     logger.info('error from claim fee breakdown controller ' + JSON.stringify(error);
     next(error);
   }
 }) as RequestHandler);
