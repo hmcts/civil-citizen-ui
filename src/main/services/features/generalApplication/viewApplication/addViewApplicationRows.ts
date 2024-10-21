@@ -113,7 +113,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   if (application.case_data.generalAppInformOtherParty && !otherPartiesAgreed(application)) {
     const informOtherParties = (application.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION_2.${informOtherParties}`, {lng})),
     );
   }
   return rows;

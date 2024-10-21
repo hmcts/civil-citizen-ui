@@ -201,7 +201,7 @@ describe('View Application service', () => {
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
-        value: { html: 'COMMON.VARIATION.YES'},
+        value: { html: 'COMMON.VARIATION_2.YES'},
       });
     });
 
