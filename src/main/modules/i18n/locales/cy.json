@@ -6,7 +6,7 @@
     "UPLOAD_FILE": "Uwchlwytho ffeil",
     "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
-    "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
+    "DATE_UPLOADED": "Dyddiad uwchlwytho [{{ uploadedDate }}]",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
     "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
     "CONTACT_NAME": "Enw cyswllt",
@@ -88,7 +88,7 @@
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
-      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
+      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Ewch yn ôl a rhowch gynnig arall ar dalu",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "PAY_APPLICATION_FEE": "Pay application fee",
@@ -105,15 +105,15 @@
       "SUBMIT_RESPONSE_PAYMENT": "Cyflwyno a symud ymlaen i'r adran dalu (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
       "START_NOW": "Dechrau nawr",
-      "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
+      "UPLOAD_ADDITIONAL_DOCUMENTS": "Uwchlwytho dogfennau ychwanegol",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
       "CLAIM_FEE": "Ffi’r hawliad",
       "APPLICATION_FEE": "Application fee",
-      "ADDITIONAL_APPLICATION_FEE" : "Additional application fee"
+      "ADDITIONAL_APPLICATION_FEE" : "Ffi gwneud cais ychwanegol"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Treth Cyngor",
@@ -2158,7 +2158,7 @@
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
-        "CONTACT_COURT": "Cysylltu â'r llys i ofyn i wneud newid i fy achos (gwneud cais)",
+        "CONTACT_COURT": "Cysylltu â’r llys i wneud cais am newid i fy achos (gwneud cais)",
         "DEBT_RESPITE_SCHEME": "Cynllun Seibiant Dyledion (Lle i Anadlu)CH1 cyfrifoldebau credydwyr i’r llys",
         "FIND_INFO_COURT": "Dod o hyd i wybodaeth am fy llys",
         "FIND_MEDIATION": "Canfod mwy am gyfryngu",
@@ -2169,7 +2169,7 @@
         "I_WANT_TO": "Rwyf eisiau...",
         "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
         "TELL_US_SETTLED": "Dweud wrthym eich bod wedi setlo’r hawliad",
-        "VIEW_ALL_APPLICATIONS": "View all existing applications",
+        "VIEW_ALL_APPLICATIONS": "Gweld pob cais presennol",
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
@@ -2640,29 +2640,29 @@
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
       "ADDITIONAL_DOCUMENTS": {
-        "ADDITIONAL_DOCUMENTS_CAPTION": "Upload additional documents",
+        "ADDITIONAL_DOCUMENTS_CAPTION": "Uwchlwytho dogfennau ychwanegol",
         "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
         "ADDITIONAL_DOCUMENTS_ROW2": "Before you upload the document you will need to describe the type of document you are uploading, for example, Bundle, witness statement or costs schedule.",
         "JUDGE_WILL_REVIEW": "A judge will review the additional documents that you’ve uploaded. You’ll receive an update with their decision or next steps.",
         "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice receipt, email, text message, photo, social media message",
         "TYPE_OF_DOCUMENT": "Type of document",
-        "UPLOAD_DOCUMENTS_TITLE": "Upload documents",
-        "UPLOADED_ADDITIONAL_DOCS": "You've uploaded additional documents"
+        "UPLOAD_DOCUMENTS_TITLE": "Uwchlwytho dogfennau",
+        "UPLOADED_ADDITIONAL_DOCS": "Rydych wedi uwchlwytho dogfennau ychwanegol"
       },
       "ADDITIONAL_FEE": {
-        "CLOSE_AND_RETURN": "Close and return to case details",
-        "COURT_DECIDED": "The court has decided that your application must be submitted 'with notice'. This means that the other parties will receive a copy of the application and will be able to respond to what you have said.",
-        "DO_NEXT": "What you need to do next",
-        "HWF_LINK": "Help with Fees",
-        "IF_NOT_PAY": "If you do not pay the fee, your application will not be considered.",
-        "LOW_INCOME": "If you're on a low income, receive benefits or have limited savings, you may be eligible for ",
-        "MAKE_PAYMENT": "Make the payment",
-        "MEET_CRITERIA": "If you meet the criteria, you can apply for this support when you make the payment.",
+        "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos",
+        "COURT_DECIDED": "Mae’r llys wedi penderfynu bod rhaid cyflwyno’ch cais ‘gyda rhybudd’. Mae hyn yn golygu y bydd y partïon eraill yn cael copi o’r cais ac yn gallu ymateb i’r hyn rydych wedi’i ddweud.",
+        "DO_NEXT": "Beth sydd angen i chi wneud nesaf",
+        "HWF_LINK": "Help i dalu ffioedd",
+        "IF_NOT_PAY": "Os na fyddwch yn talu’r ffi, ni fydd eich cais yn cael ei ystyried.",
+        "LOW_INCOME": "Os ydych ar incwm isel, yn cael budd-daliadau neu os oes gennych ond ychydig o gynilion, efallai y byddwch yn gymwys i gael ",
+        "MAKE_PAYMENT": "Gwneud y taliad",
+        "MEET_CRITERIA": "Os ydych yn bodloni’r meini prawf, gallwch wneud cais am y cymorth hwn pan fyddwch yn gwneud y taliad.",
         "PAGE_TITLE": "Additional fee",
-        "PAY_ADDITIONAL_FEE": "Pay the additional fee of {{additionalFee}}.",
-        "TITLE": "You must pay an additional fee",
-        "WITH_NOTICE_COST": "A 'with notice' application costs {{withNoticeCost}}. You've already paid {{alreadyPaid}}, but you'll now need to pay an additional fee to make up the full amount.",
-        "WITHOUT_NOTICE": "Your application was submitted without giving notice to the other parties."
+        "PAY_ADDITIONAL_FEE": "Talu’r ffi ychwanegol o {{additionalFee}}.",
+        "TITLE": "Rhaid ichi dalu ffi ychwanegol",
+        "WITH_NOTICE_COST": "Mae cais ‘gyda rhybudd’ yn costio {{withNoticeCost}}. Rydych eisoes wedi talu {{alreadyPaid}}, ond nawr bydd angen i chi dalu ffi ychwanegol i wneud y swm llawn.",
+        "WITHOUT_NOTICE": "Cyflwynwyd eich cais heb roi rhybudd i’r partïon eraill."
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
@@ -2782,8 +2782,8 @@
         "OR": "or"
       },
       "PAY_ADDITIONAL_FEE": {
-        "HEADING": "Additional application fee",
-        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
+        "HEADING": "Ffi gwneud cais ychwanegol",
+        "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi gwneud cais ychwanegol"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -2832,15 +2832,15 @@
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
       },
       "PAYMENT_UNSUCCESSFUL": {
-        "CONTACT_YOUR_BANK": "Contact your bank for more details. No money has been taken from your account.",
+        "CONTACT_YOUR_BANK": "Cysylltwch â’ch banc am ragor o fanylion. Nid oes arian wedi ei gymryd o'ch cyfrif.",
         "TITLE": "Unsuccessful payment",
-        "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
+        "YOUR_PAYMENT_HAS_FAILED": "Mae eich taliad wedi methu"
       },
       "RESPONSE_CONFIRMATION": {
         "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
         "CLOSE_AND_RETURN": "Close and return to case details",
         "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
-        "NEXT_STEPS": "What happens next",
+        "NEXT_STEPS": "Beth fydd yn digwydd nesaf",
         "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
         "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
         "TITLE": "You've responded to the application"
@@ -2908,7 +2908,7 @@
         "APPLICATION_TYPE": "Application type",
         "COMPLETE": "Complete",
         "DETAILS": "Details",
-        "IN_PROGRESS": "In progress",
+        "IN_PROGRESS": "Yn mynd rhagddo",
         "MY_APPLICATIONS": "My applications",
         "STATUS": "Statws",
         "APPLICATION_STATUS": "Application Status",
@@ -2972,20 +2972,20 @@
         "TITLE": "Application hearing arrangements"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
-        "ACCOUNT_NOT_UPDATED": "Your payment was successful but your account might not have been updated yet. Try refreshing your account later on.",
+        "ACCOUNT_NOT_UPDATED": "Roedd eich taliad yn llwyddiannus ond efallai nad yw’ch cyfrif wedi’i ddiweddaru eto. Ceisiwch adnewyddu eich cyfrif yn nes ymlaen.",
         "APPLICATION_SUBMITTED": "Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "If you've chosen not to inform the other parties",
-        "PAYMENT_SUMMARY_TITLE": "Payment Summary",
+        "PAYMENT_SUMMARY_TITLE": "Crynodeb o’r Taliad",
         "TITLE": "General application payment fee confirmation",
         "WHAT_HAPPENS_NEXT_PARA_1": "If you chosen to inform the other parties or agreed the application, they will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
         "WHAT_HAPPENS_NEXT_PARA_2": "You may be required to attend an application hearing so that a judge can consider your application with you and the other parties and decide what the next steps should be.",
-        "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
-        "WHAT_HAPPENS_NEXT_PARA_4": "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
-        "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
-        "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
-        "WHAT_HAPPENS_NEXT": "What happens next"
+        "WHAT_HAPPENS_NEXT_PARA_3": "Byddwch yn cael hysbysiad yn rhoi gwybod i chi a oes gwrandawiad cais wedi’i drefnu.",
+        "WHAT_HAPPENS_NEXT_PARA_4": "Os ydych wedi gwneud cais i newid dyddiad gwrandawiad, bydd y treial neu’r gwrandawiad yn mynd yn ei flaen fel y trefnwyd ar y dyddiad gwreiddiol oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y gwrandawiad.",
+        "WHAT_HAPPENS_NEXT_PARA_5": "Bydd gan y partïon eraill 5 diwrnod gwaith i ymateb i’ch cais. Os oes gennych wrandawiad o fewn y 10 diwrnod nesaf, bydd eich cais yn cael ei drin ar frys.",
+        "WHAT_HAPPENS_NEXT_PARA_6": "Mae’n bosibl y bydd gofyn i chi fynychu gwrandawiad fel y gall y barnwr ystyried eich cais gyda chi a’r partïon eraill a phenderfynu beth ddylai’r camau nesaf fod.",
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
@@ -3028,7 +3028,7 @@
         "TITLE": "Do you want to upload documents to support your application? (Optional)"
       },
       "UPLOAD_DOCUMENTS": {
-        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
@@ -3040,14 +3040,15 @@
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
       "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
-        "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
-        "COURT_DOCUMENT": "court document",
-        "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
-        "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
-        "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
-        "PAGE_TITLE": "Upload additional documents"
+        "CHECK_YOUR_ANSWER": "Gwirio eich atebion",
+        "CONFIRMATION_PAGE_TITLE": "Rydych wedi uwchlwytho dogfennau ychwanegol",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "Bydd barnwr yn adolygu’r dogfennau ychwanegol rydych wedi’u huwchlwytho. Byddwch yn cael diweddariad gyda’u penderfyniad neu’r camau nesaf.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+        "COURT_DOCUMENT": "ddogfen llys",
+        "IF_NOT_SURE_END": "sy’n nodi’r hyn y mae’r llys wedi gofyn amdano gennych.",
+        "IF_NOT_SURE_START": "Os nad ydych yn siŵr beth i’w uwchlwytho, cyfeiriwch at y",
+        "NEED_TO_UPLOAD": "Mae angen i chi uwchlwytho'r dogfennau y gofynnwyd amdanynt gan y llys.",
+        "PAGE_TITLE": "Uwchlwytho dogfennau ychwanegol"
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"llenwi ffurflen N245",
@@ -3068,11 +3069,11 @@
       },
       "UPLOAD_MORE_INFO_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "Bydd barnwr yn adolygu’r dogfennau ychwanegol rydych wedi’u huwchlwytho. Byddwch yn cael diweddariad gyda’u penderfyniad neu’r camau nesaf.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "PAGE_TITLE": "Request for more information",
-        "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
-        "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
+        "PAGE_TITLE_TO_UPLOAD": "Uwchlwytho dogfennau ychwanegol",
+        "UPLOAD_DOC_CYA_TITLE": "Dogfennau sydd wedi eu huwchlwytho "
       },
       "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
         "PAGE_TITLE": "Request for written representation"
@@ -3142,7 +3143,7 @@
         "CONTENT_2": "This hearing is only to discuss the application."
       },
       "RESPONDENT_UPLOAD_DOCUMENTS": {
-        "TITLE": "Upload documents",
+        "TITLE": "Uwchlwytho dogfennau",
         "MSG1": "You should only upload documents that are relevant to your application response."
       },
       "UNAVAILABLE_HEARING_DATES": {
@@ -3193,25 +3194,25 @@
       },
       "VIEW_APPLICATION": {
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
-        "APPLICANTS_DOCUMENTS": "Applicant's documents",
+        "APPLICANTS_DOCUMENTS": "Dogfennau’r ceisydd",
         "APPLICATION": "Application",
-        "APPLICATION_APPROVE_EDIT": "Application approved or edited",
+        "APPLICATION_APPROVE_EDIT": "Cais wedi’i gymeradwyo neu ei olygu",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "APPLICATION_DISMISSED": "Application dismissed",
-        "APPLICATION_DOCUMENTS": "Application Documents",
+        "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
-        "DATE_RESPONSE": "Date of response",
+        "DATE_RESPONSE": "Dyddiad yr ymateb",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
         "DISMISSED_DOCUMENT": "Dismissal order",
-        "DOCUMENTS_FROM_COURT": "Documents from the court",
+        "DOCUMENTS_FROM_COURT": "Dogfennau gan y llys",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
-        "HEARING_NOTICE" : "Hearing Notice",
+        "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
         "HEARING_NOTICE_DESC" : "There is a hearing notice",
-        "HEARING_ORDER" : "Hearing Order",
+        "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
-        "GENERAL_ORDER" : "General Order",
+        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
@@ -3226,7 +3227,7 @@
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
-        "RESPONDENTS_DOCUMENTS": "Respondent's documents",
+        "RESPONDENTS_DOCUMENTS": "Dogfennau’r atebydd",
         "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
@@ -3236,10 +3237,10 @@
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
-        "TYPE_RESPONSE": "Type of response",
+        "TYPE_RESPONSE": "Math o ymateb",
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
-        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_2": "uwchlwytho dogfennau ychwanegol",
         "UPLOAD_DOCUMENTS_3": " if you need to."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
@@ -4261,7 +4262,7 @@
       "COMPLETE": "Cyflawn",
       "DONE": "Wedi'i wneud",
       "INCOMPLETE": "Anghyflawn",
-      "IN_PROGRESS": "In progress",
+      "IN_PROGRESS": "Yn mynd rhagddo",
       "READY_TO_VIEW": "Ready to view",
       "NOT_AVAILABLE_YET": "Ddim ar gael eto",
       "ACTION_NEEDED": "Mae angen gweithredu"
@@ -5200,6 +5201,7 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
+      "UPLOAD_FILE_MESSAGE_V2": "Mae angen i chi ddewis ffeil cyn clicio 'Uwchlwytho ffeil'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",

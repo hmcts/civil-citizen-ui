@@ -3040,6 +3040,7 @@
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
       "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CHECK_YOUR_ANSWER": "Check your answers",
         "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
         "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
@@ -5200,6 +5201,7 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
+      "UPLOAD_FILE_MESSAGE_V2": "You need to choose a file before clicking 'Upload file'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
