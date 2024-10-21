@@ -5184,6 +5184,7 @@
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
+      "APPLY_HELP_WITH_FEES": "Mae angen i chi ddweud wrthym os ydych am wneud cais am help i dalu ffioedd. Dewis opsiwn Ydw neu Nac ydw",
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau gofyn am gael eich costau'n ôl. Dewiswch opsiwn: Ydw neu Nac ydw",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
