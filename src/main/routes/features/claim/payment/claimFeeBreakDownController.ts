@@ -11,6 +11,8 @@ import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimFeeBreakDownController');
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
@@ -37,6 +39,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
       paymentSyncError,
     });
   } catch (error) {
+    logger.info('error on claim fee breakup on get request ' + JSON.stringify(error));
     next(error);
   }
 })as RequestHandler);
@@ -49,12 +52,16 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      const claim = await getCaseDataFromStore(redisKey);
+      let claim = await getCaseDataFromStore(redisKey);
       claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+      logger.info('redis key before saving the payment ' + redisKey);
       await saveDraftClaim(redisKey, claim, true);
+      claim = await getCaseDataFromStore(redisKey);
+      logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference)
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
+    logger.info('error on claim fee breakup on post request ' + JSON.stringify(error));
     next(error);
   }
 }) as RequestHandler);
