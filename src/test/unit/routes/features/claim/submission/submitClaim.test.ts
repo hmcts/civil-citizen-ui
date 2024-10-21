@@ -10,7 +10,11 @@ import {req} from '../../../../../utils/UserDetails';
 jest.mock('modules/draft-store');
 
 const claim = new Claim();
-
+claim.claimFee = {
+  calculatedAmountInPence: 1000,
+  code: 'FEE202',
+  version: 1,
+};
 afterEach(() => {
   jest.clearAllMocks();
 });
