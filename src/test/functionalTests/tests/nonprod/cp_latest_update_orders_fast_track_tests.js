@@ -46,5 +46,5 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
       CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 

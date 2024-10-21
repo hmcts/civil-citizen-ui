@@ -42,5 +42,5 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', as
       }
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 
