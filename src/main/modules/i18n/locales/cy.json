@@ -2910,7 +2910,7 @@
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
         "MY_APPLICATIONS": "My applications",
-        "STATUS": "Status",
+        "STATUS": "Statws",
         "APPLICATION_STATUS": "Application Status",
         "STATES": {
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
@@ -3231,7 +3231,7 @@
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
-          "TITLE": "Status"
+          "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
