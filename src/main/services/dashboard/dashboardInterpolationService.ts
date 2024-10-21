@@ -94,6 +94,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
+  valuesMap.set('{VIEW_COSC_CERTIFICATE_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getCoscDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
   valuesMap.set('{RESPONSE_TASK_LIST_URL}', BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId));
@@ -183,6 +184,10 @@ function getDQDocumentId(claim:Claim, claimType:DirectionQuestionnaireType) : st
 
 function getSettlementAgreementDocumentId(claim:Claim) : string {
   return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT, 'claimant');
+}
+
+function getCoscDocumentId(claim:Claim) : string {
+  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.CERTIFICATE_OF_DEBT_PAYMENT, 'defendant');
 }
 
 function getSendFinancialDetailsAddress(lng: string) : string {
