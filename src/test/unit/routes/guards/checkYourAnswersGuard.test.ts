@@ -93,6 +93,7 @@ describe('checkYourAnswersClaimGuard', () => {
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.id = CLAIM_ID;
+      claim.draftClaimCreatedAt = new Date(Date.now());
       return claim;
     });
 
