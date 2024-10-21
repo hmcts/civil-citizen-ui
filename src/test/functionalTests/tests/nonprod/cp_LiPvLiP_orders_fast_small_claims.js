@@ -52,5 +52,5 @@ Scenario('Case progression journey - Small Claims - Claimant and Defendant verif
       await I.dontSee(notification.title);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 

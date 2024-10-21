@@ -54,4 +54,4 @@ Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upl
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');

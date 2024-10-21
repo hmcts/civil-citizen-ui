@@ -84,4 +84,4 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
