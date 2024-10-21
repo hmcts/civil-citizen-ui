@@ -10,7 +10,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "DTSCCI-1013-playwright-setup-bootstrap-projects"
+def ccdBranch = "DTSCCI-1020/866-setup-nightly-to-run-playwright-tests"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
