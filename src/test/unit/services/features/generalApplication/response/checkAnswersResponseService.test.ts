@@ -726,9 +726,9 @@ describe('Check Answers response service', () => {
           value: {
             html: '<ul class="no-list-style">'
               + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li>'
-              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'reason A'-</li>"
-              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER - 'reason B'-</li>"
-              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER - 'reason C'-</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'reason A'</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER - 'reason B'</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER - 'reason C'</li>"
               + '</ul>',
           },
           actions: {
