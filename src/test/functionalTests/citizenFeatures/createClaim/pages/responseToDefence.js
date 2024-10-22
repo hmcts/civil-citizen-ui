@@ -541,8 +541,11 @@ class ResponseToDefence {
     I.see('Your response','h2');
     I.see('Do you accept the defendant repayment plan?');
     I.see('I reject this repayment plan');
-    I.see('How do you wish to proceed?','h2');
-    I.see('How do you want to formalise the repayment plan');
+    I.see('How you want the defendant to pay?');
+    I.see('Immediately');
+    I.see('Court Decision');
+    I.see('Court repayment plan');
+    I.see('Completion date');
     await I.click(paths.buttons.submit_response);
   }
 
