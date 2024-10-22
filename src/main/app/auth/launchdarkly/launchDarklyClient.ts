@@ -90,7 +90,7 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
 }
 
 export async function isCARMEnabled(): Promise<boolean> {
-  return await getFlagValue(CARM) as boolean;
+  return true;
 }
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
@@ -119,12 +119,7 @@ export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
-  const { DateTime } = require('luxon');
-  const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const carmFlag = await getFlagValue(CARM) as boolean;
-  const carmApplicable = await getFlagValue(CARM_ENABLED_FOR_CASE, epoch) as boolean;
-  return carmFlag && carmApplicable;
+  return true;
 }
 
 export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
