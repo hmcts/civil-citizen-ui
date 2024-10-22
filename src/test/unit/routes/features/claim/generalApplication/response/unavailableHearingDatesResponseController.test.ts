@@ -94,6 +94,42 @@ describe('General Application Response- Unavailable hearing dates', () => {
         });
     });
 
+    it('should send action add_another-unavailableDates', async () => {
+      getUnavailableDatesHearingFormMock.mockImplementation(() => {
+        return new UnavailableDatesGaHearing(
+          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
+        );
+      });
+      const mockGaResponse = new GaResponse();
+      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
+      await request(app)
+        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
+        .send({'action': 'add_another-unavailableDates'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should send action remove-unavailableDates', async () => {
+      getUnavailableDatesHearingFormMock.mockImplementation(() => {
+        return new UnavailableDatesGaHearing(
+          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
+        );
+      });
+      const mockGaResponse = new GaResponse();
+      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
+      await request(app)
+        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
+        .send({'action': 'remove-unavailableDates'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
     it('should return errors on box selected but date input incomplete', async () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return new UnavailableDatesGaHearing(
