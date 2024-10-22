@@ -105,7 +105,7 @@ describe('General Application - Pay additional fee Page', () => {
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE'));
         });
     });
 
