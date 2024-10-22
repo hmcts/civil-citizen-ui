@@ -3034,8 +3034,7 @@
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
         "REMOVE_DOC": "Remove document",
-        "TITLE": "Upload documents to support your application",
-        "UPLOAD_A_FILE": "Upload a file"
+        "TITLE": "Upload documents to support your application"
       },
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
