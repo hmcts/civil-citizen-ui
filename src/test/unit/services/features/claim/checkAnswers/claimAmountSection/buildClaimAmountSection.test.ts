@@ -13,7 +13,8 @@ import {
   claimWithHwFDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo} from 'common/form/models/yesNo';
+import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -88,6 +89,35 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE');
   });
+
+  it('should return claim amount from a particular date when isBreakDownCompleted is false', async () => {
+    //Given
+    const claim = claimWithClaimAmountParticularDate();
+    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_INTEREST');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('COMMON.VARIATION.YES');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.INTEREST_CLAIM_OPTIONS.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_INTEREST');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('10%');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.REASON');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.FROM_A_SPECIFIC_DATE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.DATE_INTEREST');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('1 February 2011');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.REASON');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE');
+  });
+
   it('should return claim amount from submit date', async () => {
     //Given
     const claim = claimWithClaimAmountSubmitDate();
@@ -116,6 +146,22 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.CLAIMANT_INTEREST_RATE.SAME_RATE_INTEREST_8_PC');
   });
+
+  it('should return claim amount with same rate and isBreakDownCompleted is false', async () => {
+    //Given
+    const claim = claimWithClaimAmountSameRate();
+    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe('PAGES.INTEREST_CLAIM_OPTIONS.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_INTEREST');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.CLAIMANT_INTEREST_RATE.SAME_RATE_INTEREST_8_PC');
+  });
+
   it('should return claim amount with different rate', async () => {
     //Given
     const claim = claimWithClaimAmountDifferentRate();
