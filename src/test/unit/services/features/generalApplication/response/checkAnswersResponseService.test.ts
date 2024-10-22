@@ -527,6 +527,12 @@ describe('Check Answers response service', () => {
       ]);
     });
 
+    it('return upload document empty', () => {
+      const {response} = claimAndResponse();
+      response.wantToUploadDocuments = YesNo.NO;
+      expect(getSummarySections('123', '345', response, 'en')[0].value.html).toContain('COMMON.VARIATION.NO');
+    });
+
     it('returns hearing contact details', () => {
       const { response } = claimAndResponse();
       response.hearingContactDetails = new HearingContactDetails('077070707', 'email@addre.ss');
