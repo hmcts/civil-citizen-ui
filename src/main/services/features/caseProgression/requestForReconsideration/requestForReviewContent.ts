@@ -33,7 +33,7 @@ export const getButtonContent = (claimId: string) => {
 };
 
 export const getClaimantOrDefendant = (claim: Claim) => {
-  return claim.caseRole == CaseRole.CLAIMANT ? claim.getClaimantFullName() : claim.getDefendantFullName();
+  return claim.caseRole == CaseRole.CLAIMANT ? claim.getDefendantFullName() : claim.getClaimantFullName();
 };
 
 export const getNameRequestForReconsideration = (claim: Claim): string => {
