@@ -13,7 +13,6 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { PaymentSuccessfulSectionBuilder } from '../claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
@@ -100,9 +99,10 @@ export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: Upl
   const rows: SummaryRow[] = [];
   const toc = t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng});
   const uf = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng});
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   additionalDocumentsList.forEach(doc => {
     rows.push(summaryRow(toc, doc.typeOfDocument));
-    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')));
+    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel()));
   });
   return rows;
 };
