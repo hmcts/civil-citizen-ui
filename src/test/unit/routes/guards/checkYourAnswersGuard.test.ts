@@ -1,5 +1,5 @@
 import express from 'express';
-import {CLAIM_INCOMPLETE_SUBMISSION_URL, DASHBOARD_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
@@ -93,6 +93,7 @@ describe('checkYourAnswersClaimGuard', () => {
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.id = CLAIM_ID;
+      claim.draftClaimCreatedAt = new Date(Date.now());
       return claim;
     });
 
@@ -162,7 +163,7 @@ describe('checkYourAnswersClaimGuard', () => {
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
-      DASHBOARD_URL,
+      BASE_ELIGIBILITY_URL,
     );
     expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalledWith(
       CLAIM_INCOMPLETE_SUBMISSION_URL  );

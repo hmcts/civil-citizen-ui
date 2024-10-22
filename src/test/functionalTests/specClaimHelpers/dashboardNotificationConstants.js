@@ -18,18 +18,20 @@ module.exports = {
   },
 
   //Notice.AAA6.ClaimantIntent.ClaimSettled.Claimant
-  claimIsSettledClaimant: (amount, date) => {
+  claimIsSettledClaimant: () => {
     return {
       title: 'The claim is settled',
-      content: `You have confirmed that Sir John Doe paid £${amount} on ${date}.`,
+      content: ['You have confirmed that the claim against Sir John Doe was settled on 1 January 2020.',
+        'The defendant has 19 days from the date of settlement to notify the court of any objection.'],
     };
   },
 
   //Notice.AAA6.ClaimantIntent.ClaimSettled.Defendant
-  claimIsSettledDefendant: (amount, date) => {
+  claimIsSettledDefendant: () => {
     return {
       title: 'The claim is settled',
-      content: `Miss Jane Doe has confirmed that you paid £${amount} on ${date}.`,
+      content: ['The claimant has confirmed that this case was settled on 1 January 2020.',
+        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at ocmcnton@justice.gov.uk'],
     };
   },
 
@@ -269,9 +271,9 @@ module.exports = {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
       content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'When a judge has made a decision, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe',
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
       nextSteps2: 'View your response',
     };
   },
