@@ -2,13 +2,14 @@ import { Claim } from 'common/models/claim';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
-export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string) => {
+export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string, appResponse?: ApplicationResponse) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
   if (withoutFee) {
     panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.APPLICATION_SUBMITTED', lng);
   } else {
-    panelBuilder.addPanel(claim.generalApplication?.applicationFeePaymentDetails?.paymentReference, lng);
+    panelBuilder.addPanel(appResponse?.case_data?.generalAppPBADetails?.paymentDetails.reference, lng);
   }
   return panelBuilder.build();
 };
