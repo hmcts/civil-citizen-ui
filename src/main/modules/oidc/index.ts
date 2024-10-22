@@ -109,9 +109,12 @@ export class OidcMiddleware {
           app.locals.claimIssueTasklist = undefined;
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
-        if (app.locals.paymentConfirmationUrl) {
-          const paymentConfirmationUrl = app.locals.paymentConfirmationUrl;
-          app.locals.paymentConfirmationUrl = '';
+        const draftStoreClient = app.locals.draftStoreClient;
+        logger.info('login user id ', req.session.user.id);
+        const paymentConfirmationUrl = await draftStoreClient.get(req.session.user.id + 'userIdForPayment');
+        logger.info('Payment conf url ', paymentConfirmationUrl);
+        if (paymentConfirmationUrl) {
+          await draftStoreClient.del(req.session.user.id + 'userIdForPayment');
           return res.redirect(paymentConfirmationUrl);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
@@ -139,7 +142,7 @@ export class OidcMiddleware {
       res.redirect(DASHBOARD_URL);
     });
 
-    app.use((req: Request, res: Response, next: NextFunction) => {
+    app.use(async (req: Request, res: Response, next: NextFunction) => {
       const appReq: AppRequest = <AppRequest>req;
       if (appReq.session?.user) {
         if (appReq.session.user.roles?.includes(citizenRole)) {
@@ -167,8 +170,13 @@ export class OidcMiddleware {
       }
       logger.info('redirecting url ', req.originalUrl);
       if (isPaymentConfirmationUrl(req)) {
+        const claimId = req.originalUrl.split('/')[2];
         logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
-        app.locals.paymentConfirmationUrl = req.originalUrl;
+        const draftStoreClient = app.locals.draftStoreClient;
+        logger.info('Claim id ', req.params.id);
+        const userId = await draftStoreClient.get(claimId + 'userIdForPayment');
+        logger.info('User id ', userId);
+        await draftStoreClient.set(userId + 'userIdForPayment', req.originalUrl);
       }
       return res.redirect(SIGN_IN_URL);
     });
