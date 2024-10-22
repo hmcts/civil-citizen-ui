@@ -42,7 +42,7 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng}), differentRateInterestType, CLAIM_INTEREST_RATE_URL, changeLabel(lang)));
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.REASON', {lng}), claim.interest?.sameRateInterestSelection.reason, CLAIM_INTEREST_RATE_URL, changeLabel(lang)));
   }
-  if (claim?.isInterestFromASpecificDate()) {
+  if (claim?.interest?.interestClaimFrom) {
     const interestClaimFrom = 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.' + claim.interest?.interestClaimFrom;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE', {lng}), t(interestClaimFrom, {lng}), CLAIM_INTEREST_DATE_URL, changeLabel(lang)));
     if (claim?.isInterestFromASpecificDate() && !claim?.isBreakDownCompleted()) {
