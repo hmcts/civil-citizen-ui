@@ -4,7 +4,6 @@ import {ACCESSIBILITY_STATEMENT_URL} from 'routes/urls';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
-
 describe('Accessibility Statement page', () => {
   describe('on GET', () => {
     it('should show page content', async () => {
