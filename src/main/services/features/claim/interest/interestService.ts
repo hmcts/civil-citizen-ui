@@ -1,7 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Interest} from 'form/models/interest/interest';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
-import {Claim} from "models/claim";
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('interestService');
@@ -38,7 +38,7 @@ const saveInterest = async (claimId: string, value: any, interestPropertyName: s
           deleteBreakDownInterest(claim);
         } else {
           // removing values all values from SAME_RATE_INTEREST
-          deleteSameRateInterest(claim)
+          deleteSameRateInterest(claim);
         }
       }
 
