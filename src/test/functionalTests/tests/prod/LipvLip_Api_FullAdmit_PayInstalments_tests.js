@@ -14,7 +14,7 @@ const {
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let caseData, claimNumber, claimRef, claimAmount = 1500, instalmentAmount = 100, date = '1 October 2025';
+let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, instalmentAmount = 100, date = '1 October 2025';
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant');
 
@@ -39,7 +39,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
   await api.waitForFinishedBusinessProcess();
 
   if (isDashboardServiceEnabled) {
-    const notification = defendantResponseFullAdmitPayInstalments(claimAmount, instalmentAmount, date);
+    const notification = defendantResponseFullAdmitPayInstalments(claimAmountAndFee, instalmentAmount, date);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     await I.click(notification.nextSteps);
   }
@@ -48,7 +48,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
   if (isDashboardServiceEnabled) {
-    const notification = defendantResponseFullAdmitPayInstalmentsClaimant(claimAmount, instalmentAmount, date);
+    const notification = defendantResponseFullAdmitPayInstalmentsClaimant(claimAmountAndFee, instalmentAmount, date);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 

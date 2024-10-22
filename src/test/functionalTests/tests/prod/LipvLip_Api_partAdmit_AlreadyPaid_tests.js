@@ -34,14 +34,14 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
   await api.waitForFinishedBusinessProcess();
 
   if (isDashboardServiceEnabled) {
-    const notification = claimIsSettledClaimant(700, '1 January 2020');
+    const notification = claimIsSettledClaimant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 
   if (isDashboardServiceEnabled) {
     await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const notification = claimIsSettledDefendant(700, '1 January 2020');
+    const notification = claimIsSettledDefendant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 });
