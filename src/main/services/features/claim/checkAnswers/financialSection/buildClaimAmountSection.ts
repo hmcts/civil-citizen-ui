@@ -10,10 +10,11 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_INTEREST_URL,
   CLAIM_INTEREST_RATE_URL,
-} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
+} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
+import {SameRateInterestType} from 'form/models/claimDetails';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -42,7 +43,7 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng}), differentRateInterestType, CLAIM_INTEREST_RATE_URL, changeLabel(lang)));
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.REASON', {lng}), claim.interest?.sameRateInterestSelection.reason, CLAIM_INTEREST_RATE_URL, changeLabel(lang)));
   }
-  if (claim?.interest?.interestClaimFrom) {
+  if (claim?.isInterestFromASpecificDate() && !claim?.isBreakDownCompleted()) {
     const interestClaimFrom = 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.' + claim.interest?.interestClaimFrom;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE', {lng}), t(interestClaimFrom, {lng}), CLAIM_INTEREST_DATE_URL, changeLabel(lang)));
     if (claim?.isInterestFromASpecificDate()) {
