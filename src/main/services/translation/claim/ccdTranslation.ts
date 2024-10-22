@@ -24,17 +24,17 @@ import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
+import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
-
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
     defenceRouteRequired: toCCDRejectAllOfClaimType(claim.rejectAllOfClaim?.option),
     respondToClaim: toCCDRespondToClaim(claim.rejectAllOfClaim?.howMuchHaveYouPaid),
     detailsOfWhyDoesYouDisputeTheClaim: claim.rejectAllOfClaim?.defence?.text ?? claim.rejectAllOfClaim?.whyDoYouDisagree?.text,
     applicant1Represented: YesNoUpperCamelCase.NO,
-    totalClaimAmount: claim.totalClaimAmount,
+    totalClaimAmount: roundOffTwoDecimals(claim.totalClaimAmount),
     claimAmountBreakup: toCCDClaimAmount(claim.claimAmountBreakup),
     detailsOfClaim: claim.claimDetails?.reason?.text,
     speclistYourEvidenceList: toCCDEvidence(claim.claimDetails?.evidence),
