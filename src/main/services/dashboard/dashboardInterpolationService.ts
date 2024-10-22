@@ -139,7 +139,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_COSC_CERTIFICATE_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.CERTIFICATE_OF_DEBT_PAYMENT)));
   valuesMap.set('{MAKE_APPLICATION_TO_COURT_URL}', MAKE_APPLICATION_TO_COURT);
 
-
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
   }
