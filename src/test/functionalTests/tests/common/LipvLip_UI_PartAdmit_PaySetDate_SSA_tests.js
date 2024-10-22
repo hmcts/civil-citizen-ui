@@ -58,7 +58,6 @@ Scenario('Defendant responds with part admit', async ({I, api}) => {
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  await I.click('Sign out');
   await api.waitForFinishedBusinessProcess();
 }).retry(1);
 
