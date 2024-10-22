@@ -28,4 +28,4 @@ Scenario('Response with RejectAll and DisputeAll - Defendat Welsh - GA (Ask for 
     await I.click(claimNumber);
     await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
   }
-}).tag('@regression-cp');
+});
