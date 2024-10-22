@@ -61,7 +61,9 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 };
 
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
+  const mainClaimNotificationIds: string[] = [];
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
+  dashboardNotifications.items?.forEach(notification => mainClaimNotificationIds.push(notification.id));
   // Add notifications for all GAs
   const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
   const isGaEnabled = await isGaForLipsEnabled();
@@ -106,6 +108,7 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
       });
       dashboardNotifications.items.push(...(value?.items ?? []));
     });
+    sortDashboardNotifications(dashboardNotifications, mainClaimNotificationIds);
     return dashboardNotifications;
   } else {
     throw new Error('Notifications not found...');
@@ -158,4 +161,37 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
       url: applicationNoticeUrl,
     };
   }
+};
+
+export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {
+  dashboardNotifications.items?.sort((notification1, notification2) => {
+    if (notification1.deadline) {
+      if (!notification2.deadline) {
+        // Only notification 1 has a deadline
+        return -1;
+      } else {
+        // Both have deadlines, check for earliest
+        return notification1.deadline.localeCompare(notification2.deadline);
+      }
+    }
+    if (notification2.deadline) {
+      // Only notification 2 has a deadline
+      return 1;
+    }
+    if (mainClaimNotificationIds.includes(notification1.id)) {
+      if (!mainClaimNotificationIds.includes(notification2.id)) {
+        // Only notification 1 is for main claim
+        return -1;
+      } else {
+        // Both are for main claim, check which was created last
+        return -notification1.createdAt.localeCompare(notification2.createdAt);
+      }
+    }
+    if (mainClaimNotificationIds.includes(notification2.id)) {
+      // Only notification 2 is for main claim
+      return 1;
+    }
+    // Both are GA notifications, check which was created last
+    return -notification1.createdAt.localeCompare(notification2.createdAt);
+  });
 };
