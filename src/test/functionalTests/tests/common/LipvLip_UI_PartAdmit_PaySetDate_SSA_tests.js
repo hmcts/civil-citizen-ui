@@ -40,7 +40,7 @@ Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('Defendant responds with part admit', async ({I, api}) => {
+Scenario('Defendant responds with part admit', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
