@@ -132,6 +132,8 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_INTEREST');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('PAGES.CLAIMANT_INTEREST_RATE.SAME_RATE_INTEREST_8_PC');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.FROM_CLAIM_SUBMIT_DATE');
   });
   it('should return claim amount with same rate', async () => {
     //Given
