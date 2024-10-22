@@ -3266,9 +3266,18 @@
         "PARA_TITLE_4": "Agreement from the person or business owed money",
         "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
         "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
-        "PARA_TITLE_5": "Do you need to update your details?",
-        "PARA_8": "If you need to update your details from the judgment, you will need to ",
-        "COMPLETE_FORM_N443": "complete a form N443."
+        "PARA_TITLE_5": "Updating your details",
+        "PARA_8": "If your name or address have changed since the judgment (CCJ) was issued, you may want to update them before applying to confirm you've made a debt payment.",
+        "PARA_TITLE_6": "Changing your address",
+        "PARA_9": "You will need to call the court where your judgment was issued to update the address we have for you. You can find the name of the court on the top right of ",
+        "PARA_9_1": "the judgment.",
+        "PARA_9_2": " You can then",
+        "PARA_9_3": "search for the contact details of the court.",
+        "PARA_9_4": " This will be updated immediately and you can continue with your application.",
+        "PARA_TITLE_7": "Changing your name",
+        "PARA_10": "If your name has changed since the judgment and you would like to update this, you'll need to make a ",
+        "PARA_10_1": "general application.",
+        "PARA_10_2": " You will need to wait for the change to be completed before you can continue with your application."
       },
       "FINAL_DEFENDANT_PAYMENT_DATE": {
         "TITLE": "When was the final payment?",
