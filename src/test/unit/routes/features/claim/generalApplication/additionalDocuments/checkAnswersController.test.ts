@@ -70,7 +70,7 @@ describe('General Application - additional docs check answer controller ', () =>
       expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
       expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, 'cy');
-      expect(res.text).toContain('Gwiriwch eich atebion');
+      expect(res.text).toContain('Gwirio eich atebion');
     });
 
     it('should handle errors', async () => {
