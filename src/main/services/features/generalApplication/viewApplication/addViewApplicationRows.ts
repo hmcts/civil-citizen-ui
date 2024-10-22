@@ -172,7 +172,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
     const hearingPreferredType = toCUIHearingPreferencesPreferredType(application.case_data.generalAppHearingDetails.HearingPreferencesPreferredType);
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE', {lng}),
-        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${hearingPreferredType}`, {lng})),
+        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${hearingPreferredType}`, {lng})),
     );
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),

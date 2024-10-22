@@ -67,7 +67,7 @@ describe('addViewApplicationResponseRows', () => {
         value: { html: 'COMMON.VARIATION_2.YES' },
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
-        value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT' },
+        value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT' },
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
         value: { html: 'I prefer in person'},

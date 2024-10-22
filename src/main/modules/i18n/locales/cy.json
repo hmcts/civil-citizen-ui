@@ -3084,6 +3084,11 @@
           "TELEPHONE": "Gwrandawiad dros y ffôn",
           "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
+        "HEARING_TYPE_VIEW_APPLICATION": {
+          "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
+          "TELEPHONE": "Dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
+        },
         "JUDGE_HEARING_PREFERRED_LOCATION": "Os bydd barnwr angen i’r gwrandawiad ddigwydd yn y llys, a oes yna leoliad llys sydd orau gennych? (dewisol)",
         "SELECT_A_LOCATION": "-- Dewiswch leoliad --",
         "TITLE": "Trefniadau ar gyfer gwrandawiad y cais",
