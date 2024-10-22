@@ -14,7 +14,6 @@ import {
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
-import {SameRateInterestType} from 'form/models/claimDetails';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -35,7 +34,7 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     const interestClaimOptions = 'PAGES.INTEREST_CLAIM_OPTIONS.' + claim.interest?.interestClaimOptions;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.INTEREST_CLAIM_OPTIONS.TITLE', {lng}), t(interestClaimOptions, {lng}), CLAIM_INTEREST_TYPE_URL, changeLabel(lang)));
   }
-  if (claim?.isSameRateTypeEightPercent()) {
+  if (claim?.isSameRateTypeEightPercent() && !claim?.isBreakDownCompleted()) {
     const sameRateInterestType = 'PAGES.CLAIMANT_INTEREST_RATE.' + claim.interest?.sameRateInterestSelection.sameRateInterestType;
     claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CLAIMANT_INTEREST_RATE.TITLE', {lng}), t(sameRateInterestType, {lng}), CLAIM_INTEREST_RATE_URL, changeLabel(lang)));
   } else if (claim.interest?.sameRateInterestSelection?.differentRate) {
