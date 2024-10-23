@@ -11,9 +11,16 @@ import {
 } from 'routes/urls';
 
 import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../../../main/app/auth/user/oidc';
+import {Session} from 'express-session';
 
 jest.mock('../../../../main/modules/draft-store');
-
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+  del: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
 const mockGetUserDetails = getUserDetails as jest.Mock;
 const mockGetOidcResponse = getOidcResponse as jest.Mock;
 const mockGetSessionIssueTime = getSessionIssueTime as jest.Mock;
@@ -154,25 +161,31 @@ describe('OIDC middleware', () => {
   });
 
   describe('should redirect back to payment confirmation url after login', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    })
+    it('should store original url in local if user details expired', async () => {
+      mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
+      await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '123456789')).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789' + 'userIdForPayment', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '123456789'));
+        expect(res.text).toContain(SIGN_IN_URL);
+      });
+    });
     it('should redirect back to payment confirmation url after login', async () => {
       userDetails.roles = ['citizen'];
       app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
+      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
+      mockDraftStoreClient.get.mockResolvedValueOnce(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
         });
-    });
-    it('should store original url in local if user details expired', async () => {
-      await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.text).toContain(SIGN_IN_URL);
-      });
-      expect(app.locals.paymentConfirmationUrl).toBe(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
     });
   });
 });

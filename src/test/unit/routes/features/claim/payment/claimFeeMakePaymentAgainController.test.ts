@@ -15,7 +15,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
-describe('Hearing Fees - Make Payment Again', () => {
+describe('Claim Fee - Make Payment Again', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
   const citizenRoleToken: string = config.get('citizenRoleToken');
 

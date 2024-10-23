@@ -170,10 +170,10 @@ export class OidcMiddleware {
       }
       logger.info('redirecting url ', req.originalUrl);
       if (isPaymentConfirmationUrl(req)) {
-        const claimId = req.originalUrl.split('/')[2];
+        const claimId = getClaimId(req.originalUrl);
         logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
         const draftStoreClient = app.locals.draftStoreClient;
-        logger.info('Claim id ', req.params.id);
+        logger.info('Claim id ', claimId);
         const userId = await draftStoreClient.get(claimId + 'userIdForPayment');
         logger.info('User id ', userId);
         await draftStoreClient.set(userId + 'userIdForPayment', req.originalUrl);
@@ -182,3 +182,7 @@ export class OidcMiddleware {
     });
   }
 }
+
+const getClaimId = (originalUrl: string) => {
+  return originalUrl.split('/')[2];
+};

@@ -7,6 +7,14 @@ import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as claimFeePaymentConfirmationService from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+  del: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 describe('Claim Fees - Payment Status', () => {

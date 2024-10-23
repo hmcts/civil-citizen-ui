@@ -12,6 +12,12 @@ import nock from 'nock';
 import config from 'config';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
