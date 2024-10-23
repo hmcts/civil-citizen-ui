@@ -250,7 +250,7 @@ module.exports = {
     console.log('End of submitHwfEventForUser()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType, manualPIP) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType, manualPIP = false) => {
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
