@@ -271,4 +271,5 @@ civil-general-applications:
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       CUI_URL: https://${SERVICE_FQDN}
+      SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
