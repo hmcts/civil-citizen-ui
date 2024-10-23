@@ -31,7 +31,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
-    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
+    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req) || [];
 
     const applicationsRows: ApplicationSummary[] = [];
     for (const application of applications) {
