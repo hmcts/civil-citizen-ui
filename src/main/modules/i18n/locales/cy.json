@@ -2643,7 +2643,7 @@
         "ADDITIONAL_DOCUMENTS_CAPTION": "Uwchlwytho dogfennau ychwanegol",
         "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
         "ADDITIONAL_DOCUMENTS_ROW2": "Before you upload the document you will need to describe the type of document you are uploading, for example, Bundle, witness statement or costs schedule.",
-        "JUDGE_WILL_REVIEW": "A judge will review the additional documents that you’ve uploaded. You’ll receive an update with their decision or next steps.",
+        "JUDGE_WILL_REVIEW": "Bydd barnwr yn adolygu’r dogfennau ychwanegol rydych wedi’u huwchlwytho. Byddwch yn cael diweddariad gyda’u penderfyniad neu’r camau nesaf.",
         "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice receipt, email, text message, photo, social media message",
         "TYPE_OF_DOCUMENT": "Type of document",
         "UPLOAD_DOCUMENTS_TITLE": "Uwchlwytho dogfennau",
