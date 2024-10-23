@@ -18,12 +18,3 @@ jest.mock('ioredis', () => jest.requireActual('ioredis-mock'));
 jest.mock('launchdarkly-node-server-sdk', () => ({
   init: jest.fn().mockReturnValue(ldClientMock),
 }));
-jest.mock('./src/main/modules/oidc', () => {
-  return {
-    OidcMiddleware: jest.fn().mockImplementation(() => {
-      return {
-        enableFor: jest.fn(), // Mock the methods you need
-      };
-    }),
-  };
-});
