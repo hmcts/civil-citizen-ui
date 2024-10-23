@@ -53,7 +53,7 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 
 // ignored until https://tools.hmcts.net/jira/browse/CIV-15565 is fixed
 Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {

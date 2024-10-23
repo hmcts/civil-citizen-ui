@@ -72,5 +72,5 @@ Scenario('Fast Track Response with RejectAll and DisputeAll - both parties uploa
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 
