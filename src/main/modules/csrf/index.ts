@@ -10,5 +10,11 @@ export class CSRFToken {
       }
       return csurf()(req, res, next);
     });
+    app.use((req, res, next) => {
+      if (!(req.path.startsWith('/eligibility') || req.path.startsWith('/first-contact')) && !isTestingSupportDraftUrl(req.originalUrl)) {
+        res.locals.csrf = req.csrfToken();
+      }
+      next();
+    });
   }
 }
