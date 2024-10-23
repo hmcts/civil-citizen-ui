@@ -19,7 +19,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   const appId = req.params.appId;
   if (!form) {
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
-    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyAdditionalHelpWithFees?.option));
+    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyAdditionalHelpWithFees?.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
   }
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PAY_ADDITIONAL_FEE_URL);
   res.render(applyHelpWithApplicationFeeViewPath,

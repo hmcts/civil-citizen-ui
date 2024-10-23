@@ -18,18 +18,20 @@ module.exports = {
   },
 
   //Notice.AAA6.ClaimantIntent.ClaimSettled.Claimant
-  claimIsSettledClaimant: (amount, date) => {
+  claimIsSettledClaimant: () => {
     return {
       title: 'The claim is settled',
-      content: `You have confirmed that Sir John Doe paid £${amount} on ${date}.`,
+      content: ['You have confirmed that the claim against Sir John Doe was settled on 1 January 2020.',
+        'The defendant has 19 days from the date of settlement to notify the court of any objection.'],
     };
   },
 
   //Notice.AAA6.ClaimantIntent.ClaimSettled.Defendant
-  claimIsSettledDefendant: (amount, date) => {
+  claimIsSettledDefendant: () => {
     return {
       title: 'The claim is settled',
-      content: `Miss Jane Doe has confirmed that you paid £${amount} on ${date}.`,
+      content: ['The claimant has confirmed that this case was settled on 1 January 2020.',
+        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at ocmcnton@justice.gov.uk'],
     };
   },
 
