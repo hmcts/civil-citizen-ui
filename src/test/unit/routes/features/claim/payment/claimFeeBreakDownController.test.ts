@@ -14,7 +14,6 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
 
-
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
@@ -31,7 +30,7 @@ jest.mock('routes/guards/claimFeePaymentGuard', () => ({
   }),
 }));
 jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
-  saveUserId: jest.fn()
+  saveUserId: jest.fn(),
 }));
 
 describe('on GET', () => {

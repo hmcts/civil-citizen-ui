@@ -11,14 +11,14 @@ import * as paymentConfirmationService from 'services/features/caseProgression/h
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
-  saveUserId: jest.fn()
+  saveUserId: jest.fn(),
 }));
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
   generateRedisKey: jest.fn(),
   saveDraftClaim: jest.fn(),
   deleteDraftClaimFromStore: jest.fn(),
-}))
+}));
 
 describe('Hearing Fees - Payment Status', () => {
   const idamServiceUrl: string = config.get('services.idam.url');

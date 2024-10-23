@@ -15,7 +15,7 @@ import {Session} from 'express-session';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
-  saveUserId: jest.fn()
+  saveUserId: jest.fn(),
 }));
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),

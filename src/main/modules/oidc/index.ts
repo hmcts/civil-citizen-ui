@@ -22,7 +22,7 @@ import {
 import {
   getPaymentConfirmationUrl,
   getUserId,
-  saveOriginalPaymentConfirmationUrl
+  saveOriginalPaymentConfirmationUrl,
 } from '../draft-store/paymentSessionStoreService';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 

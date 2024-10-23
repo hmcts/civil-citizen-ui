@@ -3,7 +3,7 @@ import {
   getPaymentConfirmationUrl,
   getUserId,
   saveOriginalPaymentConfirmationUrl,
-  saveUserId
+  saveUserId,
 } from 'modules/draft-store/paymentSessionStoreService';
 
 const mockDraftStoreClient = {
