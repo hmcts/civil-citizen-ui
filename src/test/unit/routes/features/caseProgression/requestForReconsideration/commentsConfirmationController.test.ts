@@ -5,7 +5,6 @@ import {
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
 } from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-// import Module from 'module';
 import {mockCivilClaimFastTrack} from '../../../../../utils/mockDraftStore';
 import {CaseRole} from 'form/models/caseRoles';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -17,11 +16,6 @@ export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],
 };
-// jest.mock('../../../../../../main/modules/draft-store');
-// jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
-//   ...jest.requireActual('../../../../../../main/app/auth/user/oidc') as Module,
-//   getUserDetails: jest.fn(() => USER_DETAILS),
-// }));
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -35,8 +29,7 @@ describe('Request for reconsideration comments confirmation page test', () => {
   const claimId = claim.id;
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const idamUrl: string = config.get('idamUrl');
-
-
+  
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')

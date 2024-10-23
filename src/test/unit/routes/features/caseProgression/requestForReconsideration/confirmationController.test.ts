@@ -28,7 +28,7 @@ app.request['session'] = {
     id: '122333',
     roles: ['citizen'],
   },
-} as any
+} as any;
 describe('Request for reconsideration page test', () => {
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
