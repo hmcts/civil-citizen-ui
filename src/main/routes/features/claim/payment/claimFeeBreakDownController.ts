@@ -10,7 +10,7 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {app} from '../../../../app';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
@@ -57,9 +57,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       logger.info('redis key before saving the payment ' + redisKey);
       logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference);
       await saveDraftClaim(redisKey, claim, true);
-      const draftStoreClient = app.locals.draftStoreClient;
-      await draftStoreClient.set(claimId + 'userIdForPayment', req.session.user?.id);
-      logger.info('Draft store claim id ' +  claimId + ' user id ' + req.session.user?.id);
+      await saveUserId(claimId, req.session.user.id);
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {

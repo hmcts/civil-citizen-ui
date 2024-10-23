@@ -9,7 +9,7 @@ import {getFeePaymentRedirectInformation} from 'services/features/feePayment/fee
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
-import {app} from '../../../../app';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('hearingFeeHelpSelectionService');
@@ -26,8 +26,7 @@ export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: Gener
     if (IsApplyHelpFeeModel.option === YesNo.NO) {
       paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.HEARING, req);
       redirectUrl = paymentRedirectInformation?.nextUrl;
-      const draftStoreClient = app.locals.draftStoreClient;
-      await draftStoreClient.set(claimId + 'userIdForPayment', req.session.user?.id);
+      await saveUserId(claimId, req.session.user.id);
     } else {
       redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES);
     }

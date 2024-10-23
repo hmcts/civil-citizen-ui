@@ -19,6 +19,12 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
+import {
+  getPaymentConfirmationUrl,
+  getUserId,
+  saveOriginalPaymentConfirmationUrl
+} from '../draft-store/paymentSessionStoreService';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('IDAMlogs');
@@ -109,12 +115,12 @@ export class OidcMiddleware {
           app.locals.claimIssueTasklist = undefined;
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
-        const draftStoreClient = app.locals.draftStoreClient;
+
         logger.info('login user id ', req.session.user.id);
-        const paymentConfirmationUrl = await draftStoreClient.get(req.session.user.id + 'userIdForPayment');
+        const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id);
         logger.info('Payment conf url ', paymentConfirmationUrl);
         if (paymentConfirmationUrl) {
-          await draftStoreClient.del(req.session.user.id + 'userIdForPayment');
+          await deleteDraftClaimFromStore(req.session.user.id + 'userIdForPayment');
           return res.redirect(paymentConfirmationUrl);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
@@ -172,11 +178,10 @@ export class OidcMiddleware {
       if (isPaymentConfirmationUrl(req)) {
         const claimId = getClaimId(req.originalUrl);
         logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
-        const draftStoreClient = app.locals.draftStoreClient;
         logger.info('Claim id ', claimId);
-        const userId = await draftStoreClient.get(claimId + 'userIdForPayment');
+        const userId = await getUserId(claimId);
         logger.info('User id ', userId);
-        await draftStoreClient.set(userId + 'userIdForPayment', req.originalUrl);
+        await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl);
       }
       return res.redirect(SIGN_IN_URL);
     });

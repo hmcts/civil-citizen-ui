@@ -12,12 +12,8 @@ import nock from 'nock';
 import config from 'config';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-const mockDraftStoreClient = {
-  set: jest.fn(),
-  expireat: jest.fn(),
-  get: jest.fn(),
-};
-app.locals.draftStoreClient = mockDraftStoreClient;
+import {Session} from 'express-session';
+
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
@@ -33,6 +29,9 @@ jest.mock('routes/guards/claimFeePaymentGuard', () => ({
   claimFeePaymentGuard: jest.fn((req, res, next) => {
     next();
   }),
+}));
+jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
+  saveUserId: jest.fn()
 }));
 
 describe('on GET', () => {
@@ -99,7 +98,7 @@ describe('on POST', () => {
     claim.claimDetails = new ClaimDetails();
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({});
-
+    app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
     await request(app)
       .post(CLAIM_FEE_BREAKUP)
       .expect((res) => {
