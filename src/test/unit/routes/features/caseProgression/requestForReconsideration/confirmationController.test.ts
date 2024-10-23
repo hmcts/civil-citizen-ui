@@ -23,7 +23,12 @@ jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
+app.request['session'] = {
+  user: {
+    id: '122333',
+    roles: ['citizen'],
+  },
+} as any
 describe('Request for reconsideration page test', () => {
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
