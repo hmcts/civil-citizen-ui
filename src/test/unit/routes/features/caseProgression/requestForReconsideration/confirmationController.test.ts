@@ -34,18 +34,6 @@ describe('Request for reconsideration page test', () => {
     .post('/o/token')
     .reply(200, {id_token: citizenRoleToken});
 
-  beforeAll((done) => {
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
-  });
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
