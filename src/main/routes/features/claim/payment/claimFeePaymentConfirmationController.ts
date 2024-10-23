@@ -3,7 +3,7 @@ import {CLAIM_FEE_PAYMENT_CONFIRMATION_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_W
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 import {AppRequest} from 'common/models/AppRequest';
-import {deleteDraftClaimFromStore} from "modules/draft-store/draftStoreService";
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const claimFeePaymentConfirmationController: Router = Router();
 
