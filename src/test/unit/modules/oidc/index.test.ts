@@ -163,15 +163,18 @@ describe('OIDC middleware', () => {
   describe('should redirect back to payment confirmation url after login', () => {
     afterEach(() => {
       jest.clearAllMocks();
-    })
+    });
+
     it('should store original url in local if user details expired', async () => {
       mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
+
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '123456789')).expect((res) => {
         expect(res.status).toBe(302);
         expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789' + 'userIdForPayment', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '123456789'));
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });
+
     it('should redirect back to payment confirmation url after login', async () => {
       userDetails.roles = ['citizen'];
       app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
@@ -180,6 +183,7 @@ describe('OIDC middleware', () => {
       mockGetSessionIssueTime.mockReturnValue(1234);
       app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
       mockDraftStoreClient.get.mockResolvedValueOnce(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
+
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
