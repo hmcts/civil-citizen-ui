@@ -5,7 +5,7 @@ import {DocumentType} from 'models/document/documentType';
 export class CaseDocumentInfoExtractor {
   static getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
     const sortedDocuments = systemGeneratedCaseDocuments.sort((a, b) => {
-      return new Date(b.value.createdDatetime).getTime() - new Date(a.value.createdDatetime).getTime();
+      return a.value.createdDatetime.getTime() - b.value.createdDatetime.getTime();
     });
     const sealedDocument = sortedDocuments.find((document) => {
       if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
