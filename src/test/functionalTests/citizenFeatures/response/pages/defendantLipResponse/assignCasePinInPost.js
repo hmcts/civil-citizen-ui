@@ -14,7 +14,7 @@ class AssignCasePinInPost {
     await I.see('Enter the claim number from the email or letter we sent you.');
     await I.fillField(fields.claimNumber, claimNumber);
     await I.click('Save and continue');
-    if (manualPIP == 'yes') {
+    if (manualPIP) {
       await I.see('Enter security code');
       await I.see('You can find it on the email or letter we sent you.');
       await I.fillField(fields.securityCode, securityCode);

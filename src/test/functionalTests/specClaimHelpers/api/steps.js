@@ -271,8 +271,8 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
     await waitForFinishedBusinessProcess(caseId);
-    
-    if (manualPIP !== 'yes') {
+
+    if (!manualPIP) {
       await assignSpecCase(caseId, multipartyScenario);
     }
     //await waitForFinishedBusinessProcess(caseId);

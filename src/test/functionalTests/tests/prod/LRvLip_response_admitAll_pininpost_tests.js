@@ -9,7 +9,7 @@ const immediatePayment = 'immediate';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 const carmEnabled = false;
-const manualPIP = 'yes';
+const manualPIP = true;
 let claimRef;
 let caseData;
 let claimNumber;
