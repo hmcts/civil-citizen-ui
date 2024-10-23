@@ -3048,7 +3048,8 @@
         "IF_NOT_SURE_END": "sy’n nodi’r hyn y mae’r llys wedi gofyn amdano gennych.",
         "IF_NOT_SURE_START": "Os nad ydych yn siŵr beth i’w uwchlwytho, cyfeiriwch at y",
         "NEED_TO_UPLOAD": "Mae angen i chi uwchlwytho'r dogfennau y gofynnwyd amdanynt gan y llys.",
-        "PAGE_TITLE": "Uwchlwytho dogfennau ychwanegol"
+        "PAGE_TITLE": "Uwchlwytho dogfennau ychwanegol",
+        "UPLOADED_FILES": "Ffeiliau wedi’u huwchlwytho"
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"llenwi ffurflen N245",
