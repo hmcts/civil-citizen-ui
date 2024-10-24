@@ -3,9 +3,10 @@ const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefend
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const sharedData = require('../../../sharedData');
 // const UploadTranslatedDocumentsSteps = require('../../caseworkerFeatures/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
 // const CaseworkerDashboardSteps = require('../../caseworkerFeatures/caseworkerDashboard/steps/caseworkerDashboardSteps');
-// const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails'); 
+// const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails');
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
@@ -47,6 +48,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async 
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  sharedData.language = 'en';
 });
 
 /*
@@ -59,9 +61,9 @@ Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
     await UploadTranslatedDocumentsSteps.VerifySuccessBanner(claimRef);
   };
   await wa.runWATask(
-    config.caseWorker, 
-    claimRef, 
-    config.waTaskTypes.defendantWelshRequest, 
+    config.caseWorker,
+    claimRef,
+    config.waTaskTypes.defendantWelshRequest,
     defendantWelshRequestTaskDetails,
     taskSteps,
   );
