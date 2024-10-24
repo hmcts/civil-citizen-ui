@@ -179,9 +179,13 @@ export class OidcMiddleware {
           const claimId = getClaimId(req.originalUrl);
           logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
           logger.info('Claim id ', claimId);
-          const userId = await getUserId(claimId, app);
-          logger.info('User id ', userId);
-          await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl, app);
+          if (!claimId) {
+            logger.info('claim id does not exist from payment confirmation url ', claimId);
+          } else {
+            const userId = await getUserId(claimId, app);
+            logger.info('User id ', userId);
+            await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl, app);
+          }
         }
         return res.redirect(SIGN_IN_URL);
       } catch (err) {
