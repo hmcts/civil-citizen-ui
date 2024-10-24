@@ -12,5 +12,3 @@ export const saveUserId = async (claimId: string, userId: string) => {
     logger.info('Error while saving the userid for payment confirmation ' + err);
   }
 };
-
-
