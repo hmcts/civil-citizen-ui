@@ -27,6 +27,12 @@ const file = {
   buffer: Buffer.from('Test file content'),
 };
 const civilServiceUrl = config.get<string>('services.civilService.url');
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
 describe('"upload File controller test', () => {
   const idamUrl: string = config.get('idamUrl');
 
