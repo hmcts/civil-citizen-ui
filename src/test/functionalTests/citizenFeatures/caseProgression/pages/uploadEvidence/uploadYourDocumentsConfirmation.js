@@ -16,7 +16,7 @@ const content = {
     cy: 'Gallwch',
   },
   comeBack: {
-    en: 'now or come back later. You can view your documents and the other party’s documents.',
+    en: 'You can upload more documents now or come back later. You can view your documents and the other party\'s documents.',
     cy: 'nawr neu ddychwelyd yn hwyrach ymlaen’. Gallwch weld eich dogfennau chi a dogfennau’r parti arall.',
   },
 };

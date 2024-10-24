@@ -71,12 +71,23 @@ class IsYourCaseReadyForTrial {
     I.click(nextAction);
   }
 
-  verifyPageContent(languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyIsThisCaseReadyForTrialSectionContent();
     contactUs.verifyContactUs();
+  }
+
+  verifyBreadcrumbs() {
+    I.see('Back', '//a[@class="govuk-back-link"]');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyHeadingDetails() {
@@ -86,17 +97,17 @@ class IsYourCaseReadyForTrial {
   }
 
   verifyIsThisCaseReadyForTrialSectionContent() {
-    I.see(content.isCaseReady.title[language],'h3');
+    I.see(content.isCaseReady.title[language],'h2');
     I.see('');
     I.see(content.buttons.yes[language]);
     I.see(content.buttons.no[language]);
   }
 
   inputDataForIsThisCaseReadyForTrialPage(readyForTrial) {
-    I.see(content.isCaseReady.title[language],'h3');
+    I.see(content.isCaseReady.title[language],'h2');
     I.see(content.isCaseReady.reminder[language]);
-    I.click('//input[@value=\''+readyForTrial+'\']');
-    if (readyForTrial==='no'){
+    I.click(readyForTrial);
+    if (readyForTrial==='No'){
       I.see(content.isCaseReady.needArrangements[language]);
       I.see(content.isCaseReady.needApplication[language]);
       I.see(content.isCaseReady.goAhead[language]);
