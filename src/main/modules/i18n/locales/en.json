@@ -2642,7 +2642,7 @@
       },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
-        "ENTER_AMOUNT": "Enter the amount in £",
+        "ENTER_AMOUNT": "Amount in £",
         "N245": "N245 form",
         "N245_AFTER": " that they completed. You should read this before responding.",
         "N245_BEFORE": "The defendant's offer will be set out in the ",
