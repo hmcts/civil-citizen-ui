@@ -19,9 +19,10 @@ export default Router()
       const response: AddressInfoResponse = await lookupByPostcodeAndDataSet(req.query.postcode as string);
       res.status(200).json(response);
     }  catch (error) {
-      res.status(error.response.status).json({
+      const statusCode = error?.response?.status ? error.response.status : undefined;
+      return res.status(statusCode).json({
         error: {
-          status: error.response.status,
+          status: statusCode,
           message: error.message,
         },
       });
