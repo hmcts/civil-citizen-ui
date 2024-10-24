@@ -2706,7 +2706,7 @@
         "ENTER_REASONS": "Enter your reasons for requesting this order",
         "IMPOSE_SANCTION": "You should explain why you want the other parties to take this action. You'll have the option to upload documents to support your reasons on the next screen.",
         "MORE_TIME": "You should explain why you're not going to meet the original deadline. You'll have the option to upload documents to support your reasons on the next screen.",
-        "NOT_ON_LIST": "You should explain why you're requesting this order. You'll have the option to upload documents to support your reason on the next screen.",
+        "NOT_ON_LIST": "You should explain why you're requesting this order. You'll have the option to upload documents to support your reasons on the next screen.",
         "PAUSE": "You should explain why the claim should be paused until the date you gave on the previous screen. You'll have the option to upload documents to support your reasons on the next screen.",
         "RECONSIDER": "You should explain why you want the order to be reconsidered. You'll have the option to upload documents to support your reasons on the next screen.",
         "RELIEF_PENALTY": {
@@ -2740,6 +2740,7 @@
           "CHECKBOX": "I believe that the facts stated in this form are true.",
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
+        "TITLE": "Check your answers",
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
@@ -3147,11 +3148,11 @@
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
         "FROM": "From",
         "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
         "LONGER_PERIOD": "A longer period of time",
         "PAGE_TITLE": "Unavailable hearing dates",
+        "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Select a date or dates you cannot attend a hearing",
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
@@ -3168,7 +3169,8 @@
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
         "COSC_PAY_FEE": "Pay the fee",
         "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
-        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post.",
+        "WHAT_NEXT": "What happens next"
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -3199,6 +3201,7 @@
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
+        "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
@@ -3258,9 +3261,18 @@
         "PARA_TITLE_4": "Agreement from the person or business owed money",
         "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
         "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
-        "PARA_TITLE_5": "Do you need to update your details?",
-        "PARA_8": "If you need to update your details from the judgment, you will need to ",
-        "COMPLETE_FORM_N443": "complete a form N443."
+        "PARA_TITLE_5": "Updating your details",
+        "PARA_8": "If your name or address have changed since the judgment (CCJ) was issued, you may want to update them before applying to confirm you've made a debt payment.",
+        "PARA_TITLE_6": "Changing your address",
+        "PARA_9": "You will need to call the court where your judgment was issued to update the address we have for you. You can find the name of the court on the top right of ",
+        "PARA_9_1": "the judgment.",
+        "PARA_9_2": " You can then",
+        "PARA_9_3": "search for the contact details of the court.",
+        "PARA_9_4": " This will be updated immediately and you can continue with your application.",
+        "PARA_TITLE_7": "Changing your name",
+        "PARA_10": "If your name has changed since the judgment and you would like to update this, you'll need to make a ",
+        "PARA_10_1": "general application.",
+        "PARA_10_2": " You will need to wait for the change to be completed before you can continue with your application."
       },
       "FINAL_DEFENDANT_PAYMENT_DATE": {
         "TITLE": "When was the final payment?",
@@ -5090,6 +5102,7 @@
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
+    "VALID_FOUR_DIGIT_YEAR_V2": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",
     "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
@@ -5194,6 +5207,7 @@
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "PAY_APPLICATION_FEE": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
