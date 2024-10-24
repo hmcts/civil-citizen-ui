@@ -4743,7 +4743,7 @@
     }
   },
   "FOOTER":{
-    "ACCESSIBILITY_STATEMENT_URL": "Accessibilty Statement",
+    "ACCESSIBILITY_STATEMENT_URL": "Accessibility Statement",
     "ALL_CONTENT": "All content is available under the <a href='{{ link }}' rel='license'>Open Government Licence v3.0</a>, except where otherwise stated",
     "CONTACT_US_URL": "Contact Us",
     "COOKIES_URL": "Cookies",
