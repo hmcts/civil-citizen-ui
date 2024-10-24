@@ -69,13 +69,13 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
-    email: 'civilmoneyclaimsdemo@gmail.com',
-    // email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    //email:'civilmoneyclaimsdemo@gmail.com',
+    email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: 'civiluatdefendant@gmail.com',
+    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
@@ -95,6 +95,11 @@ module.exports = {
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',
+  },
+  legalAdvisor: {
+    password: defaultPassword,
+    email: 'tribunal_legal_caseworker_reg2@justice.gov.uk',
+    type: 'legal operations',
   },
   judgeUserWithRegionId2: {
     password: judgeDefaultPassword,
