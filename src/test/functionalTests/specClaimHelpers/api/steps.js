@@ -300,11 +300,11 @@ module.exports = {
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
     } else {
-      console.log('carm not enabled, updating submitted date');
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
       await apiRequest.setupTokens(config.systemUpdate);
-      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');*/
+      console.log('submitted date update to before carm date for legacy cases');
     }
     return caseId;
   },
