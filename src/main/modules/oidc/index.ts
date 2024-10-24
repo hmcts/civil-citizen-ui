@@ -94,35 +94,40 @@ export class OidcMiddleware {
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
-      if (typeof req.query.code === 'string') {
+      try {
+        if (typeof req.query.code === 'string') {
 
-        const responseData = await getOidcResponse(redirectUri, req.query.code);
-        req.session.user = app.locals.user = getUserDetails(responseData);
-        req.session.issuedAt = getSessionIssueTime(responseData);
-        logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
-        if (app.locals.assignClaimURL || req.session.assignClaimURL) {
-          const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
-          return res.redirect(assignClaimUrlWithClaimId);
-        }
-        if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
-          req.session.claimIssueTasklist = undefined;
-          app.locals.claimIssueTasklist = undefined;
-          return res.redirect(CLAIMANT_TASK_LIST_URL);
-        }
+          const responseData = await getOidcResponse(redirectUri, req.query.code);
+          req.session.user = app.locals.user = getUserDetails(responseData);
+          req.session.issuedAt = getSessionIssueTime(responseData);
+          logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
+          if (app.locals.assignClaimURL || req.session.assignClaimURL) {
+            const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
+            return res.redirect(assignClaimUrlWithClaimId);
+          }
+          if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
+            req.session.claimIssueTasklist = undefined;
+            app.locals.claimIssueTasklist = undefined;
+            return res.redirect(CLAIMANT_TASK_LIST_URL);
+          }
 
-        logger.info('login user id ', req.session.user.id);
-        const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, app);
-        logger.info('Payment conf url ', paymentConfirmationUrl);
-        if (paymentConfirmationUrl) {
-          await app.locals.draftStoreClient.del(req.session.user.id + 'userIdForPayment');
-          return res.redirect(paymentConfirmationUrl);
+          logger.info('login user id ', req.session.user.id);
+          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, app);
+          logger.info('Payment conf url ', paymentConfirmationUrl);
+          if (paymentConfirmationUrl) {
+            await app.locals.draftStoreClient.del(req.session.user.id + 'userIdForPayment');
+            return res.redirect(paymentConfirmationUrl);
+          }
+          if (req.session.user?.roles?.includes(citizenRole)) {
+            return res.redirect(DASHBOARD_URL);
+          }
+          return res.redirect(UNAUTHORISED_URL);
+        } else {
+          res.redirect(DASHBOARD_URL);
         }
-        if (req.session.user?.roles?.includes(citizenRole)) {
-          return res.redirect(DASHBOARD_URL);
-        }
-        return res.redirect(UNAUTHORISED_URL);
-      } else {
-        res.redirect(DASHBOARD_URL);
+      } catch (err) {
+        logger.info('Error in the callback of idam ', err);
+        throw err;
       }
     });
 
@@ -143,70 +148,60 @@ export class OidcMiddleware {
     });
 
     app.use(async (req: Request, res: Response, next: NextFunction) => {
-      const appReq: AppRequest = <AppRequest>req;
-      if (appReq.session?.user) {
-        if (appReq.session.user.roles?.includes(citizenRole)) {
+      try {
+        const appReq: AppRequest = <AppRequest>req;
+        if (appReq.session?.user) {
+          if (appReq.session.user.roles?.includes(citizenRole)) {
+            return next();
+          }
+        }
+        if (
+          requestIsForPinAndPost(req) ||
+          requestIsForDownloadPdf(req) ||
+          isEligibilityPage(req.originalUrl) ||
+          isMakeClaimPage(req.originalUrl) ||
+          isTestingSupportDraftUrl(req.originalUrl) ||
+          isAccessibilityStatementPage(req.originalUrl) ||
+          isContactUsPage(req.originalUrl) ||
+          isTermAndConditionsPage(req.originalUrl) ||
+          isPrivacyPolicyPage(req.originalUrl)
+        ) {
           return next();
         }
+        if (requestIsForAssigningClaimForDefendant(req)) {
+          app.locals.assignClaimURL = appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
+        }
+        if (requestIsForClaimIssueTaskList(req)) {
+          app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
+        }
+        logger.info('redirecting url ', req.originalUrl);
+        if (isPaymentConfirmationUrl(req)) {
+          const claimId = getClaimId(req.originalUrl);
+          logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
+          logger.info('Claim id ', claimId);
+          const userId = await getUserId(claimId, app);
+          logger.info('User id ', userId);
+          await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl, app);
+        }
+        return res.redirect(SIGN_IN_URL);
+      } catch (err) {
+        logger.info('Error in the middleware of while session check ', err);
+        throw err;
       }
-      if (
-        requestIsForPinAndPost(req) ||
-        requestIsForDownloadPdf(req) ||
-        isEligibilityPage(req.originalUrl) ||
-        isMakeClaimPage(req.originalUrl) ||
-        isTestingSupportDraftUrl(req.originalUrl) ||
-        isAccessibilityStatementPage(req.originalUrl) ||
-        isContactUsPage(req.originalUrl) ||
-        isTermAndConditionsPage(req.originalUrl) ||
-        isPrivacyPolicyPage(req.originalUrl)
-      ) {
-        return next();
-      }
-      if (requestIsForAssigningClaimForDefendant(req) ) {
-        app.locals.assignClaimURL = appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
-      }
-      if (requestIsForClaimIssueTaskList(req) ) {
-        app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
-      }
-      logger.info('redirecting url ', req.originalUrl);
-      if (isPaymentConfirmationUrl(req)) {
-        const claimId = getClaimId(req.originalUrl);
-        logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
-        logger.info('Claim id ', claimId);
-        const userId = await getUserId(claimId, app);
-        logger.info('User id ', userId);
-        await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl, app);
-      }
-      return res.redirect(SIGN_IN_URL);
     });
   }
 }
 
 export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string, app: Application) => {
-  try {
     await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
-  } catch (err) {
-    logger.info('Error while saving original payment confirmation url ', err);
-    throw err;
-  }
 };
 
 export const getUserId = async (claimId: string, app: Application): Promise<string> => {
-  try {
     return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
-  } catch (err) {
-    logger.info('Error while getting user id for payment confirmation ', err);
-    throw err;
-  }
 };
 
 export const getPaymentConfirmationUrl = async (userId: string, app: Application): Promise<string> => {
-  try {
     return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
-  } catch (err) {
-    logger.info('Error while getting payment confirmation url ', err);
-    throw err;
-  }
 };
 
 const getClaimId = (originalUrl: string) => {
