@@ -23,7 +23,7 @@
     }}
 {% endmacro %}
 
-{% macro addDateUploadedFileInformation(fileName, uploadedDate) %}
+{% macro addDateUploadedFileInformation(t, fileName, uploadedDate) %}
     <p class="govuk-body govuk-!-margin-bottom-0">{{ fileName }}</p>
     {{
         govukHint({
