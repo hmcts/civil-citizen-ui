@@ -4,7 +4,10 @@ import {DocumentType} from 'models/document/documentType';
 
 export class CaseDocumentInfoExtractor {
   static getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
-    const sealedDocument = systemGeneratedCaseDocuments.find((document) => {
+    const sortedDocuments = systemGeneratedCaseDocuments.sort((a, b) => {
+      return a.value.createdDatetime.getTime() - b.value.createdDatetime.getTime();
+    });
+    const sealedDocument = sortedDocuments.find((document) => {
       if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
         return document.value.documentType === documentType && document.value.documentName.startsWith(defendantOrClaimant);
       }
