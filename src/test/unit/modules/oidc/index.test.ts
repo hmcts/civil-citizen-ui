@@ -194,8 +194,8 @@ describe('OIDC middleware', () => {
     });
 
     it('should throw error while storing  original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
-      mockDraftStoreClient.set.mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
+      mockDraftStoreClient.get.mockRejectedValueOnce(new Error('error in getting the value'));
+      mockDraftStoreClient.set.mockRejectedValueOnce(new Error('error in getting the value'));
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
