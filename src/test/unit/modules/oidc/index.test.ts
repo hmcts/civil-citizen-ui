@@ -193,7 +193,6 @@ describe('OIDC middleware', () => {
         });
     });
     
-
     it('should throw error if issue in getting confirmation url', async () => {
       userDetails.roles = ['citizen'];
       app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
