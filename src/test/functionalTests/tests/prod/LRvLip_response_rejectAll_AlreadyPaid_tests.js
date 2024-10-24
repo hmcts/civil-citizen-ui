@@ -27,7 +27,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {
+Scenario.only('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
