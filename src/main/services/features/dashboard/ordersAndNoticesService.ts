@@ -178,9 +178,16 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionsOrder = claim.getDocumentDetails(DocumentType.SDO_ORDER);
-  return standardDirectionsOrder ? Array.of(
-    setUpDocumentLinkObject(standardDirectionsOrder.documentLink, standardDirectionsOrder.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER')) : [];
+  const standardDirectionsOrders = claim.getDocumentDetailsList(DocumentType.SDO_ORDER);
+
+  const caseDocuments: DocumentInformation[] = [];
+  if (standardDirectionsOrders && standardDirectionsOrders.length > 0) {
+    standardDirectionsOrders.forEach((documentElement) => {
+      const document = documentElement.value;
+      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER'));
+    });
+  }
+  return caseDocuments;
 };
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
