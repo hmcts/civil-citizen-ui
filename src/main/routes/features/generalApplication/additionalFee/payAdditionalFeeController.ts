@@ -47,7 +47,7 @@ payAdditionalFeeController.post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (asy
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
+    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.GENERAL_APPLICATION.APPLY_HELP_WITH_FEES', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
