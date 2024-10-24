@@ -55,6 +55,14 @@ export function getRespondToApplicationCaption(generalAppTypes: ApplicationTypeO
     { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType});
 }
 
+export function getUnavailableHearingDateCaption(lng: string): string {
+  return t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', { lng: getLng(lng) });
+}
+
+export function getHearingSupportCaption(lng: string): string {
+  return t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE', { lng: getLng(lng) });
+}
+
 export const saveRespondentHearingArrangement = async (redisKey: string, hearingArrangement: HearingArrangement): Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
