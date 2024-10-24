@@ -12,6 +12,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Session} from 'express-session';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -93,6 +94,7 @@ describe('Apply for help with fees', () => {
         status: 'initiated',
         nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
       };
+      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
       jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
       await request(app)
         .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)

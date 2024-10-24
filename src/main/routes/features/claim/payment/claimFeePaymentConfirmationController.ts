@@ -3,6 +3,7 @@ import {CLAIM_FEE_PAYMENT_CONFIRMATION_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_W
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 import {AppRequest} from 'common/models/AppRequest';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const claimFeePaymentConfirmationController: Router = Router();
 
@@ -11,6 +12,7 @@ claimFeePaymentConfirmationController.get([CLAIM_FEE_PAYMENT_CONFIRMATION_URL, C
   try {
     const claimId = req.params.id;
     const redirectUrl = await getRedirectUrl(claimId,req);
+    await deleteDraftClaimFromStore(claimId + 'userIdForPayment');
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
   } catch (error) {
     next(error);

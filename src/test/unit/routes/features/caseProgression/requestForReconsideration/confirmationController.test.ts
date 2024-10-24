@@ -23,7 +23,12 @@ jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
+app.request['session'] = {
+  user: {
+    id: '122333',
+    roles: ['citizen'],
+  },
+} as any;
 describe('Request for reconsideration page test', () => {
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
@@ -34,18 +39,6 @@ describe('Request for reconsideration page test', () => {
     .post('/o/token')
     .reply(200, {id_token: citizenRoleToken});
 
-  beforeAll((done) => {
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
-  });
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
