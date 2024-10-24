@@ -22,7 +22,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     logger.info('claim id ' + redisClaimId);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
-    logger.info('claim fee payment  info ' + paymentInfo);
+    logger.info('claim fee payment  info ' + JSON.stringify(paymentInfo));
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
     logger.info('payment status ' + paymentInfo);
     if(paymentStatus.status === success) {

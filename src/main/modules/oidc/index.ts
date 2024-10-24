@@ -183,15 +183,30 @@ export class OidcMiddleware {
 }
 
 export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string, app: Application) => {
-  await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
+  try {
+    await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl)
+  } catch (err) {
+    logger.info('Error while saving original payment confirmation url ', err);
+    throw err;
+  }
 };
 
 export const getUserId = async (claimId: string, app: Application): Promise<string> => {
-  return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
+  try {
+    return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment')
+  } catch (err) {
+    logger.info('Error while getting user id for payment confirmation ', err);
+    throw err;
+  }
 };
 
 export const getPaymentConfirmationUrl = async (userId: string, app: Application): Promise<string> => {
-  return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
+  try {
+    return await app.locals.draftStoreClient.get(userId + 'userIdForPayment')
+  } catch (err) {
+    logger.info('Error while getting payment confirmation url ', err);
+    throw err;
+  }
 };
 
 const getClaimId = (originalUrl: string) => {
