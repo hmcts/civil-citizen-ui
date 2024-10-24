@@ -98,7 +98,7 @@ export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocume
 export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string, lng: any) => {
   const rows: SummaryRow[] = [];
   const toc = t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng});
-  const uf = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng});
+  const uf = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED_2', {lng});
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   additionalDocumentsList.forEach(doc => {
     rows.push(summaryRow(toc, doc.typeOfDocument));
