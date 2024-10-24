@@ -193,15 +193,15 @@ export class OidcMiddleware {
 }
 
 export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string, app: Application) => {
-    await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
+  await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
 };
 
 export const getUserId = async (claimId: string, app: Application): Promise<string> => {
-    return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
+  return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
 };
 
 export const getPaymentConfirmationUrl = async (userId: string, app: Application): Promise<string> => {
-    return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
+  return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
 };
 
 const getClaimId = (originalUrl: string) => {
