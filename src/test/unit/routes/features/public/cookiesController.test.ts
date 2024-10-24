@@ -6,6 +6,7 @@ import {
   COOKIES_URL,
 } from 'routes/urls';
 import {defaultCookiePreferences} from 'routes/features/public/cookiesController';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -25,7 +26,7 @@ describe('Cookies page', () => {
     it('should display cookies page', async () => {
       const res = await request(app).get(COOKIES_URL);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('Cookies');
+      expect(res.text).toContain(t('PAGES.COOKIES.TITLE'));
     });
 
     describe('on POST', () => {

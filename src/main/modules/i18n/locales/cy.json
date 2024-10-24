@@ -2995,7 +2995,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"Os byddwch yn dewis sawl cais, bydd yr ateb hwn yn berthnasol i bob un ohonynt.",
         "PAY_APPLICATION_FEE": "Bydd rhaid i chi dalu ffi i wneud cais",
         "RECONSIDER_ORDER": "ailystyried gorchymyn",
-        "SET_ASIDE_JUDGMENT": "roi dyfarniad o’r naill du (ei ddileu)",
+        "SET_ASIDE_JUDGMENT": "roi dyfarniad o'r naill du (ei ddileu)",
         "TITLE": "Cais gan y partïon eraill",
         "VARY_JUDGMENT": "amrywio dyfarniad"
       },
@@ -3114,6 +3114,11 @@
         "HEARING_TYPE": {
           "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
           "TELEPHONE": "Gwrandawiad dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
+        },
+        "HEARING_TYPE_VIEW_APPLICATION": {
+          "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
+          "TELEPHONE": "Dros y ffôn",
           "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "Os bydd barnwr angen i’r gwrandawiad ddigwydd yn y llys, a oes yna leoliad llys sydd orau gennych? (dewisol)",
@@ -3241,7 +3246,7 @@
         "DIRECTION_WITH_NOTICE": "Cyfarwyddyd i wneud y cais gyda rhybudd",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
-        "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
+        "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos.",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
         "HEARING_ORDER" : "Hearing Order",
@@ -3253,7 +3258,7 @@
         "READ_RESPONSE": "Darllen yr ymateb",
         "RESPONSE": {
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
-          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "OTHER_PARTIES_RESPONSE": "Ymateb y partïon eraill i’r cais.",
           "TITLE": "Ymateb gan y partïon eraill",
           "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?"
         },

@@ -6,7 +6,7 @@ import {PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
 import {
   mockCivilClaim, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -37,7 +37,7 @@ describe('Claim fee payment confirmation', () => {
         .get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
         });
     });
   });

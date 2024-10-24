@@ -2,11 +2,11 @@
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimWithTimelineAndEvidence, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../../../main/routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { Session } from 'express-session';
+import {t} from 'i18next';
 
 describe('First contact - claim summary controller', () => {
   beforeAll(() => {
@@ -17,7 +17,7 @@ describe('First contact - claim summary controller', () => {
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain('Claim details');
+      expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PAGE_TITLE'));
     });
   });
 
@@ -28,7 +28,7 @@ describe('First contact - claim summary controller', () => {
       .get(FIRST_CONTACT_CLAIM_SUMMARY_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
       });
   });
 
