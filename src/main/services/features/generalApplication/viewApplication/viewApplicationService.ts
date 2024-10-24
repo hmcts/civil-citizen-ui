@@ -85,12 +85,16 @@ export const getCourtDocuments = (applicationResponse : ApplicationResponse, lan
 
 export const getApplicantDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const applicantDocumentsArray: DocumentInformation[] = [];
+  applicantDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   applicantDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Applicant'));
   return new DocumentsViewComponent('ApplicantDocuments', applicantDocumentsArray);
 };
 
 export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
+  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0) {
+    respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
+  }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
   return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
 };
@@ -112,6 +116,17 @@ const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: strin
       });
   }
   return addlnDocInfoArray;
+};
+
+export const getDraftDocument =  (applicationResponse: ApplicationResponse, lang: string) => {
+  const generalAppDraftDocs = applicationResponse?.case_data?.gaDraftDocument;
+  let gaDraftDocInfoArray : DocumentInformation[] = [];
+  if(generalAppDraftDocs) {
+    gaDraftDocInfoArray = generalAppDraftDocs.map(gaDraftDocument => {
+      return setUpDocumentLinkObject(gaDraftDocument?.value?.documentLink, gaDraftDocument?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT');
+    });
+  }
+  return gaDraftDocInfoArray;
 };
 
 export const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
