@@ -209,5 +209,8 @@ export const getPaymentConfirmationUrl = async (userId: string, app: Application
 };
 
 const getClaimId = (originalUrl: string) => {
-  return originalUrl.split('/')[2];
+  const extractClaimId = originalUrl?.split('/')[2];
+  if (extractClaimId && extractClaimId?.length === 16) {
+    return extractClaimId;
+  }
 };
