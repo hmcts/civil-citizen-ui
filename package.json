@@ -29,7 +29,7 @@
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:crossbrowser": "src/test/crossbrowser/run-crossbrowser-tests.sh",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functionalTests yarn test:functional:codeceptjs run-workers --suites 4 --grep @nightly --reporter mocha-multi --verbose",
-    "test-crossbrowser-fullfunctional": "MOCHAWESOME_REPORTFILENAME=crossBrowserTests yarn codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c test/end-to-end/saucelabs.conf.js",
+    "test-crossbrowser-fullfunctional": "MOCHAWESOME_REPORTFILENAME=crossBrowserTests yarn codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c test/crossbrowser/saucelabs.conf.js",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
     "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
     "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
