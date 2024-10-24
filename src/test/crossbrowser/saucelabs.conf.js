@@ -1,6 +1,7 @@
 const supportedBrowsers = require('../crossbrowser/supportedBrowsers.js');
 const {unAssignAllUsers} = require('../functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('../functionalTests/specClaimHelpers/api/idamHelper');
+const testConfig = require('../config');
 
 const browser = process.env.SAUCELABS_BROWSER;
 const tunnelName = process.env.TUNNEL_IDENTIFIER || 'reformtunnel';
@@ -49,8 +50,8 @@ const setupConfig = {
       '../e2eTests/tests/**/*.js'],
   output: `${process.cwd()}/functional-output`,
   helpers: {
-    WebDriver: {
-      url: process.env.TEST_URL || 'https://moneyclaims.aat.platform.hmcts.net',
+    Playwright: {
+      url: testConfig.TestUrl,
       browser,
       cssSelectorsEnabled: 'true',
 
