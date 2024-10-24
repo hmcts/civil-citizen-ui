@@ -8,20 +8,22 @@ const fields = {
 
 class AssignCasePinInPost {
 
-  async open(claimNumber, securityCode) {
+  async open(claimNumber, securityCode, manualPIP) {
     await I.amOnPage('/first-contact/claim-reference/');
     await I.waitForContent('Enter your claim number', config.WaitForText);
     await I.see('Enter the claim number from the email or letter we sent you.');
     await I.fillField(fields.claimNumber, claimNumber);
     await I.click('Save and continue');
-    await I.see('Enter security code');
-    await I.see('You can find it on the email or letter we sent you.');
-    await I.fillField(fields.securityCode, securityCode);
-    await I.click('Save and continue');
-    await this.verifyClaimSummaryPageContent(claimNumber);
-    await I.click('Respond to claim');
-    // To let defendant role gets assigned to citizen without any issues and then login to see the claim on dashboard if requried
-    await I.wait(10);
+    if (manualPIP) {
+      await I.see('Enter security code');
+      await I.see('You can find it on the email or letter we sent you.');
+      await I.fillField(fields.securityCode, securityCode);
+      await I.click('Save and continue');
+      await this.verifyClaimSummaryPageContent(claimNumber);
+      await I.click('Respond to claim');
+      // To let defendant role gets assigned to citizen without any issues and then login to see the claim on dashboard if requried
+      await I.wait(10);
+    }
   }
 
   async verifyClaimSummaryPageContent(claimNumber) {
