@@ -79,6 +79,10 @@ withNightlyPipeline(type, product, component) {
   ])
   loadVaultSecrets(secrets)
 
+  before('crossBrowserTest') {
+    yarnBuilder.yarn("playwright install")
+  }
+
   enableCrossBrowserTest()
 
   enableFullFunctionalTest(200)
