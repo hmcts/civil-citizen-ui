@@ -129,7 +129,7 @@ describe('General Application - Do you have a help with fees reference number', 
         .send({})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_UPPER'));
+          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_ALT'));
         });
     });
 
