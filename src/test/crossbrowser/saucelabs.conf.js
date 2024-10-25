@@ -3,7 +3,7 @@ const {unAssignAllUsers} = require('../functionalTests/specClaimHelpers/api/case
 const {deleteAllIdamTestUsers} = require('../functionalTests/specClaimHelpers/api/idamHelper');
 const testConfig = require('../config');
 
-const browser = process.env.SAUCELABS_BROWSER;
+const browser = process.env.SAUCELABS_BROWSER || 'chromium';
 const tunnelName = process.env.TUNNEL_IDENTIFIER || 'reformtunnel';
 const getBrowserConfig = (browserGroup) => {
   const browserConfig = [];
@@ -97,7 +97,7 @@ const setupConfig = {
   mocha: {
     reporter: 'mochawesome',
     reporterOptions: {
-      reportDir: process.env.E2E_CROSSBROWSER_OUTPUT_DIR || './functional-output',
+      reportDir: process.env.CROSSBROWSER_OUTPUT_DIR || './functional-output',
       reportTitle: 'Crossbrowser results',
       inline: true,
     },
