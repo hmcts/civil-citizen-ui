@@ -61,7 +61,7 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const genAppId = req.params.appId;
-    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
+    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_ALT', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, false);
