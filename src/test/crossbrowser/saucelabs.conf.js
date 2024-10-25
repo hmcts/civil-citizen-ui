@@ -3,26 +3,40 @@ const {unAssignAllUsers} = require('../functionalTests/specClaimHelpers/api/case
 const {deleteAllIdamTestUsers} = require('../functionalTests/specClaimHelpers/api/idamHelper');
 const testConfig = require('../config');
 
-const browser = process.env.SAUCELABS_BROWSER || 'chromium';
-const tunnelName = process.env.TUNNEL_IDENTIFIER || 'reformtunnel';
-const getBrowserConfig = (browserGroup) => {
+const browser = process.env.SAUCELABS_BROWSER || 'chrome';
+
+const defaultSauceOptions = {
+  username: process.env.SAUCE_USERNAME,
+  accessKey: process.env.SAUCE_ACCESS_KEY,
+  tunnelIdentifier: process.env.TUNNEL_IDENTIFIER || 'reformtunnel',
+  acceptSslCerts: true,
+  pageLoadStrategy: 'normal',
+  idleTimeout: 700,
+  tags: ['Citizen UI'],
+};
+
+function merge(intoObject, fromObject) {
+  return Object.assign({}, intoObject, fromObject);
+}
+
+function getBrowserConfig(browserGroup) {
   const browserConfig = [];
   for (const candidateBrowser in supportedBrowsers[browserGroup]) {
     if (candidateBrowser) {
-      const desiredCapability = supportedBrowsers[browserGroup][candidateBrowser];
-      desiredCapability['sauce:options'].tunnelIdentifier = tunnelName;
-      desiredCapability['sauce:options'].acceptSslCerts = true;
-      desiredCapability['sauce:options'].tags = ['citizen-ui'];
+      const candidateCapabilities = supportedBrowsers[browserGroup][candidateBrowser];
+      candidateCapabilities['sauce:options'] = merge(
+        defaultSauceOptions, candidateCapabilities['sauce:options'],
+      );
       browserConfig.push({
-        browser: desiredCapability.browserName,
-        desiredCapabilities: desiredCapability,
+        browser: candidateCapabilities.browserName,
+        capabilities: candidateCapabilities,
       });
     } else {
       console.error('ERROR: supportedBrowsers.js is empty or incorrectly defined');
     }
   }
   return browserConfig;
-};
+}
 
 let startTime;
 const setupConfig = {
@@ -50,19 +64,30 @@ const setupConfig = {
       '../e2eTests/tests/**/*.js'],
   output: `${process.cwd()}/functional-output`,
   helpers: {
-    Playwright: {
+    WebDriver: {
       url: testConfig.TestUrl,
       browser,
+      waitForTimeout: 90000,
+      smartWait: 90000,
       cssSelectorsEnabled: 'true',
-
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
+      chromeOptions: {
+        args: [
+          'start-maximized',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--no-sandbox',
+          'disable-infobars',
+          'ignore-gpu-blacklist',
+        ],
+      },
+      acceptInsecureCerts: true,
+      sauceSeleniumAddress: 'ondemand.eu-central-1.saucelabs.com:443/wd/hub',
+      host: 'ondemand.eu-central-1.saucelabs.com',
+      port: 80,
       region: 'eu',
       sauceConnect: true,
-      services: ['sauce'],
-
-      // This line is required to ensure test name and browsers are set correctly for some reason.
-      desiredCapabilities: {'sauce:options': {}},
+      supportedBrowsers,
+      capabilities: {},
     },
     SauceLabsReportingHelper: {
       require: './helpers/SauceLabsReportingHelper.js',
