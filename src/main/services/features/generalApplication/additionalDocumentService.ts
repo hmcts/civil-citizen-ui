@@ -13,7 +13,6 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { PaymentSuccessfulSectionBuilder } from '../claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
@@ -24,8 +23,9 @@ const logger = Logger.getLogger('additionalDocumentService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
-export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string): SummarySection => {
+export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string, lng: any): SummarySection => {
   let index = 0;
+  const toc = t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng});
   const formattedSummary = summarySection(
     {
       title: '',
@@ -33,7 +33,7 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
     });
   additionalDocumentsList.forEach((uploadDocument: UploadAdditionalDocument) => {
     index = index + 1;
-    formattedSummary.summaryList.rows.push(summaryRow('Type of document', uploadDocument.typeOfDocument));
+    formattedSummary.summaryList.rows.push(summaryRow(toc, uploadDocument.typeOfDocument));
     formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=${index}`, 'Remove document'));
   });
   return formattedSummary;
@@ -95,11 +95,14 @@ export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocume
   });
 };
 
-export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string) => {
+export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string, lng: any) => {
   const rows: SummaryRow[] = [];
+  const toc = t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng});
+  const uf = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED_2', {lng});
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   additionalDocumentsList.forEach(doc => {
-    rows.push(summaryRow('Type of document', doc.typeOfDocument));
-    rows.push(summaryRow('Uploaded document', doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')));
+    rows.push(summaryRow(toc, doc.typeOfDocument));
+    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel()));
   });
   return rows;
 };
