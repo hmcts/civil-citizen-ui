@@ -67,6 +67,7 @@ const setupConfig = {
     WebDriver: {
       url: testConfig.TestUrl,
       browser,
+      keepCookies: true,
       waitForTimeout: 90000,
       smartWait: 90000,
       cssSelectorsEnabled: 'true',
