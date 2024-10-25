@@ -2642,7 +2642,7 @@
       },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
-        "ENTER_AMOUNT": "Enter the amount in £",
+        "ENTER_AMOUNT": "Amount in £",
         "N245": "N245 form",
         "N245_AFTER": " that they completed. You should read this before responding.",
         "N245_BEFORE": "The defendant's offer will be set out in the ",
@@ -2923,6 +2923,22 @@
         "APPLICATION": "Application",
         "APPLICATION_ID": "Application ID",
         "APPLICATION_TYPE": "Application type",
+        "APPLICATION_TYPE_CCD": {
+          "ADJOURN_HEARING": "Adjourn a hearing",
+          "AMEND_A_STMT_OF_CASE": "Amend a statement of case",
+          "EXTEND_TIME": "Extend time",
+          "OTHER": "Other",
+          "OTHER_OPTION": "Other option",
+          "RELIEF_FROM_SANCTIONS": "Relief from sanctions",
+          "SET_ASIDE_JUDGEMENT":"Set aside judgment",
+          "SETTLE_BY_CONSENT": "Settle by consent",
+          "STAY_THE_CLAIM": "Stay the claim",
+          "STRIKE_OUT": "Strike out",
+          "SUMMARY_JUDGMENT": "Summary judgment",
+          "UNLESS_ORDER": "Unless order",
+          "VARY_ORDER": "Vary order",
+          "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Vary payment terms of judgment"
+        },
         "COMPLETE": "Complete",
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
@@ -3142,7 +3158,7 @@
         "PAGE_TITLE": "Provide more information to the court",
         "TITLE": "Provide more information to the court",
         "TEXT_INPUT": "Enter the information requested by the court",
-        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs.",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
         "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
@@ -3565,6 +3581,7 @@
       "CHECK_YOUR_ANSWERS_CORRECT": "I confirm the documents are correct and understand that I cannot withdraw documents once I have submitted them.",
       "CHECK_YOUR_ANSWERS_VALIDATION": "Tell us if you confirm the documents are correct.",
       "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Document uploaded",
+      "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED_2": "Uploaded document",
       "COSTS": "Costs",
       "COSTS_HINT": "A detailed list of the costs you have incurred in making or defending the claim, for example photocopying, getting copies of contracts, include receipts",
       "DISCLOSURE": "Disclosure",
@@ -4366,7 +4383,7 @@
       "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service.",
       "CLAIM_TITLE": "Claiming interest:",
       "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)",
-      "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date.To claim interest at different rates or for different periods of time, you should issue your claim on paper.  More information on how to do this can be found at MAKE_A_CLAIM"
+      "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date. To claim interest at different rates or for different periods of time, you should issue your claim on paper. More information on how to do this can be found at MAKE_A_CLAIM."
     },
     "SUPPORT_REQUIRED": {
       "ADD_ANOTHER": "Add another person",
@@ -4437,6 +4454,8 @@
       "SUBTITLE": "Acceptable documents formats",
       "TITLE": "Upload documents",
       "TYPE_OF_DOCUMENT": "Type of document",
+      "UPLOADED_FILES": "Uploaded document",
+      "UPLOADED_FILES_2": "Uploaded document",
       "UPLOAD": "Upload a file",
       "TYPE_OF_DOCUMENT_EXAMPLE": "For example, contract, invoice, receipt, email, text message, photo, social media message",
       "DOCUMENT_ISSUE_DATE": "Date document was issued or message was sent",
@@ -4563,7 +4582,8 @@
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Trial Ready",
-      "UNSEALED_CLAIM":"Unsealed Claim form"
+      "UNSEALED_CLAIM":"Unsealed Claim form",
+      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
@@ -5171,6 +5191,7 @@
     "VALID_YES_NO_SELECTION_VARIATION_2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_OPTION2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
+    "VALID_YES_NO_SELECTION_ALT": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_YOUR_NAME": "You must enter your name",
     "VALID_ENTER_WITNESS_NAME": "You must enter name of witness",
