@@ -61,4 +61,4 @@ Scenario('Both parties complete their trial arrangements - Fast Track', async ({
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
