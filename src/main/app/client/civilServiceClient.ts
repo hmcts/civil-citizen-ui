@@ -196,6 +196,7 @@ export class CivilServiceClient {
       amount = roundOffTwoDecimals(amount);
       logger.info('After Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');
@@ -507,7 +508,6 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
     let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
-
     dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
   }

@@ -41,6 +41,7 @@ import {
   GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_VIEW_APPLICATION_URL,
   GA_RESPONDENT_INFORMATION_URL,
+  MAKE_APPLICATION_TO_COURT,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -135,6 +136,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{GA_VIEW_APPLICATION_URL}', GA_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
   valuesMap.set('{GA_RESPONSE_VIEW_APPLICATION_URL}', GA_RESPONSE_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
   valuesMap.set('{GA_RESPONDENT_INFORMATION_URL}', GA_RESPONDENT_INFORMATION_URL.replace(':id', claimId).replace(':appId', appId));
+  valuesMap.set('{VIEW_COSC_CERTIFICATE_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.CERTIFICATE_OF_DEBT_PAYMENT)));
+  valuesMap.set('{MAKE_APPLICATION_TO_COURT_URL}', MAKE_APPLICATION_TO_COURT);
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
