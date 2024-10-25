@@ -18,7 +18,7 @@ export class ReferenceNumberValidator implements ValidatorConstraintInterface {
 
 export class ApplyHelpFeesReferenceForm {
 
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION_UPPER'})
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION_ALT'})
     option: string;
   @ValidateIf(o =>  o.isReferenceRequired())
   @IsDefined({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
