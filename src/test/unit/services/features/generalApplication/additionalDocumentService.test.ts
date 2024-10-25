@@ -11,7 +11,17 @@ import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStore
 import { getClaimById } from 'modules/utilityService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import { getClaimDetailsById, getContentForBody, getContentForCloseButton, getContentForPanel, getSummaryList, prepareCCDData, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
+import {
+  buildSummarySectionForAdditionalDoc,
+  getClaimDetailsById,
+  getContentForBody,
+  getContentForCloseButton,
+  getContentForPanel,
+  getSummaryList,
+  prepareCCDData,
+  removeSelectedDocument,
+  uploadSelectedFile,
+} from 'services/features/generalApplication/additionalDocumentService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('additionalDocumentService');
@@ -107,11 +117,48 @@ describe('Additional Documents Service', () => {
       const claimId = '1';
       const gaId = '2';
 
-      const result = getSummaryList(additionalDocumentsList, claimId, gaId);
+      const result = getSummaryList(additionalDocumentsList, claimId, gaId, undefined);
 
       expect(result.summaryList.rows).toHaveLength(4);
-      expect(result.summaryList.rows[0]).toEqual(summaryRow('Type of document', 'Type1'));
+      expect(result.summaryList.rows[0]).toEqual(summaryRow('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', 'Type1'));
       expect(result.summaryList.rows[1]).toEqual(summaryRow('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
+    });
+  });
+
+  describe('buildSummarySectionForAdditionalDoc', () => {
+    it('should generate additional summary list', () => {
+      const additionalDocumentsList: UploadAdditionalDocument[] = [
+        {
+          typeOfDocument: 'Type1',
+          caseDocument: {
+            documentName: 'Document1',
+            createdBy: 'User1',
+            documentLink: { document_url: 'ur1', document_filename: 'filename1', document_binary_url: 'binaryUrl1' },
+            documentType: null,
+            documentSize: 123,
+          } as CaseDocument,
+          fileUpload: {} as FileUpload,
+        },
+        {
+          typeOfDocument: 'Type2',
+          caseDocument: {
+            documentName: 'Document2',
+            createdBy: 'User2',
+            documentLink: { document_url: 'ur2', document_filename: 'filename2', document_binary_url: 'binaryUrl2' },
+            documentType: null,
+            documentSize: 123,
+          } as CaseDocument,
+          fileUpload: {} as FileUpload,
+        },
+      ];
+      const claimId = '1';
+      const gaId = '2';
+
+      const result = buildSummarySectionForAdditionalDoc(additionalDocumentsList, claimId, gaId, undefined);
+
+      expect(result).toHaveLength(4);
+      expect(result[0].key.text).toContain('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT');
+      expect(result[1].key.text).toContain('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED');
     });
   });
 
