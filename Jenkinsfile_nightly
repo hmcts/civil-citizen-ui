@@ -80,7 +80,7 @@ withNightlyPipeline(type, product, component) {
   loadVaultSecrets(secrets)
 
   afterAlways('build') {
-    sh 'yarn setup'
+    yarnBuilder.yarn('install-dependencies')
   }
 
   enableCrossBrowserTest()
