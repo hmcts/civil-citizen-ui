@@ -90,9 +90,9 @@ const setupConfig = {
     },
   },
   include: {
-    api: './specClaimHelpers/api/steps.js',
-    wa: './specClaimHelpers/api/stepsWA.js',
-    noc: './specClaimHelpers/api/steps_noc.js',
+    api: '../functionalTests/specClaimHelpers/api/steps.js',
+    wa: '../functionalTests/specClaimHelpers/api/stepsWA.js',
+    noc: '../functionalTests/specClaimHelpers/api/steps_noc.js',
   },
   mocha: {
     reporter: 'mochawesome',
