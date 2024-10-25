@@ -137,6 +137,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{GA_VIEW_APPLICATION_URL}', GA_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
   valuesMap.set('{GA_RESPONSE_VIEW_APPLICATION_URL}', GA_RESPONSE_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
   valuesMap.set('{GA_RESPONDENT_INFORMATION_URL}', GA_RESPONDENT_INFORMATION_URL.replace(':id', claimId).replace(':appId', appId));
+  valuesMap.set('{VIEW_COSC_CERTIFICATE_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.CERTIFICATE_OF_DEBT_PAYMENT)));
   valuesMap.set('{MAKE_APPLICATION_TO_COURT_URL}', MAKE_APPLICATION_TO_COURT);
   valuesMap.set('{COMFIRM_YOU_PAID_JUDGMENT_DEBT}', GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL.replace(':id', claimId));
 
