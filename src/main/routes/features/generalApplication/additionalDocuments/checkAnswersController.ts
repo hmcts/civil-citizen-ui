@@ -17,11 +17,12 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id: claimId } = req.params;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimIdPrettified = caseNumberPrettify(claimId);
     const claim = await getClaimDetailsById(req);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-    const summaryRows = buildSummarySectionForAdditionalDoc(claim.generalApplication.uploadAdditionalDocuments, claimId, appId);
+    const summaryRows = buildSummarySectionForAdditionalDoc(claim.generalApplication.uploadAdditionalDocuments, claimId, appId, lng);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
   } catch (error) {
     next(error);
