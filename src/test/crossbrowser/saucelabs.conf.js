@@ -64,7 +64,7 @@ const setupConfig = {
       '../e2eTests/tests/**/*.js'],
   output: `${process.cwd()}/functional-output`,
   helpers: {
-    WebDriver: {
+    Playwright: {
       url: process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net',
       browser,
       keepCookies: true,
