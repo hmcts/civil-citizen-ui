@@ -8,10 +8,10 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "feature/civ_15215"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
-def generalappCCDBranch = "master"
+def generalappCCDBranch = "feature/civ_15215"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
