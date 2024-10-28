@@ -82,7 +82,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL ));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
+          + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
       }
     }
   } catch (error) {

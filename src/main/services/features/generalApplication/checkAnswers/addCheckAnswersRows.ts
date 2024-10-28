@@ -17,6 +17,7 @@ import {
   COSC_FINAL_PAYMENT_DATE_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL,
 } from 'routes/urls';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
@@ -135,6 +136,20 @@ export const addRequestingReasonRows = (claimId: string, claim: Claim, lang: str
           href, changeLabel(), undefined, index, arr.length),
       );
     });
+  }
+  return rows;
+};
+
+export const addAddAnotherApplicationRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const rows: SummaryRow[] = [];
+  if (claim.generalApplication?.applicationCosts) {
+    const addAnotherApp = (claim.generalApplication?.applicationTypes.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION.${addAnotherApp}`, {lng}),
+        constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), changeLabel()),
+    );
   }
   return rows;
 };
