@@ -684,4 +684,288 @@ describe('dashboardService', () => {
       expect(notificationsList.items[2].id).toEqual('1');
     });
   });
+
+  describe('Stayed Claim', () => {
+    const mockDashboardInfo =
+      [{
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        tasks: [{
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+          'statusEn': 'Action needed',
+          'statusCy': 'Action needed',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }, {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+          'statusEn': 'Action needed',
+          'statusCy': 'Action needed',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }],
+      }, {
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        tasks: [{
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+          'statusEn': 'Done',
+          'statusCy': 'Done',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        },
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+          'statusEn': 'Done',
+          'statusCy': 'Done',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }] as DashboardTask[],
+      },
+      {
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        tasks: [{
+          'id': '9d2712da-47ce-4050-bbee-650134a7b9c2',
+          'statusEn': 'Available',
+          'statusCy': 'Available',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        },
+        {
+          'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+          'statusEn': 'Available',
+          'statusCy': 'Available',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }] as DashboardTask[],
+      }, {
+        'categoryEn': 'Category',
+        'categoryCy': 'Category Welsh',
+        tasks: [{
+          'id': '2a2712da-47ce-4050-bbee-650134a7b9c1',
+          'statusEn': 'Not available yet',
+          'statusCy': 'Not available yet',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        },
+        {
+          'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+          'statusEn': 'Not available yet',
+          'statusCy': 'Not available yet',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }] as DashboardTask[],
+      }, {
+        'categoryEn': 'Another Category',
+        'categoryCy': 'Another Category Welsh',
+        tasks: [{
+          'id': '2a2712da-47ce-4050-bbee-650134a7b9c1',
+          'statusEn': 'In progress',
+          'statusCy': 'In progress',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        },
+        {
+          'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+          'statusEn': 'In progress',
+          'statusCy': 'In progress',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }] as DashboardTask[],
+      },{
+        'categoryEn': 'Yet Another Category',
+        'categoryCy': 'Yet Another Category Welsh',
+        tasks: [{
+          'id': '1d2712da-47ce-4050-bbee-650134a7b9c3',
+          'statusEn': 'Optional',
+          'statusCy': 'Optional',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        },
+        {
+          'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+          'statusEn': 'In progress',
+          'statusCy': 'In progress',
+          'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+          'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+          'hintTextEn': 'hint_text_en',
+          'hintTextCy': 'hint_text_cy',
+        }] as DashboardTask[],
+      },
+      ] as DashboardTaskList[];
+
+    it('Set tasks as Inactive unless Available or Done', async () => {
+      //Given
+      const dashboard = new Dashboard(mockDashboardInfo as DashboardTaskList[]);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.ccdState = CaseState.CASE_STAYED;
+
+      //When
+      const claimantDashboard = await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890', appReq);
+
+      //Then
+      expect(claimantDashboard.items).toEqual([
+        {
+          'categoryCy': 'Hearing Welsh',
+          'categoryEn': 'Hearing',
+          'tasks': [
+            {
+              'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }, {
+              'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }],
+        },
+        {
+          'categoryCy': 'Claim Welsh',
+          'categoryEn': 'Claim',
+          'tasks': [{
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+            'statusEn': 'Done',
+            'statusCy': 'Done',
+            'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+            'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+            'hintTextEn': 'hint_text_en',
+            'hintTextCy': 'hint_text_cy',
+          },
+          {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+            'statusEn': 'Done',
+            'statusCy': 'Done',
+            'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+            'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+            'hintTextEn': 'hint_text_en',
+            'hintTextCy': 'hint_text_cy',
+          },
+          ],
+        },
+        {
+          'categoryEn': 'Claim',
+          'categoryCy': 'Claim Welsh',
+          tasks: [{
+            'id': '9d2712da-47ce-4050-bbee-650134a7b9c2',
+            'statusEn': 'Available',
+            'statusCy': 'Available',
+            'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+            'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+            'hintTextEn': 'hint_text_en',
+            'hintTextCy': 'hint_text_cy',
+          },
+          {
+            'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+            'statusEn': 'Available',
+            'statusCy': 'Available',
+            'taskNameEn': '<a href=/go-some-where>task_name_en</a>',
+            'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
+            'hintTextEn': 'hint_text_en',
+            'hintTextCy': 'hint_text_cy',
+          }] as DashboardTask[],
+        },
+        {
+          'categoryCy': 'Category Welsh',
+          'categoryEn': 'Category',
+          'tasks': [
+            {
+              'id': '2a2712da-47ce-4050-bbee-650134a7b9c1',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }, {
+              'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }],
+        },
+        {
+          'categoryCy': 'Another Category Welsh',
+          'categoryEn': 'Another Category',
+          'tasks': [
+            {
+              'id': '2a2712da-47ce-4050-bbee-650134a7b9c1',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }, {
+              'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }],
+        },
+        {
+          'categoryCy': 'Yet Another Category Welsh',
+          'categoryEn': 'Yet Another Category',
+          'tasks': [
+            {
+              'id': '1d2712da-47ce-4050-bbee-650134a7b9c3',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }, {
+              'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
+              'statusEn': 'TASK_LIST.INACTIVE_STATUS',
+              'statusCy': 'TASK_LIST.INACTIVE_STATUS',
+              'taskNameEn': '<a>task_name_en</a>',
+              'taskNameCy': '<a>task_name_cy</a>',
+              'hintTextEn': '',
+              'hintTextCy': '',
+            }],
+        },
+      ],
+      );
+    });
+  });
 });

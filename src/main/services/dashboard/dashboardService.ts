@@ -26,12 +26,17 @@ import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { APPLICATION_TYPE_URL } from 'routes/urls';
 import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'Mediation', []));
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
+
+const removeHrefFromAnchor = (text: string): string => {
+  return text.replace(/<a\s+[^>]*href=["']?[^>\s"']+["']?[^>]*>(.*?)<\/a>/gi, '<a>$1</a>'); // NOSONAR
+};
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
@@ -40,8 +45,19 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       taskList.tasks.forEach((task) => {
         task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
         task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
-        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
-        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+
+        if (claim.ccdState === CaseState.CASE_STAYED
+          && (task.statusEn !== 'Available' && task.statusEn !== 'Done')) {
+          task.statusEn = t('TASK_LIST.INACTIVE_STATUS', {lng: 'en'});
+          task.statusCy = t('TASK_LIST.INACTIVE_STATUS', {lng: 'cy'});
+          task.taskNameEn = removeHrefFromAnchor(task.taskNameEn);
+          task.taskNameCy = removeHrefFromAnchor(task.taskNameCy);
+          task.hintTextEn = '';
+          task.hintTextCy = '';
+        } else {
+          task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
+          task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+        }
       });
     });
     //exclude Carm sections
