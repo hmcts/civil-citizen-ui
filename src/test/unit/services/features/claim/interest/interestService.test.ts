@@ -184,16 +184,35 @@ describe('Interest Service', () => {
       expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
     });
 
-    it('should update interest claim options successfully', async () => {
+    it('should update interest claim options successfully with SAME_RATE_INTEREST', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.interest = new Interest();
+        claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
         return claim;
       });
       interest.interestStartDate = undefined;
       interest.interestEndDate = undefined;
       interest.interestClaimFrom = undefined;
       interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveInterest('validClaimId', interest?.interestClaimOptions, 'interestClaimOptions');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {interest});
+    });
+
+    it('should update interest claim options successfully with BREAK_DOWN_INTEREST', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.interest = new Interest();
+        claim.interest.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
+        return claim;
+      });
+      interest.interestStartDate = undefined;
+      interest.interestEndDate = undefined;
+      interest.interestClaimFrom = undefined;
+      interest.interestClaimOptions = InterestClaimOptionsType.BREAK_DOWN_INTEREST;
 
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
