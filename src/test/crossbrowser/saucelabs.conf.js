@@ -3,7 +3,7 @@ const {unAssignAllUsers} = require('../functionalTests/specClaimHelpers/api/case
 const {deleteAllIdamTestUsers} = require('../functionalTests/specClaimHelpers/api/idamHelper');
 const testConfig = require('../config');
 
-const browser = process.env.SAUCELABS_BROWSER || 'chromium';
+const browser = process.env.SAUCELABS_BROWSER || 'chrome';
 
 const defaultSauceOptions = {
   username: process.env.SAUCE_USERNAME,
