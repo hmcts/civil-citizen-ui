@@ -1,9 +1,9 @@
 const supportedBrowsers = require('../crossbrowser/supportedBrowsers.js');
 const {unAssignAllUsers} = require('../functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('../functionalTests/specClaimHelpers/api/idamHelper');
-const testConfig = require('../config');
+// const testConfig = require('../config');
 
-const browser = process.env.SAUCELABS_BROWSER || 'chrome';
+const browser = process.env.SAUCELABS_BROWSER || 'chromium';
 
 const defaultSauceOptions = {
   username: process.env.SAUCE_USERNAME,
