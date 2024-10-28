@@ -12,7 +12,7 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {
-  isCaseProgressionV1Enable,
+  isCaseProgressionV1Enable, isCoSCEnabled,
   isGaForLipsEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
@@ -40,6 +40,7 @@ export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: 
 
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
+  const isCoSCEnabledValue = await isCoSCEnabled();
   const defendantDocumentsArray: DocumentInformation[] = [];
   defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
@@ -49,6 +50,9 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
   }
   // Documents for LR only
   defendantDocumentsArray.push(...getDefendantSupportDocument(claim, claimId, lang));
+  if(isCoSCEnabledValue) {
+    defendantDocumentsArray.push(...getCoSCDocument(claim, claimId, lang));
+  }
   return new DocumentsViewComponent('Defendant', defendantDocumentsArray);
 };
 
@@ -214,6 +218,12 @@ const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => 
   const settlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT);
   return settlementAgreement ? Array.of(
     setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')) : [];
+};
+
+const getCoSCDocument = (claim: Claim, claimId: string, lang: string) => {
+  const coscDoc = claim.getDocumentDetails(DocumentType.CERTIFICATE_OF_DEBT_PAYMENT);
+  return coscDoc ? Array.of(
+    setUpDocumentLinkObject(coscDoc.documentLink, coscDoc.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COSC')) : [];
 };
 
 const getClaimantRequestForReconsideration = (claim: Claim, claimId: string, lang: string) => {
