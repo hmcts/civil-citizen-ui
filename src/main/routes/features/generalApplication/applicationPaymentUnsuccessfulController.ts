@@ -22,7 +22,8 @@ applicationPaymentUnsuccessfulController.get(GA_PAYMENT_UNSUCCESSFUL_URL, (req: 
       const cancelUrl = await getCancelUrl(claimId, claim);
       const makePaymentAgainUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, isAdditionalFee
         ? GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL : GA_APPLY_HELP_WITH_FEE_SELECTION);
-      res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl, makePaymentAgainUrl});
+      res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl, makePaymentAgainUrl, noCrumbs: true,
+        pageTitle: 'PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.TITLE'});
     } catch (error) {
       next(error);
     }
