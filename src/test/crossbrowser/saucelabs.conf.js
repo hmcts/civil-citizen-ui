@@ -65,7 +65,7 @@ const setupConfig = {
   output: `${process.cwd()}/functional-output`,
   helpers: {
     WebDriver: {
-      url: testConfig.TestUrl,
+      url: process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net',
       browser,
       keepCookies: true,
       waitForTimeout: 90000,
