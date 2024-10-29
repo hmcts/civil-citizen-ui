@@ -65,7 +65,7 @@ const setupConfig = {
   output: `${process.cwd()}/functional-output`,
   helpers: {
     Playwright: {
-      url: process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net',
+      url: process.env.TEST_URL || 'https://moneyclaims.aat.platform.hmcts.net',
       browser,
       keepCookies: true,
       waitForTimeout: 90000,

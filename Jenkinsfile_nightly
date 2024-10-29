@@ -88,7 +88,7 @@ withNightlyPipeline(type, product, component) {
   enableFullFunctionalTest(200)
 
   afterAlways('crossBrowserTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 
   afterAlways('fullFunctionalTest') {
