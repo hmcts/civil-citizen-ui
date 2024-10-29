@@ -102,4 +102,4 @@ Scenario('Defendant performs Request for reconsideration and Claimant adds a com
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
