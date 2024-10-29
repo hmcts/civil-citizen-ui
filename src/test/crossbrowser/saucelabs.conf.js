@@ -81,6 +81,7 @@ const setupConfig = {
           'ignore-gpu-blacklist',
         ],
       },
+      desiredCapabilities: {'sauce:options': {}},
       acceptInsecureCerts: true,
       sauceSeleniumAddress: 'ondemand.eu-central-1.saucelabs.com:443/wd/hub',
       host: 'ondemand.eu-central-1.saucelabs.com',

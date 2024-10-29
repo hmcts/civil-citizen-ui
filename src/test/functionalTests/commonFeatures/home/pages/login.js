@@ -47,6 +47,7 @@ class LoginPage {
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.click(buttons.submit);
+    console.log('this is executinggg');
     await I.wait(3);
     await I.seeInCurrentUrl(endpoint);
   }
