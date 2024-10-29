@@ -144,10 +144,10 @@ export const addAddAnotherApplicationRow = (claimId: string, claim: Claim, lang:
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.applicationCosts) {
+  if (claim.generalApplication?.applicationTypes) {
     const addAnotherApp = (claim.generalApplication?.applicationTypes.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION.${addAnotherApp}`, {lng}),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApp}`, {lng}),
         constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), changeLabel()),
     );
   }

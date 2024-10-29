@@ -95,6 +95,18 @@ export const addApplicationTypesAndDescriptionRows = (
   return rows;
 };
 
+export const addAnotherApplication = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.applicationTypes) {
+    const addAnotherApplication = (application.case_data.applicationTypes.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApplication}`, {lng})),
+    );
+  }
+  return rows;
+};
+
 export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
