@@ -10,7 +10,10 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimFeeBreakDownController');
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
@@ -51,10 +54,14 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     } else {
       const claim = await getCaseDataFromStore(redisKey);
       claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+      logger.info('redis key before saving the payment ' + redisKey);
+      logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference);
       await saveDraftClaim(redisKey, claim, true);
+      await saveUserId(claimId, req.session.user.id);
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
+    logger.info('error from claim fee breakdown controller ' + JSON.stringify(error));
     next(error);
   }
 }) as RequestHandler);
