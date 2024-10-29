@@ -420,7 +420,8 @@
     "YOUR_HEARING_REQUIREMENTS": {
       "GIVE_US_DETAILS": "Rhowch fanylion i ni rhag ofn y bydd gwrandawiad",
       "TITLE": "Eich gofynion ar gyfer gwrandawiad"
-    }
+    },
+    "INACTIVE_STATUS": "Segur"
   },
   "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
     "DETAILS": {

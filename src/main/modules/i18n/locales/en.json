@@ -420,7 +420,8 @@
     "YOUR_HEARING_REQUIREMENTS": {
       "GIVE_US_DETAILS": "Give us details in case there's a hearing",
       "TITLE": "Your hearing requirements"
-    }
+    },
+    "INACTIVE_STATUS": "Inactive"
   },
   "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS": {
     "DETAILS": {
