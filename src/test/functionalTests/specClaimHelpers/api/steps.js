@@ -356,11 +356,11 @@ module.exports = {
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
     } else {
-      console.log('carm not enabled, updating submitted date to past for legacy cases');
+      console.log('carm not enabled, updating submitted date');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
+      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date for legacy cases');
+      console.log('submitted date update to before carm date');*/
     }
     return caseId;
   },
@@ -416,9 +416,9 @@ module.exports = {
     } else {
       console.log('carm not enabled, updating submitted date');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
+      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');
+      console.log('submitted date update to before carm date');*/
     }
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
@@ -442,7 +442,7 @@ module.exports = {
     return caseId;
   },
 
-  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = false) => {
+  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -476,20 +476,6 @@ module.exports = {
       await assignSpecCase(caseId, 'lrvlr');
     }
     await waitForFinishedBusinessProcess(caseId);
-
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
-      await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
-      console.log('carm not enabled, updating submitted date');
-      await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');
-    }
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
