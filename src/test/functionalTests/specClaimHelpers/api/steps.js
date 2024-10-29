@@ -31,6 +31,7 @@ const claimSpecDataFastTrackLRvLR = require('../fixtures/events/createClaimSpecF
 const defendantResponse = require('../fixtures/events/createDefendantResponse.js');
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
+const translatedDocUpload = require('../fixtures/events/translatedDocUpload');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {fetchCaseDetails} = require('./apiRequest');
@@ -50,7 +51,7 @@ const data = {
   CREATE_SPEC_CLAIMLRvLR: (mpScenario) => claimSpecDataLRvLR.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACK: (mpScenario) => claimSpecDataFastTrack.createClaim(mpScenario),
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
-  CREATE_LIP_CLAIM: (user, userId, totalClaimAmount) => createLipClaim(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM: (user, userId, totalClaimAmount, language) => createLipClaim(user, userId, totalClaimAmount, language),
   CREATE_LIP_CLAIM_FOR_COMPANY: (user, userId, totalClaimAmount) => createLiPClaimForCompany(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_DEFENDANT_COMPANY: (user, userId, totalClaimAmount) => createLipClaimDefendantCompany(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER: (user, userId, totalClaimAmount) => createLipClaimDefendantSoleTrader(user, userId, totalClaimAmount),
@@ -148,7 +149,19 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType) => {
+  performTranslatedDocUpload: async (user, caseId) => {
+    console.log('This is inside performTranslatedDocUpload : ' + caseId);
+    eventName = 'UPLOAD_TRANSLATED_DOCUMENT';
+    const document = await uploadDocument();
+    const payload = translatedDocUpload.uploadDoc(document);
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.PENDING_CASE_ISSUED);
+    console.log('End of performTranslatedDocUpload()');
+  },
+
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH') => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
@@ -163,7 +176,7 @@ module.exports = {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
     }
-    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType);
+    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
@@ -287,16 +300,16 @@ module.exports = {
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
     } else {
-      console.log('carm not enabled, updating submitted date');
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
       await apiRequest.setupTokens(config.systemUpdate);
-      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');*/
+      console.log('submitted date update to before carm date for legacy cases');
     }
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual') => {
+  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual', language) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -333,7 +346,7 @@ module.exports = {
     } else if (partyType === 'IndividualVOrganisation') {
       payload = data.CREATE_LIP_CLAIM_IND_V_ORGANISATION(user, userId, totalClaimAmount);
     } else {
-      payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
+      payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount, language);
     }
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
@@ -347,9 +360,9 @@ module.exports = {
     } else {
       console.log('carm not enabled, updating submitted date');
       await apiRequest.setupTokens(config.systemUpdate);
-      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');*/
+      console.log('submitted date update to before carm date');
     }
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
@@ -373,7 +386,7 @@ module.exports = {
     return caseId;
   },
 
-  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType) => {
+  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = false) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -407,6 +420,20 @@ module.exports = {
       await assignSpecCase(caseId, 'lrvlr');
     }
     await waitForFinishedBusinessProcess(caseId);
+
+    if (carmEnabled) {
+      console.log('carm enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to after carm date');
+    } else {
+      console.log('carm not enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-08-25T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date');
+    }
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
