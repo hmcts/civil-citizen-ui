@@ -1,7 +1,7 @@
 const supportedBrowsers = require('../crossbrowser/supportedBrowsers.js');
 const {unAssignAllUsers} = require('../functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('../functionalTests/specClaimHelpers/api/idamHelper');
-// const testConfig = require('../config');
+const testConfig = require('../config');
 
 const browser = process.env.SAUCELABS_BROWSER || 'chromium';
 
@@ -64,7 +64,7 @@ const setupConfig = {
       '../e2eTests/tests/**/*.js'],
   output: `${process.cwd()}/functional-output`,
   helpers: {
-    Playwright: {
+    Webdriver: {
       url: process.env.TEST_URL || 'https://moneyclaims.aat.platform.hmcts.net',
       browser,
       keepCookies: true,
@@ -124,7 +124,7 @@ const setupConfig = {
   mocha: {
     reporter: 'mochawesome',
     reporterOptions: {
-      reportDir: process.env.CROSSBROWSER_OUTPUT_DIR || './functional-output',
+      reportDir: testConfig.TestOutputDir,
       reportTitle: 'Crossbrowser results',
       inline: true,
     },
