@@ -13,7 +13,7 @@ import config from 'config';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
-import * as feePaymentServiceModule from "services/features/feePayment/feePaymentService";
+import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
@@ -120,7 +120,7 @@ describe('on POST', () => {
     claim.claimDetails = new ClaimDetails();
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
-    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: "Success"});
+    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Success'});
     await request(app)
       .post(CLAIM_FEE_BREAKUP).expect((res) => {
         expect(res.status).toBe(302);
