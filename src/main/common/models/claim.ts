@@ -183,6 +183,7 @@ export class Claim {
   paymentSyncError?: boolean;
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
+  joIsLiveJudgmentExists?: GenericYesNo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -323,6 +324,10 @@ export class Claim {
 
   isInterestEndDateUntilSubmitDate(): boolean {
     return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+  }
+
+  isInterestEndDateUntilJudgmentDate(): boolean {
+    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
   }
 
   isInterestClaimOptionExists(): boolean {
@@ -781,9 +786,9 @@ export class Claim {
   private getName(party: Party): string {
     if (party?.type == PartyType.INDIVIDUAL || party?.type == PartyType.SOLE_TRADER) {
       if (party.partyDetails?.title) {
-        return `${party.partyDetails.title} ${party.partyDetails.firstName} ${party.partyDetails.lastName}`;
+        return `${party.partyDetails?.title} ${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
       } else {
-        return `${party.partyDetails.firstName} ${party.partyDetails.lastName}`;
+        return `${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
       }
     }
     return party?.partyDetails?.partyName;
@@ -974,6 +979,10 @@ export class Claim {
     const parts = claimId.match(/.{1,4}/g);
     const claimId_new = parts.join('-');
     return claimId_new;
+  }
+
+  isDefendant() {
+    return this.caseRole === CaseRole.RESPONDENTSOLICITORONE || this.caseRole === CaseRole.RESPONDENTSOLICITORTWO || this.caseRole === CaseRole.DEFENDANT;
   }
 
   isClaimant() {

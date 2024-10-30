@@ -42,6 +42,7 @@ describe('GA submission confirmation controller', () => {
       const res = await request(app).get(GENERAL_APPLICATION_CONFIRM_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Application created');
+      expect(res.text).toContain('You need to pay the application fee to submit the application');
     });
 
     it('should return http 500 when has error in the get method', async () => {

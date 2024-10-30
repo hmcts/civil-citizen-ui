@@ -188,7 +188,7 @@ class ResponseToDefence {
     I.see('They don’t believe they owe the full amount claimed.');
     I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
-    I.see('Their defence','h3');
+    I.see('Their defence','h2');
     I.see('Why they don’t owe the amount claimed?');
     I.see('Test reason');
     I.see('Their timeline of events');
@@ -541,8 +541,11 @@ class ResponseToDefence {
     I.see('Your response','h2');
     I.see('Do you accept the defendant repayment plan?');
     I.see('I reject this repayment plan');
-    I.see('How do you wish to proceed?','h2');
-    I.see('How do you want to formalise the repayment plan');
+    I.see('How you want the defendant to pay?');
+    I.see('Immediately');
+    I.see('Court Decision');
+    I.see('Court repayment plan');
+    I.see('Completion date');
     await I.click(paths.buttons.submit_response);
   }
 
@@ -692,7 +695,7 @@ class ResponseToDefence {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
     I.see('Mrs Jane Doe has rejected the claim.');
-    I.see('Their defence','h3');
+    I.see('Their defence','h2');
     I.see('Why they disagree with the claim?','h3');
     I.see('Test reason');
     I.see('Their evidence','h3');
@@ -709,7 +712,7 @@ class ResponseToDefence {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
     I.see('Sir John Doe has rejected the claim.');
-    I.see('Their defence','h3');
+    I.see('Their defence','h2');
     I.see('Why they disagree with the claim?','h3');
     I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);

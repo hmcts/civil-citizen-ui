@@ -14,6 +14,10 @@ import {Response} from 'supertest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Party} from 'models/party';
+import {Email} from 'models/Email';
+import {PartyPhone} from 'models/PartyPhone';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -161,10 +165,23 @@ describe('Claim - Check answers', () => {
     const spyClearcookie = jest.spyOn(app.response, 'clearCookie');
 
     it('should return errors when form is incomplete', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+        claim.applicant1.partyPhone = new PartyPhone('07557350546');
+        claim.respondent1 = new Party();
+        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.totalClaimAmount = 1000;
         claim.claimDetails.helpWithFees.option = YesNo.NO;
         return claim;
       });
@@ -186,9 +203,20 @@ describe('Claim - Check answers', () => {
     it('should return submit button when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.emailAddress = new Email('abbba@gmail.com');
+        claim.applicant1.partyPhone = new PartyPhone('07537350546');
+        claim.respondent1 = new Party();
+        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.NO;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        };
         return claim;
       });
       const data = {signed: ''};
@@ -203,9 +231,20 @@ describe('Claim - Check answers', () => {
     it('should return submit button when Fee is yes', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+        claim.applicant1.partyPhone = new PartyPhone('07557350546');
+        claim.respondent1 = new Party();
+        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.YES;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        };
         return claim;
       });
       const data = {signed: ''};
@@ -225,9 +264,20 @@ describe('Claim - Check answers', () => {
       });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+        claim.applicant1.partyPhone = new PartyPhone('07557350546');
+        claim.respondent1 = new Party();
+        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.YES;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        };
         return claim;
       });
       const data = {
@@ -251,9 +301,20 @@ describe('Claim - Check answers', () => {
     it('should redirect to claim confirmation page when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+        claim.applicant1.partyPhone = new PartyPhone('07557350546');
+        claim.respondent1 = new Party();
+        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1.partyPhone = new PartyPhone('07557350546');
         claim.claimDetails = new ClaimDetails();
         claim.claimDetails.helpWithFees = new HelpWithFees();
         claim.claimDetails.helpWithFees.option = YesNo.NO;
+        claim.claimFee = {
+          calculatedAmountInPence: 1000,
+          code: 'FEE202',
+          version: 1,
+        };
         return claim;
       });
       const data = {

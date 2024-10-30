@@ -61,6 +61,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -68,7 +69,7 @@ const logger = Logger.getLogger('civilServiceClient');
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
-  claim.id = caseDetails.id;
+  claim.id = caseDetails.id?.toString();
   claim.lastModifiedDate = caseDetails.last_modified;
   return claim;
 };
@@ -191,7 +192,11 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
+      logger.info('Before Round off ' + amount);
+      amount = roundOffTwoDecimals(amount);
+      logger.info('After Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');
@@ -503,7 +508,6 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
     let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
-
     dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
   }

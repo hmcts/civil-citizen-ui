@@ -60,6 +60,8 @@ class CheckYourAnswersPage {
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
     await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
+    await I.amOnPage('/dashboard?lang=en');
+    await I.see('Your money claims account');
   }
 
   async verifyMediationDetailsInCYA(claimRef) {

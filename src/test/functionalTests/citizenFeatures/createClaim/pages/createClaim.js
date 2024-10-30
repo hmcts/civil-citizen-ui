@@ -343,13 +343,17 @@ class CreateClaim {
     I.see('£1520.00');
     if (claimInterestFlag === true) {
       I.see('Interest to date');
-      I.see('£0');
+      I.see('£0.33');
       I.seeElement(paths.links.how_is_interest_calculated);
     }
     I.see('Claim fee');
     I.see('£115');
     I.see('Total claim amount');
-    I.see('£1635.00');
+    if (claimInterestFlag === true) {
+      I.see('£1635.33');
+    }else{
+      I.see('£1635');
+    }
     I.see('If you settle out of court', 'h3');
     I.see('We won’t refund your claim fee.');
     I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
@@ -597,7 +601,7 @@ class CreateClaim {
     I.see('successful');
     I.see('Your payment reference number is');
     I.see('You\'ll receive a confirmation email in the next hour.');
-    I.see('Payment summary','h3');
+    I.see('Payment summary','h2');
     I.see('Payment for');
     I.see('Claim fee');
     I.see('Total amount');
@@ -643,13 +647,14 @@ class CreateClaim {
         I.waitForContent('What is the total interest for your claim', 60);
         I.fillField(paths.options.interest_to_applied, 10);
         I.fillField(paths.options.interest_reason, 'calculate interest for the different time periods');
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('Continue to claim interest after you submit your claim', 60);
-        I.click(paths.options.yes);
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('How much do you want to continue claiming', 60);
-        I.click(paths.options.claim_specific_interest_after_submission);
-        I.fillField(paths.options.daily_interest_amount, '2');
+        // TODO: Uncomment this once below pages are enabled in claim creation disabled as part of CIV-15490
+        // this.clickNextAction(paths.buttons.save_and_continue);
+        // I.waitForContent('Continue to claim interest after you submit your claim', 60);
+        // I.click(paths.options.yes);
+        // this.clickNextAction(paths.buttons.save_and_continue);
+        // I.waitForContent('How much do you want to continue claiming', 60);
+        // I.click(paths.options.claim_specific_interest_after_submission);
+        // I.fillField(paths.options.daily_interest_amount, '2');
       }
     } else {
       I.click(paths.options.no);

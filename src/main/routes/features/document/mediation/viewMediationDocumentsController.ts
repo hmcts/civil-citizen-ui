@@ -45,6 +45,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
     pageTitle: 'PAGES.VIEW_MEDIATION_DOCUMENTS.PAGE_TITLE',
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
+    isCarm: true,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
 };

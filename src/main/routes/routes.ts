@@ -420,6 +420,14 @@ import respondAddInfoController
   from 'routes/features/generalApplication/additionalInfoUpload/respondController';
 import respondWrittenRepController
   from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
+import debtPaymentEvidenceController
+  from 'routes/features/generalApplication/certOfSorC/debtPaymentEvidenceController';
+import askProofOfDebtPaymentGuidanceController
+  from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
+import defendantFinalPaymentDateController from 'routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
+import coscCheckAnswersController from 'routes/features/generalApplication/certOfSorC/checkAnswersController';
+import submitCoScApplicationConfirmationController
+  from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 
 export default [
   homeController,
@@ -759,4 +767,9 @@ export default [
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
   respondWrittenRepController,
+  askProofOfDebtPaymentGuidanceController,
+  defendantFinalPaymentDateController,
+  debtPaymentEvidenceController,
+  coscCheckAnswersController,
+  submitCoScApplicationConfirmationController,
 ];

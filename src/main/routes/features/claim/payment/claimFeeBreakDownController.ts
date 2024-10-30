@@ -10,7 +10,10 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimFeeBreakDownController');
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
@@ -21,7 +24,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(claim.id, claim);
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
@@ -44,16 +47,21 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const redisKey = generateRedisKey(<AppRequest>req);
     const paymentRedirectInformation = await getRedirectInformation(req);
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      const claim = await getCaseDataFromStore(generateRedisKey(req));
+      const claim = await getCaseDataFromStore(redisKey);
       claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-      await saveDraftClaim(claim.id, claim, true);
+      logger.info('redis key before saving the payment ' + redisKey);
+      logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference);
+      await saveDraftClaim(redisKey, claim, true);
+      await saveUserId(claimId, req.session.user.id);
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
+    logger.info('error from claim fee breakdown controller ' + JSON.stringify(error));
     next(error);
   }
 }) as RequestHandler);
@@ -68,7 +76,7 @@ async function getRedirectInformation(req: AppRequest) {
   } catch (error) {
     const claim = await getClaimById(req.params.id, req, true);
     claim.paymentSyncError = true;
-    await saveDraftClaim(claim.id, claim, true);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return null;
   }
 }

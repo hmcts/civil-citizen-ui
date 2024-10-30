@@ -51,7 +51,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
         const userId = (<AppRequest>req)?.session?.user?.id.toString();
-        claim = await getClaimById(userId, req,true);
+        claim = await getClaimById(userId, req, true);
         dashboardId = userId;
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
@@ -59,6 +59,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         dashboardId = claimId;
         claimIdPrettified = caseNumberPrettify(claimId);
         claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
@@ -67,7 +68,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
-      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
         = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
@@ -89,7 +89,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         iWantToLinks,
         helpSupportTitle,
         helpSupportLinks,
-        lng,
+        lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
       });
 
