@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -31,9 +30,6 @@ describe('GA submission confirmation controller', () => {
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isCoSCEnabled').mockResolvedValue(false);
-    });
     it('should return ga submit confirmation page', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
@@ -54,29 +50,6 @@ describe('GA submission confirmation controller', () => {
       const res = await request(app).get(GENERAL_APPLICATION_CONFIRM_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
-  });
-
-  describe('on GET CoSc', () => {
-    beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isCoSCEnabled').mockResolvedValue(true);
-    });
-
-    it('should return ga submit confirmation page for certificateOfSorC', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID)];
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 100,
-        code: 'test',
-        version: 1,
-      };
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      const res = await request(app).get(GENERAL_APPLICATION_CONFIRM_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Application created');
-      expect(res.text).toContain('You need to pay the application fee to submit the application');
-      expect(res.text).toContain('Pay the fee');
     });
   });
 });

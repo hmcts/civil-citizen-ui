@@ -89,7 +89,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         iWantToLinks,
         helpSupportTitle,
         helpSupportLinks,
-        lng,
+        lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
       });
 
