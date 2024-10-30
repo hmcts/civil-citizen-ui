@@ -131,7 +131,7 @@ class CheckAndSend {
 
   async hearingSupport() {
     I.see('Do you need any adjustments or support to attend a hearing?', '(//div[@class=\'govuk-summary-list__row\'])[15]');
-    I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[14]');
+    I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[15]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[15]');
   }
 
