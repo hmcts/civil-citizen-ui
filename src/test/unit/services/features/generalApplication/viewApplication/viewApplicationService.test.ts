@@ -27,6 +27,8 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -542,6 +544,93 @@ describe('View Application service', () => {
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
+    });
+  });
+
+  describe('View application content for CoSc general application', () => {
+    let application: ApplicationResponse;
+    const date = new Date(Date.now());
+    const claim = new Claim();
+    beforeEach(() => {
+      application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+      application.case_data.generalAppType.types =[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID];
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      claim.caseRole = CaseRole.DEFENDANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
+      const caseData = application.case_data;
+      caseData.applicationTypes = 'Confirm you\'ve paid a judgment debt';
+    });
+
+    it('view cosc application with not able to provide evidence of full payment - applicant', async () => {
+      const certOfSC = {
+        debtPaymentEvidence: {
+          provideDetails: 'unable to provide evidence',
+          debtPaymentOption: 'UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT',
+        },
+        defendantFinalPaymentDate: date,
+      };
+      application.case_data.certOfSC = certOfSC;
+      mockGetApplication.mockResolvedValueOnce(application);
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701455431', 'en')).summaryRows;
+
+      expect(result).toHaveLength(4);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');
+      expect(result[2].value.html).toEqual(formatDateToFullDate(date));
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO');
+    });
+
+    it('view cosc application content - want to upload evidence that debt has been paid in full - applicant', async () => {
+      const certOfSC = {
+        proofOfDebtDoc: [{
+          value: {
+            document_url: 'http://dm-store:8080/documents/d4559b',
+            document_binary_url: 'http://dm-store:8080/documents/d4559b/binary',
+            document_filename: 'test.doc',
+            category_id: '231',
+          },
+        }],
+        debtPaymentEvidence: {
+          debtPaymentOption: 'UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL',
+        },
+        defendantFinalPaymentDate: date,
+      };
+      application.case_data.certOfSC = certOfSC;
+      mockGetApplication.mockResolvedValueOnce(application);
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701455431', 'en')).summaryRows;
+
+      expect(result).toHaveLength(4);
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL');
+    });
+
+    it('view cosc application content - made full payment to the court - applicant', async () => {
+      const certOfSC = {
+        proofOfDebtDoc: [{
+          value: {
+            document_url: 'http://dm-store:8080/documents/d4559b',
+            document_binary_url: 'http://dm-store:8080/documents/d4559b/binary',
+            document_filename: 'test.doc',
+            category_id: '231',
+          },
+        }],
+        debtPaymentEvidence: {
+          debtPaymentOption: 'MADE_FULL_PAYMENT_TO_COURT',
+        },
+        defendantFinalPaymentDate: date,
+      };
+      application.case_data.certOfSC = certOfSC;
+      mockGetApplication.mockResolvedValueOnce(application);
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701455431', 'en')).summaryRows;
+
+      expect(result).toHaveLength(4);
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT');
     });
   });
 });

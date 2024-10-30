@@ -7,6 +7,8 @@ import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {getEvidencePaymentOption} from 'services/features/generalApplication/checkAnswers/addCheckAnswersRows';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 
@@ -252,6 +254,42 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
     );
   }
   return rows;
+};
+
+export const addFinalPaymentDateDetails = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.certOfSC) {
+    const finalPaymentDate = formatDateToFullDate(application.case_data.certOfSC.defendantFinalPaymentDate, lang);
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1', {lng}), finalPaymentDate),
+    );
+  }
+  return rows;
+};
+
+export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  let rowValue: string;
+  const rows: SummaryRow[] = [];
+  if (application.case_data.certOfSC) {
+    const evidenceOption = application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption;
+    if (evidenceOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
+      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
+                        ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
+
+      rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
+        ${application.case_data.certOfSC.debtPaymentEvidence.provideDetails}</p>`;
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(rowValue, {lng})));
+    } else {
+      const evidenceDetails = getEvidencePaymentOption(application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption);
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(evidenceDetails, {lng})),
+      );
+    }
+    return rows;
+  }
 };
 
 const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType): HearingTypeOptions => {
