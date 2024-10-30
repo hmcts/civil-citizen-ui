@@ -64,6 +64,7 @@ const data = {
 let caseId, eventName;
 let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
+const smallClaimAmount = 1500;
 
 module.exports = {
 
@@ -230,7 +231,7 @@ module.exports = {
       totalClaimAmount = '1000';
     } else {
       console.log('SmallClaim...');
-      totalClaimAmount = '1500';
+      totalClaimAmount = smallClaimAmount;
     }
     payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language);
     //console.log('The payload : ' + payload);
@@ -383,7 +384,7 @@ module.exports = {
       totalClaimAmount = '150000';
     } else {
       console.log('SmallClaim...');
-      totalClaimAmount = '1500';
+      totalClaimAmount = smallClaimAmount;
     }
 
     let userAuth = await idamHelper.accessToken(user);
