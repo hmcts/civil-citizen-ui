@@ -29,7 +29,7 @@ import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplicatio
 import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
-import {CcdGeneralApplicationCertOfSC} from "models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC";
+import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 
 export class ApplicationResponse {
   id: string;
