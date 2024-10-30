@@ -9,6 +9,7 @@ const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantR
 const rejectAllClaimantResponseCarm = require('../fixtures/events/rejectAllClaimantResponseCarm.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
+const createRequestForReconsideration = require('../fixtures/events/createRequestForReconsideration');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
@@ -19,7 +20,7 @@ chai.config.truncateThreshold = 0;
 const {expect, assert} = chai;
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument,
+  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -78,6 +79,12 @@ module.exports = {
     console.log('End of performCaseHearingFeeUnpaid()');
   },
 
+  triggerTrialArrangementsNotifications: async (user, caseId) => {
+    console.log('This is inside triggerTrialArrangements() : ' + caseId);
+    await triggerTrialArrangements(caseId);
+    console.log('End of triggerTrialArrangements()');
+  },
+
   waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
   },
@@ -99,8 +106,28 @@ module.exports = {
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForFinishedBusinessProcess(caseId);
-    await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    if (claimType === 'FastTrack') {
+      await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
+    } else {
+      await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
+    }
     console.log('End of performEvidenceUpload()');
+  },
+
+  performEvidenceUploadCitizen: async (user, caseId, claimType) => {
+    console.log('This is inside performEvidenceUploadCitizen() : ' + caseId);
+    eventName = 'EVIDENCE_UPLOAD_RESPONDENT';
+    const document = await uploadDocument();
+    let payload;
+    if (claimType === 'FastTrack') {
+      payload = evidenceUpload.evidenceUploadFastClaimsLipRespondent(document);
+    } else if (claimType === 'SmallClaims') {
+      payload = evidenceUpload.evidenceUploadSmallClaimsLipRespondent(document);
+    }
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performEvidenceUploadCitizen()');
   },
 
   performTrialArrangements: async (user, caseId) => {
@@ -112,6 +139,27 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.HEARING_READINESS);
     console.log('End of performTrialArrangements()');
+  },
+
+  performTrialArrangementsCitizen: async (user, caseId) => {
+    console.log('This is inside performTrialArrangementsCitizen() : ' + caseId);
+    eventName = 'TRIAL_READINESS';
+    const payload = createATrialArrangement.createATrialArrangementRespondentLip();
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performTrialArrangementsCitizen()');
+  },
+
+  performRequestForReconsideration: async (user, caseId) => {
+    console.log('This is inside performRequestForReconsideration() : ' + caseId);
+    eventName = 'REQUEST_FOR_RECONSIDERATION';
+    const payload = createRequestForReconsideration.createATrialArrangement();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.CASE_PROGRESSION);
+    console.log('End of performRequestForReconsideration()');
   },
 
   performAnAssistedOrder: async (user, caseId) => {
@@ -141,7 +189,12 @@ module.exports = {
     console.log('This is inside performCaseProgressedToSDO : ' + caseId);
     eventName = 'CREATE_SDO';
     const document = await uploadDocument();
-    const payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
+    let payload;
+    if (claimType === 'SmallClaimsThousand') {
+      payload = caseProgressionToSDOState.SDOpayloadForLA();
+    } else{
+      payload = caseProgressionToSDOState.createCaseProgressionToSDOState(claimType, document);
+    }
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForFinishedBusinessProcess(caseId);
@@ -172,6 +225,9 @@ module.exports = {
       totalClaimAmount = '26000';
     } else if (claimType === 'Multi') {
       totalClaimAmount = '150000';
+    } else if (claimType === 'SmallClaimsThousand') {
+      console.log('SmallClaim of 1000 pounds...');
+      totalClaimAmount = '1000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
@@ -798,7 +854,6 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
     assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
   }
-
   if (eventName === 'CREATE_CLAIM_SPEC') {
     caseId = responseBody.id;
     await addUserCaseMapping(caseId, config.applicantSolicitorUser);
