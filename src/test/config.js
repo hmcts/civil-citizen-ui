@@ -22,13 +22,13 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    manageCase: 'https://xui-civil-citizen-ui-pr-4912.preview.platform.hmcts.net',
+    manageCase: 'https://xui-civil-citizen-ui-pr-4922.preview.platform.hmcts.net',
     authProviderApi:'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4912.preview.platform.hmcts.net',
+    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4922.preview.platform.hmcts.net',
     dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
-    civilService: 'https://civil-citizen-ui-pr-4912-civil-service.preview.platform.hmcts.net',
-    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4912.preview.platform.hmcts.net',
+    civilService: 'https://civil-citizen-ui-pr-4922-civil-service.preview.platform.hmcts.net',
+    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4922.preview.platform.hmcts.net',
     idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
 
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
