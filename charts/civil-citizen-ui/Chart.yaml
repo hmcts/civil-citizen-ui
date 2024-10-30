@@ -36,7 +36,7 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
   - name: civil-general-applications
-    version: 0.0.67
+    version: 0.0.66
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-general-applications.enabled
 # WA
