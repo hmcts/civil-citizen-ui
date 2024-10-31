@@ -1,5 +1,8 @@
 import { YesNo } from 'common/form/models/yesNo';
-import { CcdGeneralApplicationHearingDetails } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {
+  CcdGARespondentDebtorOfferOptionsGAspec,
+  CcdGeneralApplicationHearingDetails
+} from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import { CcdGeneralApplicationUnavailableHearingDatesElement } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationUnavailableHearingDates';
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
 import { CCDApplication } from 'common/models/generalApplication/applicationResponse';
@@ -15,7 +18,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
   const gaRespondentDebtorOfferSection = (): SummaryRow[] =>
     [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
-      yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.debtorObjections ? YesNo.NO : YesNo.YES))];
+      yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.respondentDebtorOffer === CcdGARespondentDebtorOfferOptionsGAspec.DECLINE ? YesNo.NO : YesNo.YES))];
 
   const hearingDetailsSections = (hearingDetails: CcdGeneralApplicationHearingDetails | undefined): SummaryRow[] =>
     [formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
