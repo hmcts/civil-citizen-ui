@@ -2938,7 +2938,7 @@
           "UNLESS_ORDER": "Gorchymyn Oni fydd",
           "VARY_ORDER": "Amrywio gorchymyn",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Amrywio telerau talu dyfarniad",
-          "CONFIRM_YOU_PAID_CCJ": "Cadarnhewch eich bod wedi talu dyled dyfarniad"
+          "CONFIRM_CCJ_DEBT_PAID": "Cadarnhewch eich bod wedi talu dyled dyfarniad"
         },
         "COMPLETE": "Cwblhawyd",
         "DETAILS": "Manylion",
