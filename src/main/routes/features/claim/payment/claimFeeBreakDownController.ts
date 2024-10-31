@@ -11,7 +11,7 @@ import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
-import {PaymentInformation} from "models/feePayment/paymentInformation";
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
