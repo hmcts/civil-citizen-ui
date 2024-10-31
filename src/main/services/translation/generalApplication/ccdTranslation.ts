@@ -277,7 +277,7 @@ export const translateCoScApplicationToCCD = (
   };
 };
 
-const toCCDCoScEvidenceDocuments = (evidenceOption: string, uploadDocuments: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
+const toCCDCoScEvidenceDocuments = (evidenceOption?: string, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
   return (evidenceOption == debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL || evidenceOption == debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT)
     ? uploadDocuments?.map(uploadDocument => {
       return {
