@@ -119,6 +119,18 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   return rows;
 };
 
+export const addCostRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppAskForCosts) {
+    const informOtherParties = (application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ASK_FOR_COSTS', {lng}), t(`COMMON.VARIATION_2.${informOtherParties}`, {lng})),
+    );
+  }
+  return rows;
+};
+
 export const addOrderJudgeRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
