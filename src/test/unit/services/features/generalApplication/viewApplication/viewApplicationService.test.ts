@@ -185,6 +185,10 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
 describe('View Application service', () => {
   const mockGetApplication = jest.spyOn(GaServiceClient.prototype, 'getApplication');
   const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('Build view application content for general application', () => {
 
     it('view application content test for applicant', async () => {
@@ -548,21 +552,20 @@ describe('View Application service', () => {
   });
 
   describe('View application content for CoSc general application', () => {
-    let application: ApplicationResponse;
+    let application : ApplicationResponse;
     const date = new Date(Date.now());
-    const claim = new Claim();
     beforeEach(() => {
       application = Object.assign(new ApplicationResponse(), mockApplication);
       application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
       application.case_data.generalAppType.types =[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID];
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      application.case_data.applicationTypes = 'Confirm you\'ve paid a judgment debt';
+      const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const caseData = application.case_data;
-      caseData.applicationTypes = 'Confirm you\'ve paid a judgment debt';
     });
 
     it('view cosc application with not able to provide evidence of full payment - applicant', async () => {
+      //given
       const certOfSC = {
         debtPaymentEvidence: {
           provideDetails: 'unable to provide evidence',
@@ -571,9 +574,10 @@ describe('View Application service', () => {
         defendantFinalPaymentDate: date,
       };
       application.case_data.certOfSC = certOfSC;
-      mockGetApplication.mockResolvedValueOnce(application);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701455431', 'en')).summaryRows;
-
+      mockGetApplication.mockResolvedValue(application);
+      //when
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      //then
       expect(result).toHaveLength(4);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
@@ -586,6 +590,7 @@ describe('View Application service', () => {
     });
 
     it('view cosc application content - want to upload evidence that debt has been paid in full - applicant', async () => {
+      //given
       const certOfSC = {
         proofOfDebtDoc: [{
           value: {
@@ -601,15 +606,17 @@ describe('View Application service', () => {
         defendantFinalPaymentDate: date,
       };
       application.case_data.certOfSC = certOfSC;
-      mockGetApplication.mockResolvedValueOnce(application);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701455431', 'en')).summaryRows;
-
+      mockGetApplication.mockResolvedValue(application);
+      //when
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      //then
       expect(result).toHaveLength(4);
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
       expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL');
     });
 
     it('view cosc application content - made full payment to the court - applicant', async () => {
+      //given
       const certOfSC = {
         proofOfDebtDoc: [{
           value: {
@@ -625,9 +632,10 @@ describe('View Application service', () => {
         defendantFinalPaymentDate: date,
       };
       application.case_data.certOfSC = certOfSC;
-      mockGetApplication.mockResolvedValueOnce(application);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701455431', 'en')).summaryRows;
-
+      mockGetApplication.mockResolvedValue(application);
+      //when
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      //then
       expect(result).toHaveLength(4);
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
       expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT');
