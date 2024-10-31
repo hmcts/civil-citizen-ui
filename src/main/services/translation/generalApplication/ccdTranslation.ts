@@ -274,11 +274,15 @@ export const translateCoScApplicationToCCD = (
       application.agreementFromOtherParty,
       application.informOtherParties,
     ),
+    generalAppEvidenceDocument: toCCDEvidenceDocuments(
+      isCoScProofOfDeptPaymentExists(application.certificateOfSatisfactionOrCancellation),
+      application.uploadEvidenceForApplication,
+    ),
   };
 };
 
-const toCCDCoScEvidenceDocuments = (evidenceOption?: string, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
-  return (evidenceOption == debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL || evidenceOption == debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT)
+const toCCDCoScEvidenceDocuments = (certOfSc?: CertificateOfSatisfactionOrCancellation, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
+  return (isCoScProofOfDeptPaymentExists(certOfSc))
     ? uploadDocuments?.map(uploadDocument => {
       return {
         value: {
@@ -297,8 +301,17 @@ const toCCDCertOfSC = (certificateOfSatisfactionOrCancellation?: CertificateOfSa
     ? {
       defendantFinalPaymentDate: certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate.date,
       debtPaymentEvidence: certificateOfSatisfactionOrCancellation.debtPaymentEvidence,
-      proofOfDebtDoc: toCCDCoScEvidenceDocuments(certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption, uploadDocuments),
+      proofOfDebtDoc: toCCDCoScEvidenceDocuments(certificateOfSatisfactionOrCancellation, uploadDocuments),
     }
     : undefined;
 };
 
+const isCoScProofOfDeptPaymentExists = (certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation): YesNo => {
+  if (certificateOfSatisfactionOrCancellation && certificateOfSatisfactionOrCancellation.debtPaymentEvidence ) {
+    switch (certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption) {
+      case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL : return YesNo.YES;
+      case debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT : return YesNo.YES;
+      default: return YesNo.NO;
+    }
+  }
+};
