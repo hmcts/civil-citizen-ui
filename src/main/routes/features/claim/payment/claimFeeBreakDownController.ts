@@ -49,12 +49,18 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
-    const paymentRedirectInformation = await getRedirectInformation(req);
+    const claim = await getCaseDataFromStore(redisKey);
+    let paymentRedirectInformation;
+    if (claim.claimDetails?.claimFeePayment?.paymentReference) {
+      paymentRedirectInformation = claim.claimDetails.claimFeePayment;
+      logger.info(`existing payment ref found for claim id ${claimId}: ${claim.claimDetails.claimFeePayment.paymentReference}`);
+    } else {
+      paymentRedirectInformation = await getRedirectInformation(req);
+      claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+    }
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      const claim = await getCaseDataFromStore(redisKey);
-      claim.claimDetails.claimFeePayment = paymentRedirectInformation;
       logger.info('redis key before saving the payment ' + redisKey);
       logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference);
       await saveDraftClaim(redisKey, claim, true);

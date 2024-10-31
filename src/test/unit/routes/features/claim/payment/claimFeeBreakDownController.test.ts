@@ -115,11 +115,11 @@ describe('on POST', () => {
       });
   });
   it('should redirect to confirmation url if already paid', async () => {
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({});
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Success'});
     await request(app)
       .post(CLAIM_FEE_BREAKUP).expect((res) => {
