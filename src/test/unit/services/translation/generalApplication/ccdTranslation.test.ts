@@ -42,6 +42,7 @@ import {
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import {ClaimFeeData} from 'models/civilClaimResponse';
 
 describe('translate draft application to ccd', () => {
   it('should translate application types to ccd', () => {
@@ -81,6 +82,30 @@ describe('translate draft application to ccd', () => {
     //Then
     expect(ccdGeneralApplication.generalAppInformOtherParty).toEqual({
       isWithNotice: YesNoUpperCamelCase.YES,
+    });
+  });
+
+  it('should translate pba details to ccd for set aside judgment', () => {
+    //Given
+    const application = new GeneralApplication();
+    application.agreementFromOtherParty = YesNo.NO;
+
+    const gaAppFee: ClaimFeeData = {
+      code: 'Fe124',
+      version: 0,
+      calculatedAmountInPence: 1400,
+    };
+    application.applicationFee = gaAppFee;
+    application.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
+    //When
+    const ccdGeneralApplication = translateDraftApplicationToCCD(application);
+    //Then
+    expect(ccdGeneralApplication.generalAppPBADetails).toEqual({
+      fee: {
+        code: 'Fe124',
+        version: '0',
+        calculatedAmountInPence: '1400',
+      },
     });
   });
 

@@ -18,6 +18,7 @@ import {
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
+import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -35,6 +36,7 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppReasonsOfOrder?: string;
   generalAppEvidenceDocument?: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails?: CcdGeneralApplicationHearingDetails;
+  generalAppPBADetails?: CcdGeneralApplicationPBADetails;
   generalAppStatementOfTruth?: CcdGeneralApplicationStatementOfTruth;
   caseLink?: CaseLink;
   generalAppAddlnInfoUpload?: CcdGeneralApplicationEvidenceDocument[];

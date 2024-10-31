@@ -45,6 +45,7 @@ import {
   CertificateOfSatisfactionOrCancellation,
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
+import {ClaimFeeData} from 'models/civilClaimResponse';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -68,6 +69,9 @@ export const translateDraftApplicationToCCD = (
       application.wantToUploadDocuments,
       application.uploadEvidenceForApplication,
     ),
+    generalAppPBADetails: toCCDGeneralAppPbaDetails(
+      application.applicationFee,
+    ),
     generalAppHearingDetails: toCCDGeneralAppHearingDetails(
       application.hearingArrangement,
       application.hearingContactDetails,
@@ -78,6 +82,22 @@ export const translateDraftApplicationToCCD = (
       application.statementOfTruth,
     ),
   };
+};
+
+const toCCDGeneralAppPbaDetails = (generalAppFee: ClaimFeeData) => {
+  return {
+    fee: toCCDClaimFeeData(generalAppFee),
+  };
+};
+
+const toCCDClaimFeeData = (generalAppFee: ClaimFeeData) => {
+  if (!generalAppFee?.calculatedAmountInPence) return undefined;
+  const ccdClaimFee  = {
+    calculatedAmountInPence: generalAppFee.calculatedAmountInPence.toString(),
+    version: generalAppFee.version !== undefined ? generalAppFee.version.toString() : undefined,
+    code: generalAppFee.code,
+  };
+  return ccdClaimFee;
 };
 
 const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdGeneralApplicationTypes => {

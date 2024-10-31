@@ -1,8 +1,8 @@
 export interface CcdGeneralApplicationPBADetails {
   fee: CcdFee,
-  paymentDetails: CcdPaymentDetails,
+  paymentDetails?: CcdPaymentDetails,
   additionalPaymentDetails?: CcdPaymentDetails,
-  serviceRequestReference: string,
+  serviceRequestReference?: string,
   additionalPaymentServiceRef?: string,
 }
 
