@@ -12,10 +12,25 @@ jest.mock('i18next', () => ({
 
 describe('addViewApplicationResponseRows', () => {
   describe('buildResponseSummaries', () => {
-    it('should return No agreement row', () => {
+    it('should return yes when ACCEPT ', () => {
       const application: Partial<CCDApplication> = {
         gaRespondentDebtorOffer: {
           respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT,
+          debtorObjections: 'I disagree',
+        },
+        respondentsResponses: [{ value : {}} as CcdGeneralApplicationRespondentResponse],
+      } satisfies Partial<CCDApplication>;
+
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+        value: {html: 'COMMON.VARIATION_2.YES'},
+      }]);
+    });
+
+    it('should return no when DECLINE ', () => {
+      const application: Partial<CCDApplication> = {
+        gaRespondentDebtorOffer: {
+          respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.DECLINE,
           debtorObjections: 'I disagree',
         },
         respondentsResponses: [{ value : {}} as CcdGeneralApplicationRespondentResponse],

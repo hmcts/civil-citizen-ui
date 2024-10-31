@@ -1,7 +1,7 @@
 import { YesNo } from 'common/form/models/yesNo';
 import {
   CcdGARespondentDebtorOfferOptionsGAspec,
-  CcdGeneralApplicationHearingDetails
+  CcdGeneralApplicationHearingDetails,
 } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import { CcdGeneralApplicationUnavailableHearingDatesElement } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationUnavailableHearingDates';
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
