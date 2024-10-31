@@ -2705,7 +2705,7 @@
         "STAY_THE_CLAIM": "the court to pause a claim",
         "TITLE": "Costau’r cais",
         "TO_APPLY": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}.",
-        "TO_APPLY_MULTIPLE": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}. Os byddwch yn dewis sawl cais, efallai bydd y ffi hon yn llai.",
+        "TO_APPLY_MULTIPLE": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}. Os byddwch yn dewis sawl cais, ni fydd y ffi hon yn newid.",
         "UNLESS_ORDER": "the court to impose a sanction on the other parties unless they do a specific action",
         "VARY_ORDER": "ailystyried gorchymyn",
         "VARY_PAYMENT_TERMS_OF_JUDGMENT": "amrywio dyfarniad"
