@@ -44,6 +44,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
       ...addApplicationStatus(application, lang),
       ...addApplicationTypesRows(application, lang),
       ...addFinalPaymentDateDetails(application, lang),
+      ...addEvidenceOfDebtPaymentRow(application, lang),
     ];
   } else {
     return [
