@@ -16,11 +16,11 @@ const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
 describe('Claim Fee PaymentConfirmation Service', () => {
+  mockedAppRequest.params = {id: '123'};
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
   it('should return to payment successful screen if payment is successful', async () => {
-    mockedAppRequest.params = {id: '123'};
     const mockclaimFeePaymentInfo = {
       status: 'Success',
       nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
