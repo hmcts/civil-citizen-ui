@@ -67,7 +67,7 @@ import { isApplicationVisibleToRespondent } from './response/generalApplicationR
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { t } from 'i18next';
 import { GeneralAppUrgencyRequirement } from 'models/generalApplication/response/urgencyRequirement';
-import {exhaustiveMatchingGuard} from "services/genericService";
+import {exhaustiveMatchingGuard} from 'services/genericService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
