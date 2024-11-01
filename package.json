@@ -162,7 +162,7 @@
     "wiremock-standalone": "^3.2.1"
   },
   "resolutions": {
-    "minimatch": "^3.0.5",
+    "minimatch": "5.1.6",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
     "glob-parent": "^6.0.1",
