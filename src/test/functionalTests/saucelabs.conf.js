@@ -24,7 +24,7 @@ function getBrowserConfig(browserGroup) {
     if (candidateBrowser) {
       const candidateCapabilities = supportedBrowsers[browserGroup][candidateBrowser];
       candidateCapabilities['sauce:options'] = merge(
-        defaultSauceOptions, candidateCapabilities['sauce:options']
+        defaultSauceOptions, candidateCapabilities['sauce:options'],
       );
       browserConfig.push({
         browser: candidateCapabilities.browserName,
