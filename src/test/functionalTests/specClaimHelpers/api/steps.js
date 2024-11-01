@@ -1,6 +1,5 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
-const chai = require('chai');
 const breathingSpace = require('../fixtures/events/breathingSpace.js');
 const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
@@ -15,9 +14,20 @@ const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
 const lodash = require('lodash');
 
-chai.use(deepEqualInAnyOrder);
-chai.config.truncateThreshold = 0;
-const {expect, assert} = chai;
+let chai, expect, assert;
+
+(async () => {
+  chai = await import('chai');
+
+  chai.use(deepEqualInAnyOrder);
+  chai.config.truncateThreshold = 0;
+
+  expect = chai.expect;
+  assert = chai.assert;
+
+})().catch(error => {
+  console.error('Failed to load chai:', error);
+});
 
 const {
   waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
