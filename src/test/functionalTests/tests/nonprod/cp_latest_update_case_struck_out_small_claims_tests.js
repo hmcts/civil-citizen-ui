@@ -34,7 +34,7 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', as
       const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
       if (isDashboardServiceEnabled) {
         const notification = claimStruckOut();
-        await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+        await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
         taskListItem = uploadHearingDocuments();
         await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       } else {
@@ -42,5 +42,5 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', as
       }
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 
