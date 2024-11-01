@@ -259,16 +259,16 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
 export const addFinalPaymentDateDetails = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  console.log(`addFinalPaymentDateDetails 1----------`+ application.case_data.certOfSC);
-  console.log(`addFinalPaymentDateDetails 2----------`+ application.case_data.certOfSC.defendantFinalPaymentDate);
+  console.log('addFinalPaymentDateDetails 1----------'+ application.case_data.certOfSC);
+  console.log('addFinalPaymentDateDetails 2----------'+ application.case_data.certOfSC.defendantFinalPaymentDate);
   if (application.case_data.certOfSC) {
     const finalPaymentDate = formatDateToFullDate(application.case_data.certOfSC.defendantFinalPaymentDate, lang);
-    console.log(`addFinalPaymentDateDetails 3-----finalPaymentDate-------------------`+ finalPaymentDate);
+    console.log('addFinalPaymentDateDetails 3-----finalPaymentDate-------------------'+ finalPaymentDate);
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1', {lng}), finalPaymentDate),
     );
   }
-  console.log(`addFinalPaymentDateDetails 4-----rows-------------------`+ rows.toString());
+  console.log('addFinalPaymentDateDetails 4-----rows-------------------'+ rows.toString());
   return rows;
 };
 
@@ -276,11 +276,11 @@ export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, la
   const lng = getLng(lang);
   let rowValue: string;
   const rows: SummaryRow[] = [];
-  console.log(`addEvidenceOfDebtPaymentRow 1----------`+ application.case_data.certOfSC);
-  console.log(`addEvidenceOfDebtPaymentRow 2----------`+ application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption);
+  console.log('addEvidenceOfDebtPaymentRow 1----------'+ application.case_data.certOfSC);
+  console.log('addEvidenceOfDebtPaymentRow 2----------'+ application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption);
   if (application.case_data.certOfSC) {
     const evidenceOption = application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption;
-    console.log(`addEvidenceOfDebtPaymentRow---- 3-----evidenceOption-----------------`+ evidenceOption);
+    console.log('addEvidenceOfDebtPaymentRow---- 3-----evidenceOption-----------------'+ evidenceOption);
     if (evidenceOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
       rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
                         ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
@@ -296,7 +296,7 @@ export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, la
       );
     }
   }
-  console.log(`addEvidenceOfDebtPaymentRow------ 4-----rows-------------------`+ rows.toString());
+  console.log('addEvidenceOfDebtPaymentRow------ 4-----rows-------------------'+ rows.toString());
   return rows;
 };
 
