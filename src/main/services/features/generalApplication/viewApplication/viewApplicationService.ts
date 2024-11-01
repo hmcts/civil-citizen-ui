@@ -40,12 +40,14 @@ export type ViewApplicationSummaries = {
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   if (displayToEnumKey(application.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID') {
+    console.log('----------------CONFIRM_CCJ_DEBT_PAID---------------------');
     return [
       ...addApplicationStatus(application, lang),
       ...addApplicationTypesRows(application, lang),
       ...addFinalPaymentDateDetails(application, lang),
       ...addEvidenceOfDebtPaymentRow(application, lang),
     ];
+
   }
   return [
     ...addApplicationStatus(application, lang),
