@@ -3234,13 +3234,16 @@
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
-		"APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
+		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
         "DIRECTION_WITH_NOTICE": "Cyfarwyddyd i wneud y cais gyda rhybudd",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
+        "DOCUMENT_TYPES": {
+          "SUPPORTING_EVIDENCE": "Tystiolaeth Ategol"
+        },
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",

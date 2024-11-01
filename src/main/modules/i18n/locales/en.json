@@ -3241,6 +3241,9 @@
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
+        "DOCUMENT_TYPES": {
+          "SUPPORTING_EVIDENCE": "Supporting Evidence"
+        },
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "There is a hearing notice",
