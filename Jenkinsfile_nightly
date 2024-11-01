@@ -85,4 +85,8 @@ withNightlyPipeline(type, product, component) {
     archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
+
+  afterAlways('crossBrowserTest') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
 }

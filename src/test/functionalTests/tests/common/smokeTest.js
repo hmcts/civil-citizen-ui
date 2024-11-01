@@ -14,4 +14,4 @@ Scenario('Verify if citizen user able to login to CUI', async () => {
 
 AfterSuite(async () => {
   await deleteAccount(config.defendantCitizenUser.email);
-});
+}).tag('@smoke');
