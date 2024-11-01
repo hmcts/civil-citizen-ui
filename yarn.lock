@@ -4756,6 +4756,7 @@ __metadata:
     mini-css-extract-plugin: ^2.7.2
     minimatch: ^10.0.1
     mocha: ^10.2.0
+    mocha-junit-reporter: ^2.2.1
     mocha-multi: 1.1.7
     mochawesome: 7.1.3
     multer: ^1.4.5-lts.1
@@ -9893,7 +9894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"md5@npm:^2.1.0":
+"md5@npm:^2.1.0, md5@npm:^2.3.0":
   version: 2.3.0
   resolution: "md5@npm:2.3.0"
   dependencies:
@@ -10190,6 +10191,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mkdirp@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "mkdirp@npm:3.0.1"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 972deb188e8fb55547f1e58d66bd6b4a3623bf0c7137802582602d73e6480c1c2268dcbafbfb1be466e00cc7e56ac514d7fd9334b7cf33e3e2ab547c16f83a8d
+  languageName: node
+  linkType: hard
+
 "mocha-junit-reporter@npm:1.23.1":
   version: 1.23.1
   resolution: "mocha-junit-reporter@npm:1.23.1"
@@ -10202,6 +10212,21 @@ __metadata:
   peerDependencies:
     mocha: ">=2.2.5"
   checksum: 4e4e8a4d10e6d61744586bd4c2641d1e09e627fe2b56cd3ac35b3c18691cd669deb5d9f5e7fd4d9dbcff1727e9ee6a5cff550da3bacb298cac1d7954c7eb9a86
+  languageName: node
+  linkType: hard
+
+"mocha-junit-reporter@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "mocha-junit-reporter@npm:2.2.1"
+  dependencies:
+    debug: ^4.3.4
+    md5: ^2.3.0
+    mkdirp: ^3.0.0
+    strip-ansi: ^6.0.1
+    xml: ^1.0.1
+  peerDependencies:
+    mocha: ">=2.2.5"
+  checksum: 752c30b1ef7c99eff6d82104f1b7a8179a21f3afefa3df38edb4e2478986a7c74d28b6c4525da5109cba8a4bf31cf697f4cff7584a3784fb9fc40be804fd7351
   languageName: node
   linkType: hard
 
