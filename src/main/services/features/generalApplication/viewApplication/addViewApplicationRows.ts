@@ -288,8 +288,8 @@ export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, la
         summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(evidenceDetails, {lng})),
       );
     }
-    return rows;
   }
+  return rows;
 };
 
 const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType): HearingTypeOptions => {
