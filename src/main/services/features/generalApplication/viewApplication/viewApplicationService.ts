@@ -46,21 +46,20 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
       ...addFinalPaymentDateDetails(application, lang),
       ...addEvidenceOfDebtPaymentRow(application, lang),
     ];
-  } else {
-    return [
-      ...addApplicationStatus(application, lang),
-      ...addApplicationTypesRows(application, lang),
-      ...addOtherPartiesAgreedRow(application, lang),
-      ...addInformOtherPartiesRow(application, lang),
-      ...addOrderJudgeRows(application, lang),
-      ...addRequestingReasonRows(application, lang),
-      ...addDocumentUploadRow(application, lang),
-      ...addHearingArrangementsRows(application, lang),
-      ...addHearingContactDetailsRows(application, lang),
-      ...addUnavailableDatesRows(application, lang),
-      ...addHearingSupportRows(application, lang),
-    ];
   }
+  return [
+    ...addApplicationStatus(application, lang),
+    ...addApplicationTypesRows(application, lang),
+    ...addOtherPartiesAgreedRow(application, lang),
+    ...addInformOtherPartiesRow(application, lang),
+    ...addOrderJudgeRows(application, lang),
+    ...addRequestingReasonRows(application, lang),
+    ...addDocumentUploadRow(application, lang),
+    ...addHearingArrangementsRows(application, lang),
+    ...addHearingContactDetailsRows(application, lang),
+    ...addUnavailableDatesRows(application, lang),
+    ...addHearingSupportRows(application, lang),
+  ];
 };
 
 const buildViewApplicationToRespondentSections = (application: ApplicationResponse, lang: string): SummaryRow[] => {
