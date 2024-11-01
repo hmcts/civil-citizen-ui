@@ -47,7 +47,7 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario.skip('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ @citizenUI @partAdmit @nightly - @api', async ({
+Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ @citizenUI @partAdmit @nightly - @api', async ({
   I,
   api,
 }) => {

@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario.skip('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
