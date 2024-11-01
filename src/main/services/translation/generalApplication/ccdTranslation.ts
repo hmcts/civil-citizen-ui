@@ -281,27 +281,11 @@ export const translateCoScApplicationToCCD = (
   };
 };
 
-const toCCDCoScEvidenceDocuments = (certOfSc?: CertificateOfSatisfactionOrCancellation, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
-  return (isCoScProofOfDeptPaymentExists(certOfSc))
-    ? uploadDocuments?.map(uploadDocument => {
-      return {
-        value: {
-          document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
-          document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
-          document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
-          category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
-        },
-      };
-    })
-    : undefined;
-};
-
 const toCCDCertOfSC = (certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationCertOfSC => {
   return (certificateOfSatisfactionOrCancellation)
     ? {
       defendantFinalPaymentDate: certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate.date,
       debtPaymentEvidence: certificateOfSatisfactionOrCancellation.debtPaymentEvidence,
-      proofOfDebtDoc: toCCDCoScEvidenceDocuments(certificateOfSatisfactionOrCancellation, uploadDocuments),
     }
     : undefined;
 };
@@ -309,7 +293,7 @@ const toCCDCertOfSC = (certificateOfSatisfactionOrCancellation?: CertificateOfSa
 const isCoScProofOfDeptPaymentExists = (certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation): YesNo => {
   if (certificateOfSatisfactionOrCancellation && certificateOfSatisfactionOrCancellation.debtPaymentEvidence ) {
     switch (certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption) {
-      case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL : return YesNo.YES;
+      case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
       case debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT : return YesNo.YES;
       default: return YesNo.NO;
     }

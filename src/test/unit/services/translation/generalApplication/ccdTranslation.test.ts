@@ -347,6 +347,7 @@ describe('translate draft application to ccd', () => {
       const ccdGeneralApplication = translateCoScApplicationToCCD(application);
       //Then
       expect(ccdGeneralApplication.certOfSC).not.toBeNull();
+      expect(ccdGeneralApplication.generalAppEvidenceDocument).not.toBeNull();
     });
   });
 });
