@@ -51,8 +51,26 @@ describe('General Application - additional docs check answer controller ', () =>
       expect(res.status).toBe(200);
       expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
+      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, undefined);
       expect(res.text).toContain('Check your answers');
+    });
+
+    it('should render the check answers welsh page with correct data', async () => {
+      const claimId = '123';
+      const gaId = '456';
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+      (getCancelUrl as jest.Mock).mockResolvedValue('/cancel-url');
+      (buildSummarySectionForAdditionalDoc as jest.Mock).mockReturnValue([]);
+
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL)).query({lang: 'cy'});
+
+      expect(res.status).toBe(200);
+      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
+      expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
+      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, 'cy');
+      expect(res.text).toContain('Gwirio eich atebion');
     });
 
     it('should handle errors', async () => {

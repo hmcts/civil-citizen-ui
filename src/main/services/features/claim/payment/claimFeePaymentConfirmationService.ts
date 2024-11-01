@@ -22,12 +22,12 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     logger.info('claim id ' + redisClaimId);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
-    logger.info('claim fee payment  info ' + paymentInfo);
+    logger.info('payment info from redis ' + JSON.stringify(paymentInfo));
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
-    logger.info('payment status ' + paymentInfo);
+    logger.info('payment status from service ' + JSON.stringify(paymentStatus));
     if(paymentStatus.status === success) {
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
-      deleteDraftClaimFromStore(redisClaimId);
+      await deleteDraftClaimFromStore(redisClaimId);
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?

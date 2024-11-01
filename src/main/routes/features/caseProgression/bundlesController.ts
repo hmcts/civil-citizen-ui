@@ -29,7 +29,7 @@ bundlesController.get(BUNDLES_URL, (async (req:Request, res:Response, next: Next
 
     res.render(bundlesViewPath,
       {bundleSections,
-        pageCaption: 'PAGES.DASHBOARD.HEARINGS.TITLE',
+        pageCaption: 'PAGES.DASHBOARD.HEARINGS.HEARING',
         pageTitle: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE',
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,
