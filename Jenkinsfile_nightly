@@ -79,6 +79,8 @@ withNightlyPipeline(type, product, component) {
   ])
   loadVaultSecrets(secrets)
 
+  enableCrossBrowserTest()
+
   enableFullFunctionalTest(200)
 
   afterAlways('fullFunctionalTest') {
