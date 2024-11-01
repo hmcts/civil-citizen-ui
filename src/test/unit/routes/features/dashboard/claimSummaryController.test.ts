@@ -142,7 +142,12 @@ export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],
 };
-
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
 describe('Claim Summary Controller Defendant', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const idamUrl: string = config.get('idamUrl');
@@ -545,7 +550,7 @@ describe('Claim Summary Controller Defendant', () => {
       isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
-      
+
       const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
       getContactCourtLinkMock.mockImplementation(() => {
         return {
