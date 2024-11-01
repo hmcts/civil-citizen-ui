@@ -28,7 +28,7 @@
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers --suites 2 --grep @regression-carm --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functionalTests yarn test:functional:codeceptjs run-workers --suites 4 --grep @nightly --reporter mocha-multi --verbose",
-    "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @smoketest ${BROWSER_GROUP:-'--all'} -c saucelabs.conf.js --reporter mocha-multi",
+    "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @smoketest ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
     "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
