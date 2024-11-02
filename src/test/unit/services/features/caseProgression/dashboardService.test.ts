@@ -21,7 +21,7 @@ import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
 import { ClaimantOrDefendant } from 'models/partyType';
 import { CivilServiceDashboardTask } from 'models/dashboard/taskList/civilServiceDashboardTask';
 import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
-import { DashboardTaskStatus } from 'models/dashboard/taskList/dashboardTaskStatus';
+import {DashboardTaskStatus, TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { YesNo } from 'form/models/yesNo';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import { CaseState } from 'common/form/models/claimDetails';
@@ -698,6 +698,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': TaskStatusColor[DashboardTaskStatus.ACTION_NEEDED],
         }, {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
           'statusEn': 'Action needed',
@@ -706,6 +707,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': TaskStatusColor[DashboardTaskStatus.ACTION_NEEDED],
         }],
       }, {
         'categoryEn': 'Claim',
@@ -718,6 +720,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': TaskStatusColor[DashboardTaskStatus.DONE],
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
@@ -727,6 +730,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': TaskStatusColor[DashboardTaskStatus.DONE],
         }] as DashboardTask[],
       },
       {
@@ -740,6 +744,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': 'available-colour',
         },
         {
           'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
@@ -749,6 +754,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': 'available-colour',
         }] as DashboardTask[],
       }, {
         'categoryEn': 'Category',
@@ -770,6 +776,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': TaskStatusColor[DashboardTaskStatus.NOT_AVAILABLE_YET],
         }] as DashboardTask[],
       }, {
         'categoryEn': 'Another Category',
@@ -791,6 +798,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': TaskStatusColor[DashboardTaskStatus.NOT_AVAILABLE_YET],
         }] as DashboardTask[],
       },{
         'categoryEn': 'Yet Another Category',
@@ -803,6 +811,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': 'optional-colour',
         },
         {
           'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
@@ -812,6 +821,7 @@ describe('dashboardService', () => {
           'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
           'hintTextEn': 'hint_text_en',
           'hintTextCy': 'hint_text_cy',
+          'statusColour': 'optional-colour',
         }] as DashboardTask[],
       },
       ] as DashboardTaskList[];
@@ -843,6 +853,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }, {
               'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
               'statusEn': 'TASK_LIST.INACTIVE_STATUS',
@@ -851,6 +862,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }],
         },
         {
@@ -864,6 +876,7 @@ describe('dashboardService', () => {
             'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
             'hintTextEn': 'hint_text_en',
             'hintTextCy': 'hint_text_cy',
+            'statusColour': TaskStatusColor[DashboardTaskStatus.DONE],
           },
           {
             'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
@@ -873,6 +886,7 @@ describe('dashboardService', () => {
             'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
             'hintTextEn': 'hint_text_en',
             'hintTextCy': 'hint_text_cy',
+            'statusColour': TaskStatusColor[DashboardTaskStatus.DONE],
           },
           ],
         },
@@ -887,6 +901,7 @@ describe('dashboardService', () => {
             'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
             'hintTextEn': 'hint_text_en',
             'hintTextCy': 'hint_text_cy',
+            'statusColour': 'available-colour',
           },
           {
             'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
@@ -896,6 +911,7 @@ describe('dashboardService', () => {
             'taskNameCy': '<a href=/go-some-where>task_name_cy</a>',
             'hintTextEn': 'hint_text_en',
             'hintTextCy': 'hint_text_cy',
+            'statusColour': 'available-colour',
           }] as DashboardTask[],
         },
         {
@@ -910,6 +926,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }, {
               'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
               'statusEn': 'TASK_LIST.INACTIVE_STATUS',
@@ -918,6 +935,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }],
         },
         {
@@ -932,6 +950,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }, {
               'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
               'statusEn': 'TASK_LIST.INACTIVE_STATUS',
@@ -940,6 +959,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }],
         },
         {
@@ -954,6 +974,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }, {
               'id': '9d2712da-47ce-4050-bbee-650134a7b9c3',
               'statusEn': 'TASK_LIST.INACTIVE_STATUS',
@@ -962,6 +983,7 @@ describe('dashboardService', () => {
               'taskNameCy': '<a>task_name_cy</a>',
               'hintTextEn': '',
               'hintTextCy': '',
+              'statusColour': TaskStatusColor[DashboardTaskStatus.INACTIVE],
             }],
         },
       ],

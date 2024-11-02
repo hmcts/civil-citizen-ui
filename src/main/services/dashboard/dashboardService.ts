@@ -27,6 +27,8 @@ import { APPLICATION_TYPE_URL } from 'routes/urls';
 import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {CaseState} from 'form/models/claimDetails';
+import {DashboardTaskStatus, TaskStatusColor} from "models/dashboard/taskList/dashboardTaskStatus";
+// import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -52,6 +54,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
           task.statusCy = t('TASK_LIST.INACTIVE_STATUS', {lng: 'cy'});
           task.taskNameEn = removeHrefFromAnchor(task.taskNameEn);
           task.taskNameCy = removeHrefFromAnchor(task.taskNameCy);
+          task.statusColour = TaskStatusColor[DashboardTaskStatus.INACTIVE];
           task.hintTextEn = '';
           task.hintTextCy = '';
         } else {
