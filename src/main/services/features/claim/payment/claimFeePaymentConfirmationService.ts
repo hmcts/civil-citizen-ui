@@ -19,12 +19,12 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
     const redisClaimId = generateRedisKey(req);
-    logger.info('claim id ' + redisClaimId);
+    logger.info(`claim id ${redisClaimId}`);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
-    logger.info('payment info from redis ' + JSON.stringify(paymentInfo));
+    logger.info(`payment info from redis for claim id ${req.params.id}: ${JSON.stringify(paymentInfo)}`);
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
-    logger.info('payment status from service ' + JSON.stringify(paymentStatus));
+    logger.info(`payment status from service for claim id ${req.params.id}: ${JSON.stringify(paymentStatus)}`);
     if(paymentStatus.status === success) {
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
       await deleteDraftClaimFromStore(redisClaimId);
@@ -32,7 +32,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
       PAY_CLAIM_FEE_UNSUCCESSFUL_URL : DASHBOARD_URL;
-    logger.info('redirectingUrl if payment is not success' + redirectingUrl);
+    logger.info(`redirectingUrl if payment is not success for claim id ${req.params.id}: ${redirectingUrl}`);
     return redirectingUrl;
   }
   catch (error) {
