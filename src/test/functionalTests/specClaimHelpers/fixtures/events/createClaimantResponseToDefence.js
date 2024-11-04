@@ -82,7 +82,6 @@ module.exports = {
         respondentResponseIsSame: null,
         defendantSingleResponseToBothClaimants: null,
         respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
-        defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
         showResponseOneVOneFlag: 'ONE_V_ONE_FULL_DEFENCE',
         applicant1DefenceResponseDocumentSpec: null,
         applicant1DQFileDirectionsQuestionnaire: {
@@ -464,10 +463,6 @@ module.exports = {
         specApplicant1DQDisclosureOfNonElectronicDocuments: {
           bespokeDirections: 'claimant response non-electronic docs disclosure',
         },
-        applicant1DQDefendantDocumentsToBeConsidered: {
-          hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant response docs to consider',
-        },
       },
     };
     return claimantResponseData;
@@ -538,10 +533,6 @@ module.exports = {
         },
         specApplicant1DQDisclosureOfNonElectronicDocuments: {
           bespokeDirections: 'claimant response non-electronic docs disclosure',
-        },
-        applicant1DQDefendantDocumentsToBeConsidered: {
-          hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant response docs to consider',
         },
       },
     };

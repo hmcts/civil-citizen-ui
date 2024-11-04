@@ -117,7 +117,7 @@ const content = {
       cy: 'Atebion i’r cwestiynau a ofynnwyd gan y parti arall',
     },
     answersHint: {
-      en: 'Your expert’s answers to questions put by the other party',
+      en: 'Your expert\'s answers to questions put by the other party',
       cy: 'Atebion eich arbenigwr i gwestiynau a ofynnwyd gan y parti arall',
     },
   },
@@ -200,9 +200,11 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
     I.click(nextAction);
   }
 
-  verifyPageContent(caseType) {
+  verifyPageContent(caseNumber, claimAmount, caseType) {
     this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     if (caseType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessEvidenceSectionContent();
@@ -214,6 +216,10 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
       this.verifyHearingDocumentsSectionContent();
     }
     contactUs.verifyContactUs(language);
+  }
+
+  verifyBreadcrumbs() {
+    I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
   checkAllDocumentUploadOptions(claimType) {
@@ -262,10 +268,14 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
   }
 
   verifyHeadingDetails() {
+    I.see('Hearing', 'span');
     I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.caseNumber[language]);
-    I.see(content.heading.claimAmount[language]);
     I.see(content.heading.selectDocumentType[language]);
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 
   verifyDisclosureSectionContent() {

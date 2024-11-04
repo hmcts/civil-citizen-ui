@@ -23,7 +23,12 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang, partyPhone: partyPhone});
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText});
+  const variation = {
+    yes : 'COMMON.VARIATION_7.YES',
+    no: 'COMMON.VARIATION_7.NO',
+  };
+
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation, isCarm: true});
 };
 
 const getPartyPhone = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
@@ -54,7 +59,7 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
-    const form = new GenericForm(new GenericYesNo(req.body.option));
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_GALLAI_NA_ALLAI'));
     await form.validate();
     if (form.hasErrors()) {
       const partyPhone = await getPartyPhone(redisKey, isClaimantResponse);
