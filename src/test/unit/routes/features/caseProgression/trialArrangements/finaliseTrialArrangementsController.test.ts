@@ -23,6 +23,12 @@ jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
 describe('"finalise trial arrangements" page test', () => {
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const claimId = claim.id;
