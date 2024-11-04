@@ -200,7 +200,6 @@ ccd:
 civil-wa:
   enabled: false
 
-
 civil-general-applications:
   enabled: true
   java:
