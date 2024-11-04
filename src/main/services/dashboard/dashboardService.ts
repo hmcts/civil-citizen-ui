@@ -28,7 +28,6 @@ import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {CaseState} from 'form/models/claimDetails';
 import {DashboardTaskStatus, TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
-// import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
