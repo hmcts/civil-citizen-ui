@@ -69,6 +69,9 @@ const setupConfig = {
     BrowserHelpers: {
       require: './helpers/browser_helper.js',
     },
+    SauceLabsReportingHelper: {
+      require: '../crossbrowser/helpers/saucelabsReportingHelper.js',
+    },
   },
   plugins: {
     retryFailedStep: {
