@@ -1,6 +1,6 @@
 module.exports = {
   createATrialArrangement: () => {
-    const trialArrangementData = {
+    return {
       event: 'TRIAL_READINESS',
       caseDataUpdate: {
         hearingDurationTextApplicant: '2 and half hours',
@@ -15,6 +15,20 @@ module.exports = {
         },
       },
     };
-    return trialArrangementData;
+  },
+  createATrialArrangementRespondentLip: () => {
+    return {
+      event: 'TRIAL_READINESS',
+      caseDataUpdate: {
+        trialReadyRespondent1: 'Yes',
+        respondent1RevisedHearingRequirements: {
+          revisedHearingRequirements: 'Yes',
+          revisedHearingComments: 'Nothing Special',
+        },
+        respondent1HearingOtherComments: {
+          hearingOtherComments: 'Optional information....',
+        },
+      },
+    };
   },
 };
