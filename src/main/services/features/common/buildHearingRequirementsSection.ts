@@ -12,10 +12,11 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {buildCommonHearingRequirements} from 'services/features/common/buildCommonHearingRequirements';
 
 export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string, mintiApplicable: boolean ): SummarySection => {
-  return buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.directionQuestionnaire, mintiApplicable);
+  const directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), claim.directionQuestionnaire);
+  return buildHearingRequirementsSectionCommon(claim, claimId, lang, directionQuestionnaire, mintiApplicable);
 };
 
-export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string , directionQuestionnaire: DirectionQuestionnaire, mintiApplicable: boolean): SummarySection => {
+export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string, directionQuestionnaire: DirectionQuestionnaire, mintiApplicable: boolean): SummarySection => {
   const lng = getLng(lang);
   let hearingRequirementsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
@@ -29,12 +30,12 @@ export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: str
   }
 
   if (claim.isSmallClaimsTrackDQ) {
-    buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);
+    buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaire);
   } else {
-    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire, mintiApplicable);
+    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaire, mintiApplicable);
   }
 
-  buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);
+  buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaire);
 
   return hearingRequirementsSection;
 };
