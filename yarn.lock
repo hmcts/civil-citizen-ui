@@ -3248,6 +3248,7 @@ __metadata:
 "@types/uuid@npm:^10.0.0":
   version: 10.0.0
   resolution: "@types/uuid@npm:10.0.0"
+  checksum: e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
   languageName: node
   linkType: hard
 
@@ -4867,7 +4868,7 @@ __metadata:
     express-session: ^1.17.3
     follow-redirects: 1.15.6
     glob: ^10.0.0
-    govuk-frontend: 5.3.1
+    govuk-frontend: 5.7.1
     helmet: ^7.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
@@ -7288,10 +7289,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:5.3.1":
-  version: 5.3.1
-  resolution: "govuk-frontend@npm:5.3.1"
-  checksum: b87c2208a7b971cc6ac1d0c19eb188fe1f40587af6e904d60a18ed9e5e9fef2ad9cec53734b38ad512c4fbd6c947677845d0afeff4594c59f18905485b0d0ae9
+"govuk-frontend@npm:5.7.1":
+  version: 5.7.1
+  resolution: "govuk-frontend@npm:5.7.1"
+  checksum: 720098385758667ca4a2a9b408daf58c6f3a079256a5f6dfe1bd9d0975946a7182d7db444b7465d2ae1fb98bbc3e7109061c7d41bbb90ef1d397844a3509fdba
   languageName: node
   linkType: hard
 
