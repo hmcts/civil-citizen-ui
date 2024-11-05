@@ -348,14 +348,7 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
-      console.log('carm enabled, updating submitted date');
-      await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
+    if (!carmEnabled) {
       console.log('carm not enabled, updating submitted date to past for legacy cases');
       await apiRequest.setupTokens(config.systemUpdate);
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
@@ -407,13 +400,7 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
-      await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
+    if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
       console.log('carm not enabled, updating submitted date to past for legacy cases');
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
