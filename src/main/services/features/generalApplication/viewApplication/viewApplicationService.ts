@@ -2,7 +2,7 @@ import {
   addApplicationStatus,
   addApplicationTypesAndDescriptionRows,
   addApplicationTypesRows,
-  addAnotherApplication,
+  addAnotherApplicationRow,
   addDocumentUploadRow,
   addHearingArrangementsRows,
   addHearingContactDetailsRows,
@@ -40,7 +40,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
   return [
     ...addApplicationStatus(application, lang),
     ...addApplicationTypesRows(application, lang),
-    ...addAnotherApplication(application, lang),
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),
@@ -56,7 +56,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
 const buildViewApplicationToRespondentSections = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   return [
     ...addApplicationTypesAndDescriptionRows(application, lang),
-    ...addAnotherApplication(application, lang),
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),

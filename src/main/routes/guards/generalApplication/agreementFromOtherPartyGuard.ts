@@ -9,7 +9,7 @@ export const agreementFromOtherPartyGuard = async (req: AppRequest, res: Respons
   try {
     const applicationIndex = queryParamNumber(req, 'index');
     const claim = await getClaimById(req.params.id, req, true);
-    if (claim?.generalApplication?.applicationTypes?.length > 1) {
+    if (claim?.generalApplication?.applicationTypes?.length > 1 || applicationIndex >= 0) {
       return res.redirect(constructResponseUrlWithIdParams(req.params.id, ORDER_JUDGE_URL)
         + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
     } else {
