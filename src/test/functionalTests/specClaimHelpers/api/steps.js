@@ -656,6 +656,14 @@ module.exports = {
     console.log('End of uploadMediationDocumentsCui()');
   },
 
+  adjustSubmittedDateForCarm: async (caseId) => {
+    console.log('carm not enabled, updating submitted date to past for legacy cases');
+    await apiRequest.setupTokens(config.systemUpdate);
+    const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+    await testingSupport.updateCaseData(caseId, submittedDate);
+    console.log('submitted date update to before carm date for legacy cases');
+  },
+
   uploadMediationDocumentsExui: async (user) => {
     console.log('This is inside uploadMediationDocumentsExui : ' + caseId);
     eventName = 'UPLOAD_MEDIATION_DOCUMENTS';
