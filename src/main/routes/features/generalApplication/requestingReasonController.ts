@@ -62,7 +62,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const requestingReason = new RequestingReason(req.body.text);
-    const applicationIndex = queryParamNumber(req, 'index');
+    const applicationIndex = queryParamNumber(req, 'index') || 0;
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);

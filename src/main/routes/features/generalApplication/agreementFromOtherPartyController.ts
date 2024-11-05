@@ -16,13 +16,15 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
 
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const backLinkUrl = getBackLinkUrl(<AppRequest>req);
+    const index = queryParamNumber(req, 'index');
+    const backLinkUrl = getBackLinkUrl(<AppRequest>req, index);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
@@ -42,8 +44,8 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreeme
 
 agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-
-    const backLinkUrl = getBackLinkUrl(<AppRequest>req);
+    const index = queryParamNumber(req, 'index') ;
+    const backLinkUrl = getBackLinkUrl(<AppRequest>req, index);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
@@ -59,15 +61,15 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
       await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL, index));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-function getBackLinkUrl(req: AppRequest) : string {
-  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL) + '?index=0';
+function getBackLinkUrl(req: AppRequest, index: number) : string {
+  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL) + `?index=${index}`;
 }
 
 export default agreementFromOtherPartyController;

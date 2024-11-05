@@ -62,7 +62,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequ
     const cancelUrl = await getCancelUrl(claimId, claim);
     const redisKey = generateRedisKey(<AppRequest>req);
     const orderJudge = Object.assign(new OrderJudge(), req.body);
-    const index = queryParamNumber(req, 'index');
+    const index = queryParamNumber(req, 'index') || 0;
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
 
     const form = new GenericForm(orderJudge);
