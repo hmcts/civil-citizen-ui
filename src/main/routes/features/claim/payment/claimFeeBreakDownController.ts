@@ -1,21 +1,24 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {CLAIM_FEE_BREAKUP} from 'routes/urls';
+import {CLAIM_FEE_BREAKUP, CLAIM_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
+import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
+const success = 'Success';
+const failed = 'Failed';
 
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -48,17 +51,45 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
-    const paymentRedirectInformation = await getRedirectInformation(req);
+    const claim = await getCaseDataFromStore(redisKey);
+    let paymentRedirectInformation: PaymentInformation;
+    if (claim.claimDetails?.claimFeePayment?.paymentReference) {
+      paymentRedirectInformation = claim.claimDetails.claimFeePayment;
+      logger.info(`existing payment ref found for claim id ${claimId}: ${claim.claimDetails.claimFeePayment.paymentReference}`);
+    } else {
+      paymentRedirectInformation = await getRedirectInformation(req);
+      claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+    }
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      const claim = await getCaseDataFromStore(redisKey);
-      claim.claimDetails.claimFeePayment = paymentRedirectInformation;
       logger.info('redis key before saving the payment ' + redisKey);
-      logger.info('saved redis payment reference ' + claim.claimDetails.claimFeePayment.paymentReference);
+      logger.info('saved redis payment reference ' + claim.claimDetails?.claimFeePayment?.paymentReference);
       await saveDraftClaim(redisKey, claim, true);
       await saveUserId(claimId, req.session.user.id);
-      res.redirect(paymentRedirectInformation?.nextUrl);
+      try {
+        const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation?.paymentReference, FeeType.CLAIMISSUED, req);
+        logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
+        if (paymentStatus?.status === success) {
+          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
+          res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_PAYMENT_CONFIRMATION_URL));
+        } else if (paymentStatus?.status === failed) {
+          paymentRedirectInformation = await getRedirectInformation(req);
+          logger.info(`New payment ref after failed payment for claim id ${claimId}: ${paymentRedirectInformation?.paymentReference}`);
+          if (!paymentRedirectInformation) {
+            res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
+          } else {
+            claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+            await saveDraftClaim(redisKey, claim, true);
+            res.redirect(paymentRedirectInformation?.nextUrl);
+          }
+        } else {
+          res.redirect(paymentRedirectInformation?.nextUrl);
+        }
+      } catch (err: unknown) {
+        logger.info(`Error retrieving payment status for claim id ${claimId}, payment ref ${paymentRedirectInformation?.paymentReference}`);
+        res.redirect(paymentRedirectInformation?.nextUrl);
+      }
     }
   } catch (error) {
     logger.info('error from claim fee breakdown controller ' + JSON.stringify(error));
