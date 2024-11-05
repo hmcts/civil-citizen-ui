@@ -404,13 +404,13 @@ export const getApplicationStatus = (isApplicant: boolean, status: ApplicationSt
       case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
       case ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED:
       case ApplicationState.ADDITIONAL_RESPONSE_TIME_PROVIDED:
-      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
       case ApplicationState.LISTING_FOR_A_HEARING:
       case ApplicationState.HEARING_SCHEDULED:
         return ApplicationStatus.IN_PROGRESS;
       case ApplicationState.APPLICATION_ADD_PAYMENT:
       case ApplicationState.APPLICATION_PAYMENT_FAILED:
       case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
       case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
       case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
       case ApplicationState.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION:
@@ -429,12 +429,12 @@ export const getApplicationStatus = (isApplicant: boolean, status: ApplicationSt
       case ApplicationState.APPLICATION_ADD_PAYMENT:
       case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
       case ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED:
-      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
       case ApplicationState.LISTING_FOR_A_HEARING:
       case ApplicationState.HEARING_SCHEDULED:
       case ApplicationState.APPLICATION_PAYMENT_FAILED:
       case ApplicationState.AWAITING_APPLICATION_PAYMENT:
         return ApplicationStatus.IN_PROGRESS;
+      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
       case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
       case ApplicationState.ADDITIONAL_RESPONSE_TIME_PROVIDED:
       case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:

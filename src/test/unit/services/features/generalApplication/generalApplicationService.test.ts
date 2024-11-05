@@ -681,7 +681,7 @@ describe('General Application service', () => {
       //When
       const status = getApplicationStatus(true, applicationState);
       //Then
-      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+      expect(status).toBe(ApplicationStatus.TO_DO);
     });
     it('should return TO_DO when APPLICATION_ADD_PAYMENT', () => {
       //Given
@@ -788,7 +788,7 @@ describe('General Application service', () => {
       //When
       const status = getApplicationStatus(false, applicationState);
       //Then
-      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+      expect(status).toBe(ApplicationStatus.TO_DO);
     });
     it('should return IN_PROGRESS when APPLICATION_ADD_PAYMENT', () => {
       //Given
