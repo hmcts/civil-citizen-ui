@@ -7,11 +7,11 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "CIV-15151-Trigger-email-notification-once-translated-document-has-been-uploaded"
+def camundaBranch = "CIV-15115-show-translated-docs-on-exui"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
-def generalappCCDBranch = "CIV-15151-Trigger-email-notification-once-translated-document-has-been-upload"
+def generalappCCDBranch = "CIV-15115-show-translated-doc-on-xui"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
