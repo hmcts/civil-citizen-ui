@@ -16,7 +16,7 @@ export const informOtherPartiesGuard = async (req: AppRequest, res: Response, ne
     const applicationIndex = queryParamNumber(req, 'index');
     const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     if (options.indexOf(applicationType) !== -1  || claim?.generalApplication?.agreementFromOtherParty === YesNo.YES) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL, applicationIndex));
     } else {
       next();
     }

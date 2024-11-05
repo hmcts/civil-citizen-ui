@@ -16,20 +16,23 @@ import { getApplicationCostsContent } from 'services/features/generalApplication
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';
 const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
 
 async function renderView(claim: Claim, req: AppRequest, res: Response): Promise<void> {
+  const index = queryParamNumber(req, 'index') ;
+
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypes = claim.generalApplication?.applicationTypes;
   const selectedAppType = applicationTypes[applicationTypes.length - 1]?.option;
   const applicationType = getApplicationTypeOptionByTypeAndDescription(selectedAppType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const gaFeeData = await gaApplicationFeeDetails(claim, req);
-  const nextPageUrl = getRedirectUrl(req.params.id, claim, selectedAppType);
+  const nextPageUrl = getRedirectUrl(req.params.id, claim, selectedAppType, index);
   const applicationCostsContent = getApplicationCostsContent(applicationTypes, gaFeeData, lang);
-  const backLinkUrl = getBackUrl(req.params.id, claim, selectedAppType);
+  const backLinkUrl = getBackUrl(req.params.id, claim, selectedAppType, index);
   res.render(viewPath, { backLinkUrl, nextPageUrl, applicationType, applicationCostsContent });
 }
 
@@ -43,14 +46,14 @@ applicationCostsController.get(GA_APPLICATION_COSTS_URL, (async (req: AppRequest
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim, option: ApplicationTypeOption) {
+function getRedirectUrl(claimId: string, claim: Claim, option: ApplicationTypeOption, index: number) {
   return (!claim.isClaimant() && option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) ?
-    constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL) : constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
+    constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL, index) : constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL, index);
 }
 
-function getBackUrl(claimId: string, claim: Claim, applicationTypeOption: ApplicationTypeOption) {
+function getBackUrl(claimId: string, claim: Claim, applicationTypeOption: ApplicationTypeOption, index: number) {
   return (claim.generalApplication.agreementFromOtherParty === YesNo.YES || options.indexOf(applicationTypeOption) !== -1) ?
-    constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL) : constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL);
+    constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL, index) : constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL, index);
 }
 
 export default applicationCostsController;

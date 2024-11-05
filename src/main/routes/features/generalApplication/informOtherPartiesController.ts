@@ -11,16 +11,18 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<InformOtherParties>): Promise<void> => {
   const claimId = req.params.id;
+  const index = queryParamNumber(req, 'index') ;
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL, index);
   if (!form) {
     form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
   }
@@ -41,6 +43,8 @@ informOtherPartiesController.get(INFORM_OTHER_PARTIES_URL, informOtherPartiesGua
 
 informOtherPartiesController.post(INFORM_OTHER_PARTIES_URL, informOtherPartiesGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const index = queryParamNumber(req, 'index') ;
+
     const informOtherParties = new InformOtherParties(req.body.option, req.body?.reasonForCourtNotInformingOtherParties);
     const form = new GenericForm(informOtherParties);
     await form.validate();
@@ -48,7 +52,7 @@ informOtherPartiesController.post(INFORM_OTHER_PARTIES_URL, informOtherPartiesGu
       return await renderView(req, res, form);
     }
     await saveInformOtherParties(generateRedisKey(req), informOtherParties);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL));
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL, index));
   } catch (error) {
     next(error);
   }
