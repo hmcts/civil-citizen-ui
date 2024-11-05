@@ -132,7 +132,7 @@ class CheckAndSend {
     I.see('Statement of truth', 'h2');
     I.see('The information on this page forms your application.');
     I.see('When you\'re satisfied that your answers are correct, you should tick the box below and write your name to "sign" this statement of truth.');
-    I.see('I believe that the facts stated in this form are true.');
+    I.see('I believe that the facts stated in this application are true.');
     I.see('I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.');
     I.see('Name');
     await I.seeElement('//*[@id="name"]');
