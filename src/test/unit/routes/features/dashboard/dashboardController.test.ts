@@ -25,7 +25,12 @@ export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],
 };
-
+const mockDraftStoreClient = {
+  set: jest.fn(),
+  expireat: jest.fn(),
+  get: jest.fn(),
+};
+app.locals.draftStoreClient = mockDraftStoreClient;
 describe('Dashboard page', () => {
   const idamUrl: string = config.get('idamUrl');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');

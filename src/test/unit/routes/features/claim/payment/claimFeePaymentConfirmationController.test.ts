@@ -6,9 +6,19 @@ import config from 'config';
 import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as claimFeePaymentConfirmationService from 'services/features/claim/payment/claimFeePaymentConfirmationService';
+import {Session} from 'express-session';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
+  saveUserId: jest.fn(),
+}));
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
+  getCaseDataFromStore: jest.fn(),
+  generateRedisKey: jest.fn(),
+  saveDraftClaim: jest.fn(),
+  deleteDraftClaimFromStore: jest.fn(),
+}));
+
 describe('Claim Fees - Payment Status', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,6 +35,7 @@ describe('Claim Fees - Payment Status', () => {
       CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
     ])('should redirect user to success/failure page when url is %s', async (url) => {
       jest.spyOn(claimFeePaymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
+      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
       await request(app)
         .get(url)
         .expect((res) => {
