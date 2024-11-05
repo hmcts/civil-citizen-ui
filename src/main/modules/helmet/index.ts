@@ -4,6 +4,7 @@ import {HelmetOptions,default as helmet} from 'helmet';
 import config from 'config';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
+const googleTagManagerDomain = '*.googletagmanager.com';
 const self = "'self'";
 const loginUrl: string = config.get('services.idam.authorizationURL');
 const govPayUrl: string = config.get('services.govPay.url');
@@ -13,7 +14,7 @@ const dynatraceDomain = '*.dynatrace.com';
 const scriptSrcElem = [
   self,
   googleAnalyticsDomain,
-  '*.googletagmanager.com',
+  googleTagManagerDomain,
   dynatraceDomain,
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
@@ -22,7 +23,7 @@ const scriptSrcElem = [
 
 const styleSrc = [
   self,
-  '*.googletagmanager.com',
+  googleTagManagerDomain,
   'fonts.googleapis.com',
   googleAnalyticsDomain,
   '*.analytics.google.com',
@@ -37,7 +38,7 @@ const imgSrc = [
   'ssl.gstatic.com',
   '*.gstatic.com',
   '*.g.doubleclick.net',
-  '*.googletagmanager.com',
+  googleTagManagerDomain,
   'data:',
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
@@ -52,7 +53,7 @@ const mediaSrc = [
   'www.gstatic.com',
   '*.g.doubleclick.net',
   googleAnalyticsDomain,
-  '*.googletagmanager.com',
+  googleTagManagerDomain,
   '*.analytics.google.com',
 ];
 
@@ -108,7 +109,9 @@ export class Helmet {
           objectSrc: [self],
           scriptSrc: [
             self,
+            "'unsafe-inline'", // FOR TESTING GTM IN DEBUG - DO NOT DEPLOY TO PROD
             googleAnalyticsDomain,
+            googleTagManagerDomain,
             dynatraceDomain,
             "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
             (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
