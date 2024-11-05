@@ -16,6 +16,7 @@ const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
 describe('Claim Fee PaymentConfirmation Service', () => {
+  mockedAppRequest.params = {id: '123'};
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
