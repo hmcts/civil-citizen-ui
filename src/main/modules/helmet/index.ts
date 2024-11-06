@@ -27,6 +27,7 @@ const styleSrc = [
   'fonts.googleapis.com',
   googleAnalyticsDomain,
   '*.analytics.google.com',
+  "'unsafe-inline'", // FOR TESTING GTM IN DEBUG - DO NOT DEPLOY TO PROD
 ];
 
 const imgSrc = [
