@@ -20,7 +20,6 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 import {Claim} from 'models/claim';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {queryParamNumber} from 'common/utils/requestUtils';
 
 const addAnotherApplicationController = Router();
@@ -32,10 +31,9 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const claim = await getClaimById(redisKey, req, true);
   const backLinkUrl = getBackLinkUrl(claimId, claim);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const applicationTypes = claim.generalApplication || new GeneralApplication();
-  const applicationTypeIndex = queryParamNumber(req, 'index') || 0;
-  const applicationTypeOption = getByIndexOrLast(applicationTypes, applicationTypeIndex)?.option;
-  const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE); // get by index
+  const applicationIndex = queryParamNumber(req, 'index') || 0;
+  const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+  const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   if (!form) {
     form = new GenericForm(new GenericYesNo(''));
   }

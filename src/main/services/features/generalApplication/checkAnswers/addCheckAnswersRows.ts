@@ -69,12 +69,13 @@ export const addApplicationTypesRows = (
 export const addOtherPartiesAgreedRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const href = `${constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL)}?changeScreen=true`;
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.agreementFromOtherParty) {
     const partiesAgreed = (claim.generalApplication?.agreementFromOtherParty === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng}),
-        constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), changeLabel()),
+        href, changeLabel()),
     );
   }
   return rows;
