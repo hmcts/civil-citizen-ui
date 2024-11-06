@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import {app} from '../../../../../../main/app';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
-import {CLAIM_FEE_BREAKUP} from 'routes/urls';
+import {CLAIM_FEE_BREAKUP, CLAIM_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 import {getClaimById} from 'modules/utilityService';
@@ -13,6 +13,7 @@ import config from 'config';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
+import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
@@ -111,6 +112,62 @@ describe('on POST', () => {
       .post(CLAIM_FEE_BREAKUP).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_FEE_BREAKUP);
+      });
+  });
+  it('should redirect to confirmation url if already paid', async () => {
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Success'});
+    await request(app)
+      .post(CLAIM_FEE_BREAKUP).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CLAIM_FEE_PAYMENT_CONFIRMATION_URL);
+      });
+  });
+  it('should get new payment ref if previous payment failed', async () => {
+    const paymentUrl = 'paymentUrl';
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({nextUrl: paymentUrl});
+    await request(app)
+      .post(CLAIM_FEE_BREAKUP).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(paymentUrl);
+      });
+  });
+  it('should get new payment ref if previous payment failed - no payment data returned', async () => {
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(undefined);
+    await request(app)
+      .post(CLAIM_FEE_BREAKUP).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CLAIM_FEE_BREAKUP);
+      });
+  });
+  it('should redirect to payment if cannot get payment status', async () => {
+    const paymentUrl = 'paymentUrl';
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({nextUrl: paymentUrl});
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockRejectedValueOnce(new Error('something went wrong'));
+    await request(app)
+      .post(CLAIM_FEE_BREAKUP).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(paymentUrl);
       });
   });
 });
