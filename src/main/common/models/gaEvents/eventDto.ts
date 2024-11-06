@@ -18,7 +18,7 @@ import {
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
-import {Document} from "models/document/document";
+import {Document} from 'models/document/document';
 
 export interface EventDto {
   event: ApplicationEvent,
