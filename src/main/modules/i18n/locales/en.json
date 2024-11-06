@@ -2396,8 +2396,8 @@
       "TITLE": "Apply For Help With Fees"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
-      "PAGE_TITLE": "Do you have a postal address in the UK?",
-      "TITLE": "Do you have a postal address in the UK?",
+      "PAGE_TITLE": "Do you have a postal address in England or Wales?",
+      "TITLE": "Do you have a postal address in England or Wales?",
       "UK_MADE_UP": "The UK is made up of England and Wales."
     },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
@@ -3736,7 +3736,7 @@
       },
       "CITIZENS_ADVICE": "Citizens Advice",
       "CLAIMANT_ADDRESS": {
-        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+        "NEED_UK_ADDRESS": "You need have a postal address in England or Wales to use this service."
       },
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
