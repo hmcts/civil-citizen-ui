@@ -29,12 +29,19 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const linkFrom = req.query.linkFrom;
+    let applicationIndex = queryParamNumber(req, 'index') || 0;
+
     if (linkFrom === LinKFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
+      applicationIndex = 0;
     }
+
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index');
+    if (linkFrom === LinKFromValues.addAnotherApp) {
+      const lastIndex = claim.generalApplication.applicationTypes.length - 1;
+      applicationIndex = lastIndex + 1;
+    }
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
@@ -60,7 +67,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
 
-    const applicationIndex = queryParamNumber(req, 'index');
+    const applicationIndex = queryParamNumber(req, 'index') || 0;
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
