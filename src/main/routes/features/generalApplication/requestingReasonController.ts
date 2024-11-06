@@ -79,7 +79,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
       });
     } else {
       await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) + `?index=${applicationIndex}`); //add index param
     }
   } catch (error) {
     next(error);

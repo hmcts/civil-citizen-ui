@@ -7,7 +7,7 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
-import {getCancelUrl, getLast} from 'services/features/generalApplication/generalApplicationService';
+import {getByIndexOrLast, getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
@@ -20,6 +20,8 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 import {Claim} from 'models/claim';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
@@ -30,7 +32,10 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const claim = await getClaimById(redisKey, req, true);
   const backLinkUrl = getBackLinkUrl(claimId, claim);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+  const applicationTypes = claim.generalApplication || new GeneralApplication();
+  const applicationTypeIndex = queryParamNumber(req, 'index') || 0;
+  const applicationTypeOption = getByIndexOrLast(applicationTypes, applicationTypeIndex)?.option;
+  const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE); // get by index
   if (!form) {
     form = new GenericForm(new GenericYesNo(''));
   }
