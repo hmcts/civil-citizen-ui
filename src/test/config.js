@@ -6,6 +6,7 @@ const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+const courtToBeSelected = 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS';
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
@@ -222,4 +223,5 @@ module.exports = {
     CASE_PROGRESSION: 'CASE_PROGRESSION',
     HEARING_READINESS: 'HEARING_READINESS',
   },
+  court: courtToBeSelected,
 };

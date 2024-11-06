@@ -19,6 +19,7 @@ const PayingForApplication = require('../../GA/pages/payingForApplication');
 const CheckAndSend= require('../../GA/pages/checkAndSend');
 const SubmitGAConfirmation = require('../../GA/pages/submitGAConfirmation');
 const ApplyHelpFeeSelection = require('../../GA/pages/applyHelpFeeSelection');
+const config = require('../../../../config.js');
 const govPay = new GovPay();
 
 const feeAmountForAskingMoreTime = 119;
@@ -99,7 +100,7 @@ class createGAAppSteps {
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
     //do we want to use birmingham not barnet?
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
@@ -186,7 +187,7 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
@@ -274,7 +275,7 @@ class createGAAppSteps {
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
     //do we want to use birmingham not barnet?
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
@@ -366,7 +367,7 @@ class createGAAppSteps {
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
     //do we want to use birmingham not barnet?
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
