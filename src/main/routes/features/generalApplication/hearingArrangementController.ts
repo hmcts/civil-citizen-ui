@@ -20,7 +20,7 @@ const viewPath = 'features/generalApplication/hearing-arrangement';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const index  = queryParamNumber(req, 'index');
+  const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
   const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL),index);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
@@ -51,7 +51,7 @@ hearingArrangementController.post(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRe
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveHearingArrangement(redisKey, hearingArrangement);
-      const index  = queryParamNumber(req, 'index');
+      const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
       res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index));
     }
   } catch (error) {

@@ -55,8 +55,8 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
 wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const index  = queryParamNumber(req, 'index');
     const claim = await getClaimById(claimId, req, true);
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.wantToUploadDocuments));
     await renderView(form, claim, claimId, res, index);
   } catch (error) {
@@ -67,8 +67,9 @@ wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req
 wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const index  = queryParamNumber(req, 'index');
+
     const claim = await getClaimById(claimId, req, true);
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const redisKey = generateRedisKey(req);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION'));
     await form.validate();

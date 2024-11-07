@@ -38,7 +38,7 @@ claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, claimApplicati
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index');
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
     await renderView(form, claim, claimId, res, index);
   } catch (error) {
@@ -51,7 +51,7 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicat
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const index  = queryParamNumber(req, 'index');
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
     await form.validate();
 

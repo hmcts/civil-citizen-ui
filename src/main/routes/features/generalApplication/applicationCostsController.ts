@@ -25,7 +25,7 @@ const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, Applicati
 async function renderView(claim: Claim, req: AppRequest, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  const index  = queryParamNumber(req, 'index');
+  const index  = queryParamNumber(req, 'index') || applicationTypes.length - 1;
   const selectedAppType = applicationTypes[applicationTypes.length - 1]?.option;
   const applicationType = getApplicationTypeOptionByTypeAndDescription(selectedAppType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const gaFeeData = await gaApplicationFeeDetails(claim, req);
@@ -38,9 +38,6 @@ async function renderView(claim: Claim, req: AppRequest, res: Response): Promise
 applicationCostsController.get(GA_APPLICATION_COSTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const index  = queryParamNumber(req, 'index');
-    console.log(index);
-
     const claim = await getClaimById(claimId, req, true);
     await renderView(claim, req, res);
   } catch (error) {
