@@ -260,7 +260,7 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     ),
     gaRespondentDebtorOffer: {
       respondentDebtorOffer: toCcdDebtorOfferOptions(acceptDefendantOffer?.option),
-      debtorObjections: acceptDefendantOffer?.reasonProposedInstalment,
+      debtorObjections: acceptDefendantOffer?.reasonProposedInstalment ? acceptDefendantOffer?.reasonProposedInstalment : acceptDefendantOffer?.reasonProposedSetDate,
       paymentPlan: toCcdPaymentPlan(acceptDefendantOffer?.type),
       monthlyInstalment: convertToPenceFromStringToString(acceptDefendantOffer?.amountPerMonth),
       paymentSetDate: acceptDefendantOffer?.proposedSetDate,
