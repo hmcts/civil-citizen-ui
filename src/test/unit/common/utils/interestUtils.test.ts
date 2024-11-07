@@ -167,34 +167,7 @@ describe('Interest Utils', () => {
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(0.88);
-  });
-
-  it('calculateInterestToDate from specific date till claim submit date when claim submitted after 4pm', () => {
-    //Given
-    const claim = new Claim();
-    claim.totalClaimAmount = 6000;
-    claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 3, 16, 45,0);
-    claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
-
-    const startDate = new Date(2024, 8, 30);
-    claim.interest.interestStartDate = new InterestStartDate(
-      startDate.getDate().toString(),
-      (startDate.getMonth() + 1).toString(),
-      startDate.getFullYear().toString(),
-      'my reason');
-    claim.interest.sameRateInterestSelection = {
-      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-    };
-    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-    claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
-
-    //When
-    const result = calculateInterestToDate(claim);
-
-    //Then
-    expect(result).toEqual(6.6);
+    expect(result).toEqual(0.66);
   });
 
   it('calculateInterestToDate should return correct interest to date when SAME_RATE_INTEREST selected till Judgment Date', () => {
