@@ -32,7 +32,7 @@ unavailableHearingDatesController.get(GA_UNAVAILABLE_HEARING_DATES_URL, (async (
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
     const unavailableDates = claim.generalApplication?.unavailableDatesHearing || new UnavailableDatesGaHearing();
     const form = new GenericForm(unavailableDates);
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -49,7 +49,7 @@ unavailableHearingDatesController.post(GA_UNAVAILABLE_HEARING_DATES_URL, (async 
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
     const unavailableDatesForHearing = getUnavailableDatesForHearingForm(req.body);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(unavailableDatesForHearing);
