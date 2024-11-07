@@ -12,6 +12,7 @@ const defaultSauceOptions = {
   pageLoadStrategy: 'normal',
   idleTimeout: 700,
   tags: ['Civil CUI'],
+  maxDuration: 3600,
 };
 
 function merge(intoObject, fromObject) {
