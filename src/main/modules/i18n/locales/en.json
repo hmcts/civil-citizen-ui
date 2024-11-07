@@ -460,19 +460,33 @@
   "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
     "TITLE": "What are Fixed Recoverable Costs?",
     "PARA_1":  "Most civil money claims valued up to and including £100,000 are subject to the Fixed Recoverable Costs Regime (FRCs).",
-    "PARA_2":  "FRCs set limits on the amount of legal costs the successful parties can claim back from unsuccessful parties.",
+    "PARA_2_1":  "What are FRCs?",
+    "PARA_2":  "FRCs set limits on the amount of legal costs the successful parties can claim back from the unsuccessful parties.",
     "PARA_3":  "They provide certainty to all parties involved by setting in advance the maximum amount of costs the losing party will have to pay.",
     "URL": {
-      "BEFORE": "For more information on limits for FRCs see ",
-      "TEXT": "Table 14 (opens in a new tab)",
+      "BEFORE": "See Table 14 in the Civil Procedure Rules for ",
+      "TEXT": "more information on limits for FRCs (opens in new tab)",
       "AFTER": "."
     },
-    "PARA_4": "All claims subject to FRCs need to be assigned to a complexity ban from 1 to 4.",
-    "PARA_5": "Band 1 is for the least complex claims where only one issue is in dispute. For example, claims where either the amount of money being claimed or liability (legal responsibility) is in dispute.",
-    "PARA_6": "Band 2 is for most other claims where more than one issue is in dispute. For example, the amount of money being claimed and liability is in dispute.",
-    "PARA_7": "Band 3 is for more complex claims where more than one issue is in dispute. For example, noise induced hearing loss or employer liability for diseases.",
-    "PARA_8": "Band 4 is for the most complex cases with serious issues around the facts of law.",
-    "PARA_9": "You may agree the complexity banding with the other parties beforehand or say which band you think this claim falls into.",
+    "PARA_4_1": "What are complexity bands?",
+    "PARA_4": "All claims subject to FRCs need to be assigned to a complexity band from 1 to 4.",
+    "PARA_5": "Band 1 is for:",
+    "PARA_5_1": "the least complex claims",
+    "PARA_5_2": "claims where only one issue is in dispute",
+    "PARA_5_3": "For example, claims where either the amount of money being claimed, or liability (legal responsibility) is in dispute.",
+    "PARA_6": "Band 2 is for:",
+    "PARA_6_1": "most other claims",
+    "PARA_6_2": "where more than one issue is in dispute",
+    "PARA_6_3": "For example, the amount of money being claimed, and liability is in dispute.",
+    "PARA_7": "Band 3 is for:",
+    "PARA_7_1": "more complex claims",
+    "PARA_7_2": "more than one issue is in dispute",
+    "PARA_7_3": "For example, noise induced hearing loss or employer liability for diseases.",
+    "PARA_8": "Band 4 is for:",
+    "PARA_8_1": "the most complex cases",
+    "PARA_8_2": "serious issues around the facts of law",
+    "PARA_9": "How is the complexity band decided?",
+    "PARA_9_1": "You may agree the complexity band with the other parties beforehand or say which band you think this claim falls into.",
     "PARA_10": "However, if the Court disagrees, it has the power to assign a claim to whatever band it feels is appropriate."
   },
   "WHICH_COMPLEXITY_BAND_TO_CHOOSE": {
@@ -3073,6 +3087,7 @@
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
       "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CHECK_YOUR_ANSWER": "Check your answers",
         "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
         "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
@@ -3080,7 +3095,8 @@
         "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
         "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
         "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
-        "PAGE_TITLE": "Upload additional documents"
+        "PAGE_TITLE": "Upload additional documents",
+        "UPLOADED_FILES": "Uploaded files"
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
@@ -3255,7 +3271,8 @@
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
           "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
           "TITLE": "Response from the other parties",
-          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing",
+          "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
@@ -5233,6 +5250,7 @@
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "APPLY_HELP_WITH_FEES": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
@@ -5251,6 +5269,7 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
+      "UPLOAD_FILE_MESSAGE_V2": "You need to choose a file before clicking 'Upload file'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
