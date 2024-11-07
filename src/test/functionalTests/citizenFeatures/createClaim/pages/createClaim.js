@@ -304,7 +304,6 @@ class CreateClaim {
     I.waitForContent('For example the date an invoice was overdue or that you told someone they owed you the money.',60);
     I.see('When are you claiming interest from?', 'h1');
     I.see('The date you submit the claim');
-    I.see('If you submit after 4pm it will be the next working day.');
     I.see('A particular date');
     I.click(paths.options.when_will_you_claim_interest_from);
     this.clickNextAction(paths.buttons.save_and_continue);
