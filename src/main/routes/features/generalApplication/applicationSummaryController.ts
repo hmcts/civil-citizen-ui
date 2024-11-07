@@ -15,6 +15,7 @@ import { getClaimById } from 'modules/utilityService';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -36,11 +37,12 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     for (const application of applications) {
       const index = applications.indexOf(application);
       const status = getApplicationStatus(application.state);
+      const type = displayToEnumKey(application.case_data?.applicationTypes);
       applicationsRows.push({
         state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
         status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
         statusColor: StatusColor[status],
-        types: application.case_data?.applicationTypes,
+        types: t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${type}`, {lng}),
         id: application.id,
         createdDate: dateTimeFormat(getApplicationCreatedDate(ccdClaim, application.id), lng),
         applicationUrl: getViewApplicationUrl(claimId, claim, application,index),
