@@ -15,7 +15,7 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('Create Claim @crossbrowser', async ({api}) => {
+Scenario('Create Claim', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -34,7 +34,7 @@ Scenario('Create Claim @crossbrowser', async ({api}) => {
   let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('The value of the Claim Number :' + claimNumber);
   console.log('The value of the Security Code :' + securityCode);
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1).tag('@regression-cui-r2').tag('@crossbrowser');
 
 Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);
