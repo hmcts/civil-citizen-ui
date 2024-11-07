@@ -71,6 +71,16 @@ export const saveApplicationType = async (claimId: string, claim: Claim, applica
   }
 };
 
+export const removeAllOtherApplications = async (claimId: string, claim: Claim): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication.applicationTypes.slice(1));
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const saveInformOtherParties = async (redisKey: string, informOtherParties: InformOtherParties): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey);

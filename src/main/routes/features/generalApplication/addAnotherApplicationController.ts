@@ -7,7 +7,10 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
-import {getByIndexOrLast, getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getByIndexOrLast,
+  getCancelUrl, removeAllOtherApplications,
+} from 'services/features/generalApplication/generalApplicationService';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
@@ -52,19 +55,27 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      const index  = queryParamNumber(req, 'index');
-      res.redirect(getRedirectUrl(req.params.id, req.body.option, index));
+      const redisKey = generateRedisKey(req);
+      const claim = await getClaimById(redisKey, req, true);
+
+      const claimId = req.params.id;
+      if (req.body.option === YesNo.YES) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp);
+      } else {
+        let index = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+        //todo add if with changeScreen
+        if (req.query['changeScreen'] === 'true'){
+          await removeAllOtherApplications(redisKey, claim);
+          index = claim.generalApplication.applicationTypes.length - 1;
+        }
+        res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL), index));
+      }
     }
 
   } catch (error) {
     next(error);
   }
 });
-
-function getRedirectUrl(claimId: string, option: YesNo, index: number): string {
-  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp :
-    constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL), index);
-}
 
 function getBackLinkUrl(claimId: string, index: number) : string {
   const indexParam = `?index=${index}`;
