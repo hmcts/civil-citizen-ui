@@ -1,5 +1,4 @@
 import {YesNo} from 'common/form/models/yesNo';
-import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
