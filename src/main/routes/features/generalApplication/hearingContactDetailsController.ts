@@ -11,7 +11,8 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const hearingContactDetailsController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
@@ -47,7 +48,8 @@ hearingContactDetailsController.post(GA_HEARING_CONTACT_DETAILS_URL, (async (req
       await renderView(claimId, claim, form, res);
     } else {
       await saveHearingContactDetails(redisKey, hearingContactDetails);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL));
+      const index  = queryParamNumber(req, 'index');
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), index));
     }
   } catch (error) {
     next(error);

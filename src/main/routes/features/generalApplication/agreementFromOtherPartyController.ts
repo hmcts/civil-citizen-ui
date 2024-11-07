@@ -10,12 +10,13 @@ import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
@@ -59,7 +60,8 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
       await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL));
+      const applicationIndex = queryParamNumber(req, 'index');
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL), applicationIndex));
     }
   } catch (error) {
     next(error);
@@ -67,7 +69,8 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
 }) as RequestHandler);
 
 function getBackLinkUrl(req: AppRequest) : string {
-  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL) + '?index=0';
+  const applicationIndex = queryParamNumber(req, 'index');
+  return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL), applicationIndex);
 }
 
 export default agreementFromOtherPartyController;

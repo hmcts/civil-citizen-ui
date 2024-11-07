@@ -19,9 +19,10 @@ import {
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {removeAllUploadedDocuments} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const wantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/want-to-upload-documents';
@@ -73,12 +74,13 @@ wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (re
     if (form.hasErrors()) {
       await renderView(form, claim, claimId, res);
     } else {
+      const index  = queryParamNumber(req, 'index');
       let redirectUrl;
       if (req.body.option == YesNo.YES) {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
+        redirectUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL), index);
       } else if (req.body.option == YesNo.NO) {
         await removeAllUploadedDocuments(redisKey, claim);
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
+        redirectUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL), index);
       }
       await saveIfPartyWantsToUploadDoc(redisKey, req.body.option);
       res.redirect(redirectUrl);

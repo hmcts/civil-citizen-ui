@@ -17,7 +17,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 import {queryParamNumber} from 'common/utils/requestUtils';
 
@@ -28,7 +28,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const claimId = req.params.id;
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
-  const applicationIndex = queryParamNumber(req, 'index') || 0;
+  const applicationIndex = queryParamNumber(req, 'index');
   const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
@@ -52,7 +52,8 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      res.redirect(getRedirectUrl(req.params.id, req.body.option));
+      const index  = queryParamNumber(req, 'index');
+      res.redirect(getRedirectUrl(req.params.id, req.body.option, index));
     }
 
   } catch (error) {
@@ -60,9 +61,9 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
   }
 });
 
-function getRedirectUrl(claimId: string, option: YesNo): string {
+function getRedirectUrl(claimId: string, option: YesNo, index: number): string {
   return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp :
-    constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
+    constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL), index);
 }
 
 function getBackLinkUrl(claimId: string, index: number) : string {

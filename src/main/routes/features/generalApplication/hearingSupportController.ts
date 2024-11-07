@@ -8,7 +8,8 @@ import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const hearingSupportController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
@@ -52,7 +53,8 @@ hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | 
       await renderView(claimId, claim, form, res, lng);
     } else {
       await saveHearingSupport(redisKey, hearingSupport);
-      res.redirect(constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL));
+      const index  = queryParamNumber(req, 'index');
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL), index));
     }
   } catch (error) {
     next(error);

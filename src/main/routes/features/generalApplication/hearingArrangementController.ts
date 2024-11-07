@@ -12,7 +12,8 @@ import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const hearingArrangementController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
@@ -49,7 +50,8 @@ hearingArrangementController.post(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRe
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveHearingArrangement(redisKey, hearingArrangement);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL));
+      const index  = queryParamNumber(req, 'index');
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index));
     }
   } catch (error) {
     next(error);

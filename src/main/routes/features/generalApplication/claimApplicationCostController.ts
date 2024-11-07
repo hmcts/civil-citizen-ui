@@ -11,12 +11,13 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getCancelUrl, getLast, saveApplicationCosts} from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {claimApplicationCostGuard} from 'routes/guards/generalApplication/claimApplicationCostGuard';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
@@ -56,7 +57,8 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicat
       await renderView(form, claim, claimId, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-      res.redirect(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL));
+      const index  = queryParamNumber(req, 'index');
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index));
     }
   } catch (error) {
     next(error);

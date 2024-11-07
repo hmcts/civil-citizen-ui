@@ -14,7 +14,8 @@ import {
 import {
   getUnavailableDatesForHearingForm,
 } from 'services/features/generalApplication/unavailableHearingDatesService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {queryParamNumber} from "common/utils/requestUtils";
 
 const unavailableHearingDatesController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
@@ -63,7 +64,8 @@ unavailableHearingDatesController.post(GA_UNAVAILABLE_HEARING_DATES_URL, (async 
         await renderView(claimId, claim, form, res, cancelUrl, lng);
       } else {
         await saveUnavailableDates(redisKey, claim, unavailableDatesForHearing);
-        res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL));
+        const index  = queryParamNumber(req, 'index');
+        res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), index));
       }
     }
   } catch (error) {

@@ -9,10 +9,11 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {YesNo} from 'form/models/yesNo';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import { getDynamicHeaderForMultipleApplications } from 'services/features/generalApplication/generalApplicationService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const hearingArrangementsGuidanceController = Router();
 const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
@@ -22,7 +23,8 @@ hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, 
   const claim = await getClaimById(claimId, req, true);
   const backLinkUrl = getBackLinkUrl(claim, claimId);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
-  const nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL);
+  const index  = queryParamNumber(req, 'index');
+  const nextPageUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), index);
   const cancelUrl = await getCancelUrl(claimId, claim);
   try {
     res.render(viewPath, {claimId: req.params.id, headerTitle, backLinkUrl, nextPageUrl, cancelUrl});
