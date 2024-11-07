@@ -333,7 +333,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
   return rows;
 };
 
-function getEvidencePaymentOption(evidenceOption: string) : string {
+export function getEvidencePaymentOption(evidenceOption: string) : string {
   switch(evidenceOption) {
     case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
       return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL';
