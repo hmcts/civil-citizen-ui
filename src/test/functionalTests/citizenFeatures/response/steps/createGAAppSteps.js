@@ -19,6 +19,7 @@ const PayingForApplication = require('../../GA/pages/payingForApplication');
 const CheckAndSend= require('../../GA/pages/checkAndSend');
 const SubmitGAConfirmation = require('../../GA/pages/submitGAConfirmation');
 const ApplyHelpFeeSelection = require('../../GA/pages/applyHelpFeeSelection');
+const PaymentConfirmation = require('../../GA/pages/paymentGAConfirmation');
 const config = require('../../../../config.js');
 const govPay = new GovPay();
 
@@ -41,6 +42,7 @@ const payingForApplicationPage = new PayingForApplication();
 const checkAndSendPage = new CheckAndSend();
 const submitGAConfirmationPage = new SubmitGAConfirmation();
 const applyHelpFeeSelectionPage = new ApplyHelpFeeSelection();
+const paymentConfirmationPage = new PaymentConfirmation();
 
 class createGAAppSteps {
 
@@ -134,6 +136,9 @@ class createGAAppSteps {
     //fee amount
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
   async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
@@ -218,6 +223,9 @@ class createGAAppSteps {
 
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
   async askToChangeHearingDateGA(caseRef, parties, informOtherParty = false) {
@@ -309,6 +317,9 @@ class createGAAppSteps {
     //fee amount
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
   async askForReliefFromAPenaltyGA(caseRef, parties, informOtherParty = false) {
@@ -401,6 +412,9 @@ class createGAAppSteps {
     //fee amount
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 }
 
