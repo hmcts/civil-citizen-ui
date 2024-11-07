@@ -234,7 +234,7 @@ class CreateClaim {
 
   async verifyAndInputPhoneNumber() {
     I.waitForContent('We\'ll also give your number to the person, business, or organisation you are claiming from.', 60);
-    I.see('Enter a phone number (optional)', 'h1');
+    I.see('Enter a phone number', 'h1');
     I.see('We might need to speak to you about this claim.');
     I.see('We’ll only call on weekdays between 9am and 5pm.');
     I.fillField(paths.fields.telephone_number, '07818731017');
