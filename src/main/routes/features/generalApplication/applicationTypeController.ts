@@ -29,11 +29,10 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const linkFrom = req.query.linkFrom;
-    let applicationIndex = queryParamNumber(req, 'index');
+    const applicationIndex = queryParamNumber(req, 'index');
 
     if (linkFrom === LinKFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
-      applicationIndex = 0;
     }
 
     const claimId = req.params.id;
