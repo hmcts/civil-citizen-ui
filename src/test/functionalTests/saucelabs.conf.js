@@ -38,7 +38,7 @@ function getBrowserConfig(browserGroup) {
 }
 
 const setupConfig = {
-  tests: '../functionalTests/tests/common/**/*.js',
+  tests: '../functionalTests/tests/prod/**/*.js',
   output: `${process.cwd()}/${testConfig.TestOutputDir}`,
   helpers: {
     WebDriver: {
