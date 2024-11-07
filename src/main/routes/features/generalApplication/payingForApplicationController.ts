@@ -6,7 +6,7 @@ import {getCancelUrl, getDynamicHeaderForMultipleApplications} from 'services/fe
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
-import {queryParamNumber} from "common/utils/requestUtils";
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const payingForApplicationController = Router();
 const viewPath = 'features/generalApplication/paying-for-application';

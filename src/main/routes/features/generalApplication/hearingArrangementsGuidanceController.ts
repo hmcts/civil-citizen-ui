@@ -21,9 +21,10 @@ const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
 hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
-  const backLinkUrl = getBackLinkUrl(claim, claimId);
-  const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   const index  = queryParamNumber(req, 'index');
+  const backLinkUrl = getBackLinkUrl(claim, claimId, index);
+  const headerTitle = getDynamicHeaderForMultipleApplications(claim);
+
   const nextPageUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), index);
   const cancelUrl = await getCancelUrl(claimId, claim);
   try {
@@ -33,10 +34,10 @@ hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, 
   }
 }) as RequestHandler);
 
-function getBackLinkUrl(claim: Claim, claimId: string) : string {
+function getBackLinkUrl(claim: Claim, claimId: string, index: number) : string {
   return (claim?.generalApplication?.wantToUploadDocuments === YesNo.YES)
-    ? constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL)
-    : constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
+    ? constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL), index)
+    : constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL), index);
 }
 
 export default hearingArrangementsGuidanceController;

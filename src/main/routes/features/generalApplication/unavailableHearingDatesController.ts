@@ -15,13 +15,13 @@ import {
   getUnavailableDatesForHearingForm,
 } from 'services/features/generalApplication/unavailableHearingDatesService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import {queryParamNumber} from "common/utils/requestUtils";
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const unavailableHearingDatesController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, res: Response, cancelUrl: string, lng: string): Promise<void> {
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL);
+async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, res: Response, cancelUrl: string, lng: string, index: number): Promise<void> {
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index);
   res.render(viewPath, { form, cancelUrl, backLinkUrl,
     headerTitle: getDynamicHeaderForMultipleApplications(claim),
     headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', {lng}) });
@@ -32,10 +32,11 @@ unavailableHearingDatesController.get(GA_UNAVAILABLE_HEARING_DATES_URL, (async (
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const index  = queryParamNumber(req, 'index');
     const unavailableDates = claim.generalApplication?.unavailableDatesHearing || new UnavailableDatesGaHearing();
     const form = new GenericForm(unavailableDates);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    await renderView(claimId, claim, form, res, cancelUrl, lng);
+    await renderView(claimId, claim, form, res, cancelUrl, lng, index);
   } catch (error) {
     next(error);
   }
@@ -48,23 +49,24 @@ unavailableHearingDatesController.post(GA_UNAVAILABLE_HEARING_DATES_URL, (async 
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
+    const index  = queryParamNumber(req, 'index');
     const unavailableDatesForHearing = getUnavailableDatesForHearingForm(req.body);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(unavailableDatesForHearing);
     if (action === 'add_another-unavailableDates') {
       unavailableDatesForHearing.items.push(new UnavailableDatePeriodGaHearing());
-      await renderView(claimId, claim, form, res, cancelUrl, lng);
+      await renderView(claimId, claim, form, res, cancelUrl, lng, index);
     } else if (action?.startsWith('remove-unavailableDates')) {
       const index = action.substring('remove-unavailableDates'.length);
       unavailableDatesForHearing.items.splice(Number(index), 1);
-      await renderView(claimId, claim, form, res, cancelUrl, lng);
+      await renderView(claimId, claim, form, res, cancelUrl, lng, index);
     } else {
       await form.validate();
       if (form.hasErrors()) {
-        await renderView(claimId, claim, form, res, cancelUrl, lng);
+        await renderView(claimId, claim, form, res, cancelUrl, lng, index);
       } else {
         await saveUnavailableDates(redisKey, claim, unavailableDatesForHearing);
-        const index  = queryParamNumber(req, 'index');
+
         res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), index));
       }
     }

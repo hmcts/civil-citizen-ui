@@ -21,7 +21,8 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL);
+  const index  = queryParamNumber(req, 'index');
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), index);
   if (!form) {
     form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
   }

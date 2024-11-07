@@ -13,15 +13,16 @@ import {Claim} from 'models/claim';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import {queryParamNumber} from "common/utils/requestUtils";
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const hearingArrangementController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
+  const index  = queryParamNumber(req, 'index');
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL),index);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, courtLocations });
 }

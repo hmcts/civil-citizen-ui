@@ -17,15 +17,15 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
-import {queryParamNumber} from "common/utils/requestUtils";
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
 
-async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
+async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response, index: number): Promise<void> {
   const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), index);
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -38,8 +38,9 @@ claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, claimApplicati
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const index  = queryParamNumber(req, 'index');
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
-    await renderView(form, claim, claimId, res);
+    await renderView(form, claim, claimId, res, index);
   } catch (error) {
     next(error);
   }
@@ -50,14 +51,15 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicat
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
+    const index  = queryParamNumber(req, 'index');
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
     await form.validate();
 
     if (form.hasErrors()) {
-      await renderView(form, claim, claimId, res);
+      await renderView(form, claim, claimId, res, index);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-      const index  = queryParamNumber(req, 'index');
+
       res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index));
     }
   } catch (error) {
