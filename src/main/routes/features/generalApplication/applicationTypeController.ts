@@ -29,7 +29,7 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const linkFrom = req.query.linkFrom;
-    let applicationIndex = queryParamNumber(req, 'index') || 0;
+    let applicationIndex = queryParamNumber(req, 'index');
 
     if (linkFrom === LinKFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
@@ -38,10 +38,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    if (linkFrom === LinKFromValues.addAnotherApp) {
-      const lastIndex = claim.generalApplication.applicationTypes.length - 1;
-      applicationIndex = lastIndex + 1;
-    }
+
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
@@ -67,7 +64,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
 
-    const applicationIndex = queryParamNumber(req, 'index') || 0;
+    let applicationIndex = queryParamNumber(req, 'index');
+
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
@@ -86,6 +84,10 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
+
+      if(!applicationIndex) {
+        applicationIndex = claim.generalApplication.applicationTypes.length - 1;
+      }
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {

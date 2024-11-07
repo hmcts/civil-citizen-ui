@@ -20,7 +20,6 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {Claim} from 'models/claim';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
@@ -53,9 +52,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      const redisKey = generateRedisKey(req);
-      const claim = await getClaimById(redisKey, req, true);
-      res.redirect(getRedirectUrl(req.params.id, req.body.option, claim));
+      res.redirect(getRedirectUrl(req.params.id, req.body.option));
     }
 
   } catch (error) {
@@ -63,9 +60,8 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
   }
 });
 
-function getRedirectUrl(claimId: string, option: YesNo, claim: Claim): string {
-  const applicationTypesLength = claim.generalApplication?.applicationTypes?.length;
-  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp + `?index=${applicationTypesLength}` :
+function getRedirectUrl(claimId: string, option: YesNo): string {
+  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp :
     constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
 }
 
