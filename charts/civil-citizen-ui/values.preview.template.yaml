@@ -1,7 +1,14 @@
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
-  memoryLimits: 768Mi
+  memoryRequests: 4Gi
+  cpuRequests: 4000m
+  memoryLimits: 4Gi
+  cpuLimits: 3500m
+  devmemoryRequests: 8Gi
+  devcpuRequests: 4000m
+  devmemoryLimits: 8Gi
+  devcpuLimits: 4500m
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil-cui:
@@ -174,6 +181,9 @@ ccd:
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
+      devcpuRequests: 1000m
+      devmemoryRequests: 2048Mi
+      devmemoryLimits: 4096Mi
       releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
