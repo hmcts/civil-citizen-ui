@@ -3284,6 +3284,8 @@
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
+          "AWAITING_JUDICIAL_DECISION": "Application submitted - awaiting judicial decision",
+          "AWAITING_APP_PAYMENT": "Pay application fee",
           "TITLE": "Status"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",

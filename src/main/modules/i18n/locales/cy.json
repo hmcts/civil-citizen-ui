@@ -3284,6 +3284,8 @@
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
           "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "AWAITING_JUDICIAL_DECISION": "Cais wedi’i gyflwyno - Aros am benderfyniad barnwrol",
+          "AWAITING_APP_PAYMENT": "Talu’r ffi gwneud cais",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",

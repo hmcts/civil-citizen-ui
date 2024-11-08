@@ -16,6 +16,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -24,9 +25,21 @@ export const addApplicationStatus = (
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
 
-  if (application.state) {
+  if (application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT', {lng})),
+    );
+  } else if (application.state === ApplicationState.AWAITING_RESPONDENT_RESPONSE){
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE', {lng})),
+    );
+  } else if (application.state === ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION', {lng})),
+    );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), application.state),
     );
   }
   return rows;
