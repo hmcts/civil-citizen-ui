@@ -64,7 +64,7 @@ import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {OrderJudge} from "models/generalApplication/orderJudge";
+import {OrderJudge} from 'models/generalApplication/orderJudge';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
