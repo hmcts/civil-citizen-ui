@@ -73,7 +73,9 @@ export const saveApplicationType = async (claimId: string, claim: Claim, applica
 
 export const removeAllOtherApplications = async (claimId: string, claim: Claim): Promise<void> => {
   try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication.applicationTypes.slice(1));
+    claim.generalApplication.applicationTypes = [claim.generalApplication.applicationTypes[0]];
+    claim.generalApplication.orderJudges = [claim.generalApplication.orderJudges[0]];
+    claim.generalApplication.requestingReasons = [claim.generalApplication.requestingReasons[0]];
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
