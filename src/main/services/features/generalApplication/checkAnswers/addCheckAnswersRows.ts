@@ -246,13 +246,13 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
       supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.signLanguageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.signLanguageInterpreter.content}'</li>`;
     }
     if (claim.generalApplication.hearingSupport.languageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.languageInterpreter.content}'</li>`;
     }
     if (claim.generalApplication.hearingSupport.otherSupport?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${claim.generalApplication.hearingSupport.otherSupport.content}'</li>`;
     }
     supportHtml += '</ul>';
     rows.push(
@@ -323,7 +323,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
   return rows;
 };
 
-function getEvidencePaymentOption(evidenceOption: string) : string {
+export function getEvidencePaymentOption(evidenceOption: string) : string {
   switch(evidenceOption) {
     case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
       return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL';
