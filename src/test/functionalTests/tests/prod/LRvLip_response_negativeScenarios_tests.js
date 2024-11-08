@@ -30,7 +30,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Testing error messages @nightly', async () => {
+Scenario('Testing error messages @nightly @kiyron', async () => {
   //Respond To Claim in english or welsh error screen
   await ResponseSteps.RespondToClaimError(claimRef);
   await ResponseSteps.RespondToClaim(claimRef);
@@ -64,7 +64,7 @@ Scenario('Testing error messages @nightly', async () => {
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   await ResponseSteps.EnterHowMuchYouHavePaidError(claimRef, 500, partAdmit);
-});
+})
 
 Scenario('Personal detail error screen @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);

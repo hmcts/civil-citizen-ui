@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with AdmitAll and Date to PayOn @kiyron');
+Feature('Response with AdmitAll and Date to PayOn');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
