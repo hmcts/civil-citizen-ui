@@ -379,8 +379,7 @@ describe('dashboardService', () => {
         //Then
         expect(result).toBeUndefined();
       });
-
-
+      
       it('getContactCourtLink when Gaflag is not enable', async () => {
         //Given
         const claim = new Claim();
