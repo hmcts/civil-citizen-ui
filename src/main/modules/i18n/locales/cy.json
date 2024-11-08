@@ -2770,7 +2770,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Cyfeirnod yr hawliad: ",
-        "PREFERRED_LOCATION": "Lleoliad llys a ffafrir",
+        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
         "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig fesul mis",
         "PROPOSED_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_SET_DATE": "Taliad llawn arfaethedig erbyn dyddiad penodol",
@@ -3270,7 +3270,7 @@
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
