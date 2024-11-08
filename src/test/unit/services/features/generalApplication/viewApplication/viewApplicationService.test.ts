@@ -657,10 +657,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE'},
+      });
     });
 
     it('view application content test for applicant - Awaiting judicial decision', async () => {
@@ -671,10 +671,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION'},
+      });
     });
 
     it('view application content test for applicant - Awaiting respondent response', async () => {
@@ -685,10 +685,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.LISTED_FOR_HEARING']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.LISTED_FOR_HEARING'},
+      });
     });
 
     it('view application content test for applicant - Hearing Scheduled', async () => {
@@ -699,10 +699,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.HEARING_SCHEDULED']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.HEARING_SCHEDULED'},
+      });
     });
 
     it('view application content test for applicant - Awaiting Written rep', async () => {
@@ -713,10 +713,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_WRITTEN_REP']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_WRITTEN_REP'},
+      });
     });
 
     it('view application content test for applicant - Awaiting additional info', async () => {
@@ -727,10 +727,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_INFO']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_INFO'},
+      });
     });
 
     it('view application content test for applicant - Awaiting Direction order Docs', async () => {
@@ -741,10 +741,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_DIRECTION_DOCS']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_DIRECTION_DOCS'},
+      });
     });
 
     it('view application content test for applicant - Order Made', async () => {
@@ -755,10 +755,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ORDER_MADE']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ORDER_MADE'},
+      });
     });
 
     it('view application content test for applicant - Application Dismissed', async () => {
@@ -769,10 +769,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_DISMISSED']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_DISMISSED'},
+      });
     });
 
     it('view application content test for applicant - Application Closed', async () => {
@@ -783,10 +783,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_CLOSED']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_CLOSED'},
+      });
     });
 
     it('view application content test for applicant - Proceeds in Heritage', async () => {
@@ -797,10 +797,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.PROCEEDS_IN_HERITAGE']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.PROCEEDS_IN_HERITAGE'},
+      });
     });
 
     it('view application content test for applicant - Awaiting additional payment', async () => {
@@ -811,10 +811,10 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-
-      expect(result.map(({key, value}) => [key.text, value.html])).toContainEqual(
-        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT']);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE'},
+        value: { html: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT'},
+      });
     });
   });
 });
