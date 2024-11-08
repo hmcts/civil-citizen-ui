@@ -4,6 +4,8 @@ import {
   addApplicationTypesRows,
   addAnotherApplicationRow,
   addDocumentUploadRow,
+  addEvidenceOfDebtPaymentRow,
+  addFinalPaymentDateDetails,
   addHearingArrangementsRows,
   addHearingContactDetailsRows,
   addHearingSupportRows,
@@ -30,6 +32,7 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
 
 export type ViewApplicationSummaries = {
   summaryRows: SummaryRow[],
@@ -37,6 +40,14 @@ export type ViewApplicationSummaries = {
 }
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
+  if (displayToEnumKey(application.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID') {
+    return [
+      ...addApplicationStatus(application, lang),
+      ...addApplicationTypesRows(application, lang),
+      ...addFinalPaymentDateDetails(application, lang),
+      ...addEvidenceOfDebtPaymentRow(application, lang),
+    ];
+  }
   return [
     ...addApplicationStatus(application, lang),
     ...addApplicationTypesRows(application, lang),
