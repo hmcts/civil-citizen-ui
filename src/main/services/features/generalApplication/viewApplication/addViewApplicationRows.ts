@@ -117,6 +117,14 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng})),
     );
+    if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
+      rows.push(
+        summaryRow(
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
+          application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
+        ),
+      );
+    }
   }
   return rows;
 };
