@@ -4,7 +4,7 @@ import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
 import {toCCDSpecificCourtLocations} from 'services/translation/response/convertToCCDSpecificCourtLocations';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('translate Welsh Language requirement to CCD model', () => {
   const claim = new Claim();
@@ -34,7 +34,7 @@ describe('translate Welsh Language requirement to CCD model', () => {
 
   it('should return data when it exists and want hearing to be held in specific court ', () => {
     //given
-    const specificCourtLocation = new SpecificCourtLocation(YesNo.YES, 'location', 'reason');
+    const specificCourtLocation = new SpecificCourtLocation('location', 'reason');
 
     const expected: CCDSpecificCourtLocations = {
       requestHearingAtSpecificCourt: YesNoUpperCamelCase.YES,
@@ -56,7 +56,7 @@ describe('translate Welsh Language requirement to CCD model', () => {
 
   it('should return data when it exists and dont want hearing to be held in specific court ', () => {
     //given
-    const specificCourtLocation = new SpecificCourtLocation(YesNo.NO, '', '');
+    const specificCourtLocation = new SpecificCourtLocation( '', '');
 
     const expected: CCDSpecificCourtLocations = {
       requestHearingAtSpecificCourt: YesNoUpperCamelCase.NO,

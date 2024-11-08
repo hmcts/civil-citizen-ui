@@ -487,7 +487,7 @@ function getClaimantResponseDQ(claim: Claim): Claim {
       option: YesNo.NO,
       reasonForHearing: 'reasonForHearing',
     },
-    specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
+    specificCourtLocation: <SpecificCourtLocation>{},
   };
 
   claim.claimantResponse.directionQuestionnaire.experts = {
