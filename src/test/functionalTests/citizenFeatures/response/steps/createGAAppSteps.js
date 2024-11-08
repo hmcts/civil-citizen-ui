@@ -23,7 +23,6 @@ const PaymentConfirmation = require('../../GA/pages/paymentGAConfirmation');
 const config = require('../../../../config.js');
 const govPay = new GovPay();
 
-const feeAmountForAskingMoreTime = 119;
 const applicationTypePage = new ApplicationType();
 const agreementFromOtherPartyPage = new AgreementFromOtherParty();
 const informOtherPartiesPage = new InformOtherParties();
@@ -131,7 +130,7 @@ class createGAAppSteps {
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
+    await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
     await paymentConfirmationPage.verifyPageContent();
@@ -162,7 +161,7 @@ class createGAAppSteps {
       await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
 
-    await applicationCostsPage.verifyPageContent(applicationType);
+    await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
 
     await claimApplicationCostPage.verifyPageContent(applicationType);
@@ -210,7 +209,7 @@ class createGAAppSteps {
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
-    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
     I.wait(2);
@@ -219,7 +218,7 @@ class createGAAppSteps {
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
+    await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
     await paymentConfirmationPage.verifyPageContent();
@@ -251,7 +250,7 @@ class createGAAppSteps {
     }
 
     //verification page below needs specific application type details
-    await applicationCostsPage.verifyPageContent(applicationType);
+    await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
     
     await claimApplicationCostPage.verifyPageContent(applicationType);
@@ -301,7 +300,7 @@ class createGAAppSteps {
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
-    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
     I.wait(2);
@@ -310,7 +309,7 @@ class createGAAppSteps {
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
+    await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
     await paymentConfirmationPage.verifyPageContent();
@@ -343,7 +342,7 @@ class createGAAppSteps {
     }
 
     //verification page below needs specific application type details
-    await applicationCostsPage.verifyPageContent(applicationType);
+    await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
     
     await claimApplicationCostPage.verifyPageContent(applicationType);
@@ -394,7 +393,7 @@ class createGAAppSteps {
     await checkAndSendPage.nextAction('Submit');
 
     //fee amount
-    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
     I.wait(2);
@@ -403,7 +402,7 @@ class createGAAppSteps {
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
+    await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
     await paymentConfirmationPage.verifyPageContent();
