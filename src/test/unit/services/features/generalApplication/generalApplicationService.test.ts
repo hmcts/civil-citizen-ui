@@ -8,7 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl, isConfirmYouPaidCCJAppType,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -64,6 +64,7 @@ import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {OrderJudge} from "models/generalApplication/orderJudge";
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -618,6 +619,29 @@ describe('General Application service', () => {
     });
   });
 
+  describe('removeAllOtherApplications', () => {
+    it('should keep only the first element on applicationTypes', () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = Array.of(new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
+        new ApplicationType(ApplicationTypeOption.OTHER));
+      claim.generalApplication.orderJudges = Array.of(new OrderJudge('element1'), new OrderJudge('element2'));
+      claim.generalApplication.requestingReasons = Array.of(new RequestingReason('element1'), new RequestingReason('element2'));
+
+      removeAllOtherApplications('111', claim);
+
+      expect(claim.generalApplication.applicationTypes.length).toEqual(1);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+
+      expect(claim.generalApplication.orderJudges.length).toEqual(1);
+      expect(claim.generalApplication.orderJudges[0]).toEqual(new OrderJudge('element1'));
+
+      expect(claim.generalApplication.requestingReasons.length).toEqual(1);
+      expect(claim.generalApplication.requestingReasons[0]).toEqual(new RequestingReason('element1'));
+
+    });
+  });
+
   describe('getApplicationStatus', () => {
     it('should return IN_PROGRESS when APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', () => {
       //Given
@@ -964,6 +988,7 @@ describe('Should display sync warning', () => {
 });
 
 describe('Should get the application index', () => {
+
   it('should return index', async () => {
     const applicationResponse: ApplicationResponse = {
       case_data: {
