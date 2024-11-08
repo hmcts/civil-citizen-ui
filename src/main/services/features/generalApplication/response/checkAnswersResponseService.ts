@@ -1,5 +1,4 @@
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
+import {YesNo} from 'common/form/models/yesNo';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
@@ -16,7 +15,6 @@ import {
   GA_RESPONSE_HEARING_SUPPORT_URL,
   GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
 } from 'routes/urls';
-import { exhaustiveMatchingGuard } from 'services/genericService';
 
 export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
 
@@ -44,7 +42,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
     return [
       formattedRow('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
         acceptOffer?.option,
-        yesNoFormatter,
+        yesNoFormatter2,
         constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ACCEPT_DEFENDANT_OFFER_URL)),
       (acceptOffer?.option === YesNo.NO)
         ? row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
@@ -57,15 +55,15 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   const agreeToOrderSection = (): SummaryRow[] =>
     [formattedRow('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE',
       gaResponse?.agreeToOrder,
-      yesNoFormatter,
+      yesNoFormatter4,
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_AGREE_TO_ORDER_URL))];
 
   const respondentAgreementSection = (): SummaryRow[] =>
     [formattedRow('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
       gaResponse?.respondentAgreement,
       ra => (ra?.option === YesNo.YES)
-        ? yesNoFormatter(ra?.option as YesNo)
-        : `${yesNoFormatter(ra?.option as YesNo)}<br/>${ra?.reasonForDisagreement}`,
+        ? yesNoFormatter2(ra?.option as YesNo)
+        : `${yesNoFormatter2(ra?.option as YesNo)}<br/>${ra?.reasonForDisagreement}`,
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_AGREEMENT_URL))];
 
   const hearingArrangementSections = (): SummaryRow[] => {
@@ -93,14 +91,14 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       const href = `${constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)}`;
       let rowValue: string;
       if (wantToUploadDocuments === YesNo.YES) {
-        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
         rowValue += '<ul class="no-list-style">';
         gaResponse.uploadEvidenceDocuments.forEach(uploadGAFile => {
           rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
         });
         rowValue += '</ul>';
       } else {
-        rowValue = t('COMMON.VARIATION.NO', {lng});
+        rowValue = t('COMMON.VARIATION_2.NO', {lng});
       }
       rows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
@@ -142,36 +140,25 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   };
 
   const hearingSupportSection = (): SummaryRow[] => {
-
-    const getCaption = (supportType: SupportType): string => {
-      switch (supportType) {
-        case SupportType.HEARING_LOOP: return 'HEARING_LOOP';
-        case SupportType.LANGUAGE_INTERPRETER: return 'LANGUAGE_INTERPRETER';
-        case SupportType.OTHER_SUPPORT: return 'OTHER';
-        case SupportType.SIGN_LANGUAGE_INTERPRETER: return 'SIGN_LANGUAGE_INTERPRETER';
-        case SupportType.STEP_FREE_ACCESS: return 'STEP_FREE_ACCESS';
-        default: exhaustiveMatchingGuard(supportType);
-      }
-    };
-
     const hearingSupport = gaResponse?.hearingSupport;
-    if (hearingSupport) {
-      const selectedHtml = Object.keys(hearingSupport)
-        .filter((key: keyof HearingSupport) => !!hearingSupport[key].selected)
-        .map(key => listItemCaption(`PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.${getCaption(key as SupportType)}`))
-        .join('');
-      return selectedHtml
-        ? [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          `<ul class="no-list-style">${selectedHtml}</ul>`,
-          GA_RESPONSE_HEARING_SUPPORT_URL)]
-        : [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          YesNoUpperCamelCase.NO,
-          GA_RESPONSE_HEARING_SUPPORT_URL)];
-    } else {
-      return [];
-    }
+    if (!hearingSupport) return [];
+
+    const supportOptions = [
+      { selected: hearingSupport.stepFreeAccess?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS' },
+      { selected: hearingSupport.hearingLoop?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP' },
+      { selected: hearingSupport.signLanguageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', content: hearingSupport.signLanguageInterpreter?.content },
+      { selected: hearingSupport.languageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', content: hearingSupport.languageInterpreter?.content },
+      { selected: hearingSupport.otherSupport?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', content: hearingSupport.otherSupport?.content },
+    ];
+
+    const selectedHtml = supportOptions
+      .filter(option => option.selected)
+      .map(option => `<li>${t(option.text, { lng })}${option.content ? ` - '${option.content}'` : ''}</li>`)
+      .join('');
+    const noSupport = yesNoFormatter(YesNo.NO);
+    const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : noSupport;
+
+    return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', resultHtml, GA_RESPONSE_HEARING_SUPPORT_URL)];
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);
@@ -191,6 +178,10 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
     `<li${cssClass ? ` class="${cssClass}"` : ''}>${t(caption, {lng})}</li>`;
 
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
+
+  const yesNoFormatter2 = (yesNo: YesNo): string => t(`COMMON.VARIATION_2.${yesNo.toUpperCase()}`, {lng});
+
+  const yesNoFormatter4 = (yesNo: YesNo): string => t(`COMMON.VARIATION_4.${yesNo.toUpperCase()}`, {lng});
 
   return [
     agreeToOrderSection,
