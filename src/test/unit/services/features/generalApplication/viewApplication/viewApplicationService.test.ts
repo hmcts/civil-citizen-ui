@@ -33,7 +33,7 @@ import {CcdGAMakeWithNoticeDocument} from 'common/models/ccdGeneralApplication/c
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {ApplicationState} from "models/generalApplication/applicationSummary";
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
