@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "CIV-15115-show-translated-docs-on-exui"
+def camundaBranch = "master"
 def dmnBranch = "feature/civ_15215"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
