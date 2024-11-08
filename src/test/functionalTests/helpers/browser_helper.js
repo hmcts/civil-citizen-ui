@@ -58,7 +58,7 @@ module.exports = class BrowserHelpers extends Helper {
     try {
       if (this.isPlaywright()) {
         const context = await helper._getContext();
-        return await context.waitForSelector(`xpath=//*[contains(text(), '${content}')]`, { timeout: waitTimeout });
+        return await context.waitForVisible(`//*[contains(text(), ${content})]`, waitTimeout);
       } else if (this.isWebDriver()) {
         return await helper.waitForText(content, sec, 'body');
       } else {
