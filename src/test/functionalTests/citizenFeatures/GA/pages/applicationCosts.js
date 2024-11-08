@@ -13,11 +13,11 @@ class ApplicationCosts {
     I.click(nextAction);
   }
 
-  async verifyPageContent(applicationType) {
+  async verifyPageContent(applicationType, feeAmount) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails(applicationType);
-    await this.verifyPageText();
+    await this.verifyPageText(feeAmount);
     contactUs.verifyContactUs();
   }
 
@@ -30,8 +30,10 @@ class ApplicationCosts {
     I.see(applicationType, 'h1');
   }
 
-  async verifyPageText() {
-    //I.see('To apply to extend time, the application fee is £119. If you\'ll be selecting multiple applications, this fee may be reduced.');
+  async verifyPageText(feeAmount) {
+    //I.see(`To apply to extend time, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee may be reduced.`);
+    //Above text varies with application type,
+    I.see(`£${feeAmount}`);
     await I.see('This fee will need to be paid once you\'ve created the application. If you\'re eligible, you may be able to apply for help with fees.');
   }
 }

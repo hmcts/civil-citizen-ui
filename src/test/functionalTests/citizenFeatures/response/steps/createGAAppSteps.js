@@ -50,6 +50,7 @@ class createGAAppSteps {
     //Vary order
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Reconsider an order';
+    const feeAmount = '15';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -71,7 +72,7 @@ class createGAAppSteps {
     }
 
     //verification page below needs specific application type details
-    await applicationCostsPage.verifyPageContent(applicationType);
+    await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
     
     await claimApplicationCostPage.verifyPageContent(applicationType);
@@ -101,7 +102,6 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    //do we want to use birmingham not barnet?
     await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
@@ -115,25 +115,22 @@ class createGAAppSteps {
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
 
-    //fee amount needs parameterisation
-    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
     await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
-    //fee amount
-    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(5);
+    I.wait(2);
 
     await applyHelpFeeSelectionPage.verifyPageContent();
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    //fee amount
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
 
@@ -144,6 +141,7 @@ class createGAAppSteps {
   async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'More time to do what is required by a court order';
+    const feeAmount = '119';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -205,7 +203,7 @@ class createGAAppSteps {
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
 
-    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
     await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
@@ -215,7 +213,7 @@ class createGAAppSteps {
     await submitGAConfirmationPage.verifyPageContent();
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(5);
+    I.wait(2);
 
     await applyHelpFeeSelectionPage.verifyPageContent();
     await applyHelpFeeSelectionPage.nextAction('No');
@@ -231,6 +229,7 @@ class createGAAppSteps {
   async askToChangeHearingDateGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Change a hearing date';
+    const feeAmount = '119';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -282,7 +281,6 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    //do we want to use birmingham not barnet?
     await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
@@ -296,25 +294,22 @@ class createGAAppSteps {
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
 
-    //fee amount needs parameterisation
-    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
     await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
-    //fee amount
     await submitGAConfirmationPage.verifyPageContent();
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(5);
+    I.wait(2);
 
     await applyHelpFeeSelectionPage.verifyPageContent();
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    //fee amount
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
 
@@ -326,6 +321,7 @@ class createGAAppSteps {
     //Relief from sanctions
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Relief from a penalty you\'ve been given by the court';
+    const feeAmount = '119';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -377,7 +373,6 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    //do we want to use birmingham not barnet?
     await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
     await hearingArrangementPage.nextAction('Continue');
 
@@ -391,8 +386,7 @@ class createGAAppSteps {
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
 
-    //fee amount needs parameterisation
-    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
     await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
@@ -403,13 +397,12 @@ class createGAAppSteps {
     await submitGAConfirmationPage.verifyPageContent();
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(5);
+    I.wait(2);
 
     await applyHelpFeeSelectionPage.verifyPageContent();
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    //fee amount
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
 
