@@ -29,6 +29,7 @@ import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplicatio
 import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
+import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 
 export class ApplicationResponse {
   id: string;
@@ -86,6 +87,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   generalAppNotificationDeadlineDate?: string;
   generalAppRespondent1Representative?: string;
+  certOfSC?: CcdGeneralApplicationCertOfSC;
 }
 
 export interface JudicialRequestMoreInfo {
