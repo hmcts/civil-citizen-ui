@@ -1094,7 +1094,6 @@ describe('Should display sync warning', () => {
   });
 });
 
-
 describe('Should get the application index', () => {
 
   it('should return index', async () => {
