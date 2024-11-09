@@ -45,6 +45,7 @@ import {
   CertificateOfSatisfactionOrCancellation,
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
+import {Document} from 'models/document/document';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -77,7 +78,19 @@ export const translateDraftApplicationToCCD = (
     generalAppStatementOfTruth: toCCDStatementOfTruth(
       application.statementOfTruth,
     ),
+    generalAppN245FormUpload: toCCDDocument(application.uploadN245Form),
   };
+};
+
+const toCCDDocument = (uploadDocument: UploadGAFiles): Document => {
+  return uploadDocument
+    ? {
+      document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
+      document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
+      document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
+      category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
+    }
+    : undefined;
 };
 
 const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdGeneralApplicationTypes => {
