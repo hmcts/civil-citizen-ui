@@ -19,9 +19,9 @@ const frcBandAgreedController = Router();
 const frcBandAgreedViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/frc-band-agreed';
 const FRC_BAND_AGREED_PAGE = 'PAGES.FRC_BAND_AGREED.';
 
-function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, res: Response): void {
+function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, res: Response, lang: string): void {
   const form = subjectToFRC;
-  const whatAreFixedRecoverableCostsContent = getWhatAreFixedRecoverableCostsContent();
+  const whatAreFixedRecoverableCostsContent = getWhatAreFixedRecoverableCostsContent(lang);
   res.render(frcBandAgreedViewPath, {
     form,
     whatAreFixedRecoverableCostsContent,
@@ -34,11 +34,12 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
 
 frcBandAgreedController.get(FRC_BAND_AGREED_URL, (async (req, res, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const frcBandAgreed = directionQuestionnaire.fixedRecoverableCosts?.frcBandAgreed ?
       new GenericYesNo(directionQuestionnaire.fixedRecoverableCosts?.frcBandAgreed?.option) : new GenericYesNo();
-    renderView(new GenericForm(frcBandAgreed), claimId , res);
+    renderView(new GenericForm(frcBandAgreed), claimId , res, lang);
   } catch (error) {
     next(error);
   }
@@ -46,11 +47,12 @@ frcBandAgreedController.get(FRC_BAND_AGREED_URL, (async (req, res, next: NextFun
 
 frcBandAgreedController.post(FRC_BAND_AGREED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const frcBandAgreedForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.FRC_BAND_AGREED'));
     frcBandAgreedForm.validateSync();
     if (frcBandAgreedForm.hasErrors()) {
-      renderView(frcBandAgreedForm, claimId, res);
+      renderView(frcBandAgreedForm, claimId, res, lang);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
