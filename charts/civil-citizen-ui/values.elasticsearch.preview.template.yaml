@@ -187,7 +187,9 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 100m
+            cpu: 500m
+            memory: 2048Mi
+            
         initdb:
           scripts:
             init.sql: |
@@ -210,10 +212,9 @@ camunda-bpm:
   enabled: true
   java:
     disableKeyVaults: true
-    devcpuRequests: 500m
-    devmemoryRequests: 512Mi
-    devcpuLimits: 1
-    devmemoryLimits: 1Gi
+    devcpuRequests: 1000m
+    devmemoryRequests: 2048Mi
+    devmemoryLimits: 4096Mi
     releaseNameOverride: ${SERVICE_NAME}-camunda
     ingressHost: camunda-${SERVICE_FQDN}
     environment:
