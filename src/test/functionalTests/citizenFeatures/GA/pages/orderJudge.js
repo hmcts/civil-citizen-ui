@@ -56,7 +56,7 @@ class OrderJudge {
         I.see('A judge will consider your application and make an order');
         I.see('You should explain what penalty you\'re asking for relief from. For example, if you missed a deadline to provide documents to the court, or if the court made an order giving you a penalty.');
         I.see('You\'ll be able to explain your reasons on the next screen.');
-        I.see('The contents of this box will be seen by the other parties.');
+        I.see('The information you enter on this page will be seen by the other parties.');
         break;
     }
     I.see('Enter the order that you want the judge to make', 'h1');
