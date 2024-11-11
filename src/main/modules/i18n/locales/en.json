@@ -2767,7 +2767,7 @@
         "PREFERRED_TELEPHONE": "Preferred telephone number",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your application.",
-          "CHECKBOX": "I believe that the facts stated in this form are true.",
+          "CHECKBOX": "I believe that the facts stated in this application are true.",
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
         "TITLE": "Check your answers",
