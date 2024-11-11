@@ -114,6 +114,26 @@ class CreateGAApplication {
     I.fillField('#name', 'applicant');
     clickButton(buttonType.SUBMIT);
   }
+
+  submitConfirmation(claimId, fee) {
+    I.seeInCurrentUrl(`case/${claimId}/general-application/submit-general-application-confirmation`);
+    I.see('Application created', 'h1');
+    I.see(`Your application has been saved, but you need to pay the application fee of £${fee}`);
+    clickButton('Pay application fee');
+  }
+
+  selectFeeType(claimId) {
+    I.seeInCurrentUrl(`/case/${claimId}/general-application/apply-help-fee-selection`);
+    I.click('No');
+    clickButton('Continue');
+  }
+
+  verifyPaymentSuccessfullPage(claimId, AppId) {
+    I.seeInCurrentUrl(`/case/${claimId}/general-application/${AppId}/payment-successful`);
+    I.see('Your payment was\n' +
+      'successful');
+
+  }
 }
 
 module.exports = new CreateGAApplication();

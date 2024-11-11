@@ -8,7 +8,8 @@ Scenario('Claimant GA Application with vary order consent ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GA_FOR_LIPS', true);
-    const claimID = 1730984188221535
+    const claimID = 1730984188221535;
+    const appId = 1731322828021511;
     createGAApplication.start(claimID);
     createGAApplication.selectApplicationType('Ask the court to reconsider an order');
     createGAApplication.selectAgreementFromOtherParty('Yes');
@@ -25,5 +26,8 @@ Scenario('Claimant GA Application with vary order consent ', () => {
     createGAApplication.hearingSupport(claimID);
     createGAApplication.payYourApplicationFee(claimID, 14);
     createGAApplication.checkAndSend(claimID);
+    createGAApplication.submitConfirmation(claimID, 14);
+    createGAApplication.selectFeeType(claimID);
+    createGAApplication.verifyPaymentSuccessfullPage(claimID, appId);
   }
 })
