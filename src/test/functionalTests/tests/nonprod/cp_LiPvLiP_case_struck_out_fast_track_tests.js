@@ -11,6 +11,7 @@ let caseData, claimNumber, claimRef, taskListItem;
 
 Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track');
 
+
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
