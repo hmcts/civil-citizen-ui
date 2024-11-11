@@ -55,7 +55,7 @@ function setMockAdditionalDocuments() {
         'document_filename': '000MC039-settlement-agreement.pdf',
         'document_binary_url': 'http://dm-store:8080/documents/4feaa073-c310-4096-979d-cd5b12ebddf8/binary',
       },
-      'documentName': 'Test applicant',
+      'documentName': 'Supporting evidence',
       'createdDatetime':new Date('2024-08-01'),
     },
   },
@@ -346,7 +346,7 @@ describe('View Application service', () => {
       const result = getApplicantDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test applicant',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.SUPPORTING_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
