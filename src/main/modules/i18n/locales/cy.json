@@ -2784,7 +2784,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Cyfeirnod yr hawliad: ",
-        "PREFERRED_LOCATION": "Lleoliad llys a ffafrir",
+        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
         "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig fesul mis",
         "PROPOSED_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_SET_DATE": "Taliad llawn arfaethedig erbyn dyddiad penodol",
@@ -3010,7 +3010,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"Os byddwch yn dewis sawl cais, bydd yr ateb hwn yn berthnasol i bob un ohonynt.",
         "PAY_APPLICATION_FEE": "Bydd rhaid i chi dalu ffi i wneud cais",
         "RECONSIDER_ORDER": "ailystyried gorchymyn",
-        "SET_ASIDE_JUDGMENT": "roi dyfarniad o’r naill du (ei ddileu)",
+        "SET_ASIDE_JUDGMENT": "roi dyfarniad o'r naill du (ei ddileu)",
         "TITLE": "Cais gan y partïon eraill",
         "VARY_JUDGMENT": "amrywio dyfarniad"
       },
@@ -3131,6 +3131,11 @@
         "HEARING_TYPE": {
           "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
           "TELEPHONE": "Gwrandawiad dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
+        },
+        "HEARING_TYPE_VIEW_APPLICATION": {
+          "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
+          "TELEPHONE": "Dros y ffôn",
           "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "Os bydd barnwr angen i’r gwrandawiad ddigwydd yn y llys, a oes yna leoliad llys sydd orau gennych? (dewisol)",
@@ -3270,7 +3275,7 @@
         "READ_RESPONSE": "Darllen yr ymateb",
         "RESPONSE": {
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
-          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "OTHER_PARTIES_RESPONSE": "Ymateb y partïon eraill i’r cais.",
           "TITLE": "Ymateb gan y partïon eraill",
           "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
@@ -3283,7 +3288,7 @@
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
