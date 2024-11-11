@@ -78,7 +78,6 @@ class createGAAppSteps {
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
 
-    //text problems still
     await orderJudgePage.verifyPageContent(applicationType);
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
@@ -257,7 +256,6 @@ class createGAAppSteps {
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
 
-    //text problems still
     await orderJudgePage.verifyPageContent(applicationType);
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
@@ -349,7 +347,6 @@ class createGAAppSteps {
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
 
-    //text problems still
     await orderJudgePage.verifyPageContent(applicationType);
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
