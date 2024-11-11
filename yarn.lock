@@ -3248,6 +3248,7 @@ __metadata:
 "@types/uuid@npm:^10.0.0":
   version: 10.0.0
   resolution: "@types/uuid@npm:10.0.0"
+  checksum: e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
   languageName: node
   linkType: hard
 
@@ -7805,8 +7806,8 @@ __metadata:
   linkType: hard
 
 "ioredis-mock@npm:^8.2.6":
-  version: 8.8.1
-  resolution: "ioredis-mock@npm:8.8.1"
+  version: 8.9.0
+  resolution: "ioredis-mock@npm:8.9.0"
   dependencies:
     "@ioredis/as-callback": ^3.0.0
     "@ioredis/commands": ^1.2.0
@@ -7816,7 +7817,7 @@ __metadata:
   peerDependencies:
     "@types/ioredis-mock": ^8
     ioredis: ^5
-  checksum: 2737011fae6fe0ba03269d3509754dfcb0a4a0f999162c37d22a8762c04d2d0e71003e8400e05144cc76a43c98f9a78c5e5b324eee6e5f20e2565f6398f573ae
+  checksum: 9d7480f153a5904f2bbb1555ebf2246f80bfd8c89e10442b6db58984809a1a652050c61fc8ad8a1fa86629ee0f6d2bac2929fd66f34e143263d0449bcdf657aa
   languageName: node
   linkType: hard
 
