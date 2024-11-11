@@ -268,7 +268,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
-      expect(result).toHaveLength(14);
+      expect(result).toHaveLength(15);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
         value: { html: 'COMMON.VARIATION.NO'},
