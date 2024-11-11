@@ -269,11 +269,11 @@ describe('View Application service', () => {
       expect(result).toHaveLength(14);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
-        value: { html: 'COMMON.VARIATION.NO'},
+        value: { html: 'COMMON.VARIATION_5.NO'},
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
-        value: { html: 'COMMON.VARIATION.NO'},
+        value: { html: 'COMMON.VARIATION_2.NO'},
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT'},
