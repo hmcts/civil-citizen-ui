@@ -17,6 +17,7 @@ import { decode } from 'punycode';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {CcdDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -31,7 +32,42 @@ describe('General Application - Accept defendant offer', () => {
   const idamUrl: string = config.get('idamUrl');
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
   let claim: Claim;
-  let applicationResponse: ApplicationResponse;
+  const n245: CcdDocument = { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png', category_id: 'ga' };
+  const applicationResponse: ApplicationResponse = {
+    case_data: {
+      applicationTypes: undefined,
+      generalAppType: undefined,
+      generalAppRespondentAgreement: undefined,
+      generalAppInformOtherParty: undefined,
+      generalAppAskForCosts: undefined,
+      generalAppDetailsOfOrder: undefined,
+      generalAppReasonsOfOrder: undefined,
+      generalAppEvidenceDocument: undefined,
+      gaAddlDoc: undefined,
+      generalAppHearingDetails: undefined,
+      generalAppStatementOfTruth: undefined,
+      generalAppPBADetails: {
+        fee: undefined,
+        paymentDetails: {
+          status: 'SUCCESS',
+          reference: 'REF-123-123',
+        },
+        additionalPaymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        serviceRequestReference: undefined,
+      },
+      applicationFeeAmountInPence: undefined,
+      parentClaimantIsApplicant: undefined,
+      judicialDecision: undefined,
+      generalAppN245FormUpload: n245,
+    },
+    created_date: '',
+    id: '',
+    last_modified: '',
+    state: undefined,
+  };
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -49,40 +85,6 @@ describe('General Application - Accept defendant offer', () => {
     jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
 
-    applicationResponse = {
-      case_data: {
-        applicationTypes: undefined,
-        generalAppType: undefined,
-        generalAppRespondentAgreement: undefined,
-        generalAppInformOtherParty: undefined,
-        generalAppAskForCosts: undefined,
-        generalAppDetailsOfOrder: undefined,
-        generalAppReasonsOfOrder: undefined,
-        generalAppEvidenceDocument: undefined,
-        gaAddlDoc: undefined,
-        generalAppHearingDetails: undefined,
-        generalAppStatementOfTruth: undefined,
-        generalAppPBADetails: {
-          fee: undefined,
-          paymentDetails: {
-            status: 'SUCCESS',
-            reference: 'REF-123-123',
-          },
-          additionalPaymentDetails: {
-            status: 'SUCCESS',
-            reference: undefined,
-          },
-          serviceRequestReference: undefined,
-        },
-        applicationFeeAmountInPence: undefined,
-        parentClaimantIsApplicant: undefined,
-        judicialDecision: undefined,
-      },
-      created_date: '',
-      id: '',
-      last_modified: '',
-      state: undefined,
-    };
   });
 
   afterEach(
@@ -97,6 +99,7 @@ describe('General Application - Accept defendant offer', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(decode(res.text)).toContain(t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'));
+          expect(decode(res.text)).toContain('href="/case/345/view-documents/test"' + t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245'));
         });
     });
     it('should return http 500 when has error in the get method', async () => {
