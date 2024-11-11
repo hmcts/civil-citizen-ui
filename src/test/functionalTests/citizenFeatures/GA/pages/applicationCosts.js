@@ -31,7 +31,7 @@ class ApplicationCosts {
   }
 
   async verifyPageText() {
-    I.see('To apply to extend time, the application fee is £119. If you\'ll be selecting multiple applications, this fee may be reduced.');
+    I.see('To apply to extend time, the application fee is £119. If you\'ll be selecting multiple applications, this fee will not change.');
     await I.see('This fee will need to be paid once you\'ve created the application. If you\'re eligible, you may be able to apply for help with fees.');
   }
 }
