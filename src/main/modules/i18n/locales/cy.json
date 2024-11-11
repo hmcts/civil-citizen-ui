@@ -2767,7 +2767,7 @@
         "PREFERRED_TELEPHONE": "Rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "Mae’r wybodaeth sydd ar y dudalen hon yn ffurfio eich cais.",
-          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen hon yn wir.",
+          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y cais hwn yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad gwirionedd hwn. "
         },
         "TITLE": "Gwirio eich atebion",
@@ -3255,13 +3255,16 @@
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
-		"APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
+		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
         "DIRECTION_WITH_NOTICE": "Cyfarwyddyd i wneud y cais gyda rhybudd",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Dogfennau gan y llys",
+        "DOCUMENT_TYPES": {
+          "SUPPORTING_EVIDENCE": "Tystiolaeth Ategol"
+        },
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
