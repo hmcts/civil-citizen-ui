@@ -2768,7 +2768,7 @@
         "PREFERRED_TELEPHONE": "Rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "Mae’r wybodaeth sydd ar y dudalen hon yn ffurfio eich cais.",
-          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen hon yn wir.",
+          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y cais hwn yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad gwirionedd hwn. "
         },
         "TITLE": "Gwirio eich atebion",
