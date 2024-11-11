@@ -1,6 +1,14 @@
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
+  memoryRequests: 4Gi
+  cpuRequests: 4000m
+  memoryLimits: 4Gi
+  cpuLimits: 3500m
+  devmemoryRequests: 8Gi
+  devcpuRequests: 4000m
+  devmemoryLimits: 8Gi
+  devcpuLimits: 4500m
   ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
   keyVaults:
     civil-cui:
@@ -135,7 +143,8 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 25m
+            cpu: 500m
+            memory: 2048Mi
         initdb:
           scripts:
             init.sql: |
