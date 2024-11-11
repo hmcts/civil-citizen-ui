@@ -2715,11 +2715,11 @@
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
-        "SUMMARY_JUDGMENT": "the court to make a summary judgment",
+        "SUMMARY_JUDGEMENT": "the court to make a summary judgment",
         "STAY_THE_CLAIM": "the court to pause a claim",
         "TITLE": "Application costs",
         "TO_APPLY": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}.",
-        "TO_APPLY_MULTIPLE": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}. If you'll be selecting multiple applications, this fee may be reduced.",
+        "TO_APPLY_MULTIPLE": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}. If you'll be selecting multiple applications, this fee will not change.",
         "UNLESS_ORDER": "the court to impose a sanction on the other parties unless they do a specific action",
         "VARY_ORDER": "reconsider an order",
         "VARY_PAYMENT_TERMS_OF_JUDGMENT": "vary a judgment"
@@ -2767,7 +2767,7 @@
         "PREFERRED_TELEPHONE": "Preferred telephone number",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your application.",
-          "CHECKBOX": "I believe that the facts stated in this form are true.",
+          "CHECKBOX": "I believe that the facts stated in this application are true.",
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
         "TITLE": "Check your answers",
@@ -3133,6 +3133,11 @@
           "TELEPHONE": "Telephone",
           "VIDEO_CONFERENCE": "Video Conference"
         },
+        "HEARING_TYPE_VIEW_APPLICATION": {
+          "PERSON_AT_COURT": "In person at the court",
+          "TELEPHONE": "Telephone",
+          "VIDEO_CONFERENCE": "Video Conference"
+        },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",
         "TITLE": "Application hearing arrangements",
@@ -3258,6 +3263,9 @@
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
+        "DOCUMENT_TYPES": {
+          "SUPPORTING_EVIDENCE": "Supporting Evidence"
+        },
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "There is a hearing notice",
@@ -3270,7 +3278,7 @@
         "READ_RESPONSE": "Read the response",
         "RESPONSE": {
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
-          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "OTHER_PARTIES_RESPONSE": "The other parties' response to the application.",
           "TITLE": "Response from the other parties",
           "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"

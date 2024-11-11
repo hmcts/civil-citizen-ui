@@ -18,6 +18,7 @@ import {
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
+import {Document} from 'models/document/document';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -43,6 +44,7 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppWrittenRepUpload?: CcdGeneralApplicationEvidenceDocument[];
   generalAppSubmittedDateGAspec?: Date;
   certOfSC?: CcdGeneralApplicationCertOfSC;
+  generalAppN245FormUpload?: Document;
 }
 interface DocumentDetails {
   document_url: string;
