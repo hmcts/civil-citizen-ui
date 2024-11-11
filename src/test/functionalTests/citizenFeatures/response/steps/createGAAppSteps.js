@@ -70,7 +70,6 @@ class createGAAppSteps {
       await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
 
-    //verification page below needs specific application type details
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
     
@@ -248,7 +247,6 @@ class createGAAppSteps {
       await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
 
-    //verification page below needs specific application type details
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
     
@@ -339,7 +337,6 @@ class createGAAppSteps {
       await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
 
-    //verification page below needs specific application type details
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
     
