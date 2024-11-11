@@ -69,12 +69,13 @@ export const addApplicationTypesRows = (
 export const addOtherPartiesAgreedRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const href = `${constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL)}?changeScreen=true`;
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.agreementFromOtherParty) {
     const partiesAgreed = (claim.generalApplication?.agreementFromOtherParty === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng}),
-        constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), changeLabel()),
+        href, changeLabel()),
     );
   }
   return rows;
@@ -148,7 +149,7 @@ export const addAddAnotherApplicationRow = (claimId: string, claim: Claim, lang:
     const addAnotherApp = (claim.generalApplication?.applicationTypes.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApp}`, {lng}),
-        constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), changeLabel()),
+        constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL)+'?changeScreen=true', changeLabel()),
     );
   }
   return rows;
@@ -338,7 +339,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
   return rows;
 };
 
-function getEvidencePaymentOption(evidenceOption: string) : string {
+export function getEvidencePaymentOption(evidenceOption: string) : string {
   switch(evidenceOption) {
     case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
       return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL';
