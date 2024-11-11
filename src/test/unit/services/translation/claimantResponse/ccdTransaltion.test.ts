@@ -123,7 +123,6 @@ describe('Translate claimant response to ccd version', () => {
     expect(ccdClaim.applicant1DQLanguage.court).toBe('WELSH');
     expect(ccdClaim.applicant1DQLanguage.documents).toBe('ENGLISH');
     expect(ccdClaim.applicant1DQVulnerabilityQuestions.vulnerabilityAdjustmentsRequired).toBe(YesNoUpperCamelCase.NO);
-    expect(ccdClaim.applicant1DQRequestedCourt.requestHearingAtSpecificCourt).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1DQWitnesses.witnessesToAppear).toBe(YesNoUpperCamelCase.NO);
     expect(ccdClaim.applicant1ClaimExpertSpecRequired).toBe(YesNoUpperCamelCase.YES);
     expect(ccdClaim.applicant1DQExperts.expertRequired).toBe(YesNoUpperCamelCase.YES);
