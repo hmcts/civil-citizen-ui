@@ -410,6 +410,35 @@ describe('View Application service', () => {
       });
     });
 
+    it('should include withoutNotice field when the claim has not been agreed', async () => {
+      const application = Object.assign(new ApplicationResponse(), {
+        ...mockApplication,
+        case_data: {
+          ...mockApplication.case_data,
+          generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
+          generalAppInformOtherParty: { isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'test'},
+        }});
+      mockGetApplication.mockResolvedValueOnce(application);
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+
+      expect(result).toHaveLength(14);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
+        value: { html: 'COMMON.VARIATION.NO'},
+      });
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
+        value: { html: 'COMMON.VARIATION.NO'},
+      });
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT'},
+        value: { html: 'test'},
+      });
+    });
+
     it('view application content test for respondent', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
