@@ -4,7 +4,8 @@ import {
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_HEARING_PREFERENCE_URL,
   GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
-  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL, GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
+  GA_ACCEPT_DEFENDANT_OFFER_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
@@ -47,7 +48,7 @@ respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUM
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
-    const backLinkUrl = getBackLinkUrl(claimId, req.params.appId, gaResponse);
+    const backLinkUrl = getBackLinkUrl(claimId, req.params.appId, gaResponse, claim.isClaimant());
     const form = new GenericForm(new GenericYesNo(gaResponse.wantToUploadDocuments));
     await renderView(req, form, claim, gaResponse, backLinkUrl, res);
   } catch (error) {
@@ -60,7 +61,7 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
-    const backLinkUrl = getBackLinkUrl(claimId, req.params.appId, gaResponse);
+    const backLinkUrl = getBackLinkUrl(claimId, req.params.appId, gaResponse, claim.isClaimant());
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION'));
     await form.validate();
 
@@ -81,10 +82,19 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
   }
 }) as RequestHandler);
 
-function getBackLinkUrl(claimId: string, applicationId: string, gaResponse: GaResponse) {
+function getBackLinkUrl(claimId: string, applicationId: string, gaResponse: GaResponse, isClaimant: boolean) {
+  
   if (gaResponse.generalApplicationType.length === 1 && gaResponse.generalApplicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)) {
-    return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONSE_VIEW_APPLICATION_URL);
+    if (isClaimant) {
+      return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
+    } else {
+      return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
+    }
   }
-  return !gaResponse.respondentAgreement ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
+  
+  return !gaResponse.respondentAgreement 
+    ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL) 
+    : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
 }
+
 export default respondentWantToUploadDocumentsController;

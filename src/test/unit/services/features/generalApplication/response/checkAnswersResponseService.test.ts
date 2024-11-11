@@ -85,7 +85,7 @@ describe('Check Answers response service', () => {
 
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE' },
-        value: { html: 'COMMON.VARIATION.YES' },
+        value: { html: 'COMMON.VARIATION_2.YES' },
         actions: {
           items: [{
             href: '/case/123/response/general-application/345/accept-defendant-offer',
@@ -120,7 +120,7 @@ describe('Check Answers response service', () => {
 
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE' },
-        value: { html: 'COMMON.VARIATION.YES' },
+        value: { html: 'COMMON.VARIATION_2.YES' },
         actions: {
           items: [{
             href: '/case/123/response/general-application/345/accept-defendant-offer',
@@ -161,7 +161,7 @@ describe('Check Answers response service', () => {
         + '</ul>';
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE' },
-        value: { html: 'COMMON.VARIATION.NO' },
+        value: { html: 'COMMON.VARIATION_2.NO' },
         actions: {
           items: [{
             href: '/case/123/response/general-application/345/accept-defendant-offer',
@@ -219,7 +219,7 @@ describe('Check Answers response service', () => {
       const responseData = getSummarySections('123', '345', response, 'en');
       expect(responseData).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE' },
-        value: { html: 'COMMON.VARIATION.NO' },
+        value: { html: 'COMMON.VARIATION_2.NO' },
         actions: {
           items: [{
             href: '/case/123/response/general-application/345/accept-defendant-offer',
@@ -265,7 +265,7 @@ describe('Check Answers response service', () => {
 
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' },
-        value: { html: 'COMMON.VARIATION.YES' },
+        value: { html: 'COMMON.VARIATION_2.YES' },
         actions: {
           items: [{
             href: '/case/123/response/general-application/345/respondent-agreement',
@@ -301,7 +301,7 @@ describe('Check Answers response service', () => {
       expect(getSummarySections('123', '345', response, 'en')).toEqual(
         [{
           key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' },
-          value: { html: 'COMMON.VARIATION.NO<br/>reason for disagreement' },
+          value: { html: 'COMMON.VARIATION_2.NO<br/>reason for disagreement' },
           actions: {
             items: [{
               href: '/case/123/response/general-application/345/respondent-agreement',
@@ -398,7 +398,7 @@ describe('Check Answers response service', () => {
       expect(getSummarySections('123', '345', response, 'en')).toEqual(
         [{
           key: { text: 'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE' },
-          value: { html: 'COMMON.VARIATION.YES' },
+          value: { html: 'COMMON.VARIATION_4.YES' },
           actions: {
             items: [{
               href: '/case/123/response/general-application/345/agree-to-order',
@@ -477,7 +477,7 @@ describe('Check Answers response service', () => {
 
     it('return upload document details', () => {
       const {response} = claimAndResponse();
-      const html = '<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">COMMON.VARIATION.YES</p><ul class="no-list-style"><li>abc</li></ul>';
+      const html = '<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">COMMON.VARIATION_2.YES</p><ul class="no-list-style"><li>abc</li></ul>';
       response.wantToUploadDocuments = YesNo.YES;
       const uploadedFiles = new UploadGAFiles();
       uploadedFiles.caseDocument = {
@@ -525,6 +525,12 @@ describe('Check Answers response service', () => {
           },
         },
       ]);
+    });
+
+    it('return upload document empty', () => {
+      const {response} = claimAndResponse();
+      response.wantToUploadDocuments = YesNo.NO;
+      expect(getSummarySections('123', '345', response, 'en')[0].value.html).toContain('COMMON.VARIATION_2.NO');
     });
 
     it('returns hearing contact details', () => {
@@ -701,7 +707,7 @@ describe('Check Answers response service', () => {
 
     it('returns selected support options - several', () => {
       const { response } = claimAndResponse();
-      response.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT, SupportType.SIGN_LANGUAGE_INTERPRETER]);
+      response.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT, SupportType.SIGN_LANGUAGE_INTERPRETER], 'reason A', 'reason B', 'reason C');
 
       expect(getSummarySections('123', '345', response, 'en')).toEqual([
         {
@@ -726,9 +732,9 @@ describe('Check Answers response service', () => {
           value: {
             html: '<ul class="no-list-style">'
               + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li>'
-              + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER</li>'
-              + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER</li>'
-              + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER</li>'
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'reason A'</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER - 'reason B'</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER - 'reason C'</li>"
               + '</ul>',
           },
           actions: {
@@ -766,7 +772,7 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
         },
         'value': {
-          'html': 'No',
+          'html': 'COMMON.VARIATION.NO',
         },
         'actions': {
           'items': [
