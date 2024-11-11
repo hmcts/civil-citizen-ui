@@ -3,33 +3,37 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {t} from 'i18next';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {HearingSupport} from 'models/generalApplication/hearingSupport';
-import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { t } from 'i18next';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { HearingSupport } from 'models/generalApplication/hearingSupport';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import {
   getApplicationCreatedDate,
+  getApplicationStatus,
   getLast,
-  getRespondentApplicationStatus,
   getViewApplicationUrl,
 } from 'services/features/generalApplication/generalApplicationService';
-import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
-import {getDraftGARespondentResponse, saveDraftGARespondentResponse} from './generalApplicationResponseStoreService';
+import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
 import {
-  ApplicationResponse, JudicialDecisionRequestMoreInfoOptions,
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from './generalApplicationResponseStoreService';
+import {
+  ApplicationResponse,
+  JudicialDecisionRequestMoreInfoOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import {
+  ApplicationState,
   ApplicationSummary,
   StatusColor,
-  ApplicationState,
 } from 'common/models/generalApplication/applicationSummary';
-import {dateTimeFormat} from 'common/utils/dateUtils';
-import {Claim} from 'models/claim';
+import { dateTimeFormat } from 'common/utils/dateUtils';
+import { Claim } from 'models/claim';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
 export const saveRespondentAgreeToOrder = async (redisKey: string, agreeToOrder: YesNo): Promise<void> => {
@@ -53,6 +57,14 @@ export function getRespondToApplicationCaption(generalAppTypes: ApplicationTypeO
   const applicationType = t(getApplicationTypeOptionByTypeAndDescription(getLast(generalAppTypes),ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ), {lng: getLng(lng)}).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO',
     { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType});
+}
+
+export function getUnavailableHearingDateCaption(lng: string): string {
+  return t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', { lng: getLng(lng) });
+}
+
+export function getHearingSupportCaption(lng: string): string {
+  return t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE', { lng: getLng(lng) });
 }
 
 export const saveRespondentHearingArrangement = async (redisKey: string, hearingArrangement: HearingArrangement): Promise<void> => {
@@ -126,7 +138,8 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
 };
 
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
-  const status = getRespondentApplicationStatus(application.state);
+  const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO;
+  const status = getApplicationStatus(isApplicant, application.state);
   const createDate = getApplicationCreatedDate(ccdClaim, application.id);
   return {
     state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),

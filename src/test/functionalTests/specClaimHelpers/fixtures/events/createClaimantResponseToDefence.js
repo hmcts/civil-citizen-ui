@@ -463,10 +463,6 @@ module.exports = {
         specApplicant1DQDisclosureOfNonElectronicDocuments: {
           bespokeDirections: 'claimant response non-electronic docs disclosure',
         },
-        applicant1DQDefendantDocumentsToBeConsidered: {
-          hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant response docs to consider',
-        },
       },
     };
     return claimantResponseData;
@@ -537,10 +533,6 @@ module.exports = {
         },
         specApplicant1DQDisclosureOfNonElectronicDocuments: {
           bespokeDirections: 'claimant response non-electronic docs disclosure',
-        },
-        applicant1DQDefendantDocumentsToBeConsidered: {
-          hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant response docs to consider',
         },
       },
     };

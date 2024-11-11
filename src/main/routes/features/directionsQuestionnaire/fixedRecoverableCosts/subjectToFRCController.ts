@@ -19,9 +19,9 @@ const subjectToFRCController = Router();
 const subjectToFRCViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/subject-to-frc';
 const SUBJECT_TO_FRC_PAGE = 'PAGES.SUBJECT_TO_FRC.';
 
-function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, res: Response): void {
+function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, res: Response, lang: string): void {
   const form = subjectToFRC;
-  const whatAreFixedRecoverableCostsContent = getWhatAreFixedRecoverableCostsContent();
+  const whatAreFixedRecoverableCostsContent = getWhatAreFixedRecoverableCostsContent(lang);
   res.render(subjectToFRCViewPath, {
     form,
     whatAreFixedRecoverableCostsContent,
@@ -34,11 +34,12 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
 
 subjectToFRCController.get(SUBJECT_TO_FRC_URL, (async (req, res, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const subjectToFRC = directionQuestionnaire.fixedRecoverableCosts?.subjectToFrc ?
       new GenericYesNo(directionQuestionnaire.fixedRecoverableCosts?.subjectToFrc?.option) : new GenericYesNo();
-    renderView(new GenericForm(subjectToFRC), claimId , res);
+    renderView(new GenericForm(subjectToFRC), claimId , res, lang);
   } catch (error) {
     next(error);
   }
@@ -46,11 +47,12 @@ subjectToFRCController.get(SUBJECT_TO_FRC_URL, (async (req, res, next: NextFunct
 
 subjectToFRCController.post(SUBJECT_TO_FRC_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const subjectToFRCForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SUBJECT_TO_FRC'));
     subjectToFRCForm.validateSync();
     if (subjectToFRCForm.hasErrors()) {
-      renderView(subjectToFRCForm, claimId, res);
+      renderView(subjectToFRCForm, claimId, res, lang);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
