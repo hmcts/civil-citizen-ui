@@ -22,6 +22,10 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
       return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER',
         yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.respondentDebtorOffer === CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT ? YesNo.YES : YesNo.NO))];
     }
+  };
+
+  const gaAgreeWithApplicant = (): SummaryRow[] => {
+
     return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
       yesNoFormatter(generalApplication?.generalAppRespondent1Representative === YesNoUpperCamelCase.NO ? YesNo.NO : YesNo.YES))];
 
@@ -60,7 +64,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   const hearingDetailsSections = (hearingDetails: CcdGeneralApplicationHearingDetails | undefined): SummaryRow[] =>
     [formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
       hearingDetails?.HearingPreferencesPreferredType,
-      value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${fromCcdHearingType(value)}`, {lng})),
+      value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${fromCcdHearingType(value)}`, {lng})),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
       hearingDetails?.ReasonForPreferredHearingType),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
@@ -120,10 +124,10 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   const listItemCaption = (caption: string, cssClass?: string) =>
     `<li${cssClass ? ` class="${cssClass}"` : ''}>${t(caption, {lng})}</li>`;
 
-  const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
+  const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION_2.${yesNo.toUpperCase()}`, {lng});
 
   return response
-    ? [gaRespondentDebtorOfferSection(), acceptOfferSection(),
+    ? [gaRespondentDebtorOfferSection(),gaAgreeWithApplicant(), acceptOfferSection(),
       hearingDetailsSections(response?.gaHearingDetails)]
       .flat(1).filter(row => !!row)
     : undefined;
