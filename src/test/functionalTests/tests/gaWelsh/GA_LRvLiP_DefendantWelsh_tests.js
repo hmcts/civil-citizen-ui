@@ -17,7 +17,7 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   await api.assignToLipDefendant(claimRef);
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'SmallClaims', config.defenceType.rejectAllDisputeAllWithIndividual, '', 'WELSH');
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'SmallClaims', config.defenceType.rejectAllDisputeAllWithIndividual, '', 'WELSH', 'BOTH');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 

@@ -14,7 +14,7 @@ import {
   isConfirmYouPaidCCJAppType,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import multer from 'multer';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
@@ -23,6 +23,7 @@ import {
   removeSelectedDocument, uploadSelectedFile,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -33,12 +34,12 @@ const upload = multer({
   },
 });
 
-async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
+async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
+  const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL), index);
   const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
   const backLinkPage = isConfirmPaidCCJAppType ? GA_DEBT_PAYMENT_EVIDENCE_COSC_URL : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, backLinkPage);
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, backLinkPage),index);
   const headerTitle = isConfirmPaidCCJAppType ? 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT' : getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, {
     form,
@@ -53,6 +54,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
 uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const index  = queryParamNumber(req, 'index');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(req);
     const uploadDocuments = new UploadGAFiles();
@@ -72,7 +74,7 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
       await removeSelectedDocument(redisKey, Number(index)-1);
     }
     await getSummaryList(formattedSummary, redisKey, claimId);
-    await renderView(form, claim, claimId, res, formattedSummary);
+    await renderView(form, claim, claimId, res, formattedSummary, index);
   } catch (error) {
     next(error);
   }
@@ -81,11 +83,12 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
 uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const index  = queryParamNumber(req, 'index');
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
     const currentPage = isConfirmPaidCCJAppType ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
-    const currentUrl = constructResponseUrlWithIdParams(claimId, currentPage);
+    const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, currentPage), index);
     const nextPageUrl = isConfirmPaidCCJAppType ? GA_CHECK_YOUR_ANSWERS_COSC_URL : GA_HEARING_ARRANGEMENTS_GUIDANCE_URL;
 
     const formattedSummary = summarySection(
@@ -116,7 +119,7 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, nextPageUrl));
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl),index));
     }
   } catch (error) {
     next(error);
