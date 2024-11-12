@@ -43,7 +43,6 @@ class OrderJudge {
         I.see('You can also alter any of the other text if you need to.');
         I.see('You\'ll be able to explain your reasons on the next screen.');
         I.see('The contents of this box will be seen by the other parties.');
-        //Above presumably only there for with notice applications
         break;
       case 'Change a hearing date':
         I.see('A judge will consider your application and make an order. The order that a judge would usually make to change a hearing date is in the box below.');
