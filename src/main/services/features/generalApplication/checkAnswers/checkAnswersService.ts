@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {
-  addApplicationTypesRows,
+  addApplicationTypesRows, addAddAnotherApplicationRow,
   addAskForCostsRow, addHearingContactDetailsRows, addHearingArrangementsRows, addHearingSupportRows,
   addInformOtherPartiesRow, addOrderJudgeRows,
   addOtherPartiesAgreedRow, addRequestingReasonRows, addUnavailableDatesRows, addDocumentUploadRow,
@@ -11,6 +11,7 @@ import {SummaryRow} from 'models/summaryList/summaryList';
 const buildSummarySections = (claimId: string, claim: Claim, lang: string ): SummaryRow[] => {
   return [
     ...addApplicationTypesRows(claimId, claim, lang),
+    ...addAddAnotherApplicationRow(claimId, claim, lang),
     ...addOtherPartiesAgreedRow(claimId, claim, lang),
     ...addInformOtherPartiesRow(claimId, claim, lang),
     ...addAskForCostsRow(claimId, claim, lang),
