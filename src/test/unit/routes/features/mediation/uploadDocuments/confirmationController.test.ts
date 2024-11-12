@@ -5,8 +5,8 @@ import config from 'config';
 import {
   MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
 } from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 
@@ -28,7 +28,7 @@ describe('Mediation Confirmation Upload Documents Controller', () => {
         .get(CONTROLLER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION);
+          expect(res.text).toContain(t('PAGES.MEDIATION.CONFIRMATION_PAGE.PAGE_TITLE'));
         });
     });
   });
