@@ -134,15 +134,15 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
+  async askToChangeHearingDateGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
-    const applicationType = 'More time to do what is required by a court order';
+    const applicationType = 'Change a hearing date';
     const feeAmount = '119';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
-    await applicationTypePage.nextAction('Ask for more time to do what is required by a court order');
+    await applicationTypePage.nextAction('Ask to change a hearing date');
     await applicationTypePage.nextAction('Continue');
 
     if (informOtherParty) {
@@ -160,7 +160,7 @@ class createGAAppSteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-
+    
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -222,15 +222,15 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askToChangeHearingDateGA(caseRef, parties, informOtherParty = false) {
+  async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
-    const applicationType = 'Change a hearing date';
+    const applicationType = 'More time to do what is required by a court order';
     const feeAmount = '119';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
-    await applicationTypePage.nextAction('Ask to change a hearing date');
+    await applicationTypePage.nextAction('Ask for more time to do what is required by a court order');
     await applicationTypePage.nextAction('Continue');
 
     if (informOtherParty) {
@@ -248,7 +248,7 @@ class createGAAppSteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
