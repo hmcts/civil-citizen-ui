@@ -55,7 +55,6 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
   }
 }).tag('@nightly-regression-cp');
 
-// ignored until https://tools.hmcts.net/jira/browse/CIV-15565 is fixed
 Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -65,9 +64,10 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
       notification = orderMadeLA(deadline);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await I.click(notification.nextSteps);
-      await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'undefined undefined undefined', deadline);
+      await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Test Inc', deadline);
       //defendant checks claimant's comment
       await api.performRequestForReconsideration(config.applicantSolicitorUser, claimRef);
+      I.refreshPage();
       notification = commentMadeOnRequest();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = ordersAndNotices();
@@ -78,4 +78,4 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
     }
   }
-}).tag('@ignore');
+}).tag('@nightly-regression-cp');

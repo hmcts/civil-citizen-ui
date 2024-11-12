@@ -2,6 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import {AGE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
+import {t} from 'i18next';
 jest.mock('../../../../../../main/modules/oidc');
 const nock = require('nock');
 jest.mock('ioredis', () => {
@@ -35,7 +36,7 @@ describe('Under 18 Contact court', ()=> {
         .get(AGE_ELIGIBILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Contact the court');
+          expect(res.text).toContain(t('PAGES.UNDER_18.TITLE'));
         });
     });
   });
