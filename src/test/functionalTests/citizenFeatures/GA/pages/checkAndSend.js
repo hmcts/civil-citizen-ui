@@ -68,71 +68,74 @@ class CheckAndSend {
     I.see('Do you want the court to inform the other parties?', '(//div[@class=\'govuk-summary-list__row\'])[4]');
     I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[4]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[4]');
-  }
-
-  async costsBack() {
-    I.see('Do you want to ask for your costs back?', '(//div[@class=\'govuk-summary-list__row\'])[5]');
-    I.see('Yes', '(//div[@class=\'govuk-summary-list__row\'])[5]');
+    I.see('Why do you not want the court to inform the other parties?', '(//div[@class=\'govuk-summary-list__row\'])[5]');
+    I.see('Do not need to inform', '(//div[@class=\'govuk-summary-list__row\'])[5]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[5]');
   }
 
-  async orderWanted() {
-    I.see('What order do you want the judge to make?', '(//div[@class=\'govuk-summary-list__row\'])[6]');
-    I.see('Test order', '(//div[@class=\'govuk-summary-list__row\'])[6]');
+  async costsBack() {
+    I.see('Do you want to ask for your costs back?', '(//div[@class=\'govuk-summary-list__row\'])[6]');
+    I.see('Yes', '(//div[@class=\'govuk-summary-list__row\'])[6]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[6]');
   }
 
-  async reasonsForRequest() {
-    I.see('Why are you requesting this order?', '(//div[@class=\'govuk-summary-list__row\'])[7]');
+  async orderWanted() {
+    I.see('What order do you want the judge to make?', '(//div[@class=\'govuk-summary-list__row\'])[7]');
     I.see('Test order', '(//div[@class=\'govuk-summary-list__row\'])[7]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[7]');
   }
 
-  async uploadDocument() {
-    I.see('Do you want to upload documents to support your application?', '(//div[@class=\'govuk-summary-list__row\'])[8]');
-    I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[8]');
+  async reasonsForRequest() {
+    I.see('Why are you requesting this order?', '(//div[@class=\'govuk-summary-list__row\'])[8]');
+    I.see('Test order', '(//div[@class=\'govuk-summary-list__row\'])[8]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[8]');
   }
 
-  async typeOfHearing() {
-    I.see('Choose your preferred type of hearing', '(//div[@class=\'govuk-summary-list__row\'])[9]');
-    I.see('In person at the court', '(//div[@class=\'govuk-summary-list__row\'])[9]');
+  async uploadDocument() {
+    I.see('Do you want to upload documents to support your application?', '(//div[@class=\'govuk-summary-list__row\'])[9]');
+    I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[9]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[9]');
   }
 
-  async reasonForTypeOfHearing() {
-    I.see('Why would you prefer this type of hearing?', '(//div[@class=\'govuk-summary-list__row\'])[10]');
-    I.see('In person', '(//div[@class=\'govuk-summary-list__row\'])[10]');
+  async typeOfHearing() {
+    I.see('Choose your preferred type of hearing', '(//div[@class=\'govuk-summary-list__row\'])[10]');
+    I.see('In person at the court', '(//div[@class=\'govuk-summary-list__row\'])[10]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[10]');
   }
 
-  async courtLocation() {
-    I.see('Preferred court location', '(//div[@class=\'govuk-summary-list__row\'])[11]');
-    I.see('Birmingham Civil and Family Justice Centre', '(//div[@class=\'govuk-summary-list__row\'])[11]');
+  async reasonForTypeOfHearing() {
+    I.see('Why would you prefer this type of hearing?', '(//div[@class=\'govuk-summary-list__row\'])[11]');
+    I.see('In person', '(//div[@class=\'govuk-summary-list__row\'])[11]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[11]');
   }
 
-  async phoneNumber() {
-    I.see('Preferred telephone number', '(//div[@class=\'govuk-summary-list__row\'])[12]');
-    I.see('07555655326', '(//div[@class=\'govuk-summary-list__row\'])[12]');
+  async courtLocation() {
+    I.see('Preferred court location', '(//div[@class=\'govuk-summary-list__row\'])[12]');
+    I.see('Birmingham Civil and Family Justice Centre', '(//div[@class=\'govuk-summary-list__row\'])[12]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[12]');
   }
 
-  async emailAddress() {
-    I.see('Preferred email', '(//div[@class=\'govuk-summary-list__row\'])[13]');
-    I.see('test@gmail.com', '(//div[@class=\'govuk-summary-list__row\'])[13]');
+  async phoneNumber() {
+    I.see('Preferred telephone number', '(//div[@class=\'govuk-summary-list__row\'])[13]');
+    I.see('07555655326', '(//div[@class=\'govuk-summary-list__row\'])[13]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[13]');
   }
 
-  async unavailableDates() {
-    I.see('Dates when you cannot attend a hearing', '(//div[@class=\'govuk-summary-list__row\'])[14]');
+  async emailAddress() {
+    I.see('Preferred email', '(//div[@class=\'govuk-summary-list__row\'])[14]');
+    I.see('test@gmail.com', '(//div[@class=\'govuk-summary-list__row\'])[14]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[14]');
   }
 
-  async hearingSupport() {
-    I.see('Do you need any adjustments or support to attend a hearing?', '(//div[@class=\'govuk-summary-list__row\'])[15]');
-    I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[15]');
+  async unavailableDates() {
+    I.see('Dates when you cannot attend a hearing', '(//div[@class=\'govuk-summary-list__row\'])[15]');
     await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[15]');
+  }
+
+  async hearingSupport() {
+    I.see('Do you need any adjustments or support to attend a hearing?', '(//div[@class=\'govuk-summary-list__row\'])[16]');
+    I.see('No', '(//div[@class=\'govuk-summary-list__row\'])[16]');
+    await I.see('Change', '(//div[@class=\'govuk-summary-list__row\'])[16]');
   }
 
   async verifyPageText() {
