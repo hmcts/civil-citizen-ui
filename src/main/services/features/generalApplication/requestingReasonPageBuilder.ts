@@ -54,7 +54,7 @@ export const buildRequestingReasonPageContent = (applicationType: ApplicationTyp
         .addParagraph('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.CHANGE_CLAIM')
         .build();
 
-    case ApplicationTypeOption.SUMMARY_JUDGMENT:
+    case ApplicationTypeOption.SUMMARY_JUDGEMENT:
       return new PageSectionBuilder()
         .addParagraph('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.SUMMARY_JUDGMENT')
         .build();
