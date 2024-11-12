@@ -2,12 +2,12 @@
   "total": 1,
   "cases": [
     {
-      "id": 1730988475020252,
+      "id": 1731322828021511,
       "jurisdiction": "CIVIL",
-      "state": "AWAITING_RESPONDENT_RESPONSE",
+      "state": "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
       "case_type_id": "GENERALAPPLICATION",
-      "created_date": "2024-11-07T14:07:55.013",
-      "last_modified": "2024-11-07T14:10:32.93",
+      "created_date": "2024-11-12T12:23:07.641",
+      "last_modified": "2024-11-12T12:28:14.512",
       "case_data": {
         "generalAppInformOtherParty": {
           "isWithNotice": "Yes"

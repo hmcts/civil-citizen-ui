@@ -1,10 +1,12 @@
 const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
+const RespondentResponse = require('../../genralApplication/respondentResponse');
+const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require("../../../config");
 
-Feature('Claimant GA Application @vjrtest').tag('@e2e');
+Feature('Lip V Lip Vary Order Consent').tag('@e2e');
 
-Scenario('Claimant GA Application with vary order consent ', () => {
+Scenario('Claimant GA Application and respond to response with vary order consent ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GA_FOR_LIPS', true);
@@ -29,5 +31,20 @@ Scenario('Claimant GA Application with vary order consent ', () => {
     createGAApplication.submitConfirmation(claimID, 14);
     createGAApplication.selectFeeType(claimID);
     createGAApplication.verifyPaymentSuccessfullPage(claimID, appId);
+    RespondentResponse.agreeToOrder('Yes', 'Respond to an application to reconsider an order', claimID, appId);
+    RespondentResponse.wantToUploadDocuments(claimID, appId, 'No');
+    RespondentResponse.hearingPreference(claimID, appId);
+    RespondentResponse.hearingArrangement(claimID, appId, 'In person at the court');
+    RespondentResponse.hearingContactDetails(claimID, appId);
+    RespondentResponse.unavailableDates(claimID, appId);
+    RespondentResponse.hearingSupport(claimID, appId);
+    RespondentResponse.submitApplication(claimID, appId);
+    RespondentResponse.confirmationPage(claimID, appId)
+    responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision')
   }
 })
+
+AfterSuite(async () => {
+  await createGAApplication.resetWiremockScenario();
+});
+

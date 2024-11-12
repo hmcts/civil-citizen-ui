@@ -253,6 +253,32 @@
         },
         "bodyFileName": "/generalApplication/payment-status.json"
       }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1731322828021511/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'RESPOND_TO_APPLICATION')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/respondent-response.json"
+      }
     }
   ]
 }

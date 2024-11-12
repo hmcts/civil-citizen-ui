@@ -1,5 +1,6 @@
 const {clickButton} = require("../commons/clickButton");
 const {buttonType} = require("../commons/buttonVariables");
+const {resetScenarios} = require("../../functionalTests/specClaimHelpers/api/wiremock");
 const I = actor();
 
 class CreateGAApplication {
@@ -133,6 +134,10 @@ class CreateGAApplication {
     I.see('Your payment was\n' +
       'successful');
 
+  }
+
+  async resetWiremockScenario() {
+    await resetScenarios();
   }
 }
 
