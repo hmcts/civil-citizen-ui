@@ -1,6 +1,6 @@
 const I = actor();
 const config = require('../../../../config');
-// const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookies');
+const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookies');
 const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookies');
 const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
 const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
@@ -19,8 +19,8 @@ const buttons = {
 
 class LoginPage {
   async openCitizenLogin() {
-    // await I.clearCookie();
-    // await I.setCookie([...idamCookies, ...cuiCookies]);
+    await I.clearCookie();
+    await I.setCookie([...idamCookies, ...cuiCookies]);
     await I.amOnPage('/');
   }
 
