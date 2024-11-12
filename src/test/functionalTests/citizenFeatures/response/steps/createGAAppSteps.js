@@ -81,7 +81,6 @@ class createGAAppSteps {
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
 
-    //text probs still
     await requestingReasonPage.verifyPageContent(applicationType);
     await requestingReasonPage.fillTextBox('Test order');
     await requestingReasonPage.nextAction('Continue');
@@ -258,7 +257,6 @@ class createGAAppSteps {
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
 
-    //text probs still
     await requestingReasonPage.verifyPageContent(applicationType);
     await requestingReasonPage.fillTextBox('Test order');
     await requestingReasonPage.nextAction('Continue');
@@ -348,7 +346,6 @@ class createGAAppSteps {
     await orderJudgePage.fillTextBox('Test order');
     await orderJudgePage.nextAction('Continue');
 
-    //text probs still
     await requestingReasonPage.verifyPageContent(applicationType);
     await requestingReasonPage.fillTextBox('Test order');
     await requestingReasonPage.nextAction('Continue');
