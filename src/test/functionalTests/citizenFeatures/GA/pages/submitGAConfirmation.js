@@ -13,10 +13,10 @@ class SubmitGAConfirmation {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(feeAmount) {
     this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
-    await this.verifyPageText();
+    await this.verifyPageText(feeAmount);
     contactUs.verifyContactUs();
   }
 
@@ -25,9 +25,9 @@ class SubmitGAConfirmation {
     I.see('You need to pay the application fee to submit the application');
   }
 
-  async verifyPageText() {
+  async verifyPageText(feeAmount) {
     I.see('What happens next', 'h2');
-    I.see('Your application has been saved, but you need to pay the application fee of £119.');
+    I.see(`Your application has been saved, but you need to pay the application fee of £${feeAmount}.`);
     I.see('Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.');
     I.see('You\'ll have the option to apply for help with fees once you\'ve clicked \'Pay application fee\'.');
     await I.seeElement('//a[@class=\'govuk-button\' and contains(text(), \'Pay application fee\')]\n');
