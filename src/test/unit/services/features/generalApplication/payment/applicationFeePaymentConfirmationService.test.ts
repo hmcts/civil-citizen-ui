@@ -15,7 +15,6 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
   getApplicationFromGAService: jest.fn(), getGaFeePaymentRedirectInformation: jest.fn(),
