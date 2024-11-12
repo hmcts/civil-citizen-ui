@@ -4,7 +4,6 @@ const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookie
 const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookies');
 const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
 const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
-const helper = actor().helpers['BrowserHelpers'];
 
 const fields = {
   username: 'input[id="username"]',
@@ -20,7 +19,7 @@ const buttons = {
 
 class LoginPage {
   async openCitizenLogin() {
-    if (!helper.isWebDriver()) {
+    if (I.isPlaywright()) {
       await I.clearCookie();
       await I.setCookie([...idamCookies, ...cuiCookies]);
     }

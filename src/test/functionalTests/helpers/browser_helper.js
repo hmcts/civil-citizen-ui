@@ -65,7 +65,6 @@ module.exports = class BrowserHelpers extends Helper {
         throw new Error('Helper not recognized. This function supports Playwright and WebDriver.');
       }
     } catch (error) {
-      console.error(`Error in waitForContent: ${error.message}`);
       return undefined;
     }
   }
