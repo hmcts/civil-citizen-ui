@@ -98,7 +98,7 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
@@ -186,7 +186,7 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
@@ -274,7 +274,7 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
@@ -363,7 +363,7 @@ class createGAAppSteps {
 
     await hearingArrangementPage.verifyPageContent(applicationType);
     await hearingArrangementPage.nextAction('In person at the court');
-    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.court);
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
     await hearingArrangementPage.nextAction('Continue');
 
     await hearingContactDetailsPage.verifyPageContent(applicationType);
