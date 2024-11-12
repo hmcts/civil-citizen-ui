@@ -19,8 +19,10 @@ const buttons = {
 
 class LoginPage {
   async openCitizenLogin() {
-    await I.clearCookie();
-    await I.setCookie([...idamCookies, ...cuiCookies]);
+    if (!I.isWebDriver()) {
+      await I.clearCookie();
+      await I.setCookie([...idamCookies, ...cuiCookies]);
+    }
     await I.amOnPage('/');
   }
 
