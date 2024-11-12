@@ -7,20 +7,20 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import * as cache from 'modules/draft-store/courtLocationCache';
 import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CourtLocation} from 'models/courts/courtLocations';
+import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
+jest.mock('services/features/directionsQuestionnaire/hearing/specificCourtLocationService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
-const mockCachedLocations = cache.getCourtLocationsFromCache as jest.Mock;
+const mockListOfCourtLocations = getListOfCourtLocations as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
@@ -40,7 +40,7 @@ describe('General Application - Application hearing arrangements', () => {
   describe('on GET', () => {
     it('should return Application hearing arrangements page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockCachedLocations.mockImplementation( async ()=> courtLocation);
+      mockListOfCourtLocations.mockImplementation( async ()=> courtLocation);
       await request(app)
         .get(GA_HEARING_ARRANGEMENT_URL)
         .expect((res) => {
