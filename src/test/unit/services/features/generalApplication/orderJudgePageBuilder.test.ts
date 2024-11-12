@@ -72,7 +72,7 @@ describe('General Application - Application type', () => {
     expect(result.hintText).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.CHANGE_CLAIM_HINT_TEXT');
   });
   it('should build content for SUMMARY_JUDGMENT', async () => {
-    const result = buildPageContent(ApplicationTypeOption.SUMMARY_JUDGMENT, lng);
+    const result = buildPageContent(ApplicationTypeOption.SUMMARY_JUDGEMENT, lng);
     expect(result.contentList[0].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_SUMMARY_JUDGMENT');
     expect(result.contentList[1].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ADD_OR_ALTER');
     expect(result.contentList[2].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.EXPLAIN_REASONS');
