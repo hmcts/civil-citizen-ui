@@ -1,13 +1,13 @@
-const {clickButton} = require("../commons/clickButton");
-const {buttonType} = require("../commons/buttonVariables");
-const {resetScenarios} = require("../../functionalTests/specClaimHelpers/api/wiremock");
+const {clickButton} = require('../commons/clickButton');
+const {buttonType} = require('../commons/buttonVariables');
+const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wiremock');
 const I = actor();
 
 class CreateGAApplication {
 
   start(claimId) {
-    I.amOnPage(`/dashboard/${claimId}/claimantNewDesign`)
-    I.click('Contact the court to request a change to my case')
+    I.amOnPage(`/dashboard/${claimId}/claimantNewDesign`);
+    I.click('Contact the court to request a change to my case');
   }
 
   selectApplicationType(applicationType) {
@@ -20,13 +20,13 @@ class CreateGAApplication {
     I.see('If you\'ll be selecting multiple applications, this answer will apply to all of them.');
     I.see('Yes');
     I.see('No');
-    I.click(option)
+    I.click(option);
     clickButton(buttonType.CONTINUE);
   }
 
   applicationCosts(claimId, selectedApplication, applicationFee) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/application-costs`);
-    I.see('Make an application')
+    I.see('Make an application');
     I.see(selectedApplication);
     I.see(applicationFee);
     clickButton(buttonType.START_NOW);

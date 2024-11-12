@@ -2,7 +2,7 @@ const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
 const RespondentResponse = require('../../genralApplication/respondentResponse');
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
-const config = require("../../../config");
+const config = require('../../../config');
 
 Feature('Lip V Lip Vary Order Consent').tag('@e2e');
 
@@ -39,12 +39,12 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     RespondentResponse.unavailableDates(claimID, appId);
     RespondentResponse.hearingSupport(claimID, appId);
     RespondentResponse.submitApplication(claimID, appId);
-    RespondentResponse.confirmationPage(claimID, appId)
-    responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision')
+    RespondentResponse.confirmationPage(claimID, appId);
+    responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});
 
 AfterSuite(async () => {
   await createGAApplication.resetWiremockScenario();

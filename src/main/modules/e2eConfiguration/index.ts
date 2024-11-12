@@ -29,8 +29,8 @@ export class DraftStoreCliente2e {
       GA_REDIS_DATA.forEach((element: any) => {
         client.set(element.id, JSON.stringify(element.value, null, 4)).then(() =>
           this.logger.info(`Mock data ${element.id} saved to Redis`),
-        )
-      })
+        );
+      });
     });
   }
 }

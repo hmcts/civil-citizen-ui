@@ -1,14 +1,14 @@
-const {clickButton} = require("../commons/clickButton");
-const {buttonType} = require("../commons/buttonVariables");
+const {clickButton} = require('../commons/clickButton');
+const {buttonType} = require('../commons/buttonVariables');
 const I = actor();
 
 class RespondentResponse {
 
   agreeToOrder(option, selectedApplicationType, claimId, appId) {
     I.amOnPage(`case/${claimId}/response/general-application/${appId}/agree-to-order`);
-    I.see(selectedApplicationType)
-    I.see('The other parties have said that you\'ve agreed to the order they\'ve requested. Is this correct?')
-    I.click(option)
+    I.see(selectedApplicationType);
+    I.see('The other parties have said that you\'ve agreed to the order they\'ve requested. Is this correct?');
+    I.click(option);
     clickButton(buttonType.CONTINUE);
   }
 
