@@ -3068,9 +3068,9 @@ __metadata:
   linkType: hard
 
 "@types/luxon@npm:^3.2.0":
-  version: 3.3.1
-  resolution: "@types/luxon@npm:3.3.1"
-  checksum: da8f6158edacae1430f3eca5f4ab4891200ffb34aa521ef6bae407a3c50b3854907098bc4535fb2a66a2779738f3c6c48fdfd86f01117a6f4844b18536cdb7c0
+  version: 3.4.2
+  resolution: "@types/luxon@npm:3.4.2"
+  checksum: 6f92d5bd02e89f310395753506bcd9cef3a56f5940f7a50db2a2b9822bce753553ac767d143cb5b4f9ed5ddd4a84e64f89ff538082ceb4d18739af7781b56925
   languageName: node
   linkType: hard
 
@@ -3248,6 +3248,7 @@ __metadata:
 "@types/uuid@npm:^10.0.0":
   version: 10.0.0
   resolution: "@types/uuid@npm:10.0.0"
+  checksum: e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
   languageName: node
   linkType: hard
 
@@ -9478,9 +9479,9 @@ __metadata:
   linkType: hard
 
 "luxon@npm:^3.2.1":
-  version: 3.3.0
-  resolution: "luxon@npm:3.3.0"
-  checksum: 50cf17a0dc155c3dcacbeae8c0b7e80db425e0ba97b9cbdf12a7fc142d841ff1ab1560919f033af46240ed44e2f70c49f76e3422524c7fc8bb8d81ca47c66187
+  version: 3.5.0
+  resolution: "luxon@npm:3.5.0"
+  checksum: f290fe5788c8e51e748744f05092160d4be12150dca70f9fadc0d233e53d60ce86acd82e7d909a114730a136a77e56f0d3ebac6141bbb82fd310969a4704825b
   languageName: node
   linkType: hard
 
