@@ -11,7 +11,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppSession} from 'models/AppRequest';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 
 declare const appRequest: requestModels.AppRequest;

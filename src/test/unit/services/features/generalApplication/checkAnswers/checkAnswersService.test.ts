@@ -95,7 +95,7 @@ describe('Check Answers service', () => {
 
     it('should give correct row count for multiple application types', () => {
       const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(20);
+      expect(result).toHaveLength(21);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
     });
@@ -105,9 +105,9 @@ describe('Check Answers service', () => {
       generalApplication.orderJudges = [new OrderJudge('test1')];
       generalApplication.requestingReasons = [new RequestingReason('test1')];
       const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(14);
+      expect(result).toHaveLength(15);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
-      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
     });
   });
 
@@ -167,10 +167,10 @@ describe('Check Answers service', () => {
 
     it('should give correct row count for multiple application types', () => {
       const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(21);
+      expect(result).toHaveLength(22);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
-      expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT');
-      expect(result[5].value.html).toEqual('test');
+      expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
+      expect(result[5].value.html).toEqual('COMMON.VARIATION_2.NO');
     });
   });
 

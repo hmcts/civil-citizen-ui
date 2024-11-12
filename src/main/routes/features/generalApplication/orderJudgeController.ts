@@ -21,7 +21,7 @@ import { buildPageContent } from 'services/features/generalApplication/orderJudg
 import { orderJudgeGuard } from 'routes/guards/generalApplication/orderJudgeGuard';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 
 const orderJudgeController = Router();
@@ -34,11 +34,11 @@ orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppReque
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const { applicationTypes, orderJudges } = claim.generalApplication || new GeneralApplication();
-    const applicationTypeIndex = queryParamNumber(req, 'index') || 0;
+    const applicationTypeIndex = queryParamNumber(req, 'index');
     const applicationTypeOption = getByIndexOrLast(applicationTypes, applicationTypeIndex)?.option;
     const orderJudge = getByIndex(orderJudges, applicationTypeIndex) || new OrderJudge();
     const { contentList, hintText } = buildPageContent(applicationTypeOption, lng);
-    const backLinkUrl = getBackLinkUrl(claimId, claim);
+    const backLinkUrl = getBackLinkUrl(claimId, claim, applicationTypeIndex);
 
     const form = new GenericForm(orderJudge);
     res.render(viewPath, {
@@ -89,12 +89,12 @@ orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequ
   }
 }) as RequestHandler);
 
-function getBackLinkUrl(claimId: string, claim: Claim) : string {
+function getBackLinkUrl(claimId: string, claim: Claim, index: number) : string {
   const appTypesLength = claim.generalApplication?.applicationTypes?.length;
   if (!appTypesLength || appTypesLength === 1) {
-    return constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL), index);
   } else {
-    return constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + `?linkFrom=${LinKFromValues.addAnotherApp}&index=${appTypesLength - 1}`;
+    return constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + `?linkFrom=${LinKFromValues.addAnotherApp}&index=${index}`;
   }
 
 }
