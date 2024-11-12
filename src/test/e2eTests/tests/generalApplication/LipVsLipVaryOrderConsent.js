@@ -9,7 +9,7 @@ Feature('Lip V Lip Vary Order Consent').tag('@e2e');
 Scenario('Claimant GA Application and respond to response with vary order consent ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
-    toggleFlag('GA_FOR_LIPS', true);
+    toggleFlag('GaForLips', true);
     const claimID = 1730984188221535;
     const appId = 1731322828021511;
     createGAApplication.start(claimID);
@@ -41,6 +41,8 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     RespondentResponse.submitApplication(claimID, appId);
     RespondentResponse.confirmationPage(claimID, appId)
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision')
+    toggleFlag('cuiReleaseTwoEnabled', false);
+    toggleFlag('GaForLips', false);
   }
 })
 
