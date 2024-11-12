@@ -16,7 +16,7 @@ class CheckAndSend {
   async verifyPageContent(caseNumber, parties, applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(caseNumber, parties);
+    this.verifyHeadingDetails(applicationType, caseNumber, parties);
     this.applicationType(applicationType);
     this.partiesAgreed();
     this.informOtherParties();
@@ -38,8 +38,8 @@ class CheckAndSend {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails(caseNumber, parties) {
-    I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicationType, caseNumber, parties) {
+    I.see(applicationType, 'h1');
     I.see('Check your answers', 'h1');
     I.see('Case number: ' + caseNumber);
     I.see(parties);
