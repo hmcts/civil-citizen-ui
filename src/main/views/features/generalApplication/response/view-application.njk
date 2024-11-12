@@ -27,7 +27,7 @@
   {% for item in applicantDocuments.documents %}
     {% set applicantDocRows = (applicantDocRows.push([
       {
-        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
       },
       {
         html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -48,7 +48,7 @@
   {% for item in respondentDocuments.documents %}
     {% set respondentDocRows = (respondentDocRows.push([
       {
-        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
       },
       {
         html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -69,7 +69,7 @@
     {% for item in courtDocuments.documents %}
       {% set courtDocRows = (courtDocRows.push([
         {
-          html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+          html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
         },
         {
           html: addFileLink(item.linkInformation.url, item.linkInformation.text)
