@@ -163,7 +163,7 @@ civil-general-applications:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
-          - name: AppInsightsInstrumentationKeyGeneralApplications
+          - name: appinsights-instrumentation-key
             alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
