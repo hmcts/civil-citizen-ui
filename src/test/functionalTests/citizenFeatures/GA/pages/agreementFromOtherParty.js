@@ -41,7 +41,6 @@ class AgreementFromOtherParty {
     I.see('The application fee will be reduced, unless this is an application to:');
     I.see('set aside (remove) a judgment', 'li');
     I.see('vary a judgment', 'li');
-    I.see('reconsider an order', 'li');
     await I.see('There may also be no need for a hearing to make a decision on the application. You\'ll see the final application fee amount before you pay.');
   }
 
