@@ -70,7 +70,7 @@ ccd:
     livenessProbe:
       initialDelaySeconds: 90
 
-#TESTING
+#TESTING Not merge and remove that line
 civil-service:
   enabled: true
   java:
