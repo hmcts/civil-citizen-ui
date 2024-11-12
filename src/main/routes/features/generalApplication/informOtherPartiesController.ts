@@ -1,7 +1,7 @@
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_APPLICATION_COSTS_URL, INFORM_OTHER_PARTIES_URL} from 'routes/urls';
@@ -11,6 +11,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
@@ -20,7 +21,8 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL);
+  const index  = queryParamNumber(req, 'index');
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), index);
   if (!form) {
     form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
   }
@@ -48,7 +50,8 @@ informOtherPartiesController.post(INFORM_OTHER_PARTIES_URL, informOtherPartiesGu
       return await renderView(req, res, form);
     }
     await saveInformOtherParties(generateRedisKey(req), informOtherParties);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL));
+    const index  = queryParamNumber(req, 'index');
+    res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL), index));
   } catch (error) {
     next(error);
   }
