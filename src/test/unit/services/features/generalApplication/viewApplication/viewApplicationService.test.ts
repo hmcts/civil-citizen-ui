@@ -55,7 +55,7 @@ function setMockAdditionalDocuments() {
         'document_filename': '000MC039-settlement-agreement.pdf',
         'document_binary_url': 'http://dm-store:8080/documents/4feaa073-c310-4096-979d-cd5b12ebddf8/binary',
       },
-      'documentName': 'Test applicant',
+      'documentName': 'Supporting evidence',
       'createdDatetime':new Date('2024-08-01'),
     },
   },
@@ -206,15 +206,15 @@ describe('View Application service', () => {
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED',
-          'COMMON.VARIATION.YES'],
+          'COMMON.VARIATION_5.YES'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER',
           '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> </p>'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
           'reasons'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
-          'COMMON.VARIATION.NO'],
+          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
-          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT'],
+          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
           'sdf'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
@@ -244,11 +244,11 @@ describe('View Application service', () => {
       expect(result).toHaveLength(13);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
-        value: { html: 'COMMON.VARIATION.NO'},
+        value: { html: 'COMMON.VARIATION_5.NO'},
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
-        value: { html: 'COMMON.VARIATION.YES'},
+        value: { html: 'COMMON.VARIATION_2.YES'},
       });
     });
 
@@ -269,11 +269,11 @@ describe('View Application service', () => {
       expect(result).toHaveLength(14);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
-        value: { html: 'COMMON.VARIATION.NO'},
+        value: { html: 'COMMON.VARIATION_5.NO'},
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
-        value: { html: 'COMMON.VARIATION.NO'},
+        value: { html: 'COMMON.VARIATION_2.NO'},
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT'},
@@ -296,15 +296,15 @@ describe('View Application service', () => {
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED',
-          'COMMON.VARIATION.YES'],
+          'COMMON.VARIATION_5.YES'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER',
           '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS</p>'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
           'reasons'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
-          'COMMON.VARIATION.NO'],
+          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
-          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT'],
+          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
           'sdf'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
@@ -342,7 +342,7 @@ describe('View Application service', () => {
       const result = getApplicantDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test applicant',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.SUPPORTING_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
