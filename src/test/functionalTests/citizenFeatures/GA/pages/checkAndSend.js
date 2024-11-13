@@ -20,12 +20,17 @@ class CheckAndSend {
     this.applicationType(applicationType);
     this.additionalApplication();
     this.partiesAgreed();
-    if (applicationType != 'Set aside (remove) a judgment') {
+    if (applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment') {
       this.informOtherParties();
-      //logic for with/without notice/consent applications
+      //logic needs to be updated for with/without notice/consent applications
     }
     this.costsBack();
-    this.orderWanted();
+    if (applicationType !== 'Vary a judgment') {
+      this.orderWanted();
+    }
+    if (applicationType !== 'Vary a judgment') {
+      this.reasonsForRequest();
+    }
     this.uploadDocument();
     this.typeOfHearing();
     this.reasonForTypeOfHearing();

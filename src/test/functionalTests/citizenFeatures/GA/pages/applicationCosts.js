@@ -35,6 +35,9 @@ class ApplicationCosts {
       case 'Set aside (remove) a judgment':
         I.see(`To apply to set aside (remove) a judgment, the application fee is £${feeAmount}.`);
         break;
+      case('Ask to vary a judgment'):
+        I.see(`To apply to vary a judgment, the application fee is £${feeAmount}.`);
+        break;
       case 'Reconsider an order':
         I.see(`To apply to reconsider an order, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
         break;

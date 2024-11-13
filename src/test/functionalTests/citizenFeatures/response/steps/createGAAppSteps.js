@@ -126,6 +126,81 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
+  async askToVaryAJudgementGA(caseRef, parties, informOtherParty = false) {
+    const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
+    const applicationType = 'Vary a judgment';
+    const feeAmount = '15';
+    await I.waitForContent('Contact the court to request a change to my case', 60);
+    await I.click('Contact the court to request a change to my case');
+    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Ask to vary a judgment');
+    await applicationTypePage.nextAction('Continue');
+
+    if (informOtherParty) {
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
+      await agreementFromOtherPartyPage.nextAction('Yes');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+    } else {
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
+      await agreementFromOtherPartyPage.nextAction('No');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+    }
+
+    await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
+    await applicationCostsPage.nextAction('Start now');
+    
+    //For defendant creating claim extra screen in here for uploading N245
+
+    await claimApplicationCostPage.verifyPageContent(applicationType);
+    await claimApplicationCostPage.selectAndVerifyYesOption();
+    await claimApplicationCostPage.nextAction('Continue');
+
+    await wantToUploadDocumentsPage.verifyPageContent(applicationType);
+    await wantToUploadDocumentsPage.nextAction('No');
+    await wantToUploadDocumentsPage.nextAction('Continue');
+
+    await hearingArrangementsGuidancePage.verifyPageContent(applicationType);
+    await hearingArrangementsGuidancePage.nextAction('Continue');
+
+    await hearingArrangementPage.verifyPageContent(applicationType);
+    await hearingArrangementPage.nextAction('In person at the court');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
+    await hearingArrangementPage.nextAction('Continue');
+
+    await hearingContactDetailsPage.verifyPageContent(applicationType);
+    await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
+    await hearingContactDetailsPage.nextAction('Continue');
+
+    await unavailableDatesPage.verifyPageContent(applicationType);
+    await unavailableDatesPage.nextAction('Continue');
+
+    await hearingSupportPage.verifyPageContent(applicationType);
+    await hearingSupportPage.nextAction('Continue');
+
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
+    await payingForApplicationPage.nextAction('Continue');
+
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.checkAndSign();
+    await checkAndSendPage.nextAction('Submit');
+
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
+    await submitGAConfirmationPage.nextAction('Pay application fee');
+
+    I.wait(2);
+
+    await applyHelpFeeSelectionPage.verifyPageContent();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    await govPay.addValidCardDetails(feeAmount);
+    govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
+  }
+
   async askCourtToReconsiderAnOrderGA(caseRef, parties, informOtherParty = false) {
     //Vary order
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
@@ -464,7 +539,6 @@ class createGAAppSteps {
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
-    //fee amount
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
