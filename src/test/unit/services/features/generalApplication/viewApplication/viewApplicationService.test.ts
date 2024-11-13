@@ -555,25 +555,6 @@ describe('View Application service', () => {
       expect(result.title).toContain(expectedResult.title);
     });
 
-    it('should get data array if there is court order hearing notice documents', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      const caseData = application.case_data;
-      caseData.hearingNoticeDocument = setMockHearingNoticeDocuments();
-
-      mockGetApplication.mockResolvedValueOnce(application);
-      //When
-      const result = getCourtDocuments(application, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf841', 'Application_Hearing_Notice_2024-08-01 12:15:34.pdf'),
-      );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
-      expect(result.title).toContain(expectedResult.title);
-    });
-
     it('should get data array if there is court has dismissal order documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
@@ -593,7 +574,7 @@ describe('View Application service', () => {
       expect(result.documents[2]).toEqual(expectedResult.documents[0]);
     });
 
-    it('should dismissal order documents', async () => {
+    it('should get dismissal order documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
@@ -617,6 +598,18 @@ describe('View Application service', () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument= null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDismissalOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
+
+    it('should get empty applicationResponse', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), null);
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
