@@ -10,7 +10,7 @@ const rejectAllIntermediateClaim = require('./defendantResponseIntermediateClaim
 const rejectAllMultiClaim = require('./defendantResponseMultiClaim');
 
 module.exports = {
-  createDefendantResponse: (totalClaimAmount, responseType, claimType, partyType, language) => {
+  createDefendantResponse: (totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage) => {
     switch (responseType) {
       case config.defenceType.admitAllPayImmediateWithIndividual:
         return admitAllDefendantResponse.admitAllPayImmediateWithIndividual(totalClaimAmount);
@@ -46,7 +46,7 @@ module.exports = {
         if (claimType === 'FastTrack') {
           return rejectAllFastTrack.rejectAllDisputeAllWithIndividual(totalClaimAmount);
         } else {
-          return rejectAllSmallClaims.rejectAllDisputeAllWithIndividual(totalClaimAmount, language);
+          return rejectAllSmallClaims.rejectAllDisputeAllWithIndividual(totalClaimAmount, language, respondentLanguage);
         }
       case config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual:
         if (claimType === 'FastTrack') {
