@@ -31,6 +31,7 @@ nodejs:
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
     CIVIL_GENERAL_APPLICATIONS_URL: http://${SERVICE_NAME}-general-applications
+    TESTING_SUPPORT_ENABLED: true
 
 aac-manage-case-assignment:
   enabled: true
