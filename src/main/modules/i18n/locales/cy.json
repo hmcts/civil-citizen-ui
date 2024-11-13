@@ -2702,25 +2702,25 @@
       },
       "APPLICATION_COSTS": {
         "ADJOURN_HEARING": "newid dyddiad gwrandawiad",
-        "AMEND_A_STMT_OF_CASE": "make a change to your claim or defence",
+        "AMEND_A_STMT_OF_CASE": "gwneud newid i’ch hawliad neu amddiffyniad",
         "HEARING_LESS_THAN": "Os yw dyddiad y gwrandawiad llai na 14 diwrnod i ffwrdd, neu os nad ydych wedi cytuno iddo ymlaen llaw gyda’r parti arall, mae’r ffi uchod yn berthnasol.",
         "HEARING_MORE_THAN": "Os yw dyddiad y gwrandawiad fwy na 14 diwrnod i ffwrdd o’r dyddiad pan rydych yn gwneud y cais hwn ac rydych wedi cytuno i hyn gyda’r parti arall, ni fydd rhaid i chi dalu’r ffi. Os byddwch yn ychwanegu cais arall bydd rhaid i chi dalu’r ffi ar gyfer y cais ychwanegol hwn.",
-        "EXTEND_TIME": "Estyniad o amser",
+        "EXTEND_TIME": "estyniad o amser",
         "FEE_NEED_TO_BE_PAID": "Bydd rhaid talu’r ffi hon unwaith y byddwch wedi creu’r cais. Os ydych yn gymwys, efallai y byddwch yn gallu gwneud cais am help i dalu ffioedd.",
         "MAKE_AN_APPLICATION": "Gwneud cais",
         "MAY_NOT_AGREE": "Efallai na fydd y llys yn cytuno i newid dyddiad y gwrandawiad, hyd yn oed os yw’r ddau barti wedi cytuno.",
-        "OTHER": "the court to do something else",
-        "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
+        "OTHER": "y llys i wneud rhywbeth arall",
+        "RELIEF_FROM_SANCTIONS": "gofyn am ryddhad o gosb",
         "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
-        "SET_ASIDE_JUDGEMENT": "roi dyfarniad o’r naill du (ei ddileu)",
+        "SET_ASIDE_JUDGEMENT": "rhoi dyfarniad o’r naill du (ei ddileu)",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
-        "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
-        "SUMMARY_JUDGMENT": "the court to make a summary judgment",
-        "STAY_THE_CLAIM": "the court to pause a claim",
+        "STRIKE_OUT": "y llys i ddileu achos y partïon eraill i gyd neu ran ohono",
+        "SUMMARY_JUDGEMENT": "y llys i wneud dyfarniad diannod",
+        "STAY_THE_CLAIM": "y llys i oedi hawliad",
         "TITLE": "Costau’r cais",
         "TO_APPLY": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}.",
-        "TO_APPLY_MULTIPLE": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}. Os byddwch yn dewis sawl cais, ni fydd y ffi hon yn newid.",
-        "UNLESS_ORDER": "the court to impose a sanction on the other parties unless they do a specific action",
+        "TO_APPLY_MULTIPLE": "Y ffi cais ar gyfer gwneud cais i {{applicationType}} yw £{{applicationFee}}. Os byddwch yn dewis sawl cais, efallai bydd y ffi hon yn llai.",
+        "UNLESS_ORDER": "y llys i osod sancsiwn ar y partïon eraill oni bai eu bod yn cymryd camau penodol",
         "VARY_ORDER": "ailystyried gorchymyn",
         "VARY_PAYMENT_TERMS_OF_JUDGMENT": "amrywio dyfarniad"
       },
@@ -2753,6 +2753,7 @@
         "WHY_REQUESTING": "Pam ydych chi’n gwneud cais am y gorchymyn hwn?"
       },
       "CHECK_YOUR_ANSWER": {
+        "ADD_ANOTHER_APPLICATION": "Ydych chi eisiau ychwanegu cais arall?",
         "APPLICATION_TYPE": "Math o gais",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
         "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
@@ -2767,7 +2768,7 @@
         "PREFERRED_TELEPHONE": "Rhif ffôn a ffafrir",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "Mae’r wybodaeth sydd ar y dudalen hon yn ffurfio eich cais.",
-          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen hon yn wir.",
+          "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y cais hwn yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi\" y datganiad gwirionedd hwn. "
         },
         "TITLE": "Gwirio eich atebion",
@@ -2784,7 +2785,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Cyfeirnod yr hawliad: ",
-        "PREFERRED_LOCATION": "Lleoliad llys a ffafrir",
+        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
         "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig fesul mis",
         "PROPOSED_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_SET_DATE": "Taliad llawn arfaethedig erbyn dyddiad penodol",
@@ -2882,8 +2883,8 @@
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
         "CONFIRM_YOU_PAID_CCJ": "Cadarnhewch eich bod wedi talu dyled dyfarniad",
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
-        "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol gan orchymyn llys",
-        "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i gynnwys yn y rhestr hon",
+        "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
+        "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
         "PAUSE": "Y llys i oedi hawliad",
         "RECONSIDER": "Ailystyried gorchymyn",
         "RELIEF_PENALTY": "Rhyddhad o gosb rydych wedi’i chael gan y llys",
@@ -3009,7 +3010,6 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION": "A yw’r partïon eraill wedi cytuno i’r cais hwn?",
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"Os byddwch yn dewis sawl cais, bydd yr ateb hwn yn berthnasol i bob un ohonynt.",
         "PAY_APPLICATION_FEE": "Bydd rhaid i chi dalu ffi i wneud cais",
-        "RECONSIDER_ORDER": "ailystyried gorchymyn",
         "SET_ASIDE_JUDGMENT": "roi dyfarniad o’r naill du (ei ddileu)",
         "TITLE": "Cais gan y partïon eraill",
         "VARY_JUDGMENT": "amrywio dyfarniad"
@@ -3133,6 +3133,11 @@
           "TELEPHONE": "Gwrandawiad dros y ffôn",
           "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
+        "HEARING_TYPE_VIEW_APPLICATION": {
+          "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
+          "TELEPHONE": "Dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
+        },
         "JUDGE_HEARING_PREFERRED_LOCATION": "Os bydd barnwr angen i’r gwrandawiad ddigwydd yn y llys, a oes yna leoliad llys sydd orau gennych? (dewisol)",
         "SELECT_A_LOCATION": "-- Dewiswch leoliad --",
         "TITLE": "Trefniadau ar gyfer gwrandawiad y cais",
@@ -3251,13 +3256,16 @@
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
-		"APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
+		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
         "DIRECTION_WITH_NOTICE": "Cyfarwyddyd i wneud y cais gyda rhybudd",
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Dogfennau gan y llys",
+        "DOCUMENT_TYPES": {
+          "SUPPORTING_EVIDENCE": "Tystiolaeth Ategol"
+        },
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
@@ -3270,7 +3278,7 @@
         "READ_RESPONSE": "Darllen yr ymateb",
         "RESPONSE": {
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
-          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "OTHER_PARTIES_RESPONSE": "Ymateb y partïon eraill i’r cais.",
           "TITLE": "Ymateb gan y partïon eraill",
           "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
@@ -3283,7 +3291,7 @@
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
@@ -5271,11 +5279,11 @@
       "TYPE_OF_DOC": "Mae angen i chi ddweud wrthym pa fath o ddogfen rydych yn ei huwchlwytho.",
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
       "UPLOAD_FILE_MESSAGE_V2": "Mae angen i chi ddewis ffeil cyn clicio 'Uwchlwytho ffeil'",
-      "UPLOAD_ONE_FILE": "Mae angen i chi uwchlwytho o leiaf un ffeil.",
-      "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
-      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
-      "WHY_PREFER_THIS_HEARING_TYPE": "Mae arnoch angen dweud wrthym pam byddai'n well gennych y math hwn o wrandawiad",
-      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi i'ch ymateb. Dewiswch Ydw neu Nac ydw.",
+      "UPLOAD_ONE_FILE": "Rhaid ichi uwchlwytho o leiaf un ffeil.",
+      "WANT_TO_ADD_ANOTHER_APPLICATION": "Mae arnoch angen dweud wrthym os ydych eisiau ychwanegu cais arall. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich cais. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
       "RESPONDENT_UPLOAD_OPTION": {
         "EMPTY_OPTION": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb.",
         "EMPTY_OPTION_TEXT": "Mae angen i chi ddweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich ymateb. Dewiswch opsiwn: Ydw neu Nac ydw.",

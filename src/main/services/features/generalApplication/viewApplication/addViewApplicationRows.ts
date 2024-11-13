@@ -97,13 +97,25 @@ export const addApplicationTypesAndDescriptionRows = (
   return rows;
 };
 
+export const addAnotherApplicationRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.applicationTypes) {
+    const addAnotherApplication = (application.case_data.generalAppType.types.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApplication}`, {lng})),
+    );
+  }
+  return rows;
+};
+
 export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppRespondentAgreement) {
     const partiesAgreed = otherPartiesAgreed(application) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng})),
     );
   }
   return rows;
@@ -115,7 +127,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   if (application.case_data.generalAppInformOtherParty && !otherPartiesAgreed(application)) {
     const informOtherParties = (application.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION_2.${informOtherParties}`, {lng})),
     );
     if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
       rows.push(
@@ -158,7 +170,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
   const rows: SummaryRow[] = [];
   let rowValue: string;
   if (application.case_data.gaAddlDoc) {
-    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
     rowValue += '<ul class="no-list-style">';
     application.case_data.gaAddlDoc.forEach(uploadGAFile => {
       rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', documentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
@@ -167,7 +179,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
     rowValue += '</ul>';
 
   } else {
-    rowValue = t('COMMON.VARIATION.NO', {lng});
+    rowValue = t('COMMON.VARIATION_2.NO', {lng});
   }
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue),
@@ -182,7 +194,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
     const hearingPreferredType = toCUIHearingPreferencesPreferredType(application.case_data.generalAppHearingDetails.HearingPreferencesPreferredType);
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE', {lng}),
-        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${hearingPreferredType}`, {lng})),
+        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${hearingPreferredType}`, {lng})),
     );
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
