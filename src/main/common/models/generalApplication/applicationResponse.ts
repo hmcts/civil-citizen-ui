@@ -86,7 +86,6 @@ export interface CCDApplication extends ApplicationUpdate {
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   generalAppNotificationDeadlineDate?: string;
-  generalAppRespondent1Representative?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
 }
 
