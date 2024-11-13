@@ -365,6 +365,21 @@ describe('dashboardService', () => {
         expect(result.url).toContain('/case/1234567890/general-application/application-type');
       });
 
+      it('Hide getContactCourtLink when CASE_SETTLED', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.CASE_SETTLED;
+        claim.defendantUserDetails = {};
+        //When
+        const result = getContactCourtLink(claim.id, claim, true, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+      
       it('getContactCourtLink when Gaflag is not enable', async () => {
         //Given
         const claim = new Claim();
