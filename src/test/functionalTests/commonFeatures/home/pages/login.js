@@ -19,7 +19,10 @@ const buttons = {
 
 class LoginPage {
   async openCitizenLogin() {
-    if (I.isPlaywright()) {
+    const isPlaywrightActive = await I.isPlaywright();
+    console.log('Is Playwright active?', isPlaywrightActive);
+
+    if (isPlaywrightActive) {
       await I.clearCookie();
       await I.setCookie([...idamCookies, ...cuiCookies]);
     }
