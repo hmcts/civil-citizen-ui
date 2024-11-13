@@ -587,7 +587,6 @@ describe('View Application service', () => {
       //when
       const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
 
-
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('12 November 2024');
