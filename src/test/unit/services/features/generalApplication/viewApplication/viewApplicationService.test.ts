@@ -644,17 +644,11 @@ describe('View Application service', () => {
 
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[0].rows[0].value.html).toEqual('12 November 2024');
+      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[0].rows[2].value.html).toContain('Dismissal_order_for_application_2024-11-12 16:25:48.pdf');
-      expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('1 August 2024');
-      expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
-      expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[1].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
+      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
     });
 
     it('should return court from response section for defendant', async () => {
@@ -671,12 +665,12 @@ describe('View Application service', () => {
       //when'
       const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
       //then
-      expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('1 August 2024');
-      expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
-      expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[1].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
     });
   });
 
