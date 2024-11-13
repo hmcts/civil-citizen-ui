@@ -618,6 +618,18 @@ describe('View Application service', () => {
 
       expect(result.length).toEqual(0);
     });
+
+    it('should get empty applicationResponse if application not defined', async () => {
+      //given
+      const application: ApplicationResponse = undefined;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDismissalOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
   });
 
   describe('getResponseFromCourtSection', () => {
