@@ -597,7 +597,7 @@ describe('View Application service', () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
-      caseData.dismissalOrderDocument= null;
+      caseData.dismissalOrderDocument = undefined;
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
@@ -609,7 +609,7 @@ describe('View Application service', () => {
 
     it('should get empty applicationResponse', async () => {
       //given
-      const application = Object.assign(new ApplicationResponse(), null);
+      const application = Object.assign(new ApplicationResponse(), undefined);
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
