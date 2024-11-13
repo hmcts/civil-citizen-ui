@@ -193,7 +193,7 @@ export const getDismissalOrder = (applicationResponse: ApplicationResponse, lang
   let dismissalOrderDocInfoArray : DocumentInformation[] = [];
   if (dismissOrderDoc) {
     dismissalOrderDocInfoArray = dismissOrderDoc.map(dismissalOrder => {
-      return setUpDocumentLinkObject(dismissalOrder?.value?.documentLink, dismissalOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER');
+      return setUpDocumentLinkObject(dismissalOrder?.value?.documentLink, dismissalOrder?.value?.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER');
     });
   }
   return dismissalOrderDocInfoArray;
