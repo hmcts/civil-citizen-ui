@@ -22,7 +22,7 @@
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.MSG1') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
-      <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+      <form method="post" action="{{ currentUrl }}&_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-inset-text" >
         {{govukFileUpload({
