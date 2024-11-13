@@ -68,7 +68,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
     specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmountPounds: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
-    respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount ? convertToPence(claim.partialAdmission?.howMuchDoYouOwe?.amount * 100).toString(): undefined,
+    respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount ? convertToPence(claim.partialAdmission?.howMuchDoYouOwe?.amount).toString(): undefined,
     detailsOfWhyDoesYouDisputeTheClaim: claim.detailsOfWhyYouDisputeTheClaim(),
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
     specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim),
