@@ -2410,8 +2410,8 @@
       "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
-      "PAGE_TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
-      "TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
+      "PAGE_TITLE": "A oes gennych chi gyfeiriad ar gyfer postio yng Nghymru neu Loegr?",
+      "TITLE": "A oes gennych chi gyfeiriad ar gyfer postio yng Nghymru neu Loegr?",
       "UK_MADE_UP": "Mae'r DU yn cynnwys Cymru a Lloegr."
     },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
@@ -3763,7 +3763,7 @@
       },
       "CITIZENS_ADVICE": "Cyngor ar Bopeth",
       "CLAIMANT_ADDRESS": {
-        "NEED_UK_ADDRESS": "Mae angen i chi gael cyfeiriad yn y DU i wneud hawliad am arian."
+        "NEED_UK_ADDRESS": "Mae arnoch angen cyfeiriad ar gyfer postio yng Nghymru neu Loegr i ddefnyddio’r gwaith hwn."
       },
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "Mae angen i chi fod yn 18 oed neu'n hŷn i ddefnyddio'r gwasanaeth hwn."
