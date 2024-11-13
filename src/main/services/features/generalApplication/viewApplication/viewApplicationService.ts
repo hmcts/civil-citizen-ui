@@ -192,10 +192,8 @@ export const getDismissalOrder = (applicationResponse: ApplicationResponse, lang
   const dismissOrderDoc = applicationResponse?.case_data?.dismissalOrderDocument;
   let dismissalOrderDocInfoArray : DocumentInformation[] = [];
   if (dismissOrderDoc) {
-    dismissalOrderDocInfoArray = dismissOrderDoc.sort((item1,item2) => {
-      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
-    }).map(hearingOrder => {
-      return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER');
+    dismissalOrderDocInfoArray = dismissOrderDoc.map(dismissalOrder => {
+      return setUpDocumentLinkObject(dismissalOrder?.value?.documentLink, dismissalOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER');
     });
   }
   return dismissalOrderDocInfoArray;
