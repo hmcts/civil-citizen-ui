@@ -30,7 +30,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Testing error messages @nightly @kiyron', async () => {
+Scenario('Testing error messages @nightly', async () => {
   //Respond To Claim in english or welsh error screen
   await ResponseSteps.RespondToClaimError(claimRef);
   await ResponseSteps.RespondToClaim(claimRef);

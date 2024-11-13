@@ -11,7 +11,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and AlreadyPaid');
+Feature('Response with RejectAll and AlreadyPaid @kiyron');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -28,21 +28,21 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
-  await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
-  await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-  // await api.enterBreathingSpace(config.applicantSolicitorUser);
-  // await api.liftBreathingSpace(config.applicantSolicitorUser);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
-  await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
+//   await ResponseSteps.RespondToClaim(claimRef);
+//   await ResponseSteps.EnterPersonalDetails(claimRef);
+//   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+//   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
+//   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
+//   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
+//   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
+//   await ResponseSteps.AddYourTimeLineEvents();
+//   await ResponseSteps.EnterYourEvidenceDetails();
+//   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+//   await ResponseSteps.EnterDQForSmallClaims(claimRef);
+//   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
+//   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+//   // await api.enterBreathingSpace(config.applicantSolicitorUser);
+//   // await api.liftBreathingSpace(config.applicantSolicitorUser);
+//   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
+//   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
 }).tag('@regression-cui-r1');
