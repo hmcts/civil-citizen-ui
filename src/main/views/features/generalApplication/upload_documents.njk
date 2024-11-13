@@ -22,14 +22,14 @@
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.MSG1') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
-      <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+      <form method="post" action="{{ currentUrl }}&_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-inset-text" >
         {{govukFileUpload({
           id: idValue,
           name: "selectedFile",
           label: {
-            html: '<strong>Upload a file</strong>'
+            html: '<strong>' + t('COMMON.UPLOAD_FILE_LABEL') +'</strong>'
           },
           errorMessage: { text: t(errors.text) } if t(errors.text) else ''
         }) }}

@@ -1,5 +1,6 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {
+  GA_PROVIDE_MORE_INFORMATION_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
@@ -18,6 +19,9 @@ import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { translateCUItoCCD } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import { buildSummarySection } from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
+import {
+  getDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const gaWrittenRepresentationCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
@@ -32,8 +36,17 @@ gaWrittenRepresentationCheckAnswersController.get(GA_UPLOAD_WRITTEN_REPRESENTATI
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const additionalDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
-    const summaryRows = buildSummarySection(additionalDocuments, backLinkUrl, lng);
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    const backLinkUrlDoc = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
+    const additionalText = gaResponse.writtenRepText;
+    const backLinkUrlText = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PROVIDE_MORE_INFORMATION_URL);
+    let backLinkUrl;
+    if (additionalDocuments.length < 1) {
+      backLinkUrl = backLinkUrlText;
+    } else {
+      backLinkUrl = backLinkUrlDoc;
+    }
+    const summaryRows = buildSummarySection(additionalText, additionalDocuments, claimId, appId, lng);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows, headerCaption });
   } catch (error) {
     next(error);
@@ -45,8 +58,11 @@ gaWrittenRepresentationCheckAnswersController.post(GA_UPLOAD_WRITTEN_REPRESENTAT
     const { appId, id: claimId } = req.params;
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    const writtenRepText = gaResponse.writtenRepText;
     const generalApplication = {
       generalAppWrittenRepUpload: uploadedDocument,
+      generalAppWrittenRepText: writtenRepText,
     };
     await gaServiceClient.submitEvent(ApplicationEvent.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION, appId, generalApplication, req);
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL));

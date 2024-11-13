@@ -19,7 +19,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   const appId = req.params.appId;
   if (!form) {
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
-    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyAdditionalHelpWithFees?.option));
+    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyAdditionalHelpWithFees?.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
   }
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PAY_ADDITIONAL_FEE_URL);
   res.render(applyHelpWithApplicationFeeViewPath,
@@ -47,7 +47,7 @@ payAdditionalFeeController.post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (asy
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
+    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.GENERAL_APPLICATION.APPLY_HELP_WITH_FEES', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);

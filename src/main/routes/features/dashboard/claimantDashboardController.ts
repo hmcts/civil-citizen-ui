@@ -1,6 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL,
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
@@ -8,6 +7,7 @@ import {
 } from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
+  getContactCourtLink,
   getDashboardForm,
   getHelpSupportLinks,
   getHelpSupportTitle,
@@ -26,8 +26,8 @@ import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -51,7 +51,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
         const userId = (<AppRequest>req)?.session?.user?.id.toString();
-        claim = await getClaimById(userId, req,true);
+        claim = await getClaimById(userId, req, true);
         dashboardId = userId;
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
@@ -59,6 +59,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         dashboardId = claimId;
         claimIdPrettified = caseNumberPrettify(claimId);
         claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
@@ -67,9 +68,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
-      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-        = getSupportLinks(claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
+        = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
       hearing.forEach((task) => {
         if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -89,7 +89,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         iWantToLinks,
         helpSupportTitle,
         helpSupportLinks,
-        lng,
+        lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
       });
 
@@ -101,7 +101,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
@@ -126,22 +126,16 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgr
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
-  if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
-      });
-    } else if(claim.hasClaimTakenOffline()) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-      });
-    } else {
-      iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl });
-    }
+
+  iWantToLinks.push(getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+
+  const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  if(viewAllApplicationLink) {
+    iWantToLinks.push(viewAllApplicationLink);
   }
+
   if (showTellUsEndedLink) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if ((showGetDebtRespiteLink && claim.isClaimant())
     || (isCaseProgressionEnabled && showGetDebtRespiteLinkCaseProgression && claim.isClaimant())) {

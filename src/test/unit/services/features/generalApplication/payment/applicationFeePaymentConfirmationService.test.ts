@@ -15,10 +15,9 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
-  getApplicationFromGAService: jest.fn(),
+  getApplicationFromGAService: jest.fn(), getGaFeePaymentRedirectInformation: jest.fn(),
 }));
 
 declare const appRequest: requestModels.AppRequest;
@@ -69,9 +68,15 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
     };
 
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
+
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
-
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
@@ -86,10 +91,16 @@ describe('Application Fee PaymentConfirmation Service', () => {
       externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
       paymentReference: 'RC-1701-0909-0602-0418',
     };
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
 
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
 
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
@@ -106,8 +117,14 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment Failed',
     };
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
@@ -123,8 +140,14 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment was cancelled by the user',
     };
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
@@ -140,9 +163,15 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment was cancelled by the user',
     };
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
@@ -151,6 +180,11 @@ describe('Application Fee PaymentConfirmation Service', () => {
   });
 
   it('should return 500 error page for any service error', async () => {
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+    };
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
 
     //Then

@@ -1,14 +1,18 @@
-import {Dashboard} from 'models/dashboard/dashboard';
-import {ClaimantOrDefendant} from 'models/partyType';
-import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {AppRequest} from 'models/AppRequest';
-import {Claim} from 'models/claim';
-import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
-import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {t} from 'i18next';
+import { Dashboard } from 'models/dashboard/dashboard';
+import { ApplicantOrRespondent, ClaimantOrDefendant } from 'models/partyType';
+import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
+import { AppRequest } from 'models/AppRequest';
+import { Claim } from 'models/claim';
 import {
+  objectToMap,
+  replaceDashboardPlaceholders,
+} from 'services/dashboard/dashboardInterpolationService';
+import config from 'config';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
+import { t } from 'i18next';
+import {
+  applicationNoticeUrl,
   feesHelpUrl,
   findCourtTribunalUrl,
   findLegalAdviceUrl,
@@ -16,6 +20,12 @@ import {
   representYourselfUrl,
   whatToExpectUrl,
 } from 'common/utils/externalURLs';
+import {YesNo} from 'form/models/yesNo';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { APPLICATION_TYPE_URL } from 'routes/urls';
+import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -38,12 +48,12 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (!isCarmApplicable){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    
+
     //exclude Applications sections
-    if (!isGAFlagEnable){
+    if (!isGAFlagEnable || claim.defendantUserDetails === undefined){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    
+
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
@@ -51,12 +61,54 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 };
 
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
+  const mainClaimNotificationIds: string[] = [];
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
+  dashboardNotifications.items?.forEach(notification => mainClaimNotificationIds.push(notification.id));
+  // Add notifications for all GAs
+  const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
+  const isGaEnabled = await isGaForLipsEnabled();
+  if (isGaEnabled) {
+    for (const generalApplication of (claim.generalApplications ?? [])) {
+      const gaReference = generalApplication.value?.caseLink?.CaseReference;
+      const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
+      if (gaReference && claimantIsApplicant) {
+        let gaRole: ApplicantOrRespondent;
+        if (claimantIsApplicant === YesNo.YES) {
+          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
+        } else {
+          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
+        }
+        genAppsByRole.get(gaRole).push(gaReference);
+      }
+    }
+  }
+  const applicantNotifications = genAppsByRole.get(ApplicantOrRespondent.APPLICANT).length > 0
+    ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.APPLICANT), ApplicantOrRespondent.APPLICANT, req)
+    : null;
+  const respondentNotifications = genAppsByRole.get(ApplicantOrRespondent.RESPONDENT).length > 0
+    ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.RESPONDENT), ApplicantOrRespondent.RESPONDENT, req)
+    : null;
+
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
       notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
       notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
     });
+    applicantNotifications?.forEach((value, gaRef, map) => {
+      value.items.forEach((notification) => {
+        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+      });
+      dashboardNotifications.items.push(...(value?.items ?? []));
+    });
+    respondentNotifications?.forEach((value, gaRef, map) => {
+      value.items.forEach((notification) => {
+        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+      });
+      dashboardNotifications.items.push(...(value?.items ?? []));
+    });
+    sortDashboardNotifications(dashboardNotifications, mainClaimNotificationIds);
     return dashboardNotifications;
   } else {
     throw new Error('Notifications not found...');
@@ -90,3 +142,57 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   }
   return undefined;
 }
+
+export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
+  if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+   && claim.defendantUserDetails !== undefined) {
+    if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+      };
+    } else if(claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+      };
+    }
+
+    return {
+      text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }),
+      url: applicationNoticeUrl,
+    };
+  }
+};
+
+export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {
+  dashboardNotifications.items?.sort((notification1, notification2) => {
+    if (notification1.deadline) {
+      if (!notification2.deadline) {
+        // Only notification 1 has a deadline
+        return -1;
+      } else {
+        // Both have deadlines, check for earliest
+        return notification1.deadline.localeCompare(notification2.deadline);
+      }
+    }
+    if (notification2.deadline) {
+      // Only notification 2 has a deadline
+      return 1;
+    }
+    if (mainClaimNotificationIds.includes(notification1.id)) {
+      if (!mainClaimNotificationIds.includes(notification2.id)) {
+        // Only notification 1 is for main claim
+        return -1;
+      } else {
+        // Both are for main claim, check which was created last
+        return -notification1.createdAt.localeCompare(notification2.createdAt);
+      }
+    }
+    if (mainClaimNotificationIds.includes(notification2.id)) {
+      // Only notification 2 is for main claim
+      return 1;
+    }
+    // Both are GA notifications, check which was created last
+    return -notification1.createdAt.localeCompare(notification2.createdAt);
+  });
+};

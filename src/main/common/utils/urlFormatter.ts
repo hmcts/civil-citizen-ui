@@ -16,3 +16,7 @@ export function constructUrlWithNotEligibleReason(path: string, reason: NotEligi
   return `${path}?reason=${reason}`;
 }
 
+export function constructUrlWithIndex(path: string, index: number): string {
+  return `${path}?index=${index}`;
+}
+

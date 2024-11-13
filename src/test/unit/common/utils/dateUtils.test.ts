@@ -1,7 +1,12 @@
 import {
   addDaysBefore4pm,
-  addMonths, checkEvidenceUploadTime, dateTimeFormat, formatStringDateDMY, formatStringTimeHMS,
-  getDOBforAgeFromCurrentTime, isDateOnOrAfterSpecificDate,
+  addMonths,
+  checkEvidenceUploadTime,
+  dateTimeFormat,
+  formatStringDateDMY,
+  formatStringTimeHMS,
+  getDOBforAgeFromCurrentTime, isAfter4PM,
+  isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
 describe('addDaysBefore4pm', () => {
@@ -179,4 +184,19 @@ describe('dateTimeFormat', () => {
     const result = dateTimeFormat(date, 'cy');
     expect(result).toBe('29 Mai 2024, 2:39:28 yh');
   });
+});
+
+describe('isAfter4PM', () => {
+  it('should return false when date is before 4pm', () => {
+    const date = new Date('2023-01-01T11:59');
+    const result = isAfter4PM(date);
+    expect(result).toBe(false);
+  });
+
+  it('should return true when date is on after 4pm', () => {
+    const date = new Date('2023-01-01T17:59');
+    const result = isAfter4PM(date);
+    expect(result).toBe(true);
+  });
+
 });

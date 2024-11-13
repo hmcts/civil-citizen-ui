@@ -11,7 +11,7 @@ import {getCancelUrl} from 'services/features/generalApplication/generalApplicat
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {generateRedisKey, generateRedisKeyForGA, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
   getSummaryList,
   removeDocumentFromRedis,
@@ -81,8 +81,6 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
   try {
     const claimId = req.params.id;
     const redisKeyForGA = generateRedisKeyForGA(req);
-    const redisKey = generateRedisKey(req);
-    const claim: Claim = await getCaseDataFromStore(redisKey);
     const gaResponse = await getDraftGARespondentResponse(redisKeyForGA);
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
 
@@ -102,8 +100,19 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     form.validateSync();
     if (form.hasFieldError('fileUpload') && (gaResponse?.uploadEvidenceDocuments === undefined ||
       gaResponse?.uploadEvidenceDocuments?.length === 0)) {
-      await getSummaryList(formattedSummary, redisKeyForGA, claimId, req.params.appId);
-      return await renderView(req, form, claim, claimId, res, req.params.appId, formattedSummary);
+      const errors = [{
+        target: {
+          fileUpload: '',
+          typeOfDocument: '',
+        },
+        value: '',
+        property: '',
+        constraints: {
+          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
+        },
+      }];
+      req.session.fileUpload = JSON.stringify(errors);
+      return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
     }

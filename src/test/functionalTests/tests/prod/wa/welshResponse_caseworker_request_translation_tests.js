@@ -3,9 +3,10 @@ const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefend
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const sharedData = require('../../../sharedData');
 // const UploadTranslatedDocumentsSteps = require('../../caseworkerFeatures/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
 // const CaseworkerDashboardSteps = require('../../caseworkerFeatures/caseworkerDashboard/steps/caseworkerDashboardSteps');
-// const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails'); 
+// const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails');
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
@@ -30,23 +31,24 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
 });
 
 Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async () => {
-  // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  // await ResponseSteps.RespondToClaim(claimRef, 'cy');
-  // await ResponseSteps.EnterPersonalDetails(claimRef, false);
-  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  // await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  // await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  // await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  // await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  // await ResponseSteps.AddYourTimeLineEvents();
-  // await ResponseSteps.EnterYourEvidenceDetails();
-  // await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
-  // await ResponseSteps.EnterDateToPayOn();
-  // await ResponseSteps.EnterFinancialDetails(claimRef);
-  // await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  // await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  // await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  await ResponseSteps.RespondToClaim(claimRef, 'cy');
+  await ResponseSteps.EnterPersonalDetails(claimRef, false);
+  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  await ResponseSteps.AddYourTimeLineEvents();
+  await ResponseSteps.EnterYourEvidenceDetails();
+  await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
+  await ResponseSteps.EnterDateToPayOn();
+  await ResponseSteps.EnterFinancialDetails(claimRef);
+  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  sharedData.language = 'en';
 });
 
 /*
@@ -59,9 +61,9 @@ Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
     await UploadTranslatedDocumentsSteps.VerifySuccessBanner(claimRef);
   };
   await wa.runWATask(
-    config.caseWorker, 
-    claimRef, 
-    config.waTaskTypes.defendantWelshRequest, 
+    config.caseWorker,
+    claimRef,
+    config.waTaskTypes.defendantWelshRequest,
     defendantWelshRequestTaskDetails,
     taskSteps,
   );

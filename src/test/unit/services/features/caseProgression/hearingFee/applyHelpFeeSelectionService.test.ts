@@ -8,9 +8,9 @@ import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
 import {APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppSession} from 'models/AppRequest';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 
 declare const appRequest: requestModels.AppRequest;
@@ -18,6 +18,7 @@ const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
 describe('applyHelpWithFeeSelection', () => {
+  mockedAppRequest.session = {user: {id: 'jfkdljfd'}} as unknown as AppSession;
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   it('should return gov pay url if user selects No', async () => {

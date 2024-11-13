@@ -2,13 +2,14 @@ import { Claim } from 'common/models/claim';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
-export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string) => {
+export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string, appResponse?: ApplicationResponse) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
   if (withoutFee) {
     panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.APPLICATION_SUBMITTED', lng);
   } else {
-    panelBuilder.addPanel(claim.generalApplication?.applicationFeePaymentDetails?.paymentReference, lng);
+    panelBuilder.addPanel(appResponse?.case_data?.generalAppPBADetails?.paymentDetails.reference, lng);
   }
   return panelBuilder.build();
 };
@@ -27,7 +28,8 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', {lng: getLng(lng)})
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_6', {lng: getLng(lng)})
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', {lng: getLng(lng)})
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)});
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)})
+      .addParagraph('COMMON.IF_NECESSARY_DOCUMENTS', {lng: getLng(lng)});
   } else {
     if (withoutFee) {
       contentBuilder
@@ -39,7 +41,9 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
     contentBuilder
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_2', {lng: getLng(lng)})
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', {lng: getLng(lng)})
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)});
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)})
+      .addParagraph('COMMON.IF_NECESSARY_DOCUMENTS', {lng: getLng(lng)});
+
     if (!withoutFee) {
       contentBuilder
         .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY', {lng: getLng(lng)})

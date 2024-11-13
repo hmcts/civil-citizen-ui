@@ -1,6 +1,14 @@
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
+  memoryRequests: 4Gi
+  cpuRequests: 4000m
+  memoryLimits: 4Gi
+  cpuLimits: 3500m
+  devmemoryRequests: 8Gi
+  devcpuRequests: 4000m
+  devmemoryLimits: 8Gi
+  devcpuLimits: 4500m
   ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
   keyVaults:
     civil-cui:
@@ -135,7 +143,8 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 25m
+            cpu: 500m
+            memory: 2048Mi
         initdb:
           scripts:
             init.sql: |
@@ -446,8 +455,6 @@ civil-general-applications:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
-          - name: AppInsightsInstrumentationKeyGeneralApplications
-            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
           - name: gov-notify-api-key
@@ -473,6 +480,7 @@ civil-general-applications:
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       DASHBOARD_API_URL: http://${SERVICE_NAME}-java
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
+      SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
 postgresql:
   enabled: false

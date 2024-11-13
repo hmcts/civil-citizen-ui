@@ -34,12 +34,12 @@ class ApplyHelpWithFeesReferenceNumber {
   }
 
   verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    // I.see('Case number: ' + caseNumber, 'p');
+    I.see('Case number: ' + caseNumber, 'p');
     I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyPageText() {
-    I.see('Do you have a help with fees reference number?', 'h3');
+    I.see('Do you have a help with fees reference number?', 'h2');
     I.see('Yes');
     I.see('No');
   }
@@ -56,7 +56,7 @@ class ApplyHelpWithFeesReferenceNumber {
     I.see('Next steps');
     I.see('You must apply for help with fees before submitting your application.');
     I.see('Go to');
-    I.see('apply for help with fees (opens in a new tab).', '[href=\'https://www.gov.uk/get-help-with-court-fees\']');
+    I.see('apply for help with fees (opens in a new tab)', '[href=\'https://www.gov.uk/get-help-with-court-fees\']');
     I.see('When you are asked to enter a court or tribunal number, enter \'hearing fee\' followed by short explanation, for example \'hearing fee for small claims\' or \'hearing fee for fast track\'.');
     I.see('Complete the help with fees application.');
     I.see('Return here to your online money claims account.');

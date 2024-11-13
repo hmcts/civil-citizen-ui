@@ -87,6 +87,8 @@ import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedR
 import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
 import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 
 export class CivilClaimResponse {
   id: string;
@@ -199,6 +201,7 @@ export interface CCDClaim extends ClaimUpdate {
   specRespondent1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
   specRespondent1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
   respondent1DQClaimantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
+  respondent1DQEvidenceConfirmDetails?: CCDEvidenceConfirmDetails;
   sdoOrderDocument?: CaseDocument;
   respondToClaim?: CCDRespondToClaim;
   defenceRouteRequired?: string;
@@ -309,6 +312,8 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
+  generalApplications?: CCDGeneralApplication[];
+  joIsLiveJudgmentExists?: YesNoUpperCamelCase;
 }
 
 export interface ClaimFeeData {

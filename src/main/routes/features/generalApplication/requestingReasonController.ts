@@ -6,7 +6,6 @@ import {
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
@@ -20,6 +19,10 @@ import { buildRequestingReasonPageContent } from 'services/features/generalAppli
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
@@ -34,9 +37,9 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
     const applicationTypeOption = getByIndexOrLast(generalApplication?.applicationTypes, applicationIndex)?.option;
     const requestingReasonText = getByIndex(generalApplication?.requestingReasons, applicationIndex)?.text;
     const requestingReason = new RequestingReason(requestingReasonText);
-    const applicationType = selectedApplicationType[applicationTypeOption];
+    const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
+    const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
@@ -58,10 +61,10 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const requestingReason = new RequestingReason(req.body.text);
-    const applicationIndex = queryParamNumber(req, 'index');
+    const applicationIndex = queryParamNumber(req, 'index') || 0;
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
+    const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     await form.validate();
@@ -70,16 +73,21 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
         form,
         cancelUrl,
         backLinkUrl,
-        applicationType: selectedApplicationType[applicationTypeOption],
+        applicationType: getApplicationTypeOptionByTypeAndDescription(applicationTypeOption,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ),
         contentList,
       });
     } else {
       await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) + `?index=${applicationIndex}`); //add index param
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
+
+function getBackLinkUrl(claimId: string, index: number) : string {
+  const indexParam = `?index=${index}`;
+  return constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL) + indexParam;
+}
 
 export default requestingReasonController;

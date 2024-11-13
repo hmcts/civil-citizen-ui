@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
+import {CLAIM_HELP_WITH_FEES_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 import {Claim} from 'models/claim';
@@ -82,7 +82,7 @@ describe('Claim Total Interest Controller', () => {
 
       await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '8', reason: '99 reasons'}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_INTEREST_CONTINUE_CLAIMING_URL);
+        expect(res.header.location).toBe(CLAIM_HELP_WITH_FEES_URL);
       });
     });
 

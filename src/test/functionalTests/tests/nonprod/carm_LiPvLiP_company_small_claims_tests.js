@@ -107,7 +107,7 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
     taskListItem = viewMediationDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
     await ClaimantResponseSteps.StartUploadDocs();
     await UploadDocSteps.VerifyDocuments();
     await UploadDocSteps.SelectDocuments('Your statement');
@@ -130,9 +130,9 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
     await api.waitForFinishedBusinessProcess();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
     await ClaimantResponseSteps.ViewMediationDocs();
   }
 }).tag('@regression-carm').tag('@nightly');
@@ -143,9 +143,9 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     const notification = mediationUnsuccessfulClaimant1NonAttendance();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
     await ClaimantResponseSteps.StartUploadDocs();
     await UploadDocSteps.VerifyDocuments();
     await UploadDocSteps.SelectDocuments('Your statement');
@@ -158,13 +158,13 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     await api.waitForFinishedBusinessProcess();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
     taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress');
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
   }
 }).tag('@regression-carm').tag('@nightly');

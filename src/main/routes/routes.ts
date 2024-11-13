@@ -416,6 +416,18 @@ import gaDirectionOrderCheckAnswersController from './features/generalApplicatio
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
 import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
 import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
+import respondAddInfoController
+  from 'routes/features/generalApplication/additionalInfoUpload/respondController';
+import respondWrittenRepController
+  from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
+import debtPaymentEvidenceController
+  from 'routes/features/generalApplication/certOfSorC/debtPaymentEvidenceController';
+import askProofOfDebtPaymentGuidanceController
+  from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
+import defendantFinalPaymentDateController from 'routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
+import coscCheckAnswersController from 'routes/features/generalApplication/certOfSorC/checkAnswersController';
+import submitCoScApplicationConfirmationController
+  from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 
 export default [
   homeController,
@@ -742,6 +754,7 @@ export default [
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  respondAddInfoController,
   uploadAdditionalDocumentsController,
   gaAdditionalDocCheckAnswerController,
   additionalDocSubmittedController,
@@ -753,4 +766,10 @@ export default [
   directionOrderSubmittedConfirmationController,
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
+  respondWrittenRepController,
+  askProofOfDebtPaymentGuidanceController,
+  defendantFinalPaymentDateController,
+  debtPaymentEvidenceController,
+  coscCheckAnswersController,
+  submitCoScApplicationConfirmationController,
 ];

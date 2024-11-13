@@ -1,64 +1,95 @@
 import {
+  deleteFieldDraftClaimFromStore,
+  findClaimIdsbyUserId,
   getCaseDataFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
   ApplicationTypeOption,
-  selectedApplicationType,
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
-import {HearingSupport} from 'models/generalApplication/hearingSupport';
-import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {AppRequest} from 'common/models/AppRequest';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {ValidationError} from 'class-validator';
-import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {OrderJudge} from 'common/models/generalApplication/orderJudge';
-import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
-import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import { HearingSupport } from 'models/generalApplication/hearingSupport';
+import { Claim } from 'models/claim';
+import {
+  CANCEL_URL,
+  GA_APPLICATION_RESPONSE_SUMMARY_URL,
+  GA_APPLICATION_SUMMARY_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_VIEW_APPLICATION_URL,
+} from 'routes/urls';
+import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { AppRequest } from 'common/models/AppRequest';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { ValidationError } from 'class-validator';
+import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
+import {
+  constructResponseUrlWithIdAndAppIdParams,
+  constructResponseUrlWithIdParams,
+} from 'common/utils/urlFormatter';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { OrderJudge } from 'common/models/generalApplication/orderJudge';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
+import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
 import {
   AcceptDefendantOffer,
   ProposedPaymentPlanOption,
 } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {
+  ApplicationState,
+  ApplicationStatus,
+} from 'common/models/generalApplication/applicationSummary';
+import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import config from 'config';
-import {GaServiceClient} from 'client/gaServiceClient';
+import { GaServiceClient } from 'client/gaServiceClient';
 import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from './response/generalApplicationResponseStoreService';
-import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
+import { CCDGaHelpWithFees } from 'models/gaEvents/eventDto';
+import { triggerNotifyHwfEvent } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { toCCDYesNo } from 'services/translation/response/convertToCCDYesNo';
+import { getClaimById } from 'modules/utilityService';
 import {
-  triggerNotifyHwfEvent,
-} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
-import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
-import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
-import {getClaimById} from 'modules/utilityService';
-import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+  getDraftGAHWFDetails,
+  saveDraftGAHWFDetails,
+} from 'modules/draft-store/gaHwFeesDraftStore';
+import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { t } from 'i18next';
+import { GeneralAppUrgencyRequirement } from 'models/generalApplication/response/urgencyRequirement';
+import {exhaustiveMatchingGuard} from 'services/genericService';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
 const generalApplicationClient = new GaServiceClient(baseUrl);
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
+export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const removeAllOtherApplications = async (claimId: string, claim: Claim): Promise<void> => {
+  try {
+    claim.generalApplication.applicationTypes = [claim.generalApplication.applicationTypes[0]];
+    claim.generalApplication.orderJudges = [claim.generalApplication.orderJudges[0]];
+    claim.generalApplication.requestingReasons = [claim.generalApplication.requestingReasons[0]];
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -180,14 +211,9 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 };
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
-  if (claim.isClaimant()) {
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled) {
-      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    }
-    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
-  }
-  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  return CANCEL_URL
+    .replace(':id', claimId)
+    .replace(':propertyName', 'generalApplication');
 };
 
 export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
@@ -283,7 +309,7 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
   return (applicationTypes?.length === 1)
-    ? selectedApplicationType[applicationTypes[0].option]
+    ? getApplicationTypeOptionByTypeAndDescription(applicationTypes[0].option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE)
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 
@@ -323,6 +349,17 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
       property: 'option',
     });
 
+    errors.push(validationError);
+  } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.joIsLiveJudgmentExists === undefined || claim.joIsLiveJudgmentExists?.option === YesNo.NO)) {
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(body.optionOther, ''),
+      value: body.option,
+      constraints: {
+        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
+      },
+      property: 'option',
+    });
     errors.push(validationError);
   }
 };
@@ -371,33 +408,61 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
   };
 };
 
-export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
-  switch (status) {
-    case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
-    case ApplicationState.LISTING_FOR_A_HEARING:
-    case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
-      return ApplicationStatus.IN_PROGRESS;
-    case ApplicationState.AWAITING_APPLICATION_PAYMENT:
-    case ApplicationState.HEARING_SCHEDULED:
-    case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
-    case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
-    case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
-    case ApplicationState.APPLICATION_ADD_PAYMENT:
-      return ApplicationStatus.TO_DO;
-    case ApplicationState.ORDER_MADE:
-    case ApplicationState.APPLICATION_DISMISSED:
-    case ApplicationState.APPLICATION_CLOSED:
-    case ApplicationState.PROCEEDS_IN_HERITAGE:
-      return ApplicationStatus.COMPLETE;
-    default:
-      return ApplicationStatus.TO_DO;
+export const getApplicationStatus = (isApplicant: boolean, status: ApplicationState): ApplicationStatus => {
+  if (isApplicant) {
+    switch (status) {
+      case ApplicationState.PENDING_APPLICATION_ISSUED:
+      case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_PROVIDED:
+      case ApplicationState.LISTING_FOR_A_HEARING:
+      case ApplicationState.HEARING_SCHEDULED:
+        return ApplicationStatus.IN_PROGRESS;
+      case ApplicationState.APPLICATION_ADD_PAYMENT:
+      case ApplicationState.APPLICATION_PAYMENT_FAILED:
+      case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
+      case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
+      case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
+      case ApplicationState.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION:
+        return ApplicationStatus.TO_DO;
+      case ApplicationState.ORDER_MADE:
+      case ApplicationState.APPLICATION_DISMISSED:
+      case ApplicationState.APPLICATION_CLOSED:
+      case ApplicationState.PROCEEDS_IN_HERITAGE:
+        return ApplicationStatus.COMPLETE;
+      default:
+        exhaustiveMatchingGuard(status);
+    }
+  } else {
+    switch (status) {
+      case ApplicationState.PENDING_APPLICATION_ISSUED:
+      case ApplicationState.APPLICATION_ADD_PAYMENT:
+      case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED:
+      case ApplicationState.LISTING_FOR_A_HEARING:
+      case ApplicationState.HEARING_SCHEDULED:
+      case ApplicationState.APPLICATION_PAYMENT_FAILED:
+      case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+        return ApplicationStatus.IN_PROGRESS;
+      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
+      case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_PROVIDED:
+      case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
+      case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
+      case ApplicationState.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION:
+        return ApplicationStatus.TO_DO;
+      case ApplicationState.ORDER_MADE:
+      case ApplicationState.APPLICATION_DISMISSED:
+      case ApplicationState.APPLICATION_CLOSED:
+      case ApplicationState.PROCEEDS_IN_HERITAGE:
+        return ApplicationStatus.COMPLETE;
+      default:
+        exhaustiveMatchingGuard(status);
+    }
   }
 };
-
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
-  (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
-    ? ApplicationStatus.TO_DO
-    : ApplicationStatus.IN_PROGRESS;
 
 export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
   return await generalApplicationClient.getApplication(req, applicationId);
@@ -407,6 +472,30 @@ export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUplo
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.wantToUploadDocuments = wantToUploadDocuments;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveAdditionalText = async (redisKey: string, additionalText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveWrittenRepText = async (redisKey: string, writtenRepText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.writtenRepText = writtenRepText;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
@@ -449,10 +538,55 @@ export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
       || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
-export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
-  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+
+export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {
+  if (!userId) return;
+  const claimsIds = await findClaimIdsbyUserId(userId);
+  claimsIds?.forEach(async (claimId: string) => {
+    const claim = await getCaseDataFromStore(claimId);
+    await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+  });
+};
+
+export const getViewApplicationUrl = (claimId: string, claim: Claim, application: ApplicationResponse, index: number ) : string => {
+  const viewApplicationUrl = toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, application) ? GA_VIEW_APPLICATION_URL : GA_RESPONSE_VIEW_APPLICATION_URL;
+  return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
+};
+
+export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boolean, gaRedisKey: string, applicationTypes: ApplicationTypeOption[], generalAppUrgencyRequirement: GeneralAppUrgencyRequirement): Promise<void> => {
+  if (isAllowedToRespond) {
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalAppUrgencyRequirement = generalAppUrgencyRequirement;
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
+};
+
+export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
+  if(isGAFlagEnable) {
+    let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
+    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
+    if(applications && applications.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
+      };
+    }
+  }
+};
+
+export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  for (const ccdGeneralApplication of ccdGeneralApplications) {
+    if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec.toString();
+    }
+  }
+  return undefined;
+};
+
+export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
+  const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
+  return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
 };

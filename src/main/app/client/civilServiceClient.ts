@@ -25,8 +25,11 @@ import {
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
-  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
-  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL, CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL,
+  CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
+  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL,
+  CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
+  CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -58,6 +61,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -65,7 +69,7 @@ const logger = Logger.getLogger('civilServiceClient');
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
-  claim.id = caseDetails.id;
+  claim.id = caseDetails.id?.toString();
   claim.lastModifiedDate = caseDetails.last_modified;
   return claim;
 };
@@ -188,7 +192,11 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
+      logger.info('Before Round off ' + amount);
+      amount = roundOffTwoDecimals(amount);
+      logger.info('After Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');
@@ -474,12 +482,8 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
-    const config = this.getConfig(req);
-    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
-    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
-
-    dashboardNotificationItems = dashboardNotificationItems.filter((notification) => {
+  filterDashboardNotificationItems(dashboardNotifications: DashboardNotification[], req: AppRequest): DashboardNotification[] {
+    return dashboardNotifications.filter((notification) => {
 
       const session = req?.session;
       const actionUser = notification?.notificationAction?.createdBy;
@@ -490,16 +494,36 @@ export class CivilServiceClient {
       const timeToLive = notification.timeToLive;
 
       return !(actionUser === sessionUser && actionPerformed === 'Click'
-            && (timeToLive === 'Click'
-                || (timeToLive === 'Session'
+          && (timeToLive === 'Click'
+              || (timeToLive === 'Session'
                   && sessionStart > actionPerformedTime
-                )
-            )
+              )
+          )
       );
 
     });
+  }
 
+  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
+    const config = this.getConfig(req);
+    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+    dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
+  }
+
+  async retrieveGaNotification(appIds: string[], role: string,  req: AppRequest): Promise<Map<string, DashboardNotificationList>>  {
+    const config = this.getConfig(req);
+    const appIdsParam = appIds.join(',');
+    const response = await this.client.get(CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL.replace(':ccd-case-identifiers', appIdsParam).replace(':role-type', role), config);
+    const dashboardNotificationItems = plainToInstance(Map<string, DashboardNotification[]>, response.data as Map<string, DashboardNotification[]>);
+    const gaNotifications = new Map<string, DashboardNotificationList>;
+    dashboardNotificationItems.forEach((value, key, map) => {
+      const dashboardNotificationItems = this.filterDashboardNotificationItems(value, req);
+      gaNotifications.set(key, new DashboardNotificationList(dashboardNotificationItems));
+    });
+
+    return gaNotifications;
   }
 
   async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {

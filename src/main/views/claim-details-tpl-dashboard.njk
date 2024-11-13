@@ -18,6 +18,9 @@
 <!-- End Dynatrace -->
 
 <!-- Google Tag Manager -->
+<script nonce={{ nonceDataLayer }}>
+window.dataLayer = window.dataLayer || [];
+</script>
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -42,7 +45,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ headerComponent(t, user) }}
 {% endblock %}
 
-{% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces})  %}
+{% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces if pageTitle else 'cui' }) %}
+
 {% block beforeContent %}
 
 {{ govukPhaseBanner({
@@ -58,7 +62,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ govukBreadcrumbs({
     items: [
       {
-        text: t('COMMON.HOME'),
+        text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME'),
         href: dashboardUrl
       },
       {
@@ -71,7 +75,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {{ govukBreadcrumbs({
       items: [
         {
-          text: t('COMMON.HOME')
+          text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')
         }
       ]
     }) }}
@@ -110,7 +114,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 {% endblock %}
 {% block footer %}
-{% if developmentMode != 'production' %}
+{% if developmentMode%}
 {{ govukFooter({
     contentLicence: {
       html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })

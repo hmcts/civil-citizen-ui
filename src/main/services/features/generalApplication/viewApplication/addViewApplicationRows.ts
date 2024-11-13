@@ -3,13 +3,19 @@ import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {getEvidencePaymentOption} from 'services/features/generalApplication/checkAnswers/addCheckAnswersRows';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {generalApplicationDocumentIdExtractor} from 'common/utils/stringUtils';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -37,7 +43,7 @@ export const addApplicationTypesRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
         rows.push(
           summaryRow(
@@ -69,8 +75,8 @@ export const addApplicationTypesAndDescriptionRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
-        const applicationTypeDescription = selectedApplicationTypeDescription[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+        const applicationTypeDescription = getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION);
 
         rows.push(
           summaryRow(
@@ -91,13 +97,25 @@ export const addApplicationTypesAndDescriptionRows = (
   return rows;
 };
 
+export const addAnotherApplicationRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.applicationTypes) {
+    const addAnotherApplication = (application.case_data.generalAppType.types.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApplication}`, {lng})),
+    );
+  }
+  return rows;
+};
+
 export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppRespondentAgreement) {
-    const partiesAgreed = (application.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    const partiesAgreed = otherPartiesAgreed(application) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng})),
     );
   }
   return rows;
@@ -106,11 +124,19 @@ export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang:
 export const addInformOtherPartiesRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppInformOtherParty) {
+  if (application.case_data.generalAppInformOtherParty && !otherPartiesAgreed(application)) {
     const informOtherParties = (application.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION_2.${informOtherParties}`, {lng})),
     );
+    if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
+      rows.push(
+        summaryRow(
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
+          application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
+        ),
+      );
+    }
   }
   return rows;
 };
@@ -144,16 +170,16 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
   const rows: SummaryRow[] = [];
   let rowValue: string;
   if (application.case_data.gaAddlDoc) {
-    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
     rowValue += '<ul class="no-list-style">';
     application.case_data.gaAddlDoc.forEach(uploadGAFile => {
-      rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', generalApplicationDocumentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
+      rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', documentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
 
     });
     rowValue += '</ul>';
 
   } else {
-    rowValue = t('COMMON.VARIATION.NO', {lng});
+    rowValue = t('COMMON.VARIATION_2.NO', {lng});
   }
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue),
@@ -168,7 +194,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
     const hearingPreferredType = toCUIHearingPreferencesPreferredType(application.case_data.generalAppHearingDetails.HearingPreferencesPreferredType);
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE', {lng}),
-        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${hearingPreferredType}`, {lng})),
+        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${hearingPreferredType}`, {lng})),
     );
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
@@ -233,19 +259,55 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
       supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.SIGN_INTERPRETER)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage}'</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.LANGUAGE_INTERPRETER)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${application.case_data.generalAppHearingDetails.SupportRequirementLanguageInterpreter}'</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.OTHER_SUPPORT)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${application.case_data.generalAppHearingDetails.SupportRequirementOther}'</li>`;
     }
     supportHtml += '</ul>';
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
     );
+  }
+  return rows;
+};
+
+export const addFinalPaymentDateDetails = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.certOfSC) {
+    const finalPaymentDate = formatDateToFullDate(application.case_data.certOfSC.defendantFinalPaymentDate, lang);
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1', {lng}), finalPaymentDate),
+    );
+  }
+  return rows;
+};
+
+export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  let rowValue: string;
+  const rows: SummaryRow[] = [];
+  if (application.case_data.certOfSC) {
+    const evidenceOption = application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption;
+    if (evidenceOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
+      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
+                        ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
+
+      rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
+        ${application.case_data.certOfSC.debtPaymentEvidence.provideDetails}</p>`;
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(rowValue, {lng})));
+    } else {
+      const evidenceDetails = getEvidencePaymentOption(application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption);
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(evidenceDetails, {lng})),
+      );
+    }
   }
   return rows;
 };
@@ -262,3 +324,6 @@ const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType)
       return undefined;
   }
 };
+
+const otherPartiesAgreed = (application: ApplicationResponse): boolean =>
+  application.case_data.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES;

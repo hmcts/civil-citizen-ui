@@ -103,9 +103,22 @@ module.exports = {
     email: 'civil-admin@mailnesia.com',
     type: 'admin',
   },
+  //For users info refer - https://tools.hmcts.net/confluence/display/CHMC/Civil+Hearings+Management+JO+Test+Data+Requirements+-+for+Key+Journeys
   judgeUserWithRegionId1: {
     password: judgeDefaultPassword,
-    email: '4917924EMP-@ejudiciary.net',
+    email: 'DJ.Amy.Powell@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
+  legalAdvisor: {
+    password: defaultPassword,
+    email: 'tribunal_legal_caseworker_reg2@justice.gov.uk',
+    type: 'legal operations',
+  },
+  judgeUserWithRegionId2: {
+    password: judgeDefaultPassword,
+    email: 'DJ.Angel.Morgan@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',
@@ -119,6 +132,13 @@ module.exports = {
   },
   hearingCenterAdminWithRegionId1: {
     email: 'hearing_center_admin_reg1@justice.gov.uk',
+    password: defaultPassword,
+    type: 'hearing-center-admin',
+    roleCategory: 'ADMIN',
+    regionId: '1',
+  },
+  hearingCenterAdminWithRegionId2: {
+    email: 'hearing_center_admin_reg2@justice.gov.uk',
     password: defaultPassword,
     type: 'hearing-center-admin',
     roleCategory: 'ADMIN',
@@ -164,14 +184,17 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  gaCourtToBeSelected:'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS',
   localMediationTests: false,
   localNoCTests: false,
   hwfEvents: {
     updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
     partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
     fullRemission: 'FULL_REMISSION_HWF',
+    noRemission: 'NO_REMISSION',
     invalidHWFRef: 'INVALID_HWF_REFERENCE',
     moreInfoHWF: 'MORE_INFORMATION_HWF',
+    feePayOutcome: 'FEE_PAYMENT_OUTCOME',
   },
   defenceType: {
     admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',

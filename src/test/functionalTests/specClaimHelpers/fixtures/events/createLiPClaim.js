@@ -1,7 +1,7 @@
 
 const { getClaimFee } = require('./claimAmountAndFee');
 
-const createLipClaim = (user, userId, totalClaimAmount) => {
+const createLipClaim = (user, userId, totalClaimAmount, language = undefined) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
     caseDataUpdate: {
@@ -18,7 +18,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
           AddressLine1: '123',
           AddressLine2: 'Fake Street',
           AddressLine3: '',
-          PostCode: 'S12eu',
+          PostCode: 'EC1V 3RE',
           PostTown: 'sheffield',
         },
         soleTraderDateOfBirth: null,
@@ -149,7 +149,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
         },
       ],
       claimFee: getClaimFee(totalClaimAmount),
-      claimantBilingualLanguagePreference: undefined,
+      claimantBilingualLanguagePreference: language,
     },
   };
   return eventDto;

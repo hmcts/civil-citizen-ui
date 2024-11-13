@@ -18,18 +18,20 @@ module.exports = {
   },
 
   //Notice.AAA6.ClaimantIntent.ClaimSettled.Claimant
-  claimIsSettledClaimant: (amount, date) => {
+  claimIsSettledClaimant: () => {
     return {
       title: 'The claim is settled',
-      content: `You have confirmed that Sir John Doe paid £${amount} on ${date}.`,
+      content: ['You have confirmed that the claim against Sir John Doe was settled on 1 January 2020.',
+        'The defendant has 19 days from the date of settlement to notify the court of any objection.'],
     };
   },
 
   //Notice.AAA6.ClaimantIntent.ClaimSettled.Defendant
-  claimIsSettledDefendant: (amount, date) => {
+  claimIsSettledDefendant: () => {
     return {
       title: 'The claim is settled',
-      content: `Miss Jane Doe has confirmed that you paid £${amount} on ${date}.`,
+      content: ['The claimant has confirmed that this case was settled on 1 January 2020.',
+        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at ocmcnton@justice.gov.uk'],
     };
   },
 
@@ -99,7 +101,7 @@ module.exports = {
   hwfNoRemission: () => {
     return {
       title: 'Your help with fees application has been rejected',
-      content: ['We\'ve rejected your application for help with the claim fee. See the email for further details.', 'You\'ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.'],
+      content: ['We\'ve rejected your application for help with the claim fee. See the email for further details.', 'You must pay the full fee of', 'You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
@@ -208,6 +210,23 @@ module.exports = {
     };
   },
 
+  otherSideTrialArrangements: () => {
+    return {
+      title: 'The other side has confirmed their trial arrangements',
+      content: 'You can view the arrangements that they\'ve confirmed.',
+      nextSteps: 'view the arrangements that they\'ve confirmed',
+    };
+  },
+
+  //Notice.AAA6.CP.Trial Arrangements.Required
+  confirmTrialArrangements: (dueDate) => {
+    return {
+      title: 'Confirm your trial arrangements',
+      content: `You must confirm your trial arrangements by ${dueDate}. This means that you'll need to confirm if the case is ready for trial or not. You'll also need to confirm whether circumstances have changed since you completed the directions questionnaire. Refer to the questionnaire you submitted if you're not sure what you previously said.`,
+      nextSteps: 'confirm your trial arrangements',
+    };
+  },
+
   //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
@@ -217,12 +236,58 @@ module.exports = {
     };
   },
 
+  orderMadeLA: (deadline) => {
+    return {
+      title: 'An order has been made on this claim',
+      content: `You need to carefully read and review this order. If you don't agree with something in the order you can ask the court to review it. You can only do this once. You will have to provide details about what changes you want made and these will be reviewed by a judge. This must be done before ${deadline}.`,
+      nextSteps: 'ask the court to review it',
+    };
+  },
+
+  reviewRequested: (deadline) => {
+    return {
+      title: 'Review has been requested',
+      content: `A review of an order has been requested by the other parties. You can view their request and add comments of your own by ${deadline}. A judge will review the request and your comments and you will be contacted if the judge makes a new order. Continue doing what the current order asks of you unless you're informed a judge has made a new order.`,
+      nextSteps: 'add comments of your own',
+    };
+  },
+
+  commentMadeOnRequest: () => {
+    return {
+      title: 'Comment made on your request',
+      content: ['The other parties have made a comment on your request to review an order.',
+        'Review has been requested',
+        'A review of an order has been requested by the other parties. You can view their request and/or comments.',
+        'A judge will review the request and comments and you will be contacted if the judge makes a new order. Continue doing what the current order asks of you unless you\'re informed a judge has made a new order.'],
+      nextSteps: 'view their request and/or comments',
+    };
+  },
+
+  //Notice.AAA6.CP.Bundle.Ready
+  bundleReady: () => {
+    return {
+      title: 'The bundle is ready to view',
+      content: 'The bundle contains all the documents that will be referred to at the hearing. Review the bundle to ensure that the information is accurate.',
+      nextSteps: 'Review the bundle',
+    };
+  },
+
   //Notice.AAA6.CP.Hearing.Scheduled.Claimant
   hearingScheduled: (hearingDate) => {
     return {
       title: 'A hearing has been scheduled',
       content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050.`,
       nextSteps: 'View the hearing notice',
+    };
+  },
+
+  //Notice.AAA6.CP.HearingDocuments.Upload
+  uploadDocuments: (statedPosition) => {
+    return {
+      title: 'Upload documents',
+      content: `You can upload and submit documents to support your ${statedPosition}. Follow the instructions set out in the directions order. Any documents submitted after the deadlines in the directions order may not be considered by the judge.`,
+      nextSteps: 'upload and submit documents',
+      nextSteps2: 'directions order',
     };
   },
 
@@ -269,9 +334,9 @@ module.exports = {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
       content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'When a judge has made a decision, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe',
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
       nextSteps2: 'View your response',
     };
   },

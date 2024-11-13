@@ -15,15 +15,20 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
   const claim = await getClaimById(claimId, req, true);
   const withoutFee = !appId;
   const applicationResponse = appId ? await getApplicationFromGAService(req, appId) : undefined;
-  const calculatedAmountInPence = applicationResponse?.case_data?.generalAppPBADetails?.fee?.calculatedAmountInPence;
+  let calculatedAmountInPence = applicationResponse?.case_data?.generalAppPBADetails?.fee?.calculatedAmountInPence;
+  if (!calculatedAmountInPence) {
+    calculatedAmountInPence = '0';
+  }
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   res.render(paymentSuccessfulViewPath,
     {
-      gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, withoutFee, lng),
+      gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, withoutFee, lng, applicationResponse),
       gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), isAdditionalFee, withoutFee,
         shouldDisplaySyncWarning(applicationResponse), lng),
       gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(await getCancelUrl(claimId, claim)),
+      noCrumbs: true,
+      pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
     });
 }
 

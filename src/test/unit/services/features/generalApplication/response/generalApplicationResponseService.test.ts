@@ -18,8 +18,14 @@ import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupp
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {t} from 'i18next';
-import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
+import {
+  ApplicationResponse,
+  CCDApplication,
+  JudicialDecisionRequestMoreInfoOptions,
+} from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
+import { Claim } from 'common/models/claim';
+import { CaseRole } from 'common/form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -42,13 +48,13 @@ describe('General Application Response service', () => {
     jest.clearAllMocks();
   });
 
-  const applicationResponse = (state: ApplicationState, withNotice?: boolean, withConsent?: boolean): ApplicationResponse => {
+  const applicationResponse = (state: ApplicationState, withNotice?: boolean, withConsent?: boolean, parentClaimantIsApplicant?: boolean): ApplicationResponse => {
     const ccdApplication: Partial<CCDApplication> = {
       applicationTypes: 'Vary order',
-      generalAppInformOtherParty: withNotice ? {isWithNotice: YesNoUpperCamelCase.YES, reasonsForWithoutNotice: undefined} : undefined,
-      generalAppRespondentAgreement: withConsent ? {hasAgreed: YesNoUpperCamelCase.YES} : undefined,
-    };
-    return {
+      generalAppInformOtherParty: withNotice ? {isWithNotice: YesNoUpperCamelCase.YES, reasonsForWithoutNotice: undefined} : {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+      generalAppRespondentAgreement: withConsent ? {hasAgreed: YesNoUpperCamelCase.YES} : {hasAgreed: YesNoUpperCamelCase.NO},
+      parentClaimantIsApplicant: parentClaimantIsApplicant ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    };    return {
       id: '6789',
       case_data: ccdApplication as CCDApplication,
       state,
@@ -178,7 +184,7 @@ describe('General Application Response service', () => {
     it('should display when multiple application selected', () => {
       //Given
       const gaResponse = new GaResponse();
-      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.SUMMARY_JUDGMENT];
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.SUMMARY_JUDGEMENT];
       //When
       const result = getRespondToApplicationCaption(gaResponse.generalApplicationType, 'en');
       //Then
@@ -188,28 +194,247 @@ describe('General Application Response service', () => {
 
   describe('isApplicationVisibleToRespondent', () => {
 
-    it('should return true when application is with notice', () => {
-      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, true)))
+    it('should return true when Claimant application is with notice', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, true, false, true)))
         .toBeTruthy();
     });
 
-    it('should return true when application is with consent', () => {
-      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, true)))
+    it('should return true when Claimant application is with consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, true, true)))
         .toBeTruthy();
     });
 
-    it('should return false when application is without notice nor consent', () => {
-      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE)))
+    it('should return false when Claimant application is without notice nor consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, false, true)))
         .toBeFalsy();
+    });
+
+    it('should return true when Defendant application is without notice or consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, false, false, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Defendant application is with notice and with consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, true, true, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Defendant application is with notice and without consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, true, false, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Defendant application is without notice and with consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, false, true, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Claimant application is without notice and court move to with notice after additional payment', () => {
+      const ccdApplication : CCDApplication = {
+        applicationFeeAmountInPence: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        applicationTypes: 'Vary order',
+        generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+        generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecisionRequestMoreInfo: {
+          judgeRequestMoreInfoText: undefined,
+          judgeRequestMoreInfoByDate: undefined,
+          deadlineForMoreInfoSubmission: undefined,
+          isWithNotice: undefined,
+          judgeRecitalText: undefined,
+          requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+        },
+        generalAppPBADetails : {
+          fee: undefined,
+          paymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          additionalPaymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          serviceRequestReference: undefined,
+        },
+      };
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        ccdApplication,
+        ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
+
+      expect(isApplicationVisibleToRespondent(applicationResponse)).toBeTruthy();
+    });
+
+    it('should return false when Claimant application is without notice and undefined fields', () => {
+      const ccdApplication : CCDApplication = {
+        applicationFeeAmountInPence: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        applicationTypes: 'Vary order',
+        generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+        generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecisionRequestMoreInfo: {
+          judgeRequestMoreInfoText: undefined,
+          judgeRequestMoreInfoByDate: undefined,
+          deadlineForMoreInfoSubmission: undefined,
+          isWithNotice: undefined,
+          judgeRecitalText: undefined,
+          requestMoreInfoOption: undefined,
+        },
+        generalAppPBADetails : {
+          fee: undefined,
+          paymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          additionalPaymentDetails: {
+            status: undefined,
+            reference: undefined,
+          },
+          serviceRequestReference: undefined,
+        },
+      };
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        ccdApplication,
+        ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
+
+      expect(isApplicationVisibleToRespondent(applicationResponse)).toBeFalsy();
+    });
+
+    it('should return false when application case data is undefined', () => {
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        undefined,
+        ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
+
+      expect(isApplicationVisibleToRespondent(applicationResponse)).toBeFalsy();
+    });
+
+    it('should return false when Claimant application is without notice and undefined judicialDecisionRequestMoreInfo', () => {
+      const ccdApplication : CCDApplication = {
+        applicationFeeAmountInPence: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        applicationTypes: 'Vary order',
+        generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+        generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecisionRequestMoreInfo: undefined,
+        generalAppPBADetails : {
+          fee: undefined,
+          paymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          additionalPaymentDetails: {
+            status: undefined,
+            reference: undefined,
+          },
+          serviceRequestReference: undefined,
+        },
+      };
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        ccdApplication,
+        ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
+
+      expect(isApplicationVisibleToRespondent(applicationResponse)).toBeFalsy();
+    });
+
+    it('should return false when Claimant application is without notice and undefined PBA', () => {
+      const ccdApplication : CCDApplication = {
+        applicationFeeAmountInPence: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        applicationTypes: 'Vary order',
+        generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+        generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecisionRequestMoreInfo: {
+          judgeRequestMoreInfoText: undefined,
+          judgeRequestMoreInfoByDate: undefined,
+          deadlineForMoreInfoSubmission: undefined,
+          isWithNotice: undefined,
+          judgeRecitalText: undefined,
+          requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+        },
+        generalAppPBADetails : undefined,
+      };
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        ccdApplication,
+        ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
+
+      expect(isApplicationVisibleToRespondent(applicationResponse)).toBeFalsy();
     });
   });
 
   describe('buildRespondentApplicationSummaryRow', () => {
 
     it('returns row awaiting respondent response state', () => {
-      const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE);
+      const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE,false, false, true);
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+          },
+        },
+      ];
 
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
@@ -222,9 +447,22 @@ describe('General Application Response service', () => {
     });
 
     it('returns row in awaiting judicial decision state', () => {
-      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
+      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,false, false, true);
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+          },
+        },
+      ];
 
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
@@ -233,6 +471,35 @@ describe('General Application Response service', () => {
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
+        } as ApplicationSummary);
+    });
+
+    it('returns row in awaiting judicial decision state with applicant view application', () => {
+      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
+      appResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+          },
+        },
+      ];
+
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
+        .toStrictEqual({
+          state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
+          status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
+          statusColor: 'govuk-tag--green',
+          types: 'Vary order',
+          id: '6789',
+          createdDate: '29 May 2024, 2:39:28 pm',
+          applicationUrl: '/case/12345/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
   });
