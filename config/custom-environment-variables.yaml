@@ -48,5 +48,3 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
-testingSupport:
-  enabled: TESTING_SUPPORT_ENABLED

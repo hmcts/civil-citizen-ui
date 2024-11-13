@@ -159,7 +159,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('nextMonth', nextMonth);
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
     nunjucksEnv.addGlobal('TestingSupportUrl', '/testing-support/create-draft-claim');
-    nunjucksEnv.addGlobal('testingSupportEnabled', config.get('testingSupport.enabled'));
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
     nunjucksEnv.addGlobal('nonceDataLayer', nonceDataLayer);
