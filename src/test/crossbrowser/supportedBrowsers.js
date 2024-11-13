@@ -42,8 +42,8 @@ const supportedBrowsers = {
       browserVersion: 'latest',
       'sauce:options': {
         name: 'Civil CUI Tests: MAC_SAFARI',
-        seleniumVersion: '3.141.59',
         screenResolution: '1280x960',
+        extendedDebugging: true,
       },
     },
   },
