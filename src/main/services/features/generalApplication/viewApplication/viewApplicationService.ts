@@ -2,6 +2,7 @@ import {
   addApplicationStatus,
   addApplicationTypesAndDescriptionRows,
   addApplicationTypesRows,
+  addAnotherApplicationRow,
   addDocumentUploadRow,
   addEvidenceOfDebtPaymentRow,
   addFinalPaymentDateDetails,
@@ -55,6 +56,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
   return [
     ...addApplicationStatus(application, lang),
     ...addApplicationTypesRows(application, lang),
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),
@@ -70,6 +72,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
 const buildViewApplicationToRespondentSections = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   return [
     ...addApplicationTypesAndDescriptionRows(application, lang),
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),
