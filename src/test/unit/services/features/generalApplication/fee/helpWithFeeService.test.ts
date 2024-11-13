@@ -193,8 +193,8 @@ describe('apply help with application fee selection', () => {
     claim.paymentSyncError = false;
     (getClaimById as jest.Mock).mockResolvedValue(claim);
     jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(ccdClaimNoGARef);
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(ccdClaimNoGARef);
     mockedAppRequest.query = {id: 'abcdef'};
     mockedAppRequest.params = {appId: '123456678'};
     mockedAppRequest.originalUrl = originalUrl;
