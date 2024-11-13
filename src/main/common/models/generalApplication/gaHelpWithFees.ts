@@ -7,6 +7,7 @@ export class GaHelpWithFees {
   helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
   applyAdditionalHelpWithFees?: GenericYesNo;
   applicationFee?: string;
+  additionalFee?: string;
 
   constructor(applyHelpWithFees?: GenericYesNo, helpWithFeesRequested?: string, helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm, applyAdditionalHelpWithFees?: GenericYesNo) {
     this.applyHelpWithFees = applyHelpWithFees;

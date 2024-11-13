@@ -19,7 +19,6 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/generalApplication/checkAnswers/checkAnswersService');
 jest.mock('../../../../../../main/services/features/generalApplication/submitApplication');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('../../../../../../main/routes/guards/checkYourAnswersGAGuard', () => ({
   checkYourAnswersGAGuard: jest.fn((req, res, next) => next()),
 }));
