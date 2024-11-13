@@ -249,7 +249,7 @@ describe('Check your Answers GA Guard', () => {
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
     );
-    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SUMMARY_JUDGMENT)];
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SUMMARY_JUDGEMENT)];
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);

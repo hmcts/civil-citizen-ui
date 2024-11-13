@@ -144,7 +144,8 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 }
 
 export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
-  if (claim.ccdState && !claim.isCaseIssuedPending() && claim.defendantUserDetails !== undefined) {
+  if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+   && claim.defendantUserDetails !== undefined) {
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
