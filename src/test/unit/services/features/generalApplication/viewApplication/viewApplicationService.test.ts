@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments, getDraftDocument, getGeneralOrder, getHearingNotice,
+  getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
   getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
@@ -508,10 +508,12 @@ describe('View Application service', () => {
       //When
       const resultGeneralOrder = getGeneralOrder(application, 'en');
       const resultHearingNotice = getHearingNotice(application, 'en');
+      const resultDismissalOrder = getDismissalOrder(application, 'en');
       //Then
 
       expect(resultGeneralOrder.length).toEqual(0);
       expect(resultHearingNotice.length).toEqual(0);
+      expect(resultDismissalOrder.length).toEqual(0);
     });
 
     it('should get data array if there is court has hearing order documents', async () => {
