@@ -20,9 +20,7 @@ class CheckAndSend {
     this.applicationType(applicationType);
     this.additionalApplication();
     this.partiesAgreed();
-    console.log(applicationType);
     if (applicationType != 'Set aside (remove) a judgment') {
-      console.log('Expecting inform other parties section');
       this.informOtherParties();
       //logic for with/without notice/consent applications
     }

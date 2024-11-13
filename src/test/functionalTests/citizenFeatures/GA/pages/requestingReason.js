@@ -33,14 +33,21 @@ class RequestingReason {
   async verifyPageText(applicationType) {
     I.see('The information you enter on this page will be seen by the other parties.');
     switch(applicationType) {
+      case 'Set aside (remove) a judgment':
+        I.see('The information you enter on this page will be seen by the other parties.');
+        I.see('You should:');
+        I.see('explain why you believe the judgment should be set aside. For example, if you missed the deadline to respond to the original claim form, then you should explain why');
+        I.see('if you don\'t believe you owe the money, or if you disagree with the claim made against you, explain why');
+        I.see('You\'ll have the option to upload documents to support your reasons on the next screen.');
+        break;
       case 'Reconsider an order':
         I.see('You should explain why you want the order to be reconsidered. You\'ll have the option to upload documents to support your reasons on the next screen.');
         break;
-      case 'More time to do what is required by a court order':
-        I.see('You should explain why you\'re not going to meet the original deadline. You\'ll have the option to upload documents to support your reasons on the next screen.');
-        break;
       case 'Change a hearing date':
         I.see('You should explain why you want the hearing date to be changed. You\'ll have the option to upload documents to support your reasons on the next screen.');
+        break;
+      case 'More time to do what is required by a court order':
+        I.see('You should explain why you\'re not going to meet the original deadline. You\'ll have the option to upload documents to support your reasons on the next screen.');
         break;
       case 'Relief from a penalty you\'ve been given by the court':
         I.see('You should explain:');

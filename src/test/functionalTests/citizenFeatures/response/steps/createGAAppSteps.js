@@ -47,7 +47,7 @@ class createGAAppSteps {
 
   async askToSetAsideJudgementGA(caseRef, parties, informOtherParty = false) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
-    const applicationType = 'Set aside \(remove\) a judgment';
+    const applicationType = 'Set aside (remove) a judgment';
     const feeAmount = '303';
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
