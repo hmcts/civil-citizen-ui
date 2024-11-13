@@ -3272,6 +3272,7 @@
         "HEARING_ORDER" : "Hearing Order",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "GENERAL_ORDER" : "General Order",
+        "DISMISSAL_ORDER": "Dismissal order",
         "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
