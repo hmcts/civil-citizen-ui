@@ -20,7 +20,7 @@ import {
   CcdHearingDocument,
   CcdGeneralOrderDocument,
   CcdGaDraftDocument,
-  CcdHearingNoticeDocument,
+  CcdHearingNoticeDocument, CcdDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
@@ -88,6 +88,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppNotificationDeadlineDate?: string;
   generalAppRespondent1Representative?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
+  generalAppN245FormUpload?: CcdDocument;
 }
 
 export interface JudicialRequestMoreInfo {
