@@ -150,7 +150,7 @@ class EligibilityCheck {
 
   async eligibilityClaimantAddressValidations(){
     await I.seeInCurrentUrl('/eligibility/claimant-address');
-    await I.waitForContent('Do you have a postal address in the UK?');
+    await I.waitForContent('Do you have a postal address in England or Wales?');
     await I.click(fields.claimantAddressNo);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claimant-address');
@@ -160,7 +160,7 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimantAddress() {
-    await I.waitForContent('Do you have a postal address in the UK?');
+    await I.waitForContent('Do you have a postal address in England or Wales?');
     await I.click(fields.claimantAddressYes);
     await I.click('Save and continue');
   }

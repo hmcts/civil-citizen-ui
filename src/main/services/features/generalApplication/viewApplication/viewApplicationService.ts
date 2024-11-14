@@ -2,6 +2,7 @@ import {
   addApplicationStatus,
   addApplicationTypesAndDescriptionRows,
   addApplicationTypesRows,
+  addAnotherApplicationRow,
   addDocumentUploadRow,
   addEvidenceOfDebtPaymentRow,
   addFinalPaymentDateDetails,
@@ -14,29 +15,34 @@ import {
   addRequestingReasonRows,
   addUnavailableDatesRows,
 } from './addViewApplicationRows';
-import {SummaryRow} from 'models/summaryList/summaryList';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {AppRequest} from 'models/AppRequest';
-import {getApplicationFromGAService, toggleViewApplicationBuilderBasedOnUserAndApplicant} from 'services/features/generalApplication/generalApplicationService';
-import {getClaimById} from 'modules/utilityService';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { SummaryRow } from 'models/summaryList/summaryList';
+import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import { AppRequest } from 'models/AppRequest';
+import {
+  getApplicationFromGAService,
+  toggleViewApplicationBuilderBasedOnUserAndApplicant,
+} from 'services/features/generalApplication/generalApplicationService';
+import { getClaimById } from 'modules/utilityService';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
 import {
   DocumentInformation,
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {CcdDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
-import {buildResponseSummaries} from './addViewApplicationResponseRows';
-import {documentIdExtractor} from 'common/utils/stringUtils';
+import { CcdDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import { buildResponseSummaries } from './addViewApplicationResponseRows';
+import { documentIdExtractor } from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
-import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { t } from 'i18next';
+import { GaDocumentType } from 'models/generalApplication/gaDocumentType';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
 
 export type ViewApplicationSummaries = {
-  summaryRows: SummaryRow[],
-  responseSummaries?: SummaryRow[],
-}
+  summaryRows: SummaryRow[];
+  responseSummaries?: SummaryRow[];
+};
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   if (displayToEnumKey(application.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID') {
@@ -50,6 +56,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
   return [
     ...addApplicationStatus(application, lang),
     ...addApplicationTypesRows(application, lang),
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),
@@ -65,6 +72,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
 const buildViewApplicationToRespondentSections = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   return [
     ...addApplicationTypesAndDescriptionRows(application, lang),
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),
@@ -181,11 +189,23 @@ export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: 
 
 const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string) => {
   return new DocumentInformation(
-    fileName,
+    getTranslatedDocumentName(fileName, lang),
     formatDateToFullDate(documentDate, lang),
     new DocumentLinkInformation(
       CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
         .replace(':documentId',
           documentIdExtractor(document.document_binary_url)),
       document.document_filename));
+};
+
+const getTranslatedDocumentName = (documentName: string, lng: string) => {
+  let documentType: GaDocumentType;
+  switch (documentName) {
+    case 'Supporting evidence':
+      documentType = GaDocumentType.SUPPORTING_EVIDENCE;
+      break;
+    default:
+      documentType = null;
+  }
+  return documentType ? t(`PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.${documentType}`, { lng }) : documentName;
 };
