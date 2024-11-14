@@ -4,7 +4,7 @@ import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  APPLY_HELP_WITH_FEES,
+  APPLY_HELP_WITH_FEES, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
   HEARING_FEE_PAYMENT_CONFIRMATION_URL,
 } from 'routes/urls';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
@@ -85,6 +85,14 @@ describe('getRedirectUrl', () => {
     expect(result).toBe(mockNewPaymentInfo.nextUrl);
   });
 
+  it('throws error if getFeePaymentRedirectInformation fails', async () => {
+    (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue({});
+    (getFeePaymentRedirectInformation as jest.Mock).mockRejectedValue(new Error('Failed to get payment info'));
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    await expect(getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockAppRequest)).rejects.toThrow('Failed to get payment info');
+  });
+
   it('throws error if getFeePaymentStatus fails', async () => {
     const mockPaymentInfo = {nextUrl: 'https://payment.url', paymentReference: 'paymentRef'} as PaymentInformation;
     (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
@@ -108,5 +116,28 @@ describe('getRedirectUrl', () => {
     (getClaimById as jest.Mock).mockRejectedValue(new Error('Failed to get claim by id'));
 
     await expect(getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockAppRequest)).rejects.toThrow('Failed to get claim by id');
+  });
+
+  it('returns payment nextUrl if paymentRedirectInformation is defined', async () => {
+    const mockPaymentInfo = {nextUrl: 'https://payment.url', paymentReference: 'paymentRef'} as PaymentInformation;
+    (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue({});
+    (getFeePaymentRedirectInformation as jest.Mock).mockResolvedValue(mockPaymentInfo);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+
+    const result = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockAppRequest);
+
+    expect(result).toBe(mockPaymentInfo.nextUrl);
+  });
+
+  it('returns HEARING_FEE_APPLY_HELP_FEE_SELECTION url if paymentRedirectInformation is undefined', async () => {
+    (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue({});
+    (getFeePaymentRedirectInformation as jest.Mock).mockResolvedValue(undefined);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+
+    const result = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockAppRequest);
+
+    expect(result).toBe(constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION));
   });
 });
