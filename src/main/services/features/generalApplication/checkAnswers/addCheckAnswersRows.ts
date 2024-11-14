@@ -17,6 +17,7 @@ import {
   COSC_FINAL_PAYMENT_DATE_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL,
 } from 'routes/urls';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
@@ -68,12 +69,13 @@ export const addApplicationTypesRows = (
 export const addOtherPartiesAgreedRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const href = `${constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL)}?changeScreen=true`;
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.agreementFromOtherParty) {
     const partiesAgreed = (claim.generalApplication?.agreementFromOtherParty === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION_5.${partiesAgreed}`, {lng}),
-        constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), changeLabel()),
+        href, changeLabel()),
     );
   }
   return rows;
@@ -89,6 +91,16 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION_2.${informOtherParties}`, {lng}),
         constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL), changeLabel()),
     );
+    if (informOtherParties === YesNoUpperCase.NO) {
+      rows.push(
+        summaryRow(
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
+          claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties,
+          constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL),
+          changeLabel(),
+        ),
+      );
+    }
   }
   return rows;
 };
@@ -135,6 +147,20 @@ export const addRequestingReasonRows = (claimId: string, claim: Claim, lang: str
           href, changeLabel(), undefined, index, arr.length),
       );
     });
+  }
+  return rows;
+};
+
+export const addAddAnotherApplicationRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const rows: SummaryRow[] = [];
+  if (claim.generalApplication?.applicationTypes) {
+    const addAnotherApp = (claim.generalApplication?.applicationTypes.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApp}`, {lng}),
+        constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL)+'?changeScreen=true', changeLabel()),
+    );
   }
   return rows;
 };
@@ -246,13 +272,13 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
       supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.signLanguageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.signLanguageInterpreter.content}'</li>`;
     }
     if (claim.generalApplication.hearingSupport.languageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.languageInterpreter.content}'</li>`;
     }
     if (claim.generalApplication.hearingSupport.otherSupport?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})}</li>`;
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${claim.generalApplication.hearingSupport.otherSupport.content}'</li>`;
     }
     supportHtml += '</ul>';
     rows.push(
@@ -323,7 +349,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
   return rows;
 };
 
-function getEvidencePaymentOption(evidenceOption: string) : string {
+export function getEvidencePaymentOption(evidenceOption: string) : string {
   switch(evidenceOption) {
     case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
       return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL';

@@ -214,7 +214,7 @@ module.exports = {
     console.log('End of performTranslatedDocUpload()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH') => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH', respondentLanguage = 'ENGLISH') => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
@@ -232,7 +232,7 @@ module.exports = {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
     }
-    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language);
+    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
@@ -654,6 +654,14 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId, user);
 
     console.log('End of uploadMediationDocumentsCui()');
+  },
+
+  adjustSubmittedDateForCarm: async (caseId) => {
+    console.log('carm not enabled, updating submitted date to past for legacy cases');
+    await apiRequest.setupTokens(config.systemUpdate);
+    const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+    await testingSupport.updateCaseData(caseId, submittedDate);
+    console.log('submitted date update to before carm date for legacy cases');
   },
 
   uploadMediationDocumentsExui: async (user) => {
