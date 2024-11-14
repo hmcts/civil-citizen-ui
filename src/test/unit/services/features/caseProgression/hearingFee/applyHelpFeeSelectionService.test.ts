@@ -5,7 +5,7 @@ import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   APPLY_HELP_WITH_FEES,
-  HEARING_FEE_PAYMENT_CONFIRMATION_URL
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL,
 } from 'routes/urls';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
