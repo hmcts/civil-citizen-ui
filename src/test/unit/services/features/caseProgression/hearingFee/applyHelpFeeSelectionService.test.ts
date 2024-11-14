@@ -85,7 +85,6 @@ describe('getRedirectUrl', () => {
     expect(result).toBe(mockNewPaymentInfo.nextUrl);
   });
 
-
   it('throws error if getFeePaymentStatus fails', async () => {
     const mockPaymentInfo = {nextUrl: 'https://payment.url', paymentReference: 'paymentRef'} as PaymentInformation;
     (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
