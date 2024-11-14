@@ -49,6 +49,8 @@ export const IGNORED_URLS = [
   urls.VIEW_DEFENDANT_INFO,
   urls.VIEW_CLAIMANT_INFO,
   urls.VIEW_RESPONSE_TO_CLAIM,
+  //TODO: remove this once finished CIV-11619
+  urls.MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
   urls.TESTING_SUPPORT_URL,
   urls.DASHBOARD_CLAIMANT_URL,
   // WCAG2AA.Principle1.Guideline1_3.1_3_1.H39.3.LayoutTable - govUK has caption on tables
