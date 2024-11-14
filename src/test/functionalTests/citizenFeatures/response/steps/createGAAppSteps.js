@@ -201,7 +201,8 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askCourtToReconsiderAnOrderGA(caseRef, parties, informOtherParty = false) {
+  async askCourtToReconsiderAnOrderGA(caseRef, parties, communicationType = 'withoutnotice') {
+    //Communication types are, consent, notice, withoutnotice/anything (default is withoutnotice)
     //Vary order
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Reconsider an order';
@@ -213,7 +214,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Ask the court to reconsider an order');
     await applicationTypePage.nextAction('Continue');
 
-    if (informOtherParty) {
+    if (communicationType == 'consent') {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
@@ -221,9 +222,13 @@ class createGAAppSteps {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
-
-      await informOtherPartiesPage.verifyPageContent(applicationType);
-      await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
     }
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
@@ -270,7 +275,7 @@ class createGAAppSteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
@@ -290,10 +295,23 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askToChangeHearingDateGA(caseRef, parties, informOtherParty = false) {
+  async askToChangeHearingDateGA(caseRef, parties, communicationType = 'withoutnotice') {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Change a hearing date';
-    const feeAmount = '119';
+    let feeAmount;
+
+    switch(communicationType) {
+      case 'consent':
+        feeAmount = '119';
+        break;
+      case 'notice':
+        feeAmount = '303';
+        break;
+      case 'withoutnotice':
+        feeAmount = '119';
+        break;
+    }
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -301,7 +319,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Ask to change a hearing date');
     await applicationTypePage.nextAction('Continue');
 
-    if (informOtherParty) {
+    if (communicationType == 'consent') {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
@@ -309,9 +327,13 @@ class createGAAppSteps {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
-
-      await informOtherPartiesPage.verifyPageContent(applicationType);
-      await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
     }
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
@@ -358,7 +380,7 @@ class createGAAppSteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
@@ -378,10 +400,23 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
+  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice') {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'More time to do what is required by a court order';
-    const feeAmount = '119';
+    let feeAmount;
+
+    switch(communicationType) {
+      case 'consent':
+        feeAmount = '119';
+        break;
+      case 'notice':
+        feeAmount = '303';
+        break;
+      case 'withoutnotice':
+        feeAmount = '119';
+        break;
+    }
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -389,7 +424,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Ask for more time to do what is required by a court order');
     await applicationTypePage.nextAction('Continue');
 
-    if (informOtherParty) {
+    if (communicationType == 'consent') {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
@@ -397,9 +432,13 @@ class createGAAppSteps {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
-
-      await informOtherPartiesPage.verifyPageContent(applicationType);
-      await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
     }
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
@@ -446,7 +485,7 @@ class createGAAppSteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
@@ -466,11 +505,24 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askForReliefFromAPenaltyGA(caseRef, parties, informOtherParty = false) {
+  async askForReliefFromAPenaltyGA(caseRef, parties, communicationType = 'withoutnotice') {
     //Relief from sanctions
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Relief from a penalty you\'ve been given by the court';
-    const feeAmount = '119';
+    let feeAmount;
+    
+    switch(communicationType) {
+      case 'consent':
+        feeAmount = '119';
+        break;
+      case 'notice':
+        feeAmount = '303';
+        break;
+      case 'withoutnotice':
+        feeAmount = '119';
+        break;
+    }
+    
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -478,7 +530,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Ask for relief from a penalty you\'ve been given by the court');
     await applicationTypePage.nextAction('Continue');
 
-    if (informOtherParty) {
+    if (communicationType == 'consent') {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
@@ -486,9 +538,13 @@ class createGAAppSteps {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
-
-      await informOtherPartiesPage.verifyPageContent(applicationType);
-      await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
     }
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
@@ -535,7 +591,7 @@ class createGAAppSteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 

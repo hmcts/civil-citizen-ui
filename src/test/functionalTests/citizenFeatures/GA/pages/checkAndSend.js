@@ -13,16 +13,15 @@ class CheckAndSend {
     I.click(nextAction);
   }
 
-  async verifyPageContent(caseNumber, parties, applicationType) {
+  async verifyPageContent(caseNumber, parties, applicationType, communicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails(applicationType, caseNumber, parties);
     this.applicationType(applicationType);
     this.additionalApplication();
-    this.partiesAgreed();
-    if (applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment') {
-      this.informOtherParties();
-      //logic needs to be updated for with/without notice/consent applications
+    this.partiesAgreed(communicationType);
+    if (communicationType !== 'consent') {
+      this.informOtherParties(communicationType);
     }
     this.costsBack();
     if (applicationType !== 'Vary a judgment') {
@@ -68,22 +67,33 @@ class CheckAndSend {
     await I.see('Change', applicatonTypeSelector);
   }
 
-  async partiesAgreed() {
+  async partiesAgreed(communicationType) {
     const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Have the other parties agreed?\')]';
     I.see('Have the other parties agreed?', applicatonTypeSelector);
-    I.see('No', applicatonTypeSelector);
+    if (communicationType == 'consent') {
+      I.see('Yes', applicatonTypeSelector);
+    } else {
+      I.see('No', applicatonTypeSelector);
+    }
     await I.see('Change', applicatonTypeSelector);
   }
 
-  async informOtherParties() {
-    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Do you want the court to inform the other parties?\')]';
-    I.see('Do you want the court to inform the other parties?', applicatonTypeSelector);
-    I.see('No', applicatonTypeSelector);
-    await I.see('Change', applicatonTypeSelector);
-    const applicatonTypeSelector2 = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Why do you not want the court to inform the other parties?\')]';
-    I.see('Why do you not want the court to inform the other parties?', applicatonTypeSelector2);
-    I.see('Do not need to inform', applicatonTypeSelector2);
-    await I.see('Change', applicatonTypeSelector2);
+  async informOtherParties(communicationType) {
+    if (communicationType == 'notice') {
+      const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Do you want the court to inform the other parties?\')]';
+      I.see('Do you want the court to inform the other parties?', applicatonTypeSelector);
+      I.see('Yes', applicatonTypeSelector);
+      await I.see('Change', applicatonTypeSelector);
+    } else {
+      const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Do you want the court to inform the other parties?\')]';
+      I.see('Do you want the court to inform the other parties?', applicatonTypeSelector);
+      I.see('No', applicatonTypeSelector);
+      await I.see('Change', applicatonTypeSelector);
+      const applicatonTypeSelector2 = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Why do you not want the court to inform the other parties?\')]';
+      I.see('Why do you not want the court to inform the other parties?', applicatonTypeSelector2);
+      I.see('Do not need to inform', applicatonTypeSelector2);
+      await I.see('Change', applicatonTypeSelector2);
+    }
   }
 
   async costsBack() {

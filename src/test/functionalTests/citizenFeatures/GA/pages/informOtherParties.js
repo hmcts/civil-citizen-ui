@@ -52,6 +52,12 @@ class InformOtherParties {
     await I.fillField('#reasonForCourtNotInformingOtherParties', 'Do not need to inform');
     await I.click('Continue');
   }
+
+  async selectAndVerifyDoInformOption() {
+    await I.waitForContent('Should the court inform the other parties about this application', 60);
+    await I.click('Yes');
+    await I.click('Continue');
+  }
 }
 
 module.exports = InformOtherParties;
