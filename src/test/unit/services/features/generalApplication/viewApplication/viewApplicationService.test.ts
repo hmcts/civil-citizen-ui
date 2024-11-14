@@ -27,6 +27,8 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -53,7 +55,7 @@ function setMockAdditionalDocuments() {
         'document_filename': '000MC039-settlement-agreement.pdf',
         'document_binary_url': 'http://dm-store:8080/documents/4feaa073-c310-4096-979d-cd5b12ebddf8/binary',
       },
-      'documentName': 'Test applicant',
+      'documentName': 'Supporting evidence',
       'createdDatetime':new Date('2024-08-01'),
     },
   },
@@ -183,6 +185,10 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
 describe('View Application service', () => {
   const mockGetApplication = jest.spyOn(GaServiceClient.prototype, 'getApplication');
   const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('Build view application content for general application', () => {
 
     it('view application content test for applicant', async () => {
@@ -193,22 +199,24 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
-      expect(result).toHaveLength(12);
+      expect(result).toHaveLength(13);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
           'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION',
+          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED',
-          'COMMON.VARIATION.YES'],
+          'COMMON.VARIATION_5.YES'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER',
           '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> </p>'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
           'reasons'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
-          'COMMON.VARIATION.NO'],
+          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
-          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT'],
+          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
           'sdf'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
@@ -235,14 +243,43 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
-      expect(result).toHaveLength(13);
+      expect(result).toHaveLength(14);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
-        value: { html: 'COMMON.VARIATION.NO'},
+        value: { html: 'COMMON.VARIATION_5.NO'},
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
-        value: { html: 'COMMON.VARIATION.YES'},
+        value: { html: 'COMMON.VARIATION_2.YES'},
+      });
+    });
+
+    it('should include withoutNotice field when the claim has not been agreed', async () => {
+      const application = Object.assign(new ApplicationResponse(), {
+        ...mockApplication,
+        case_data: {
+          ...mockApplication.case_data,
+          generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
+          generalAppInformOtherParty: { isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'test'},
+        }});
+      mockGetApplication.mockResolvedValueOnce(application);
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+
+      expect(result).toHaveLength(15);
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
+        value: { html: 'COMMON.VARIATION_5.NO'},
+      });
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
+        value: { html: 'COMMON.VARIATION_2.NO'},
+      });
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT'},
+        value: { html: 'test'},
       });
     });
 
@@ -256,20 +293,22 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
-      expect(result).toHaveLength(11);
+      expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION',
+          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED',
-          'COMMON.VARIATION.YES'],
+          'COMMON.VARIATION_5.YES'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER',
           '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS</p>'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
           'reasons'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
-          'COMMON.VARIATION.NO'],
+          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
-          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT'],
+          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
           'sdf'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
@@ -307,7 +346,7 @@ describe('View Application service', () => {
       const result = getApplicantDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test applicant',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.SUPPORTING_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
@@ -542,6 +581,97 @@ describe('View Application service', () => {
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
+    });
+  });
+
+  describe('View application content for CoSc general application', () => {
+    let application : ApplicationResponse;
+    const date = new Date(Date.now());
+    beforeEach(() => {
+      application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+      application.case_data.generalAppType.types =[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID];
+      application.case_data.applicationTypes = 'Confirm you\'ve paid a judgment debt';
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
+    });
+
+    it('view cosc application with not able to provide evidence of full payment - applicant', async () => {
+      //given
+      const certOfSC = {
+        debtPaymentEvidence: {
+          provideDetails: 'unable to provide evidence',
+          debtPaymentOption: 'UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT',
+        },
+        defendantFinalPaymentDate: date,
+      };
+      application.case_data.certOfSC = certOfSC;
+      mockGetApplication.mockResolvedValue(application);
+      //when
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      //then
+      expect(result).toHaveLength(4);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');
+      expect(result[2].value.html).toEqual(formatDateToFullDate(date));
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO');
+    });
+
+    it('view cosc application content - want to upload evidence that debt has been paid in full - applicant', async () => {
+      //given
+      const certOfSC = {
+        proofOfDebtDoc: [{
+          value: {
+            document_url: 'http://dm-store:8080/documents/d4559b',
+            document_binary_url: 'http://dm-store:8080/documents/d4559b/binary',
+            document_filename: 'test.doc',
+            category_id: '231',
+          },
+        }],
+        debtPaymentEvidence: {
+          debtPaymentOption: 'UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL',
+        },
+        defendantFinalPaymentDate: date,
+      };
+      application.case_data.certOfSC = certOfSC;
+      mockGetApplication.mockResolvedValue(application);
+      //when
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      //then
+      expect(result).toHaveLength(4);
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL');
+    });
+
+    it('view cosc application content - made full payment to the court - applicant', async () => {
+      //given
+      const certOfSC = {
+        proofOfDebtDoc: [{
+          value: {
+            document_url: 'http://dm-store:8080/documents/d4559b',
+            document_binary_url: 'http://dm-store:8080/documents/d4559b/binary',
+            document_filename: 'test.doc',
+            category_id: '231',
+          },
+        }],
+        debtPaymentEvidence: {
+          debtPaymentOption: 'MADE_FULL_PAYMENT_TO_COURT',
+        },
+        defendantFinalPaymentDate: date,
+      };
+      application.case_data.certOfSC = certOfSC;
+      mockGetApplication.mockResolvedValue(application);
+      //when
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      //then
+      expect(result).toHaveLength(4);
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT');
     });
   });
 });
