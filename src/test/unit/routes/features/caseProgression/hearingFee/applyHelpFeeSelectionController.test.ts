@@ -108,6 +108,7 @@ describe('Apply for help with fees', () => {
 
     it('should redirect to help with fees if option is YES', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      (getRedirectUrl as jest.Mock).mockResolvedValue(APPLY_HELP_WITH_FEES);
       await request(app)
         .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .send({option: YesNo.YES})
