@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('inside hello 2');
   // Regular expression to match URLs in the format "/claim/{id}/fee"
   const urlPatterns = [
     /^\/claim\/\d+\/fee$/,
@@ -7,9 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /^\/dashboard\/\d+\/claimantNewDesign$/,
   ];
   const path = window.location.pathname;
-  console.log('path: ' + path);
   if (urlPatterns.some(pattern => pattern.test(path))) {
-    console.log('inside if');
     const form = document.getElementsByTagName('form')[0];
     if (form) {
       form.onsubmit = handleSubmit;
