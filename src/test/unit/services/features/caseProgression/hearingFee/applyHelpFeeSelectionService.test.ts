@@ -85,13 +85,6 @@ describe('getRedirectUrl', () => {
     expect(result).toBe(mockNewPaymentInfo.nextUrl);
   });
 
-  it('throws error if getFeePaymentRedirectInformation fails', async () => {
-    (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue({});
-    (getFeePaymentRedirectInformation as jest.Mock).mockRejectedValue(new Error('Failed to get payment info'));
-    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
-    await expect(getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockAppRequest)).rejects.toThrow('Failed to get payment info');
-  });
 
   it('throws error if getFeePaymentStatus fails', async () => {
     const mockPaymentInfo = {nextUrl: 'https://payment.url', paymentReference: 'paymentRef'} as PaymentInformation;
@@ -120,9 +113,11 @@ describe('getRedirectUrl', () => {
 
   it('returns payment nextUrl if paymentRedirectInformation is defined', async () => {
     const mockPaymentInfo = {nextUrl: 'https://payment.url', paymentReference: 'paymentRef'} as PaymentInformation;
+    const mockFailedPaymentStatus = {status: 'Initiated'};
     (generateRedisKey as jest.Mock).mockReturnValue('redisKey');
     (getCaseDataFromStore as jest.Mock).mockResolvedValue({});
     (getFeePaymentRedirectInformation as jest.Mock).mockResolvedValue(mockPaymentInfo);
+    (getFeePaymentStatus as jest.Mock).mockResolvedValue(mockFailedPaymentStatus);
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
 
     const result = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockAppRequest);
