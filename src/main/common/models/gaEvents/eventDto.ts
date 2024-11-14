@@ -65,6 +65,7 @@ export interface AdditionalDocuments {
 export interface CCDGaHelpWithFees {
 
   generalAppHelpWithFees?: CCDHelpWithFees;
+  gaAdditionalHelpWithFees?: CCDHelpWithFees;
 
 }
 

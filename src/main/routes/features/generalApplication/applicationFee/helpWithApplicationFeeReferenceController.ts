@@ -70,7 +70,7 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
       await saveHelpWithFeesDetails(redisKey, new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber), hwfPropertyName);
 
       if (form.model.option === YesNo.YES) {
-        await saveAndTriggerNotifyGaHwfEvent(<AppRequest>req, form.model);
+        await saveAndTriggerNotifyGaHwfEvent(<AppRequest>req, form.model, isAdditionalFeeType);
       }
       res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType, genAppId));
     }
