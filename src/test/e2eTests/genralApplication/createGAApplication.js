@@ -1,8 +1,6 @@
 const {clickButton} = require('../commons/clickButton');
 const {buttonType} = require('../commons/buttonVariables');
 const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wiremock');
-const restHelper = require('../../functionalTests/specClaimHelpers/api/restHelper.js');
-const {url} = require("../../config");
 const I = actor();
 
 class CreateGAApplication {
@@ -136,17 +134,6 @@ class CreateGAApplication {
     I.see('Your payment was\n' +
       'successful');
 
-  }
-
-  async verifyWiremockRequestForGA() {
-    const headers = {
-      Authorization: 'Bearer your-token-here',
-    };
-    console.log(url.wiremockServiceE2e);
-    const data = await restHelper.request(
-      `${url.wiremockServiceE2e}/cases/1730984188221535`, headers, '', 'GET', 200);
-    const response = await data.json()
-    console.debug(JSON.stringify(response));
   }
 
   async resetWiremockScenario() {
