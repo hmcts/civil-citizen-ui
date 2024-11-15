@@ -32,18 +32,19 @@ const supportedBrowsers = {
       'sauce:options': {
         name: 'Civil CUI Tests: WIN_FF_LATEST',
         screenResolution: '1024x768',
+        extendedDebugging: true,
       },
     },
   },
   safari: {
-    safari_mac: {
+    safari: {
       browserName: 'safari',
-      platformName: 'macOS 12',
       browserVersion: 'latest',
+      platformName: 'macOS 13',
       'sauce:options': {
         name: 'Civil CUI Tests: MAC_SAFARI',
-        screenResolution: '1280x960',
-        extendedDebugging: true,
+        seleniumVersion: '3.141.59',
+        screenResolution: '1600x1200',
       },
     },
   },

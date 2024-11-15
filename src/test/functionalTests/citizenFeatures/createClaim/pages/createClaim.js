@@ -201,12 +201,17 @@ class CreateClaim {
     this.selectAddress(claimantFlag);
   }
 
-  selectAddress(claimantFlag) {
+  async selectAddress(claimantFlag) {
+    const isSafariBrowser = await I.isSafariBrowser();
     I.fillField(paths.buttons.find_address_field, 'MK5 7HH');
     this.clickNextAction('Find address');
     I.wait(2);
     I.waitForVisible('#primaryAddresspostcodeAddress', 3);
     I.see('Pick an address');
+    if (isSafariBrowser) {
+      console.log('Using Safari?' + isSafariBrowser);
+      I.waitForClickable('#primaryAddresspostcodeAddress', 30);
+    }
     if (claimantFlag === true) {
       I.selectOption('#primaryAddresspostcodeAddress',
         'THE COMMUNITY CENTRE, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH');
