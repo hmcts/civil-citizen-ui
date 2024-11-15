@@ -846,13 +846,35 @@ describe('View Application service', () => {
 
     it('should return empty if no data in applicationResponse', async () => {
       //given
-      const applicationResponse = new ApplicationResponse();
+      const applicationResponse: ApplicationResponse = undefined;
       const claim = new Claim();
       //when
       const moreInfoResponse = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
       const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
       const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
       const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
+      //Then
+      expect(moreInfoResponse.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(writtenRepSequentialDocument.length).toEqual(0);
+      expect(writtenRepConcurrentDocument.length).toEqual(0);
+    });
+
+    it('should get empty data array if there is no dismissal order documents', async () => {
+      //given
+      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = applicationResponse.case_data;
+      caseData.dismissalOrderDocument = undefined;
+      caseData.gaDraftDocument = undefined;
+      caseData.hearingOrderDocument = undefined;
+      caseData.hearingNoticeDocument = undefined;
+
+      //When
+      const moreInfoResponse = getRequestMoreInfoResponse('1', applicationResponse, 'en');
+      const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
+      const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
+      const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
+
       //Then
       expect(moreInfoResponse.length).toEqual(0);
       expect(dismissalOrder.length).toEqual(0);

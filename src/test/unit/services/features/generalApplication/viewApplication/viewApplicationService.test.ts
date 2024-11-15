@@ -60,7 +60,7 @@ function setMockAdditionalDocuments() {
         'document_binary_url': 'http://dm-store:8080/documents/4feaa073-c310-4096-979d-cd5b12ebddf8/binary',
       },
       'documentName': 'Supporting evidence',
-      'createdDatetime':new Date('2024-08-01'),
+      'createdDatetime':new Date('2024-08-01T10:57:18'),
     },
   },
   {
@@ -74,7 +74,7 @@ function setMockAdditionalDocuments() {
         'document_binary_url': 'http://dm-store:8080/documents/f0508c67-d3cf-4774-b3f3-0903f77d2664/binary',
       },
       'documentName': 'Test resp1',
-      'createdDatetime':  new Date('2024-08-01'),
+      'createdDatetime':  new Date('2024-08-01T10:57:18'),
     },
   }];
 }
@@ -92,7 +92,7 @@ function setMockGaDraftDocuments(): CcdGaDraftDocument[] {
       },
       'documentName': 'Draft_application_2024-08-01 14:47:03.pdf',
       'documentType': DocumentType.GENERAL_APPLICATION_DRAFT,
-      'createdDatetime':  new Date('2024-08-01'),
+      'createdDatetime':  new Date('2024-08-01T10:57:18'),
     },
   },
   {
@@ -107,7 +107,7 @@ function setMockGaDraftDocuments(): CcdGaDraftDocument[] {
       },
       'documentName': 'Translated_draft_application_2024-11-15 15:38:26.pdf',
       'documentType':  DocumentType.GENERAL_APPLICATION_DRAFT,
-      'createdDatetime': new Date('2024-11-14'),
+      'createdDatetime': new Date('2024-11-14T16:57:18'),
     },
   }];
 }
@@ -213,7 +213,7 @@ function setMockDismissalOrderDocuments(): CcdGeneralApplicationDirectionsOrderD
       },
       'documentName': 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf',
       'documentType': DocumentType.DISMISSAL_ORDER,
-      'createdDatetime': new Date('2024-11-12'),
+      'createdDatetime': new Date('2024-11-12T14:15:19'),
     },
   }];
 }

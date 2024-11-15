@@ -211,7 +211,7 @@ const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, appl
       CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
         .replace(':documentId',
           documentIdExtractor(document.document_binary_url)),
-      documentName ? documentName : document.document_filename));
+      documentName ?? document.document_filename));
 };
 
 const getTranslatedDocumentName = (documentName: string, lng: string) => {
