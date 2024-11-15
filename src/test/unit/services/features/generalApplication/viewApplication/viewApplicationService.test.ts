@@ -376,7 +376,7 @@ describe('View Application service', () => {
       expect(result).toHaveLength(13);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
-          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE'],
+          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION',
@@ -850,7 +850,7 @@ describe('View Application service', () => {
       //then
       expect(result).toHaveLength(4);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
-      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
+      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');
