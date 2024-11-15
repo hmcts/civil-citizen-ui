@@ -90,5 +90,6 @@ withNightlyPipeline(type, product, component) {
 
   afterAlways('crossBrowserTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+    env.IS_CROSSBROWSER = false
   }
 }

@@ -1,6 +1,9 @@
 #!/bin/bash
 set -ex
 
+# Always set IS_CROSSBROWSER to true for cross-browser testing
+export IS_CROSSBROWSER=true
+
 echo "Running Cross-browser tests on ${ENVIRONMENT} env"
 
 if [[ "$BROWSER_GROUP" == "" ]]

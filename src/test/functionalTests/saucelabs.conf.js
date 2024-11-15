@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-
 const supportedBrowsers = require('../crossbrowser/supportedBrowsers.js');
 const testConfig = require('../config.js');
+const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
+const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 const browser = process.env.SAUCELABS_BROWSER || 'chrome';
 const defaultSauceOptions = {
@@ -37,7 +38,24 @@ function getBrowserConfig(browserGroup) {
   return browserConfig;
 }
 
+let startTime;
+
 const setupConfig = {
+  bootstrapAll: async () => {
+    startTime = new Date();
+    console.log(`Starting the tests at ${startTime}`);
+  },
+  teardownAll: async () => {
+    const endTime = new Date();
+    const executionTime = (endTime - startTime) / 1000; // in seconds
+    console.log(`Finished the tests at ${endTime}`);
+    console.log(`Total execution time: ${executionTime} seconds`);
+  },
+  async teardown() {
+    console.log('Current worker has finished running tests so we should clean up the user roles');
+    await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
+  },
   tests: '../functionalTests/tests/prod/**/*.js',
   output: `${process.cwd()}/${testConfig.TestOutputDir}`,
   helpers: {
