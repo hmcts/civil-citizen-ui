@@ -50,7 +50,7 @@ export const getJudgeDirectionWithNotice = (req: AppRequest, applicationResponse
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   const claimId = req.params.id;
   const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
-  if(makeWithNoticeDocs) {
+  if (makeWithNoticeDocs) {
     courtResponseSummaryList = makeWithNoticeDocs
       .filter(makeWithNoticeDoc => {
         return makeWithNoticeDoc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY;
@@ -65,7 +65,7 @@ export const getJudgeDirectionWithNotice = (req: AppRequest, applicationResponse
           );
         }
         let payAdditionalFeeButton : ResponseButton = null;
-        if(applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT && !makeWithNoticeDoc.value.documentName.includes('Translated')) {
+        if (applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT && !makeWithNoticeDoc.value.documentName.includes('Translated')) {
           const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
           payAdditionalFeeButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE', {lng}), payAdditionalFeeUrl);
         }
@@ -81,7 +81,7 @@ export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: A
   const claimId = req.params.id;
   const directionOrderDocuments = applicationResponse?.case_data?.directionOrderDocument;
   const judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-  if(directionOrderDocuments) {
+  if (directionOrderDocuments) {
     courtResponseSummaryList = directionOrderDocuments
       .filter(directionOrderDocument => {
         return directionOrderDocument?.value?.documentType === DocumentType.DIRECTION_ORDER;
@@ -102,7 +102,7 @@ export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, ln
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   const judgeApproveEditDocuments = applicationResponse?.case_data?.generalOrderDocument;
 
-  if(judgeApproveEditDocuments) {
+  if (judgeApproveEditDocuments) {
     courtResponseSummaryList = judgeApproveEditDocuments
       .filter(judgeDismissDocument => {
         return judgeDismissDocument?.value?.documentType === DocumentType.GENERAL_ORDER;
@@ -120,7 +120,7 @@ export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, ln
 export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   const judgeDismissDocuments = applicationResponse?.case_data?.dismissalOrderDocument;
-  if(judgeDismissDocuments) {
+  if (judgeDismissDocuments) {
     courtResponseSummaryList = judgeDismissDocuments
       .filter(judgeDismissDocument => {
         return judgeDismissDocument?.value?.documentType === DocumentType.DISMISSAL_ORDER;
@@ -141,7 +141,7 @@ export const getHearingOrderResponses = (req: AppRequest, applicationResponse: A
   const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
   const uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
 
-  if(hearingOrders) {
+  if (hearingOrders) {
     courtResponseSummaryList = hearingOrders
       .filter(directionOrderDocument => {
         return directionOrderDocument?.value?.documentType === DocumentType.HEARING_ORDER;
@@ -160,7 +160,7 @@ export const getHearingNoticeResponses = (applicationResponse: ApplicationRespon
   const hearingNotices = applicationResponse?.case_data?.hearingNoticeDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 
-  if(hearingNotices) {
+  if (hearingNotices) {
     courtResponseSummaryList = hearingNotices
       .filter(directionOrderDocument => {
         return directionOrderDocument?.value?.documentType === DocumentType.HEARING_NOTICE;
@@ -179,7 +179,7 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
   const requestMoreInfos = applicationResponse?.case_data?.requestForInformationDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 
-  if(requestMoreInfos) {
+  if (requestMoreInfos) {
     courtResponseSummaryList = requestMoreInfos
       .filter(requestMoreInfo => {
         return requestMoreInfo?.value?.documentType === DocumentType.REQUEST_MORE_INFORMATION;
@@ -205,7 +205,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
   const writtenRepSequentialDocs = applicationResponse?.case_data?.writtenRepSequentialDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 
-  if(writtenRepSequentialDocs) {
+  if (writtenRepSequentialDocs) {
     courtResponseSummaryList = writtenRepSequentialDocs
       .filter(writtenRepSequentialDocs => {
         return writtenRepSequentialDocs?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL;
@@ -228,7 +228,7 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
   const writtenRepConcurrentDocs = applicationResponse?.case_data?.writtenRepConcurrentDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 
-  if(writtenRepConcurrentDocs) {
+  if (writtenRepConcurrentDocs) {
     courtResponseSummaryList = writtenRepConcurrentDocs
       .filter(writtenRepConcurrentDoc => {
         return writtenRepConcurrentDoc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_CONCURRENT;
@@ -244,13 +244,6 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
   }
   return courtResponseSummaryList;
 };
-
-/*const getMakeWithNoticeDocument = (applicationResponse: ApplicationResponse) : CcdGAMakeWithNoticeDocument => {
-  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
-  if(requestForInformationDocument) {
-    return requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
-  }
-};*/
 
 const getResponseSummaryRows = (documentUrl : string, typeOfResponse: string, responseDate : Date, lng: string) => {
   const rows: SummaryRow[] = [];
