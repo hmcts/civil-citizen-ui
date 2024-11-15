@@ -2410,8 +2410,8 @@
       "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
-      "PAGE_TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
-      "TITLE": "Oes gennych chi gyfeiriad post yn y DU?",
+      "PAGE_TITLE": "A oes gennych chi gyfeiriad ar gyfer postio yng Nghymru neu Loegr?",
+      "TITLE": "A oes gennych chi gyfeiriad ar gyfer postio yng Nghymru neu Loegr?",
       "UK_MADE_UP": "Mae'r DU yn cynnwys Cymru a Lloegr."
     },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
@@ -3291,7 +3291,19 @@
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
+          "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "AWAITING_JUDICIAL_DECISION": "Cais wedi’i gyflwyno - Aros am benderfyniad barnwrol",
+          "AWAITING_APP_PAYMENT": "Talu’r ffi gwneud cais",
+          "LISTED_FOR_HEARING": "Rhestru ar gyfer gwrandawiad",
+          "HEARING_SCHEDULED": "Gwrandawiad wedi’i Drefnu",
+          "AWAITING_WRITTEN_REP": "Aros am sylwadau ysgrifenedig",
+          "AWAITING_ADDL_INFO": "Aros am wybodaeth ychwanegol",
+          "AWAITING_DIRECTION_DOCS": "Aros am ddogfen gorchymyn cyfarwyddiadau",
+          "ORDER_MADE": "Gorchymyn wedi’i wneud",
+          "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
+          "APPLICATION_CLOSED": "Cais wedi’i gau",
+          "PROCEEDS_IN_HERITAGE": "Parhau yn y cyflwr etifeddiaeth",
+          "AWAITING_ADDL_PAYMENT": "Aros am daliad ychwanegol",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
@@ -3762,7 +3774,7 @@
       },
       "CITIZENS_ADVICE": "Cyngor ar Bopeth",
       "CLAIMANT_ADDRESS": {
-        "NEED_UK_ADDRESS": "Mae angen i chi gael cyfeiriad yn y DU i wneud hawliad am arian."
+        "NEED_UK_ADDRESS": "Mae arnoch angen cyfeiriad ar gyfer postio yng Nghymru neu Loegr i ddefnyddio’r gwaith hwn."
       },
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "Mae angen i chi fod yn 18 oed neu'n hŷn i ddefnyddio'r gwasanaeth hwn."

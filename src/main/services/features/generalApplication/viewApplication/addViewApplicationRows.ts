@@ -16,6 +16,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -24,9 +25,61 @@ export const addApplicationStatus = (
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
 
-  if (application.state) {
+  if (application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT', {lng})),
+    );
+  } else if (application.state === ApplicationState.AWAITING_RESPONDENT_RESPONSE){
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE', {lng})),
+    );
+  } else if (application.state === ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION', {lng})),
+    );
+  } else if (application.state === ApplicationState.LISTING_FOR_A_HEARING) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.LISTED_FOR_HEARING', {lng})),
+    );
+  }else if (application.state === ApplicationState.HEARING_SCHEDULED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.HEARING_SCHEDULED', {lng})),
+    );
+  }else if (application.state === ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_WRITTEN_REP', {lng})),
+    );
+  }else if (application.state === ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_DIRECTION_DOCS', {lng})),
+    );
+  }else if (application.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_INFO', {lng})),
+    );
+  }else if (application.state === ApplicationState.ORDER_MADE) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ORDER_MADE', {lng})),
+    );
+  }else if (application.state === ApplicationState.APPLICATION_DISMISSED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_DISMISSED', {lng})),
+    );
+  }else if (application.state === ApplicationState.APPLICATION_CLOSED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_CLOSED', {lng})),
+    );
+  }else if (application.state === ApplicationState.PROCEEDS_IN_HERITAGE) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.PROCEEDS_IN_HERITAGE', {lng})),
+    );
+  }else if (application.state === ApplicationState.APPLICATION_ADD_PAYMENT) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT', {lng})),
+    );
+  }else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), application.state),
     );
   }
   return rows;
