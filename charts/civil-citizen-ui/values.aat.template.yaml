@@ -29,7 +29,6 @@ nodejs:
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net/dashboard
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-java
     LAUNCH_DARKLY_ENV: service-staging
-    TESTING_SUPPORT_ENABLED: true
 
 civil-service:
   enabled: true
