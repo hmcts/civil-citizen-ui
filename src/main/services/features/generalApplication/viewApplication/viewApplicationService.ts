@@ -99,6 +99,7 @@ export const getCourtDocuments = (applicationResponse : ApplicationResponse, lan
   courtDocumentsArray.push(...getHearingNotice(applicationResponse, lang));
   courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
   courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lang));
+  courtDocumentsArray.push(...getDismissalOrder(applicationResponse, lang));
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
 
@@ -141,8 +142,10 @@ export const getDraftDocument =  (applicationResponse: ApplicationResponse, lang
   const generalAppDraftDocs = applicationResponse?.case_data?.gaDraftDocument;
   let gaDraftDocInfoArray : DocumentInformation[] = [];
   if(generalAppDraftDocs) {
-    gaDraftDocInfoArray = generalAppDraftDocs.map(gaDraftDocument => {
-      return setUpDocumentLinkObject(gaDraftDocument?.value?.documentLink, gaDraftDocument?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT');
+    gaDraftDocInfoArray = generalAppDraftDocs.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(gaDraftDocument => {
+      return setUpDocumentLinkObject(gaDraftDocument?.value?.documentLink, gaDraftDocument?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT', gaDraftDocument.value.documentName);
     });
   }
   return gaDraftDocInfoArray;
@@ -187,7 +190,20 @@ export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: 
   return generalOrderDocInfoArray;
 };
 
-const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string) => {
+export const getDismissalOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+  const dismissOrderDoc = applicationResponse?.case_data?.dismissalOrderDocument;
+  let dismissalOrderDocInfoArray : DocumentInformation[] = [];
+  if (dismissOrderDoc) {
+    dismissalOrderDocInfoArray = dismissOrderDoc.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(dismissalOrder => {
+      return setUpDocumentLinkObject(dismissalOrder?.value?.documentLink, dismissalOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER', dismissalOrder.value.documentName);
+    });
+  }
+  return dismissalOrderDocInfoArray;
+};
+
+const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string, documentName?: string ) => {
   return new DocumentInformation(
     getTranslatedDocumentName(fileName, lang),
     formatDateToFullDate(documentDate, lang),
@@ -195,7 +211,7 @@ const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, appl
       CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
         .replace(':documentId',
           documentIdExtractor(document.document_binary_url)),
-      document.document_filename));
+      documentName ? documentName : document.document_filename));
 };
 
 const getTranslatedDocumentName = (documentName: string, lng: string) => {
