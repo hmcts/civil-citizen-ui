@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
+  getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice, getHearingOrder,
   getRespondentDocuments,
   getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
@@ -93,6 +93,21 @@ function setMockGaDraftDocuments(): CcdGaDraftDocument[] {
       'documentName': 'Draft_application_2024-08-01 14:47:03.pdf',
       'documentType': DocumentType.GENERAL_APPLICATION_DRAFT,
       'createdDatetime':  new Date('2024-08-01'),
+    },
+  },
+  {
+    'id': '2491009e-8b8d-48ff-8f02-36bd28711997',
+    'value': {
+      'createdBy': 'ga_ctsc_team_leader_national@justice.gov.uk National',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413',
+        'document_filename': 'draft_claim_form_000MC003.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413/binary',
+      },
+      'documentName': 'Translated_draft_application_2024-11-15 15:38:26.pdf',
+      'documentType':  DocumentType.GENERAL_APPLICATION_DRAFT,
+      'createdDatetime': new Date('2024-11-14'),
     },
   }];
 }
@@ -524,12 +539,17 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
-      const expectedDraftDocument = new DocumentInformation(
+      const expectedDraftDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        '14 November 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413', 'Translated_draft_application_2024-11-15 15:38:26.pdf'),
+      );
+      const expectedDraftDocument2 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-01 14:47:03.pdf'),
       );
-      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument,expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument1, expectedDraftDocument2, expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -604,13 +624,18 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
-      const expectedDraftDocument = new DocumentInformation(
+      const expectedDraftDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        '14 November 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413', 'Translated_draft_application_2024-11-15 15:38:26.pdf'),
+      );
+      const expectedDraftDocument2 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-01 14:47:03.pdf'),
       );
 
-      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument, expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument1, expectedDraftDocument2, expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -755,22 +780,16 @@ describe('View Application service', () => {
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
-      const result = getDismissalOrder(application, 'en');
+      const dismissalOrder = getDismissalOrder(application, 'en');
+      const draftDoc = getDraftDocument(application, 'en');
+      const haringNotice = getHearingNotice(application, 'en');
+      const hearingOrder = getHearingOrder(application, 'en');
+
       //Then
-
-      expect(result.length).toEqual(0);
-    });
-
-    it('should get empty applicationResponse', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), undefined);
-
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-      //When
-      const result = getDismissalOrder(application, 'en');
-      //Then
-
-      expect(result.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(draftDoc.length).toEqual(0);
+      expect(haringNotice.length).toEqual(0);
+      expect(hearingOrder.length).toEqual(0);
     });
 
     it('should get empty applicationResponse if application not defined', async () => {
@@ -779,10 +798,15 @@ describe('View Application service', () => {
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
-      const result = getDismissalOrder(application, 'en');
+      const dismissalOrder = getDismissalOrder(application, 'en');
+      const draftDoc = getDraftDocument(application, 'en');
+      const haringNotice = getHearingNotice(application, 'en');
+      const hearingOrder = getHearingOrder(application, 'en');
       //Then
-
-      expect(result.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(draftDoc.length).toEqual(0);
+      expect(haringNotice.length).toEqual(0);
+      expect(hearingOrder.length).toEqual(0);
     });
   });
 
