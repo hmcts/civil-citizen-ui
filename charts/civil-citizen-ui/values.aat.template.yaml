@@ -481,6 +481,7 @@ civil-general-applications:
       DASHBOARD_API_URL: http://${SERVICE_NAME}-java
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      EM_CCD_ORCHESTRATOR_URL: http://em-ccd-orchestrator-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
 postgresql:
   enabled: false
