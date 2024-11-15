@@ -21,6 +21,7 @@ import {DocumentType} from 'models/document/documentType';
 import {CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -215,6 +216,7 @@ describe('View Application service', () => {
       };
       applicationResponse.case_data= caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
+      applicationResponse.state = ApplicationState.APPLICATION_ADD_PAYMENT;
       //when
       const result = getJudgeDirectionWithNotice(mockedAppRequest,  applicationResponse, 'en');
       //then
@@ -847,9 +849,15 @@ describe('View Application service', () => {
       const applicationResponse = new ApplicationResponse();
       const claim = new Claim();
       //when
-      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
-      //then
-      expect(result.length).toEqual(0);
+      const moreInfoResponse = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
+      const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
+      const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
+      const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
+      //Then
+      expect(moreInfoResponse.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(writtenRepSequentialDocument.length).toEqual(0);
+      expect(writtenRepConcurrentDocument.length).toEqual(0);
     });
   });
 });

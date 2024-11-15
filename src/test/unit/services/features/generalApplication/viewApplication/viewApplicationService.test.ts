@@ -777,6 +777,9 @@ describe('View Application service', () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument = undefined;
+      caseData.gaDraftDocument = undefined;
+      caseData.hearingOrderDocument = undefined;
+      caseData.hearingNoticeDocument = undefined;
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
