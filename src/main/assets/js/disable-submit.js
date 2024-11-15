@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const urlPatterns = [
     /^\/claim\/\d+\/fee$/,
     /^\/case\/\d+\/case-progression\/pay-hearing-fee\/apply-help-fee-selection$/,
-    /^\/dashboard\/\d+\/claimantNewDesign$/,
     /^\/case\/\d+\/case-progression\/make-payment-again$/,
   ];
   const path = window.location.pathname;
