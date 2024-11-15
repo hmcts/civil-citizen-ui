@@ -8,7 +8,6 @@ const supportedBrowsers = {
       browserVersion: 'latest',
       'sauce:options': {
         name: 'Civil CUI Tests: MAC_CHROME_LATEST',
-        screenResolution: '1280x960',
         extendedDebugging: true,
       },
     },
@@ -20,7 +19,6 @@ const supportedBrowsers = {
       browserVersion: 'latest',
       'sauce:options': {
         name: 'Civil CUI Tests: WIN_EDGE_LATEST',
-        screenResolution: '1024x768',
       },
     },
   },
@@ -31,7 +29,6 @@ const supportedBrowsers = {
       browserVersion: 'latest',
       'sauce:options': {
         name: 'Civil CUI Tests: WIN_FF_LATEST',
-        screenResolution: '1024x768',
         extendedDebugging: true,
       },
     },
@@ -44,7 +41,6 @@ const supportedBrowsers = {
       'sauce:options': {
         name: 'Civil CUI Tests: MAC_SAFARI',
         seleniumVersion: '3.141.59',
-        screenResolution: '1600x1200',
       },
     },
   },

@@ -12,6 +12,7 @@ const defaultSauceOptions = {
   acceptSslCerts: true,
   pageLoadStrategy: 'normal',
   idleTimeout: 700,
+  screenResolution: '1600x1200',
   tags: ['Civil CUI'],
 };
 
