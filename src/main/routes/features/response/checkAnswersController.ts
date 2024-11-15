@@ -58,7 +58,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
 
-    if (!claim.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
+    if (claim?.directionQuestionnaire?.hearing && !claim.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
     if (form.hasErrors()) {

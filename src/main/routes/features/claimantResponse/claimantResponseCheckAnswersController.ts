@@ -63,7 +63,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const claim = await getClaimById(claimId, req, true);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
-    if (!claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
+    if (claim.claimantResponse?.directionQuestionnaire?.hearing && !claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
     if (form.hasErrors()) {
