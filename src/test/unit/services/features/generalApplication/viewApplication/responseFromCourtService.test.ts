@@ -865,9 +865,9 @@ describe('View Application service', () => {
       const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = applicationResponse.case_data;
       caseData.dismissalOrderDocument = undefined;
-      caseData.gaDraftDocument = undefined;
-      caseData.hearingOrderDocument = undefined;
-      caseData.hearingNoticeDocument = undefined;
+      caseData.requestForInformationDocument = undefined;
+      caseData.writtenRepSequentialDocument = undefined;
+      caseData.writtenRepConcurrentDocument = undefined;
 
       //When
       const moreInfoResponse = getRequestMoreInfoResponse('1', applicationResponse, 'en');
