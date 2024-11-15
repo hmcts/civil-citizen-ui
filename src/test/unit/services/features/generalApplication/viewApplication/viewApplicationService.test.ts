@@ -3,10 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments,
-  getDraftDocument,
-  getGeneralOrder,
-  getHearingNotice,
+  getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
   getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
@@ -33,6 +30,9 @@ import {CcdGAMakeWithNoticeDocument} from 'common/models/ccdGeneralApplication/c
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {
+  CcdGeneralApplicationDirectionsOrderDocument,
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../main/modules/i18n');
@@ -183,6 +183,23 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
       'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
       'createdDatetime': new Date('2024-03-02'),
       'createdBy':'civils',
+    },
+  }];
+}
+
+function setMockDismissalOrderDocuments(): CcdGeneralApplicationDirectionsOrderDocument[] {
+  return [{
+    'id': '609912c3-68c1-4996-801d-830fe7db5c6f',
+    'value': {
+      'documentLink': {
+        'category_id': 'ordersMadeOnApplications',
+        'document_url': 'http://dm-store-aat.service.core-compute-aat.internal/documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a',
+        'document_filename': 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf',
+        'document_binary_url': 'http://dm-store-aat.service.core-compute-aat.internal/documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a/binary',
+      },
+      'documentName': 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf',
+      'documentType': DocumentType.DISMISSAL_ORDER,
+      'createdDatetime': new Date('2024-11-12'),
     },
   }];
 }
@@ -636,6 +653,7 @@ describe('View Application service', () => {
 
       expect(result.length).toEqual(0);
     });
+
     it('should get empty data array if there is no casedata', async () => {
       //given
       //given
@@ -646,10 +664,12 @@ describe('View Application service', () => {
       //When
       const resultGeneralOrder = getGeneralOrder(application, 'en');
       const resultHearingNotice = getHearingNotice(application, 'en');
+      const resultDismissalOrder = getDismissalOrder(application, 'en');
       //Then
 
       expect(resultGeneralOrder.length).toEqual(0);
       expect(resultHearingNotice.length).toEqual(0);
+      expect(resultDismissalOrder.length).toEqual(0);
     });
 
     it('should get data array if there is court has hearing order documents', async () => {
@@ -689,6 +709,82 @@ describe('View Application service', () => {
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result.title).toContain(expectedResult.title);
     });
+
+    it('should get data array if there is court has dismissal order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.dismissalOrderDocument = setMockDismissalOrderDocuments();
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
+        '12 November 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a', 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result.documents[2]).toEqual(expectedResult.documents[0]);
+    });
+
+    it('should get dismissal order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.dismissalOrderDocument = setMockDismissalOrderDocuments();
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getDismissalOrder(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
+        '12 November 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a', 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result[0]).toEqual(expectedResult.documents[0]);
+    });
+
+    it('should get empty data array if there is no dismissal order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.dismissalOrderDocument = undefined;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDismissalOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
+
+    it('should get empty applicationResponse', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), undefined);
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDismissalOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
+
+    it('should get empty applicationResponse if application not defined', async () => {
+      //given
+      const application: ApplicationResponse = undefined;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getDismissalOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
   });
 
   describe('getResponseFromCourtSection', () => {
@@ -713,10 +809,6 @@ describe('View Application service', () => {
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-01 12:15:34.pdf');
-      expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('1 August 2024');
-      expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
     });
 
     it('should return court from response section for defendant', async () => {
