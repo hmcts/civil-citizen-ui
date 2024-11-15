@@ -163,7 +163,7 @@ describe('Response - Check answers', () => {
       });
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         mockClaimWithPcqId.directionQuestionnaire = new DirectionQuestionnaire();
-        mockClaimWithPcqId.directionQuestionnaire.hearing = new Hearing()
+        mockClaimWithPcqId.directionQuestionnaire.hearing = new Hearing();
         return mockClaimWithPcqId;
       });
       const data = {signed: ''};
@@ -178,7 +178,7 @@ describe('Response - Check answers', () => {
         });
     });
     it('should return 500 when error in service', async () => {
-      mockGetCaseDataFromDraftStore.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE))
+      mockGetCaseDataFromDraftStore.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       mockSaveStatementOfTruth.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

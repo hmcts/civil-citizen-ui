@@ -113,7 +113,7 @@ describe('Claimant Response - Check answers', () => {
     it('should return errors when form is incomplete', async () => {
       (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockCivilClaimantIntention;
-      const claim = Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data)
+      const claim = Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
       claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
       claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
       (getClaimById as jest.Mock).mockResolvedValue(claim);
