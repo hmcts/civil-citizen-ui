@@ -12,11 +12,6 @@ module.exports = class BrowserHelpers extends Helper {
     return !!this.helpers['WebDriver'];
   }
 
-  async isSafariBrowser() {
-    const browserName = await this.helpers.WebDriver.config.browser;
-    return browserName === 'safari';
-  }
-
   /**
    * Finds elements described by selector.
    * If element cannot be found an empty collection is returned.

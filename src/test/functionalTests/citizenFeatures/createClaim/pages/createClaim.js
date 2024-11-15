@@ -188,7 +188,7 @@ class CreateClaim {
     I.see('You cannot use their work address.');
   }
 
-  inputEnterYourDetails(claimantFlag) {
+  async inputEnterYourDetails(claimantFlag) {
     if (claimantFlag === true) {
       I.fillField(paths.fields.individual_title, 'Mr');
       I.fillField(paths.fields.individual_first_name, 'Joe');
@@ -198,18 +198,17 @@ class CreateClaim {
       I.fillField(paths.fields.individual_first_name, 'Jane');
       I.fillField(paths.fields.individual_last_name, 'Doe');
     }
-    this.selectAddress(claimantFlag);
+    await this.selectAddress(claimantFlag);
   }
 
   async selectAddress(claimantFlag) {
-    const isSafariBrowser = await I.isSafariBrowser();
-    I.fillField(paths.buttons.find_address_field, 'MK5 7HH');
-    this.clickNextAction('Find address');
+    const isPlaywrightActive = await I.isPlaywright();
+    await I.fillField(paths.buttons.find_address_field, 'MK5 7HH');
+    await this.clickNextAction('Find address');
     I.wait(2);
     I.waitForVisible('#primaryAddresspostcodeAddress', 3);
     I.see('Pick an address');
-    if (isSafariBrowser) {
-      console.log('Using Safari?' + isSafariBrowser);
+    if (!isPlaywrightActive) {
       I.waitForClickable('#primaryAddresspostcodeAddress', 30);
     }
     if (claimantFlag === true) {
@@ -220,7 +219,7 @@ class CreateClaim {
         'ARCANA, 54, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH');
     }
     I.wait(2);
-    this.clickNextAction(paths.buttons.save_and_continue);
+    await this.clickNextAction(paths.buttons.save_and_continue);
   }
 
   verifyDateOfBirth() {
