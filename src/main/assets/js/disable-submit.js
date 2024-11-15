@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /^\/claim\/\d+\/fee$/,
     /^\/case\/\d+\/case-progression\/pay-hearing-fee\/apply-help-fee-selection$/,
     /^\/dashboard\/\d+\/claimantNewDesign$/,
+    /^\/case\/\d+\/case-progression\/make-payment-again$/,
   ];
   const path = window.location.pathname;
   if (urlPatterns.some(pattern => pattern.test(path))) {
