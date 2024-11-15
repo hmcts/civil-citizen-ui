@@ -45,7 +45,8 @@ const paymentConfirmationPage = new PaymentConfirmation();
 
 class createGAAppSteps {
 
-  async askToSetAsideJudgementGA(caseRef, parties, informOtherParty = false) {
+  async askToSetAsideJudgementGA(caseRef, parties, communicationType = 'notice') {
+    //Cannot be withoutnotice
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Set aside (remove) a judgment';
     const feeAmount = '303';
@@ -56,7 +57,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Ask to set aside');
     await applicationTypePage.nextAction('Continue');
 
-    if (informOtherParty) {
+    if (communicationType == 'consent') {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
@@ -106,7 +107,7 @@ class createGAAppSteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
@@ -126,7 +127,8 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askToVaryAJudgementGA(caseRef, parties, informOtherParty = false) {
+  async askToVaryAJudgementGA(caseRef, parties, communicationType = 'notice') {
+    //Cannot be withoutnotice
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Vary a judgment';
     const feeAmount = '15';
@@ -137,7 +139,7 @@ class createGAAppSteps {
     await applicationTypePage.nextAction('Ask to vary a judgment');
     await applicationTypePage.nextAction('Continue');
 
-    if (informOtherParty) {
+    if (communicationType == 'consent') {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('Yes');
       await agreementFromOtherPartyPage.nextAction('Continue');
@@ -181,7 +183,7 @@ class createGAAppSteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
     await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
@@ -202,7 +204,7 @@ class createGAAppSteps {
   }
 
   async askCourtToReconsiderAnOrderGA(caseRef, parties, communicationType = 'withoutnotice') {
-    //Communication types are, consent, notice, withoutnotice/anything (default is withoutnotice)
+    //Communication types are, consent, notice, withoutnotice (default is withoutnotice)
     //Vary order
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Reconsider an order';
