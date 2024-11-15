@@ -24,6 +24,7 @@
     <a class="govuk-link" href={{ uploadYourDocumentsUrl }}> {{t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.UPLOAD_MORE_DOCUMENTS_MID')}} </a>
     {{t('PAGES.EVIDENCE_DOCUMENTS_UPLOADED.UPLOAD_MORE_DOCUMENTS_END')}}
   </p>
+  <div class="form-group">
     <form method="post" novalidate>
       {{ csrfProtection(csrf) }}
       {{ govukButton({
@@ -31,4 +32,5 @@
         href: documentsPageUrl
       }) }}
     </form>
+  </div>
 {% endblock %}
