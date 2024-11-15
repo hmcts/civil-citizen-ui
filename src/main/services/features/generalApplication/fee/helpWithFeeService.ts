@@ -41,7 +41,6 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       if (!generalApplicationId) {
         claim.paymentSyncError = true;
         await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
-        console.log(req.originalUrl);
         return req.originalUrl;
       }
     } else {
