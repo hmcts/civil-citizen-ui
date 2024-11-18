@@ -145,7 +145,7 @@ export const getDraftDocument =  (applicationResponse: ApplicationResponse, lang
     gaDraftDocInfoArray = generalAppDraftDocs.sort((item1,item2) => {
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(gaDraftDocument => {
-      return setUpDocumentLinkObject(gaDraftDocument.value?.documentLink, gaDraftDocument.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT', gaDraftDocument.value.documentName);
+      return setUpDocumentLinkObject(gaDraftDocument.value.documentLink, gaDraftDocument.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT', gaDraftDocument.value.documentName);
     });
   }
   return gaDraftDocInfoArray;
@@ -169,9 +169,9 @@ export const getHearingNotice = (applicationResponse: ApplicationResponse, lang:
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingNoticeDocs) {
     hearingOrderDocInfoArray = hearingNoticeDocs.sort((item1,item2) => {
-      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+      return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(hearingNotice => {
-      return setUpDocumentLinkObject(hearingNotice.value?.documentLink, hearingNotice.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
+      return setUpDocumentLinkObject(hearingNotice.value.documentLink, hearingNotice.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
     });
   }
   return hearingOrderDocInfoArray;
@@ -197,7 +197,7 @@ export const getDismissalOrder = (applicationResponse: ApplicationResponse, lang
     dismissalOrderDocInfoArray = dismissOrderDoc.sort((item1,item2) => {
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(dismissalOrder => {
-      return setUpDocumentLinkObject(dismissalOrder.value?.documentLink, dismissalOrder.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER', dismissalOrder.value?.documentName);
+      return setUpDocumentLinkObject(dismissalOrder.value.documentLink, dismissalOrder.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER', dismissalOrder.value.documentName);
     });
   }
   return dismissalOrderDocInfoArray;

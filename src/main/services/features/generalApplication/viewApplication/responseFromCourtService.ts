@@ -53,11 +53,11 @@ export const getJudgeDirectionWithNotice = (req: AppRequest, applicationResponse
   if (makeWithNoticeDocs) {
     courtResponseSummaryList = makeWithNoticeDocs
       .filter(makeWithNoticeDoc => {
-        return makeWithNoticeDoc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY;
+        return makeWithNoticeDoc.value.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY;
       })
       .map(makeWithNoticeDoc => {
         const documentUrl = `<a href=${GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(makeWithNoticeDoc.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${makeWithNoticeDoc.value.documentName}</a>`;
-        const createdDatetime = makeWithNoticeDoc?.value?.createdDatetime;
+        const createdDatetime = makeWithNoticeDoc.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng}), createdDatetime, lng);
         if (documentUrl && (applicationResponse.case_data?.generalAppPBADetails?.additionalPaymentDetails) && makeWithNoticeDoc.value.documentName.includes('make-with')) {
           rows.push(
@@ -182,7 +182,7 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
   if (requestMoreInfos) {
     courtResponseSummaryList = requestMoreInfos
       .filter(requestMoreInfo => {
-        return requestMoreInfo?.value?.documentType === DocumentType.REQUEST_MORE_INFORMATION;
+        return requestMoreInfo.value.documentType === DocumentType.REQUEST_MORE_INFORMATION;
       })
       .map(requestMoreInfo => {
         const documentName = requestMoreInfo.value.documentName;
