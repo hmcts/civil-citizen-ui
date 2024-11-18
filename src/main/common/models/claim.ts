@@ -1069,7 +1069,9 @@ export class Claim {
   }
 
   isCaseProgressionCaseState(): boolean {
-    return [CaseState.CASE_PROGRESSION].includes(this.ccdState);
+    return [CaseState.CASE_PROGRESSION, CaseState.HEARING_READINESS,
+    CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
+    CaseState.All_FINAL_ORDERS_ISSUED].includes(this.ccdState);
   }
 }
 
