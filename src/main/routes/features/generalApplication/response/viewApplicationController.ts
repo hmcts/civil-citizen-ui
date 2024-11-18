@@ -27,7 +27,7 @@ import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewCompone
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
@@ -58,6 +58,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const viewPath = hasRespondentResponded(applicationResponse) ? viewPathPostResponse : viewPathPreResponse;
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
+    await deleteDraftClaimFromStore(claimId);
 
     await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {

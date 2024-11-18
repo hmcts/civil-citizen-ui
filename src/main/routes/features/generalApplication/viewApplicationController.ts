@@ -26,6 +26,7 @@ import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsVi
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -57,6 +58,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
+    await deleteDraftClaimFromStore(claimId);
 
     res.render(viewPath, {
       backLinkUrl: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
