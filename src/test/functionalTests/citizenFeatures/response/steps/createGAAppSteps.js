@@ -20,6 +20,7 @@ const CheckAndSend= require('../../GA/pages/checkAndSend');
 const SubmitGAConfirmation = require('../../GA/pages/submitGAConfirmation');
 const ApplyHelpFeeSelection = require('../../GA/pages/applyHelpFeeSelection');
 const PaymentConfirmation = require('../../GA/pages/paymentGAConfirmation');
+const N245Upload = require('../../GA/pages/uploadN245FormPage');
 const config = require('../../../../config.js');
 const govPay = new GovPay();
 
@@ -42,6 +43,7 @@ const checkAndSendPage = new CheckAndSend();
 const submitGAConfirmationPage = new SubmitGAConfirmation();
 const applyHelpFeeSelectionPage = new ApplyHelpFeeSelection();
 const paymentConfirmationPage = new PaymentConfirmation();
+const uploadN245FormPage = new N245Upload();
 
 class createGAAppSteps {
 
@@ -127,7 +129,7 @@ class createGAAppSteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 
-  async askToVaryAJudgementGA(caseRef, parties, communicationType = 'notice') {
+  async askToVaryAJudgementGA(caseRef, parties, communicationType = 'notice', defendant = false) {
     //Cannot be withoutnotice
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Vary a judgment';
@@ -151,12 +153,16 @@ class createGAAppSteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
-    //For defendant creating claim extra screen in here for uploading N245
 
-    await claimApplicationCostPage.verifyPageContent(applicationType);
-    await claimApplicationCostPage.selectAndVerifyYesOption();
-    await claimApplicationCostPage.nextAction('Continue');
+    if (defendant) {
+      await uploadN245FormPage.verifyPageContent(applicationType);
+      await uploadN245FormPage.uploadN245();
+      await uploadN245FormPage.nextAction('Continue');
+    } else {
+      await claimApplicationCostPage.verifyPageContent(applicationType);
+      await claimApplicationCostPage.selectAndVerifyYesOption();
+      await claimApplicationCostPage.nextAction('Continue');
+    }
 
     await wantToUploadDocumentsPage.verifyPageContent(applicationType);
     await wantToUploadDocumentsPage.nextAction('No');

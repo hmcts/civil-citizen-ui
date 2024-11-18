@@ -23,11 +23,9 @@ class CheckAndSend {
     if (communicationType !== 'consent' && applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment') {
       this.informOtherParties(communicationType);
     }
-    this.costsBack();
     if (applicationType !== 'Vary a judgment') {
+      this.costsBack();
       this.orderWanted();
-    }
-    if (applicationType !== 'Vary a judgment') {
       this.reasonsForRequest();
     }
     this.uploadDocument();
