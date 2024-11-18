@@ -18,7 +18,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/mainCaseForGA.json"
+        "bodyFileName": "generalApplication/mainCaseForGA.json"
       }
     },
     {
@@ -36,7 +36,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/claimantDashboardTasks.json"
+        "bodyFileName": "generalApplication/claimantDashboardTasks.json"
       }
     },
     {
@@ -54,7 +54,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/claimantDashboardNotifications.json"
+        "bodyFileName": "generalApplication/claimantDashboardNotifications.json"
       }
     },
     {
@@ -170,7 +170,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/fee-select.json"
+        "bodyFileName": "generalApplication/fee-select.json"
       }
     },
     {
@@ -191,7 +191,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/fee-select.json"
+        "bodyFileName": "generalApplication/fee-select.json"
       }
     },
     {
@@ -209,7 +209,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/gaApplication-afterpayment.json"
+        "bodyFileName": "generalApplication/gaApplication-afterpayment.json"
       }
     },
     {
@@ -230,7 +230,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/payment-redirect.json"
+        "bodyFileName": "generalApplication/payment-redirect.json"
       }
     },
     {
@@ -251,7 +251,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "/generalApplication/payment-status.json"
+        "bodyFileName": "generalApplication/payment-status.json"
       }
     },
     {
