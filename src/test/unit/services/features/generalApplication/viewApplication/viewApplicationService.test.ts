@@ -751,10 +751,12 @@ describe('View Application service', () => {
 
     it('should get data array if there is court has dismissal order documents', async () => {
       //given
+      mockGetApplication.mockClear();
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument = setMockDismissalOrderDocuments();
-
+      caseData.hearingNoticeDocument = null;
+      caseData.hearingOrderDocument = null;
       mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getCourtDocuments(application, 'en');
@@ -779,6 +781,7 @@ describe('View Application service', () => {
 
     it('should get dismissal order documents', async () => {
       //given
+      mockGetApplication.mockClear();
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument = setMockDismissalOrderDocuments();
@@ -787,11 +790,14 @@ describe('View Application service', () => {
       //When
       const result = getDismissalOrder(application, 'en');
       //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
-        '12 November 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a', 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf'),
-      );
+      const expectedDocument = {
+        'fileName': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
+        'uploadDate': '15 November 2024',
+        'linkInformation': {
+          'url': '/case/1718105701451856/view-documents/82941661-c59b-437f-8b13-c680c81839c7',
+          'text': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf',
+        },
+      };
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result[0]).toEqual(expectedResult.documents[0]);
     });
