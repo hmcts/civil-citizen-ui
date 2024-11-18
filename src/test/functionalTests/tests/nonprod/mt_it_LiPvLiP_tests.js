@@ -72,7 +72,7 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, rejectAll, 'Intermediate');
     await api.waitForFinishedBusinessProcess();
 
-    // Respond as claimant user
+    // Respond as claimant user CIV-14655
     // To do later
     // await LoginSteps.EnterCitizenCredentials(config.applicantSolicitorUser.email, config.applicantSolicitorUser.password);
     // await ResponseSteps.RespondToClaim(claimRef);
