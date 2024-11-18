@@ -1067,6 +1067,10 @@ export class Claim {
   getIntentionToProceed(): string{
     return this.claimantResponse?.intentionToProceed?.option;
   }
+
+  isCaseProgressionCaseState(): boolean {
+    return [CaseState.CASE_PROGRESSION].includes(this.ccdState);
+  }
 }
 
 export interface StatementOfTruth {
