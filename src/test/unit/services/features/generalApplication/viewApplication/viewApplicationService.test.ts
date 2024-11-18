@@ -223,13 +223,13 @@ function setMockDismissalOrderDocuments(): CcdGeneralApplicationDirectionsOrderD
         'category_id': 'applications',
         'document_url': 'http://dm-store:8080/documents/82941661-c59b-437f-8b13-c680c81839c7',
         'document_filename': '000MC039-settlement-agreement.pdf',
-        'document_binary_url': 'http://dm-store:8080/documents/82941661-c59b-437f-8b13-c680c81839c7/binary'
+        'document_binary_url': 'http://dm-store:8080/documents/82941661-c59b-437f-8b13-c680c81839c7/binary',
       },
       'documentName': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf',
       //'documentSize': 0,
       'documentType': 'DISMISSAL_ORDER',
-      'createdDatetime': new Date('2024-11-15T12:05:40.1976336')
-    }
+      'createdDatetime': new Date('2024-11-15T12:05:40.1976336'),
+    },
   }];
 }
 
@@ -769,9 +769,9 @@ describe('View Application service', () => {
         'uploadDate': '15 November 2024',
         'linkInformation': {
           'url': '/case/1718105701451856/view-documents/82941661-c59b-437f-8b13-c680c81839c7',
-          'text': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf'
-        }
-      }
+          'text': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf',
+        },
+      };
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument1, expectedDocument]);
       expect(result.documents[0]).toEqual(expectedResult.documents[0]);
       expect(result.documents[1]).toEqual(expectedResult.documents[1]);
