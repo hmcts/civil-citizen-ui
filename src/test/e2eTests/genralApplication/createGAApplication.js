@@ -138,17 +138,6 @@ class CreateGAApplication {
 
   }
 
-  async verifyWiremockRequestForGA() {
-    const headers = {
-      Authorization: 'Bearer your-token-here',
-    };
-    console.log(url.wiremockServiceE2e);
-    const data = await restHelper.request(
-      `${url.wiremockServiceE2e}/cases/1730984188221535`, headers, '', 'GET', 200);
-    const response = await data.json()
-    console.debug(JSON.stringify(response));
-  }
-
   async resetWiremockScenario() {
     await resetScenarios();
   }
