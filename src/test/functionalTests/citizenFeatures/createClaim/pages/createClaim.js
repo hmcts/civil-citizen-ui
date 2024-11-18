@@ -681,7 +681,7 @@ class CreateClaim {
     await I.click(paths.options.sole_trader_claimant);
     this.clickNextAction(paths.buttons.save_and_continue);
     await I.fillField(paths.fields.soleTraderTradingAs, 'Sole trader trading name');
-    this.selectAddress(true);
+    await this.selectAddress(true);
     this.inputDateOfBirth();
     I.fillField(paths.fields.telephone_number, '07818731017');
     this.clickNextAction(paths.buttons.save_and_continue);
@@ -691,7 +691,7 @@ class CreateClaim {
     await I.click(paths.options.sole_trader_defendant);
     this.clickNextAction(paths.buttons.save_and_continue);
     await I.fillField(paths.fields.soleTraderTradingAs, 'Defendant Sole trader trading name');
-    this.selectAddress(false);
+    await this.selectAddress(false);
     I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
     I.fillField(paths.fields.telephone_number, '07800000000');
@@ -704,7 +704,7 @@ class CreateClaim {
     await I.waitForContent('Enter organisation details', 60);
     await I.fillField(paths.fields.OrgpartyName, 'Claimant Org name');
     await I.fillField(paths.fields.OrgContactPerson, 'Claimant contact name');
-    this.selectAddress(true);
+    await this.selectAddress(true);
     I.fillField(paths.fields.telephone_number, '07818731017');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
@@ -715,7 +715,7 @@ class CreateClaim {
     await I.waitForContent('Enter organisation details', 60);
     await I.fillField(paths.fields.OrgpartyName, 'Defendant Org name');
     await I.fillField(paths.fields.OrgContactPerson, 'Defendant contact name');
-    this.selectAddress(false);
+    await this.selectAddress(false);
     I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
     I.fillField(paths.fields.telephone_number, '07800000000');
@@ -728,7 +728,7 @@ class CreateClaim {
     await I.waitForContent('Company details', 60);
     await I.fillField(paths.fields.OrgpartyName, 'Claimant Org name');
     await I.fillField(paths.fields.OrgContactPerson, 'Claimant contact name');
-    this.selectAddress(true);
+    await this.selectAddress(true);
     I.fillField(paths.fields.telephone_number, '07818731017');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
@@ -749,7 +749,7 @@ class CreateClaim {
     await I.waitForContent('Company details', 60);
     await I.fillField(paths.fields.OrgpartyName, 'Defendant Company name');
     await I.fillField(paths.fields.OrgContactPerson, 'Defendant Company name');
-    this.selectAddress(false);
+    await this.selectAddress(false);
     I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
     I.fillField(paths.fields.telephone_number, '07800000000');
