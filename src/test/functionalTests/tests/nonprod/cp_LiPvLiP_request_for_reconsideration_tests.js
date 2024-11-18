@@ -67,7 +67,7 @@ Scenario('Claimant performs Request for reconsideration and Defendant adds a com
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 
 Scenario('Defendant performs Request for reconsideration and Claimant adds a comment', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
