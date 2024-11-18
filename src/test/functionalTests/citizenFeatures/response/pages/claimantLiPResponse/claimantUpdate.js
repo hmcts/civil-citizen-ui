@@ -23,6 +23,19 @@ class ClaimantUpdate {
     }
   }
 
+  async viewAndRespondToClaim(claimRef, notification) {
+    console.log('notification..', notification);
+    I.amOnPage('/dashboard/' + claimRef + '/claimant');
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (isDashboardServiceEnabled) {
+      await verifyNotificationTitleAndContent('', notification.title, notification.content);
+      I.click(notification.nextSteps);
+    } else {
+      I.waitForContent('Response to the claim', config.WaitForText);
+      I.click('View and respond');
+    }
+  }
+
   async startUploadDocs() {
     await I.waitForVisible(selectors.titleClass, config.WaitForText);
     I.waitForVisible(selectors.contentClass, config.WaitForText);
