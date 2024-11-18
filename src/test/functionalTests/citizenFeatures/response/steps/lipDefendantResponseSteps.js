@@ -674,7 +674,6 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
-
   async EnterDQForFastTrack(claimRef, isIndividual = true){
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
