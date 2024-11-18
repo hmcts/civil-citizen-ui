@@ -8,7 +8,7 @@ accessibilityStatementController.get(ACCESSIBILITY_STATEMENT_URL, async (req, re
   res.render(
     accessibilityStatementViewPath,
     {
-      dashboardUrl: DASHBOARD_URL
+      dashboardUrl: DASHBOARD_URL,
     },
   );
 });
