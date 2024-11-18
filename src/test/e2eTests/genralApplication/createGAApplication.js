@@ -1,8 +1,6 @@
 const {clickButton} = require('../commons/clickButton');
 const {buttonType} = require('../commons/buttonVariables');
 const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wiremock');
-const restHelper = require('../../functionalTests/specClaimHelpers/api/restHelper.js');
-const {url} = require("../../config");
 const I = actor();
 
 class CreateGAApplication {
