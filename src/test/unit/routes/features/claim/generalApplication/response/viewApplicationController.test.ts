@@ -247,14 +247,14 @@ describe('General Application - View application', () => {
       application.case_data.respondentsResponses = [{value: {}}];
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       mockedSummaryRows.mockResolvedValue({summaryRows: [
-          {
-            key: {text: 'Application type and description'},
-            value: {
-              html: 'More time to do what is required by a court order.',
-            },
+        {
+          key: {text: 'Application type and description'},
+          value: {
+            html: 'More time to do what is required by a court order.',
           },
-        ],
-        responseSummaries: []},
+        },
+      ],
+      responseSummaries: []},
       );
       await request(app)
         .get(GA_RESPONSE_VIEW_APPLICATION_URL)
