@@ -26,7 +26,6 @@ export const IGNORED_URLS = [
   urls.REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
 
   //Currently failing on accessibility for case progression 15112024
-  urls.CP_UPLOAD_DOCUMENTS_URL,
   urls.CP_EVIDENCE_UPLOAD_SUBMISSION_URL,
 
   //Currently failing on accessibility or pending to review
