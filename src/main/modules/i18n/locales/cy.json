@@ -2949,7 +2949,7 @@
           "SETTLE_BY_CONSENT": "Setlo drwy gydsyniad",
           "STAY_THE_CLAIM": "Atal yr hawliad",
           "STRIKE_OUT": "Dileu",
-          "SUMMARY_JUDGMENT": "Dyfarniad Diannod",
+          "SUMMARY_JUDGEMENT": "Dyfarniad Diannod",
           "UNLESS_ORDER": "Gorchymyn Oni fydd",
           "VARY_ORDER": "Amrywio gorchymyn",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Amrywio telerau talu dyfarniad",
@@ -5284,7 +5284,7 @@
       "MISSING_OTHER": "Mae arnoch angen dweud wrthym pa fath arall o gymorth sydd ei angen arnoch.",
       "MISSING_SIGN_LANGUAGE": "Mae arnoch angen dweud wrthym pa fath o iaith arwyddion rydych angen dehonglydd ar ei chyfer.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
-      "PAY_APPLICATION_FEE": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
+      "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os ydych yn cytuno y dylai'r llys wneud y gorchymyn y gofynnwyd amdano gan y parti arall. Dewiswch opsiwn: Ydw neu Nac ydw",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "Mae arnoch angen esbonio pam rydych yn anghytuno â'r cais"
