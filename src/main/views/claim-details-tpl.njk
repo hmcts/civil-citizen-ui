@@ -62,7 +62,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% endblock %}
 
 {% block footer %}
-{% if testingSupportEnabled %}
+{% if developmentMode %}
 {{ govukFooter({
     contentLicence: {
       html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })
