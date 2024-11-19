@@ -387,19 +387,11 @@ export const saveHelpWithFeesDetails = async (gaRedisKey: string, value: any, hw
   }
 };
 
-export const saveAndTriggerNotifyGaHwfEvent = async (req: AppRequest, gaHwf: ApplyHelpFeesReferenceForm, isAdditionalFeeType: boolean): Promise<void> => {
+export const saveAndTriggerNotifyGaHwfEvent = async (req: AppRequest, gaHwf: ApplyHelpFeesReferenceForm): Promise<void> => {
   try {
-    let gaHelpWithFees: CCDGaHelpWithFees;
-    if (isAdditionalFeeType) {
-      gaHelpWithFees = {
-        gaAdditionalHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
-      };
-    } else {
-      gaHelpWithFees = {
-        generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
-      };
-    }
-
+    const gaHelpWithFees: CCDGaHelpWithFees = {
+      generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
+    };
     await triggerNotifyHwfEvent(req.params.appId, gaHelpWithFees, req);
   }
   catch (error) {
