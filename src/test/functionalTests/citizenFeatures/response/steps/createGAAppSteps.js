@@ -125,8 +125,12 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
   }
 
   async askToVaryAJudgementGA(caseRef, parties, communicationType = 'notice', defendant = false) {
@@ -205,8 +209,12 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
   }
 
   async askCourtToReconsiderAnOrderGA(caseRef, parties, communicationType = 'withoutnotice') {
@@ -299,8 +307,12 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
   }
 
   async askToChangeHearingDateGA(caseRef, parties, communicationType = 'withoutnotice') {
@@ -404,8 +416,12 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
   }
 
   async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice') {
@@ -509,8 +525,12 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
   }
 
   async askForReliefFromAPenaltyGA(caseRef, parties, communicationType = 'withoutnotice') {
@@ -615,8 +635,12 @@ class createGAAppSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
 
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
   }
 }
 
