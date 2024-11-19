@@ -1,0 +1,30 @@
+[
+  {
+    "id": "00af3a73-f79a-4fa5-a893-a8304b29bbf9",
+    "titleEn": "Wait for defendant to respond",
+    "titleCy": "Aros i'r diffynnydd ymateb",
+    "descriptionEn": "<p class=\"govuk-body\">mr defendant person has until 17 December 2024 to respond. They can request an extra 28 days if they need it.</p>",
+    "descriptionCy": "<p class=\"govuk-body\">Mae gan mr defendant person hyd at 17 Rhagfyr 2024 i ymateb. Gallant ofyn am 28 diwrnod ychwanegol os oes arnynt angen hynny.</p>",
+    "params": {
+      "claimantRepaymentPlanDecisionCy": "gwrthod",
+      "applicant1PartyName": "Mr Claimant person",
+      "respondent1PartyName": "mr defendant person",
+      "legacyCaseReference": "000MC022",
+      "respondent1ResponseDeadlineCy": "17 Rhagfyr 2024",
+      "djDefendantNotificationMessage": "<u>make an application to set aside (remove) or vary the judgment</u>",
+      "djDefendantNotificationMessageCy": "<u>wneud cais i roi’r dyfarniad o’r naill du (ei ddileu) neu amrywio’r dyfarniad</u>",
+      "respondent1ResponseDeadline": "2024-12-17T16:00:00",
+      "djClaimantNotificationMessage": "<u>make an application to vary the judgment</u>",
+      "defaultRespondTime": "4pm",
+      "ccdCaseReference": 1732014426677369,
+      "claimantRepaymentPlanDecision": "rejected",
+      "djClaimantNotificationMessageCy": "<u>wneud cais i amrywio’r dyfarniad</u>",
+      "claimIssueRemissionAmount": "£0",
+      "hearingFeeRemissionAmount": "£0",
+      "respondent1ResponseDeadlineEn": "17 December 2024",
+      "claimFee": "£455",
+      "priorityNotificationDeadline": "2024-11-19T11:07:18"
+    },
+    "createdAt": "2024-11-19T11:07:18.202614Z"
+  }
+]
