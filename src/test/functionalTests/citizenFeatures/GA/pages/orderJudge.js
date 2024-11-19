@@ -72,6 +72,11 @@ class OrderJudge {
         I.see('You\'ll be able to explain your reasons on the next screen.');
         I.see('The contents of this box will be seen by the other parties.');
         break;
+      case 'Court to make a summary judgment on a case':
+        I.see('A judge will consider your application to make an order. The order that a judge would usually make for a summary judgment is in the box below.');
+        I.see('You can add or alter any of the text if you need to.');
+        I.see('You\'ll be able to explain your reasons on the next screen.');
+        I.see('The contents of this box will be seen by the other parties.');
     }
     I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');

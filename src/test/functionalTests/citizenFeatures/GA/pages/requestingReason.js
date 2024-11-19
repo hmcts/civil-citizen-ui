@@ -60,6 +60,10 @@ class RequestingReason {
         I.see('The information you enter on this page will be seen by the other parties.');
         I.see('You should explain why the change is needed also. If necessary, why it was not included in the original documents. You\'ll have the option to upload a new version of the document on the next screen.');
         break;
+      case 'Court to make a summary judgment on a case':
+        I.see('The information you enter on this page will be seen by the other parties.');
+        I.see('You should explain why you do not believe the other parties\' claim will succeed. You\'ll have the option to upload documents to support your reasons on the next screen.');
+        break;
     }
     I.see('Enter your reasons for requesting this order', 'h1');
     await I.seeElement('//*[@id="text"]');

@@ -56,6 +56,9 @@ class ApplicationCosts {
       case 'Make a change to your claim or defence that you\'ve submitted':
         I.see(`To apply to make a change to your claim or defence, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
         break;
+      case 'Court to make a summary judgment on a case':
+        I.see(`To apply to the court to make a summary judgment, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
+        break;
     }
     await I.see('This fee will need to be paid once you\'ve created the application. If you\'re eligible, you may be able to apply for help with fees.');
   }
