@@ -3315,9 +3315,9 @@
         "UPLOAD_DOCUMENTS_1": "Gallwch hefyd ",
         "UPLOAD_DOCUMENTS_2": "uwchlwytho dogfennau ychwanegol",
         "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny.",
-        "UPLOAD_DOCUMENTS_TRIAL_1": "You can ",
-        "UPLOAD_DOCUMENTS_TRIAL_2": "upload documents",
-        "UPLOAD_DOCUMENTS_TRIAL_3": " you would like to be included in a trial bundle."
+        "UPLOAD_DOCUMENTS_TRIAL_1": "Gallwch ",
+        "UPLOAD_DOCUMENTS_TRIAL_2": "uwchlwytho dogfennau",
+        "UPLOAD_DOCUMENTS_TRIAL_3": " yr hoffech iddynt gael eu cynnwys mewn bwndel treial."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "Os ydych wedi talu'r ddyled o ddyfarniad y llys sirol (CCJ), gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau ac asiantaethau archwilio credyd. Gelwir hyn hefyd yn gais am dystysgrif canslo neu dystysgrif diwallu.",
