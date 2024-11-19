@@ -21,6 +21,9 @@ const paymentSuccessfulViewPath  = 'features/claim/payment-successful';
 async function renderView(res: Response, req:  AppRequest | Request, claimId: string, redirectUrl: string, calculatedAmountInPence: string) {
   const claim: Claim = await getClaimById(claimId, req, true);
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+  console.log('req.cookies?.lang:', req.cookies.lang);
+  console.log('req.query?.lang:', req.query.lang);
+
   res.render(paymentSuccessfulViewPath,
     {
       paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim,lng),

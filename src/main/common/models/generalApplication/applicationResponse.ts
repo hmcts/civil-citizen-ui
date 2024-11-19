@@ -89,6 +89,8 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppRespondent1Representative?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
   generalAppN245FormUpload?: CcdDocument;
+  applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
+  respondentBilingualLanguagePreference?: YesNoUpperCamelCase
 }
 
 export interface JudicialRequestMoreInfo {
