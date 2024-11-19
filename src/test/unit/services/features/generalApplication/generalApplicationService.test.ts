@@ -614,32 +614,7 @@ describe('General Application service', () => {
       });
       const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
       //When
-      await saveAndTriggerNotifyGaHwfEvent({params: {appId: '12334'}} as unknown as AppRequest, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'), false);
-      expect(spyOnGA).toHaveBeenCalled();
-    });
-
-    it('should save help with hwf additional application fee selection', async () => {
-      const gaHwfFees = new GaHelpWithFees();
-      const ccdClaim = new Claim();
-      ccdClaim.generalApplications = [
-        {
-          'id': 'test',
-          'value': {
-            'caseLink': {
-              'CaseReference': 'testApp1',
-            },
-          },
-        },
-      ];
-      //Given
-      mockGetGaHwFDetails.mockImplementation(async () => {
-
-        gaHwfFees.applyHelpWithFees = {option: YesNo.YES};
-        return gaHwfFees;
-      });
-      const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
-      //When
-      await saveAndTriggerNotifyGaHwfEvent({params: {appId: '12334'}} as unknown as AppRequest, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'), true);
+      await saveAndTriggerNotifyGaHwfEvent({params: {appId: '12334'}} as unknown as AppRequest, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
       expect(spyOnGA).toHaveBeenCalled();
     });
 
