@@ -21,9 +21,11 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 function getApplicantIssueLang(applicationResponse: ApplicationResponse) {
   const applicationData = applicationResponse.case_data;
   if (applicationData.parentClaimantIsApplicant === YesNoUpperCamelCase.YES) {
-    return applicationData?.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
+    return applicationData?.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES? 'cy' : 'en';
+  } else if (applicationData.parentClaimantIsApplicant === YesNoUpperCamelCase.NO) {
+    return applicationData?.respondentBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
   }
-  return applicationData?.respondentBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
+  return 'en';
 }
 
 export const getRedirectUrl = async (claimId: string, applicationId: string, req: AppRequest): Promise<string> => {
