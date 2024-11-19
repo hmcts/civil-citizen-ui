@@ -151,6 +151,66 @@
         },
         "bodyFileName": "generalApplication/hearingdate/applications.json"
       }
+    },
+    {
+      "scenarioName": "create-ga-application",
+      "requiredScenarioState": "Post-submission",
+      "newScenarioState": "Post-submission",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732014426677369",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/post-submission.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732018301268558",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/gaApplicationAfterPayment.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/case/1732018301268558/payment",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/paymentRedirect.json"
+      }
     }
   ]
 }

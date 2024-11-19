@@ -18,7 +18,7 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     createGAApplication.selectAgreementFromOtherParty('Yes');
     createGAApplication.applicationCosts(claimID, 'Reconsider an order', 'To apply to reconsider an order, the application fee is £14');
     createGAApplication.claimCosts(claimID, 'Yes');
-    createGAApplication.orderJudge(claimID);
+    createGAApplication.orderJudge(claimID, 'no mistake done by me to dismiss the claim');
     createGAApplication.requestingReason(claimID);
     createGAApplication.addAnotherApp(claimID, 'No');
     createGAApplication.wantToUploadDocs(claimID, 'No');

@@ -24,6 +24,16 @@ class CreateGAApplication {
     clickButton(buttonType.CONTINUE);
   }
 
+  InformOtherParties(option) {
+    I.waitForContent('Should the court inform the other parties about this application?');
+    I.click(option);
+    if (option === 'No') {
+      I.see('Why do you not want the court to inform the other parties?');
+      I.fillField('#reasonForCourtNotInformingOtherParties', 'not informed to other parties');
+    }
+    clickButton(buttonType.CONTINUE);
+  }
+
   applicationCosts(claimId, selectedApplication, applicationFee) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/application-costs`);
     I.see('Make an application');
@@ -39,10 +49,10 @@ class CreateGAApplication {
     clickButton(buttonType.CONTINUE);
   }
 
-  orderJudge(claimId) {
+  orderJudge(claimId, text) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/order-judge`);
     I.see('What order do you want the judge to make?');
-    I.fillField('#text', 'no mistake done by me to dismiss the claim');
+    I.fillField('#text', text);
     clickButton(buttonType.CONTINUE);
   }
 
