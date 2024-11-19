@@ -10,7 +10,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeePaymentConfirmationService');
@@ -18,12 +18,11 @@ const logger = Logger.getLogger('applicationFeePaymentConfirmationService');
 const success = 'Success';
 const paymentCancelledByUser = 'Payment was cancelled by the user';
 
-function getApplicantIssueLang(applicationResponse: ApplicationResponse) {
-  const applicationData = applicationResponse.case_data;
-  if (applicationData.parentClaimantIsApplicant === YesNoUpperCamelCase.YES) {
-    return applicationData?.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES? 'cy' : 'en';
-  } else if (applicationData.parentClaimantIsApplicant === YesNoUpperCamelCase.NO) {
-    return applicationData?.respondentBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
+function getApplicantIssueLang(claim: Claim) {
+  if(claim.isClaimant()) {
+    return claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
+  } else if(claim.isDefendant()) {
+    return claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH' ? 'cy' : 'en';
   }
   return 'en';
 }
@@ -35,7 +34,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const paymentReference = claim.generalApplication?.applicationFeePaymentDetails?.paymentReference;
     const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
-    const lang = getApplicantIssueLang(applicationResponse);
+    const lang = getApplicantIssueLang(claim);
 
     if(paymentStatus.status === success) {
       return `${GA_PAYMENT_SUCCESSFUL_URL}?lang=${lang}`;

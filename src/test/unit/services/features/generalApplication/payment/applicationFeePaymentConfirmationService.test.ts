@@ -1,7 +1,11 @@
 import * as requestModels from 'models/AppRequest';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {
+  civilClaimResponseMock,
+  mockCivilClaim,
+  mockDraftClaim,
+} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
@@ -13,7 +17,10 @@ import {getRedirectUrl} from 'services/features/generalApplication/payment/appli
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {cloneDeep} from 'lodash';
+import {Claim} from 'models/claim';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('modules/draft-store');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
@@ -58,7 +65,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
       state: undefined,
     };
   });
-
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
@@ -84,58 +90,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
 
     //Then
     expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+lang);
-  });
-
-  it('should return to payment successful screen if payment is successful and respondent submit app and response lang is bilingual.', async () => {
-    const mockclaimFeePaymentInfo = {
-      status: 'Success',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
-      paymentReference: 'RC-1701-0909-0602-0418',
-    };
-
-    const mockClaimFeePaymentRedirectInfo = {
-      status: 'initiated',
-      paymentReference:'RC-1701-0909-0602-0418',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-    };
-
-    applicationResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
-    applicationResponse.case_data.respondentBilingualLanguagePreference = YesNoUpperCamelCase.YES;
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    //when
-    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
-
-    //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+'?lang=cy');
-  });
-
-  it('should return to payment successful screen if payment is successful and claimant submit app and claimissue lang is bilingual.', async () => {
-    const mockclaimFeePaymentInfo = {
-      status: 'Success',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
-      paymentReference: 'RC-1701-0909-0602-0418',
-    };
-
-    const mockClaimFeePaymentRedirectInfo = {
-      status: 'initiated',
-      paymentReference:'RC-1701-0909-0602-0418',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-    };
-
-    applicationResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.YES;
-    applicationResponse.case_data.applicantBilingualLanguagePreference = YesNoUpperCamelCase.YES;
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    //when
-    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
-
-    //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+'?lang=cy');
   });
 
   it('should return to additional payment successful screen if payment is successful', async () => {
@@ -245,6 +199,64 @@ describe('Application Fee PaymentConfirmation Service', () => {
     await expect(getRedirectUrl(claimId, applicationId, mockedAppRequest)).rejects.toBe(
       TestMessages.SOMETHING_WENT_WRONG,
     );
+  });
+
+  it('should return to payment successful screen if payment is successful and claimant submit app and claimissue lang is bilingual.', async () => {
+    const draftClaim = cloneDeep(civilClaimResponseMock);
+    draftClaim.case_data.caseRole = CaseRole.CLAIMANT;
+    draftClaim.case_data.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+    const mockclaimFeePaymentInfo = {
+      status: 'Success',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
+      paymentReference: 'RC-1701-0909-0602-0418',
+    };
+
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
+
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
+    //when
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
+
+    //Then
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+'?lang=cy');
+  });
+
+  it('should return to payment successful screen if payment is successful and respondent submit app and response lang is bilingual.', async () => {
+    const draftClaim = cloneDeep(civilClaimResponseMock);
+    draftClaim.case_data.caseRole =  CaseRole.DEFENDANT;
+    draftClaim.case_data.respondent1LiPResponse.respondent1ResponseLanguage = 'BOTH';
+    app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+
+    const mockclaimFeePaymentInfo = {
+      status: 'Success',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
+      paymentReference: 'RC-1701-0909-0602-0418',
+    };
+
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      paymentReference:'RC-1701-0909-0602-0418',
+      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+    };
+
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
+    //when
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
+
+    //Then
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+'?lang=cy');
   });
 
 });
