@@ -4437,6 +4437,7 @@
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
+      "MEDIATION_TEXT": "This includes support for you or your representative at mediation.",
       "WHAT_LANGUAGE": "What language needs to be interpreted?",
       "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts require support, but are not listed below, add them on other witness page.",
       "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
@@ -4639,11 +4640,13 @@
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
       "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "OFFICIAL_LANGUAGE_MEDIATION": "Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.",
       "PAGE_TITLE": "Welsh language",
       "WELSH": "Welsh",
       "WELSH_AND_ENGLISH": "Welsh and English",
       "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
-      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
+      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
+      "WHAT_LANGUAGE_SPEAK_MEDIATION": "This includes the language that you or your representative will speak at mediation."
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Add another job",
