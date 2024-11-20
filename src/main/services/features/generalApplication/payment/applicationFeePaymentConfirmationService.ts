@@ -18,10 +18,6 @@ const logger = Logger.getLogger('applicationFeePaymentConfirmationService');
 const success = 'Success';
 const paymentCancelledByUser = 'Payment was cancelled by the user';
 
-function isApplicantBilingual(applicationResponse: ApplicationResponse) {
-  return applicationResponse.case_data?.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
-}
-
 export const getRedirectUrl = async (claimId: string, applicationId: string, req: AppRequest): Promise<string> => {
   try {
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
@@ -29,7 +25,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const paymentReference = claim.generalApplication?.applicationFeePaymentDetails?.paymentReference;
     const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
-    const lang = isApplicantBilingual(applicationResponse);
+    const lang = applicationResponse.case_data?.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
 
     if(paymentStatus.status === success) {
       return `${GA_PAYMENT_SUCCESSFUL_URL}?lang=${lang}`;
