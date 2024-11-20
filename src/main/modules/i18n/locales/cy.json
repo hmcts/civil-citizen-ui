@@ -2754,6 +2754,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Ydych chi eisiau ychwanegu cais arall?",
+        "APPLICATION": "Cais",
         "APPLICATION_TYPE": "Math o gais",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
         "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",

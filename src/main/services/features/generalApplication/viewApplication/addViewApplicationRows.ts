@@ -107,8 +107,6 @@ export const addApplicationTypesRows = (
             null,
             null,
             undefined,
-            index,
-            arr.length,
           ),
         );
       },
@@ -140,8 +138,6 @@ export const addApplicationTypesAndDescriptionRows = (
             null,
             null,
             undefined,
-            index,
-            arr.length,
           ),
         );
       },
@@ -185,7 +181,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
     if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
       rows.push(
         summaryRow(
-          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
         ),
       );
