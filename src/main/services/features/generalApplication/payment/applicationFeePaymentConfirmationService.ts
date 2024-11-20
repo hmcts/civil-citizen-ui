@@ -19,10 +19,7 @@ const success = 'Success';
 const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 function isApplicantBilingual(applicationResponse: ApplicationResponse) {
-  if (applicationResponse.case_data.applicantBilingualLanguagePreference !== undefined) {
-    return applicationResponse.case_data.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
-  }
-  return 'en';
+  return applicationResponse.case_data?.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
 }
 
 export const getRedirectUrl = async (claimId: string, applicationId: string, req: AppRequest): Promise<string> => {
