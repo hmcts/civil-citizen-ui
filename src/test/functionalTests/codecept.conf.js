@@ -14,13 +14,13 @@ exports.config = {
   teardownAll: async () => {
     const endTime = new Date();
     const executionTime = (endTime - startTime) / 1000; // in seconds
-    console.log(`Finished the tests at ${endTime}`);
-    console.log(`Total execution time: ${executionTime} seconds`);
+    // console.log(`Finished the tests at ${endTime}`);
+    // console.log(`Total execution time: ${executionTime} seconds`);
   },
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
-    await unAssignAllUsers();
-    await deleteAllIdamTestUsers();
+    // await unAssignAllUsers();
+    // await deleteAllIdamTestUsers();
   },
   tests: process.env.ENVIRONMENT == 'aat' ?
     [ '../functionalTests/tests/prod/**/*.js',
@@ -33,7 +33,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+      show:  false,
       browser: 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
