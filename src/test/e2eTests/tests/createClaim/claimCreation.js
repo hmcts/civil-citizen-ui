@@ -2,7 +2,7 @@ const config = require('../../../config');
 const ClaimCreation = require('../../createClaim/steps/claimCreation');
 const {yesAndNoCheckBoxOptionValue} = require('../../commons/eligibleVariables');
 
-Feature('Claim creation journey').tag('@test');
+Feature('Claim creation journey').tag('@e2e');
 
 Scenario('Claim creation journey with interest with fess reference', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

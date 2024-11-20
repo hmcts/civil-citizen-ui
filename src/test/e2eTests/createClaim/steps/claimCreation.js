@@ -19,7 +19,7 @@ class ClaimCreation {
   considerOtherOptions() {
     I.click(taskListItems.RESOLVING_THIS_DISPUTE); // Ensure the element exists
     I.seeInCurrentUrl('/claim/resolving-this-dispute');
-    clickButton(buttonType.SAVE_AND_CONTINUE);
+    clickButton(buttonType.I_CONFIRM_I_HAVE_READ_THIS);
     I.seeInCurrentUrl('/claim/task-list');
     I.see(taskListItems.RESOLVING_THIS_DISPUTE, checkTaskList(taskListItems.RESOLVING_THIS_DISPUTE, taskListStatus.COMPLETE));
   }
