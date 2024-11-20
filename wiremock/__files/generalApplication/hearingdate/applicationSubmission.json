@@ -288,6 +288,41 @@
           "caseNameGaInternal": "'Claimant person' v 'defendant person'"
         },
         "id": "c7bac70a-5a8a-467c-9a82-67841e0d58e5"
+      },
+      {
+        "id": "d05df5f6-99c4-49cb-9773-c53fec26f676",
+        "value": {
+          "caseLink": {
+            "CaseReference": "1732106154804395"
+          },
+          "generalAppType": {
+            "types": [
+              "EXTEND_TIME"
+            ]
+          },
+          "businessProcess": {
+            "status": "FINISHED",
+            "camundaEvent": "CREATE_GENERAL_APPLICATION_CASE",
+            "processInstanceId": "fbc55fb4-a73b-11ef-b2df-0242ac120006"
+          },
+          "isGaApplicantLip": "Yes",
+          "litigiousPartyID": "002",
+          "caseNameGaInternal": "'Claimant person' v 'defendant person'",
+          "isGaRespondentOneLip": "Yes",
+          "isGaRespondentTwoLip": "No",
+          "generalAppAskForCosts": "Yes",
+          "caseManagementLocation": {
+            "region": "2",
+            "address": "St Mary's Court, Regents Park Road",
+            "postcode": "N3 1BQ",
+            "siteName": "Barnet Civil and Family Centre",
+            "baseLocation": "000000"
+          },
+          "generalAppConsentOrder": "No",
+          "generalAppDateDeadline": "2024-11-25T16:00:00",
+          "parentClaimantIsApplicant": "No",
+          "generalAppSubmittedDateGAspec": "2024-11-20T12:35:53"
+        }
       }
     ],
     "applicant1OrganisationPolicy": {

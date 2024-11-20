@@ -4,7 +4,7 @@ const createGAApplication = require("../../genralApplication/createGAApplication
 const RespondentResponse = require("../../genralApplication/respondentResponse");
 const responseApplicationSummary = require("../../genralApplication/responseApplicationSummary");
 
-Feature('Lip V Lip Hearing Date Change').tag('@vjrtest');
+Feature('Lip V Lip Hearing Date Change @vjrtest').tag('@e2e');
 Scenario('Claimant GA Application and respond to response with hearing date change without notice', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
@@ -29,9 +29,13 @@ Scenario('Claimant GA Application and respond to response with hearing date chan
     createGAApplication.payYourApplicationFee(claimID, 119);
     createGAApplication.checkAndSend(claimID);
     createGAApplication.submitConfirmation(claimID, 119);
-    createGAApplication.selectFeeType(claimID);
-    createGAApplication.verifyPaymentSuccessfullPage(claimID, appId);
+    createGAApplication.selectFeeType(claimID, appId, 119);
+    createGAApplication.verifyPaymentSuccessfullPage();
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GaForLips', true);
   }
 })
+
+AfterSuite(async () => {
+  await createGAApplication.resetWiremockScenario();
+});

@@ -4,7 +4,7 @@ const RespondentResponse = require('../../genralApplication/respondentResponse')
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
 
-Feature('Lip V Lip Vary Order Consent').tag('@e2e');
+Feature('Lip V Lip Vary Order Consent @vjrtest').tag('@e2e');
 
 Scenario('Claimant GA Application and respond to response with vary order consent ', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

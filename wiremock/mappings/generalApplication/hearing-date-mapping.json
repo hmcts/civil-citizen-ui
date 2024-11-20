@@ -91,9 +91,13 @@
         },
         "bodyPatterns": [
           {
-            "equalToJson": "{\"applicationTypes\": [\"ADJOURN_HEARING\"], \"withConsent\": false, \"withNotice\": false, \"hearingDate\": null}",
-            "ignoreArrayOrder": true,
-            "ignoreExtraElements": false
+            "matchesJsonPath": "$[?(@.applicationTypes == ['ADJOURN_HEARING'])]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withConsent == false)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withNotice == false)]"
           }
         ]
       },
