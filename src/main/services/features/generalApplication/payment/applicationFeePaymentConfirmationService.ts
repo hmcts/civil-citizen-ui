@@ -10,7 +10,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeePaymentConfirmationService');
@@ -18,11 +18,11 @@ const logger = Logger.getLogger('applicationFeePaymentConfirmationService');
 const success = 'Success';
 const paymentCancelledByUser = 'Payment was cancelled by the user';
 
-function getApplicantApplicationIssueLang(claim: Claim) {
-  if(claim.isClaimant()) {
-    return claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
+function isApplicantBilingual(applicationResponse: ApplicationResponse) {
+  if (applicationResponse.case_data.applicantBilingualLanguagePreference !== undefined) {
+    return applicationResponse.case_data.applicantBilingualLanguagePreference === YesNoUpperCamelCase.YES ? 'cy' : 'en';
   }
-  return claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH' ? 'cy' : 'en';
+  return 'en';
 }
 
 export const getRedirectUrl = async (claimId: string, applicationId: string, req: AppRequest): Promise<string> => {
@@ -32,7 +32,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const paymentReference = claim.generalApplication?.applicationFeePaymentDetails?.paymentReference;
     const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
-    const lang = getApplicantApplicationIssueLang(claim);
+    const lang = isApplicantBilingual(applicationResponse);
 
     if(paymentStatus.status === success) {
       return `${GA_PAYMENT_SUCCESSFUL_URL}?lang=${lang}`;

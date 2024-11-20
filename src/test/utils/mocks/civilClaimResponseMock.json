@@ -206,10 +206,6 @@
     "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
     "totalInterest": 15,
-    "claimantBilingualLanguagePreference": "ENGLISH",
-    "respondent1LiPResponse": {
-      "respondent1ResponseLanguage": "ENGLISH"
-    },
     "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
     "interest": {
       "sameRateInterestSelection": {
