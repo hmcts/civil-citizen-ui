@@ -70,6 +70,32 @@
         },
         "body": "{\"calculatedAmountInPence\": \"10800\", \"code\": \"FEE0443\", \"version\": \"2\"}"
       }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732106154804395/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'RESPOND_TO_APPLICATION_URGENT_LIP')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/respondent-response.json"
+      }
     }
   ]
 }
