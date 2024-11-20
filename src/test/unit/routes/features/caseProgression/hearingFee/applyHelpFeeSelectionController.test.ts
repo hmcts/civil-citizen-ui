@@ -9,11 +9,12 @@ import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Session} from 'express-session';
+import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 
+jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionService');
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -95,7 +96,7 @@ describe('Apply for help with fees', () => {
         nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
       };
       app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-      jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
+      (getRedirectUrl as jest.Mock).mockResolvedValue(mockHearingFeePaymentRedirectInfo.nextUrl);
       await request(app)
         .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .send({option: YesNo.NO})
@@ -107,6 +108,7 @@ describe('Apply for help with fees', () => {
 
     it('should redirect to help with fees if option is YES', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      (getRedirectUrl as jest.Mock).mockResolvedValue(APPLY_HELP_WITH_FEES);
       await request(app)
         .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .send({option: YesNo.YES})
