@@ -41,7 +41,7 @@ Scenario('Claimant GA Application and respond to response with extend time conse
     RespondentResponse.hearingSupport(claimID, appId);
     RespondentResponse.submitApplication(claimID, appId);
     RespondentResponse.confirmationPage(claimID, appId);
-    // responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
+    responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Order made');
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }

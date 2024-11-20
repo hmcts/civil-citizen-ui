@@ -35,10 +35,10 @@
     {
       "id": 1732106154804395,
       "jurisdiction": "CIVIL",
-      "state": "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
+      "state": "ORDER_MADE",
       "case_type_id": "GENERALAPPLICATION",
       "created_date": "2024-11-20T12:35:54.847",
-      "last_modified": "2024-11-20T12:44:27.527",
+      "last_modified": "2024-11-20T16:01:49.79",
       "case_data": {
         "generalAppInformOtherParty": {
           "isWithNotice": "Yes"
