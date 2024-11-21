@@ -86,9 +86,9 @@ export interface CCDApplication extends ApplicationUpdate {
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   generalAppNotificationDeadlineDate?: string;
-  generalAppRespondent1Representative?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
   generalAppN245FormUpload?: CcdDocument;
+  applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
 }
 
 export interface JudicialRequestMoreInfo {
