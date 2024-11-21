@@ -77,6 +77,15 @@ class OrderJudge {
         I.see('You can add or alter any of the text if you need to.');
         I.see('You\'ll be able to explain your reasons on the next screen.');
         I.see('The contents of this box will be seen by the other parties.');
+        break;
+      case 'Court to strike out all or part of the other parties\' case without a trial':
+        I.see('A judge will consider your application and make an order.');
+        I.see('You should:');
+        I.see('explain which document you want to be dismissed');
+        I.see('mention the date that the document was submitted');
+        I.see('You\'ll be able to explain your reasons on the next screen.');
+        I.see('The information you enter on this page will be seen by the other parties.');
+        break;
     }
     I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');
