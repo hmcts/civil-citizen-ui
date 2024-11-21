@@ -36,7 +36,6 @@ class HearingSupport {
     I.see('You\'ll need to arrange your own language interpreter.');
     I.see('If you\'re not able to arrange your own interpreter, the court may be able to arrange one for you.');
     I.see('If you\'ll be arranging your own interpreter, you still need to tell us what language you\'ll be using by ticking the \'Language interpreter\' box below.');
-    I.see('We\'ll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the \'Sign language interpreter\' box below.');
     I.see('Find out how to get an interpreter at a court or tribunal.');
     await I.seeElement('//a[contains(text(), \'get an interpreter at a court or tribunal\')]');
   }
