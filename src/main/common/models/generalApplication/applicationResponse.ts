@@ -88,6 +88,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppNotificationDeadlineDate?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
   generalAppN245FormUpload?: CcdDocument;
+  applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
 }
 
 export interface JudicialRequestMoreInfo {
