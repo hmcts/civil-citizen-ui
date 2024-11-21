@@ -1023,7 +1023,7 @@
         "TITLE_NO": "Y camau nesaf",
         "PARAGRAPH_NO": "Mae’n rhaid i chi wneud cais am Help i Dalu Ffioedd cyn i chi gyflwyno’ch cais.",
         "QUESTION_TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
-        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+        "VALID_ENTER_REFERENCE_NUMBER": "Nodwch eich Rhif Help i Dalu Ffioedd 11 nod",
         "LIST_ITEMS": {
           "FIRST": "Ewch i",
           "FIRST_LINK": "gwneud cais am help i dalu ffioedd (yn agor mewn tab newydd)",
@@ -3035,7 +3035,6 @@
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
-        "ALWAYS_ARRANGE": "Byddwn wastad yn trefnu dehonglydd iaith arwyddion. Dywedwch wrthym pa fath o iaith arwyddion rydych chi angen dehonglydd iaith arwyddion ar ei chyfer, trwy roi tic yn y blwch ‘Dehonglydd iaith arwyddion’ isod.",
         "ARRANGING_OWN": "Os byddwch yn trefnu cyfieithydd ar y pryd eich hun, bydd dal angen i chi ddweud wrthym pa iaith byddwch yn ei defnyddio trwy roi tic yn y blwch ‘Cyfieithydd ar y pryd’ isod.",
         "DO_YOU_NEED": "A oes arnoch angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad (dewisol)?",
         "FIND_OUT": "Canfod sut i",
@@ -4436,6 +4435,7 @@
       "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy'n berthnasol.",
       "SIGN_LANGUAGE": "Dehonglydd iaith arwyddion",
       "TITLE": "Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?",
+      "MEDIATION_TEXT": "Mae hyn yn cynnwys cefnogaeth i chi neu'ch cynrychiolydd yn yr apwyntiad cyfryngu",
       "WHAT_LANGUAGE": "Pa iaith sydd angen ei chyfieithu?",
       "SUPPORT_REQUIREMENTS_MESSAGE": "Os ydych chi neu eich arbenigwyr angen cymorth, ond nad yw wedi’i restru isod, ychwanegwch y cymorth sydd ei angen arnoch ar y dudalen tystion eraill.",
       "SUPPORT_REQUIREMENTS_HEADING": "Anghenion cymorth"
@@ -4638,11 +4638,13 @@
     "WELSH_LANGUAGE": {
       "ENGLISH": "Saesneg",
       "OFFICIAL_LANGUAGE": "Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.",
+      "OFFICIAL_LANGUAGE_MEDIATION": "Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio'r Gymraeg mewn gwrandawiadau llys ac wrth gyfryngu. Ni fydd gofyn am gael siarad Cymraeg yn oedi'r gwrandawiad neu'r apwyntiad cyfryngu nac yn cael unrhyw effaith ar yr achos neu ganlyniad yr achos.",
       "PAGE_TITLE": "Yr iaith Gymraeg",
       "WELSH": "Cymraeg",
       "WELSH_AND_ENGLISH": "Y Gymraeg a'r Saesneg",
       "WHAT_LANGUAGE_DOCUMENTS": "Ym mha iaith y darperir y dogfennau?",
-      "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?"
+      "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?",
+      "WHAT_LANGUAGE_SPEAK_MEDIATION": "Mae hyn yn cynnwys yr iaith y byddwch chi neu'ch cynrychiolydd yn ei siarad yn y cyfryngu."
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
@@ -5008,7 +5010,7 @@
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "GIVE_DETAILS_DOCUMENTS": "Rhoi manylion y dogfennau",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
-    "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+    "VALID_ENTER_REFERENCE_NUMBER": "Nodwch eich Rhif Help i Dalu Ffioedd 11 nod",
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
