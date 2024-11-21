@@ -64,6 +64,9 @@ class ApplicationCosts {
         I.see(`To apply to the court to strike out all or part of the other parties’ case, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
         //The incorrect type of apostrophe is used in the content here - if that is fixed then top line will need to be used instead
         break;
+      case 'Court to pause a claim':
+        I.see(`To apply to the court to pause a claim, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
+        break;
     }
     await I.see('This fee will need to be paid once you\'ve created the application. If you\'re eligible, you may be able to apply for help with fees.');
   }

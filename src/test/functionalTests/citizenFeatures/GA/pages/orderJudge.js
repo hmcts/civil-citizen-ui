@@ -86,6 +86,13 @@ class OrderJudge {
         I.see('You\'ll be able to explain your reasons on the next screen.');
         I.see('The information you enter on this page will be seen by the other parties.');
         break;
+      case 'Court to pause a claim':
+        I.see('A judge will consider your application and make an order. The order that a judge would usually make to pause a claim is in the box below.');
+        I.see('You\'ll need to add information to the box, like when you\'d like the claim to be paused until.');
+        I.see('You can also alter any of the other text if you need to.');
+        I.see('You\'ll be able to explain your reasons on the next screen.');
+        I.see('The contents of this box will be seen by the other parties.');
+        break;
     }
     I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');
