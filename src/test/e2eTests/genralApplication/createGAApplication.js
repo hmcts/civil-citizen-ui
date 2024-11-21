@@ -6,8 +6,7 @@ const I = actor();
 class CreateGAApplication {
 
   start(claimId) {
-    I.amOnPage(`/dashboard/${claimId}/claimantNewDesign`);
-    I.click('Contact the court to request a change to my case');
+    I.amOnPage(`/case/${claimId}/general-application/application-type`);
   }
 
   selectApplicationType(applicationType) {
