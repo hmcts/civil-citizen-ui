@@ -535,8 +535,16 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
 };
 
 export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  if (hasRespondentResponded(application)) {
+    return true;
+  }
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
       || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+
+export const hasRespondentResponded = (application: ApplicationResponse) : boolean => {
+  const responses = application.case_data.respondentsResponses;
+  return (responses?.length > 0) && !!responses[0].value;
 };
 
 export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {

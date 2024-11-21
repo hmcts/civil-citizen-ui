@@ -19,7 +19,7 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
-  getApplicationFromGAService,
+  getApplicationFromGAService, hasRespondentResponded,
   saveApplicationTypesToGaResponse,
 } from 'services/features/generalApplication/generalApplicationService';
 import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
@@ -30,7 +30,8 @@ import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
 
 const viewApplicationToRespondentController = Router();
-const viewPath = 'features/generalApplication/response/view-application';
+const viewPathPreResponse = 'features/generalApplication/response/view-application';
+const viewPathPostResponse = 'features/generalApplication/view-applications';
 
 viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -38,7 +39,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const applicationId = req.params.appId ? String(req.params.appId) : null;
     const applicationIndex = queryParamNumber(req, 'index') ? queryParamNumber(req, 'index') : '1';
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const {summaryRows} = await getApplicationSections(req, applicationId, lang);
+    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationId, lang);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const redirectUrl = await getRedirectUrl(applicationResponse, applicationId, claimId);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
@@ -50,11 +51,13 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
+    const viewPath = hasRespondentResponded(applicationResponse) ? viewPathPostResponse : viewPathPreResponse;
 
     await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {
       backLinkUrl,
       summaryRows,
+      responseSummaries,
       pageTitle,
       redirectUrl,
       applicationIndex,
