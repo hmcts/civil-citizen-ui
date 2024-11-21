@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Regular expression to match URLs in the format "/claim/{id}/fee"
-  const urlPattern = /^\/claim\/\d+\/fee$/;
+  const urlPatterns = [
+    /^\/claim\/\d+\/fee$/,
+    /^\/case\/\d+\/case-progression\/pay-hearing-fee\/apply-help-fee-selection$/,
+    /^\/case\/\d+\/case-progression\/make-payment-again$/,
+  ];
   const path = window.location.pathname;
-  if (urlPattern.test(path)) {
+  if (urlPatterns.some(pattern => pattern.test(path))) {
     const form = document.getElementsByTagName('form')[0];
     if (form) {
       form.onsubmit = handleSubmit;
