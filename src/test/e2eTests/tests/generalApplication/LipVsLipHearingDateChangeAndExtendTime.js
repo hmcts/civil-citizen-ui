@@ -5,9 +5,8 @@ const RespondentResponse = require("../../genralApplication/respondentResponse")
 const responseApplicationSummary = require("../../genralApplication/responseApplicationSummary");
 
 Feature('Lip V Lip creating multiple applications under one claim i.e extending time and hearing date @vjrtest').tag('@e2e');
-Scenario('Extending time with consent and change hearing date with notice', async () => {
+Scenario('Extending time with consent and change hearing date with out notice', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732014426677369;
