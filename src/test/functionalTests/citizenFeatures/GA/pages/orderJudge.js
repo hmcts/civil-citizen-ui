@@ -109,6 +109,11 @@ class OrderJudge {
         I.see('explain the terms of settlement');
         I.see('The information you enter on this page will be seen by the other parties.');
         break;
+      case 'Court to do something that\'s not on this list':
+        I.see('A judge will consider your application and make an order.');
+        I.see('You should explain what order you want the judge to make. You\'ll be able to explain your reasons on the next screen.');
+        I.see('The information you enter on this page will be seen by the other parties.');
+        break;
     }
     I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');

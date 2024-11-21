@@ -80,7 +80,11 @@ class RequestingReason {
         I.see('The information you enter on this page will be seen by the other parties.');
         I.see('You should explain why you\'re requesting this order. You\'ll have the option to upload documents to support your reasons on the next screen.');
         break;
-      }
+      case 'Court to do something that\'s not on this list':
+        I.see('The information you enter on this page will be seen by the other parties.');
+        I.see('You should explain why you\'re requesting this order. You\'ll have the option to upload documents to support your reasons on the next screen.');
+        break;
+    }
     I.see('Enter your reasons for requesting this order', 'h1');
     await I.seeElement('//*[@id="text"]');
   }

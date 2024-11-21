@@ -1283,6 +1283,117 @@ class createGAAppSteps {
 
     return generalApplicationID;
   }
+
+  async askSomethingNotOnListGA(caseRef, parties, communicationType = 'withoutnotice') {
+    const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
+    const applicationType = 'Court to do something that\'s not on this list';
+    let feeAmount;
+    
+    switch(communicationType) {
+      case 'consent':
+        feeAmount = '119';
+        break;
+      case 'notice':
+        feeAmount = '303';
+        break;
+      case 'withoutnotice':
+        feeAmount = '119';
+        break;
+    }
+    
+    await I.waitForContent('Contact the court to request a change to my case', 60);
+    await I.click('Contact the court to request a change to my case');
+    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Other applications');
+    await I.waitForContent('Ask to make a change to your claim or defence that you\'ve submitted', 10);
+    await applicationTypePage.nextAction('Ask the court to do something that\'s not on this list');
+    await applicationTypePage.nextAction('Continue');
+
+    if (communicationType == 'consent') {
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
+      await agreementFromOtherPartyPage.nextAction('Yes');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+    } else {
+      await agreementFromOtherPartyPage.verifyPageContent(applicationType);
+      await agreementFromOtherPartyPage.nextAction('No');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
+    }
+
+    await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
+    await applicationCostsPage.nextAction('Start now');
+    
+    await claimApplicationCostPage.verifyPageContent(applicationType);
+    await claimApplicationCostPage.selectAndVerifyYesOption();
+    await claimApplicationCostPage.nextAction('Continue');
+
+    await orderJudgePage.verifyPageContent(applicationType);
+    await orderJudgePage.fillTextBox('Test order');
+    await orderJudgePage.nextAction('Continue');
+
+    await requestingReasonPage.verifyPageContent(applicationType);
+    await requestingReasonPage.fillTextBox('Test order');
+    await requestingReasonPage.nextAction('Continue');
+
+    await addAnotherApplicationPage.verifyPageContent(applicationType);
+    await addAnotherApplicationPage.nextAction('No');
+    await addAnotherApplicationPage.nextAction('Continue');
+
+    await wantToUploadDocumentsPage.verifyPageContent(applicationType);
+    await wantToUploadDocumentsPage.nextAction('No');
+    await wantToUploadDocumentsPage.nextAction('Continue');
+
+    await hearingArrangementsGuidancePage.verifyPageContent(applicationType);
+    await hearingArrangementsGuidancePage.nextAction('Continue');
+
+    await hearingArrangementPage.verifyPageContent(applicationType);
+    await hearingArrangementPage.nextAction('In person at the court');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
+    await hearingArrangementPage.nextAction('Continue');
+
+    await hearingContactDetailsPage.verifyPageContent(applicationType);
+    await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
+    await hearingContactDetailsPage.nextAction('Continue');
+
+    await unavailableDatesPage.verifyPageContent(applicationType);
+    await unavailableDatesPage.nextAction('Continue');
+
+    await hearingSupportPage.verifyPageContent(applicationType);
+    await hearingSupportPage.nextAction('Continue');
+
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
+    await payingForApplicationPage.nextAction('Continue');
+
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType);
+    await checkAndSendPage.checkAndSign();
+    await checkAndSendPage.nextAction('Submit');
+
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
+    await submitGAConfirmationPage.nextAction('Pay application fee');
+
+    I.wait(2);
+
+    await applyHelpFeeSelectionPage.verifyPageContent();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    await govPay.addValidCardDetails(feeAmount);
+    govPay.confirmPayment();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    return generalApplicationID;
+  }
 }
 
 module.exports = new createGAAppSteps();
