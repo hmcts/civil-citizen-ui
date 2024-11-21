@@ -70,6 +70,9 @@ class ApplicationCosts {
       case 'Court to impose a sanction on the other parties unless they do a specific action':
         I.see(`To apply to the court to impose a sanction on the other parties unless they do a specific action, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
         break;
+      case 'Court to make an order settling the claim by consent':
+        I.see(`To apply to the court to make an order settling the claim by consent, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
+        break;
     }
     await I.see('This fee will need to be paid once you\'ve created the application. If you\'re eligible, you may be able to apply for help with fees.');
   }

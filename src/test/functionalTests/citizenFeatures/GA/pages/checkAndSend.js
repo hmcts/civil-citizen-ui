@@ -20,7 +20,7 @@ class CheckAndSend {
     this.applicationType(applicationType);
     this.additionalApplication();
     this.partiesAgreed(communicationType);
-    if (communicationType !== 'consent' && applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment') {
+    if (communicationType !== 'consent' && applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment' && applicationType !== 'Court to make an order settling the claim by consent') {
       this.informOtherParties(communicationType);
     }
     if (applicationType !== 'Vary a judgment') {

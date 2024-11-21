@@ -101,6 +101,14 @@ class OrderJudge {
         I.see('You\'ll be able to explain your reasons on the next screen.');
         I.see('The information you enter on this page will be seen by the other parties.');
         break;
+      case 'Court to make an order settling the claim by consent':
+        I.see('A judge will consider your application and make an order.');
+        I.see('You should:');
+        I.see('explain that you and all the parties involved in the case should be settled');
+        I.see('include the name of all the parties involved');
+        I.see('explain the terms of settlement');
+        I.see('The information you enter on this page will be seen by the other parties.');
+        break;
     }
     I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');

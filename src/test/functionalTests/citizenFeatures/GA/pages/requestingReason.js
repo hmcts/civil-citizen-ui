@@ -76,7 +76,11 @@ class RequestingReason {
         I.see('The information you enter on this page will be seen by the other parties.');
         I.see('You should explain why you want the other parties to take this action. You\'ll have the option to upload documents to support your reasons on the next screen.');
         break;
-    }
+      case 'Court to make an order settling the claim by consent':
+        I.see('The information you enter on this page will be seen by the other parties.');
+        I.see('You should explain why you\'re requesting this order. You\'ll have the option to upload documents to support your reasons on the next screen.');
+        break;
+      }
     I.see('Enter your reasons for requesting this order', 'h1');
     await I.seeElement('//*[@id="text"]');
   }
