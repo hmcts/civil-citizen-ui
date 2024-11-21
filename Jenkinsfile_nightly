@@ -22,6 +22,8 @@ properties([
           description: 'The URL of civil service'),
         string(name: 'CIVIL_GENERAL_APPLICATIONS_URL', defaultValue: 'http://civil-general-applications-aat.service.core-compute-aat.internal',
           description: 'The URL of general applications'),
+        string(name: 'AAC_API_URL', defaultValue: 'http://aac-manage-case-assignment-aat.service.core-compute-aat.internal',
+          description: 'The URL of AAC service'),
     ])
 ])
 
@@ -79,10 +81,17 @@ withNightlyPipeline(type, product, component) {
   ])
   loadVaultSecrets(secrets)
 
+  enableCrossBrowserTest()
+
   enableFullFunctionalTest(200)
 
   afterAlways('fullFunctionalTest') {
     archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
+  }
+
+  afterAlways('crossBrowserTest') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+    env.IS_CROSSBROWSER = false
   }
 }
