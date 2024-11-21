@@ -34,7 +34,7 @@ claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest 
     const claimId = (<AppRequest>req).session.user?.id;
     const claim: Claim = await getCaseDataFromStore(claimId);
     const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
-    const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, carmEnabled));
+    const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, true));
     form.validateSync();
 
     if (form.hasErrors()) {
