@@ -47,7 +47,4 @@ Scenario('Claimant GA Application and respond to response with extend time conse
   }
 });
 
-AfterSuite(async () => {
-  await createGAApplication.resetWiremockScenario();
-});
 

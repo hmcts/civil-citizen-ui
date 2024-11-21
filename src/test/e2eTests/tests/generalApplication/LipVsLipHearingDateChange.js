@@ -36,6 +36,3 @@ Scenario('Claimant GA Application and respond to response with hearing date chan
   }
 })
 
-AfterSuite(async () => {
-  await createGAApplication.resetWiremockScenario();
-});
