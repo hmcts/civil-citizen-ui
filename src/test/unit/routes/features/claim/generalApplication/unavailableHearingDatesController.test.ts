@@ -86,7 +86,7 @@ describe('General Application - Unavailable hearing dates', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GA_ENTER_DAY_FOR_UNAVAILABILITY'));
+          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
         });
     });
 
