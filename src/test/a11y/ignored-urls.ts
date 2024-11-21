@@ -73,7 +73,6 @@ export const IGNORED_URLS = [
   urls.VIEW_DEFENDANT_INFO,
   urls.VIEW_CLAIMANT_INFO,
   urls.VIEW_RESPONSE_TO_CLAIM,
-  urls.VIEW_THE_HEARING_URL,  //TODO: remove this once finished the page
   urls.VIEW_THE_JUDGMENT_URL,  //TODO: remove this once finished the page
 
   urls.GENERAL_APPLICATION_CONFIRM_URL,  //TODO: remove this once finished the page
