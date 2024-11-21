@@ -1,7 +1,7 @@
 {
   "mappings": [
     {
-      "scenarioName": "create-ga-application",
+      "scenarioName": "create-ga-application-hearingdate",
       "requiredScenarioState": "Started",
       "newScenarioState": "Post-submission",
       "request": {
@@ -157,7 +157,7 @@
       }
     },
     {
-      "scenarioName": "create-ga-application",
+      "scenarioName": "create-ga-application-hearingdate",
       "requiredScenarioState": "Post-submission",
       "newScenarioState": "Post-submission",
       "request": {
