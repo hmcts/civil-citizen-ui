@@ -72,6 +72,10 @@ class RequestingReason {
         I.see('The information you enter on this page will be seen by the other parties.');
         I.see('You should explain why the claim should be paused until the date you gave on the previous screen. You\'ll have the option to upload documents to support your reasons on the next screen.');
         break;
+      case 'Court to impose a sanction on the other parties unless they do a specific action':
+        I.see('The information you enter on this page will be seen by the other parties.');
+        I.see('You should explain why you want the other parties to take this action. You\'ll have the option to upload documents to support your reasons on the next screen.');
+        break;
     }
     I.see('Enter your reasons for requesting this order', 'h1');
     await I.seeElement('//*[@id="text"]');

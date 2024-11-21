@@ -93,6 +93,14 @@ class OrderJudge {
         I.see('You\'ll be able to explain your reasons on the next screen.');
         I.see('The contents of this box will be seen by the other parties.');
         break;
+      case 'Court to impose a sanction on the other parties unless they do a specific action':
+        I.see('A judge will consider your application and make an order.');
+        I.see('You should:');
+        I.see('explain the action you want the other parties to take and by which date they should do this action');
+        I.see('explain that you\'d like the court to give an appropriate sanction to the other parties');
+        I.see('You\'ll be able to explain your reasons on the next screen.');
+        I.see('The information you enter on this page will be seen by the other parties.');
+        break;
     }
     I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');
