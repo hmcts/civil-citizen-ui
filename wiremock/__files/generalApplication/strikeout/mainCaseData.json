@@ -1,0 +1,199 @@
+{
+  "id": 1732192997720139,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-11-21T12:43:17",
+  "last_modified": "2024-11-21T13:02:02",
+  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+  "case_data": {
+    "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+    "generalAppAskForCosts": "Yes",
+    "totalClaimAmount": 9000,
+    "submittedDate": "2024-11-21T12:43:17",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-12-19T16:00:00",
+    "respondentSolGaAppDetails": [
+      {
+        "id": "992eacd4-c812-4ef5-bde3-f96ced38c3d1",
+        "value": {
+          "caseLink": {
+            "CaseReference": "1732194111758649"
+          },
+          "caseState": "Application Submitted - Awaiting Judicial Decision",
+          "generalApplicationType": "Strike out",
+          "generalAppSubmittedDateGAspec": "2024-11-21T13:01:49"
+        }
+      }
+    ],
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "id": "dc90f783-f626-464d-ba75-a85556447384",
+      "email": "citizen.user2@gmail.com"
+    },
+    "applicant1": {
+      "type": "INDIVIDUAL",
+      "partyName": "Mr Claimant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "primaryAddress": {
+        "PostCode": "S12eu",
+        "PostTown": "sheffield",
+        "AddressLine1": "123",
+        "AddressLine2": "Fake Street"
+      },
+      "individualTitle": "Mr",
+      "individualLastName": "person",
+      "individualFirstName": "Claimant",
+      "individualDateOfBirth": "1993-08-28",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "timelineOfEvents": [
+      {
+        "id": "0",
+        "value": {
+          "timelineDate": "2000-01-01",
+          "timelineDescription": "test"
+        }
+      }
+    ],
+    "serviceRequestReference": "2022-1655915218557",
+    "issueDate": "2024-11-21",
+    "applicant1Represented": "No",
+    "detailsOfClaim": "Injury",
+    "claimFee": {
+      "code": "FEE0208",
+      "version": "3",
+      "calculatedAmountInPence": "45500"
+    },
+    "systemGeneratedCaseDocuments": [
+      {
+        "id": "e4813d63-a48c-48b7-8fdb-8730169c9a35",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "detailsOfClaim",
+            "document_url": "http://dm-store:8080/documents/015fc303-6d88-401b-b1d4-4bb49bc62ceb",
+            "document_filename": "000MC024-claim-form-claimant-copy.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/015fc303-6d88-401b-b1d4-4bb49bc62ceb/binary"
+          },
+          "documentName": "000MC024-claim-form-claimant-copy.pdf",
+          "documentSize": 34300,
+          "documentType": "CLAIMANT_CLAIM_FORM",
+          "createdDatetime": "2024-11-21T12:45:09"
+        }
+      },
+      {
+        "id": "e950d7e8-e0d1-492c-a1e7-afc9f8160456",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "detailsOfClaim",
+            "document_url": "http://dm-store:8080/documents/9ed53190-0894-4026-a5d2-9d9b0585a805",
+            "document_filename": "000MC024-sealed-claim-form.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/9ed53190-0894-4026-a5d2-9d9b0585a805/binary"
+          },
+          "documentName": "000MC024-sealed-claim-form.pdf",
+          "documentSize": 42892,
+          "documentType": "SEALED_CLAIM",
+          "createdDatetime": "2024-11-21T12:45:10"
+        }
+      }
+    ],
+    "helpWithFees": {
+      "helpWithFee": "No"
+    },
+    "claimInterest": "No",
+    "applicant1AdditionalLipPartyDetails": {
+      "correspondenceAddress": {
+        "PostCode": "L7 2pz",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Test Street"
+      }
+    },
+    "claimantUserDetails": {
+      "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+      "email": "civilmoneyclaimsdemo@gmail.com"
+    },
+    "legacyCaseReference": "000MC024",
+    "caseNameHmctsInternal": "'Claimant person' v 'defendant person'",
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "CREATE_CLAIM_SPEC_AFTER_PAYMENT"
+    },
+    "respondent1": {
+      "type": "INDIVIDUAL",
+      "partyName": "mr defendant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "primaryAddress": {
+        "PostCode": "L7 2PZ",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Claim Road"
+      },
+      "individualTitle": "mr",
+      "individualLastName": "person",
+      "individualFirstName": "defendant",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "respondent1PinToPostLRspec": {
+      "accessCode": "FHN6BZM9L7EY",
+      "expiryDate": "2025-05-20",
+      "respondentCaseRole": "[DEFENDANT]"
+    },
+    "generalApplications": [
+      {
+        "id": "717871d3-8ff9-47d3-80c9-f4f211410e6e",
+        "value": {
+          "caseLink": {
+            "CaseReference": "1732194111758649"
+          },
+          "generalAppType": {
+            "types": [
+              "STRIKE_OUT"
+            ]
+          },
+          "businessProcess": {
+            "status": "FINISHED",
+            "camundaEvent": "CREATE_GENERAL_APPLICATION_CASE",
+            "processInstanceId": "c59c1514-a808-11ef-b2df-0242ac120006"
+          },
+          "isGaApplicantLip": "Yes",
+          "litigiousPartyID": "002",
+          "caseNameGaInternal": "'Claimant person' v 'defendant person'",
+          "isGaRespondentOneLip": "Yes",
+          "isGaRespondentTwoLip": "No",
+          "generalAppAskForCosts": "Yes",
+          "caseManagementLocation": {
+            "region": "2",
+            "address": "St Mary's Court, Regents Park Road",
+            "postcode": "N3 1BQ",
+            "siteName": "Barnet Civil and Family Centre",
+            "baseLocation": "000000"
+          },
+          "generalAppDateDeadline": "2024-11-26T16:00:00",
+          "parentClaimantIsApplicant": "No",
+          "generalAppSubmittedDateGAspec": "2024-11-21T13:01:49"
+        }
+      }
+    ],
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "claimIssuedPaymentDetails": {
+      "status": "SUCCESS",
+      "reference": "RC-1234-1234-1234-1234"
+    },
+    "isFlightDelayClaim": "No",
+    "claimAmountBreakup": [
+      {
+        "id": "0",
+        "value": {
+          "claimAmount": "900000",
+          "claimReason": "Injury"
+        }
+      }
+    ]
+  },
+  "security_classification": "PUBLIC"
+}

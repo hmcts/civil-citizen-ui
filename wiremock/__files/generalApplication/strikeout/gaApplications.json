@@ -1,0 +1,47 @@
+{
+  "total": 1,
+  "cases": [
+    {
+      "id": 1732194111758649,
+      "jurisdiction": "CIVIL",
+      "state": "AWAITING_RESPONDENT_RESPONSE",
+      "case_type_id": "GENERALAPPLICATION",
+      "created_date": "2024-11-21T13:01:51.763",
+      "last_modified": "2024-11-21T13:31:59.667",
+      "case_data": {
+        "generalAppInformOtherParty": {
+          "isWithNotice": "No"
+        },
+        "parentClaimantIsApplicant": "No",
+        "applicationTypes": "Strike out",
+        "generalAppRespondentAgreement": {
+          "hasAgreed": "No"
+        },
+        "judicialDecisionRequestMoreInfo": {
+          "judgeRecitalText": "The Judge considered the without notice application of the defendant dated 21 November 2024\n\nAnd the Judge considered the information provided by the defendant",
+          "isWithNotice": "No",
+          "requestMoreInfoOption": "SEND_APP_TO_OTHER_PARTY",
+          "judgeRequestMoreInfoByDate": "2024-11-28"
+        },
+        "generalAppPBADetails": {
+          "additionalPaymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          },
+          "fee": {
+            "calculatedAmountInPence": "16700",
+            "code": "FEE0444",
+            "version": "2"
+          },
+          "serviceRequestReference": "2022-1655915218557",
+          "paymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          },
+          "additionalPaymentServiceRef": "2022-1655915218557"
+        }
+      },
+      "security_classification": "PUBLIC"
+    }
+  ]
+}

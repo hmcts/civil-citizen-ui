@@ -26,6 +26,18 @@
     }
   },
   {
+    "id": "1732194111758649someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "STRIKE_OUT"
+      ]
+    }
+  },
+  {
     "id": "courtLocations",
     "value": [
       {

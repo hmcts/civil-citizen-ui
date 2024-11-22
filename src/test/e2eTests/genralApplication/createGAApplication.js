@@ -9,8 +9,13 @@ class CreateGAApplication {
     I.amOnPage(`/case/${claimId}/general-application/application-type`);
   }
 
-  selectApplicationType(applicationType) {
-    I.click(`${applicationType}`);
+  selectApplicationType(applicationType, otherApplicationType) {
+    if (applicationType === 'Other applications') {
+      I.click(`${applicationType}`);
+      I.click(otherApplicationType);
+    } else {
+      I.click(`${applicationType}`);
+    }
     clickButton(buttonType.CONTINUE);
   }
 
