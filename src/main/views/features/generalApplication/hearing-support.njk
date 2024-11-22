@@ -67,7 +67,7 @@
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NOT_ABLE') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ARRANGING_OWN') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.FIND_OUT') }}
-                      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.GET_INTERPRETER', externalURLs.getInterpreterUrl, false) }}</p>
+                      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.GET_INTERPRETER', externalURLs.getInterpreterUrl, false) }}.</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukCheckboxes({
