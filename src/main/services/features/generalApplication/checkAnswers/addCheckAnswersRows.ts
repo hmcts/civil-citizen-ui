@@ -28,6 +28,7 @@ import {
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {getListOfNotAllowedAdditionalAppType} from 'services/features/generalApplication/generalApplicationService';
 
 export const addApplicationTypesRows = (
   claimId: string,
@@ -155,7 +156,8 @@ export const addAddAnotherApplicationRow = (claimId: string, claim: Claim, lang:
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.applicationTypes) {
+  if (claim.generalApplication?.applicationTypes
+    && !getListOfNotAllowedAdditionalAppType().includes(claim.generalApplication.applicationTypes[0].option)) {
     const addAnotherApp = (claim.generalApplication?.applicationTypes.length > 1) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION', {lng}), t(`COMMON.VARIATION_2.${addAnotherApp}`, {lng}),
