@@ -70,3 +70,6 @@ Scenario('Extending time with consent and change hearing date with out notice', 
   }
 });
 
+AfterSuite(async () => {
+  await createGAApplication.resetWiremockScenario();
+});

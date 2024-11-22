@@ -49,3 +49,6 @@ Scenario('Claimant GA Application and respond to response for strike out without
     RespondentResponse.confirmationPage(claimID, appId);
   }
 });
+AfterSuite(async () => {
+  await createGAApplication.resetWiremockScenario();
+});

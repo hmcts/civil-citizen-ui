@@ -46,3 +46,7 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     toggleFlag('GaForLips', false);
   }
 });
+
+AfterSuite(async () => {
+  await createGAApplication.resetWiremockScenario();
+});
