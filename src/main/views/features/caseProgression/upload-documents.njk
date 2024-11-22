@@ -38,10 +38,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in disclosureSections %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
@@ -64,10 +66,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in witnessSections %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
@@ -90,11 +94,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in expertSections %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
@@ -121,10 +126,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in trialSections %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
