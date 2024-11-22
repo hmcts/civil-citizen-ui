@@ -25,10 +25,8 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const gaAgreeWithApplicant = (): SummaryRow[] => {
-
     return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
-      yesNoFormatter(generalApplication?.generalAppRespondent1Representative === YesNoUpperCamelCase.NO ? YesNo.NO : YesNo.YES))];
-
+      yesNoFormatter(response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES ? YesNo.YES : YesNo.NO))];
   };
 
   const acceptOfferSection = (): SummaryRow[] => {
