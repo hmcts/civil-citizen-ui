@@ -59,7 +59,7 @@ export const getJudgeDirectionWithNotice = (req : AppRequest, applicationRespons
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(createdDateTime, lng)),
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}" target="_blank" rel="noopener noreferrer">${makeWithNoticeDoc.value.documentLink.document_filename}</a>`),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}" target="_blank" rel="noopener noreferrer" class="govuk-link">${makeWithNoticeDoc.value.documentLink.document_filename}</a>`),
     );
 
     if (documentUrl && (applicationResponse.case_data?.generalAppPBADetails?.additionalPaymentDetails)) {
