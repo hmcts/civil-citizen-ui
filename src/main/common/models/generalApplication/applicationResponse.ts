@@ -84,6 +84,7 @@ export interface CCDApplication extends ApplicationUpdate {
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
+  applicationIsCloaked?: YesNoUpperCamelCase;
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   generalAppNotificationDeadlineDate?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
