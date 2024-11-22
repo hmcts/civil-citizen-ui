@@ -31,7 +31,7 @@ describe('UploadN245 Form service', () => {
       {
         type: 'html',
         data: {
-          html: '<p class="govuk-body">PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE</p>',
+          html: '<p class="govuk-body govuk-link">PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE</p>',
         },
       },
       {
