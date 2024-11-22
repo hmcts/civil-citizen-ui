@@ -109,6 +109,16 @@ describe('Check Answers service', () => {
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
     });
+
+    it('should give correct row count for application type = SETTLE_BY_CONSENT', () => {
+      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT)];
+      generalApplication.orderJudges = [new OrderJudge('test1')];
+      generalApplication.requestingReasons = [new RequestingReason('test1')];
+      const result = getSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(14);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
+    });
   });
 
   describe('Build check answers for submit general application without', () => {
