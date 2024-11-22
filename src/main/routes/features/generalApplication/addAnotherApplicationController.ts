@@ -37,7 +37,8 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
   const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   if (!form) {
-    form = new GenericForm(new GenericYesNo(''));
+    const value = (claim.generalApplication?.applicationTypes.length > 1) ? YesNo.YES : YesNo.NO;
+    form = new GenericForm(new GenericYesNo(value));
   }
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
 };
