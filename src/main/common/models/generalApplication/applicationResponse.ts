@@ -20,7 +20,7 @@ import {
   CcdHearingDocument,
   CcdGeneralOrderDocument,
   CcdGaDraftDocument,
-  CcdHearingNoticeDocument,
+  CcdHearingNoticeDocument, CcdDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
@@ -84,10 +84,12 @@ export interface CCDApplication extends ApplicationUpdate {
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
+  applicationIsCloaked?: YesNoUpperCamelCase;
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   generalAppNotificationDeadlineDate?: string;
-  generalAppRespondent1Representative?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
+  generalAppN245FormUpload?: CcdDocument;
+  applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
 }
 
 export interface JudicialRequestMoreInfo {

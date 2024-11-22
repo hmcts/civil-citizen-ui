@@ -1023,7 +1023,7 @@
         "TITLE_NO": "Y camau nesaf",
         "PARAGRAPH_NO": "Mae’n rhaid i chi wneud cais am Help i Dalu Ffioedd cyn i chi gyflwyno’ch cais.",
         "QUESTION_TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
-        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+        "VALID_ENTER_REFERENCE_NUMBER": "Nodwch eich Rhif Help i Dalu Ffioedd 11 nod",
         "LIST_ITEMS": {
           "FIRST": "Ewch i",
           "FIRST_LINK": "gwneud cais am help i dalu ffioedd (yn agor mewn tab newydd)",
@@ -2949,7 +2949,7 @@
           "SETTLE_BY_CONSENT": "Setlo drwy gydsyniad",
           "STAY_THE_CLAIM": "Atal yr hawliad",
           "STRIKE_OUT": "Dileu",
-          "SUMMARY_JUDGMENT": "Dyfarniad Diannod",
+          "SUMMARY_JUDGEMENT": "Dyfarniad Diannod",
           "UNLESS_ORDER": "Gorchymyn Oni fydd",
           "VARY_ORDER": "Amrywio gorchymyn",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Amrywio telerau talu dyfarniad",
@@ -3036,7 +3036,6 @@
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
-        "ALWAYS_ARRANGE": "Byddwn wastad yn trefnu dehonglydd iaith arwyddion. Dywedwch wrthym pa fath o iaith arwyddion rydych chi angen dehonglydd iaith arwyddion ar ei chyfer, trwy roi tic yn y blwch ‘Dehonglydd iaith arwyddion’ isod.",
         "ARRANGING_OWN": "Os byddwch yn trefnu cyfieithydd ar y pryd eich hun, bydd dal angen i chi ddweud wrthym pa iaith byddwch yn ei defnyddio trwy roi tic yn y blwch ‘Cyfieithydd ar y pryd’ isod.",
         "DO_YOU_NEED": "A oes arnoch angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad (dewisol)?",
         "FIND_OUT": "Canfod sut i",
@@ -3272,6 +3271,7 @@
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
+        "DISMISSAL_ORDER": "Gorchymyn diddymu",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
@@ -3291,7 +3291,19 @@
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
-          "AWAITING_RESPONSE": "Aros am ymateb gan y partïon eraill",
+          "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
+          "AWAITING_JUDICIAL_DECISION": "Cais wedi’i gyflwyno - Aros am benderfyniad barnwrol",
+          "AWAITING_APP_PAYMENT": "Talu’r ffi gwneud cais",
+          "LISTED_FOR_HEARING": "Rhestru ar gyfer gwrandawiad",
+          "HEARING_SCHEDULED": "Gwrandawiad wedi’i Drefnu",
+          "AWAITING_WRITTEN_REP": "Aros am sylwadau ysgrifenedig",
+          "AWAITING_ADDL_INFO": "Aros am wybodaeth ychwanegol",
+          "AWAITING_DIRECTION_DOCS": "Aros am ddogfen gorchymyn cyfarwyddiadau",
+          "ORDER_MADE": "Gorchymyn wedi’i wneud",
+          "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
+          "APPLICATION_CLOSED": "Cais wedi’i gau",
+          "PROCEEDS_IN_HERITAGE": "Parhau yn y cyflwr etifeddiaeth",
+          "AWAITING_ADDL_PAYMENT": "Aros am daliad ychwanegol",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
@@ -3301,7 +3313,10 @@
         "PAY_ADDITIONAL_FEE": "Talu’r ffi ychwanegol",
         "UPLOAD_DOCUMENTS_1": "Gallwch hefyd ",
         "UPLOAD_DOCUMENTS_2": "uwchlwytho dogfennau ychwanegol",
-        "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny."
+        "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny.",
+        "UPLOAD_DOCUMENTS_TRIAL_1": "Gallwch ",
+        "UPLOAD_DOCUMENTS_TRIAL_2": "uwchlwytho dogfennau",
+        "UPLOAD_DOCUMENTS_TRIAL_3": " yr hoffech iddynt gael eu cynnwys mewn bwndel treial."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "Os ydych wedi talu'r ddyled o ddyfarniad y llys sirol (CCJ), gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau ac asiantaethau archwilio credyd. Gelwir hyn hefyd yn gais am dystysgrif canslo neu dystysgrif diwallu.",
@@ -4424,6 +4439,7 @@
       "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy'n berthnasol.",
       "SIGN_LANGUAGE": "Dehonglydd iaith arwyddion",
       "TITLE": "Ydych chi, eich arbenigwyr neu eich tystion angen cymorth i allu mynychu gwrandawiad?",
+      "MEDIATION_TEXT": "Mae hyn yn cynnwys cefnogaeth i chi neu'ch cynrychiolydd yn yr apwyntiad cyfryngu",
       "WHAT_LANGUAGE": "Pa iaith sydd angen ei chyfieithu?",
       "SUPPORT_REQUIREMENTS_MESSAGE": "Os ydych chi neu eich arbenigwyr angen cymorth, ond nad yw wedi’i restru isod, ychwanegwch y cymorth sydd ei angen arnoch ar y dudalen tystion eraill.",
       "SUPPORT_REQUIREMENTS_HEADING": "Anghenion cymorth"
@@ -4626,11 +4642,13 @@
     "WELSH_LANGUAGE": {
       "ENGLISH": "Saesneg",
       "OFFICIAL_LANGUAGE": "Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.",
+      "OFFICIAL_LANGUAGE_MEDIATION": "Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio'r Gymraeg mewn gwrandawiadau llys ac wrth gyfryngu. Ni fydd gofyn am gael siarad Cymraeg yn oedi'r gwrandawiad neu'r apwyntiad cyfryngu nac yn cael unrhyw effaith ar yr achos neu ganlyniad yr achos.",
       "PAGE_TITLE": "Yr iaith Gymraeg",
       "WELSH": "Cymraeg",
       "WELSH_AND_ENGLISH": "Y Gymraeg a'r Saesneg",
       "WHAT_LANGUAGE_DOCUMENTS": "Ym mha iaith y darperir y dogfennau?",
-      "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?"
+      "WHAT_LANGUAGE_SPEAK": "Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?",
+      "WHAT_LANGUAGE_SPEAK_MEDIATION": "Mae hyn yn cynnwys yr iaith y byddwch chi neu'ch cynrychiolydd yn ei siarad yn y cyfryngu."
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
@@ -4996,7 +5014,7 @@
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "GIVE_DETAILS_DOCUMENTS": "Rhoi manylion y dogfennau",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
-    "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+    "VALID_ENTER_REFERENCE_NUMBER": "Nodwch eich Rhif Help i Dalu Ffioedd 11 nod",
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
@@ -5271,7 +5289,7 @@
       "MISSING_OTHER": "Mae arnoch angen dweud wrthym pa fath arall o gymorth sydd ei angen arnoch.",
       "MISSING_SIGN_LANGUAGE": "Mae arnoch angen dweud wrthym pa fath o iaith arwyddion rydych angen dehonglydd ar ei chyfer.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
-      "PAY_APPLICATION_FEE": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
+      "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os ydych yn cytuno y dylai'r llys wneud y gorchymyn y gofynnwyd amdano gan y parti arall. Dewiswch opsiwn: Ydw neu Nac ydw",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "Mae arnoch angen esbonio pam rydych yn anghytuno â'r cais"

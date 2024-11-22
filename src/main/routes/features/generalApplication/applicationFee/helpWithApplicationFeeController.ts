@@ -39,7 +39,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   }
   let backLinkUrl;
   if (req.query.id) {
-    backLinkUrl = constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id;
+    backLinkUrl = constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id + '&appFee=' + Number(req.query.appFee);
   } else {
     const index = await getApplicationIndex(claimId, req.params.appId, <AppRequest>req);
     backLinkUrl =`${constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL)}?index=${index + 1}`;
@@ -67,7 +67,7 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE'));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, lng);

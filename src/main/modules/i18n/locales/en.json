@@ -2949,7 +2949,7 @@
           "SETTLE_BY_CONSENT": "Settle by consent",
           "STAY_THE_CLAIM": "Stay the claim",
           "STRIKE_OUT": "Strike out",
-          "SUMMARY_JUDGMENT": "Summary judgment",
+          "SUMMARY_JUDGEMENT": "Summary judgment",
           "UNLESS_ORDER": "Unless order",
           "VARY_ORDER": "Vary order",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Vary payment terms of judgment",
@@ -3036,7 +3036,6 @@
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
-        "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
         "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
         "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
         "FIND_OUT": "Find out how to",
@@ -3272,6 +3271,7 @@
         "HEARING_ORDER" : "Hearing Order",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "GENERAL_ORDER" : "General Order",
+        "DISMISSAL_ORDER": "Dismissal order",
         "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
@@ -3292,6 +3292,18 @@
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
+          "AWAITING_JUDICIAL_DECISION": "Application submitted - awaiting judicial decision",
+          "AWAITING_APP_PAYMENT": "Pay application fee",
+          "LISTED_FOR_HEARING": "Listing for a hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "AWAITING_WRITTEN_REP": "Awaiting written representations",
+          "AWAITING_ADDL_INFO": "Awaiting additional information",
+          "AWAITING_DIRECTION_DOCS": "Awaiting directions order document",
+          "ORDER_MADE": "Order made",
+          "APPLICATION_DISMISSED": "Application dismissed",
+          "APPLICATION_CLOSED": "Application closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
+          "AWAITING_ADDL_PAYMENT": "Awaiting additional payment",
           "TITLE": "Status"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
@@ -3301,7 +3313,10 @@
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
-        "UPLOAD_DOCUMENTS_3": " if you need to."
+        "UPLOAD_DOCUMENTS_3": " if you need to.",
+        "UPLOAD_DOCUMENTS_TRIAL_1": "You can ",
+        "UPLOAD_DOCUMENTS_TRIAL_2": "upload documents",
+        "UPLOAD_DOCUMENTS_TRIAL_3": " you would like to be included in a trial bundle."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
@@ -4424,6 +4439,7 @@
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
+      "MEDIATION_TEXT": "This includes support for you or your representative at mediation.",
       "WHAT_LANGUAGE": "What language needs to be interpreted?",
       "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts require support, but are not listed below, add them on other witness page.",
       "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
@@ -4626,11 +4642,13 @@
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
       "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "OFFICIAL_LANGUAGE_MEDIATION": "Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.",
       "PAGE_TITLE": "Welsh language",
       "WELSH": "Welsh",
       "WELSH_AND_ENGLISH": "Welsh and English",
       "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
-      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
+      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
+      "WHAT_LANGUAGE_SPEAK_MEDIATION": "This includes the language that you or your representative will speak at mediation."
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Add another job",
