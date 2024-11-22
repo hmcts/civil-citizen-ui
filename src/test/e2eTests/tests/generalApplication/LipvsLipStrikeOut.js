@@ -33,7 +33,7 @@ Scenario('Claimant GA Application and respond to response for strike out without
     createGAApplication.checkAndSend(claimID);
     createGAApplication.submitConfirmation(claimID, 108);
     createGAApplication.selectFeeType(claimID);
-    createGAApplication.verifyPaymentSuccessfullPage(claimID, appId);
+    createGAApplication.verifyPaymentSuccessfullPage();
     responseFromCourt.viewApplication(claimID, appId);
     responseFromCourt.checkResponseFromCourtSection('Direction to make the application with notice', 'Pay the additional fee');
     responseFromCourt.additionalFeePage(275);
