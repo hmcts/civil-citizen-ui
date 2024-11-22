@@ -38,7 +38,7 @@ Scenario('Claimant GA Application and respond to response for strike out without
     responseFromCourt.checkResponseFromCourtSection('Direction to make the application with notice', 'Pay the additional fee');
     responseFromCourt.additionalFeePage(275);
     responseFromCourt.feeSelectionPage('No');
-    responseFromCourt.verifyPaymentSuccessfullPage(claimID, appId);
+    responseFromCourt.verifyPaymentSuccessfullPage();
     RespondentResponse.respondentAgreement(claimID, appId, 'Respond to an application to court to strike out all or part of the other parties\' case without a trial', 'Yes');
     RespondentResponse.wantToUploadDocuments(claimID, appId, 'No');
     RespondentResponse.hearingPreference(claimID, appId);
