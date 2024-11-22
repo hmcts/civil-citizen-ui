@@ -141,9 +141,9 @@ class CreateGAApplication {
 
   selectFeeType(claimId, appId, fee) {
     if (appId) {
-      I.amOnPage(`/case/${claimId}/general-application/${appId}/apply-help-fee-selection?appFee=${fee}`)
+      I.amOnPage(`/case/${claimId}/general-application/${appId}/apply-help-fee-selection?appFee=${fee}`);
     } else {
-      I.seeInCurrentUrl(`/case/${claimId}/general-application/apply-help-fee-selection`)
+      I.seeInCurrentUrl(`/case/${claimId}/general-application/apply-help-fee-selection`);
     }
     I.click('No');
     clickButton('Continue');

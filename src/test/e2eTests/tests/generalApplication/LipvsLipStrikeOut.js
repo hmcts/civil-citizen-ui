@@ -1,7 +1,6 @@
 const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
 const RespondentResponse = require('../../genralApplication/respondentResponse');
-const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const responseFromCourt = require('../../genralApplication/responseFromCourt');
 const config = require('../../../config');
 
@@ -49,4 +48,4 @@ Scenario('Claimant GA Application and respond to response for strike out without
     RespondentResponse.submitApplication(claimID, appId);
     RespondentResponse.confirmationPage(claimID, appId);
   }
-})
+});
