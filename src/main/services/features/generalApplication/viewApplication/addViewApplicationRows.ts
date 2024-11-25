@@ -191,7 +191,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
 export const addOrderJudgeRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppDetailsOfOrderColl[index]) {
+  if (application.case_data.generalAppDetailsOfOrderColl?.[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
     const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrderColl[index].value} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
@@ -204,7 +204,7 @@ export const addOrderJudgeRow = (application: ApplicationResponse, index: number
 export const addRequestingReasonRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppReasonsOfOrderColl[index]) {
+  if (application.case_data.generalAppReasonsOfOrderColl?.[index]) {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
     );

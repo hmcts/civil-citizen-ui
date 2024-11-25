@@ -99,6 +99,7 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
     summaryRows.push(...addApplicationTypesAndDescriptionRows(application, lang));
   }
   summaryRows.push(
+    ...addAnotherApplicationRow(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
   );
