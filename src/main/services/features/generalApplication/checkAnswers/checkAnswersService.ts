@@ -4,7 +4,7 @@ import {
   addAskForCostsRow, addHearingContactDetailsRows, addHearingArrangementsRows, addHearingSupportRows,
   addInformOtherPartiesRow, addOrderJudgeRows,
   addOtherPartiesAgreedRow, addRequestingReasonRows, addUnavailableDatesRows, addDocumentUploadRow,
-  addFinalPaymentDateRows, addCoScDocumentUploadRow, addHasEvidenceOfDebtPaymentRow,
+  addFinalPaymentDateRows, addCoScDocumentUploadRow, addHasEvidenceOfDebtPaymentRow, addN245Row,
 } from './addCheckAnswersRows';
 import {SummaryRow} from 'models/summaryList/summaryList';
 
@@ -17,6 +17,7 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string ): Sum
     ...addAskForCostsRow(claimId, claim, lang),
     ...addOrderJudgeRows(claimId, claim, lang),
     ...addRequestingReasonRows(claimId, claim, lang),
+    ...addN245Row(claimId, claim, lang),
     ...addDocumentUploadRow(claimId, claim, lang),
     ...addHearingArrangementsRows(claimId, claim, lang),
     ...addHearingContactDetailsRows(claimId, claim, lang),
