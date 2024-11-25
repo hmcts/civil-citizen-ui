@@ -5,6 +5,7 @@ import {
   addInformOtherPartiesRow, addOrderJudgeRow,
   addOtherPartiesAgreedRow, addUnavailableDatesRows, addDocumentUploadRow,
   addFinalPaymentDateRows, addCoScDocumentUploadRow, addHasEvidenceOfDebtPaymentRow, addRequestingReasonRow,
+  addN245Row,
 } from './addCheckAnswersRows';
 import {SummaryCard, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
@@ -29,6 +30,7 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string ): Sum
     );
   }
   summaryRows.push(
+    ...addN245Row(claimId, claim, lang),
     ...addDocumentUploadRow(claimId, claim, lang),
     ...addHearingArrangementsRows(claimId, claim, lang),
     ...addHearingContactDetailsRows(claimId, claim, lang),

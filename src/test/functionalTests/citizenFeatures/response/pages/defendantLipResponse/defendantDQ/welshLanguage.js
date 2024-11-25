@@ -22,8 +22,8 @@ const content = {
     cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio\'r Gymraeg mewn gwrandawiadau llys ac wrth gyfryngu. Ni fydd gofyn am gael siarad Cymraeg yn oedi\'r gwrandawiad neu\'r apwyntiad cyfryngu nac yn cael unrhyw effaith ar yr achos neu ganlyniad yr achos.',
   },
   hintTextMediation: {
-    en: 'This includes the language that you or your representative will be speak at mediation.',
-    cy: 'Mae hyn yn cynnwys yr iaith y byddwch chi neu\'ch cynrychiolydd yn ei siarad yn yr apwyntiad cyfryngu',
+    en: 'This includes the language that you or your representative will speak at mediation.',
+    cy: 'Mae hyn yn cynnwys yr iaith y byddwch chi neu\'ch cynrychiolydd yn ei siarad yn y cyfryngu.',
   },
   speakLanguageQuestion: {
     en: 'What languages will you, your experts and your witnesses speak at the hearing?',
