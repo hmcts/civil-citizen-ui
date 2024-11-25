@@ -13,6 +13,20 @@
 {% set applicationHtml %}
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS') }}</p>
+    {% if statusRow %}
+      <div class="govuk-form-group">
+        {{ govukSummaryList({
+          rows: statusRow
+        }) }}
+      </div>
+    {% endif %}
+    {% if applicationTypeCards %}
+      <div class="govuk-form-group">
+        {% for summaryCard in applicationTypeCards %}
+          {{ govukSummaryList(summaryCard) }}
+        {% endfor %}
+      </div>
+    {% endif %}
     <div class="govuk-form-group">
       {{ govukSummaryList({
         rows: summaryRows

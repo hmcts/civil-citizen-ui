@@ -85,31 +85,29 @@ export const addApplicationStatus = (
   return rows;
 };
 
-export const addApplicationTypesRows = (
+export const addApplicationTypeRow = (
   application: ApplicationResponse,
+  index: number,
   lang: string,
 ): SummaryRow[] => {
   const lng = getLng(lang);
 
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppType.types) {
-    application.case_data.generalAppType?.types?.forEach(
-      (applicationType, index, arr) => {
-        const applicationTypeDisplay =
-            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+    const applicationType = application.case_data.generalAppType.types[index];
+    const applicationTypeDisplay =
+      getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
-        rows.push(
-          summaryRow(
-            t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
-              lng,
-            }),
-            t(applicationTypeDisplay, { lng }),
-            null,
-            null,
-            undefined,
-          ),
-        );
-      },
+    rows.push(
+      summaryRow(
+        t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
+          lng,
+        }),
+        t(applicationTypeDisplay, { lng }),
+        null,
+        null,
+        undefined,
+      ),
     );
   }
   return rows;
@@ -190,12 +188,12 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   return rows;
 };
 
-export const addOrderJudgeRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+export const addOrderJudgeRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppDetailsOfOrder) {
+  if (application.case_data.generalAppDetailsOfOrderColl[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
-    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder} <br> ${t(orderForCost, {lng})}</p>`;
+    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrderColl[index].value} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
@@ -203,12 +201,12 @@ export const addOrderJudgeRows = (application: ApplicationResponse, lang: string
   return rows;
 };
 
-export const addRequestingReasonRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+export const addRequestingReasonRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppReasonsOfOrder) {
+  if (application.case_data.generalAppReasonsOfOrderColl[index]) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrder),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
     );
   }
   return rows;
