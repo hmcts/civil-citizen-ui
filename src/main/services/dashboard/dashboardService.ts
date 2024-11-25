@@ -166,6 +166,19 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
 
 export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {
   dashboardNotifications.items?.sort((notification1, notification2) => {
+
+    const priorityTitles = ['The case has been stayed', 'The stay has been lifted'];
+
+    if (priorityTitles.includes(notification1.titleEn) && !priorityTitles.includes(notification2.titleEn)) {
+      return -1;
+    }
+    if (priorityTitles.includes(notification2.titleEn) && !priorityTitles.includes(notification1.titleEn)) {
+      return 1;
+    }
+    if (priorityTitles.includes(notification1.titleEn) && priorityTitles.includes(notification2.titleEn)) {
+      return 0; // Maintain original order if both are priority titles
+    }
+
     if (notification1.deadline) {
       if (!notification2.deadline) {
         // Only notification 1 has a deadline
