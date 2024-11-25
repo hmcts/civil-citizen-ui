@@ -19,7 +19,7 @@ import {SummaryCard, SummaryRow, summaryRow} from 'models/summaryList/summaryLis
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import { AppRequest } from 'models/AppRequest';
 import {
-  getApplicationFromGAService,
+  getApplicationFromGAService, hasRespondentResponded,
   toggleViewApplicationBuilderBasedOnUserAndApplicant,
 } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimById } from 'modules/utilityService';
@@ -151,12 +151,18 @@ export const getSummaryCardSections = (applicationResponse: ApplicationResponse,
 };
 
 export const getResponseSummaryCardSections = (applicationResponse: ApplicationResponse, lang?: string): SummaryCard[] => {
-  const lng = getLng(lang);
   const singleAppType = applicationResponse.case_data.generalAppType.types.length === 1;
   if (singleAppType) {
     // Only use summary cards if there are multiple app types
     return null;
   }
+  return hasRespondentResponded(applicationResponse)
+    ? getSummaryCardSections(applicationResponse, lang)
+    : getPreResponseSummaryCardSections(applicationResponse, lang);
+};
+
+export const getPreResponseSummaryCardSections = (applicationResponse: ApplicationResponse, lang?: string): SummaryCard[] => {
+  const lng = getLng(lang);
   const summaryCards: SummaryCard[] = [];
   applicationResponse.case_data.generalAppType.types.forEach((value, index) => {
     const applicationTypeDisplay =
