@@ -22,7 +22,6 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-// Move this to Prod folder after the Platops fix. 
 Feature('LR - CARM - Mediation Journey @nightly @carm @regression @nightly');
 
 Before(async () => {
