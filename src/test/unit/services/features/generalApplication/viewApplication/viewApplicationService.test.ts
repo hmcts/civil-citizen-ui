@@ -6,6 +6,7 @@ import {
   getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
   getResponseFromCourtSection,
+  getStatusRow,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -904,5 +905,37 @@ describe('View Application service', () => {
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
       expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT');
     });
+  });
+
+  describe('getStatusRow', () => {
+    it('should return status row', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data.generalAppType = {
+        types: [ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.ADJOURN_HEARING],
+      };
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = await getStatusRow(application, 'en');
+
+      //then
+      expect(result.length).toEqual(1);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT');
+    });
+
+    it('should return null status row if single app type', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = await getStatusRow(application, 'en');
+
+      //then
+      expect(result).toBeNull();
+    });
+
   });
 });
