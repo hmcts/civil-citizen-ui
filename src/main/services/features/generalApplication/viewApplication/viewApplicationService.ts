@@ -152,11 +152,6 @@ export const getSummaryCardSections = (applicationResponse: ApplicationResponse,
 };
 
 export const getResponseSummaryCardSections = (applicationResponse: ApplicationResponse, lang?: string): SummaryCard[] => {
-  const singleAppType = applicationResponse.case_data.generalAppType.types.length === 1;
-  if (singleAppType) {
-    // Only use summary cards if there are multiple app types
-    return null;
-  }
   return hasRespondentResponded(applicationResponse)
     ? getSummaryCardSections(applicationResponse, lang)
     : getPreResponseSummaryCardSections(applicationResponse, lang);
@@ -164,6 +159,11 @@ export const getResponseSummaryCardSections = (applicationResponse: ApplicationR
 
 export const getPreResponseSummaryCardSections = (applicationResponse: ApplicationResponse, lang?: string): SummaryCard[] => {
   const lng = getLng(lang);
+  const singleAppType = applicationResponse.case_data.generalAppType.types.length === 1;
+  if (singleAppType) {
+    // Only use summary cards if there are multiple app types
+    return null;
+  }
   const summaryCards: SummaryCard[] = [];
   applicationResponse.case_data.generalAppType.types.forEach((value, index) => {
     const applicationTypeDisplay =

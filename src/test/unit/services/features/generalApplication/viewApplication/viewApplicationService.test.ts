@@ -5,8 +5,8 @@ import {
   getApplicationSections,
   getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
-  getResponseFromCourtSection,
-  getStatusRow, getSummaryCardSections,
+  getResponseFromCourtSection, getResponseSummaryCardSections,
+  getStatusRow,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -939,17 +939,18 @@ describe('View Application service', () => {
     });
   });
 
-  describe('getSummaryCardSections', () => {
-    it('should return status row', async () => {
+  describe('getResponseSummaryCardSections', () => {
+    it('should return summary card sections if respondent has responded', async () => {
       //given
       const application = JSON.parse(JSON.stringify(mockApplication));
+      application.case_data.respondentsResponses = [{value: {}}];
       application.case_data.generalAppType = {
         types: [ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.ADJOURN_HEARING],
       };
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
 
       //when
-      const result = getSummaryCardSections(application, 'en');
+      const result = getResponseSummaryCardSections(application, 'en');
 
       //then
       expect(result.length).toEqual(2);
@@ -959,14 +960,49 @@ describe('View Application service', () => {
       expect(result[0].rows[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME');
     });
 
-    it('should return null summary card sections if single app type', async () => {
+    it('should return null summary card sections if single app type, respondent responded', async () => {
       //given
       const application = JSON.parse(JSON.stringify(mockApplication));
+      application.case_data.respondentsResponses = [{value: {}}];
       expect(application.case_data.generalAppType.types.length).toEqual(1);
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
 
       //when
-      const result = getSummaryCardSections(application, 'en');
+      const result = getResponseSummaryCardSections(application, 'en');
+
+      //then
+      expect(result).toBeNull();
+    });
+
+    it('should return summary card sections if respondent not responded', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      delete application.case_data.respondentsResponses;
+      application.case_data.generalAppType = {
+        types: [ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.ADJOURN_HEARING],
+      };
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = getResponseSummaryCardSections(application, 'en');
+
+      //then
+      expect(result.length).toEqual(2);
+      expect(result[0].rows.length).toEqual(3);
+      expect(result[0].card.title.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION 1');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC');
+      expect(result[0].rows[0].value.html).toEqual(
+        'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION');
+    });
+
+    it('should return null summary card sections if single app type, respondent not responded', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      delete application.case_data.respondentsResponses;
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = getResponseSummaryCardSections(application, 'en');
 
       //then
       expect(result).toBeNull();
