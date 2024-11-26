@@ -17,6 +17,7 @@ import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatte
 import {DocumentType} from 'models/document/documentType';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import {Claim} from 'models/claim';
 
 /**
  * Creates Response from court summary list by sorting on response time.
@@ -24,14 +25,8 @@ import {ApplicationState} from 'models/generalApplication/applicationSummary';
 export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
-  let judgeDirectionWithNotice : CourtResponseSummaryList[] = undefined;
-
-  if(toggleViewApplicationBuilderBasedOnUserAndApplicant(claim,application)) {
-    judgeDirectionWithNotice = getJudgeDirectionWithNotice(req, application, lang);
-  }
-
   return [
-    ...judgeDirectionWithNotice,
+    ...getJudgeDirectionWithNotice(claim, req, application, lang),
     ...getHearingNoticeResponses(application, lang),
     ...getHearingOrderResponses(req, application, lang),
     ...getRequestMoreInfoResponse(claimId, application, lang),
@@ -46,33 +41,34 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
     });
 };
 
-export const getJudgeDirectionWithNotice = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  const claimId = req.params.id;
-  const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
-  if (makeWithNoticeDocs) {
-    courtResponseSummaryList = makeWithNoticeDocs
-      .filter(makeWithNoticeDoc => {
-        return makeWithNoticeDoc.value.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY;
-      })
-      .map(makeWithNoticeDoc => {
-        const documentUrl = `<a href=${GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(makeWithNoticeDoc.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${makeWithNoticeDoc.value.documentName}</a>`;
-        const createdDatetime = makeWithNoticeDoc.value.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng}), createdDatetime, lng);
-        if (documentUrl && (applicationResponse.case_data?.generalAppPBADetails?.additionalPaymentDetails) && makeWithNoticeDoc.value.documentName.includes('make-with')) {
-          rows.push(
-            summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng})),
-          );
-        }
-        let payAdditionalFeeButton : ResponseButton = null;
-        if (applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT && !makeWithNoticeDoc.value.documentName.includes('Translated')) {
-          const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
-          payAdditionalFeeButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE', {lng}), payAdditionalFeeUrl);
-        }
-        return new CourtResponseSummaryList(rows, createdDatetime, payAdditionalFeeButton);
-      });
+  if (toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse)) {
+    const claimId = req.params.id;
+    const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
+    if (makeWithNoticeDocs) {
+      courtResponseSummaryList = makeWithNoticeDocs
+        .filter(makeWithNoticeDoc => {
+          return makeWithNoticeDoc.value.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY;
+        })
+        .map(makeWithNoticeDoc => {
+          const documentUrl = `<a href=${GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(makeWithNoticeDoc.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${makeWithNoticeDoc.value.documentName}</a>`;
+          const createdDatetime = makeWithNoticeDoc.value.createdDatetime;
+          const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng}), createdDatetime, lng);
+          if (documentUrl && (applicationResponse.case_data?.generalAppPBADetails?.additionalPaymentDetails) && makeWithNoticeDoc.value.documentName.includes('make-with')) {
+            rows.push(
+              summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng})),
+            );
+          }
+          let payAdditionalFeeButton: ResponseButton = null;
+          if (applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT && !makeWithNoticeDoc.value.documentName.includes('Translated')) {
+            const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
+            payAdditionalFeeButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE', {lng}), payAdditionalFeeUrl);
+          }
+          return new CourtResponseSummaryList(rows, createdDatetime, payAdditionalFeeButton);
+        });
+    }
   }
-
   return courtResponseSummaryList;
 };
 

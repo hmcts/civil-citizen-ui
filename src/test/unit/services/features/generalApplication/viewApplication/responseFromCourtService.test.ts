@@ -22,6 +22,7 @@ import {CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplica
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import * as utilityService from 'modules/utilityService';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -125,6 +126,7 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
 
 describe('View Application service', () => {
 
+  const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
   describe('getJudgeResponseSummary', () => {
     let applicationResponse : ApplicationResponse;
     beforeEach(() => {
@@ -153,9 +155,12 @@ describe('View Application service', () => {
 
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
 
       //when
-      const result = getJudgeDirectionWithNotice(mockedAppRequest, applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(claim, mockedAppRequest, applicationResponse, 'en');
 
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
@@ -217,8 +222,11 @@ describe('View Application service', () => {
       applicationResponse.case_data= caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       applicationResponse.state = ApplicationState.APPLICATION_ADD_PAYMENT;
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
       //when
-      const result = getJudgeDirectionWithNotice(mockedAppRequest,  applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(claim, mockedAppRequest, applicationResponse, 'en');
       //then
       expect(result[0].rows[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].rows[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
@@ -262,9 +270,12 @@ describe('View Application service', () => {
 
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
 
       //when
-      const result = getJudgeDirectionWithNotice(mockedAppRequest, applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(claim, mockedAppRequest, applicationResponse, 'en');
 
       //then
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
