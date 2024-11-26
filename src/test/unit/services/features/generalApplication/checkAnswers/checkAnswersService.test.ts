@@ -30,6 +30,7 @@ import {
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {addN245Row} from 'services/features/generalApplication/checkAnswers/addCheckAnswersRows';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -108,6 +109,16 @@ describe('Check Answers service', () => {
       expect(result).toHaveLength(15);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
+    });
+
+    it('should give correct row count for application type = SETTLE_BY_CONSENT', () => {
+      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT)];
+      generalApplication.orderJudges = [new OrderJudge('test1')];
+      generalApplication.requestingReasons = [new RequestingReason('test1')];
+      const result = getSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(14);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
     });
   });
 
@@ -213,6 +224,35 @@ describe('Check Answers service', () => {
       expect(result).toHaveLength(2);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+    });
+  });
+
+  describe('Build check answers for submit resp vary general application type with N245', () => {
+    let claim: Claim;
+    let generalApplication: GeneralApplication;
+    beforeEach(() => {
+      claim = new Claim();
+      generalApplication = new GeneralApplication();
+      claim.generalApplication = generalApplication;
+      generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      ];
+      generalApplication.uploadN245Form = new UploadGAFiles();
+      generalApplication.uploadN245Form.caseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: 'test.pdf',
+        documentSize: 0,
+        documentType: undefined,
+      };
+    });
+
+    it('should give correct row count for multiple application types', () => {
+      const result = addN245Row('12345', claim, 'en');
+      expect(result).toHaveLength(1);
+      expect(result[0].key.text).toContain('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE');
+      expect(result[0].value.html).toContain('test.pdf');
     });
   });
 });
