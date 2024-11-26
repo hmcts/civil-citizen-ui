@@ -442,6 +442,20 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondToAdmittedClaimOwingAmountPounds).toBe('10000');
   });
 
+  it.each([[100, 10000], [1, 100], [123, 12300], [293.78, 29378], [139.98, 13998], [257.29, 25729], [8330.38, 833038], [312.90, 31290]])('should translate to respond to admitted claim amount with floating point error', (amountInPounds, expectedAmount)=>{
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.explanation = undefined;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.howMuchDoYouOwe = <HowMuchDoYouOwe>{};
+    claim.partialAdmission.howMuchDoYouOwe.amount = amountInPounds;
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //Then
+    expect(ccdResponse.respondToAdmittedClaimOwingAmount).toBe(expectedAmount.toString());
+    expect(ccdResponse.respondToAdmittedClaimOwingAmountPounds).toBe(amountInPounds.toString());
+  });
+
   it('should translate timeline of events', ()=>{
     //Given
     claim.respondent1 = new Party();

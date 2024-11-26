@@ -17,7 +17,7 @@ import {
   COSC_FINAL_PAYMENT_DATE_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
-  GA_ADD_ANOTHER_APPLICATION_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL, GA_UPLOAD_N245_FORM_URL,
 } from 'routes/urls';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
@@ -360,3 +360,19 @@ export function getEvidencePaymentOption(evidenceOption: string) : string {
     default: return undefined;
   }
 }
+
+export const addN245Row = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const rows: SummaryRow[] = [];
+  const href = `${constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL)}`;
+  if(claim.generalApplication?.uploadN245Form) {
+    let rowValue = '<ul class="no-list-style">';
+    rowValue += `<li>${claim.generalApplication?.uploadN245Form.caseDocument.documentName}</li>`;
+    rowValue += '</ul>';
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE', {lng}), rowValue, href, changeLabel()),
+    );
+  }
+  return rows;
+};
