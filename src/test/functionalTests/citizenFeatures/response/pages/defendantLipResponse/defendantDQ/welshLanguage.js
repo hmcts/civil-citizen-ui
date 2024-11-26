@@ -17,6 +17,14 @@ const content = {
     en: 'Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.',
     cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.',
   },
+  descriptionTextMediation: {
+    en: 'Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.',
+    cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio\'r Gymraeg mewn gwrandawiadau llys ac wrth gyfryngu. Ni fydd gofyn am gael siarad Cymraeg yn oedi\'r gwrandawiad neu\'r apwyntiad cyfryngu nac yn cael unrhyw effaith ar yr achos neu ganlyniad yr achos.',
+  },
+  hintTextMediation: {
+    en: 'This includes the language that you or your representative will speak at mediation.',
+    cy: 'Mae hyn yn cynnwys yr iaith y byddwch chi neu\'ch cynrychiolydd yn ei siarad yn y cyfryngu.',
+  },
   speakLanguageQuestion: {
     en: 'What languages will you, your experts and your witnesses speak at the hearing?',
     cy: 'Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?',
@@ -29,10 +37,15 @@ const content = {
 
 class WelshLanguage {
 
-  async selectLanguageOption() {
-    const { language } = sharedData; 
+  async selectLanguageOption(carmEnabled = false) {
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
-    await I.see(content.descriptionText[language]);
+    if (carmEnabled) {
+      await I.see(content.descriptionTextMediation[language]);
+      await I.see(content.hintTextMediation[language]);
+    } else {
+      await I.see(content.descriptionText[language]);
+    }
     await I.see(content.speakLanguageQuestion[language]);
     await I.click(fields.speakLanguage);
     await I.see(content.documentsLanguageQuestion[language]);
