@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {
   DQ_COURT_LOCATION_URL, DQ_WELSH_LANGUAGE_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import * as specificCourtLocationService from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 import * as directionQuestionnaireService
   from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
@@ -34,7 +34,7 @@ describe('specificCourtController test', ()=>{
       });
       await request(app).get(DQ_COURT_LOCATION_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you want to ask for the hearing to be held at a specific court?');
+        expect(res.text).toContain('Please select your preferred court hearing location.');
       });
     });
     it('should show error page if there is an error', async ()=>{
@@ -48,12 +48,7 @@ describe('specificCourtController test', ()=>{
     });
   });
   describe('on POST', ()=> {
-    it('should show error message when yes or no not selected', async ()=>{
-      await request(app).post(DQ_COURT_LOCATION_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Select yes if you want to ask for the hearing to be held at a specific court');
-      });
-    });
+
     it('should show error message when court location is required but location is not selected and reason for court locaiton is not entered', async ()=>{
       await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'yes'}).expect((res) => {
         expect(res.status).toBe(200);
@@ -61,14 +56,9 @@ describe('specificCourtController test', ()=>{
         expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
       });
     });
-    it('should redirect to next page successfully when there are no errors and no is selected', async () =>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'no'}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.get('location')).toBe(DQ_WELSH_LANGUAGE_URL);
-      });
-    });
+
     it('should redirect to next page successfully when there are no errors and yes is selected', async () =>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'yes', reason:'reason', courtLocation:'courtLocation'}).expect((res) => {
+      await request(app).post(DQ_COURT_LOCATION_URL).send({reason:'reason', courtLocation:'courtLocation'}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.get('location')).toBe(DQ_WELSH_LANGUAGE_URL);
       });
@@ -77,7 +67,7 @@ describe('specificCourtController test', ()=>{
       saveDirectionQuestionnaire.mockImplementation(async() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'yes', reason:'reason', courtLocation:'courtLocation'}).expect((res) => {
+      await request(app).post(DQ_COURT_LOCATION_URL).send({reason:'reason', courtLocation:'courtLocation'}).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
