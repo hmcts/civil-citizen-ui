@@ -16,6 +16,11 @@
       iconFallbackText: "Warning"
     }) }}
   {% endif %}
+
+  {% block warning_message %}
+    {% include "../../macro/banner.njk" %}
+  {% endblock %}
+
   {% if not claimDraftSaved %}
     <p class="govuk-body">
       <a class="govuk-link govuk-!-font-weight-bold" href={{ newOcmcClaimUrl }} target="_blank" rel="noreferrer noopener">
