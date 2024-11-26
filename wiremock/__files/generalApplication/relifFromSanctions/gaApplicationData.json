@@ -1,0 +1,136 @@
+{
+  "id": 1732553590764925,
+  "jurisdiction": "CIVIL",
+  "state": "AWAITING_RESPONDENT_RESPONSE",
+  "case_type_id": "GENERALAPPLICATION",
+  "created_date": "2024-11-25T16:53:10.707468",
+  "last_modified": "2024-11-25T16:53:34.865889",
+  "case_data": {
+    "generalAppUrgencyRequirement": {
+      "generalAppUrgency": "No"
+    },
+    "generalAppNotificationDeadlineDate": "2024-12-01T16:00:00",
+    "caseManagementLocation": {
+      "region": "2",
+      "address": "St Mary's Court, Regents Park Road",
+      "postcode": "N3 1BQ",
+      "siteName": "Barnet Civil and Family Centre",
+      "baseLocation": "000000"
+    },
+    "generalAppAskForCosts": "Yes",
+    "generalAppApplnSolicitor": {
+      "id": "7e6536b5-9cd2-40eb-a5b6-f252d2e6c7ef",
+      "email": "citizen.user2@gmail.com",
+      "surname": "citizen",
+      "forename": "citizen.user2@gmail.com"
+    },
+    "parentClaimantIsApplicant": "No",
+    "isGaApplicantLip": "Yes",
+    "caseManagementCategory": {
+      "value": {
+        "code": "Civil",
+        "label": "Civil"
+      },
+      "list_items": [
+        {
+          "id": "59780a60-cb79-4191-bfd0-83ec720d04fc",
+          "value": {
+            "code": "Civil",
+            "label": "Civil"
+          }
+        }
+      ]
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "parentCaseReference": "1732551952128739",
+    "generalAppRespondentSolicitors": [
+      {
+        "id": "fa9eb7dd-afa7-444b-ae90-b19d2123de3b",
+        "value": {
+          "id": "22a43efe-ea15-4ad0-9c22-4904b5c28fbe",
+          "email": "civilmoneyclaimsdemo@gmail.com",
+          "surname": "person",
+          "forename": "Claimant"
+        }
+      }
+    ],
+    "isDocumentVisible": "Yes",
+    "generalAppParentCaseLink": {
+      "CaseReference": "1732551952128739"
+    },
+    "generalAppRespondentAgreement": {
+      "hasAgreed": "Yes"
+    },
+    "applicantPartyName": "mr defendant person",
+    "generalAppConsentOrder": "No",
+    "generalAppSuperClaimType": "SPEC_CLAIM",
+    "generalAppPBADetails": {
+      "fee": {
+        "code": "FEE0443",
+        "version": "2",
+        "calculatedAmountInPence": "10800"
+      },
+      "paymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234"
+      },
+      "serviceRequestReference": "2022-1655915218557"
+    },
+    "generalAppDetailsOfOrder": "x",
+    "isGaRespondentTwoLip": "No",
+    "locationName": "Barnet Civil and Family Centre",
+    "claimant1PartyName": "Mr Claimant person",
+    "respondent1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[DEFENDANT]"
+    },
+    "caseNameGaInternal": "'Claimant person' v 'defendant person'",
+    "generalAppHearingDetails": {
+      "HearingDetailsEmailID": "civilmoneyclaimsdemo@gmail.com",
+      "HearingDetailsTelephoneNumber": "07557250542",
+      "ReasonForPreferredHearingType": "x",
+      "HearingPreferencesPreferredType": "IN_PERSON",
+      "unavailableTrialRequiredYesOrNo": "No"
+    },
+    "isGaRespondentOneLip": "Yes",
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "INITIATE_GENERAL_APPLICATION_AFTER_PAYMENT"
+    },
+    "defendant1PartyName": "mr defendant person",
+    "generalAppInformOtherParty": {
+      "isWithNotice": "Yes"
+    },
+    "generalAppType": {
+      "types": [
+        "RELIEF_FROM_SANCTIONS"
+      ]
+    },
+    "generalAppReasonsOfOrder": "x",
+    "applicationTypes": "Relief from sanctions",
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "gaDraftDocument": [
+      {
+        "id": "84ebb6f8-d819-4058-a2b6-b0a813541079",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "applications",
+            "document_url": "http://dm-store:8080/documents/892afe75-613b-4b86-9550-dffd76931048",
+            "document_filename": "Draft_application_2024-11-25 16:53:31.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/892afe75-613b-4b86-9550-dffd76931048/binary"
+          },
+          "documentName": "Draft_application_2024-11-25 16:53:31.pdf",
+          "documentSize": 36115,
+          "documentType": "GENERAL_APPLICATION_DRAFT",
+          "createdDatetime": "2024-11-25T16:53:31.6901196"
+        }
+      }
+    ],
+    "isMultiParty": "No",
+    "isCcmccLocation": "Yes",
+    "gaApplicantDisplayName": "mr defendant person - Defendant"
+  },
+  "security_classification": "PUBLIC"
+}
