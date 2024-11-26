@@ -54,7 +54,6 @@ export class UnavailableDatePeriodGaHearing {
 
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1872, { message: 'ERRORS.VALID_YEAR' })
     startYear?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && ((!!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear > 999) ||
@@ -76,7 +75,6 @@ export class UnavailableDatePeriodGaHearing {
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1872, {message: 'ERRORS.VALID_YEAR'})
     endYear?: number;
 
   [key: string]: UnavailableDateType | Date | number;
