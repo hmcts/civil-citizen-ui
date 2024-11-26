@@ -482,7 +482,7 @@ module.exports = {
       title: 'Pay application fee',
       content: `To finish making your application, you must pay the application fee of £${feeAmount}.00 as soon as possible. Your application will be paused and will not be sent to the other parties or considered by a judge until you’ve paid the fee.`,
       nestSteps: 'Pay application fee',
-    }
+    };
   },
 
   // Application being processed
@@ -492,7 +492,7 @@ module.exports = {
       content: ['A judge will consider the application.',
         'The other parties can respond within 5 working days after the application is submitted, unless you\'ve chosen not to inform them. If you have a hearing in the next 10 days, your application will be treated urgently.'],
       nextSteps: 'View application documents',
-    }
+    };
   },
 
   // Additional application fee
@@ -501,6 +501,6 @@ module.exports = {
       title: 'You must pay an additional application fee',
       content: 'The court requires you to pay an additional fee before your application can progress further.',
       nextSteps: 'Pay the additional application fee',
-    }
+    };
   },
 };
