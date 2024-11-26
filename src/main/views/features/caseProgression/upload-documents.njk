@@ -4,7 +4,6 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
 {% from "../dashboard/item-content.njk" import itemContent %}
-{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
 {% from "../../macro/button.njk" import addButton %}
 
 {% set pageTitle = t('PAGES.EVIDENCE.PAGE_TITLE') %}
@@ -39,18 +38,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in disclosureSections %}
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      classes: 'moj-add-another__title',
-                      isPageHeading: false
-                    }
-                  }) %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                  {% endcall %}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
@@ -73,18 +66,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in witnessSections %}
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      classes: 'moj-add-another__title',
-                      isPageHeading: false
-                    }
-                  }) %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                  {% endcall %}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
@@ -107,18 +94,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in expertSections %}
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      classes: 'moj-add-another__title',
-                      isPageHeading: false
-                    }
-                  }) %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                  {% endcall %}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
@@ -145,18 +126,12 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in trialSections %}
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      classes: 'moj-add-another__title',
-                      isPageHeading: false
-                    }
-                  }) %}
+                <div class="moj-add-another__item moj-add-another__title">
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                  {% endcall %}
                 {% endfor %}
+                </div>
                 <div class="moj-button-action">
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
