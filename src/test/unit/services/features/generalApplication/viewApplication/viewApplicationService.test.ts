@@ -908,6 +908,18 @@ describe('View Application service', () => {
   });
 
   describe('getStatusRow', () => {
+    it('should return null status row if single app type', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = await getStatusRow(application, 'en');
+
+      //then
+      expect(result).toBeNull();
+    });
+
     it('should return status row', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
@@ -924,18 +936,5 @@ describe('View Application service', () => {
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT');
     });
-
-    it('should return null status row if single app type', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-
-      //when
-      const result = await getStatusRow(application, 'en');
-
-      //then
-      expect(result).toBeNull();
-    });
-
   });
 });
