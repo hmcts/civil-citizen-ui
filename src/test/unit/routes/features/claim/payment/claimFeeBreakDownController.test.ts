@@ -14,6 +14,7 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
 import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
+import {BusinessProcess} from "models/businessProcess";
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
@@ -54,7 +55,9 @@ describe('on GET', () => {
       claimInterest: 'yes' ,
       claimFee: {
         calculatedAmountInPence: 10000,
-      }};
+      },
+      hasBusinessProcessFinished: () => true,
+    };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
     (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
@@ -70,6 +73,42 @@ describe('on GET', () => {
           hasInterest: true,
           pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
           totalAmount: mockTotalAmount.toFixed(2),
+          businessProcessFinished: true,
+        });
+      });
+  });
+
+  it('should handle the get call of fee summary details when business process has not finished', async () => {
+    //given
+    const claimId = '111111';
+    const mockClaimData = {
+      totalClaimAmount: 1000,
+      interest: {
+        interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
+        totalInterest: { amount: 100 },
+      },
+      claimInterest: 'yes' ,
+      claimFee: {
+        calculatedAmountInPence: 10000,
+      },
+      hasBusinessProcessFinished: () => false,
+    };
+    const mockClaimFee = 100;
+    const mockTotalAmount = 1200;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
+    //when-then
+    await request(app)
+      .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+          totalClaimAmount: mockClaimData.totalClaimAmount.toFixed(2),
+          interest: mockClaimData.interest.totalInterest.amount,
+          claimFee: mockClaimFee,
+          paymentSyncError: false,
+          hasInterest: true,
+          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
+          totalAmount: mockTotalAmount.toFixed(2),
+          businessProcessFinished: false,
         });
       });
   });
