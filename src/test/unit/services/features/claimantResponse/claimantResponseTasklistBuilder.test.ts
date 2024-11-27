@@ -1573,7 +1573,7 @@ function getCommonJourneyCompleted() {
     hearing: <Hearing>{
       phoneOrVideoHearing: {option: YesNo.NO},
       supportRequiredList: {option: YesNo.NO},
-      specificCourtLocation: <SpecificCourtLocation>{option: YesNo.NO},
+      specificCourtLocation: <SpecificCourtLocation>{},
       cantAttendHearingInNext12Months: {option: YesNo.NO},
     },
     witnesses: <Witnesses>{
