@@ -4219,13 +4219,13 @@
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r parti arall?”"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
+      "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddwy ochr wrth benderfynu ble i gynnal y gwrandawiad. Dewch o hyd i'ch llys agosaf yn ôl cod post : <a class='govuk-link' href='https://www.gov.uk/find-court-tribunal' target='_blank'>https://www.gov.uk/find-court-tribunal</a>.",
       "PAGE_TITLE": "Llys penodol",
-      "SELECT_COURT": "Dewiswch lys",
+      "SELECT_COURT": "Dewis llys",
       "SELECTED_COURT": "Llys sydd wedi ei ddewis",
       "SELECT_VALUE": "Dewiswch werth",
       "REASON": "Dywedwch wrthym pam ydych chi eisiau i’r gwrandawiad gael ei gynnal yn y llys hwn",
-      "TITLE": "Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?"
+      "TITLE": "Dewiswch y lleoliad sydd orau gennych ar gyfer eich gwrandawiad llys."
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
