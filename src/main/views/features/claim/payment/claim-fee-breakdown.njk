@@ -18,7 +18,7 @@
                        {% endif %}
                       {% if not businessProcessFinished %}
                            {{ govukWarningText({
-                               text: "The case processing has not completed, please refresh this page in a few minutes. If the problem persists please contact the helpdesk.",
+                               text: t('PAGES.FEE_AMOUNT.CASE_PROCESSING_WARNING'),
                                 iconFallbackText: "Warning"
                            }) }}
                        {% endif %}
