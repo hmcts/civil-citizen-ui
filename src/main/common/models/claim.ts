@@ -1073,6 +1073,10 @@ export class Claim {
       CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
       CaseState.All_FINAL_ORDERS_ISSUED].includes(this.ccdState);
   }
+
+  hasBusinessProcessFinished() {
+    return this.businessProcess?.status === 'FINISHED';
+  }
 }
 
 export interface StatementOfTruth {

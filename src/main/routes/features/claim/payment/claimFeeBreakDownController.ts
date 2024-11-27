@@ -33,6 +33,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     const hasInterest = claim.claimInterest === YesNo.YES;
     const interestAmount = calculateInterestToDate(claim);
     const totalAmount = hasInterest ? (claim.totalClaimAmount + interestAmount + claimFee) : (claim.totalClaimAmount + claimFee);
+    const businessProcessFinished = claim.hasBusinessProcessFinished() || false;
     return res.render(viewPath, {
       totalClaimAmount: claim.totalClaimAmount?.toFixed(2),
       interest: interestAmount,
@@ -41,6 +42,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
       totalAmount: totalAmount?.toFixed(2),
       pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
       paymentSyncError,
+      businessProcessFinished,
     });
   } catch (error) {
     next(error);

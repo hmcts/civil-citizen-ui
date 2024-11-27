@@ -16,6 +16,12 @@
                                 iconFallbackText: "Warning"
                            }) }}
                        {% endif %}
+                      {% if not businessProcessFinished %}
+                           {{ govukWarningText({
+                               text: "The case processing has not completed, please refresh this page in a few minutes. If the problem persists please contact the helpdesk.",
+                                iconFallbackText: "Warning"
+                           }) }}
+                       {% endif %}
                     {{ govukSummaryList({
                         rows: [
                             {
@@ -65,8 +71,9 @@
                     <form method="post" novalidate autocomplete="off">
                         {{ csrfProtection(csrf) }}
                         {{ govukButton({
-                 text: buttonText
-              }) }}
+                           text: buttonText,
+                           disabled: not businessProcessFinished
+                        }) }}
                     </form>
                 </div>
             </div>
