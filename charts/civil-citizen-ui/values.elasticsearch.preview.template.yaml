@@ -189,7 +189,7 @@ civil-service:
           requests:
             cpu: 500m
             memory: 2048Mi
-            
+
         initdb:
           scripts:
             init.sql: |
