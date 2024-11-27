@@ -14,7 +14,6 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
 import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
-import {BusinessProcess} from "models/businessProcess";
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
