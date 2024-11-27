@@ -106,7 +106,7 @@ export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, ln
       .map(judgeApproveEditDocument => {
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeApproveEditDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${judgeApproveEditDocument.value.documentLink.document_filename}</a>`;
         const createdDatetime = judgeApproveEditDocument?.value?.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT', {lng}), createdDatetime, lng);
+        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER', {lng}), createdDatetime, lng);
         return new CourtResponseSummaryList(rows, createdDatetime);
       });
   }
