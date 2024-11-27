@@ -50,6 +50,18 @@
     }
   },
   {
+    "id": "1732553590764925someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "RELIEF_FROM_SANCTIONS"
+      ]
+    }
+  },
+  {
     "id": "courtLocations",
     "value": [
       {
