@@ -134,6 +134,53 @@
         },
         "bodyFileName": "generalApplication/relifFromSanctions/paymentRedirect.json"
       }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732553590764925/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'RESPOND_TO_APPLICATION')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/relifFromSanctions/respondentResponse.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732551952128739/applications",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/relifFromSanctions/applicationSummary.json"
+      }
     }
   ]
 }

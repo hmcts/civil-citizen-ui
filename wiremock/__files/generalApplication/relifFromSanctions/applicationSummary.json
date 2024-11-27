@@ -1,0 +1,36 @@
+{
+  "total": 1,
+  "cases": [
+    {
+      "id": 1732553590764925,
+      "jurisdiction": "CIVIL",
+      "state": "ORDER_MADE",
+      "case_type_id": "GENERALAPPLICATION",
+      "created_date": "2024-11-25T16:53:10.707",
+      "last_modified": "2024-11-27T11:10:00.88",
+      "case_data": {
+        "generalAppInformOtherParty": {
+          "isWithNotice": "Yes"
+        },
+        "parentClaimantIsApplicant": "No",
+        "applicationTypes": "Relief from sanctions",
+        "generalAppRespondentAgreement": {
+          "hasAgreed": "Yes"
+        },
+        "generalAppPBADetails": {
+          "fee": {
+            "calculatedAmountInPence": "10800",
+            "code": "FEE0443",
+            "version": "2"
+          },
+          "serviceRequestReference": "2022-1655915218557",
+          "paymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          }
+        }
+      },
+      "security_classification": "PUBLIC"
+    }
+  ]
+}
