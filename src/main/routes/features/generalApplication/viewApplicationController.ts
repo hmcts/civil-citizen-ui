@@ -13,7 +13,7 @@ import {
   getApplicationSections,
   getCourtDocuments,
   getRespondentDocuments,
-  getResponseFromCourtSection,
+  getResponseFromCourtSection, getStatusRow, getSummaryCardSections,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
@@ -37,10 +37,12 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const claim: Claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const {summaryRows, responseSummaries} = await getApplicationSections(req, req.params.appId, lang);
+    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
+    const statusRow = getStatusRow(applicationResponse, lang);
+    const applicationTypeCards = getSummaryCardSections(applicationResponse, lang);
+    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationResponse, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const applicantDocuments : DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
@@ -62,6 +64,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
 
     res.render(viewPath, {
       backLinkUrl: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
+      statusRow,
+      applicationTypeCards,
       summaryRows,
       responseSummaries,
       pageTitle,
