@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_HEARING_SUPPORT_URL,
-  GA_UNAVAILABLE_HEARING_DATES_URL,
   PAYING_FOR_APPLICATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
@@ -25,7 +25,7 @@ const viewPath = 'features/generalApplication/hearing-support';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingSupport>, res: Response, lng: string, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), index);
+  const backLinkUrl = BACK_URL;
   const pageContent = getPageContent();
   res.render(viewPath, {
     form,

@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL,
+  BACK_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
   INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
@@ -25,8 +25,8 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreeme
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
-    const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
-    const backLinkUrl = getBackLinkUrl(<AppRequest>req, applicationIndex);
+    //const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const backLinkUrl = BACK_URL;
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE );
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
@@ -47,7 +47,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
-    const backLinkUrl = getBackLinkUrl(<AppRequest>req, applicationIndex);
+    const backLinkUrl = BACK_URL;
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const applicationTypeOption = getLast(claim.generalApplication?.applicationTypes)?.option;
     const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
@@ -67,9 +67,5 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
     next(error);
   }
 }) as RequestHandler);
-
-function getBackLinkUrl(req: AppRequest, index: number) : string {
-  return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL), index);
-}
 
 export default agreementFromOtherPartyController;
