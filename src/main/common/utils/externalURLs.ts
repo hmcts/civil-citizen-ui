@@ -31,3 +31,4 @@ export const table14 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/
 export const cpr26 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part26#16';
 export const certificateN443Url = 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation';
 export const makeAClaimUrl = 'https://www.gov.uk/make-court-claim-for-money/make-claim';
+export const interpreterUrl = 'https://www.gov.uk/get-interpreter-at-court-or-tribunal';
