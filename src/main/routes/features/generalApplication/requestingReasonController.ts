@@ -1,8 +1,8 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
+  BACK_URL,
   GA_ADD_ANOTHER_APPLICATION_URL,
   GA_REQUESTING_REASON_URL,
-  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -39,7 +39,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
     const requestingReason = new RequestingReason(requestingReasonText);
     const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
+    const backLinkUrl = BACK_URL;
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
@@ -64,7 +64,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
     const applicationIndex = queryParamNumber(req, 'index') || 0;
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
+    const backLinkUrl = BACK_URL;
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     await form.validate();
@@ -84,10 +84,5 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
     next(error);
   }
 }) as RequestHandler);
-
-function getBackLinkUrl(claimId: string, index: number) : string {
-  const indexParam = `?index=${index}`;
-  return constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL) + indexParam;
-}
 
 export default requestingReasonController;

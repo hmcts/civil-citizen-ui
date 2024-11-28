@@ -1,9 +1,8 @@
 import {NextFunction, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 import {
-  APPLICATION_TYPE_URL,
+  APPLICATION_TYPE_URL, BACK_URL,
   GA_ADD_ANOTHER_APPLICATION_URL,
-  GA_REQUESTING_REASON_URL,
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
@@ -32,7 +31,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
   const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
-  const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
+  const backLinkUrl = BACK_URL;
   const cancelUrl = await getCancelUrl(claimId, claim);
   const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
   const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
@@ -86,10 +85,5 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
     next(error);
   }
 });
-
-function getBackLinkUrl(claimId: string, index: number) : string {
-  const indexParam = `?index=${index}`;
-  return constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL) + indexParam;
-}
 
 export default addAnotherApplicationController;

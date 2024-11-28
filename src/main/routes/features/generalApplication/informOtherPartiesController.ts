@@ -4,7 +4,11 @@ import { InformOtherParties } from 'common/models/generalApplication/informOther
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import {GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_APPLICATION_COSTS_URL, INFORM_OTHER_PARTIES_URL} from 'routes/urls';
+import {
+  BACK_URL,
+  GA_APPLICATION_COSTS_URL,
+  INFORM_OTHER_PARTIES_URL,
+} from 'routes/urls';
 import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
 import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
 import {
@@ -21,8 +25,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const index  = queryParamNumber(req, 'index');
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), index);
+  const backLinkUrl = BACK_URL;
   if (!form) {
     form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
   }

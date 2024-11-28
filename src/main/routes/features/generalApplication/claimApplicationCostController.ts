@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_APPLICATION_COSTS_URL,
+  BACK_URL,
   GA_CLAIM_APPLICATION_COST_URL,
   ORDER_JUDGE_URL,
 } from 'routes/urls';
@@ -22,10 +22,10 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
 
-async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response, index: number): Promise<void> {
+async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
   const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), index);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -38,9 +38,8 @@ claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, claimApplicati
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
-    await renderView(form, claim, claimId, res, index);
+    await renderView(form, claim, claimId, res);
   } catch (error) {
     next(error);
   }
@@ -56,7 +55,7 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicat
     await form.validate();
 
     if (form.hasErrors()) {
-      await renderView(form, claim, claimId, res, index);
+      await renderView(form, claim, claimId, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
 
