@@ -81,6 +81,14 @@ class CreateGAApplication {
     clickButton(buttonType.CONTINUE);
   }
 
+  uploadDocument(claimId) {
+    I.seeInCurrentUrl(`case/${claimId}/general-application/upload-documents`);
+    I.see('Upload documents to support your application');
+    I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestDOC.doc');
+    I.click('#uploadFileButton')
+    clickButton(buttonType.CONTINUE);
+  }
+
   hearingArrangementsInfo(claimId) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/hearing-arrangements-guidance`);
     I.see('Application hearing arrangements', 'h1.govuk-heading-l');
