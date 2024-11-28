@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
+  getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice, getHearingOrder,
   getRespondentDocuments,
   getResponseFromCourtSection, getResponseSummaryCardSections,
   getStatusRow,
@@ -12,7 +12,6 @@ import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import * as utilityService from 'modules/utilityService';
-import {getClaimById} from 'modules/utilityService';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {DocumentType} from 'models/document/documentType';
@@ -24,10 +23,10 @@ import {
 import {
   CcdGaDraftDocument,
   CcdGeneralOrderDocument,
-  CcdHearingDocument,
-  CcdHearingNoticeDocument,
+  CcdHearingDocument, CcdHearingNoticeDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
-import {CcdGAMakeWithNoticeDocument} from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
+import {getClaimById} from 'modules/utilityService';
+import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -62,7 +61,7 @@ function setMockAdditionalDocuments() {
         'document_binary_url': 'http://dm-store:8080/documents/4feaa073-c310-4096-979d-cd5b12ebddf8/binary',
       },
       'documentName': 'Supporting evidence',
-      'createdDatetime':new Date('2024-08-01'),
+      'createdDatetime':new Date('2024-08-01T10:57:18'),
     },
   },
   {
@@ -76,7 +75,7 @@ function setMockAdditionalDocuments() {
         'document_binary_url': 'http://dm-store:8080/documents/f0508c67-d3cf-4774-b3f3-0903f77d2664/binary',
       },
       'documentName': 'Test resp1',
-      'createdDatetime':  new Date('2024-08-01'),
+      'createdDatetime':  new Date('2024-08-01T10:57:18'),
     },
   }];
 }
@@ -94,7 +93,22 @@ function setMockGaDraftDocuments(): CcdGaDraftDocument[] {
       },
       'documentName': 'Draft_application_2024-08-01 14:47:03.pdf',
       'documentType': DocumentType.GENERAL_APPLICATION_DRAFT,
-      'createdDatetime':  new Date('2024-08-01'),
+      'createdDatetime':  new Date('2024-08-01T10:57:18'),
+    },
+  },
+  {
+    'id': '2491009e-8b8d-48ff-8f02-36bd28711997',
+    'value': {
+      'createdBy': 'ga_ctsc_team_leader_national@justice.gov.uk National',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413',
+        'document_filename': 'draft_claim_form_000MC003.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413/binary',
+      },
+      'documentName': 'Translated_draft_application_2024-11-15 15:38:26.pdf',
+      'documentType':  DocumentType.GENERAL_APPLICATION_DRAFT,
+      'createdDatetime': new Date('2024-11-14T16:57:18'),
     },
   }];
 }
@@ -200,7 +214,22 @@ function setMockDismissalOrderDocuments(): CcdGeneralApplicationDirectionsOrderD
       },
       'documentName': 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf',
       'documentType': DocumentType.DISMISSAL_ORDER,
-      'createdDatetime': new Date('2024-11-12'),
+      'createdDatetime': new Date('2024-11-12T14:15:19'),
+    },
+  }, {
+    'id': '3229bc9d-cb76-4954-a257-4dcf442c0b98',
+    'value': {
+      //'createdBy': 'ga_ctsc_team_leader_national@justice.gov.uk National',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/82941661-c59b-437f-8b13-c680c81839c7',
+        'document_filename': '000MC039-settlement-agreement.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/82941661-c59b-437f-8b13-c680c81839c7/binary',
+      },
+      'documentName': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf',
+      //'documentSize': 0,
+      'documentType': 'DISMISSAL_ORDER',
+      'createdDatetime': new Date('2024-11-15T12:05:40.1976336'),
     },
   }];
 }
@@ -510,12 +539,17 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
-      const expectedDraftDocument = new DocumentInformation(
+      const expectedDraftDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        '14 November 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413', 'Translated_draft_application_2024-11-15 15:38:26.pdf'),
+      );
+      const expectedDraftDocument2 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-01 14:47:03.pdf'),
       );
-      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument,expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument1, expectedDraftDocument2, expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -590,13 +624,18 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
-      const expectedDraftDocument = new DocumentInformation(
+      const expectedDraftDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        '14 November 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413', 'Translated_draft_application_2024-11-15 15:38:26.pdf'),
+      );
+      const expectedDraftDocument2 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-01 14:47:03.pdf'),
       );
 
-      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument, expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument1, expectedDraftDocument2, expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -697,10 +736,12 @@ describe('View Application service', () => {
 
     it('should get data array if there is court has dismissal order documents', async () => {
       //given
+      mockGetApplication.mockClear();
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument = setMockDismissalOrderDocuments();
-
+      caseData.hearingNoticeDocument = null;
+      caseData.hearingOrderDocument = null;
       mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getCourtDocuments(application, 'en');
@@ -710,12 +751,22 @@ describe('View Application service', () => {
         '12 November 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a', 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf'),
       );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
-      expect(result.documents[2]).toEqual(expectedResult.documents[0]);
+      const expectedDocument1 = {
+        'fileName': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
+        'uploadDate': '15 November 2024',
+        'linkInformation': {
+          'url': '/case/1718105701451856/view-documents/82941661-c59b-437f-8b13-c680c81839c7',
+          'text': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf',
+        },
+      };
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument1, expectedDocument]);
+      expect(result.documents[0]).toEqual(expectedResult.documents[0]);
+      expect(result.documents[1]).toEqual(expectedResult.documents[1]);
     });
 
     it('should get dismissal order documents', async () => {
       //given
+      mockGetApplication.mockClear();
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument = setMockDismissalOrderDocuments();
@@ -724,11 +775,14 @@ describe('View Application service', () => {
       //When
       const result = getDismissalOrder(application, 'en');
       //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
-        '12 November 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/3d39afa3-653f-456f-900e-1c5ed0f8dd5a', 'Dismissal_order_for_application_2024-11-12 16:25:48.pdf'),
-      );
+      const expectedDocument = {
+        'fileName': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER',
+        'uploadDate': '15 November 2024',
+        'linkInformation': {
+          'url': '/case/1718105701451856/view-documents/82941661-c59b-437f-8b13-c680c81839c7',
+          'text': 'Translated_Dismissal_order_for_application_2024-11-15 12:05:40.pdf',
+        },
+      };
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result[0]).toEqual(expectedResult.documents[0]);
     });
@@ -738,25 +792,22 @@ describe('View Application service', () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.dismissalOrderDocument = undefined;
+      caseData.gaDraftDocument = undefined;
+      caseData.hearingOrderDocument = undefined;
+      caseData.hearingNoticeDocument = undefined;
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
-      const result = getDismissalOrder(application, 'en');
+      const dismissalOrder = getDismissalOrder(application, 'en');
+      const draftDoc = getDraftDocument(application, 'en');
+      const haringNotice = getHearingNotice(application, 'en');
+      const hearingOrder = getHearingOrder(application, 'en');
+
       //Then
-
-      expect(result.length).toEqual(0);
-    });
-
-    it('should get empty applicationResponse', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), undefined);
-
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-      //When
-      const result = getDismissalOrder(application, 'en');
-      //Then
-
-      expect(result.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(draftDoc.length).toEqual(0);
+      expect(haringNotice.length).toEqual(0);
+      expect(hearingOrder.length).toEqual(0);
     });
 
     it('should get empty applicationResponse if application not defined', async () => {
@@ -765,10 +816,15 @@ describe('View Application service', () => {
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
-      const result = getDismissalOrder(application, 'en');
+      const dismissalOrder = getDismissalOrder(application, 'en');
+      const draftDoc = getDraftDocument(application, 'en');
+      const haringNotice = getHearingNotice(application, 'en');
+      const hearingOrder = getHearingOrder(application, 'en');
       //Then
-
-      expect(result.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(draftDoc.length).toEqual(0);
+      expect(haringNotice.length).toEqual(0);
+      expect(hearingOrder.length).toEqual(0);
     });
   });
 
