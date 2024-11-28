@@ -8,7 +8,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../macro/external-link.njk" import externalLink %}
-{% import "external-urls.njk" as externalURLs %}
+{% from "../dashboard/item-content.njk" import itemContent %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') }}
@@ -62,12 +62,9 @@
 
 {% block nestedContent %}
           {{ headingWithCaption(t, headerTitle, headingTitle) }}
-          <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.IF_YOU_NEED') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NEED_TO_ARRANGE') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NOT_ABLE') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ARRANGING_OWN') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.FIND_OUT') }}
-                      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.GET_INTERPRETER', externalURLs.getInterpreterUrl, false) }}</p>
+            {% for content in pageContent %}
+              {{ itemContent(content,t) }}
+            {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukCheckboxes({
