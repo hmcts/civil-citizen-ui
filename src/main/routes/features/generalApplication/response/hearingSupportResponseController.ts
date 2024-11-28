@@ -21,6 +21,8 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {interpreterUrl} from 'common/utils/externalURLs';
 
 const hearingSupportResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
@@ -31,7 +33,8 @@ async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericFor
   const cancelUrl = await getCancelUrl(req.params.id, claim);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
   const headingTitle = getHearingSupportCaption(lang);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle });
+  const pageContent = getPageContent();
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, pageContent, headerTitle, headingTitle });
 }
 
 hearingSupportResponseController.get(GA_RESPONSE_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -67,5 +70,16 @@ hearingSupportResponseController.post(GA_RESPONSE_HEARING_SUPPORT_URL, (async (r
     next(error);
   }
 }) as RequestHandler);
+
+export const getPageContent = () => {
+  return new PageSectionBuilder()
+    .addParagraph('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.IF_YOU_NEED',null, 'govuk-!-font-weight-bold')
+    .addParagraph('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NEED_TO_ARRANGE')
+    .addParagraph('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NOT_ABLE')
+    .addParagraph('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ARRANGING_OWN')
+    .addFullStopLink('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.GET_INTERPRETER', interpreterUrl, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.FIND_OUT', null, null, true)
+    .addParagraph(null, null)
+    .build();
+};
 
 export default hearingSupportResponseController;
