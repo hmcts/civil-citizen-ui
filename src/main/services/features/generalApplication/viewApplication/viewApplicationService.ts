@@ -247,8 +247,10 @@ export const getDraftDocument =  (applicationResponse: ApplicationResponse, lang
   const generalAppDraftDocs = applicationResponse?.case_data?.gaDraftDocument;
   let gaDraftDocInfoArray : DocumentInformation[] = [];
   if(generalAppDraftDocs) {
-    gaDraftDocInfoArray = generalAppDraftDocs.map(gaDraftDocument => {
-      return setUpDocumentLinkObject(gaDraftDocument?.value?.documentLink, gaDraftDocument?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT');
+    gaDraftDocInfoArray = generalAppDraftDocs.sort((item1,item2) => {
+      return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
+    }).map(gaDraftDocument => {
+      return setUpDocumentLinkObject(gaDraftDocument.value.documentLink, gaDraftDocument.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT', gaDraftDocument.value.documentName);
     });
   }
   return gaDraftDocInfoArray;
@@ -261,7 +263,7 @@ export const getHearingOrder = (applicationResponse: ApplicationResponse, lang: 
     hearingOrderDocInfoArray = hearingOrderDocs.sort((item1,item2) => {
       return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
     }).map(hearingOrder => {
-      return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER');
+      return setUpDocumentLinkObject(hearingOrder.value?.documentLink, hearingOrder.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER');
     });
   }
   return hearingOrderDocInfoArray;
@@ -272,9 +274,9 @@ export const getHearingNotice = (applicationResponse: ApplicationResponse, lang:
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingNoticeDocs) {
     hearingOrderDocInfoArray = hearingNoticeDocs.sort((item1,item2) => {
-      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+      return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(hearingNotice => {
-      return setUpDocumentLinkObject(hearingNotice?.value?.documentLink, hearingNotice?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
+      return setUpDocumentLinkObject(hearingNotice.value.documentLink, hearingNotice.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
     });
   }
   return hearingOrderDocInfoArray;
@@ -285,9 +287,9 @@ export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: 
   let generalOrderDocInfoArray : DocumentInformation[] = [];
   if(generalOrderDocs) {
     generalOrderDocInfoArray = generalOrderDocs.sort((item1,item2) => {
-      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+      return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(hearingOrder => {
-      return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER');
+      return setUpDocumentLinkObject(hearingOrder.value?.documentLink, hearingOrder.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER');
     });
   }
   return generalOrderDocInfoArray;
@@ -297,14 +299,16 @@ export const getDismissalOrder = (applicationResponse: ApplicationResponse, lang
   const dismissOrderDoc = applicationResponse?.case_data?.dismissalOrderDocument;
   let dismissalOrderDocInfoArray : DocumentInformation[] = [];
   if (dismissOrderDoc) {
-    dismissalOrderDocInfoArray = dismissOrderDoc.map(dismissalOrder => {
-      return setUpDocumentLinkObject(dismissalOrder?.value?.documentLink, dismissalOrder?.value?.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER');
+    dismissalOrderDocInfoArray = dismissOrderDoc.sort((item1,item2) => {
+      return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
+    }).map(dismissalOrder => {
+      return setUpDocumentLinkObject(dismissalOrder.value.documentLink, dismissalOrder.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSAL_ORDER', dismissalOrder.value.documentName);
     });
   }
   return dismissalOrderDocInfoArray;
 };
 
-const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string) => {
+const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string, documentName?: string ) => {
   return new DocumentInformation(
     getTranslatedDocumentName(fileName, lang),
     formatDateToFullDate(documentDate, lang),
@@ -312,7 +316,7 @@ const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, appl
       CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
         .replace(':documentId',
           documentIdExtractor(document.document_binary_url)),
-      document.document_filename));
+      documentName ?? document.document_filename));
 };
 
 const getTranslatedDocumentName = (documentName: string, lng: string) => {
