@@ -32,7 +32,7 @@ Scenario('Claimant creates GA Application with application amend a statement wit
     createGAApplication.checkAndSend(claimID);
     createGAApplication.submitConfirmation(claimID, 108);
     createGAApplication.selectFeeType(claimID);
-    createGAApplication.verifyPaymentSuccessfullPage(claimID, appId);
+    createGAApplication.verifyPaymentSuccessfullPage();
     responseApplicationSummary.viewApplicantApplicationSummary(claimID, appId, 'Awaiting additional information');
     responseFromCourt.viewApplication(claimID, appId);
     responseFromCourt.checkResponseFromCourtSection('Request for more information', 'Respond to the request');
