@@ -5,7 +5,8 @@ import {
   getApplicationSections,
   getCourtDocuments, getDismissalOrder, getDraftDocument, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
-  getResponseFromCourtSection,
+  getResponseFromCourtSection, getResponseSummaryCardSections,
+  getStatusRow,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -212,15 +213,14 @@ describe('View Application service', () => {
   });
 
   describe('Build view application content for general application for different case states', () => {
-    
+
     it('view application content test for applicant - Awaiting judicial decision', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
     });
@@ -228,11 +228,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Awaiting judicial decision', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION');
     });
@@ -240,11 +239,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Listed for hearing', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.LISTING_FOR_A_HEARING;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.LISTED_FOR_HEARING');
     });
@@ -252,11 +250,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Hearing Scheduled', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.HEARING_SCHEDULED;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.HEARING_SCHEDULED');
@@ -265,11 +262,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Awaiting Written rep', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_WRITTEN_REP');
@@ -278,11 +274,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Awaiting additional info', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_INFO');
@@ -291,11 +286,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Awaiting Direction order Docs', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_DIRECTION_DOCS');
@@ -304,11 +298,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Order Made', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.ORDER_MADE;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ORDER_MADE');
@@ -317,11 +310,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Application Dismissed', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.APPLICATION_DISMISSED;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_DISMISSED');
@@ -330,11 +322,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Application Closed', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.APPLICATION_CLOSED;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_CLOSED');
     });
@@ -342,11 +333,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Proceeds in Heritage', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.PROCEEDS_IN_HERITAGE;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.PROCEEDS_IN_HERITAGE');
     });
@@ -354,11 +344,10 @@ describe('View Application service', () => {
     it('view application content test for applicant - Awaiting additional payment', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.APPLICATION_ADD_PAYMENT;
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT');
     });
@@ -368,11 +357,10 @@ describe('View Application service', () => {
 
     it('view application content test for applicant', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result).toHaveLength(13);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
@@ -412,11 +400,10 @@ describe('View Application service', () => {
           ...mockApplication.case_data,
           generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
         }});
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result).toHaveLength(14);
       expect(result).toContainEqual({
@@ -437,11 +424,10 @@ describe('View Application service', () => {
           generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
           generalAppInformOtherParty: { isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'test'},
         }});
-      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result).toHaveLength(15);
       expect(result).toContainEqual({
@@ -462,12 +448,11 @@ describe('View Application service', () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
       application.case_data.generalAppAskForCosts = YesNoUpperCamelCase.YES;
-      mockGetApplication.mockResolvedValueOnce(application);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
@@ -857,9 +842,8 @@ describe('View Application service', () => {
         defendantFinalPaymentDate: date,
       };
       application.case_data.certOfSC = certOfSC;
-      mockGetApplication.mockResolvedValue(application);
       //when
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       //then
       expect(result).toHaveLength(4);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
@@ -889,9 +873,8 @@ describe('View Application service', () => {
         defendantFinalPaymentDate: date,
       };
       application.case_data.certOfSC = certOfSC;
-      mockGetApplication.mockResolvedValue(application);
       //when
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       //then
       expect(result).toHaveLength(4);
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
@@ -915,13 +898,114 @@ describe('View Application service', () => {
         defendantFinalPaymentDate: date,
       };
       application.case_data.certOfSC = certOfSC;
-      mockGetApplication.mockResolvedValue(application);
       //when
-      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
       //then
       expect(result).toHaveLength(4);
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
       expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT');
+    });
+  });
+
+  describe('getStatusRow', () => {
+    it('should return status row', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      application.case_data.generalAppType = {
+        types: [ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.ADJOURN_HEARING],
+      };
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = await getStatusRow(application, 'en');
+
+      //then
+      expect(result.length).toEqual(1);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT');
+    });
+
+    it('should return null status row if single app type', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      expect(application.case_data.generalAppType.types.length).toEqual(1);
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = await getStatusRow(application, 'en');
+
+      //then
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('getResponseSummaryCardSections', () => {
+    it('should return summary card sections if respondent has responded', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      application.case_data.respondentsResponses = [{value: {}}];
+      application.case_data.generalAppType = {
+        types: [ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.ADJOURN_HEARING],
+      };
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = getResponseSummaryCardSections(application, 'en');
+
+      //then
+      expect(result.length).toEqual(2);
+      expect(result[0].rows.length).toEqual(3);
+      expect(result[0].card.title.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION 1');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[0].rows[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME');
+    });
+
+    it('should return null summary card sections if single app type, respondent responded', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      application.case_data.respondentsResponses = [{value: {}}];
+      expect(application.case_data.generalAppType.types.length).toEqual(1);
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = getResponseSummaryCardSections(application, 'en');
+
+      //then
+      expect(result).toBeNull();
+    });
+
+    it('should return summary card sections if respondent not responded', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      delete application.case_data.respondentsResponses;
+      application.case_data.generalAppType = {
+        types: [ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.ADJOURN_HEARING],
+      };
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = getResponseSummaryCardSections(application, 'en');
+
+      //then
+      expect(result.length).toEqual(2);
+      expect(result[0].rows.length).toEqual(3);
+      expect(result[0].card.title.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION 1');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC');
+      expect(result[0].rows[0].value.html).toEqual(
+        'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION');
+    });
+
+    it('should return null summary card sections if single app type, respondent not responded', async () => {
+      //given
+      const application = JSON.parse(JSON.stringify(mockApplication));
+      delete application.case_data.respondentsResponses;
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      //when
+      const result = getResponseSummaryCardSections(application, 'en');
+
+      //then
+      expect(result).toBeNull();
     });
   });
 });
