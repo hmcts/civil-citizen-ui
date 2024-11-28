@@ -34,6 +34,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);

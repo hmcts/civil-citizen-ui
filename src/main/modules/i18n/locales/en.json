@@ -2949,7 +2949,7 @@
           "SETTLE_BY_CONSENT": "Settle by consent",
           "STAY_THE_CLAIM": "Stay the claim",
           "STRIKE_OUT": "Strike out",
-          "SUMMARY_JUDGMENT": "Summary judgment",
+          "SUMMARY_JUDGEMENT": "Summary judgment",
           "UNLESS_ORDER": "Unless order",
           "VARY_ORDER": "Vary order",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Vary payment terms of judgment",
@@ -3011,7 +3011,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
         "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
-        "TITLE": "Application from the other parties",
+        "TITLE": "Agreement from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
       "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
@@ -3039,7 +3039,7 @@
         "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
         "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
         "FIND_OUT": "Find out how to",
-        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
+        "GET_INTERPRETER": "get an interpreter at a court or tribunal",
         "IF_YOU_NEED": "If you need a sign language or language interpreter",
         "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
         "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
@@ -3256,6 +3256,7 @@
         "APPLICATION_DOCUMENTS": "Application Documents",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
+        "GENERAL_ORDER" : "General Order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
@@ -3313,7 +3314,10 @@
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
-        "UPLOAD_DOCUMENTS_3": " if you need to."
+        "UPLOAD_DOCUMENTS_3": " if you need to.",
+        "UPLOAD_DOCUMENTS_TRIAL_1": "You can ",
+        "UPLOAD_DOCUMENTS_TRIAL_2": "upload documents",
+        "UPLOAD_DOCUMENTS_TRIAL_3": " you would like to be included in a trial bundle."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
@@ -4216,13 +4220,13 @@
       "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
+      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing. Find your nearest court by postcode : <a class='govuk-link' href='https://www.gov.uk/find-court-tribunal' target='_blank'>https://www.gov.uk/find-court-tribunal</a>.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
-      "SELECTED_COURT": "Selected court",
+      "SELECTED_COURT": "Please select your preferred court hearing location",
       "SELECT_VALUE": "Select a value",
       "REASON": "Tell us why you want the hearing to be held at this court",
-      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
+      "TITLE": "Please select your preferred court hearing location."
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -4865,6 +4869,7 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
+    "GA_ENTER_A_VALID_DATE": "Enter a valid date",
     "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",

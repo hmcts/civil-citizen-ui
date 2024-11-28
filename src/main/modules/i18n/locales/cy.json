@@ -2671,11 +2671,11 @@
       },
       "ADDITIONAL_DOCUMENTS": {
         "ADDITIONAL_DOCUMENTS_CAPTION": "Uwchlwytho dogfennau ychwanegol",
-        "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
-        "ADDITIONAL_DOCUMENTS_ROW2": "Before you upload the document you will need to describe the type of document you are uploading, for example, Bundle, witness statement or costs schedule.",
+        "ADDITIONAL_DOCUMENTS_ROW1": "Dylech ond uwchlwytho dogfennau sy’n berthnasol i’ch cais, er enghraifft, os yw’r barnwr wedi gorchymyn gwrandawiad ac wedi'ch cyfarwyddo i ddarparu dogfennau cyn hyn.",
+        "ADDITIONAL_DOCUMENTS_ROW2": "Cyn i chi uwchlwytho’r ddogfen bydd angen i chi ddisgrifio’r math o ddogfen rydych chi’n ei huwchlwytho, er enghraifft, Bwndel, datgani ad tyst neu atodlen gostau.",
         "JUDGE_WILL_REVIEW": "Bydd barnwr yn adolygu’r dogfennau ychwanegol rydych wedi’u huwchlwytho. Byddwch yn cael diweddariad gyda’u penderfyniad neu’r camau nesaf.",
-        "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice receipt, email, text message, photo, social media message",
-        "TYPE_OF_DOCUMENT": "Type of document",
+        "TYPE_OF_DOCUMENT_HINT": "Er enghraifft, contract, derbynneb anfoneb, e-bost, neges testun, llun, neges ar y cyfryngau cymdeithasol",
+        "TYPE_OF_DOCUMENT": "Math o ddogfen",
         "UPLOAD_DOCUMENTS_TITLE": "Uwchlwytho dogfennau",
         "UPLOADED_ADDITIONAL_DOCS": "Rydych wedi uwchlwytho dogfennau ychwanegol"
       },
@@ -2949,7 +2949,7 @@
           "SETTLE_BY_CONSENT": "Setlo drwy gydsyniad",
           "STAY_THE_CLAIM": "Atal yr hawliad",
           "STRIKE_OUT": "Dileu",
-          "SUMMARY_JUDGMENT": "Dyfarniad Diannod",
+          "SUMMARY_JUDGEMENT": "Dyfarniad Diannod",
           "UNLESS_ORDER": "Gorchymyn Oni fydd",
           "VARY_ORDER": "Amrywio gorchymyn",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Amrywio telerau talu dyfarniad",
@@ -3039,7 +3039,7 @@
         "ARRANGING_OWN": "Os byddwch yn trefnu cyfieithydd ar y pryd eich hun, bydd dal angen i chi ddweud wrthym pa iaith byddwch yn ei defnyddio trwy roi tic yn y blwch ‘Cyfieithydd ar y pryd’ isod.",
         "DO_YOU_NEED": "A oes arnoch angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad (dewisol)?",
         "FIND_OUT": "Canfod sut i",
-        "GET_INTERPRETER": "gael cyfieithydd ar y pryd mewn llys neu dribiwnlys.",
+        "GET_INTERPRETER": "gael cyfieithydd ar y pryd mewn llys neu dribiwnlys",
         "IF_YOU_NEED": "Os oes arnoch angen dehonglydd iaith arwyddion neu gyfieithydd ar y pryd",
         "NEED_TO_ARRANGE": "Bydd arnoch angen trefnu cyfieithydd ar y pryd eich hun.",
         "NOT_ABLE": "Os nad ydych yn gallu trefnu cyfieithydd ar y pryd eich hun, efallai bydd y llys yn gallu trefnu un ar eich cyfer.",
@@ -3252,10 +3252,11 @@
         "APPLICATION": "Cais",
         "APPLICATION_APPROVE_EDIT": "Cais wedi’i gymeradwyo neu ei olygu",
         "APPLICATION_DETAILS": "Manylion y cais a gyflwynwyd gan y ceisydd.",
-        "APPLICATION_DISMISSED": "Application dismissed",
+        "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
+        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
@@ -3313,7 +3314,10 @@
         "PAY_ADDITIONAL_FEE": "Talu’r ffi ychwanegol",
         "UPLOAD_DOCUMENTS_1": "Gallwch hefyd ",
         "UPLOAD_DOCUMENTS_2": "uwchlwytho dogfennau ychwanegol",
-        "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny."
+        "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny.",
+        "UPLOAD_DOCUMENTS_TRIAL_1": "Gallwch ",
+        "UPLOAD_DOCUMENTS_TRIAL_2": "uwchlwytho dogfennau",
+        "UPLOAD_DOCUMENTS_TRIAL_3": " yr hoffech iddynt gael eu cynnwys mewn bwndel treial."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "Os ydych wedi talu'r ddyled o ddyfarniad y llys sirol (CCJ), gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau ac asiantaethau archwilio credyd. Gelwir hyn hefyd yn gais am dystysgrif canslo neu dystysgrif diwallu.",
@@ -4216,13 +4220,13 @@
       "TITLE": "Ydych chi eisiau rhannu arbenigwr gyda’r parti arall?”"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddau barti wrth benderfynu ble i gynnal y gwrandawiad.",
+      "EXPlANATION": "Gallwch ofyn am gynnal y gwrandawiad mewn llys penodol, er enghraifft, os ydych yn treulio dyddiau'r wythnos yn bell o'ch cartref. Bydd y llys yn ystyried amgylchiadau'r ddwy ochr wrth benderfynu ble i gynnal y gwrandawiad. Dewch o hyd i'ch llys agosaf yn ôl cod post : <a class='govuk-link' href='https://www.gov.uk/find-court-tribunal' target='_blank'>https://www.gov.uk/find-court-tribunal</a>.",
       "PAGE_TITLE": "Llys penodol",
-      "SELECT_COURT": "Dewiswch lys",
+      "SELECT_COURT": "Dewis llys",
       "SELECTED_COURT": "Llys sydd wedi ei ddewis",
       "SELECT_VALUE": "Dewiswch werth",
       "REASON": "Dywedwch wrthym pam ydych chi eisiau i’r gwrandawiad gael ei gynnal yn y llys hwn",
-      "TITLE": "Ydych chi eisiau gwneud cais i’r gwrandawiad gael ei gynnal mewn llys penodol?"
+      "TITLE": "Dewiswch y lleoliad sydd orau gennych ar gyfer eich gwrandawiad llys."
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -4865,6 +4869,7 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Nodwch y dyddiad nad ydych ar gael",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Rhowch y dyddiadau nad ydynt ar gael",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Nodwch y dyddiadau nad ydych ar gael",
+    "GA_ENTER_A_VALID_DATE": "Rhowch ddyddiad dilys",
     "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Nodwch y dyddiadau pan nad ydych ar gael",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Rhowch y dyddiad nad ydynt ar gael",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Rhowch y dyddiad nad yw ar gael o",
@@ -5286,7 +5291,7 @@
       "MISSING_OTHER": "Mae arnoch angen dweud wrthym pa fath arall o gymorth sydd ei angen arnoch.",
       "MISSING_SIGN_LANGUAGE": "Mae arnoch angen dweud wrthym pa fath o iaith arwyddion rydych angen dehonglydd ar ei chyfer.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
-      "PAY_APPLICATION_FEE": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
+      "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os ydych yn cytuno y dylai'r llys wneud y gorchymyn y gofynnwyd amdano gan y parti arall. Dewiswch opsiwn: Ydw neu Nac ydw",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "Mae arnoch angen esbonio pam rydych yn anghytuno â'r cais"

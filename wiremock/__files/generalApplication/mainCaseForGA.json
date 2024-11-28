@@ -1,0 +1,188 @@
+{
+  "id": 1730984188221535,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-11-07T12:56:28",
+  "last_modified": "2024-11-07T12:57:50",
+  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+  "case_data": {
+    "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+    "caseManagementLocation": {
+      "region": "2",
+      "baseLocation": "000000"
+    },
+    "totalClaimAmount": 9000,
+    "submittedDate": "2024-11-07T12:56:28",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-12-05T16:00:00",
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "id": "dc90f783-f626-464d-ba75-a85556447384",
+      "email": "citizen.user2@gmail.com"
+    },
+    "applicant1": {
+      "type": "INDIVIDUAL",
+      "partyName": "Mr Claimant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "primaryAddress": {
+        "PostCode": "S12eu",
+        "PostTown": "sheffield",
+        "AddressLine1": "123",
+        "AddressLine2": "Fake Street"
+      },
+      "individualTitle": "Mr",
+      "individualLastName": "person",
+      "individualFirstName": "Claimant",
+      "individualDateOfBirth": "1993-08-28",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "timelineOfEvents": [
+      {
+        "id": "0",
+        "value": {
+          "timelineDate": "2000-01-01",
+          "timelineDescription": "test"
+        }
+      }
+    ],
+    "serviceRequestReference": "2022-1655915218557",
+    "issueDate": "2024-11-07",
+    "applicant1Represented": "No",
+    "detailsOfClaim": "Injury",
+    "claimFee": {
+      "code": "FEE0208",
+      "version": "3",
+      "calculatedAmountInPence": "45500"
+    },
+    "respondent2OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
+    },
+    "systemGeneratedCaseDocuments": [
+      {
+        "id": "58f3e433-79a7-4db5-b536-9258c1995c3b",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "detailsOfClaim",
+            "document_url": "http://dm-store:8080/documents/df131134-9750-4be0-8def-6172de562e4a",
+            "document_filename": "000MC003-claim-form-claimant-copy.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/df131134-9750-4be0-8def-6172de562e4a/binary"
+          },
+          "documentName": "000MC003-claim-form-claimant-copy.pdf",
+          "documentSize": 34514,
+          "documentType": "CLAIMANT_CLAIM_FORM",
+          "createdDatetime": "2024-11-07T12:56:55"
+        }
+      },
+      {
+        "id": "c8c6f4f1-4641-4834-a27c-0cb439f0e8db",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "detailsOfClaim",
+            "document_url": "http://dm-store:8080/documents/3315e3fb-7da0-4246-bf0e-979fcad943fc",
+            "document_filename": "000MC003-sealed-claim-form.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/3315e3fb-7da0-4246-bf0e-979fcad943fc/binary"
+          },
+          "documentName": "000MC003-sealed-claim-form.pdf",
+          "documentSize": 43100,
+          "documentType": "SEALED_CLAIM",
+          "createdDatetime": "2024-11-07T12:56:58"
+        }
+      }
+    ],
+    "locationName": "Barnet Civil and Family Centre",
+    "claimNotificationDate": "2024-11-07T12:57:01",
+    "helpWithFees": {
+      "helpWithFee": "No"
+    },
+    "claimInterest": "No",
+    "applicant1AdditionalLipPartyDetails": {
+      "correspondenceAddress": {
+        "PostCode": "L7 2pz",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Test Street"
+      }
+    },
+    "claimantUserDetails": {
+      "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+      "email": "civilmoneyclaimsdemo@gmail.com"
+    },
+    "legacyCaseReference": "000MC003",
+    "respondent1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+    },
+    "caseNameHmctsInternal": "'Claimant person' v 'defendant person'",
+    "respondent1Represented": "No",
+    "respondent1DetailsForClaimDetailsTab": {
+      "type": "INDIVIDUAL",
+      "partyName": "mr defendant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "primaryAddress": {
+        "PostCode": "L7 2PZ",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Claim Road"
+      },
+      "individualTitle": "mr",
+      "individualLastName": "person",
+      "individualFirstName": "defendant",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "claimIssuedPBADetails": {
+      "fee": {
+        "code": "FEE0208",
+        "version": "3",
+        "calculatedAmountInPence": "45500"
+      },
+      "serviceRequestReference": "2022-1655915218557"
+    },
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "CREATE_CLAIM_SPEC_AFTER_PAYMENT"
+    },
+    "respondent1": {
+      "type": "INDIVIDUAL",
+      "partyName": "mr defendant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "primaryAddress": {
+        "PostCode": "L7 2PZ",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Claim Road"
+      },
+      "individualTitle": "mr",
+      "individualLastName": "person",
+      "individualFirstName": "defendant",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "respondent1PinToPostLRspec": {
+      "accessCode": "AX9SKLH2H4AH",
+      "expiryDate": "2025-05-06",
+      "respondentCaseRole": "[DEFENDANT]"
+    },
+    "claimNotificationDeadline": "2025-03-07T23:59:59",
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "caseNamePublic": "'Claimant person' v 'defendant person'",
+    "claimIssuedPaymentDetails": {
+      "status": "SUCCESS",
+      "reference": "RC-1234-1234-1234-1234"
+    },
+    "isFlightDelayClaim": "No",
+    "claimAmountBreakup": [
+      {
+        "id": "0",
+        "value": {
+          "claimAmount": "900000",
+          "claimReason": "Injury"
+        }
+      }
+    ]
+  },
+  "security_classification": "PUBLIC"
+}
