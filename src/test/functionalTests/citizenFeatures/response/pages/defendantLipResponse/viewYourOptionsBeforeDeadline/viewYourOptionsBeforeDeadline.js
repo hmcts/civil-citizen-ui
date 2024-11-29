@@ -46,17 +46,17 @@ const extendedDay = targetDate.getDate();
 const extendedMonth = targetDate.getMonth() + 1;
 const extendedYear = targetDate.getFullYear();
 
-var targetDateFutureError = new Date();
-targetDateFutureError.setDate(targetDateFutureError.getDate() + 60);
-const extendedDayFutureError = targetDateFutureError.getDate();
-const extendedMonthFutureError = targetDateFutureError.getMonth() + 1;
-const extendedYearFutureError = targetDateFutureError.getFullYear();
+var targetDateFuture = new Date();
+targetDateFuture.setDate(targetDateFuture.getDate() + 60);
+const futureDay = targetDateFuture.getDate();
+const futureMonth = targetDateFuture.getMonth() + 1;
+const futureYear = targetDateFuture.getFullYear();
 
-var targetDatePastError = new Date();
-targetDatePastError.setDate(targetDatePastError.getDate() - 1);
-const extendedDayPastError = targetDatePastError.getDate();
-const extendedMonthPastError = targetDatePastError.getMonth() + 1;
-const extendedYearPastError = targetDatePastError.getFullYear();
+var targetDatePast = new Date();
+targetDatePast.setDate(targetDatePast.getDate() - 1);
+const pastDay = targetDatePast.getDate();
+const pastMonth = targetDatePast.getMonth() + 1;
+const pastYear = targetDatePast.getFullYear();
 
 class ViewYourOptionsBeforeDeadline {
 
@@ -79,7 +79,7 @@ class ViewYourOptionsBeforeDeadline {
         await I.click('Save and continue');
         await I.see('You have already agreed to more time to respond','h1');
         await I.see('Enter the respond date you have agreed with the other party or their legal representative');
-        await I.fillField(fields.day, extendedDay );
+        await I.fillField(fields.day, extendedDay);
         await I.fillField(fields.month, extendedMonth);
         await I.fillField(fields.year, extendedYear);
         await I.click('Save and continue');
@@ -135,16 +135,16 @@ class ViewYourOptionsBeforeDeadline {
         await I.see('Enter a valid month');
         await I.see('Enter a valid year');
         //past date
-        await I.fillField(fields.day, extendedDayPastError);
-        await I.fillField(fields.month, extendedMonthPastError);
-        await I.fillField(fields.year, extendedYearPastError);
+        await I.fillField(fields.day, pastDay);
+        await I.fillField(fields.month, pastMonth);
+        await I.fillField(fields.year, pastYear);
         await I.click(buttons.saveAndContinue);
         await I.see('There was a problem');
         await I.see('Agreed response date must be in the future');
         //future date
-        await I.fillField(fields.day, extendedDayFutureError);
-        await I.fillField(fields.month, extendedMonthFutureError);
-        await I.fillField(fields.year, extendedYearFutureError);
+        await I.fillField(fields.day, futureDay);
+        await I.fillField(fields.month, futureMonth);
+        await I.fillField(fields.year, futureYear);
         await I.click(buttons.saveAndContinue);
         await I.see('There was a problem');
         await I.see('Agreed response date cannot be more than 28 days after the original response date');
