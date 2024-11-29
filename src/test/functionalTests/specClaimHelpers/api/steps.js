@@ -522,8 +522,16 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, claimType) => {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, claimType, eaCase = true) => {
     let responsePayload;
+    let location;
+
+    if (eaCase === true){
+      location = config.eaCourt;
+    } else {
+      location = config.nonEaCourt;
+    }
+
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
     } else if (defenceType === config.defenceType.admitAllPayImmediate) {
@@ -539,7 +547,7 @@ module.exports = {
     } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     } else if (defenceType === config.defenceType.rejectAll) {
-      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(claimType);
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(claimType, location);
     } else if (defenceType === config.defenceType.rejectAllAlreadyPaid) {
       responsePayload = rejectAllClaimantResponse.rejectAllAlreadyPaidButClaimantWantsToProceed();
     } else if (defenceType === config.defenceType.rejectAllDisputeAll) {
@@ -553,12 +561,19 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '') => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '', eaCase = true) => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
+    let location;
 
     await apiRequest.setupTokens(user);
+
+    if (eaCase === true){
+      location = config.eaCourt;
+    } else {
+      location = config.nonEaCourt;
+    }
 
     if (mintiTrack === 'Intermediate') {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate();
@@ -567,7 +582,7 @@ module.exports = {
     } else if (carmEnabled) {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm();
     } else {
-      payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponse(location);
     }
 
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
