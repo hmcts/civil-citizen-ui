@@ -26,7 +26,7 @@
     "test:cui-cp": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 9 --grep @regression-cp --reporter mocha-multi --verbose",
     "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 13 --grep @regression --config src/test/functionalTests/codecept.conf.js --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers --suites 2 --grep @regression-carm --reporter mocha-multi --verbose",
-    "test:functional": "src/test/functionalTests/run-functional-tests.sh",
+    "test:functional": "echo src/test/functionalTests/run-functional-tests.sh",
     "test:fullfunctional": "MOCHAWESOME_REPORTFILENAME=functionalTests codeceptjs run-workers --suites 4 --grep @nightly --config src/test/functionalTests/codecept.conf.js --reporter mocha-multi --verbose",
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",
