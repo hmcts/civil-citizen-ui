@@ -2,7 +2,7 @@ const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
-const RespondentResponse = require("../../genralApplication/respondentResponse");
+const RespondentResponse = require('../../genralApplication/respondentResponse');
 
 Feature('Lip V Lip vary judgement with consent @galip').tag('@e2e');
 
@@ -16,7 +16,7 @@ Scenario('Defendant creates GA Application vary judgement with consent @varyjudg
     createGAApplication.selectApplicationType('Ask to vary a judgment');
     createGAApplication.selectAgreementFromOtherParty('Yes');
     createGAApplication.applicationCosts(claimID, 'Vary a judgment', 'To apply to vary a judgment, the application fee is £14.');
-    createGAApplication.uploadN245Form(claimID)
+    createGAApplication.uploadN245Form(claimID);
     createGAApplication.wantToUploadDocs(claimID, 'No');
     createGAApplication.hearingArrangementsInfo(claimID);
     createGAApplication.hearingArrangements(claimID, 'In person at the court');
@@ -28,7 +28,7 @@ Scenario('Defendant creates GA Application vary judgement with consent @varyjudg
     createGAApplication.submitConfirmation(claimID, 14);
     createGAApplication.selectFeeType(claimID);
     createGAApplication.verifyPaymentSuccessfullPage();
-    RespondentResponse.acceptDefendantOffer(claimID, appId, 'No', 'instalments')
+    RespondentResponse.acceptDefendantOffer(claimID, appId, 'No', 'instalments');
     RespondentResponse.wantToUploadDocuments(claimID, appId, 'No');
     RespondentResponse.hearingPreference(claimID, appId);
     RespondentResponse.hearingArrangement(claimID, appId, 'In person at the court');
@@ -41,4 +41,4 @@ Scenario('Defendant creates GA Application vary judgement with consent @varyjudg
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});

@@ -34,4 +34,4 @@ Scenario('Claimant creates GA Application with application other without notice 
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});

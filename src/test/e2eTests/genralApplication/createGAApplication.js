@@ -57,7 +57,7 @@ class CreateGAApplication {
     I.seeInCurrentUrl(`case/${claimId}/general-application/upload-n245-form`);
     I.see('Upload N245 form');
     I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestDOC.doc');
-    I.click('#uploadFileButton')
+    I.click('#uploadFileButton');
     clickButton(buttonType.CONTINUE);
   }
 
@@ -93,7 +93,7 @@ class CreateGAApplication {
     I.seeInCurrentUrl(`case/${claimId}/general-application/upload-documents`);
     I.see('Upload documents to support your application');
     I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestDOC.doc');
-    I.click('#uploadFileButton')
+    I.click('#uploadFileButton');
     clickButton(buttonType.CONTINUE);
   }
 

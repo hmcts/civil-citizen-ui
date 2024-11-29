@@ -24,7 +24,7 @@ class RespondentResponse {
     I.amOnPage(`case/${claimId}/response/general-application/${appId}/accept-defendant-offer`);
     I.click(option);
     if (option === 'No' && planType === 'instalments') {
-      I.click('I\'ll accept certain instalments per month')
+      I.click('I\'ll accept certain instalments per month');
       I.fillField('#amountPerMonth', 100);
       I.fillField('#reasonProposedInstalment', 'no savings');
     }

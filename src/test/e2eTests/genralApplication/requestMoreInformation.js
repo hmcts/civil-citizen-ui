@@ -1,12 +1,12 @@
-const {clickButton} = require("../commons/clickButton");
-const {buttonType} = require("../commons/buttonVariables");
+const {clickButton} = require('../commons/clickButton');
+const {buttonType} = require('../commons/buttonVariables');
 const I = actor();
 
 class RequestMoreInformation {
   respondAdditionalInfo(claimId, appId, option) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/${appId}/respond-addln-info`);
     I.fillField('#additionalText', 'Request more information');
-    I.click(option)
+    I.click(option);
     clickButton(buttonType.CONTINUE);
   }
 
@@ -15,8 +15,8 @@ class RequestMoreInformation {
     clickButton(buttonType.SUBMIT);
   }
 
-  verifySucessfullPage(claimId, appId) {
-    I.see('You\'ve submitted the information')
+  verifySucessfullPage() {
+    I.see('You\'ve submitted the information');
   }
 }
 

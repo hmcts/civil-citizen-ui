@@ -1,8 +1,8 @@
 const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
 const config = require('../../../config');
-const RespondentResponse = require("../../genralApplication/respondentResponse");
-const responseApplicationSummary = require("../../genralApplication/responseApplicationSummary");
+const RespondentResponse = require('../../genralApplication/respondentResponse');
+const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 
 Feature('Lip V Lip settle claim with consent @galip').tag('@e2e');
 Scenario('Claimant GA Application and respond to response for settle claim with consent ', () => {
@@ -42,4 +42,4 @@ Scenario('Claimant GA Application and respond to response for settle claim with 
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});

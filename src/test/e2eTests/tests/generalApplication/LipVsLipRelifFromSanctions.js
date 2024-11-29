@@ -33,7 +33,7 @@ Scenario('Claimant GA Application and respond to response with relief from sanct
     createGAApplication.selectFeeType(claimID);
     createGAApplication.verifyPaymentSuccessfullPage();
     RespondentResponse.agreeToOrder('No', 'Respond to an application to relief from a penalty you\'ve been given by the court', claimID, appId);
-    RespondentResponse.respondentAgreement(claimID, appId, 'Respond to an application to relief from a penalty you\'ve been given by the court', 'Yes')
+    RespondentResponse.respondentAgreement(claimID, appId, 'Respond to an application to relief from a penalty you\'ve been given by the court', 'Yes');
     RespondentResponse.wantToUploadDocuments(claimID, appId, 'No');
     RespondentResponse.hearingPreference(claimID, appId);
     RespondentResponse.hearingArrangement(claimID, appId, 'In person at the court');
@@ -46,4 +46,4 @@ Scenario('Claimant GA Application and respond to response with relief from sanct
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});

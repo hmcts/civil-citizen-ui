@@ -35,4 +35,4 @@ Scenario('Claimant creates GA Application with application summary judgment with
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});

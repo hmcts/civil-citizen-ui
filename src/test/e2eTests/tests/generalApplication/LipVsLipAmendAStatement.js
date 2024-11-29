@@ -2,8 +2,8 @@ const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
-const responseFromCourt = require("../../genralApplication/responseFromCourt");
-const requestMoreInformation = require("../../genralApplication/requestMoreInformation");
+const responseFromCourt = require('../../genralApplication/responseFromCourt');
+const requestMoreInformation = require('../../genralApplication/requestMoreInformation');
 Feature('Lip V Lip Amend a statement without notice @galip').tag('@e2e');
 
 Scenario('Claimant creates GA Application with application amend a statement without notice @summary', async () => {
@@ -22,7 +22,7 @@ Scenario('Claimant creates GA Application with application amend a statement wit
     createGAApplication.requestingReason(claimID);
     createGAApplication.addAnotherApp(claimID, 'No');
     createGAApplication.wantToUploadDocs(claimID, 'Yes');
-    createGAApplication.uploadDocument(claimID)
+    createGAApplication.uploadDocument(claimID);
     createGAApplication.hearingArrangementsInfo(claimID);
     createGAApplication.hearingArrangements(claimID, 'In person at the court');
     createGAApplication.hearingContactDetails(claimID);
@@ -42,4 +42,4 @@ Scenario('Claimant creates GA Application with application amend a statement wit
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
   }
-})
+});
