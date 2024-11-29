@@ -9,7 +9,7 @@ const loginUrl: string = config.get('services.idam.authorizationURL');
 const govPayUrl: string = config.get('services.govPay.url');
 const ocmcBaseUrl: string = config.get('services.cmc.url');
 const dynatraceDomain = '*.dynatrace.com';
-const webChat = 'https://vcc-eu4.8x8.com';
+const webChat = ['vcc-eu4.8x8.com', 'vcc-eu4-cf.8x8.com'];
 
 const scriptSrcElem = [
   self,
@@ -18,7 +18,7 @@ const scriptSrcElem = [
   dynatraceDomain,
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
   "'sha256-bO2kSSSSPjquZda7pRDcJRmK0Rb71GQMapte27geUGs='",
-  webChat,
+  ...webChat,
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
   (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
 ];
@@ -35,7 +35,7 @@ const imgSrc = [
   self,
   googleAnalyticsDomain,
   '*.analytics.google.com',
-  webChat,
+  ...webChat,
   'ssl.gstatic.com',
   '*.gstatic.com',
   '*.g.doubleclick.net',
@@ -48,7 +48,7 @@ const imgSrc = [
 
 const mediaSrc = [
   self,
-  webChat,
+  ...webChat,
   'ssl.gstatic.com',
   'www.gstatic.com',
   '*.g.doubleclick.net',
@@ -63,14 +63,14 @@ const connectSrc = [
   googleAnalyticsDomain,
   '*.analytics.google.com',
   dynatraceDomain,
-  webChat,
+  'https://cloud8-cc-geo.8x8.com',
 ];
 
 const manifestSrc = [
   self,
 ];
 
-const frameSrc = [webChat];
+const frameSrc = [...webChat];
 
 /**
  * Module that enables helmet in the application
