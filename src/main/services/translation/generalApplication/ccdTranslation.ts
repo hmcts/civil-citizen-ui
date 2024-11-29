@@ -46,6 +46,8 @@ import {
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 import {Document} from 'models/document/document';
+import {CcdGeneralApplicationOrderJudge} from 'models/ccdGeneralApplication/ccdGeneralApplicationOrderJudge';
+import {CcdGeneralApplicationRequestingReason} from 'models/ccdGeneralApplication/ccdGeneralAppRequestingReason';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -62,9 +64,9 @@ export const translateDraftApplicationToCCD = (
     ),
     generalAppAskForCosts: toCCDYesNo(application.applicationCosts),
     generalAppDetailsOfOrder: toCCDDetailsOfOrder(application.orderJudges),
-    generalAppReasonsOfOrder: toCCDReasonsOfOrder(
-      application.requestingReasons,
-    ),
+    generalAppDetailsOfOrderColl: toCCDDetailsOfOrderColl(application.orderJudges),
+    generalAppReasonsOfOrder: toCCDReasonsOfOrder(application.requestingReasons),
+    generalAppReasonsOfOrderColl: toCCDReasonsOfOrderColl(application.requestingReasons),
     generalAppEvidenceDocument: toCCDEvidenceDocuments(
       application.wantToUploadDocuments,
       application.uploadEvidenceForApplication,
@@ -123,6 +125,22 @@ const toCCDInformOtherParty = (applicationTypes: ApplicationType[], agreementFro
 
 const toCCDDetailsOfOrder = (orderJudges: OrderJudge[]): string => {
   return orderJudges?.map(orderJudge => orderJudge.text)?.join('\n\n');
+};
+
+const toCCDDetailsOfOrderColl = (orderJudges: OrderJudge[]): CcdGeneralApplicationOrderJudge[] => {
+  return orderJudges?.map(orderJudge => {
+    return {
+      value: orderJudge.text,
+    };
+  });
+};
+
+const toCCDReasonsOfOrderColl = (requestingReasons: RequestingReason[]): CcdGeneralApplicationRequestingReason[] => {
+  return requestingReasons?.map(requestingReason => {
+    return {
+      value: requestingReason.text,
+    };
+  });
 };
 
 const toCCDReasonsOfOrder = (requestingReasons: RequestingReason[]): string => {
