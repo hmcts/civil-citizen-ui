@@ -36,7 +36,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(IS_COSC_ENABLED).booleanFlag().variationForAll(false));
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
@@ -88,7 +87,7 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
 }
 
 export async function isCARMEnabled(): Promise<boolean> {
@@ -96,7 +95,7 @@ export async function isCARMEnabled(): Promise<boolean> {
 }
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
 
 export async function isMintiEnabled(): Promise<boolean> {
@@ -112,7 +111,12 @@ export async function isJudgmentOnlineLive(): Promise<boolean> {
 }
 
 export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
-  return true;
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
+  const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  return cuiR2Flag && dashboardEnabledForR2Cases;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
