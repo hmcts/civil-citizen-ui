@@ -1067,7 +1067,7 @@ class ResponseToDefence {
     I.see('Do you want to ask for a telephone or video hearing?');
     I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?');
     I.see('Do you, your experts or witnesses need support to attend a hearing?');
-    I.see('Selected court');
+    I.see('Please select your preferred court hearing location');
     I.see('Tell us why you want the hearing to be held at this court');
     I.see('Welsh language');
     I.see('What languages will you, your experts and your witnesses speak at the hearing?');

@@ -2754,6 +2754,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Ydych chi eisiau ychwanegu cais arall?",
+        "APPLICATION": "Cais",
         "APPLICATION_TYPE": "Math o gais",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
         "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
@@ -2958,7 +2959,7 @@
         "COMPLETE": "Cwblhawyd",
         "DETAILS": "Manylion",
         "IN_PROGRESS": "Yn mynd rhagddo",
-        "MY_APPLICATIONS": "My applications",
+        "MY_APPLICATIONS": "Fy ngheisiadau",
         "STATUS": "Statws",
         "APPLICATION_STATUS": "Statws y cais",
         "STATES": {
@@ -3039,7 +3040,7 @@
         "ARRANGING_OWN": "Os byddwch yn trefnu cyfieithydd ar y pryd eich hun, bydd dal angen i chi ddweud wrthym pa iaith byddwch yn ei defnyddio trwy roi tic yn y blwch ‘Cyfieithydd ar y pryd’ isod.",
         "DO_YOU_NEED": "A oes arnoch angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad (dewisol)?",
         "FIND_OUT": "Canfod sut i",
-        "GET_INTERPRETER": "gael cyfieithydd ar y pryd mewn llys neu dribiwnlys.",
+        "GET_INTERPRETER": "gael cyfieithydd ar y pryd mewn llys neu dribiwnlys",
         "IF_YOU_NEED": "Os oes arnoch angen dehonglydd iaith arwyddion neu gyfieithydd ar y pryd",
         "NEED_TO_ARRANGE": "Bydd arnoch angen trefnu cyfieithydd ar y pryd eich hun.",
         "NOT_ABLE": "Os nad ydych yn gallu trefnu cyfieithydd ar y pryd eich hun, efallai bydd y llys yn gallu trefnu un ar eich cyfer.",
@@ -3256,6 +3257,7 @@
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
+        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
@@ -4868,6 +4870,7 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Nodwch y dyddiad nad ydych ar gael",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Rhowch y dyddiadau nad ydynt ar gael",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Nodwch y dyddiadau nad ydych ar gael",
+    "GA_ENTER_A_VALID_DATE": "Rhowch ddyddiad dilys",
     "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Nodwch y dyddiadau pan nad ydych ar gael",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Rhowch y dyddiad nad ydynt ar gael",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Rhowch y dyddiad nad yw ar gael o",
@@ -5309,5 +5312,10 @@
       }
     },
     "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 ar 4 Rhagfyr 2024 a 02:00 ar 5 Rhagfyr 2024 tra bydd Cynnydd Achosion CUI yn cael ei ryddhau."
+    }
   }
 }
