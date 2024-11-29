@@ -15,6 +15,7 @@ import { getCancelUrl, saveN245Form } from 'services/features/generalApplication
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
+import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
@@ -84,7 +85,8 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
       });
     }
     const uploadedN245Details = claim.generalApplication?.uploadN245Form || new UploadGAFiles();
-    const form = new GenericForm(uploadedN245Details);
+    const uploadedN245: UploadN245GAFiles = new UploadN245GAFiles(uploadedN245Details);
+    const form = new GenericForm(uploadedN245);
     form.validateSync();
     if (form.hasErrors()) {
       return res.render(viewPath, {
