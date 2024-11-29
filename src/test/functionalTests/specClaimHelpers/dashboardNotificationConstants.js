@@ -474,4 +474,11 @@ module.exports = {
         'You can view your mediation agreement here.'],
     };
   },
+
+  caseOffline: () => {
+    return {
+      title: 'Your online account will no longer be updated',
+      content: 'Your online account will no longer be updated. If there are any further updates to your case these will be by post.',
+    };
+  },
 };

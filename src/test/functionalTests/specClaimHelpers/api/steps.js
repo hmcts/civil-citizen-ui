@@ -43,6 +43,7 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const translatedDocUpload = require('../fixtures/events/translatedDocUpload');
+const caseProceedsInCaseman = require('../fixtures/events/caseProceedsInCaseman');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {fetchCaseDetails} = require('./apiRequest');
@@ -664,6 +665,17 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId, user);
 
     console.log('End of uploadMediationDocumentsCui()');
+  },
+
+  caseProceedsInCaseman: async (user = config.ctscAdmin) => {
+    console.log('This is inside caseProceedsInCaseman: ' + caseId);
+    eventName = 'CASE_PROCEEDS_IN_CASEMAN';
+    const payload = caseProceedsInCaseman.caseman();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
+    console.log('End of caseProceedsInCaseman()');
   },
 
   adjustSubmittedDateForCarm: async (caseId) => {
