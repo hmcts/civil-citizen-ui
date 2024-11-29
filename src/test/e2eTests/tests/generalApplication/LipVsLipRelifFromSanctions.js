@@ -4,7 +4,7 @@ const RespondentResponse = require('../../genralApplication/respondentResponse')
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
 
-Feature('Lip V Lip relief from sanctions with consent @galip').tag('@e2e');
+Feature('Lip V Lip relief from sanctions with consent').tag('@galip');
 
 Scenario('Claimant GA Application and respond to response with relief from sanctions with consent', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
