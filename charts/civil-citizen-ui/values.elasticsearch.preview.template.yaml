@@ -189,7 +189,8 @@ civil-service:
           requests:
             cpu: 500m
             memory: 2048Mi
-
+        podAnnotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
         initdb:
           scripts:
             init.sql: |
