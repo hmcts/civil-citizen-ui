@@ -43,12 +43,20 @@ const content = {
 var targetDate = new Date();
 targetDate.setDate(targetDate.getDate() + 40);
 const extendedDay = targetDate.getDate();
-const extendedMonth = targetDate.getMonth()+ 1;
+const extendedMonth = targetDate.getMonth() + 1;
 const extendedYear = targetDate.getFullYear();
-const extendedMonthPastError = targetDate.getMonth()- 1 ;
-targetDate.setMonth(targetDate.getMonth() + 1);
-const extendedMonthFutureError = targetDate.getMonth() + 1 ;
-const newYear = targetDate.getFullYear();
+
+var targetDateFutureError = new Date();
+targetDateFutureError.setDate(targetDateFutureError.getDate() + 60);
+const extendedDayFutureError = targetDateFutureError.getDate();
+const extendedMonthFutureError = targetDateFutureError.getMonth() + 1;
+const extendedYearFutureError = targetDateFutureError.getFullYear();
+
+var targetDatePastError = new Date();
+targetDatePastError.setDate(targetDatePastError.getDate() - 1);
+const extendedDayPastError = targetDatePastError.getDate();
+const extendedMonthPastError = targetDatePastError.getMonth() + 1;
+const extendedYearPastError = targetDatePastError.getFullYear();
 
 class ViewYourOptionsBeforeDeadline {
 
@@ -127,16 +135,16 @@ class ViewYourOptionsBeforeDeadline {
         await I.see('Enter a valid month');
         await I.see('Enter a valid year');
         //past date
-        await I.fillField(fields.day, extendedDay );
+        await I.fillField(fields.day, extendedDayPastError);
         await I.fillField(fields.month, extendedMonthPastError);
-        await I.fillField(fields.year, extendedYear);
+        await I.fillField(fields.year, extendedYearPastError);
         await I.click(buttons.saveAndContinue);
         await I.see('There was a problem');
         await I.see('Agreed response date must be in the future');
         //future date
-        await I.fillField(fields.day, extendedDay );
+        await I.fillField(fields.day, extendedDayFutureError);
         await I.fillField(fields.month, extendedMonthFutureError);
-        await I.fillField(fields.year, newYear);
+        await I.fillField(fields.year, extendedYearFutureError);
         await I.click(buttons.saveAndContinue);
         await I.see('There was a problem');
         await I.see('Agreed response date cannot be more than 28 days after the original response date');
