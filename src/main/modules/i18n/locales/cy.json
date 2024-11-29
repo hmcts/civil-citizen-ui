@@ -5312,5 +5312,10 @@
       }
     },
     "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 ar 4 Rhagfyr 2024 a 02:00 ar 5 Rhagfyr 2024 tra bydd Cynnydd Achosion CUI yn cael ei ryddhau."
+    }
   }
 }
