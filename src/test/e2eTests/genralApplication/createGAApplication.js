@@ -53,6 +53,14 @@ class CreateGAApplication {
     clickButton(buttonType.CONTINUE);
   }
 
+  uploadN245Form(claimId) {
+    I.seeInCurrentUrl(`case/${claimId}/general-application/upload-n245-form`);
+    I.see('Upload N245 form');
+    I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestDOC.doc');
+    I.click('#uploadFileButton')
+    clickButton(buttonType.CONTINUE);
+  }
+
   orderJudge(claimId, text) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/order-judge`);
     I.see('What order do you want the judge to make?');
