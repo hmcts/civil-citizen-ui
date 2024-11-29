@@ -4,7 +4,7 @@ const createGAApplication = require('../../genralApplication/createGAApplication
 const RespondentResponse = require('../../genralApplication/respondentResponse');
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 
-Feature('Lip V Lip creating multiple applications under one claim i.e extending time and hearing date').tag('@galip');
+Feature('Lip V Lip creating multiple applications under one claim i.e extending time and hearing date @galip').tag('@e2e');
 Scenario('Extending time with consent and change hearing date with out notice', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);

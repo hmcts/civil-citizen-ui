@@ -4,7 +4,7 @@ const responseApplicationSummary = require('../../genralApplication/responseAppl
 const config = require('../../../config');
 const responseFromCourt = require('../../genralApplication/responseFromCourt');
 const requestMoreInformation = require('../../genralApplication/requestMoreInformation');
-Feature('Lip V Lip Amend a statement without notice').tag('@galip');
+Feature('Lip V Lip Amend a statement without notice @galip').tag('@e2e');
 
 Scenario('Claimant creates GA Application with application amend a statement without notice @summary', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

@@ -4,7 +4,7 @@ const responseApplicationSummary = require('../../genralApplication/responseAppl
 const config = require('../../../config');
 const RespondentResponse = require('../../genralApplication/respondentResponse');
 
-Feature('Lip V Lip vary judgement with consent').tag('@galip');
+Feature('Lip V Lip vary judgement with consent @galip').tag('@e2e');
 
 Scenario('Defendant creates GA Application vary judgement with consent @varyjudgement', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

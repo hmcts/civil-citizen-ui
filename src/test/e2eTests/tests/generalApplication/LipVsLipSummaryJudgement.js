@@ -3,7 +3,7 @@ const createGAApplication = require('../../genralApplication/createGAApplication
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
 
-Feature('Lip V Lip summary judgment without notice').tag('@galip');
+Feature('Lip V Lip summary judgment without notice @galip').tag('@e2e');
 
 Scenario('Claimant creates GA Application with application summary judgment without notice @judgement', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

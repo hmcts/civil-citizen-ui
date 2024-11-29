@@ -4,7 +4,7 @@ const config = require('../../../config');
 const RespondentResponse = require('../../genralApplication/respondentResponse');
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 
-Feature('Lip V Lip settle claim with consent').tag('@galip');
+Feature('Lip V Lip settle claim with consent @galip').tag('@e2e');
 Scenario('Claimant GA Application and respond to response for settle claim with consent ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
