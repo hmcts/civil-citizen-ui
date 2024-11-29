@@ -10,7 +10,7 @@ def component = "citizen-ui"
 def camundaBranch = "CIV-15640-COO_notify"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-15640-COO_notify"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
