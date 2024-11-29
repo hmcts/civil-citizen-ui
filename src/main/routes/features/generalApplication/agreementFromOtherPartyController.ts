@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BACK_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_APPLICATION_COSTS_URL,
   INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
@@ -17,6 +17,7 @@ import {
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {YesNo} from "form/models/yesNo";
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
@@ -61,7 +62,9 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
       await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
-      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL), applicationIndex));
+      req.body.option === YesNo.YES ?
+        res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL), applicationIndex)) :
+        res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL), applicationIndex));
     }
   } catch (error) {
     next(error);

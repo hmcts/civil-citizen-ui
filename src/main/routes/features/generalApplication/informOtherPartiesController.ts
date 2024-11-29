@@ -10,7 +10,6 @@ import {
   INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
 import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
-import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
@@ -37,14 +36,14 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   });
 };
 
-informOtherPartiesController.get(INFORM_OTHER_PARTIES_URL, informOtherPartiesGuard,(req: AppRequest, res: Response, next: NextFunction) => {
+informOtherPartiesController.get(INFORM_OTHER_PARTIES_URL,(req: AppRequest, res: Response, next: NextFunction) => {
   renderView(req, res).catch((error) => {
     next(error);
   });
 
 });
 
-informOtherPartiesController.post(INFORM_OTHER_PARTIES_URL, informOtherPartiesGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+informOtherPartiesController.post(INFORM_OTHER_PARTIES_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const informOtherParties = new InformOtherParties(req.body.option, req.body?.reasonForCourtNotInformingOtherParties);
     const form = new GenericForm(informOtherParties);

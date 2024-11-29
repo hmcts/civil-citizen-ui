@@ -20,7 +20,6 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 import {queryParamNumber} from 'common/utils/requestUtils';
 
 const addAnotherApplicationController = Router();
@@ -47,13 +46,13 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
 };
 
-addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherApplicationGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   renderView(req, res).catch((error) => {
     next(error);
   });
 });
 
-addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherApplicationGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_ADD_ANOTHER_APPLICATION'));
     await form.validate();
@@ -70,7 +69,6 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
         res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp);
       } else {
         let index = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
-        //todo add if with changeScreen
         if (req.query['changeScreen'] === 'true'){
           await removeAllOtherApplications(redisKey, claim);
           index = claim.generalApplication.applicationTypes.length - 1;
