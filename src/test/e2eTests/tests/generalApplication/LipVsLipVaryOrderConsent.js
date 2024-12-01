@@ -11,6 +11,7 @@ Scenario('Claimant GA Application and respond to response with vary order consen
 
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GaForLips', true);
+    toggleFlag('is-dashboard-enabled-for-case', true);
     const claimID = 1730984188221535;
     const appId = 1731322828021511;
     createGAApplication.start(claimID);
@@ -43,6 +44,7 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     RespondentResponse.confirmationPage(claimID, appId);
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
     toggleFlag('cuiReleaseTwoEnabled', false);
+    toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }
 });

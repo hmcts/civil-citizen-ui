@@ -9,6 +9,7 @@ Feature('Lip V Lip vary judgement with consent').tag('@galip');
 Scenario('Defendant creates GA Application vary judgement with consent @varyjudgement', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
+    toggleFlag('is-dashboard-enabled-for-case', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732877831207299;
     const appId = 1732878113661799;
@@ -39,6 +40,7 @@ Scenario('Defendant creates GA Application vary judgement with consent @varyjudg
     RespondentResponse.confirmationPage(claimID, appId);
     responseApplicationSummary.viewApplicantApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
     toggleFlag('cuiReleaseTwoEnabled', false);
+    toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }
 });

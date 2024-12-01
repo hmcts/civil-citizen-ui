@@ -8,6 +8,7 @@ Feature('Lip V Lip creating multiple applications under one claim i.e extending 
 Scenario('Extending time with consent and change hearing date with out notice', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
+    toggleFlag('is-dashboard-enabled-for-case', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732014426677369;
     let appId = 1732106154804395;
@@ -65,8 +66,9 @@ Scenario('Extending time with consent and change hearing date with out notice', 
     createGAApplication.submitConfirmation(claimID, 119);
     createGAApplication.selectFeeType(claimID, appId, 119);
     createGAApplication.verifyPaymentSuccessfullPage();
-    toggleFlag('cuiReleaseTwoEnabled', true);
-    toggleFlag('GaForLips', true);
+    toggleFlag('cuiReleaseTwoEnabled', false);
+    toggleFlag('is-dashboard-enabled-for-case', false);
+    toggleFlag('GaForLips', false);
   }
 });
 
