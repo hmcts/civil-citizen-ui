@@ -27,7 +27,7 @@ class WantToUploadDocuments {
 
   verifyHeadingDetails(applicationType) {
     I.see(applicationType, 'h1');
-    I.see('Do you want to upload documents to support your application? (Optional)', 'h1');
+    I.see('Do you want to upload documents to support your application?', 'h1');
   }
 
   async verifyOptions() {
