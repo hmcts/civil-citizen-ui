@@ -263,7 +263,7 @@ export class CivilServiceClient {
       if (!response.data) {
         return false;
       }
-      return response.data;
+      return response.data as boolean;
     } catch (err: unknown) {
       logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
       throw err;
