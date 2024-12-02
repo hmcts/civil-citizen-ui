@@ -3,7 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { createAccount } = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { caseOffline } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
@@ -32,9 +32,10 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
 Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
+    notification = caseOfflineAfterSDO();
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM', false);
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.claimantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
 }).tag('@regression');
