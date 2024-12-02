@@ -69,7 +69,7 @@ describe('getGiveUsDetailsHearingTask', () => {
       claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
       claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
+      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{};
       claim.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
       claim.directionQuestionnaire.experts.expertRequired = false;
       //When
@@ -122,7 +122,7 @@ describe('getGiveUsDetailsHearingTask', () => {
       claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
       claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
+      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{};
       claim.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
       claim.directionQuestionnaire.experts.expertRequired = false;
       //When
@@ -178,7 +178,7 @@ describe('getGiveUsDetailsHearingTask', () => {
       claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
       claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
+      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{};
       claim.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       //When
@@ -234,7 +234,7 @@ describe('getGiveUsDetailsHearingTask', () => {
       claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.NO};
       claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {option: YesNo.NO};
       claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{option: 'no'};
+      claim.directionQuestionnaire.hearing.specificCourtLocation = <SpecificCourtLocation>{};
       claim.directionQuestionnaire.welshLanguageRequirements.language = {speakLanguage: LanguageOptions.WELSH, documentsLanguage: LanguageOptions.ENGLISH};
       claim.directionQuestionnaire.experts.expertEvidence = {option: YesNo.NO};
       //When

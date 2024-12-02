@@ -1,10 +1,19 @@
 const config = require('../../../config');
-const {updateActiveOrganisationUsersMocks} = require('./activeOrganisationUsers');
-const {getNocQuestions, validateNocAnswers, submitNocRequest} = require('./caseAssignment');
-const {waitForFinishedBusinessProcess} = require('./testingSupport');
-const {fetchCaseDetails} = require('./apiRequest');
-const chai = require('chai');
-const {assert} = chai;
+const { updateActiveOrganisationUsersMocks } = require('./activeOrganisationUsers');
+const { getNocQuestions, validateNocAnswers, submitNocRequest } = require('./caseAssignment');
+const { waitForFinishedBusinessProcess } = require('./testingSupport');
+const { fetchCaseDetails } = require('./apiRequest');
+
+let chai;
+let assert;
+
+import('chai').then(module => {
+  chai = module;
+  assert = chai.assert;
+
+}).catch(error => {
+  console.error('Failed to load chai:', error);
+});
 
 const requestNoticeOfChange = async (claimRef, newSolicitor, orgPolicyTag, answers) => {
   if (config.localNoCTests === true) {

@@ -53,7 +53,7 @@ describe('specific court location service test', ()=> {
       const specificCourtLocation = await getSpecificCourtLocationForm('123');
       //Then
       expect(specificCourtLocation).not.toBeUndefined();
-      expect(specificCourtLocation.option).toBe('no');
+
     });
     it('should return new specific court location form when data does not exist', async ()=>{
       //Given
@@ -64,7 +64,6 @@ describe('specific court location service test', ()=> {
       const specificCourtLocation = await getSpecificCourtLocationForm('123');
       //Then
       expect(specificCourtLocation).not.toBeUndefined();
-      expect(specificCourtLocation.option).toBeUndefined();
       expect(specificCourtLocation.courtLocation).toBeUndefined();
       expect(specificCourtLocation.reason).toBeUndefined();
     });

@@ -99,11 +99,9 @@ class CheckYourAnswersPage {
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
     I.checkOption(fields.directionsQuestionnaireSigned);
-    if (['preview', 'demo'  ].includes(config.runningEnv)) {
-      I.click(cButtons.submit[language]);
-      I.waitForContent(content.confirmationHeading[language],config.WaitForText);
-      I.see(content.confirmationSubheading[language]);
-    }
+    I.click(cButtons.submit[language]);
+    I.waitForContent(content.confirmationHeading[language],config.WaitForText);
+    I.see(content.confirmationSubheading[language]);
   }
 
   async navigateToCheckYourAnswersPage(claimRef) {

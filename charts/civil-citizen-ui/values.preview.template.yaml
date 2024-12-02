@@ -217,6 +217,9 @@ civil-general-applications:
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
+    devcpuRequests: 1000m
+    devmemoryRequests: 2048Mi
+    devmemoryLimits: 4096Mi
     keyVaults:
       civil:
         resourceGroup: civil
