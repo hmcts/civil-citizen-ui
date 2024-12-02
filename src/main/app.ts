@@ -27,7 +27,7 @@ import {
   BASE_GENERAL_APPLICATION_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
-  CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DEFENDANT_SUMMARY_URL,
   DQ_DISCLOSURE_OF_DOCUMENTS_URL,
   DQ_MULTITRACK_AGREEMENT_REACHED_URL,
   DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
@@ -75,12 +75,13 @@ import {OidcMiddleware} from 'modules/oidc';
 import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
+import {GaTrackHistory} from "routes/guards/GaTrackHistory";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+const productionMode = false;
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = 90 * (60 * 1000); // 21 minutes
@@ -193,6 +194,10 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
   RESPONSE_CHECK_ANSWERS_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
+  DEFENDANT_SUMMARY_URL,
+], trackHistory);
+
+app.use([
   //GA
   APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
@@ -213,7 +218,7 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   ORDER_JUDGE_URL,
   GA_REQUESTING_REASON_URL,
   GA_ADD_ANOTHER_APPLICATION_URL,
-], trackHistory);
+], GaTrackHistory);
 
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));

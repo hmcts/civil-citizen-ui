@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   APPLICATION_TYPE_URL, BACK_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -90,8 +90,13 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
+        if (claim?.generalApplication?.applicationTypes?.length > 1){
+          res.redirect(constructResponseUrlWithIdParams(req.params.id,ORDER_JUDGE_URL )
+            + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
           + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
+        }
       }
     }
   } catch (error) {

@@ -11,18 +11,17 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
 
-agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
@@ -43,7 +42,7 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreeme
   }
 }) as RequestHandler);
 
-agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);

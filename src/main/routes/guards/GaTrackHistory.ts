@@ -9,7 +9,7 @@ export const GaTrackHistory = async (req: AppRequest, res: Response, next: NextF
         req.session.history = [];
       }
       //removing lang from originalUrl
-      const cleanUrl = req.originalUrl.split('?')[0];
+      const cleanUrl = req.originalUrl;
       if (req.session.history.length === 0 || req.session.history[req.session.history.length - 1] !== cleanUrl) {
         req.session.history.push(req.originalUrl);
       }
