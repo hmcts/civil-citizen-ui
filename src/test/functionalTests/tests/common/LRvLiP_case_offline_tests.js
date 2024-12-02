@@ -20,7 +20,7 @@ Before(async ({api}) => {
   notification = caseOffline();
 });
 
-Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api, I}) => {
+Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     await api.caseProceedsInCaseman();
