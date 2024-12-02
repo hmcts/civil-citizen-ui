@@ -1,6 +1,6 @@
 module.exports = {
   createCaseProgressionToSDOState: (claimType, document) => {
-    const judgeToSDOData = {
+    return {
       event: 'CREATE_SDO',
       caseDataUpdate: {
         drawDirectionsOrderRequired: 'No',
@@ -77,6 +77,55 @@ module.exports = {
         },
       },
     };
-    return judgeToSDOData;
+  },
+  SDOpayloadForLA: () => {
+    return {
+      event: 'CREATE_SDO',
+      valid: {
+        SDO: {
+          drawDirectionsOrderRequired: 'No',
+          claimsTrack: 'smallClaimsTrack',
+        },
+        SmallClaims: {
+          smallClaims: [
+
+          ],
+          smallClaimsJudgesRecital: {
+            input: 'string',
+          },
+          smallClaimsHearing: {
+            input1: 'string',
+            input2: 'string',
+            time: 'THIRTY_MINUTES',
+          },
+          smallClaimsMethod: 'smallClaimsMethodTelephoneHearing',
+          smallClaimsMethodTelephoneHearing: 'telephoneTheClaimant',
+          smallClaimsDocuments: {
+            input1: 'string',
+            input2: 'string',
+          },
+          smallClaimsWitnessStatement: {
+            input1: 'string',
+            input2: '1',
+            input3: '1',
+            input4: 'string',
+          },
+          smallClaimsAddNewDirections: [],
+          smallClaimsNotes: {
+            input: 'This order has been made without hearing. Each party has the right to apply to have this Order set aside or varied. Any such application must be received by the Court (together with the appropriate fee) by 4pm on 18 October 2024',
+            date: null,
+          },
+        },
+      },
+      midEventData: {
+        ClaimsTrack: {
+          setSmallClaimsFlag: 'Yes',
+          setFastTrackFlag: 'No',
+        },
+        SmallClaims: {
+        },
+      },
+      smallClaimsJudgementDeductionValue :null,
+    };
   },
 };

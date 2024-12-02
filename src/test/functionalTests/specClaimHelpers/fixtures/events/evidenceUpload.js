@@ -35,7 +35,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'Order_2023-10-09.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -50,7 +50,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'fast_track_sdo_000MC014.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -59,13 +59,13 @@ module.exports = {
         documentWitnessStatement: [
           {
             value: {
-              witnessOptionName: 'Witness Nae',
+              witnessOptionName: 'Witness Name',
               witnessOptionUploadDate: '2023-03-01',
               createdDatetime: null,
               witnessOptionDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'hearing_small_claim_000MC013.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -74,13 +74,13 @@ module.exports = {
         documentWitnessSummary: [
           {
             value: {
-              witnessOptionName: 'Suary 23',
+              witnessOptionName: 'Summary 23',
               witnessOptionUploadDate:'2020-01-01',
               createdDatetime: null,
               witnessOptionDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: '000MC038-claim-response.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -95,7 +95,7 @@ module.exports = {
               witnessOptionDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'fast_track_sdo_000MC014.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -111,7 +111,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'Order_2023-10-09.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -120,14 +120,14 @@ module.exports = {
         documentExpertReport: [
           {
             value: {
-              expertOptionName: 'nae',
+              expertOptionName: 'Name',
               expertOptionExpertise: 'Expertise',
               expertOptionUploadDate: '2023-03-02',
               createdDatetime: null,
               expertDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: '000MC038-claim-response.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -136,14 +136,14 @@ module.exports = {
         documentJointStatement: [
           {
             value: {
-              expertOptionName: 'Nae',
-              expertOptionExpertises: 'expertise',
+              expertOptionName: 'Name',
+              expertOptionExpertises: 'Expertise',
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'Order_2023-10-09.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -160,7 +160,7 @@ module.exports = {
               expertDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'fast_track_sdo_000MC014.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -177,7 +177,7 @@ module.exports = {
               expertDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'hearing_small_claim_000MC013.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -190,7 +190,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'Order_2023-10-09.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -203,7 +203,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'fast_track_sdo_000MC014.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -216,7 +216,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: '000MC038-claim-response.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -229,7 +229,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'hearing_small_claim_000MC013.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -244,7 +244,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'fast_track_sdo_000MC014.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -269,6 +269,7 @@ module.exports = {
       },
     };
   },
+
   evidenceUploadSmallClaims: (document) => {
     return {
       event: 'EVIDENCE_UPLOAD_APPLICANT',
@@ -293,13 +294,13 @@ module.exports = {
         documentWitnessStatement: [
           {
             value: {
-              witnessOptionName: 'Witness Nae',
+              witnessOptionName: 'Witness Name',
               witnessOptionUploadDate: '2023-03-01',
               createdDatetime: null,
               witnessOptionDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'hearing_small_claim_000MC013.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -308,13 +309,13 @@ module.exports = {
         documentWitnessSummary: [
           {
             value: {
-              witnessOptionName: 'Suary 23',
+              witnessOptionName: 'Summary 23',
               witnessOptionUploadDate:'2020-01-01',
               createdDatetime: null,
               witnessOptionDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: '000MC038-claim-response.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -330,7 +331,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'Order_2023-10-09.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -339,14 +340,14 @@ module.exports = {
         documentExpertReport: [
           {
             value: {
-              expertOptionName: 'nae',
+              expertOptionName: 'Name',
               expertOptionExpertise: 'Expertise',
               expertOptionUploadDate: '2023-03-02',
               createdDatetime: null,
               expertDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: '000MC038-claim-response.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -355,14 +356,14 @@ module.exports = {
         documentJointStatement: [
           {
             value: {
-              expertOptionName: 'Nae',
-              expertOptionExpertises: 'expertise',
+              expertOptionName: 'Name',
+              expertOptionExpertises: 'Expertise',
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'Order_2023-10-09.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -375,7 +376,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: '000MC038-claim-response.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -388,7 +389,7 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'hearing_small_claim_000MC013.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
@@ -403,13 +404,335 @@ module.exports = {
               documentUpload: {
                 document_url: document.document_url,
                 document_binary_url: document.document_binary_url,
-                document_filename: 'fast_track_sdo_000MC014.pdf',
+                document_filename: 'test.pdf',
               },
             },
             id: null,
           },
         ],
         caseDocumentUploadDate: null,
+      },
+    };
+  },
+
+  evidenceUploadFastClaimsLipRespondent: (document) => {
+    return {
+      event: 'EVIDENCE_UPLOAD_RESPONDENT',
+      caseDataUpdate: {
+        documentDisclosureListRes: [
+          {
+            value: {
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'Order_2023-10-09.pdf',
+              },
+            },
+          },
+        ],
+        documentForDisclosureRes: [
+          {
+            value: {
+              typeOfDocument: 'Testing',
+              documentIssuedDate: '2023-03-01',
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentWitnessStatementRes: [
+          {
+            value: {
+              witnessOptionName: 'Witness Name',
+              witnessOptionUploadDate: '2023-03-01',
+              createdDatetime: null,
+              witnessOptionDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentWitnessSummaryRes: [
+          {
+            value: {
+              witnessOptionName: 'Summary 23',
+              witnessOptionUploadDate:'2020-01-01',
+              createdDatetime: null,
+              witnessOptionDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentHearsayNoticeRes: [
+          {
+            value: {
+              witnessOptionName: 'Witness',
+              witnessOptionUploadDate: '2023-03-01',
+              createdDatetime: null,
+              witnessOptionDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentReferredInStatementRes: [
+          {
+            value: {
+              witnessOptionName:'john',
+              typeOfDocument: 'Upper',
+              documentIssuedDate: '2023-01-01',
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentExpertReportRes: [
+          {
+            value: {
+              expertOptionName: 'Name',
+              expertOptionExpertise: 'Expertise',
+              expertOptionUploadDate: '2023-03-02',
+              createdDatetime: null,
+              expertDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentJointStatementRes: [
+          {
+            value: {
+              expertOptionName: 'Name',
+              expertOptionExpertises: 'Expertise',
+              expertOptionUploadDate: '2023-04-01',
+              createdDatetime: null,
+              expertDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentQuestionsRes: [
+          {
+            value: {
+              expertOptionName: 'testing',
+              expertOptionOtherParty: 'Party',
+              expertDocumentQuestion: 'Document',
+              expertOptionUploadDate: '2023-04-01',
+              createdDatetime: null,
+              expertDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentAnswersRes: [
+          {
+            value: {
+              expertOptionName: 'Ep',
+              expertOptionOtherParty: 'Other party',
+              expertDocumentAnswer: 'Question',
+              expertOptionUploadDate: '2023-03-10',
+              createdDatetime: null,
+              expertDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentCaseSummaryRes: [
+          {
+            value: {
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentSkeletonArgumentRes: [
+          {
+            value: {
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentAuthoritiesRes: [
+          {
+            value: {
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentCostsRes: [
+          {
+            value: {
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentEvidenceForTrialRes: [
+          {
+            value: {
+              typeOfDocument: 'Deadline',
+              documentIssuedDate: '2023-02-01',
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+      },
+    };
+  },
+
+  evidenceUploadSmallClaimsLipRespondent: (document) => {
+    return {
+      event: 'EVIDENCE_UPLOAD_RESPONDENT',
+      caseDataUpdate: {
+        documentWitnessStatementRes: [
+          {
+            value: {
+              witnessOptionName: 'Witness Name',
+              witnessOptionUploadDate: '2023-03-01',
+              createdDatetime: null,
+              witnessOptionDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentWitnessSummaryRes: [
+          {
+            value: {
+              witnessOptionName: 'Summary 23',
+              witnessOptionUploadDate:'2020-01-01',
+              createdDatetime: null,
+              witnessOptionDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentReferredInStatementRes: [
+          {
+            value: {
+              witnessOptionName:'john',
+              typeOfDocument: 'Upper',
+              documentIssuedDate: '2023-01-01',
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentExpertReportRes: [
+          {
+            value: {
+              expertOptionName: 'Name',
+              expertOptionExpertise: 'Expertise',
+              expertOptionUploadDate: '2023-03-02',
+              createdDatetime: null,
+              expertDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentJointStatementRes: [
+          {
+            value: {
+              expertOptionName: 'Name',
+              expertOptionExpertises: 'Expertise',
+              expertOptionUploadDate: '2023-04-01',
+              createdDatetime: null,
+              expertDocument: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentEvidenceForTrialRes: [
+          {
+            value: {
+              typeOfDocument: 'Deadline',
+              documentIssuedDate: '2023-02-01',
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
+        documentAuthoritiesRes: [
+          {
+            value: {
+              createdDatetime: null,
+              documentUpload: {
+                document_url: document.document_url,
+                document_binary_url: document.document_binary_url,
+                document_filename: 'test.pdf',
+              },
+            },
+          },
+        ],
       },
     };
   },

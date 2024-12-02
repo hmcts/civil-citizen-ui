@@ -17,6 +17,7 @@ env:
   CIVIL_SERVICE_URL: http://localhost:1111
   TEST_URL: http://localhost:3001
   IDAM_API_URL: http://localhost:1111
+  CIVIL_GENERAL_APPLICATIONS_URL: http://localhost:1111
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK: test
 
@@ -32,17 +33,18 @@ jobs:
         run: yarn install && yarn playwright install
       - name: Build
         run: yarn build
-      - name: Starting WireMock
-        run: yarn wiremock:start &
-      - name: Starting CUI
-        run: yarn start:e2e &
-      - name: Waiting CUI to get ready
-        run: sleep 10
-      - name: Executing e2e tests
-        run: yarn test:e2e
+      - name: Starting WireMock , starting ui , wait and run e2e test
+        run: |
+          yarn wiremock:start &
+          sleep 2
+          yarn start:e2e &
+          sleep 25
+          yarn test:e2e
       - name: Upload e2e test artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: integration-tests-results
-          path: test-results/functional
+          path: |
+            test-results/functional
+            src/test/functionalTests/test-results

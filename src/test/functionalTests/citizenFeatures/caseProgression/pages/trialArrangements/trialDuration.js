@@ -69,13 +69,24 @@ class HasAnythingChanged {
     I.click(nextAction);
   }
 
-  verifyPageContent(languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyTrialDurationSectionContent();
     this.verifyOtherInformationSectionContent();
     contactUs.verifyContactUs();
+  }
+
+  verifyBreadcrumbs() {
+    I.see('Back', '//a[@class="govuk-back-link"]');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyHeadingDetails() {
@@ -85,20 +96,20 @@ class HasAnythingChanged {
   }
 
   verifyTrialDurationSectionContent() {
-    I.see(content.duration.title[language],'h3');
+    I.see(content.duration.title[language],'h2');
     I.see(content.duration.allocated[language]);
     I.see(content.duration.moreTime[language]);
     I.see(content.duration.noIncrease[language]);
   }
 
   verifyOtherInformationSectionContent() {
-    I.see(content.otherInfo.title[language],'h3');
+    I.see(content.otherInfo.title[language],'h2');
     I.see(content.otherInfo.text[language]);
     I.see(content.otherInfo.example[language]);
   }
 
   inputDataForTrialDurationOtherInformation() {
-    I.fillField('otherInformation','Autoation Testing for Other Information of the Trial Arrangement Section......%$£^');
+    I.fillField('otherInformation','Automation Testing for Other Information of the Trial Arrangement Section......%$£^');
   }
 }
 

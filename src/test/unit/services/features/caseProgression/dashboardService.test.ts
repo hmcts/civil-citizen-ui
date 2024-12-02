@@ -365,6 +365,21 @@ describe('dashboardService', () => {
         expect(result.url).toContain('/case/1234567890/general-application/application-type');
       });
 
+      it('Hide getContactCourtLink when CASE_SETTLED', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.CASE_SETTLED;
+        claim.defendantUserDetails = {};
+        //When
+        const result = getContactCourtLink(claim.id, claim, true, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
       it('getContactCourtLink when Gaflag is not enable', async () => {
         //Given
         const claim = new Claim();
@@ -682,6 +697,23 @@ describe('dashboardService', () => {
       expect(notificationsList.items[0].id).toEqual('2');
       expect(notificationsList.items[1].id).toEqual('3');
       expect(notificationsList.items[2].id).toEqual('1');
+    });
+
+    it('should prioritize notifications with titles "The case has been stayed" and "The stay has been lifted"', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', 'The case has been stayed', '', '', '', '', undefined, undefined, '', '');
+      const notification2 = new DashboardNotification('2', 'Other title', '', '', '', '', undefined, undefined, '', '');
+      const notification3 = new DashboardNotification('3', 'The stay has been lifted', '', '', '', '', undefined, undefined, '', '');
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2, notification3];
+
+      // When
+      sortDashboardNotifications(notificationsList, []);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('1');
+      expect(notificationsList.items[1].id).toEqual('3');
+      expect(notificationsList.items[2].id).toEqual('2');
     });
   });
 });

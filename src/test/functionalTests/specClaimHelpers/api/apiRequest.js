@@ -89,7 +89,7 @@ module.exports = {
 
     const response = await restHelper.request(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
     const data = await response.json();
-    console.log('***************** case id *****************' + data.id);
+    console.log('***************** case id ***************** ' + data.id);
     return data.id;
   },
 
@@ -204,5 +204,5 @@ module.exports = {
           }
         });
     }, TASK_MAX_RETRIES, TASK_RETRY_TIMEOUT_MS);
-  }, 
+  },
 };

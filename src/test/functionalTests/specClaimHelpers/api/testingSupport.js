@@ -184,6 +184,24 @@ module.exports = {
       );
   },
 
+  triggerTrialArrangements: async (caseId) => {
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+    await restHelper.request(
+      `${config.url.civilService}/testing-support/${caseId}/trigger-trial-arrangements`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      }, null, 'GET')
+      .then(async response => {
+        if (response.status === 200) {
+          console.log(`Trigger trial arrangements for ${caseId} successful`);
+        } else {
+          throw new Error(`Error occurred with status : ${response.status}`);
+        }
+      },
+      );
+  },
+
   bundleGeneration: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
     await restHelper.request(

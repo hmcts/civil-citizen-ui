@@ -16,7 +16,9 @@
             <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE') }}</h2>
             {% for section in summarySections.disclosureEvidenceSection.sections %}
               <div class="govuk-!-margin-bottom-9">
-                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                {% if section.title %}
+                  <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                {% endif %}
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
                     rows: section.summaryList.rows
@@ -30,7 +32,9 @@
             <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE') }}</h2>
             {% for section in summarySections.witnessEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                    {% if section.title %}
+                      <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                    {% endif %}
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
@@ -44,7 +48,9 @@
             <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE') }}</h2>
             {% for section in summarySections.expertEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                    {% if section.title %}
+                      <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                    {% endif %}
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
@@ -63,7 +69,9 @@
             {% endif %}
             {% for section in summarySections.trialEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                    {% if section.title %}
+                      <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
+                    {% endif %}
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows

@@ -33,7 +33,7 @@ Scenario('Fast Track case is struck out due to hearing fee not being paid', asyn
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       const notification = claimStruckOut();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = addTrialArrangements();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       taskListItem = uploadHearingDocuments();
@@ -42,5 +42,5 @@ Scenario('Fast Track case is struck out due to hearing fee not being paid', asyn
       CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
 

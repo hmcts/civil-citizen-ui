@@ -13,10 +13,10 @@ class WantToUploadDocuments {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     await this.verifyOptions();
     contactUs.verifyContactUs();
   }
@@ -25,8 +25,8 @@ class WantToUploadDocuments {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'h1');
     I.see('Do you want to upload documents to support your application? (Optional)', 'h1');
   }
 

@@ -27,7 +27,7 @@
   {% for item in applicantDocuments.documents %}
     {% set applicantDocRows = (applicantDocRows.push([
       {
-        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
       },
       {
         html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -48,7 +48,7 @@
   {% for item in respondentDocuments.documents %}
     {% set respondentDocRows = (respondentDocRows.push([
       {
-        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
       },
       {
         html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -69,7 +69,7 @@
     {% for item in courtDocuments.documents %}
       {% set courtDocRows = (courtDocRows.push([
         {
-          html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+          html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
         },
         {
           html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -115,12 +115,19 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE3') }}</p>
 
 <div class="govuk-!-padding-top-5">
-      {% if responseFromCourt.length > 0 %}
-        {{ govukDetails({
-          summaryHtml: courtResponseHeaderHtml,
-          html: responseFromCourtHtml
-        }) }}
-      {% endif %}
+  {% if responseFromCourt.length > 0 %}
+    {{ govukDetails({
+      summaryHtml: courtResponseHeaderHtml,
+      html: responseFromCourtHtml
+    }) }}
+  {% endif %}
+  {% if applicationTypeCards %}
+    <div class="govuk-form-group">
+      {% for summaryCard in applicationTypeCards %}
+        {{ govukSummaryList(summaryCard) }}
+      {% endfor %}
+    </div>
+  {% endif %}
   <div class="govuk-section-break--s govuk-section-break--visible"></div>
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <div class="govuk-form-group">

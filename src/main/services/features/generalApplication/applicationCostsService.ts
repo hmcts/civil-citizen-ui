@@ -50,15 +50,6 @@ const getSelectedApplicationTypeContent = (lang: string, gaFee: number) : Partia
         },
       },
     ],
-    [ApplicationTypeOption.VARY_ORDER]: [
-      {
-        text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TO_APPLY',
-        variables: {
-          applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.VARY_ORDER', {lng: lang}),
-          applicationFee: gaFee,
-        },
-      },
-    ],
     [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: [
       {
         text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TO_APPLY',

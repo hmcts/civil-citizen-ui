@@ -7,7 +7,10 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
-import {getCancelUrl, getLast} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getByIndexOrLast,
+  getCancelUrl, removeAllOtherApplications,
+} from 'services/features/generalApplication/generalApplicationService';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
@@ -15,11 +18,11 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
-import {Claim} from 'models/claim';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
@@ -28,11 +31,19 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const claimId = req.params.id;
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
-  const backLinkUrl = getBackLinkUrl(claimId, claim);
+  const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+  const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+  const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+  const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+  let value;
   if (!form) {
-    form = new GenericForm(new GenericYesNo(''));
+    if (claim.generalApplication?.addType) {
+      value = (claim.generalApplication?.applicationTypes.length > 1) ? YesNo.YES : YesNo.NO;
+    } else {
+      value = '';
+    }
+    form = new GenericForm(new GenericYesNo(value));
   }
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
 };
@@ -50,7 +61,25 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      res.redirect(getRedirectUrl(req.params.id, req.body.option));
+      const redisKey = generateRedisKey(req);
+      const claim = await getClaimById(redisKey, req, true);
+
+      const claimId = req.params.id;
+      claim.generalApplication.addType = true;
+      if (req.body.option === YesNo.YES) {
+        await saveDraftClaim(redisKey, claim);
+        res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp);
+      } else {
+        let index = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+        //todo add if with changeScreen
+        if (req.query['changeScreen'] === 'true'){
+          await removeAllOtherApplications(redisKey, claim);
+          index = claim.generalApplication.applicationTypes.length - 1;
+        } else {
+          await saveDraftClaim(redisKey, claim);
+        }
+        res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL), index));
+      }
     }
 
   } catch (error) {
@@ -58,14 +87,8 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
   }
 });
 
-function getRedirectUrl(claimId: string, option: YesNo): string {
-  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp :
-    constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
-}
-
-function getBackLinkUrl(claimId: string, claim: Claim) : string {
-  const requestingReasonLength = claim.generalApplication?.requestingReasons?.length;
-  const indexParam = requestingReasonLength ? `?index=${requestingReasonLength - 1}` : '';
+function getBackLinkUrl(claimId: string, index: number) : string {
+  const indexParam = `?index=${index}`;
   return constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL) + indexParam;
 }
 

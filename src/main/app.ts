@@ -186,8 +186,8 @@ app.use((_req, res, next) => {
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   const serviceShuttered = await isServiceShuttered();
-  logger.info(`Checking for service availability... ${serviceShuttered}`);
   if (serviceShuttered) {
+    logger.info(`service is shuttered... ${serviceShuttered}`);
     res.render('service-unavailable');
   } else {
     next();

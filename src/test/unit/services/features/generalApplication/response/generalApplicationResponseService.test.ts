@@ -184,7 +184,7 @@ describe('General Application Response service', () => {
     it('should display when multiple application selected', () => {
       //Given
       const gaResponse = new GaResponse();
-      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.SUMMARY_JUDGMENT];
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.SUMMARY_JUDGEMENT];
       //When
       const result = getRespondToApplicationCaption(gaResponse.generalApplicationType, 'en');
       //Then

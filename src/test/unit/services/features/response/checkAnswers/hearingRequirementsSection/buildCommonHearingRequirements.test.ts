@@ -28,7 +28,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {
   displaySpecificCourtLocation,
   displayUnavailabilityForHearing,
-  documentsLanguagePreference, getSpecificCourtLocation,
+  documentsLanguagePreference,
   getSummaryRowForDisplayEvidenceYourself, getUnavailabilityReason, getUnavailableDatesList,
   getWitnesses,
   phoneAndVideoInfo,
@@ -690,56 +690,11 @@ describe('Common Hearing Requirements Section', () => {
       code: '28b3277a-92f8-4e6b-a8b5-78c5de5c9a7a',
       label: "Barnet Civil and Family Centre - ST MARY'S COURT, REGENTS PARK ROAD - N3 1BQ",
     }];
-    it('should display NO if the defendant does not have a preference for hearing court location', function () {
-      //GIVEN
-      claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.NO, courtLocations[0].label, 'reason');
-      const mockSummarySection: SummaryRow = summaryRow(
-        'PAGES.SPECIFIC_COURT.TITLE',
-        'COMMON.VARIATION_2.NO',
-        '/case/validClaimId/directions-questionnaire/court-location',
-        changeButton,
-      );
-      //WHEN
-      const specificCourtLocation: SummaryRow =
-        getSpecificCourtLocation(claimId, lng, claim.directionQuestionnaire);
-      //THEN
-      expect(specificCourtLocation).toStrictEqual(mockSummarySection);
-    });
-    it('should display YES if the defendant does have a preference for hearing court location', function () {
-      //GIVEN
-      claim.directionQuestionnaire.hearing.specificCourtLocation = new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
-      //WHEN
-      const specificCourtLocation: SummaryRow =
-        getSpecificCourtLocation( claimId, lng, claim.directionQuestionnaire);
-      const mockSummarySection: SummaryRow = summaryRow(
-        'PAGES.SPECIFIC_COURT.TITLE',
-        'COMMON.VARIATION_2.YES',
-        '/case/validClaimId/directions-questionnaire/court-location',
-        changeButton,
-      );
-      //THEN
-      expect(specificCourtLocation).toStrictEqual(mockSummarySection);
-    });
-    it('should display selection as empty if there is no hearing object', function () {
-      //GIVEN
-      const claimWithNoHearing = new Claim();
-      //WHEN
-      const specificCourtLocation: SummaryRow =
-        getSpecificCourtLocation( claimId, lng, claimWithNoHearing.directionQuestionnaire);
-      const mockSummarySection: SummaryRow = summaryRow(
-        'PAGES.SPECIFIC_COURT.TITLE',
-        '',
-        '/case/validClaimId/directions-questionnaire/court-location',
-        changeButton,
-      );
-      //THEN
-      expect(specificCourtLocation).toStrictEqual(mockSummarySection);
-    });
 
     it('should display court location if the defendant does have a preference for  hearing', function () {
       //GIVEN
       claim.directionQuestionnaire.hearing.specificCourtLocation =
-        new SpecificCourtLocation(YesNo.YES, courtLocations[0].label, 'reason');
+        new SpecificCourtLocation(courtLocations[0].label, 'reason');
       //WHEN
       const specificCourtLocation: SummaryRow =
         displaySpecificCourtLocation( claimId, lng, claim.directionQuestionnaire);

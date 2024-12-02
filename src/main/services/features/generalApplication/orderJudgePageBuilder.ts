@@ -95,7 +95,7 @@ export const buildPageContent = (applicationType: ApplicationTypeOption, lng: st
         hintText: t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.CHANGE_CLAIM_HINT_TEXT', {lng}),
       };
 
-    case ApplicationTypeOption.SUMMARY_JUDGMENT:
+    case ApplicationTypeOption.SUMMARY_JUDGEMENT:
       return {
         contentList: new PageSectionBuilder()
           .addParagraph('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_SUMMARY_JUDGMENT')

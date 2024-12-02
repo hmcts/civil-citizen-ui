@@ -34,7 +34,7 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       const notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = ordersAndNotices();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       await I.click(notification.nextSteps);
@@ -46,4 +46,4 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
       CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
