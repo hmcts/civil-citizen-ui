@@ -4,8 +4,8 @@ const PropertiesVolume = require('./secretsConfig');
 const defaultPassword = process.env.CITIZEN_PASSWORD || 'Password12!';
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD || 'Password12';
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD || 'Hmcts1234';
-// const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-4988.preview.platform.hmcts.net';
+const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
+// const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-5158.preview.platform.hmcts.net';
 // const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.aat.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false;
 
@@ -34,23 +34,23 @@ module.exports = {
     // waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-aat.service.core-compute-aat.internal',
     // paymentApi: process.env.PAYMENT_API_URL || 'http://payment-api-aat.service.core-compute-aat.internal',
 
-    manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-4988.preview.platform.hmcts.net',
-    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-4988.preview.platform.hmcts.net',
-    dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
-    idamApi:  'https://idam-api.aat.platform.hmcts.net',
-    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
-    civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-4988-civil-service.preview.platform.hmcts.net',
+    // manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-5158.preview.platform.hmcts.net',
+    // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
+    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-5158.preview.platform.hmcts.net',
+    // dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
+    // idamApi:  'https://idam-api.aat.platform.hmcts.net',
+    // idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
+    // civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-5158-civil-service.preview.platform.hmcts.net',
     
-    // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
-    // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
-    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
-    // dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
-    // idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
-    // idamWeb: process.env.IDAM_WEB_URL || 'https://idam-web-public.demo.platform.hmcts.net',
-    // civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-    // waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
-    // generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-general-applications-demo.service.core-compute-demo.internal',
+    manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
+    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
+    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
+    dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
+    idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
+    idamWeb: process.env.IDAM_WEB_URL || 'https://idam-web-public.demo.platform.hmcts.net',
+    civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
+    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
+    generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-general-applications-demo.service.core-compute-demo.internal',
   },
   getDomain: (url) => new URL(url).host,
   s2s: {
