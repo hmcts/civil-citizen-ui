@@ -37,5 +37,6 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.claimantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await api.caseProceedsInCaseman();
   }
 }).tag('@regression');
