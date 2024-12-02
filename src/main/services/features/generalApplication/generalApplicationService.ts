@@ -534,6 +534,11 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
   return applications.findIndex(application => application.id == applicationId);
 };
 
+export const isGaApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+    || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+
 export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
   if (hasRespondentResponded(application)) {
     return true;
