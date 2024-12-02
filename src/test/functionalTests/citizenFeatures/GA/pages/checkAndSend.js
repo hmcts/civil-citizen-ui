@@ -18,7 +18,9 @@ class CheckAndSend {
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails(applicationType, caseNumber, parties);
     this.applicationType(applicationType);
-    this.additionalApplication();
+    if (applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment' && applicationType !== 'Court to make an order settling the claim by consent') {
+      this.additionalApplication();
+    }
     this.partiesAgreed(communicationType);
     if (communicationType !== 'consent' && applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment' && applicationType !== 'Court to make an order settling the claim by consent') {
       this.informOtherParties(communicationType);
