@@ -11,7 +11,6 @@ import { Session } from 'express-session';
 import { AppSession } from 'common/models/AppRequest';
 import nock from 'nock';
 import config from 'config';
-import {DefendantLinkStatus} from 'models/DefendantLinkStatus';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -20,7 +19,6 @@ describe('Respond to Claim - Claim Reference Controller', () => {
   const validClaimNumberV1 = '123MC123';
   const validClaimNumberV2 = '123DC123';
   const civilServiceUrl = config.get<string>('services.civilService.url');
-  const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
   describe('on GET', () => {
     it('should display page successfully', async () => {
@@ -70,10 +68,10 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, new DefendantLinkStatus(true, true));
+        .reply(200, 'true');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ocmcBaseUrl + DASHBOARD_URL);
+        expect(res.header.location).toBe(DASHBOARD_URL);
         expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
       });
     });
@@ -82,7 +80,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, new DefendantLinkStatus(true, false));
+        .reply(200, 'false');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
@@ -94,7 +92,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, new DefendantLinkStatus(false, true));
+        .reply(200, 'true');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(DASHBOARD_URL);
@@ -106,7 +104,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, new DefendantLinkStatus(false, false));
+        .reply(200, 'false');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);

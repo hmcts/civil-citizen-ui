@@ -62,7 +62,6 @@ import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
-import {DefendantLinkStatus} from 'models/DefendantLinkStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -257,14 +256,14 @@ export class CivilServiceClient {
     }
   }
 
-  async isDefendantLinked(caseReference: string): Promise<DefendantLinkStatus> {
+  async isDefendantLinked(caseReference: string): Promise<boolean> {
     try {
       const response = await this.client.get(CIVIL_SERVICE_CHECK_DEFENDENT_LINKED_URL //nosonar
         .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
       if (!response.data) {
-        return new DefendantLinkStatus(false, false);
+        return false;
       }
-      return response.data as DefendantLinkStatus;
+      return response.data;
     } catch (err: unknown) {
       logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
       throw err;
