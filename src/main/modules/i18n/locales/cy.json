@@ -3073,7 +3073,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "Os ydych chi wedi dewis sawl cais, dylech uwchlwytho’r dogfennau sy’n ymwneud â phob un ohonynt.",
-        "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais? (Dewisol)"
+        "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
