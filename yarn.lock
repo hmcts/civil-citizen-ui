@@ -5049,7 +5049,7 @@ __metadata:
     webdriverio: ^8.3.2
     webpack: ^5.75.0
     webpack-cli: ^5.0.1
-    webpack-dev-middleware: 7.1.0
+    webpack-dev-middleware: 7.4.2
     webpack-node-externals: ^3.0.0
     wiremock-standalone: ^3.2.1
   languageName: unknown
@@ -13939,9 +13939,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-dev-middleware@npm:7.1.0":
-  version: 7.1.0
-  resolution: "webpack-dev-middleware@npm:7.1.0"
+"webpack-dev-middleware@npm:7.4.2":
+  version: 7.4.2
+  resolution: "webpack-dev-middleware@npm:7.4.2"
   dependencies:
     colorette: ^2.0.10
     memfs: ^4.6.0
@@ -13954,7 +13954,7 @@ __metadata:
   peerDependenciesMeta:
     webpack:
       optional: true
-  checksum: 820eb23c3eef917e8616735f7c4b9f970785a71ff276216dbc5ffef05ce9c6750029cd5b913f3afbc66e2b0c23533197c773967565a2d75af36cff0934bb4e1b
+  checksum: 39314ec5e4468d177dd61fb51af87ec097e920fe0f0dc101e1bf71796740a7e49fd4f7f939cf91e130232714d6d2fffd948d72dc65dec10f87ac30339929f018
   languageName: node
   linkType: hard
 
