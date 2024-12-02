@@ -8,7 +8,7 @@ Feature('Lip V Lip settle claim with consent').tag('@galip');
 Scenario('Claimant GA Application and respond to response for settle claim with consent ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
-    toggleFlag('is-dashboard-enabled-for-case', true)
+    toggleFlag('is-dashboard-enabled-for-case', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732290567986310;
     const appId = 1732292100554027;

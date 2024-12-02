@@ -34,7 +34,7 @@ Scenario('Claimant creates GA Application with application summary judgment with
     createGAApplication.verifyPaymentSuccessfullPage();
     responseApplicationSummary.viewApplicantApplicationSummary(claimID, appId, 'Application dismissed');
     toggleFlag('cuiReleaseTwoEnabled', false);
-    toggleFlag('is-dashboard-enabled-for-case', false)
+    toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }
 });
