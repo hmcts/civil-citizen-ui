@@ -2754,6 +2754,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "APPLICATION": "Application",
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
@@ -3072,7 +3073,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
-        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+        "TITLE": "Do you want to upload documents to support your application?"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -4869,6 +4870,7 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
+    "GA_ENTER_A_VALID_DATE": "Enter a valid date",
     "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
@@ -5310,5 +5312,10 @@
       }
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 4th December 2024 and 02:00 on 5th December 2024 due to the release of CUI Case Progression."
+    }
   }
 }
