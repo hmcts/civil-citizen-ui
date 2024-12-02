@@ -8,7 +8,7 @@ let claimRef, claimType, caseData, claimNumber;
 
 Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track');
 
-Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmit @nightly - @api @ga', async ({I, api}) => {
+Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmit @nightly - @api @ga @regression', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
