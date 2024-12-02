@@ -17,7 +17,6 @@ const scriptSrcElem = [
   '*.googletagmanager.com',
   dynatraceDomain,
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
-  "'sha256-bO2kSSSSPjquZda7pRDcJRmK0Rb71GQMapte27geUGs='",
   ...webChat,
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
   (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
