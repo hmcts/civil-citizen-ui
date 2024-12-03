@@ -3073,7 +3073,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
-        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+        "TITLE": "Do you want to upload documents to support your application?"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
