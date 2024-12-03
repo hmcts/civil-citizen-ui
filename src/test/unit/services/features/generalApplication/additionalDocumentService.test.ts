@@ -331,9 +331,18 @@ describe('canUploadAddlDoc', () => {
     };
   });
 
-  it('should allow upload additional document', async () => {
+  it('should allow upload additional document - APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', async () => {
     //Given
     applicationResponse.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+    //When
+    const result = canUploadAddlDoc(applicationResponse);
+    //Then
+    expect(result).toEqual(true);
+  });
+
+  it('should allow upload additional document - HEARING_SCHEDULED', async () => {
+    //Given
+    applicationResponse.state = ApplicationState.HEARING_SCHEDULED;
     //When
     const result = canUploadAddlDoc(applicationResponse);
     //Then
