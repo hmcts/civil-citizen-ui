@@ -62,7 +62,7 @@ const connectSrc = [
   googleAnalyticsDomain,
   '*.analytics.google.com',
   dynatraceDomain,
-  'https://cloud8-cc-geo.8x8.com',
+  'cloud8-cc-geo.8x8.com',
 ];
 
 const manifestSrc = [
