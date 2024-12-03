@@ -88,57 +88,6 @@ describe('Completing Claim', () => {
     });
   });
 
-  // delete after CARM release
-  describe('on Post, CARM off', () => {
-    beforeEach(() => {
-      isCarmEnabledSpy(false);
-    });
-
-    it('should redirect to task list when optional phone number provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: PHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
-    });
-
-    it('should redirect to task list when optional phone number is not provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: ''})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
-    });
-
-    it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: 'abc'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
-        });
-    });
-
-    it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIMANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: PHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-  });
-
   describe('on Post, CARM on', () => {
     beforeEach(() => {
       isCarmEnabledSpy(true);
