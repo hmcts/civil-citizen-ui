@@ -14,7 +14,7 @@ Before(async ({api}) => {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     
     claimType = 'FastTrack';
-    claimRef = await api.createSpecifiedClaim(config.claimantCitizenUser.email, claimType);
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser.email, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
 
