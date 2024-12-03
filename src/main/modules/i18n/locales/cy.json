@@ -2754,6 +2754,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Ydych chi eisiau ychwanegu cais arall?",
+        "APPLICATION": "Cais",
         "APPLICATION_TYPE": "Math o gais",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
         "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
@@ -2958,7 +2959,7 @@
         "COMPLETE": "Cwblhawyd",
         "DETAILS": "Manylion",
         "IN_PROGRESS": "Yn mynd rhagddo",
-        "MY_APPLICATIONS": "My applications",
+        "MY_APPLICATIONS": "Fy ngheisiadau",
         "STATUS": "Statws",
         "APPLICATION_STATUS": "Statws y cais",
         "STATES": {
@@ -3072,7 +3073,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "Os ydych chi wedi dewis sawl cais, dylech uwchlwytho’r dogfennau sy’n ymwneud â phob un ohonynt.",
-        "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais? (Dewisol)"
+        "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -5311,5 +5312,10 @@
       }
     },
     "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 ar 4 Rhagfyr 2024 a 02:00 ar 5 Rhagfyr 2024 tra bydd Cynnydd Achosion CUI yn cael ei ryddhau."
+    }
   }
 }

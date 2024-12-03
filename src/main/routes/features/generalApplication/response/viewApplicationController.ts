@@ -15,7 +15,7 @@ import {
   getApplicationSections,
   getCourtDocuments,
   getRespondentDocuments,
-  getResponseFromCourtSection,
+  getResponseFromCourtSection, getResponseSummaryCardSections,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
@@ -43,8 +43,9 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const applicationId = req.params.appId ? String(req.params.appId) : null;
     const applicationIndex = queryParamNumber(req, 'index') ? queryParamNumber(req, 'index') : '1';
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationId, lang);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+    const applicationTypeCards = getResponseSummaryCardSections(applicationResponse, lang);
+    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationResponse, lang);
     const redirectUrl = await getRedirectUrl(applicationResponse, applicationId, claimId);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const applicantDocuments: DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
@@ -63,6 +64,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {
       backLinkUrl,
+      applicationTypeCards,
       summaryRows,
       responseSummaries,
       pageTitle,
