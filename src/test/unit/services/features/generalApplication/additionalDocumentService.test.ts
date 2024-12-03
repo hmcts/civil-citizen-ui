@@ -12,7 +12,7 @@ import { getClaimById } from 'modules/utilityService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {
-  buildSummarySectionForAdditionalDoc,
+  buildSummarySectionForAdditionalDoc, canUploadAddlDoc,
   getClaimDetailsById,
   getContentForBody,
   getContentForCloseButton,
@@ -22,6 +22,8 @@ import {
   removeSelectedDocument,
   uploadSelectedFile,
 } from 'services/features/generalApplication/additionalDocumentService';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('additionalDocumentService');
@@ -287,5 +289,63 @@ describe('Additional Documents Service', () => {
       const result = getContentForCloseButton(redirectUrl);
       expect(result).toEqual([{ 'data': { 'href': '/redirect-url', 'text': 'COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD' }, 'type': 'button' }]);
     });
+  });
+});
+
+describe('canUploadAddlDoc', () => {
+  let applicationResponse: ApplicationResponse;
+  beforeEach(() => {
+    applicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: {
+          fee: undefined,
+          paymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          additionalPaymentDetails: {
+            status: 'SUCCESS',
+            reference: undefined,
+          },
+          serviceRequestReference: undefined,
+        },
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
+  });
+
+  it('should allow upload additional document', async () => {
+    //Given
+    applicationResponse.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+    //When
+    const result = canUploadAddlDoc(applicationResponse);
+    //Then
+    expect(result).toEqual(true);
+  });
+
+  it('should not allow upload additional document', async () => {
+    //Given
+    applicationResponse.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+    //When
+    const result = canUploadAddlDoc(applicationResponse);
+    //Then
+    expect(result).toEqual(false);
   });
 });
