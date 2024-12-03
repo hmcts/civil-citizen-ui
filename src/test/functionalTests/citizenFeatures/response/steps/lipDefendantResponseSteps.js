@@ -270,6 +270,10 @@ class ResponseSteps {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
   }
 
+  async submitResponse(responseType) {
+    await checkYourAnswersPage.submitResponse(responseType);
+  }
+
   async verifyMediationDetailsInCYA(claimRef) {
     await checkYourAnswersPage.verifyMediationDetailsInCYA(claimRef);
   }
