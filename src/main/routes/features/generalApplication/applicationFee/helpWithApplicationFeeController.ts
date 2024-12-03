@@ -79,7 +79,7 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
     } else {
       const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
       console.log('redirectUrl =>' + redirectUrl );
-      res.redirect(redirectUrl);
+      res.redirect(`${redirectUrl}?lang=${lng}`);
     }
   }catch (error) {
     next(error);
