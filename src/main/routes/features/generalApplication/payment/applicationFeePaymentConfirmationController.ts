@@ -12,7 +12,6 @@ applicationFeePaymentConfirmationController.get([APPLICATION_FEE_PAYMENT_CONFIRM
     const claimId = req.params.id;
     const applicationId = req.params.appId;
     const redirectUrl = await getRedirectUrl(claimId, applicationId, req);
-    console.log('applicationFeePaymentConfirmationController redirectUrl =>' + redirectUrl);
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, redirectUrl));
   } catch (error) {
     next(error);
