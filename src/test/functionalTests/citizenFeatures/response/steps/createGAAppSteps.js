@@ -222,7 +222,21 @@ class createGAAppSteps {
     //Vary order
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Reconsider an order';
-    const feeAmount = '15';
+    
+    let feeAmount;
+
+    switch(communicationType) {
+      case 'consent':
+        feeAmount = '119';
+        break;
+      case 'notice':
+        feeAmount = '303';
+        break;
+      case 'withoutnotice':
+        feeAmount = '119';
+        break;
+    }
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);

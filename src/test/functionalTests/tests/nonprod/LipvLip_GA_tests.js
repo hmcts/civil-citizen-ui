@@ -30,68 +30,68 @@ Scenario('LipvLip GA tests @citizenUI @nightly - @api @ga @regression', async ({
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askToSetAsideJudgementGA(claimRef, 'Mr Claimant person v mr defendant person', 'consent');
+    await createGAAppSteps.askToSetAsideJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askToVaryAJudgementGA(claimRef, 'Mr Claimant person v mr defendant person', 'consent');
+    await createGAAppSteps.askToVaryAJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtToReconsiderAnOrderGA(claimRef, 'Mr Claimant person v mr defendant person', 'consent');
+    await createGAAppSteps.askCourtToReconsiderAnOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askToChangeHearingDateGA(claimRef, 'Mr Claimant person v mr defendant person', 'notice');
+    await createGAAppSteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Mr Claimant person v mr defendant person', 'notice');
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForReliefFromAPenaltyGA(claimRef, 'Mr Claimant person v mr defendant person', 'withoutnotice');
+    await createGAAppSteps.askForReliefFromAPenaltyGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askToChangeSubmittedGA(claimRef, 'Mr Claimant person v mr defendant person', 'withoutnotice');
+    await createGAAppSteps.askToChangeSubmittedGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtSummaryJudgmentGA(claimRef, 'Mr Claimant person v mr defendant person', 'consent');
+    await createGAAppSteps.askCourtSummaryJudgmentGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtStrikeOutGA(claimRef, 'Mr Claimant person v mr defendant person', 'consent');
+    await createGAAppSteps.askCourtStrikeOutGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtToPauseClaimGA(claimRef, 'Mr Claimant person v mr defendant person', 'notice');
+    await createGAAppSteps.askCourtToPauseClaimGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtSanction(claimRef, 'Mr Claimant person v mr defendant person', 'notice');
+    await createGAAppSteps.askCourtSanction(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Mr Claimant person v mr defendant person', 'consent');
+    await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askSomethingNotOnListGA(claimRef, 'Mr Claimant person v mr defendant person', 'withoutnotice');
+    await createGAAppSteps.askSomethingNotOnListGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
   }
 });
