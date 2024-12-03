@@ -3,7 +3,7 @@ import {ApplicationTypeOption} from 'common/models/generalApplication/applicatio
 import {getClaimById} from 'modules/utilityService';
 import {getByIndexOrLast} from 'services/features/generalApplication/generalApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {GA_APPLICATION_COSTS_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
@@ -16,7 +16,7 @@ export const informOtherPartiesGuard = async (req: AppRequest, res: Response, ne
     const applicationIndex = queryParamNumber(req, 'index');
     const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     if (options.indexOf(applicationType) !== -1  || claim?.generalApplication?.agreementFromOtherParty === YesNo.YES) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL));
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL), applicationIndex));
     } else {
       next();
     }

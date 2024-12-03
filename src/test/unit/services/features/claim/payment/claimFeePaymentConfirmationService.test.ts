@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 
 declare const appRequest: requestModels.AppRequest;

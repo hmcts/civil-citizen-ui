@@ -45,6 +45,9 @@ import {
   CertificateOfSatisfactionOrCancellation,
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
+import {Document} from 'models/document/document';
+import {CcdGeneralApplicationOrderJudge} from 'models/ccdGeneralApplication/ccdGeneralApplicationOrderJudge';
+import {CcdGeneralApplicationRequestingReason} from 'models/ccdGeneralApplication/ccdGeneralAppRequestingReason';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -61,9 +64,9 @@ export const translateDraftApplicationToCCD = (
     ),
     generalAppAskForCosts: toCCDYesNo(application.applicationCosts),
     generalAppDetailsOfOrder: toCCDDetailsOfOrder(application.orderJudges),
-    generalAppReasonsOfOrder: toCCDReasonsOfOrder(
-      application.requestingReasons,
-    ),
+    generalAppDetailsOfOrderColl: toCCDDetailsOfOrderColl(application.orderJudges),
+    generalAppReasonsOfOrder: toCCDReasonsOfOrder(application.requestingReasons),
+    generalAppReasonsOfOrderColl: toCCDReasonsOfOrderColl(application.requestingReasons),
     generalAppEvidenceDocument: toCCDEvidenceDocuments(
       application.wantToUploadDocuments,
       application.uploadEvidenceForApplication,
@@ -77,7 +80,19 @@ export const translateDraftApplicationToCCD = (
     generalAppStatementOfTruth: toCCDStatementOfTruth(
       application.statementOfTruth,
     ),
+    generalAppN245FormUpload: toCCDDocument(application.uploadN245Form),
   };
+};
+
+const toCCDDocument = (uploadDocument: UploadGAFiles): Document => {
+  return uploadDocument
+    ? {
+      document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
+      document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
+      document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
+      category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
+    }
+    : undefined;
 };
 
 const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdGeneralApplicationTypes => {
@@ -110,6 +125,22 @@ const toCCDInformOtherParty = (applicationTypes: ApplicationType[], agreementFro
 
 const toCCDDetailsOfOrder = (orderJudges: OrderJudge[]): string => {
   return orderJudges?.map(orderJudge => orderJudge.text)?.join('\n\n');
+};
+
+const toCCDDetailsOfOrderColl = (orderJudges: OrderJudge[]): CcdGeneralApplicationOrderJudge[] => {
+  return orderJudges?.map(orderJudge => {
+    return {
+      value: orderJudge.text,
+    };
+  });
+};
+
+const toCCDReasonsOfOrderColl = (requestingReasons: RequestingReason[]): CcdGeneralApplicationRequestingReason[] => {
+  return requestingReasons?.map(requestingReason => {
+    return {
+      value: requestingReason.text,
+    };
+  });
 };
 
 const toCCDReasonsOfOrder = (requestingReasons: RequestingReason[]): string => {
@@ -247,7 +278,7 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     ),
     gaRespondentDebtorOffer: {
       respondentDebtorOffer: toCcdDebtorOfferOptions(acceptDefendantOffer?.option),
-      debtorObjections: acceptDefendantOffer?.reasonProposedInstalment,
+      debtorObjections: acceptDefendantOffer?.reasonProposedInstalment ? acceptDefendantOffer?.reasonProposedInstalment : acceptDefendantOffer?.reasonProposedSetDate,
       paymentPlan: toCcdPaymentPlan(acceptDefendantOffer?.type),
       monthlyInstalment: convertToPenceFromStringToString(acceptDefendantOffer?.amountPerMonth),
       paymentSetDate: acceptDefendantOffer?.proposedSetDate,
@@ -274,22 +305,11 @@ export const translateCoScApplicationToCCD = (
       application.agreementFromOtherParty,
       application.informOtherParties,
     ),
+    generalAppEvidenceDocument: toCCDEvidenceDocuments(
+      isCoScProofOfDeptPaymentExists(application.certificateOfSatisfactionOrCancellation),
+      application.uploadEvidenceForApplication,
+    ),
   };
-};
-
-const toCCDCoScEvidenceDocuments = (evidenceOption: string, uploadDocuments: UploadGAFiles[]): CcdGeneralApplicationEvidenceDocument[] => {
-  return (evidenceOption == debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL || evidenceOption == debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT)
-    ? uploadDocuments?.map(uploadDocument => {
-      return {
-        value: {
-          document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
-          document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
-          document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
-          category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
-        },
-      };
-    })
-    : undefined;
 };
 
 const toCCDCertOfSC = (certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation, uploadDocuments?: UploadGAFiles[]): CcdGeneralApplicationCertOfSC => {
@@ -297,8 +317,16 @@ const toCCDCertOfSC = (certificateOfSatisfactionOrCancellation?: CertificateOfSa
     ? {
       defendantFinalPaymentDate: certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate.date,
       debtPaymentEvidence: certificateOfSatisfactionOrCancellation.debtPaymentEvidence,
-      proofOfDebtDoc: toCCDCoScEvidenceDocuments(certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption, uploadDocuments),
     }
     : undefined;
 };
 
+const isCoScProofOfDeptPaymentExists = (certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation): YesNo => {
+  if (certificateOfSatisfactionOrCancellation && certificateOfSatisfactionOrCancellation.debtPaymentEvidence ) {
+    switch (certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption) {
+      case debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL :
+      case debtPaymentOptions.MADE_FULL_PAYMENT_TO_COURT : return YesNo.YES;
+      default: return YesNo.NO;
+    }
+  }
+};

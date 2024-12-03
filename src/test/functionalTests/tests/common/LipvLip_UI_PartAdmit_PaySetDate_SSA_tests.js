@@ -29,6 +29,7 @@ Scenario('Create Claim by claimant', async ({api}) => {
   await CreateLipvLipClaimSteps.clickPayClaimFee();
   await CreateLipvLipClaimSteps.verifyAndPayClaimFee(1520, 115);
   await api.waitForFinishedBusinessProcess();
+  await api.adjustSubmittedDateForCarm(claimRef);
   let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;

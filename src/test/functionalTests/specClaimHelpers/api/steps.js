@@ -1,6 +1,5 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
-const chai = require('chai');
 const breathingSpace = require('../fixtures/events/breathingSpace.js');
 const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
@@ -15,9 +14,20 @@ const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
 const lodash = require('lodash');
 
-chai.use(deepEqualInAnyOrder);
-chai.config.truncateThreshold = 0;
-const {expect, assert} = chai;
+let chai, expect, assert;
+
+(async () => {
+  chai = await import('chai');
+
+  chai.use(deepEqualInAnyOrder);
+  chai.config.truncateThreshold = 0;
+
+  expect = chai.expect;
+  assert = chai.assert;
+
+})().catch(error => {
+  console.error('Failed to load chai:', error);
+});
 
 const {
   waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
@@ -214,7 +224,7 @@ module.exports = {
     console.log('End of performTranslatedDocUpload()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH') => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH', respondentLanguage = 'ENGLISH') => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
@@ -232,7 +242,7 @@ module.exports = {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
     }
-    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language);
+    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
@@ -348,19 +358,12 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
-      console.log('carm enabled, updating submitted date');
+    if (!carmEnabled) {
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
+      const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
-      console.log('carm not enabled, updating submitted date');
-      await apiRequest.setupTokens(config.systemUpdate);
-      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');*/
+      console.log('submitted date update to before carm date for legacy cases');
     }
     return caseId;
   },
@@ -407,18 +410,12 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
+    if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
+      const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
-      console.log('carm not enabled, updating submitted date');
-      await apiRequest.setupTokens(config.systemUpdate);
-      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');*/
+      console.log('submitted date update to before carm date for legacy cases');
     }
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
@@ -442,7 +439,7 @@ module.exports = {
     return caseId;
   },
 
-  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType) => {
+  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = false) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -476,6 +473,20 @@ module.exports = {
       await assignSpecCase(caseId, 'lrvlr');
     }
     await waitForFinishedBusinessProcess(caseId);
+
+    if (carmEnabled) {
+      console.log('carm enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to after carm date');
+    } else {
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date');
+    }
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
@@ -653,6 +664,14 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId, user);
 
     console.log('End of uploadMediationDocumentsCui()');
+  },
+
+  adjustSubmittedDateForCarm: async (caseId) => {
+    console.log('carm not enabled, updating submitted date to past for legacy cases');
+    await apiRequest.setupTokens(config.systemUpdate);
+    const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+    await testingSupport.updateCaseData(caseId, submittedDate);
+    console.log('submitted date update to before carm date for legacy cases');
   },
 
   uploadMediationDocumentsExui: async (user) => {

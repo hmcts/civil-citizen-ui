@@ -12,15 +12,17 @@ import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const hearingArrangementController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
+  const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL),index);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, courtLocations });
 }
@@ -49,7 +51,8 @@ hearingArrangementController.post(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRe
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveHearingArrangement(redisKey, hearingArrangement);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL));
+      const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index));
     }
   } catch (error) {
     next(error);
