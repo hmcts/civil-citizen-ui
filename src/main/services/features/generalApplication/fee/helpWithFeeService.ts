@@ -28,7 +28,7 @@ const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest, lang = 'en'): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
@@ -51,6 +51,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
