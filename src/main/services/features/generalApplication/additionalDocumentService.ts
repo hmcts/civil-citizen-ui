@@ -129,7 +129,7 @@ export const getContentForCloseButton = (redirectUrl: string) => {
 };
 
 export const canUploadAddlDoc = (applicationResponse: ApplicationResponse): boolean => {
-  const availableStates :ApplicationState[] = [ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+  const availableStates: ApplicationState[] = [ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
     ApplicationState.AWAITING_RESPONDENT_RESPONSE,
     ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS,
     ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS,
