@@ -25,12 +25,9 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    console.log('getRedirectUrl lang->' + lang);
-    console.log('getRedirectUrl req.cookies.lang;->' + req.cookies?.lang);
     if(paymentStatus.status === success) {
       return `${GA_PAYMENT_SUCCESSFUL_URL}?lang=${lang}`;
     }
-
     const paymentCancelledUrl = isAdditionalFee
       ? `${GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL}?lang=${lang}`
       : `${GA_APPLY_HELP_WITH_FEE_SELECTION}?lang=${lang}`;
