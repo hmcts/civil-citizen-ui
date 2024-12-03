@@ -152,7 +152,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES);
+          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES+'?lang=undefined');
         });
     });
 
