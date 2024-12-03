@@ -67,7 +67,9 @@ helpWithApplicationFeeController.get([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY
 helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    console.log('lng =>' + lng );
+    console.log('helpWithApplicationFeeController req.query.lang =>' + req.query.lang );
+    console.log('helpWithApplicationFeeController req.cookies.lang =>' + req.cookies.lang );
+    console.log('helpWithApplicationFeeController lng =>' + lng );
 
     const claimId = req.params.id;
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE'));

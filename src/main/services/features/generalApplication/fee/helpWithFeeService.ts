@@ -30,6 +30,10 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    console.log('getRedirectUrl req.query.lang =>' + req.query.lang );
+    console.log('getRedirectUrl req.cookies.lang =>' + req.cookies.lang );
+    console.log('getRedirectUrl lng =>' + lng );
     let redirectUrl;
     let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
