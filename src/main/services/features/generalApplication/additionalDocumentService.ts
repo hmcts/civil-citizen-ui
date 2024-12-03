@@ -129,14 +129,16 @@ export const getContentForCloseButton = (redirectUrl: string) => {
 };
 
 export const canUploadAddlDoc = (applicationResponse: ApplicationResponse): boolean => {
-  if(applicationResponse.state === ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION
-    || applicationResponse.state === ApplicationState.AWAITING_RESPONDENT_RESPONSE
-    || applicationResponse.state === ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS
-    || applicationResponse.state === ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS
-    || applicationResponse.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION
-    || applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT
-    || applicationResponse.state === ApplicationState.LISTING_FOR_A_HEARING
-    || applicationResponse.state === ApplicationState.HEARING_SCHEDULED) {
+  const availableStates :ApplicationState[] = [ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+    ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+    ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS,
+    ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS,
+    ApplicationState.AWAITING_ADDITIONAL_INFORMATION,
+    ApplicationState.APPLICATION_ADD_PAYMENT,
+    ApplicationState.LISTING_FOR_A_HEARING,
+    ApplicationState.HEARING_SCHEDULED,
+  ];
+  if(availableStates.includes(applicationResponse.state)) {
     return true;
   }
   return false;
