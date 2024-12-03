@@ -18,6 +18,7 @@ import {DocumentType} from 'models/document/documentType';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {Claim} from 'models/claim';
+import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
 
 /**
  * Creates Response from court summary list by sorting on response time.
@@ -134,9 +135,11 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
 export const getHearingOrderResponses = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   const hearingOrders = applicationResponse?.case_data?.hearingOrderDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-  const uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
-
+  let uploadAddlDocsButton :ResponseButton = null;
+  if(canUploadAddlDoc(applicationResponse)) {
+    const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
+  }
   if (hearingOrders) {
     courtResponseSummaryList = hearingOrders
       .filter(directionOrderDocument => {
