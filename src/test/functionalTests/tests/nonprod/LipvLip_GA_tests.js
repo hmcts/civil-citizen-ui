@@ -8,30 +8,38 @@ let claimRef, claimType, caseData, claimNumber;
 
 Feature('Lip v Lip GA Creation Tests');
 
-Scenario('LipvLip GA tests @citizenUI @partAdmit @nightly - @api @ga @regression', async ({I, api}) => {
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimType = 'FastTrack';
-  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-  await api.assignToLipDefendant(claimRef);
-  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = await caseData.legacyCaseReference;
-  await api.waitForFinishedBusinessProcess();
+Before(async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    
+    claimType = 'FastTrack';
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, claimType);
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
 
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await api.assignToLipDefendant(claimRef);
+    await api.waitForFinishedBusinessProcess();
+  }
+});
 
-  console.log('Creating GA app as claimant');
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await createGAAppSteps.askToSetAsideJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
+Scenario('LipvLip GA tests @citizenUI @partAdmit @nightly - @api @ga @regression', async ({I}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
-  console.log('Creating GA app as claimant');
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await createGAAppSteps.askToVaryAJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askToSetAsideJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
-  console.log('Creating GA app as claimant');
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
-}).tag('@regression');
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askToVaryAJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
+
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
+  }
+});
