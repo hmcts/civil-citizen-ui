@@ -23,7 +23,7 @@ Before(async () => {
   }
 });
 
-Scenario('MT Defendant and Claimant responses', async ({api}) => {
+Scenario('MT Defendant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
     console.log('LIP vs LIP MT claim has been created Successfully    <===>  ', claimRef);
@@ -51,7 +51,7 @@ Scenario('MT Defendant and Claimant responses', async ({api}) => {
   }
 }).tag('@regression-minti').tag('@nightly');
 
-Scenario('IT Defendant and Claimant responses @123', async ({api}) => {
+Scenario('IT Defendant and Claimant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
@@ -79,14 +79,12 @@ Scenario('IT Defendant and Claimant responses @123', async ({api}) => {
 
     // Respond as claimant user
     paidDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(paymentDate);
-    await LoginSteps.EnterCitizenCredentials('claimantcitizen-wb6hms8@gmail.com', config.applicantSolicitorUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid(15000, paidDate));
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.isDefendantPaid('Yes', 15000);
     await ClaimantResponseSteps.settleTheClaim('No', 15000);
-    // To do
     await ResponseSteps.EnterClaimantDQForIntTrack(claimRef, false);
-
-    //await ClaimantResponseSteps.submitYourResponse();
+    await ClaimantResponseSteps.submitYourResponse();
   }
 }).tag('@regression-minti').tag('@nightly');
