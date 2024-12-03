@@ -613,7 +613,7 @@ describe('View Application service', () => {
   });
 
   describe('getHearingOrderResponses', () => {
-    it('should return hearing order response', async () => {
+    it('should return hearing order response but can not upload additional doc', async () => {
       const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
       applicationResponse.case_data.hearingOrderDocument = setMockHearingOrderDocuments();
 
@@ -626,6 +626,7 @@ describe('View Application service', () => {
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
+      expect(result[0].responseButton).toBeNull();
     });
 
     it('should return empty if no data in applicationResponse', async () => {
