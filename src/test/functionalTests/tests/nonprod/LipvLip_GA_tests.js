@@ -6,9 +6,9 @@ const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAA
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track');
+Feature('Lip v Lip GA Creation Tests');
 
-Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmit @nightly - @api @ga @regression', async ({I, api}) => {
+Scenario('LipvLip GA tests @citizenUI @partAdmit @nightly - @api @ga @regression', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
@@ -34,4 +34,4 @@ Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmi
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
-});
+}).tag('@regression');
