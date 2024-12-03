@@ -14,7 +14,7 @@ Before(async ({api}) => {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     
     claimType = 'FastTrack';
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser.email, claimType);
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
 
@@ -23,7 +23,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip GA tests @citizenUI @nightly - @api @ga @regression @debug', async ({I}) => {
+Scenario('LipvLip GA tests @citizenUI @nightly - @api @ga @regression', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
