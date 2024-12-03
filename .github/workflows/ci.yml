@@ -16,8 +16,8 @@ env:
   NODE_OPTIONS: --max-old-space-size=4096
   CIVIL_SERVICE_URL: http://localhost:1111
   TEST_URL: http://localhost:3001
-  CIVIL_GENERAL_APPLICATIONS_URL: http://localhost:1111
   IDAM_API_URL: http://localhost:1111
+  CIVIL_GENERAL_APPLICATIONS_URL: http://localhost:1111
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK: test
 
