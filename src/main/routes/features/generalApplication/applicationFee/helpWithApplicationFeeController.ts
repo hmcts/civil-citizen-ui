@@ -56,7 +56,6 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 helpWithApplicationFeeController.get([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    console.log('helpWithApplicationFeeController lng =>' + lng );
     const claimId = req.params.id;
     await renderView(res, req, null, claimId, lng);
   }catch (error) {
