@@ -4,7 +4,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
 // eslint-disable-next-line no-unused-vars
 
-let claimRef, claimType, caseData, claimNumber;
+let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip GA Creation Tests');
 
@@ -12,7 +12,6 @@ Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     
-    claimType = 'FastTrack';
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
