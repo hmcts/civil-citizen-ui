@@ -23,7 +23,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip GA tests @citizenUI @nightly - @api @ga @regression', async ({I}) => {
+Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga @regression', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
@@ -61,7 +61,11 @@ Scenario('LipvLip GA tests @citizenUI @nightly - @api @ga @regression', async ({
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
     await createGAAppSteps.askToChangeSubmittedGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
+  }
+});
 
+Scenario('LipvLip Defendant GA creation tests @citizenUI @nightly - @api @ga @regression', async ({I}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
     console.log('Creating GA app as defendant');
@@ -82,7 +86,7 @@ Scenario('LipvLip GA tests @citizenUI @nightly - @api @ga @regression', async ({
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtSanction(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+    await createGAAppSteps.askCourtSanctionGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
