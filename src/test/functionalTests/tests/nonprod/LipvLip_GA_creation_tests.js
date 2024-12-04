@@ -33,33 +33,21 @@ Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga @re
     await createGAAppSteps.askToSetAsideJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as claimant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
     await createGAAppSteps.askToVaryAJudgementGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as claimant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
     await createGAAppSteps.askCourtToReconsiderAnOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
     console.log('Creating GA app as claimant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
     await createGAAppSteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as claimant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
     await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     console.log('Creating GA app as claimant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
     await createGAAppSteps.askForReliefFromAPenaltyGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
     console.log('Creating GA app as claimant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
     await createGAAppSteps.askToChangeSubmittedGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
   }
 });
