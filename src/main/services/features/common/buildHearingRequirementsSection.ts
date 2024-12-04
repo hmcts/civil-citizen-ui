@@ -12,8 +12,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {buildCommonHearingRequirements} from 'services/features/common/buildCommonHearingRequirements';
 
 export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string, mintiApplicable: boolean ): SummarySection => {
-  const directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), claim.directionQuestionnaire);
-  return buildHearingRequirementsSectionCommon(claim, claimId, lang, directionQuestionnaire, mintiApplicable);
+  return buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.directionQuestionnaire, mintiApplicable);
 };
 
 export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string, directionQuestionnaire: DirectionQuestionnaire, mintiApplicable: boolean): SummarySection => {
@@ -29,13 +28,14 @@ export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: str
     });
   }
 
+  const directionQuestionnaireObj = Object.assign(new DirectionQuestionnaire(), directionQuestionnaire);
   if (claim.isSmallClaimsTrackDQ) {
-    buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaire);
+    buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaireObj);
   } else {
-    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaire, mintiApplicable);
+    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaireObj, mintiApplicable);
   }
 
-  buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaire);
+  buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaireObj);
 
   return hearingRequirementsSection;
 };
