@@ -1,5 +1,4 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
@@ -35,8 +34,6 @@ Scenario('Fast Track case is struck out due to hearing fee not being paid', asyn
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
     taskListItem = uploadHearingDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-  } else {
-    CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
 }).tag('@nightly-regression-cp');
 

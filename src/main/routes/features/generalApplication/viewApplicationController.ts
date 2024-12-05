@@ -27,6 +27,7 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -42,7 +43,6 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const applicationTypeCards = getSummaryCardSections(applicationResponse, lang);
     const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationResponse, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
-    const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicantDocuments : DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
@@ -55,7 +55,10 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     if(isApplicationFeeAmountNotPaid) {
       applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?appFee=' + convertToPoundsFilter(applicationResponse?.case_data?.generalAppPBADetails?.fee.calculatedAmountInPence));
     }
-
+    let additionalDocUrl : string = null;
+    if(canUploadAddlDoc(applicationResponse)) {
+      additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    }
     const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
