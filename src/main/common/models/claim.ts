@@ -126,7 +126,7 @@ export class Claim {
   claimantBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   pcqId: string;
-  respondentResponsePcqId: string;
+  respondentResponsePcqId?: string;
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
