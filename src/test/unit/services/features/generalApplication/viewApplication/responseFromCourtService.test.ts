@@ -21,6 +21,8 @@ import {DocumentType} from 'models/document/documentType';
 import {CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import * as utilityService from 'modules/utilityService';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -86,6 +88,7 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
       },
       'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
       'createdDatetime': new Date('2024-03-02'),
+      'documentName': fileName,
       'createdBy':'civils',
     },
   },
@@ -103,11 +106,27 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
       'documentType': DocumentType.REQUEST_MORE_INFORMATION,
       'createdDatetime': new Date('2024-05-02'),
     },
+  },
+  {
+    'id': '5186dee0-3186-4397-a357-2c791d001eec',
+    'value': {
+      'createdBy': 'ga_ctsc_team_leader_national@justice.gov.uk National',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/f4a248ec-ce38-47f5-969d-d4eb54b848fe',
+        'document_filename': '000MC039-settlement-agreement.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/f4a248ec-ce38-47f5-969d-d4eb54b848fe/binary',
+      },
+      'documentName': 'Translated_Request_for_information_for_application_2024-11-14 21:30:24.pdf',
+      'documentType': DocumentType.REQUEST_MORE_INFORMATION,
+      'createdDatetime': new Date('2024-11-14'),
+    },
   }];
 }
 
 describe('View Application service', () => {
 
+  const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
   describe('getJudgeResponseSummary', () => {
     let applicationResponse : ApplicationResponse;
     beforeEach(() => {
@@ -136,21 +155,24 @@ describe('View Application service', () => {
 
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
 
       //when
-      const result = getJudgeDirectionWithNotice(mockedAppRequest, applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(claim, mockedAppRequest, applicationResponse, 'en');
 
       //then
-      expect(result.rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result.rows[0].value.html).toEqual('1 January 2024');
-      expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
-      expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098" target="_blank" rel="noopener noreferrer">make-with-notice_2024-07-22 11:01:54.pdf</a>');
-      expect(result.rows[2].value.html).toContain('make-with-notice_2024-07-22 11:01:54.pdf');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('make-with-notice_2024-07-22 11:01:54.pdf');
     });
 
-    it('should return judge response summary with correct status when requestForInformation isWithNotice is present', async () => {
+    it('should return judge response summary with correct status and pay fee button ' +
+      'when requestForInformation isWithNotice is present and Add fee is not paid.', async () => {
       //given
       applicationResponse.created_date = new Date('2024-01-01').toString();
       const caseData = applicationResponse.case_data;
@@ -166,6 +188,22 @@ describe('View Application service', () => {
           },
           'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
           'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+          'createdDatetime': new Date('2024-11-13'),
+        },
+      },
+      {
+        'id': '6c755e96-086e-477a-b446-ab86b321a23c',
+        'value': {
+          'createdBy': 'ga_ctsc_team_leader_national@justice.gov.uk National',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://dm-store:8080/documents/f5043c2f-61d3-41f9-84ef-fcbd07f3bcae',
+            'document_filename': 'CIV-7828 testing notes.PDF',
+            'document_binary_url': 'http://dm-store:8080/documents/f5043c2f-61d3-41f9-84ef-fcbd07f3bcae/binary',
+          },
+          'documentName': 'Translated Court document',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+          'createdDatetime': new Date('2024-11-14'),
         },
       }];
 
@@ -183,11 +221,69 @@ describe('View Application service', () => {
       };
       applicationResponse.case_data= caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
+      applicationResponse.state = ApplicationState.APPLICATION_ADD_PAYMENT;
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
       //when
-      const result = getJudgeDirectionWithNotice(mockedAppRequest,  applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(claim, mockedAppRequest, applicationResponse, 'en');
       //then
-      expect(result.rows[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
-      expect(result.rows[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
+      expect(result[0].rows[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[0].rows[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
+      expect(result[1].rows.length).toEqual(3);
+    });
+
+    it('should return judge direction with notice summary translated document', async () => {
+      //given
+
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [{
+        'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+            'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
+            'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+          },
+          'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+          'createdDatetime' : new Date('2024-01-01'),
+        },
+      },
+      {
+        'id': '6c755e96-086e-477a-b446-ab86b321a23c',
+        'value': {
+          'createdBy': 'ga_ctsc_team_leader_national@justice.gov.uk National',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://dm-store:8080/documents/f5043c2f-61d3-41f9-84ef-fcbd07f3bcae',
+            'document_filename': 'CIV-7828 testing notes.PDF',
+            'document_binary_url': 'http://dm-store:8080/documents/f5043c2f-61d3-41f9-84ef-fcbd07f3bcae/binary',
+          },
+          'documentName': 'Translated Court document',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+          'createdDatetime': new Date('2024-11-14'),
+        },
+      }];
+
+      applicationResponse.case_data = caseData;
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
+
+      //when
+      const result = getJudgeDirectionWithNotice(claim, mockedAppRequest, applicationResponse, 'en');
+
+      //then
+      expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[1].rows[0].value.html).toEqual('14 November 2024');
+      expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[1].rows[2].value.html).toContain('Translated Court document');
     });
 
   });
@@ -284,6 +380,7 @@ describe('View Application service', () => {
               },
               documentType: DocumentType.DISMISSAL_ORDER,
               createdDatetime: new Date('2024-01-01'),
+              documentName: fileName,
             },
           },
         ],
@@ -583,24 +680,24 @@ describe('View Application service', () => {
       const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
 
       //then
-      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
-      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
-      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('2 May 2024');
+      expect(result[1].rows[0].value.html).toEqual('1 August 2024');
       expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
+      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[1].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[1].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
       expect(result[2].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[2].rows[0].value.html).toEqual('2 March 2024');
+      expect(result[2].rows[0].value.html).toEqual('2 May 2024');
       expect(result[2].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[2].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[2].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[2].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].rows[2].value.html).toContain('Name of file');
+      expect(result[2].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[3].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[3].rows[0].value.html).toEqual('2 March 2024');
+      expect(result[3].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[3].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[3].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[3].rows[2].value.html).toContain('Name of file');
     });
 
     it('should return court from response section for defendant', async () => {
@@ -617,18 +714,18 @@ describe('View Application service', () => {
       //when'
       const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
       //then
-      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
-      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
-      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('2 May 2024');
+      expect(result[1].rows[0].value.html).toEqual('1 August 2024');
       expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
+      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[1].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[1].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
+      expect(result[2].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[2].rows[0].value.html).toEqual('2 May 2024');
+      expect(result[2].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[2].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
+      expect(result[2].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
     });
   });
 
@@ -760,12 +857,40 @@ describe('View Application service', () => {
 
     it('should return empty if no data in applicationResponse', async () => {
       //given
-      const applicationResponse = new ApplicationResponse();
+      const applicationResponse: ApplicationResponse = undefined;
       const claim = new Claim();
       //when
-      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
-      //then
-      expect(result.length).toEqual(0);
+      const moreInfoResponse = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
+      const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
+      const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
+      const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
+      //Then
+      expect(moreInfoResponse.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(writtenRepSequentialDocument.length).toEqual(0);
+      expect(writtenRepConcurrentDocument.length).toEqual(0);
+    });
+
+    it('should get empty data array if there is no dismissal order documents', async () => {
+      //given
+      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = applicationResponse.case_data;
+      caseData.dismissalOrderDocument = undefined;
+      caseData.requestForInformationDocument = undefined;
+      caseData.writtenRepSequentialDocument = undefined;
+      caseData.writtenRepConcurrentDocument = undefined;
+
+      //When
+      const moreInfoResponse = getRequestMoreInfoResponse('1', applicationResponse, 'en');
+      const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
+      const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
+      const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
+
+      //Then
+      expect(moreInfoResponse.length).toEqual(0);
+      expect(dismissalOrder.length).toEqual(0);
+      expect(writtenRepSequentialDocument.length).toEqual(0);
+      expect(writtenRepConcurrentDocument.length).toEqual(0);
     });
   });
 });

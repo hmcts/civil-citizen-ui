@@ -192,7 +192,6 @@
 
   {% if content.type === ClaimSummaryType.INPUT_ARRAY %}
      <div>
-      <fieldset class="govuk-fieldset">
         {{ govukInput({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -210,7 +209,6 @@
              'data-id': content.data.category+'[%index%]['+content.data.field+']'
            }
         }) }}
-      </fieldset>
      </div>
   {% endif %}
 

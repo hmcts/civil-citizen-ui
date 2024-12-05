@@ -2754,6 +2754,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "APPLICATION": "Application",
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
@@ -3011,7 +3012,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
         "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
-        "TITLE": "Application from the other parties",
+        "TITLE": "Agreement from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
       "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
@@ -3039,7 +3040,7 @@
         "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
         "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
         "FIND_OUT": "Find out how to",
-        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
+        "GET_INTERPRETER": "get an interpreter at a court or tribunal",
         "IF_YOU_NEED": "If you need a sign language or language interpreter",
         "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
         "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
@@ -3072,7 +3073,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
-        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+        "TITLE": "Do you want to upload documents to support your application?"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -4220,13 +4221,13 @@
       "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
+      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing. Find your nearest court by postcode : <a class='govuk-link' href='https://www.gov.uk/find-court-tribunal' target='_blank'>https://www.gov.uk/find-court-tribunal</a>.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
-      "SELECTED_COURT": "Selected court",
+      "SELECTED_COURT": "Please select your preferred court hearing location",
       "SELECT_VALUE": "Select a value",
       "REASON": "Tell us why you want the hearing to be held at this court",
-      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
+      "TITLE": "Please select your preferred court hearing location."
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -4869,6 +4870,7 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
+    "GA_ENTER_A_VALID_DATE": "Enter a valid date",
     "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
@@ -5310,5 +5312,10 @@
       }
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 4th December 2024 and 02:00 on 5th December 2024 due to the release of CUI Case Progression."
+    }
   }
 }
