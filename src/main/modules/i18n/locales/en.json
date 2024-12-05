@@ -4389,7 +4389,7 @@
       "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
       "CONTINUE_TO_PAYMENT": "continue to payment",
       "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry.",
-      "CASE_PROCESSING_WARNING": "The case processing has not completed, please refresh this page in a few minutes. If the problem persists please contact the helpdesk."
+      "CASE_PROCESSING_WARNING": "The case processing has not completed, please refresh this page in one minute. If the problem persists please contact the helpdesk 0300 123 7050."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",

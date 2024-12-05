@@ -16,7 +16,7 @@
                                 iconFallbackText: "Warning"
                            }) }}
                        {% endif %}
-                      {% if not businessProcessFinished %}
+                      {% if not hasBusinessProcessFinished %}
                            {{ govukWarningText({
                                text: t('PAGES.FEE_AMOUNT.CASE_PROCESSING_WARNING'),
                                 iconFallbackText: "Warning"
@@ -72,7 +72,7 @@
                         {{ csrfProtection(csrf) }}
                         {{ govukButton({
                            text: buttonText,
-                           disabled: not businessProcessFinished
+                           disabled: not hasBusinessProcessFinished
                         }) }}
                     </form>
                 </div>
