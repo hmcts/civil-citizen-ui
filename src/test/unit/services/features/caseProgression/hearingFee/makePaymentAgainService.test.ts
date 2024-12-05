@@ -1,18 +1,26 @@
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/makePaymentAgainService';
 import * as requestModels from 'models/AppRequest';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {AppRequest} from 'models/AppRequest';
+import {getRedirectUrlCommon} from 'services/features/caseProgression/hearingFee/paymentServiceUtils';
 
-jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
-jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+jest.mock('common/utils/urlFormatter');
+jest.mock('services/features/caseProgression/hearingFee/paymentServiceUtils');
+
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 declare const appRequest: requestModels.AppRequest;
-const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
+const mockAppRequest = {
+  session: {user: {id: 'userId'}},
+  params: {id: claimId},
+} as unknown as AppRequest;
 
 describe('MakePaymentAgain Service', () => {
   app.locals.draftStoreClient = mockCivilClaim;
@@ -22,19 +30,19 @@ describe('MakePaymentAgain Service', () => {
       status: 'initiated',
       nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
     };
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(mockHearingFeePaymentRedirectInfo);
+    (getRedirectUrlCommon as jest.Mock).mockResolvedValue(mockHearingFeePaymentRedirectInfo.nextUrl);
     //when
-    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockAppRequest);
 
     //Then
     expect(actualPaymentRedirectUrl).toBe(mockHearingFeePaymentRedirectInfo.nextUrl);
   });
 
   it('should return 500 error page for any service error', async () => {
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
+    (getRedirectUrlCommon as jest.Mock).mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
 
     //Then
-    await expect(getRedirectUrl(claimId, mockedAppRequest)).rejects.toBe(
+    await expect(getRedirectUrl(claimId, mockAppRequest)).rejects.toBe(
       TestMessages.SOMETHING_WENT_WRONG,
     );
   });

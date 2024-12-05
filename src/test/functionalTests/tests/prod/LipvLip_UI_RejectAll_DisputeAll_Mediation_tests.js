@@ -16,6 +16,7 @@ Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
 });
 
 Scenario('Create Claim', async ({api}) => {
+  const isCrossBrowser = process.env.IS_CROSSBROWSER;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -27,13 +28,16 @@ Scenario('Create Claim', async ({api}) => {
   await api.waitForFinishedBusinessProcess();
   await CreateLipvLipClaimSteps.clickPayClaimFee();
   await CreateLipvLipClaimSteps.verifyAndPayClaimFee(1520, 115);
-  await api.waitForFinishedBusinessProcess();
-  let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  claimNumber = await caseData.legacyCaseReference;
-  let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
-  console.log('The value of the Claim Number :' + claimNumber);
-  console.log('The value of the Security Code :' + securityCode);
-}).retry(1).tag('@regression-cui-r2');
+  if (!isCrossBrowser) {
+    await api.waitForFinishedBusinessProcess();
+    await api.adjustSubmittedDateForCarm(claimRef);
+    let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
+    let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('The value of the Claim Number :' + claimNumber);
+    console.log('The value of the Security Code :' + securityCode);
+  }
+}).retry(1).tag('@regression-cui-r2').tag('@crossbrowser');
 
 Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);

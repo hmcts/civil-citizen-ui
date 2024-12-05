@@ -8,7 +8,6 @@ import {
   FIRST_CONTACT_PIN_URL,
 } from 'routes/urls';
 import {t} from 'i18next';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import { Session } from 'express-session';
 import { AppSession } from 'common/models/AppRequest';
@@ -110,7 +109,7 @@ describe('Respond to Claim - Pin Controller', () => {
         .send({ pin: 'error' })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
         });
     });
   });

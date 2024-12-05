@@ -1,6 +1,7 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
+
 let ldClient: LDClient;
 let testData: TestData;
 
@@ -8,7 +9,6 @@ const CUI_CASE_PROGRESSION = 'cui-case-progression';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
 const CUI_RELEASE_TWO_ENABLED = 'cuiReleaseTwoEnabled';
-const CARM = 'carm';
 const GA_FOR_LIPS = 'GaForLips';
 const MINTI = 'minti';
 const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
@@ -28,13 +28,13 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(CARM).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MINTI).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
@@ -89,10 +89,6 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
 }
 
-export async function isCARMEnabled(): Promise<boolean> {
-  return await getFlagValue(CARM) as boolean;
-}
-
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
@@ -122,9 +118,7 @@ export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const carmFlag = await getFlagValue(CARM) as boolean;
-  const carmApplicable = await getFlagValue(CARM_ENABLED_FOR_CASE, epoch) as boolean;
-  return carmFlag && carmApplicable;
+  return await getFlagValue(CARM_ENABLED_FOR_CASE, epoch) as boolean;
 }
 
 export async function isMintiEnabledForCase(date: Date): Promise<boolean> {

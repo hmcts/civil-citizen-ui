@@ -366,9 +366,15 @@ class Response {
 
     I.seeInCurrentUrl('/directions-questionnaire/court-location');
     seeInTitle('Specific court');
-    I.see('Do you want to ask for the hearing to be held at a specific court?', 'h1.govuk-heading-l');
-    I.see('You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties\' circumstances when deciding where to hold the hearing.', 'p.govuk-body');
-    I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
+    I.see('Please select your preferred court hearing location.', 'h1.govuk-heading-l');
+    I.see('You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties\' circumstances when deciding where to hold the hearing. Find your nearest court by postcode :', 'p.govuk-body');
+    I.see('Select a court', 'label.govuk-label');
+
+    I.selectOption('select[name="courtLocation"]', 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ');
+    I.see('Tell us why you want the hearing to be held at this court', 'label.govuk-label');
+
+    I.fillField('textarea[name="reason"]', 'test');
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/welsh-language');

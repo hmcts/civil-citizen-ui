@@ -5,6 +5,7 @@ import RedisStore from 'connect-redis';
 const Redis = require('ioredis-mock');
 
 const REDIS_DATA = require('./redisData.json');
+const GA_REDIS_DATA = require('./gaRedisData.json');
 
 export class DraftStoreCliente2e {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully e2e tests';
@@ -22,6 +23,11 @@ export class DraftStoreCliente2e {
       REDIS_DATA.forEach((element: any) => {
         element.case_data.draftClaimCreatedAt = Date.now();
         client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
+          this.logger.info(`Mock data ${element.id} saved to Redis`),
+        );
+      });
+      GA_REDIS_DATA.forEach((element: any) => {
+        client.set(element.id, JSON.stringify(element.value, null, 4)).then(() =>
           this.logger.info(`Mock data ${element.id} saved to Redis`),
         );
       });
