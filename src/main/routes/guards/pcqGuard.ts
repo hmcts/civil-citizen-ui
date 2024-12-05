@@ -22,10 +22,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const caseData: Claim = await getCaseDataFromStore(redisKey);
     const pcqShutterOn = await isPcqShutterOn();
 
-    console.log('PCQShutter : ', pcqShutterOn);
-    console.log('pcqId:', caseData.pcqId);
-    if (pcqShutterOn || caseData.pcqId) {
-      console.log('I am going ahead');
+    if (pcqShutterOn || caseData.respondentResponsePcqId) {
       return next();
     }
 
@@ -38,7 +35,6 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const isElegible = isPcqElegible(type);
 
     if (isHealthy && isElegible) {
-      console.log('I am generating new pcq id ');
       const pcqId = generatePcqId();
       await savePcqId(pcqId,req, claimId);
 
