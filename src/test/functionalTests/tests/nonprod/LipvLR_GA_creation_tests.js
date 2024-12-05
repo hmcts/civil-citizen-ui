@@ -25,24 +25,24 @@ Scenario('LipvLR Defendant GA creation tests @citizenUI @nightly - @api @ga @reg
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
-    console.log('Creating GA app as defendant');
+    console.log('Creating summary judgment GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
     await createGAAppSteps.askCourtSummaryJudgmentGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
 
-    console.log('Creating GA app as defendant');
+    console.log('Creating strike out GA app as defendant');
     await createGAAppSteps.askCourtStrikeOutGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
 
-    console.log('Creating GA app as defendant');
+    console.log('Creating pause claim GA app as defendant');
     await createGAAppSteps.askCourtToPauseClaimGA(claimRef, 'Test Inc v Sir John Doe', 'notice');
 
-    console.log('Creating GA app as defendant');
+    console.log('Creating impose a sanction GA app as defendant');
     await createGAAppSteps.askCourtSanctionGA(claimRef, 'Test Inc v Sir John Doe', 'notice');
 
-    console.log('Creating GA app as defendant');
+    console.log('Creating settle by consent GA app as defendant');
     await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
 
-    console.log('Creating GA app as defendant');
+    console.log('Creating not on list GA app as defendant');
     await createGAAppSteps.askSomethingNotOnListGA(claimRef, 'Test Inc v Sir John Doe', 'withoutnotice');
   }
 });
