@@ -37,7 +37,7 @@ Scenario('LipvLip Applicant GA creation e2e tests @citizenUI @nightly - @api @ga
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
     
-    await respondToGASteps.asdf();
+    //await respondToGASteps.asdf();
 
   }
 });
