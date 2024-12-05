@@ -34,8 +34,8 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
 
 /**
  * Gets the claims latest business process from civil service
- * @param claimId, req, useRedisKey
- * @returns claim
+ * @param claimId, req
+ * @returns businessProcess
  */
 export const getClaimBusinessProcess = async (claimId: string, req: Request): Promise<BusinessProcess> => {
   const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
