@@ -1,7 +1,9 @@
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
-import {toggleViewApplicationBuilderBasedOnUserAndApplicant} from 'services/features/generalApplication/generalApplicationService';
+import {
+  isGaApplicant,
+} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -43,7 +45,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
 
 export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  if (toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse)) {
+  if (isGaApplicant(claim, applicationResponse)) {
     const claimId = req.params.id;
     const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
     if (makeWithNoticeDocs) {
