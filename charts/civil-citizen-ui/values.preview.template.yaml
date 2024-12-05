@@ -213,7 +213,7 @@ civil-wa:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1604'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
