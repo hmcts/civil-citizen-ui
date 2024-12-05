@@ -30,39 +30,28 @@ import {
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {getListOfNotAllowedAdditionalAppType} from 'services/features/generalApplication/generalApplicationService';
 
-export const addApplicationTypesRows = (
+export const addApplicationTypeRow = (
   claimId: string,
   claim: Claim,
+  appTypeIndex: number,
   lang: string,
 ): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (): string =>
     t('COMMON.BUTTONS.CHANGE', { lng });
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.applicationTypes) {
-    claim.generalApplication?.applicationTypes?.forEach(
-      (applicationType, index, arr) => {
-        const applicationTypeDisplay =
-            getApplicationTypeOptionByTypeAndDescription(applicationType.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
-        const href = `${constructResponseUrlWithIdParams(
-          claimId,
-          APPLICATION_TYPE_URL,
-        )}?index=${index}`;
-        rows.push(
-          summaryRow(
-            t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
-              lng,
-            }),
-            t(applicationTypeDisplay, { lng }),
-            href,
-            changeLabel(),
-            undefined,
-            index,
-            arr.length,
-          ),
-        );
-      },
-    );
+  if (claim.generalApplication?.applicationTypes?.length > appTypeIndex) {
+    const applicationType = claim.generalApplication.applicationTypes[appTypeIndex];
+    const applicationTypeDisplay =
+      getApplicationTypeOptionByTypeAndDescription(applicationType.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+    const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${appTypeIndex}`;
+    rows.push(summaryRow(
+      t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}),
+      t(applicationTypeDisplay, {lng}),
+      href,
+      changeLabel(),
+      undefined,
+    ));
   }
   return rows;
 };
@@ -120,34 +109,32 @@ export const addAskForCostsRow = (claimId: string, claim: Claim, lang: string): 
   return rows;
 };
 
-export const addOrderJudgeRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+export const addOrderJudgeRow = (claimId: string, claim: Claim, orderJudgeIndex: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.orderJudges) {
-    claim.generalApplication?.orderJudges?.forEach((orderJudge, index, arr) => {
-      const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${index}`;
-      rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
-          href, changeLabel(), undefined, index, arr.length),
-      );
-    });
+  if (claim.generalApplication?.orderJudges?.length > orderJudgeIndex) {
+    const orderJudge = claim.generalApplication.orderJudges[orderJudgeIndex];
+    const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${orderJudgeIndex}`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
+        href, changeLabel(), undefined),
+    );
   }
   return rows;
 };
 
-export const addRequestingReasonRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+export const addRequestingReasonRow = (claimId: string, claim: Claim, requestingReasonIndex: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.requestingReasons) {
-    claim.generalApplication?.requestingReasons?.forEach((requestingReason, index, arr) => {
-      const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${index}`;
-      rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
-          href, changeLabel(), undefined, index, arr.length),
-      );
-    });
+  if (claim.generalApplication?.requestingReasons?.length > requestingReasonIndex) {
+    const requestingReason = claim.generalApplication.requestingReasons[requestingReasonIndex];
+    const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${requestingReasonIndex}`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
+        href, changeLabel(), undefined),
+    );
   }
   return rows;
 };
