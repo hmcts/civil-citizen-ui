@@ -20,6 +20,7 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
   saveDraftGAHWFDetails: jest.fn(),
