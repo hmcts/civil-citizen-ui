@@ -9,6 +9,14 @@ class ResponseApplicationSummary {
     I.see('Application ID');
     I.see(appId);
   }
+
+  viewApplicantApplicationSummary(claimId, appId, applicationStatus) {
+    I.amOnPage(`/case/${claimId}/general-application/summary`);
+    I.see('Application Status');
+    I.see(applicationStatus);
+    I.see('Application ID');
+    I.see(appId);
+  }
 }
 
 module.exports = new ResponseApplicationSummary();
