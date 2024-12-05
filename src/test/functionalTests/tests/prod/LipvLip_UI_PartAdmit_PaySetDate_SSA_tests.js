@@ -12,7 +12,7 @@ let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@regression-cui-r2').tag('@nightly');
 
-Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
+Scenario('Verify the Eligibility Check journey @nightly', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
