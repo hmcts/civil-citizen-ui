@@ -25,9 +25,15 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
+        {% if carmEnabled %}
+            <p class="govuk-body">{{t('PAGES.WELSH_LANGUAGE.OFFICIAL_LANGUAGE_MEDIATION')}}</p>
+        {% else %}
             <p class="govuk-body">{{t('PAGES.WELSH_LANGUAGE.OFFICIAL_LANGUAGE')}}</p>
-
+        {% endif %}
             <p class="govuk-body govuk-!-font-weight-bold">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK')}}</p>
+        {% if carmEnabled %}
+              <div id="hint" class="govuk-hint">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK_MEDIATION')}}</div>
+        {% endif %}
             {{ govukRadios({
               id: "speakLanguage",
               name: "speakLanguage",

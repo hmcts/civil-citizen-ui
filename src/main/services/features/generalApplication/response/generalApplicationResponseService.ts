@@ -131,7 +131,9 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
     || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO)
     || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
-    || (application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
+    || ((application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO
+        || application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES)
+      && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
     || (application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
       && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS')
   );
