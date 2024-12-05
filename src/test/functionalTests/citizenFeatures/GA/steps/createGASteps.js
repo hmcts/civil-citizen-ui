@@ -1,26 +1,26 @@
 const I = actor();
-const StringUtilsComponent = require('../../caseProgression/util/StringUtilsComponent');
-const GovPay = require ('../../common/govPay');
-const ApplicationType = require('../../GA/pages/applicationType');
-const AgreementFromOtherParty= require('../../GA/pages/agreementFromOtherParty');
-const InformOtherParties = require('../../GA/pages/informOtherParties');
-const ApplicationCosts = require('../../GA/pages/applicationCosts');
-const ClaimApplicationCost = require('../../GA/pages/claimApplicationCost');
-const OrderJudge = require('../../GA/pages/orderJudge');
-const RequestingReason = require('../../GA/pages/requestingReason');
-const AddAnotherApplication= require('../../GA/pages/addAnotherApplication');
-const WantToUploadDocuments = require('../../GA/pages/wantToUploadDocuments');
-const HearingArrangementsGuidance = require('../../GA/pages/hearingArrangementsGuidance');
-const HearingArrangement = require('../../GA/pages/hearingArrangement');
-const HearingContactDetails = require('../../GA/pages/hearingContactDetails');
-const UnavailableDates = require('../../GA/pages/unavailableDates');
-const HearingSupport = require('../../GA/pages/hearingSupport');
-const PayingForApplication = require('../../GA/pages/payingForApplication');
-const CheckAndSend= require('../../GA/pages/checkAndSend');
-const SubmitGAConfirmation = require('../../GA/pages/submitGAConfirmation');
-const ApplyHelpFeeSelection = require('../../GA/pages/applyHelpFeeSelection');
-const PaymentConfirmation = require('../../GA/pages/paymentGAConfirmation');
-const N245Upload = require('../../GA/pages/uploadN245FormPage');
+const StringUtilsComponent = require('../../caseProgression/util/StringUtilsComponent.js');
+const GovPay = require ('../../common/govPay.js');
+const ApplicationType = require('../pages/applicationType.js');
+const AgreementFromOtherParty= require('../pages/agreementFromOtherParty.js');
+const InformOtherParties = require('../pages/informOtherParties.js');
+const ApplicationCosts = require('../pages/applicationCosts.js');
+const ClaimApplicationCost = require('../pages/claimApplicationCost.js');
+const OrderJudge = require('../pages/orderJudge.js');
+const RequestingReason = require('../pages/requestingReason.js');
+const AddAnotherApplication= require('../pages/addAnotherApplication.js');
+const WantToUploadDocuments = require('../pages/wantToUploadDocuments.js');
+const HearingArrangementsGuidance = require('../pages/hearingArrangementsGuidance.js');
+const HearingArrangement = require('../pages/hearingArrangement.js');
+const HearingContactDetails = require('../pages/hearingContactDetails.js');
+const UnavailableDates = require('../pages/unavailableDates.js');
+const HearingSupport = require('../pages/hearingSupport.js');
+const PayingForApplication = require('../pages/payingForApplication.js');
+const CheckAndSend= require('../pages/checkAndSend.js');
+const SubmitGAConfirmation = require('../pages/submitGAConfirmation.js');
+const ApplyHelpFeeSelection = require('../pages/applyHelpFeeSelection.js');
+const PaymentConfirmation = require('../pages/paymentGAConfirmation.js');
+const N245Upload = require('../pages/uploadN245FormPage.js');
 const config = require('../../../../config.js');
 const govPay = new GovPay();
 
@@ -45,7 +45,7 @@ const applyHelpFeeSelectionPage = new ApplyHelpFeeSelection();
 const paymentConfirmationPage = new PaymentConfirmation();
 const uploadN245FormPage = new N245Upload();
 
-class createGAAppSteps {
+class createGASteps {
 
   async askToSetAsideJudgementGA(caseRef, parties, communicationType = 'notice') {
     //Cannot be withoutnotice
@@ -1410,4 +1410,4 @@ class createGAAppSteps {
   }
 }
 
-module.exports = new createGAAppSteps();
+module.exports = new createGASteps();

@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
+const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 // eslint-disable-next-line no-unused-vars
 
 let claimRef, caseData, claimNumber;
@@ -28,21 +28,21 @@ Scenario('LipvLR Defendant GA creation tests @citizenUI @nightly - @api @ga @reg
     console.log('Creating summary judgment GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askCourtSummaryJudgmentGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
+    await createGASteps.askCourtSummaryJudgmentGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
 
     console.log('Creating strike out GA app as defendant');
-    await createGAAppSteps.askCourtStrikeOutGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
+    await createGASteps.askCourtStrikeOutGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
 
     console.log('Creating pause claim GA app as defendant');
-    await createGAAppSteps.askCourtToPauseClaimGA(claimRef, 'Test Inc v Sir John Doe', 'notice');
+    await createGASteps.askCourtToPauseClaimGA(claimRef, 'Test Inc v Sir John Doe', 'notice');
 
     console.log('Creating impose a sanction GA app as defendant');
-    await createGAAppSteps.askCourtSanctionGA(claimRef, 'Test Inc v Sir John Doe', 'notice');
+    await createGASteps.askCourtSanctionGA(claimRef, 'Test Inc v Sir John Doe', 'notice');
 
     console.log('Creating settle by consent GA app as defendant');
-    await createGAAppSteps.askCourtToSettleByConsentGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
+    await createGASteps.askCourtToSettleByConsentGA(claimRef, 'Test Inc v Sir John Doe', 'consent');
 
     console.log('Creating not on list GA app as defendant');
-    await createGAAppSteps.askSomethingNotOnListGA(claimRef, 'Test Inc v Sir John Doe', 'withoutnotice');
+    await createGASteps.askSomethingNotOnListGA(claimRef, 'Test Inc v Sir John Doe', 'withoutnotice');
   }
 });

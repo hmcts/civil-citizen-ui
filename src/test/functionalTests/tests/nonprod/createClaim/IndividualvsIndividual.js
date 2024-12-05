@@ -17,7 +17,7 @@ const {
 let caseData, legacyCaseReference, caseRef, claimNumber, claimInterestFlag, StandardInterest, selectedHWF,
   claimAmount = 1600, claimFee = 115;
 
-const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
+const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
 Feature('Create Lip v Lip claim - Individual vs Individual @claimCreation').tag('@regression-r2');
 
