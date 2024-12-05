@@ -8,7 +8,7 @@ const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/das
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track');
+Feature('Lip v Lip - Case Offline Tests');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
