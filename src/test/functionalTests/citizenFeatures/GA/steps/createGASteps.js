@@ -20,7 +20,7 @@ const CheckAndSend= require('../pages/checkAndSend.js');
 const SubmitGAConfirmation = require('../pages/submitGAConfirmation.js');
 const ApplyHelpFeeSelection = require('../pages/applyHelpFeeSelection.js');
 const PaymentConfirmation = require('../pages/paymentGAConfirmation.js');
-const N245Upload = require('../pages/uploadN245Form.js/index.js');
+const N245Upload = require('../pages/uploadN245Form.js');
 const config = require('../../../../config.js');
 const govPay = new GovPay();
 
