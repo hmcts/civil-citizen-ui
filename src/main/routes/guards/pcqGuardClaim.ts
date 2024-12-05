@@ -21,7 +21,7 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
     const userId = (<AppRequest>req).session?.user?.id;
     const caseData: Claim = await getCaseDataFromStore(userId);
     const pcqShutterOn = await isPcqShutterOn();
-
+    console.log('pcqId for claim Issue:', caseData.pcqId);
     if (pcqShutterOn || caseData.pcqId) {
       return next();
     }
@@ -35,6 +35,7 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
 
     if (isHealthy && isEligible) {
       const pcqId = generatePcqId();
+      console.log('pcqId for claim Issue created:', caseData.pcqId);
       await savePcqIdClaim(pcqId, userId);
 
       const pcqUrl = generatePcqUrl(
