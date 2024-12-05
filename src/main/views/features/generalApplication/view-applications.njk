@@ -128,11 +128,11 @@
 
 {% set applicationDocumentsHtml %}
   {{ createDocumentsTableWithoutTableCaption(applicantDocRows) }}
-  {% if applicantDocuments.documents.length > 0 %}
-  {{ govukButton({
-    text: t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS'),
-    href: additionalDocUrl
-  }) }}
+  {% if applicantDocuments.documents.length > 0 and additionalDocUrl %}
+    {{ govukButton({
+      text: t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS'),
+      href: additionalDocUrl
+    }) }}
   {% endif %}
   {{ createDocumentsTableWithoutTableCaption(respondentDocRows) }}
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
@@ -160,7 +160,9 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.SUBMITTED') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.EITHER_PARTIES') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_SECTIONS') }}</p>
-  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}" class="govuk-link">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
+  {% if additionalDocUrl %}
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}" class="govuk-link">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
+  {% endif %}
   {% if caseProgressionCaseState %}
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_1')}}<a href="{{uploadDocsTrialUrl}}" class="govuk-link">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_3') }}</p>
   {% endif %}
