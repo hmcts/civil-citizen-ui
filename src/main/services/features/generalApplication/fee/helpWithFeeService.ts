@@ -22,6 +22,7 @@ import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/g
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
@@ -52,6 +53,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+      await saveUserId(claimId, req.session.user.id);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
