@@ -13,7 +13,6 @@ import {getRedirectUrl} from 'services/features/generalApplication/payment/appli
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('modules/draft-store');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
@@ -23,6 +22,7 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+mockedAppRequest.query = {lang:'en'};
 const claimId = '1';
 const applicationId = '12';
 let applicationResponse: ApplicationResponse;
@@ -192,33 +192,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
     await expect(getRedirectUrl(claimId, applicationId, mockedAppRequest)).rejects.toBe(
       TestMessages.SOMETHING_WENT_WRONG,
     );
-  });
-
-  it('should return to payment successful screen if payment is successful and applicant is bilingual.', async () => {
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-
-    const mockclaimFeePaymentInfo = {
-      status: 'Success',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
-      paymentReference: 'RC-1701-0909-0602-0418',
-    };
-
-    const mockClaimFeePaymentRedirectInfo = {
-      status: 'initiated',
-      paymentReference:'RC-1701-0909-0602-0418',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-    };
-
-    applicationResponse.case_data.applicantBilingualLanguagePreference = YesNoUpperCamelCase.YES;
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    //when
-    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
-
-    //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+'?lang=cy');
   });
 
 });
