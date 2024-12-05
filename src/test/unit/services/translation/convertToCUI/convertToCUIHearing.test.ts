@@ -87,7 +87,7 @@ describe('translate CCDHearing to CUI Hearing model', () => {
     const output = toCUIHearing(input);
     //Then
     const expected : Hearing = {
-      specificCourtLocation : new SpecificCourtLocation(YesNo.YES, 'test', 'test'),
+      specificCourtLocation : new SpecificCourtLocation( 'test', 'test'),
     };
     expect(output).toEqual(expected);
   });
@@ -108,7 +108,7 @@ describe('translate CCDHearing to CUI Hearing model', () => {
     const output = toCUIHearing(input);
     //Then
     const expected : Hearing = {
-      specificCourtLocation : new SpecificCourtLocation(undefined, undefined, undefined),
+      specificCourtLocation : new SpecificCourtLocation(undefined, undefined),
     };
     expect(output).toEqual(expected);
   });

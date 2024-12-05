@@ -4,12 +4,15 @@ import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSu
 import { getLng } from 'common/utils/languageToggleUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
-export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string, appResponse?: ApplicationResponse) => {
+export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, isAdditionalFee: boolean, lng?: string, appResponse?: ApplicationResponse) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
   if (withoutFee) {
     panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.APPLICATION_SUBMITTED', lng);
   } else {
-    panelBuilder.addPanel(appResponse?.case_data?.generalAppPBADetails?.paymentDetails.reference, lng);
+    const paymentReference = isAdditionalFee
+      ? appResponse?.case_data?.generalAppPBADetails?.additionalPaymentDetails.reference
+      : appResponse?.case_data?.generalAppPBADetails?.paymentDetails.reference;
+    panelBuilder.addPanel(paymentReference, lng);
   }
   return panelBuilder.build();
 };

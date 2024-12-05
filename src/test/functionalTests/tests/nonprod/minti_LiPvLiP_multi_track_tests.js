@@ -27,6 +27,6 @@ Scenario('LiP vs LiP Multi claim', async ({api}) => {
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, multiTrackClaimType, config.defenceType.rejectAllMultiTrackMinti, 'DefendantCompany');
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'JUDICIAL_REFERRAL', multiTrackClaimType);
+    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'AWAITING_APPLICANT_INTENTION', multiTrackClaimType);
   }
 });

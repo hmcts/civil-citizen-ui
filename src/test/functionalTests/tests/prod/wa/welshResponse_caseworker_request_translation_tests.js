@@ -46,7 +46,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async 
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, true, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   sharedData.language = 'en';
 });

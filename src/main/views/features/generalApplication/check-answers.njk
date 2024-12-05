@@ -30,6 +30,13 @@
   {% if claimantName and defendantName %}
     <p class="govuk-body-m">{{ claimantName }} v {{ defendantName }}</p>
   {% endif %}
+  {% if applicationTypeCards %}
+    <div class="govuk-form-group">
+      {% for summaryCard in applicationTypeCards %}
+        {{ govukSummaryList(summaryCard) }}
+      {% endfor %}
+    </div>
+  {% endif %}
   {% if summaryRows %}
     <div class="govuk-!-margin-bottom-9 govuk-border-colour-border-top-1">
       <div class="govuk-form-group">

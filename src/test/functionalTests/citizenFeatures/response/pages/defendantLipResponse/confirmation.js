@@ -14,7 +14,7 @@ class ConfirmationPage {
         break;
       }
       case 'PartAdmitAndPayImmediately': {
-        I.see('If Miss Jane Doe rejects your offer');
+        I.see('You\'ve said you owe £500.00 and offered to pay Miss Jane Doe immediately.');
         break;
       }
     }

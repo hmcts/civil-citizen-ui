@@ -171,17 +171,34 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
             },
             {
               'key': {
-                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+                'text': 'PAGES.SPECIFIC_COURT.SELECTED_COURT',
               },
               'value': {
-                'html': '',
+                'html': undefined,
               },
               'actions': {
                 'items': [
                   {
                     'href': '/case/12345/directions-questionnaire/court-location',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.TITLE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.SELECTED_COURT',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.REASON',
+              },
+              'value': {
+                'html': undefined,
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.REASON',
                   },
                 ],
               },
@@ -413,17 +430,34 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
             },
             {
               'key': {
-                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+                'text': 'PAGES.SPECIFIC_COURT.SELECTED_COURT',
               },
               'value': {
-                'html': '',
+                'html': undefined,
               },
               'actions': {
                 'items': [
                   {
                     'href': '/case/12345/directions-questionnaire/court-location',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.TITLE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.SELECTED_COURT',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.REASON',
+              },
+              'value': {
+                'html': undefined,
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.REASON',
                   },
                 ],
               },
@@ -635,17 +669,34 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
             },
             {
               'key': {
-                'text': 'PAGES.SPECIFIC_COURT.TITLE',
+                'text': 'PAGES.SPECIFIC_COURT.SELECTED_COURT',
               },
               'value': {
-                'html': '',
+                'html': undefined,
               },
               'actions': {
                 'items': [
                   {
                     'href': '/case/12345/directions-questionnaire/court-location',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.TITLE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.SELECTED_COURT',
+                  },
+                ],
+              },
+            },
+            {
+              'key': {
+                'text': 'PAGES.SPECIFIC_COURT.REASON',
+              },
+              'value': {
+                'html': undefined,
+              },
+              'actions': {
+                'items': [
+                  {
+                    'href': '/case/12345/directions-questionnaire/court-location',
+                    'text': 'COMMON.BUTTONS.CHANGE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.REASON',
                   },
                 ],
               },

@@ -42,6 +42,7 @@ const claimId = '1';
 const nextUrl= 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960';
 let claim: Claim;
 let ccdClaim: Claim;
+let ccdClaimNoGARef: Claim;
 let applicationResponse: ApplicationResponse;
 const mockGAHwFDraftStore = getDraftGAHWFDetails as jest.Mock;
 describe('apply help with application fee selection', () => {
@@ -56,6 +57,42 @@ describe('apply help with application fee selection', () => {
           'caseLink': {
             'CaseReference': 'testApp1',
           },
+        },
+      },
+    ];
+    applicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: {
+          fee: undefined,
+          paymentDetails: undefined,
+          serviceRequestReference: undefined,
+        },
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
+    ccdClaimNoGARef = new Claim();
+    ccdClaimNoGARef.generalApplications = [
+      {
+        'id': 'test',
+        'value': {
+          'caseLink': undefined,
         },
       },
     ];
@@ -149,5 +186,22 @@ describe('apply help with application fee selection', () => {
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '123456678', GA_APPLY_HELP_WITH_FEE_SELECTION));
+  });
+
+  it('should enable the warning text if claim not updated with GA ref', async () => {
+    const originalUrl = '/case/1/general-application/apply-help-fee-selection?id=abcdef&appFee=275';
+    claim.paymentSyncError = false;
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(ccdClaimNoGARef);
+    mockedAppRequest.query = {id: 'abcdef'};
+    mockedAppRequest.params = {appId: '123456678'};
+    mockedAppRequest.originalUrl = originalUrl;
+    applicationResponse = new ApplicationResponse();
+    //when
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
+    //Then
+    expect(actualRedirectUrl).toBe(originalUrl);
   });
 });

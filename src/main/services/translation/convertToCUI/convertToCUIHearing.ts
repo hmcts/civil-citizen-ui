@@ -115,7 +115,7 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
 };
 
 export const toCUISpecificCourtLocation = (specificCourtLocation: CCDSpecificCourtLocations) : SpecificCourtLocation=> {
-  return new SpecificCourtLocation(toCUIYesNo(specificCourtLocation.requestHearingAtSpecificCourt),specificCourtLocation.caseLocation?.baseLocation,specificCourtLocation.reasonForHearingAtSpecificCourt);
+  return new SpecificCourtLocation(specificCourtLocation.caseLocation?.baseLocation,specificCourtLocation.reasonForHearingAtSpecificCourt);
 };
 
 function toCUIUnavailableDates(ccdUnavailableDates: CCDUnavailableDates[]) : UnavailableDatePeriod[] {

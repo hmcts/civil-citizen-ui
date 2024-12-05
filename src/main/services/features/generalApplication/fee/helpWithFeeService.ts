@@ -37,7 +37,12 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       const ccdGeneralApplications = ccdClaim.generalApplications;
       const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
-      generalApplicationId = ga.value.caseLink.CaseReference;
+      generalApplicationId = ga?.value?.caseLink?.CaseReference;
+      if (!generalApplicationId) {
+        claim.paymentSyncError = true;
+        await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+        return req.originalUrl;
+      }
     } else {
       generalApplicationId = req.params.appId;
     }

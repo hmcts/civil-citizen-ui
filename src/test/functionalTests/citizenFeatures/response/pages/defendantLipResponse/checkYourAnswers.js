@@ -60,8 +60,19 @@ class CheckYourAnswersPage {
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
     await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
-    await I.amOnPage('/dashboard?lang=en');
-    await I.see('Your money claims account');
+  }
+
+  async submitResponse(responseType='') {
+    const { language } = sharedData;
+    await I.click(links.checkAndSubmit[language]);
+    await I.waitForContent(content.heading[language], config.WaitForText);
+    await I.waitForElement(fields.cyaSigned);
+    await I.checkOption(fields.cyaSigned);
+    if (responseType === 'partial-admission' || responseType === 'rejectAll') {
+      await I.waitForElement(fields.directionsQuestionnaireSigned);
+      await I.checkOption(fields.directionsQuestionnaireSigned);
+    }
+    await I.click(cButtons.submit[language]);
   }
 
   async verifyMediationDetailsInCYA(claimRef) {
@@ -99,11 +110,9 @@ class CheckYourAnswersPage {
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
     I.checkOption(fields.directionsQuestionnaireSigned);
-    if (['preview', 'demo'  ].includes(config.runningEnv)) {
-      I.click(cButtons.submit[language]);
-      I.waitForContent(content.confirmationHeading[language],config.WaitForText);
-      I.see(content.confirmationSubheading[language]);
-    }
+    I.click(cButtons.submit[language]);
+    I.waitForContent(content.confirmationHeading[language],config.WaitForText);
+    I.see(content.confirmationSubheading[language]);
   }
 
   async navigateToCheckYourAnswersPage(claimRef) {

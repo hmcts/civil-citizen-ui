@@ -217,6 +217,9 @@ civil-general-applications:
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
+    devcpuRequests: 1000m
+    devmemoryRequests: 2048Mi
+    devmemoryLimits: 4096Mi
     keyVaults:
       civil:
         resourceGroup: civil
@@ -280,4 +283,4 @@ civil-general-applications:
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       CUI_URL: https://${SERVICE_FQDN}
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-
+      STITCHING_API_ENABLED: false

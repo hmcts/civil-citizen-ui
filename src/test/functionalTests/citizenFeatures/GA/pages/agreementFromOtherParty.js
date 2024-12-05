@@ -28,7 +28,7 @@ class AgreementFromOtherParty {
 
   verifyHeadingDetails(applicationType) {
     I.see(applicationType, 'h1');
-    I.see('Application from the other parties', 'h1');
+    I.see('Agreement from the other parties', 'h1');
   }
 
   async verifyPageText() {

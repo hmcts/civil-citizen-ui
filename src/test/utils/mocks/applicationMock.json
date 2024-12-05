@@ -69,6 +69,11 @@
       "serviceRequestReference": "2022-1655915218557"
     },
     "generalAppDetailsOfOrder": "The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].",
+    "generalAppDetailsOfOrderColl": [
+      {
+        "value": "The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]."
+      }
+    ],
     "isGaRespondentTwoLip": "No",
     "locationName": "County Court Money Claims Centre",
     "claimant1PartyName": "Mr Claimant person",
@@ -109,6 +114,11 @@
       ]
     },
     "generalAppReasonsOfOrder": "reasons",
+    "generalAppReasonsOfOrderColl": [
+      {
+        "value": "reasons"
+      }
+    ],
     "applicationTypes": "Adjourn a hearing",
     "applicant1OrganisationPolicy": {
       "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"

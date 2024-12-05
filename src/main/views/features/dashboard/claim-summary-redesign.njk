@@ -7,6 +7,9 @@
 {% from "../../macro/support-links.njk" import supportLinks %}
 
 {% block nestedContent %}
+        {% block warning_message %}
+          {% include "../../macro/banner.njk" %}
+        {% endblock %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
         {% if claimantName and defendantName %}

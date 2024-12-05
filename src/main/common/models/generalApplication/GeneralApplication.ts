@@ -39,6 +39,7 @@ export class GeneralApplication {
   uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
   generalAppAddlnInfoUpload?: UploadGAFiles[];
   certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation;
+  addType?: boolean;
 
   constructor(
     applicationType?: ApplicationType,

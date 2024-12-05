@@ -8,7 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications, resetClaimDataByApplicationType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -66,6 +66,8 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {OrderJudge} from 'models/generalApplication/orderJudge';
 import clearAllMocks = jest.clearAllMocks;
+import {InformOtherParties} from 'models/generalApplication/informOtherParties';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -1331,4 +1333,54 @@ describe('should check if the application type on the case is "Confirm CCJ debt 
       //Then
       expect(isConfirmYouPaidCCJAppType(claim)).toEqual(expectedOutput);
     });
+});
+
+describe('should Remove unnecessary data based on the type of application.', () => {
+
+  it.each`
+      applicationType                                                      | expectedOutput
+      ${ApplicationTypeOption.SETTLE_BY_CONSENT}                                    | ${undefined}
+      ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}                              | ${undefined}
+    `('should return $expectedOutput when selected type is applicationType',
+    ({ applicationType, expectedOutput}) => {
+      //When
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.informOtherParties = new InformOtherParties();
+      //given
+      resetClaimDataByApplicationType(claim, new ApplicationType(applicationType));
+
+      //Then
+      expect(claim.generalApplication.informOtherParties).toEqual(expectedOutput);
+    });
+
+  it('should remove unnecessary Data when type of application is VARY_PAYMENT_TERMS_OF_JUDGMENT', async () => {
+    //When
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.informOtherParties = new InformOtherParties();
+    claim.generalApplication.requestingReasons = Array.of(new RequestingReason());
+    claim.generalApplication.orderJudges = Array.of(new OrderJudge());
+    claim.generalApplication.applicationCosts = YesNo.NO;
+    //given
+    resetClaimDataByApplicationType(claim, new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT));
+    //Then
+    expect(claim.generalApplication.informOtherParties).toEqual(undefined);
+    expect(claim.generalApplication.requestingReasons).toEqual(undefined);
+    expect(claim.generalApplication.orderJudges).toEqual(undefined);
+    expect(claim.generalApplication.applicationCosts).toEqual(undefined);
+
+  });
+
+  it('should remove uploadN245Form Data when type of application is not VARY_PAYMENT_TERMS_OF_JUDGMENT', async () => {
+    //When
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.uploadN245Form = new UploadGAFiles();
+    //given
+    resetClaimDataByApplicationType(claim, new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
+    //Then
+    expect(claim.generalApplication.uploadN245Form).toEqual(undefined);
+  });
+
 });

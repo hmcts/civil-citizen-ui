@@ -184,19 +184,6 @@ export const displayUnavailabilityForHearing = ( claimId: string, lng: string, d
   );
 };
 
-export const getSpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  const option = directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES
-    ? YesNoUpperCase.YES
-    : YesNoUpperCase.NO;
-  
-  return summaryRow(
-    t('PAGES.SPECIFIC_COURT.TITLE', {lng}),
-    directionQuestionnaire?.hearing?.specificCourtLocation?.option ? t(`COMMON.VARIATION_2.${option}`, {lng}) : '',
-    constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
-    changeLabel(lng),
-  );
-};
-
 export const displaySpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasSpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
   return summaryRow(
@@ -252,11 +239,8 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
     addSupportRequiredList(claim, hearingRequirementsSection, claimId, lng);
   }
 
-  hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocation( claimId, lng,directionQuestionnaire));
-  if (directionQuestionnaire?.hearing?.specificCourtLocation?.option === YesNo.YES) {
-    hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claimId, lng,directionQuestionnaire));
-    hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocationReason( claimId, lng,directionQuestionnaire));
-  }
+  hearingRequirementsSection.summaryList.rows.push(displaySpecificCourtLocation(claimId, lng,directionQuestionnaire));
+  hearingRequirementsSection.summaryList.rows.push(getSpecificCourtLocationReason( claimId, lng,directionQuestionnaire));
 
   if (directionQuestionnaire?.welshLanguageRequirements?.language) {
     hearingRequirementsSection.summaryList.rows.push(summaryRow(

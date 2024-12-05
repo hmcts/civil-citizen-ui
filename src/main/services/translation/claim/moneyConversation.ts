@@ -1,9 +1,9 @@
 export const convertToPence = (amount: number): number => {
-  return amount ? amount*100 : undefined;
+  return amount ? Math.round(amount*100) : undefined;
 };
 
 export const convertToPenceFromString = (amountString: string): number => {
-  return amountString ? Number(amountString)*100 : undefined;
+  return amountString ? Math.round(Number(amountString)*100) : undefined;
 };
 
 export const convertToPenceFromStringToString = (amountString: string): string | undefined => {

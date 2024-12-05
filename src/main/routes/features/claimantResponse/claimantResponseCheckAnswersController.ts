@@ -19,8 +19,11 @@ import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResp
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {getClaimById} from 'modules/utilityService';
+import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
+import {ValidationError, Validator} from 'class-validator';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
+const validator = new Validator();
 const claimantResponseCheckAnswersController = Router();
 
 async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean, isMintiApplicable: boolean) {
@@ -60,6 +63,9 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const claim = await getClaimById(claimId, req, true);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
+    if (claim.claimantResponse?.directionQuestionnaire?.hearing && !claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
+      form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
+    }
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
@@ -74,3 +80,6 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
 }) as RequestHandler);
 
 export default claimantResponseCheckAnswersController;
+const validateFields = (genericForm: GenericForm<any>, formErrors: ValidationError[]): ValidationError[] => {
+  return [...formErrors, ...validator.validateSync(genericForm.model)];
+};
