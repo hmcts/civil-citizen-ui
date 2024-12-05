@@ -12,6 +12,68 @@
     }
   },
   {
+    "id": "1732106154804395someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "Yes",
+        "reasonsForUrgency": "There is a hearing on the main case within 10 days",
+        "urgentAppConsiderationDate": "2024-11-23"
+      },
+      "generalApplicationType": [
+        "EXTEND_TIME"
+      ]
+    }
+  },
+  {
+    "id": "1732194111758649someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "STRIKE_OUT"
+      ]
+    }
+  },
+  {
+    "id": "1732292100554027someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "SETTLE_BY_CONSENT"
+      ]
+    }
+  },
+  {
+    "id": "1732553590764925someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "RELIEF_FROM_SANCTIONS"
+      ]
+    }
+  },
+  {
+    "id": "1732878113661799someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "VARY_PAYMENT_TERMS_OF_JUDGMENT"
+      ]
+    }
+  },
+  {
     "id": "courtLocations",
     "value": [
       {

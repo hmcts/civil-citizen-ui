@@ -6686,5 +6686,715 @@
       "id": "1730984188221535",
       "lastModifiedDate": "2024-11-07T12:57:50"
     }
+  },
+  {
+    "id": "1732014426677369someID",
+    "case_data": {
+      "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+      "caseManagementLocation": {
+        "region": "2",
+        "baseLocation": "000000"
+      },
+      "totalClaimAmount": 9000,
+      "submittedDate": "2024-11-19T11:07:06",
+      "specRespondent1Represented": "No",
+      "respondent1ResponseDeadline": "2024-12-17T16:00:00",
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "defendantUserDetails": {
+        "id": "dc90f783-f626-464d-ba75-a85556447384",
+        "email": "citizen.user2@gmail.com"
+      },
+      "applicant1": {
+        "partyDetails": {
+          "title": "Mr",
+          "lastName": "person",
+          "firstName": "Claimant",
+          "primaryAddress": {
+            "addressLine1": "123",
+            "addressLine2": "Fake Street",
+            "city": "sheffield",
+            "postCode": "S12eu"
+          },
+          "nameLength": null
+        },
+        "dateOfBirth": {
+          "date": "1993-08-27T23:00:00.000Z",
+          "year": 1993,
+          "month": 8,
+          "day": 28
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL"
+      },
+      "timelineOfEvents": [
+        {
+          "id": "0",
+          "value": {
+            "timelineDate": "2000-01-01",
+            "timelineDescription": "test"
+          }
+        }
+      ],
+      "serviceRequestReference": "2022-1655915218557",
+      "issueDate": "2024-11-19",
+      "applicant1Represented": "No",
+      "detailsOfClaim": "Injury",
+      "claimFee": {
+        "code": "FEE0208",
+        "version": "3",
+        "calculatedAmountInPence": "45500"
+      },
+      "respondent2OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
+      },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "f4dd97d9-8e51-4f36-add1-875dfe1cff20",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "detailsOfClaim",
+              "document_url": "http://dm-store:8080/documents/78717e5a-7139-4810-8163-f3b3bb7ee979",
+              "document_filename": "000MC022-claim-form-claimant-copy.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/78717e5a-7139-4810-8163-f3b3bb7ee979/binary"
+            },
+            "documentName": "000MC022-claim-form-claimant-copy.pdf",
+            "documentSize": 34313,
+            "documentType": "CLAIMANT_CLAIM_FORM",
+            "createdDatetime": "2024-11-19T11:07:14"
+          }
+        },
+        {
+          "id": "80a3df0a-01a0-4d8c-8bc4-1c35a5721acf",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "detailsOfClaim",
+              "document_url": "http://dm-store:8080/documents/e01178c4-73ad-4f7c-bce8-6ef139d43af5",
+              "document_filename": "000MC022-sealed-claim-form.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/e01178c4-73ad-4f7c-bce8-6ef139d43af5/binary"
+            },
+            "documentName": "000MC022-sealed-claim-form.pdf",
+            "documentSize": 42902,
+            "documentType": "SEALED_CLAIM",
+            "createdDatetime": "2024-11-19T11:07:15"
+          }
+        }
+      ],
+      "locationName": "Barnet Civil and Family Centre",
+      "claimNotificationDate": "2024-11-19T11:07:17",
+      "helpWithFees": {
+        "helpWithFee": "No"
+      },
+      "claimInterest": "No",
+      "applicant1AdditionalLipPartyDetails": {
+        "correspondenceAddress": {
+          "PostCode": "L7 2pz",
+          "PostTown": "Liverpool",
+          "AddressLine1": "123",
+          "AddressLine2": "Test Street"
+        }
+      },
+      "claimantUserDetails": {
+        "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "legacyCaseReference": "000MC022",
+      "respondent1OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+      },
+      "caseNameHmctsInternal": "'Claimant person' v 'defendant person'",
+      "respondent1Represented": "No",
+      "respondent1DetailsForClaimDetailsTab": {
+        "type": "INDIVIDUAL",
+        "partyName": "mr defendant person",
+        "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+        "partyPhone": "07800000000",
+        "primaryAddress": {
+          "PostCode": "L7 2PZ",
+          "PostTown": "Liverpool",
+          "AddressLine1": "123",
+          "AddressLine2": "Claim Road"
+        },
+        "individualTitle": "mr",
+        "individualLastName": "person",
+        "individualFirstName": "defendant",
+        "partyTypeDisplayValue": "Individual"
+      },
+      "claimIssuedPBADetails": {
+        "fee": {
+          "code": "FEE0208",
+          "version": "3",
+          "calculatedAmountInPence": "45500"
+        },
+        "serviceRequestReference": "2022-1655915218557"
+      },
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "CREATE_CLAIM_SPEC_AFTER_PAYMENT"
+      },
+      "respondent1": {
+        "partyDetails": {
+          "title": "mr",
+          "lastName": "person",
+          "firstName": "defendant",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "123",
+            "addressLine2": "Claim Road",
+            "city": "Liverpool",
+            "postCode": "L7 2PZ"
+          },
+          "nameLength": null
+        },
+        "partyPhone": {
+          "phone": "07800000000",
+          "ccdPhoneExist": true
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL"
+      },
+      "respondent1PinToPostLRspec": {
+        "accessCode": "EENXRLAZMVEN",
+        "expiryDate": "2025-05-18",
+        "respondentCaseRole": "[DEFENDANT]"
+      },
+      "claimNotificationDeadline": "2025-03-19T23:59:59",
+      "applicant1OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+      },
+      "caseNamePublic": "'Claimant person' v 'defendant person'",
+      "claimIssuedPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234"
+      },
+      "isFlightDelayClaim": "No",
+      "claimAmountBreakup": [
+        {
+          "id": "0",
+          "value": {
+            "claimAmount": "900000",
+            "claimReason": "Injury"
+          }
+        }
+      ],
+      "caseRole": "[CLAIMANT]",
+      "claimDetails": {
+        "reason": {
+          "text": "Injury"
+        },
+        "helpWithFees": {
+          "option": "no"
+        },
+        "claimFeePayment": {
+          "externalReference": "",
+          "paymentReference": "RC-1234-1234-1234-1234",
+          "status": "SUCCESS"
+        }
+      },
+      "statementOfMeans": {},
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "year": null,
+          "month": null,
+          "day": null,
+          "date": null
+        },
+        "whyDoYouDisagree": {},
+        "defence": {},
+        "timeline": {}
+      },
+      "directionQuestionnaire": {
+        "hearing": {},
+        "experts": {},
+        "confirmYourDetailsEvidence": {}
+      },
+      "caseProgressionHearing": {
+        "hearingLocation": {},
+        "hearingFeeInformation": {}
+      },
+      "caseProgression": {
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "defendantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "caseBundles": []
+      },
+      "interest": {
+        "sameRateInterestSelection": {}
+      },
+      "claimantResponse": {
+        "suggestedPaymentIntention": {
+          "repaymentPlan": {
+            "firstRepaymentDate": null
+          }
+        },
+        "chooseHowToProceed": {},
+        "courtProposedPlan": {},
+        "courtProposedDate": {}
+      },
+      "generalApplications": [],
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+      "id": "1732014426677369",
+      "lastModifiedDate": "2024-11-19T11:07:24"
+    }
+  },
+  {
+    "id": "1732192997720139someID",
+    "case_data": {
+      "requestForInfoDocClaimant": [
+        {
+          "id": "314fc315-d904-48f0-82a2-f03c0be0bf47",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "applications",
+              "document_url": "http://dm-store:8080/documents/3e87869e-3958-44b6-bdb3-ded9d4712763",
+              "document_filename": "make-with-notice_2024-11-21 16:01:52.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/3e87869e-3958-44b6-bdb3-ded9d4712763/binary"
+            },
+            "documentName": "make-with-notice_2024-11-21 16:01:52.pdf",
+            "documentSize": 28248,
+            "documentType": "SEND_APP_TO_OTHER_PARTY",
+            "createdDatetime": "2024-11-21T16:01:53"
+          }
+        },
+        {
+          "id": "172afd3f-d3d2-479f-80d7-d576113639e0",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "applications",
+              "document_url": "http://dm-store:8080/documents/d80ecd39-119a-4e15-90ee-25075e5d2332",
+              "document_filename": "make-with-notice_2024-11-21 13:25:04.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/d80ecd39-119a-4e15-90ee-25075e5d2332/binary"
+            },
+            "documentName": "make-with-notice_2024-11-21 13:25:04.pdf",
+            "documentSize": 28452,
+            "documentType": "SEND_APP_TO_OTHER_PARTY",
+            "createdDatetime": "2024-11-21T13:25:05"
+          }
+        }
+      ],
+      "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+      "gaDraftDocClaimant": [
+        {
+          "id": "6b11aae6-0f1a-46e9-8a6c-fe1c2b26620a",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "applications",
+              "document_url": "http://dm-store:8080/documents/7dad6a2f-2651-40fa-bdf6-d88a85061151",
+              "document_filename": "Draft_application_2024-11-21 15:59:08.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/7dad6a2f-2651-40fa-bdf6-d88a85061151/binary"
+            },
+            "documentName": "Draft_application_2024-11-21 15:59:08.pdf",
+            "documentSize": 44681,
+            "documentType": "GENERAL_APPLICATION_DRAFT",
+            "createdDatetime": "2024-11-21T15:59:10"
+          }
+        },
+        {
+          "id": "914d6aa4-d41b-4dea-bbdf-8d7cf02a8e16",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "applications",
+              "document_url": "http://dm-store:8080/documents/7a0a61a8-1896-4222-9c99-e9d5fcaa4170",
+              "document_filename": "Draft_application_2024-11-21 17:20:25.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/7a0a61a8-1896-4222-9c99-e9d5fcaa4170/binary"
+            },
+            "documentName": "Draft_application_2024-11-21 17:20:25.pdf",
+            "documentSize": 47625,
+            "documentType": "GENERAL_APPLICATION_DRAFT",
+            "createdDatetime": "2024-11-21T17:20:26"
+          }
+        }
+      ],
+      "caseManagementLocation": {
+        "region": "2",
+        "baseLocation": "000000"
+      },
+      "generalAppAskForCosts": "No",
+      "totalClaimAmount": 9000,
+      "claimantGaAppDetails": [
+        {
+          "id": "e2f9e611-4a10-4097-a846-15bcdea4dbe5",
+          "value": {
+            "caseLink": {
+              "CaseReference": "1732194111758649"
+            },
+            "caseState": "Application Submitted - Awaiting Judicial Decision",
+            "generalApplicationType": "Strike out",
+            "generalAppSubmittedDateGAspec": "2024-11-21T13:01:49"
+          }
+        },
+        {
+          "id": "87499904-a91c-4d8f-bed7-fc18ac4f028d",
+          "value": {
+            "caseLink": {
+              "CaseReference": "1732204740778999"
+            },
+            "caseState": "Application Additional Payment",
+            "generalApplicationType": "Strike out",
+            "generalAppSubmittedDateGAspec": "2024-11-21T15:58:57"
+          }
+        }
+      ],
+      "submittedDate": "2024-11-21T12:43:17",
+      "specRespondent1Represented": "No",
+      "respondent1ResponseDeadline": "2024-12-19T16:00:00",
+      "CaseAccessCategory": "SPEC_CLAIM",
+      "defendantUserDetails": {
+        "id": "dc90f783-f626-464d-ba75-a85556447384",
+        "email": "citizen.user2@gmail.com"
+      },
+      "applicant1": {
+        "partyDetails": {
+          "title": "Mr",
+          "lastName": "person",
+          "firstName": "Claimant",
+          "primaryAddress": {
+            "addressLine1": "123",
+            "addressLine2": "Fake Street",
+            "city": "sheffield",
+            "postCode": "S12eu"
+          },
+          "nameLength": null
+        },
+        "dateOfBirth": {
+          "date": "1993-08-27T23:00:00.000Z",
+          "year": 1993,
+          "month": 8,
+          "day": 28
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL"
+      },
+      "timelineOfEvents": [
+        {
+          "id": "0",
+          "value": {
+            "timelineDate": "2000-01-01",
+            "timelineDescription": "test"
+          }
+        }
+      ],
+      "serviceRequestReference": "2022-1655915218557",
+      "issueDate": "2024-11-21",
+      "applicant1Represented": "No",
+      "detailsOfClaim": "Injury",
+      "claimFee": {
+        "code": "FEE0208",
+        "version": "3",
+        "calculatedAmountInPence": "45500"
+      },
+      "respondent2OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
+      },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "e4813d63-a48c-48b7-8fdb-8730169c9a35",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "detailsOfClaim",
+              "document_url": "http://dm-store:8080/documents/015fc303-6d88-401b-b1d4-4bb49bc62ceb",
+              "document_filename": "000MC024-claim-form-claimant-copy.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/015fc303-6d88-401b-b1d4-4bb49bc62ceb/binary"
+            },
+            "documentName": "000MC024-claim-form-claimant-copy.pdf",
+            "documentSize": 34300,
+            "documentType": "CLAIMANT_CLAIM_FORM",
+            "createdDatetime": "2024-11-21T12:45:09"
+          }
+        },
+        {
+          "id": "e950d7e8-e0d1-492c-a1e7-afc9f8160456",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "category_id": "detailsOfClaim",
+              "document_url": "http://dm-store:8080/documents/9ed53190-0894-4026-a5d2-9d9b0585a805",
+              "document_filename": "000MC024-sealed-claim-form.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/9ed53190-0894-4026-a5d2-9d9b0585a805/binary"
+            },
+            "documentName": "000MC024-sealed-claim-form.pdf",
+            "documentSize": 42892,
+            "documentType": "SEALED_CLAIM",
+            "createdDatetime": "2024-11-21T12:45:10"
+          }
+        }
+      ],
+      "locationName": "Barnet Civil and Family Centre",
+      "claimNotificationDate": "2024-11-21T12:45:12",
+      "applicant1AdditionalLipPartyDetails": {
+        "correspondenceAddress": {
+          "PostCode": "L7 2pz",
+          "PostTown": "Liverpool",
+          "AddressLine1": "123",
+          "AddressLine2": "Test Street"
+        }
+      },
+      "helpWithFees": {
+        "helpWithFee": "No"
+      },
+      "claimInterest": "No",
+      "claimantUserDetails": {
+        "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+        "email": "civilmoneyclaimsdemo@gmail.com"
+      },
+      "legacyCaseReference": "000MC024",
+      "respondent1OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+      },
+      "respondent1DetailsForClaimDetailsTab": {
+        "type": "INDIVIDUAL",
+        "partyName": "mr defendant person",
+        "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+        "partyPhone": "07800000000",
+        "primaryAddress": {
+          "PostCode": "L7 2PZ",
+          "PostTown": "Liverpool",
+          "AddressLine1": "123",
+          "AddressLine2": "Claim Road"
+        },
+        "individualTitle": "mr",
+        "individualLastName": "person",
+        "individualFirstName": "defendant",
+        "partyTypeDisplayValue": "Individual"
+      },
+      "caseNameHmctsInternal": "'Claimant person' v 'defendant person'",
+      "respondent1Represented": "No",
+      "claimIssuedPBADetails": {
+        "fee": {
+          "code": "FEE0208",
+          "version": "3",
+          "calculatedAmountInPence": "45500"
+        },
+        "serviceRequestReference": "2022-1655915218557"
+      },
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "CREATE_CLAIM_SPEC_AFTER_PAYMENT"
+      },
+      "respondent1": {
+        "partyDetails": {
+          "title": "mr",
+          "lastName": "person",
+          "firstName": "defendant",
+          "postToThisAddress": "no",
+          "primaryAddress": {
+            "addressLine1": "123",
+            "addressLine2": "Claim Road",
+            "city": "Liverpool",
+            "postCode": "L7 2PZ"
+          },
+          "nameLength": null
+        },
+        "partyPhone": {
+          "phone": "07800000000",
+          "ccdPhoneExist": true
+        },
+        "emailAddress": {
+          "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+        },
+        "type": "INDIVIDUAL"
+      },
+      "respondent1PinToPostLRspec": {
+        "accessCode": "FHN6BZM9L7EY",
+        "expiryDate": "2025-05-20",
+        "respondentCaseRole": "[DEFENDANT]"
+      },
+      "generalApplications": [
+        {
+          "id": "717871d3-8ff9-47d3-80c9-f4f211410e6e",
+          "value": {
+            "caseLink": {
+              "CaseReference": "1732194111758649"
+            },
+            "parentClaimantIsApplicant": "no",
+            "generalAppSubmittedDateGAspec": "2024-11-21T13:01:49"
+          }
+        },
+        {
+          "id": "bb1a97d6-b3e0-4fcd-8fd1-4380cca5fcf9",
+          "value": {
+            "caseLink": {
+              "CaseReference": "1732204740778999"
+            },
+            "parentClaimantIsApplicant": "yes",
+            "generalAppSubmittedDateGAspec": "2024-11-21T15:58:57"
+          }
+        }
+      ],
+      "claimNotificationDeadline": "2025-03-21T23:59:59",
+      "applicant1OrganisationPolicy": {
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+      },
+      "caseNamePublic": "'Claimant person' v 'defendant person'",
+      "claimIssuedPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234"
+      },
+      "isFlightDelayClaim": "No",
+      "claimAmountBreakup": [
+        {
+          "id": "0",
+          "value": {
+            "claimAmount": "900000",
+            "claimReason": "Injury"
+          }
+        }
+      ],
+      "caseRole": "[CLAIMANT]",
+      "claimDetails": {
+        "reason": {
+          "text": "Injury"
+        },
+        "helpWithFees": {
+          "option": "no"
+        },
+        "claimFeePayment": {
+          "externalReference": "",
+          "paymentReference": "RC-1234-1234-1234-1234",
+          "status": "SUCCESS"
+        }
+      },
+      "statementOfMeans": {},
+      "rejectAllOfClaim": {
+        "howMuchHaveYouPaid": {
+          "year": null,
+          "month": null,
+          "day": null,
+          "date": null
+        },
+        "whyDoYouDisagree": {},
+        "defence": {},
+        "timeline": {}
+      },
+      "directionQuestionnaire": {
+        "hearing": {},
+        "experts": {},
+        "confirmYourDetailsEvidence": {}
+      },
+      "caseProgressionHearing": {
+        "hearingLocation": {},
+        "hearingFeeInformation": {}
+      },
+      "caseProgression": {
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "defendantUploadDocuments": {
+          "disclosure": [],
+          "witness": [],
+          "expert": [],
+          "trial": [],
+          "checkboxGrp": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "caseBundles": []
+      },
+      "interest": {
+        "sameRateInterestSelection": {}
+      },
+      "claimantResponse": {
+        "suggestedPaymentIntention": {
+          "repaymentPlan": {
+            "firstRepaymentDate": null
+          }
+        },
+        "chooseHowToProceed": {},
+        "courtProposedPlan": {},
+        "courtProposedDate": {}
+      },
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+      "id": "1732192997720139",
+      "lastModifiedDate": "2024-11-21T17:20:27"
+    }
   }
 ]
