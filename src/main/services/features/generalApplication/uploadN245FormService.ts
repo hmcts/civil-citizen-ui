@@ -18,7 +18,7 @@ export const getUploadFormContent = (lng: string) => {
   const uploadItHere = t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE', { lng });
   const linkForN245Form = `<a href="${formN245Url}" target="_blank" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.COMPLETE_N245_FORM', { lng })}</a>`;
   return new UploadDocumentsSectionBuilder()
-    .addRawHtml(`<p class="govuk-body govuk-link">${uploadItHere.replace('LINK_FOR_N245_FORM', linkForN245Form)}</p>`)
+    .addRawHtml(`<p class="govuk-body">${uploadItHere.replace('LINK_FOR_N245_FORM', linkForN245Form)}</p>`)
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.OFFER_OF_PAYMENT')
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.INCOME_AND_EXPENSE')
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.WAYS_TO_COMPLETE')
