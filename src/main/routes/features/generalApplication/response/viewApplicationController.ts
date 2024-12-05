@@ -93,7 +93,7 @@ async function getRedirectUrl(applicationResponse: ApplicationResponse, applicat
   if (isClaimantRespondent && claimantRespondingToDefendantVaryAJudgment) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
   }
-  if (withConsent) {
+  if (withConsent && !claimantRespondingToDefendantVaryAJudgment) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL);
   }
   return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
