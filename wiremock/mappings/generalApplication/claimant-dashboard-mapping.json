@@ -215,7 +215,7 @@
     {
       "request": {
         "method": "POST",
-        "urlPattern": "/fees/case/.*?/payment",
+        "urlPattern": "/fees/case/1731322828021511/payment",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"

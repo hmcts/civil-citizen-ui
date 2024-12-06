@@ -23,6 +23,7 @@ import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import * as utilityService from 'modules/utilityService';
+import {ResponseButton} from 'models/generalApplication/CourtResponseSummary';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -613,7 +614,7 @@ describe('View Application service', () => {
   });
 
   describe('getHearingOrderResponses', () => {
-    it('should return hearing order response', async () => {
+    it('should return hearing order response but can not upload additional doc', async () => {
       const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
       applicationResponse.case_data.hearingOrderDocument = setMockHearingOrderDocuments();
 
@@ -626,6 +627,19 @@ describe('View Application service', () => {
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('Application_Hearing_Notice_2024-08-02 12:15:34.pdf');
+      expect(result[0].responseButton).toBeNull();
+    });
+
+    it('should return hearing order response but can not upload additional doc', async () => {
+      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      applicationResponse.case_data.hearingOrderDocument = setMockHearingOrderDocuments();
+      applicationResponse.state = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+
+      //when
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
+      //then
+      expect(result[0].responseButton).toBeInstanceOf(ResponseButton);
+      expect(result[0].responseButton.title).toContain('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS');
     });
 
     it('should return empty if no data in applicationResponse', async () => {
