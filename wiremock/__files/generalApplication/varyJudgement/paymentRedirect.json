@@ -1,0 +1,7 @@
+{
+  "externalReference": "DUMMY-EXT-REF",
+  "paymentReference": "DUMMY-PAYMENT-REF",
+  "status": "Initiated",
+  "nextUrl": "http://localhost:3001/general-application/payment-confirmation/1732877831207299/gaid/1732878113661799",
+  "dateCreated": "2020-02-20T20:20:20.222Z"
+}

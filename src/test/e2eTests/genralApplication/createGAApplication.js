@@ -6,12 +6,16 @@ const I = actor();
 class CreateGAApplication {
 
   start(claimId) {
-    I.amOnPage(`/dashboard/${claimId}/claimantNewDesign`);
-    I.click('Contact the court to request a change to my case');
+    I.amOnPage(`/case/${claimId}/general-application/application-type`);
   }
 
-  selectApplicationType(applicationType) {
-    I.click(`${applicationType}`);
+  selectApplicationType(applicationType, otherApplicationType) {
+    if (applicationType === 'Other applications') {
+      I.click(`${applicationType}`);
+      I.click(otherApplicationType);
+    } else {
+      I.click(`${applicationType}`);
+    }
     clickButton(buttonType.CONTINUE);
   }
 
@@ -21,6 +25,16 @@ class CreateGAApplication {
     I.see('Yes');
     I.see('No');
     I.click(option);
+    clickButton(buttonType.CONTINUE);
+  }
+
+  InformOtherParties(option) {
+    I.waitForContent('Should the court inform the other parties about this application?');
+    I.click(option);
+    if (option === 'No') {
+      I.see('Why do you not want the court to inform the other parties?');
+      I.fillField('#reasonForCourtNotInformingOtherParties', 'not informed to other parties');
+    }
     clickButton(buttonType.CONTINUE);
   }
 
@@ -39,10 +53,18 @@ class CreateGAApplication {
     clickButton(buttonType.CONTINUE);
   }
 
-  orderJudge(claimId) {
+  uploadN245Form(claimId) {
+    I.seeInCurrentUrl(`case/${claimId}/general-application/upload-n245-form`);
+    I.see('Upload N245 form');
+    I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestDOC.doc');
+    I.click('#uploadFileButton');
+    clickButton(buttonType.CONTINUE);
+  }
+
+  orderJudge(claimId, text) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/order-judge`);
     I.see('What order do you want the judge to make?');
-    I.fillField('#text', 'no mistake done by me to dismiss the claim');
+    I.fillField('#text', text);
     clickButton(buttonType.CONTINUE);
   }
 
@@ -64,6 +86,14 @@ class CreateGAApplication {
     I.seeInCurrentUrl(`case/${claimId}/general-application/want-to-upload-documents`);
     I.see('Do you want to upload documents to support your application?');
     I.click(option);
+    clickButton(buttonType.CONTINUE);
+  }
+
+  uploadDocument(claimId) {
+    I.seeInCurrentUrl(`case/${claimId}/general-application/upload-documents`);
+    I.see('Upload documents to support your application');
+    I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestDOC.doc');
+    I.click('#uploadFileButton');
     clickButton(buttonType.CONTINUE);
   }
 
@@ -119,18 +149,26 @@ class CreateGAApplication {
   submitConfirmation(claimId, fee) {
     I.seeInCurrentUrl(`case/${claimId}/general-application/submit-general-application-confirmation`);
     I.see('Application created', 'h1');
-    I.see(`Your application has been saved, but you need to pay the application fee of £${fee}`);
+    if (fee) {
+      I.see(`Your application has been saved, but you need to pay the application fee of £${fee}`);
+    }
     clickButton('Pay application fee');
   }
 
-  selectFeeType(claimId) {
-    I.seeInCurrentUrl(`/case/${claimId}/general-application/apply-help-fee-selection`);
+  selectFeeType(claimId, appId, fee) {
+    if (appId) {
+      I.amOnPage(`/case/${claimId}/general-application/${appId}/apply-help-fee-selection?appFee=${fee}`);
+    } else {
+      I.seeInCurrentUrl(`/case/${claimId}/general-application/apply-help-fee-selection`);
+    }
     I.click('No');
     clickButton('Continue');
   }
 
   verifyPaymentSuccessfullPage(claimId, AppId) {
-    I.seeInCurrentUrl(`/case/${claimId}/general-application/${AppId}/payment-successful`);
+    if (claimId && AppId) {
+      I.seeInCurrentUrl(`/case/${claimId}/general-application/${AppId}/payment-successful`);
+    }
     I.see('Your payment was\n' +
       'successful');
 
