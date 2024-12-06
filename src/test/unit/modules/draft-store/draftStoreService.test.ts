@@ -125,7 +125,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).toEqual({refreshDataForDJ: true,});
+    expect(result).toEqual({refreshDataForDJ: true});
   });
   it('should throw error if not selected do not throw error', async () => {
     //Given

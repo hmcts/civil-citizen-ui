@@ -402,7 +402,7 @@ describe('Claimant Response Service', () => {
       await saveClaimantResponse('validClaimId', YesNo.NO, 'option', 'hasDefendantPaidYou');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToSave
+        claimantResponse: claimantResponseToSave,
       }, true);
     });
 
@@ -420,7 +420,7 @@ describe('Claimant Response Service', () => {
       await saveClaimantResponse('validClaimId', claimantResponse?.hasDefendantPaidYou.option, 'hasDefendantPaidYou');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToUpdate
+        claimantResponse: claimantResponseToUpdate,
       }, true);
     });
 
@@ -441,7 +441,7 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToUpdate
+        claimantResponse: claimantResponseToUpdate,
       }, true);
     });
 
@@ -465,7 +465,7 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToUpdate
+        claimantResponse: claimantResponseToUpdate,
       }, true);
     });
     it('should delete hasPartPaymentBeenAccepted and rejectionReason fields from redis when hasDefendantPaidYou is no', async () => {
@@ -487,7 +487,7 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToUpdate
+        claimantResponse: claimantResponseToUpdate,
       }, true);
     });
     it('should delete rejectionReason field from redis when hasPartPaymentBeenAccepted is yes', async () => {
@@ -508,7 +508,7 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToUpdate
+        claimantResponse: claimantResponseToUpdate,
       }, true);
     });
     it('should delete rejectionReason field from redis when hasFullDefenceStatesPaidClaimSettled is yes', async () => {
@@ -529,7 +529,7 @@ describe('Claimant Response Service', () => {
       //Then
       expect(spySave).toHaveBeenCalledWith('validClaimId', {
         refreshDataForDJ: true,
-        claimantResponse: claimantResponseToUpdate
+        claimantResponse: claimantResponseToUpdate,
       }, true);
     });
     describe('reset tasklist data', () => {
@@ -637,7 +637,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {
           refreshDataForDJ: true,
-          claimantResponse: claimantResponseToSave
+          claimantResponse: claimantResponseToSave,
         }, true);
       });
 
@@ -657,7 +657,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {
           refreshDataForDJ: true,
-          claimantResponse: claimantResponseToUpdate
+          claimantResponse: claimantResponseToUpdate,
         }, true);
       });
     });
@@ -680,7 +680,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {
           refreshDataForDJ: true,
-          claimantResponse: claimantResponseToSave
+          claimantResponse: claimantResponseToSave,
         }, true);
       });
 
@@ -702,7 +702,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {
           refreshDataForDJ: true,
-          claimantResponse: claimantResponseToUpdate
+          claimantResponse: claimantResponseToUpdate,
         }, true);
       });
 
@@ -740,7 +740,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {
           refreshDataForDJ: true,
-          claimantResponse: claimantResponseToSave
+          claimantResponse: claimantResponseToSave,
         }, true);
       });
 
@@ -769,7 +769,7 @@ describe('Claimant Response Service', () => {
         //Then
         expect(spySave).toHaveBeenCalledWith('validClaimId', {
           refreshDataForDJ: true,
-          claimantResponse: claimantResponseToUpdate
+          claimantResponse: claimantResponseToUpdate,
         }, true);
       });
     });
