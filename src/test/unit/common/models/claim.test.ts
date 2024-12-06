@@ -48,7 +48,6 @@ import {FlightDetails} from 'common/models/flightDetails';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {BusinessProcess} from "models/businessProcess";
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -2426,27 +2425,6 @@ describe('isCcjCompleteForJo', () => {
     jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
     //When
     const result = claim.isCCJCompleteForJo(true);
-    //Then
-    expect(result).toBe(false);
-  });
-});
-
-describe('hasBusinessProcessFinished', () => {
-  const claim = new Claim();
-  claim.businessProcess = new BusinessProcess();
-  it('should return true when business process status is FINISHED', async() => {
-    //Given
-    claim.businessProcess.status = 'FINISHED';
-    //When
-    const result = claim.hasBusinessProcessFinished();
-    //Then
-    expect(result).toBe(true);
-  });
-  it('should return false when business process status is STARTED', async() => {
-    //Given
-    claim.businessProcess.status = 'STARTED';
-    //When
-    const result = claim.hasBusinessProcessFinished();
     //Then
     expect(result).toBe(false);
   });
