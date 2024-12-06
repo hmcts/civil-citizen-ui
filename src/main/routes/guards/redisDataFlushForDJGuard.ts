@@ -4,7 +4,7 @@ import {
   deleteDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
-  saveDraftClaim
+  saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 
@@ -21,4 +21,4 @@ export const redisDataFlushForDJ = async (req: AppRequest, res: Response, next: 
   } catch (error) {
     next(error);
   }
-}
+};
