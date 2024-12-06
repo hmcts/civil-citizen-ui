@@ -1,0 +1,186 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732192997720139",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/strikeout/mainCaseData.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732192997720139/userCaseRoles",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[CLAIMANT]"
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732194111758649",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/strikeout/gaApplicationData.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732192997720139/applications",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/strikeout/gaApplications.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/general-application",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.applicationTypes == ['STRIKE_OUT'])]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withConsent == false)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withNotice == false)]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"calculatedAmountInPence\": \"10800\", \"code\": \"FEE0443\", \"version\": \"2\"}"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732192997720139/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'INITIATE_GENERAL_APPLICATION')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/strikeout/mainCaseData.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/case/1732194111758649/payment",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/strikeout/paymentRedirect.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732194111758649/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'RESPOND_TO_APPLICATION')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/strikeout/respondentResponse.json"
+      }
+    }
+  ]
+}
