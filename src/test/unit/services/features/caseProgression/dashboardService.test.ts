@@ -364,7 +364,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, true, 'en');
+        const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -383,7 +383,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, true, 'en');
+        const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -403,7 +403,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -423,7 +423,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -441,7 +441,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -461,7 +461,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -482,7 +482,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -502,7 +502,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, true, 'en');
+        const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
         //Then
         expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
@@ -523,7 +523,7 @@ describe('dashboardService', () => {
           baseLocation: '0909089',
         };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
