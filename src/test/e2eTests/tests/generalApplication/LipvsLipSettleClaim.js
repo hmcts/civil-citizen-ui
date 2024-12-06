@@ -1,39 +1,36 @@
 const {toggleFlag} = require('../../commons/toggleFlag');
 const createGAApplication = require('../../genralApplication/createGAApplication');
+const config = require('../../../config');
 const RespondentResponse = require('../../genralApplication/respondentResponse');
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
-const config = require('../../../config');
 
-Feature('Lip V Lip Vary Order Consent').tag('@galip');
-
-Scenario('Claimant GA Application and respond to response with vary order consent ', async () => {
+Feature('Lip V Lip settle claim with consent').tag('@galip');
+Scenario('Claimant GA Application and respond to response for settle claim with consent ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-
     toggleFlag('cuiReleaseTwoEnabled', true);
-    toggleFlag('GaForLips', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    const claimID = 1730984188221535;
-    const appId = 1731322828021511;
+    toggleFlag('GaForLips', true);
+    const claimID = 1732290567986310;
+    const appId = 1732292100554027;
     createGAApplication.start(claimID);
-    createGAApplication.selectApplicationType('Ask the court to reconsider an order');
+    createGAApplication.selectApplicationType('Other applications', 'Ask the court to make an order settling the claim by consent');
     createGAApplication.selectAgreementFromOtherParty('Yes');
-    createGAApplication.applicationCosts(claimID, 'Reconsider an order', 'To apply to reconsider an order, the application fee is £14');
+    createGAApplication.applicationCosts(claimID, 'Court to make an order settling the claim by consent', 'To apply to the court to make an order settling the claim by consent, the application fee is £108');
     createGAApplication.claimCosts(claimID, 'Yes');
-    createGAApplication.orderJudge(claimID, 'no mistake done by me to dismiss the claim');
+    createGAApplication.orderJudge(claimID, 'settle the claim');
     createGAApplication.requestingReason(claimID);
-    createGAApplication.addAnotherApp(claimID, 'No');
     createGAApplication.wantToUploadDocs(claimID, 'No');
     createGAApplication.hearingArrangementsInfo(claimID);
     createGAApplication.hearingArrangements(claimID, 'In person at the court');
     createGAApplication.hearingContactDetails(claimID);
     createGAApplication.unavailableDates(claimID);
     createGAApplication.hearingSupport(claimID);
-    createGAApplication.payYourApplicationFee(claimID, 14);
+    createGAApplication.payYourApplicationFee(claimID, 108);
     createGAApplication.checkAndSend(claimID);
-    createGAApplication.submitConfirmation(claimID, 14);
+    createGAApplication.submitConfirmation(claimID, 108);
     createGAApplication.selectFeeType(claimID);
-    createGAApplication.verifyPaymentSuccessfullPage(claimID, appId);
-    RespondentResponse.agreeToOrder('Yes', 'Respond to an application to reconsider an order', claimID, appId);
+    createGAApplication.verifyPaymentSuccessfullPage();
+    RespondentResponse.agreeToOrder('Yes', 'Respond to an application to court to make an order settling the claim by consent', claimID, appId);
     RespondentResponse.wantToUploadDocuments(claimID, appId, 'No');
     RespondentResponse.hearingPreference(claimID, appId);
     RespondentResponse.hearingArrangement(claimID, appId, 'In person at the court');
@@ -42,13 +39,9 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     RespondentResponse.hearingSupport(claimID, appId);
     RespondentResponse.submitApplication(claimID, appId);
     RespondentResponse.confirmationPage(claimID, appId);
-    responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
+    responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Order made');
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }
-});
-
-AfterSuite(async () => {
-  await createGAApplication.resetWiremockScenario();
 });
