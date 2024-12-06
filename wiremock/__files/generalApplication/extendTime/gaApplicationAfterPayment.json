@@ -1,0 +1,153 @@
+{
+  "id": 1732106154804395,
+  "jurisdiction": "CIVIL",
+  "state": "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
+  "case_type_id": "GENERALAPPLICATION",
+  "created_date": "2024-11-20T12:35:54.84744",
+  "last_modified": "2024-11-20T12:44:27.527825",
+  "case_data": {
+    "generalAppUrgencyRequirement": {
+      "generalAppUrgency": "Yes",
+      "reasonsForUrgency": "There is a hearing on the main case within 10 days",
+      "urgentAppConsiderationDate": "2024-11-23"
+    },
+    "generalAppNotificationDeadlineDate": "2024-11-25T16:00:00",
+    "generalAppHearingDate": {
+      "hearingScheduledDate": "2024-11-23"
+    },
+    "caseManagementLocation": {
+      "region": "2",
+      "address": "St Mary's Court, Regents Park Road",
+      "postcode": "N3 1BQ",
+      "siteName": "Barnet Civil and Family Centre",
+      "baseLocation": "000000"
+    },
+    "generalAppAskForCosts": "Yes",
+    "generalAppApplnSolicitor": {
+      "id": "dc90f783-f626-464d-ba75-a85556447384",
+      "email": "citizen.user2@gmail.com",
+      "surname": "citizen",
+      "forename": "citizen.user2@gmail.com"
+    },
+    "parentClaimantIsApplicant": "No",
+    "isGaApplicantLip": "Yes",
+    "caseManagementCategory": {
+      "value": {
+        "code": "Civil",
+        "label": "Civil"
+      },
+      "list_items": [
+        {
+          "id": "58fb8273-b8b8-4aa2-8ca6-d9ec38ed783f",
+          "value": {
+            "code": "Civil",
+            "label": "Civil"
+          }
+        }
+      ]
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "parentCaseReference": "1732014426677369",
+    "generalAppRespondentSolicitors": [
+      {
+        "id": "b338adfa-0a6b-4a03-a60e-f942aa43be68",
+        "value": {
+          "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+          "email": "civilmoneyclaimsdemo@gmail.com",
+          "surname": "person",
+          "forename": "Claimant"
+        }
+      }
+    ],
+    "isDocumentVisible": "Yes",
+    "generalAppParentCaseLink": {
+      "CaseReference": "1732014426677369"
+    },
+    "generalAppRespondentAgreement": {
+      "hasAgreed": "Yes"
+    },
+    "applicantPartyName": "mr defendant person",
+    "generalAppConsentOrder": "No",
+    "generalAppSuperClaimType": "SPEC_CLAIM",
+    "generalAppPBADetails": {
+      "fee": {
+        "code": "FEE0443",
+        "version": "2",
+        "calculatedAmountInPence": "10800"
+      },
+      "paymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234"
+      },
+      "serviceRequestReference": "2022-1655915218557"
+    },
+    "generalAppDetailsOfOrder": "The time by which I must [specify what needs to be done] be extended to [enter the date you can do this by].",
+    "isGaRespondentTwoLip": "No",
+    "locationName": "Barnet Civil and Family Centre",
+    "claimant1PartyName": "Mr Claimant person",
+    "respondent1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[DEFENDANT]"
+    },
+    "caseNameGaInternal": "'Claimant person' v 'defendant person'",
+    "generalAppHearingDetails": {
+      "HearingDetailsEmailID": "civilmoneyclaimsdemo@gmail.com",
+      "HearingPreferredLocation": {
+        "value": {
+          "code": "94de642b-6045-48b1-b339-2ec9e891acbd",
+          "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"
+        },
+        "list_items": [
+          {
+            "code": "94de642b-6045-48b1-b339-2ec9e891acbd",
+            "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"
+          }
+        ]
+      },
+      "HearingDetailsTelephoneNumber": "07557350542",
+      "ReasonForPreferredHearingType": "test",
+      "HearingPreferencesPreferredType": "IN_PERSON",
+      "unavailableTrialRequiredYesOrNo": "No"
+    },
+    "isGaRespondentOneLip": "Yes",
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "INITIATE_GENERAL_APPLICATION_AFTER_PAYMENT"
+    },
+    "defendant1PartyName": "mr defendant person",
+    "generalAppInformOtherParty": {
+      "isWithNotice": "Yes"
+    },
+    "generalAppType": {
+      "types": [
+        "EXTEND_TIME"
+      ]
+    },
+    "generalAppReasonsOfOrder": "testtttttttttttt",
+    "applicationTypes": "Extend time",
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "gaDraftDocument": [
+      {
+        "id": "b048dc19-618b-41f5-9fca-7d902df63e97",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "applications",
+            "document_url": "http://dm-store:8080/documents/a3e8304a-c3ca-4b83-bc28-5a821265e912",
+            "document_filename": "Draft_application_2024-11-20 12:44:25.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/a3e8304a-c3ca-4b83-bc28-5a821265e912/binary"
+          },
+          "documentName": "Draft_application_2024-11-20 12:44:25.pdf",
+          "documentSize": 45619,
+          "documentType": "GENERAL_APPLICATION_DRAFT",
+          "createdDatetime": "2024-11-20T12:44:26.1136474"
+        }
+      }
+    ],
+    "isMultiParty": "No",
+    "isCcmccLocation": "Yes",
+    "gaApplicantDisplayName": "mr defendant person - Defendant"
+  },
+  "security_classification": "PUBLIC"
+}
