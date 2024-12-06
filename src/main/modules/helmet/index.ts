@@ -101,31 +101,33 @@ export class Helmet {
 
   private setContentSecurityPolicy(app: express.Express): void {
     app.use(
-      helmet.contentSecurityPolicy({
-        directives: {
-          connectSrc: connectSrc,
-          mediaSrc: mediaSrc,
-          defaultSrc: ["'none'"],
-          fontSrc: [self, 'data:', 'fonts.gstatic.com'],
-          imgSrc: imgSrc,
-          objectSrc: [self],
-          scriptSrc: [
-            self,
-            googleAnalyticsDomain,
-            dynatraceDomain,
-            "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-            (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
-            (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
-          ],
-          scriptSrcElem: scriptSrcElem,
-          styleSrc: styleSrc,
-          manifestSrc: manifestSrc,
-          formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
-          frameSrc: frameSrc,
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            connectSrc: connectSrc,
+            mediaSrc: mediaSrc,
+            defaultSrc: ["'none'"],
+            fontSrc: [self, 'data:', 'fonts.gstatic.com'],
+            imgSrc: imgSrc,
+            objectSrc: [self],
+            scriptSrc: [
+              self,
+              googleAnalyticsDomain,
+              dynatraceDomain,
+              "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
+              (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
+              (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
+            ],
+            scriptSrcElem: scriptSrcElem,
+            styleSrc: styleSrc,
+            manifestSrc: manifestSrc,
+            formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
+            frameSrc: frameSrc,
+          },
         },
-      }),
-      helmet.crossOriginOpenerPolicy({
-        policy: 'same-origin-allow-popups',
+        crossOriginOpenerPolicy: {
+          policy: 'same-origin-allow-popups',
+        },
       }),
     );
   }
