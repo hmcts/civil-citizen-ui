@@ -84,7 +84,7 @@
 {% set applicationDocumentsHtml %}
   {{ createDocumentsTableWithoutTableCaption(applicantDocRows) }}
   {{ createDocumentsTableWithoutTableCaption(respondentDocRows) }}
-  {% if respondentDocuments.documents.length > 0 %}
+  {% if respondentDocuments.documents.length > 0 and additionalDocUrl %}
     {{ govukButton({
       text: t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS'),
       href: additionalDocUrl
