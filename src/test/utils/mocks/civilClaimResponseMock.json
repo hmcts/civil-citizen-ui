@@ -7,6 +7,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
+    "refreshDataForDJ": true,
     "id": "1645882162449409",
     "caseRole" : "[APPLICANTSOLICITORONE]",
     "pcqId":"123",

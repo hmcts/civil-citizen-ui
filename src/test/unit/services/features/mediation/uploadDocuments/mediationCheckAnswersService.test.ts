@@ -65,7 +65,7 @@ describe('Check answers service For Mediation', () => {
         const updatedClaim = new Claim();
         updatedClaim.app1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD(CLAIMANT_ONE_MEDIATION_DOCS);
         updatedClaim.app1MediationDocumentsReferred = getReferredDocumentCCD(CLAIMANT_ONE_MEDIATION_DOCS);
-
+        delete updatedClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -91,7 +91,7 @@ describe('Check answers service For Mediation', () => {
 
         const updatedClaim = new Claim();
         updatedClaim.app1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD(CLAIMANT_ONE_MEDIATION_DOCS);
-
+        delete updatedClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -117,7 +117,7 @@ describe('Check answers service For Mediation', () => {
 
         const updatedClaim = new Claim();
         updatedClaim.app1MediationDocumentsReferred = getReferredDocumentCCD(CLAIMANT_ONE_MEDIATION_DOCS);
-
+        delete updatedClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -152,7 +152,7 @@ describe('Check answers service For Mediation', () => {
 
         expectedOldClaim.app1MediationDocumentsReferred = referredDocumentCCD;
         expectedOldClaim.app1MediationNonAttendanceDocs = nonAttendanceDocumentsCCD;
-
+        delete expectedOldClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -182,7 +182,7 @@ describe('Check answers service For Mediation', () => {
         const updatedClaim = new Claim();
         updatedClaim.res1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD(DEFENDANT_ONE_MEDIATION_DOCS);
         updatedClaim.res1MediationDocumentsReferred = getReferredDocumentCCD(DEFENDANT_ONE_MEDIATION_DOCS);
-
+        delete updatedClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -208,7 +208,7 @@ describe('Check answers service For Mediation', () => {
 
         const updatedClaim = new Claim();
         updatedClaim.res1MediationNonAttendanceDocs = getNonAttendanceDocumentsCCD(DEFENDANT_ONE_MEDIATION_DOCS);
-
+        delete updatedClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -234,7 +234,7 @@ describe('Check answers service For Mediation', () => {
 
         const updatedClaim = new Claim();
         updatedClaim.res1MediationDocumentsReferred = getReferredDocumentCCD(DEFENDANT_ONE_MEDIATION_DOCS);
-
+        delete updatedClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
@@ -269,7 +269,7 @@ describe('Check answers service For Mediation', () => {
 
         expectedOldClaim.res1MediationDocumentsReferred = referredDocumentCCD;
         expectedOldClaim.res1MediationNonAttendanceDocs = nonAttendanceDocumentsCCD;
-
+        delete expectedOldClaim.refreshDataForDJ;
         //When
         await saveMediationUploadedDocuments('1111', uploadDocuments,  null);
 
