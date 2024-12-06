@@ -68,7 +68,7 @@ async function getUser(epoch: string): Promise<LDUser> {
   return user;
 }
 
-async function getUserLocation(epoch: string): Promise<LDUser> {
+async function getUserLocation(location: string): Promise<LDUser> {
   const launchDarklyEnv = config.get<string>('services.launchDarkly.env');
   let user: LDUser = {'name': 'civil-service', 'key': 'civil-service'};
 
@@ -77,7 +77,7 @@ async function getUserLocation(epoch: string): Promise<LDUser> {
       'name': 'civil-service', 'key': 'civil-service',
       'custom': {
         environment: launchDarklyEnv,
-        location: epoch,
+        location: location,
       },
     };
 
