@@ -120,9 +120,6 @@
     "partialPaymentAmount": "10000",
     "applicant1Represented": "No",
     "issueDate": "2024-08-21",
-    "respondent2OrganisationPolicy": {
-      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-    },
     "systemGeneratedCaseDocuments": [
       {
         "value": {

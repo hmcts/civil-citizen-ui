@@ -69,9 +69,6 @@
       "version": "3",
       "calculatedAmountInPence": "45500"
     },
-    "respondent2OrganisationPolicy": {
-      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-    },
     "systemGeneratedCaseDocuments": [
       {
         "id": "f4dd97d9-8e51-4f36-add1-875dfe1cff20",

@@ -6309,10 +6309,7 @@
         },
         "OrgPolicyReference": "Defendant policy reference",
         "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
-      },
-      "respondent2OrganisationPolicy": {
-        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-      },
+      }
       "specClaimResponseTimelineList": "MANUAL",
       "applicantSolicitor1PbaAccounts": {
         "value": {
@@ -6447,9 +6444,6 @@
         "code": "FEE0208",
         "version": "3",
         "calculatedAmountInPence": "45500"
-      },
-      "respondent2OrganisationPolicy": {
-        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
       },
       "systemGeneratedCaseDocuments": [
         {
@@ -6745,9 +6739,6 @@
         "code": "FEE0208",
         "version": "3",
         "calculatedAmountInPence": "45500"
-      },
-      "respondent2OrganisationPolicy": {
-        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
       },
       "systemGeneratedCaseDocuments": [
         {
@@ -7136,9 +7127,6 @@
         "code": "FEE0208",
         "version": "3",
         "calculatedAmountInPence": "45500"
-      },
-      "respondent2OrganisationPolicy": {
-        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
       },
       "systemGeneratedCaseDocuments": [
         {

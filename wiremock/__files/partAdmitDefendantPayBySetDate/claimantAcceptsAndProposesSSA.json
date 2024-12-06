@@ -196,9 +196,6 @@
     "applicant1Represented": "No",
     "issueDate": "2024-08-02",
     "disabilityPremiumPayments": "Yes",
-    "respondent2OrganisationPolicy": {
-      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-    },
     "showResponseOneVOneFlag": "ONE_V_ONE_PART_ADMIT_PAY_BY_SET_DATE",
     "systemGeneratedCaseDocuments": [
       {
