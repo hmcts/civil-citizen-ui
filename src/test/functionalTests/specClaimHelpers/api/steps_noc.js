@@ -73,4 +73,8 @@ module.exports = {
       buildNocAnswers('Second Defendant'),
     );
   },
+  requestNoticeOfChangeForLipRespondent: async (claimRef, newSolicitor) => {
+    await requestNoticeOfChange(claimRef, newSolicitor, 'respondent1OrganisationPolicy',
+      buildNocAnswers('Sir John Doe'));
+  },
 };
