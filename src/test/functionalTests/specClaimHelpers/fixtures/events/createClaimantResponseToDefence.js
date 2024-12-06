@@ -1,7 +1,7 @@
 const {date} = require('../../api/dataHelper');
 
 module.exports = {
-  createClaimantIntendsToProceedResponse: (claimType) => {
+  createClaimantIntendsToProceedResponse: (claimType, location) => {
     const claimantResponseData = {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
@@ -136,12 +136,12 @@ module.exports = {
           responseCourtLocations: {
             value: {
               code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-              label: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+              label: location,
             },
             list_items: [
               {
                 code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-                label: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+                label: location,
               },
             ],
           },
@@ -180,7 +180,7 @@ module.exports = {
     return claimantResponseData;
   },
 
-  createClaimantLipIntendsToProceedResponse: () => {
+  createClaimantLipIntendsToProceedResponse: (location) => {
     const claimantResponseData = {
       event: 'CLAIMANT_RESPONSE_CUI',
       caseDataUpdate: {
@@ -216,8 +216,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'test',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
-            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            region: location,
+            baseLocation: location,
           },
         },
         applicant1DQWitnesses: {
