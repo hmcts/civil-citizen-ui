@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@hmcts/cookie-manager": "^1.0.0",
-    "@hmcts/info-provider": "^1.2.1",
+    "@hmcts/info-provider": "^1.2.2",
     "@hmcts/nodejs-healthcheck": "^1.8.0",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^0.0.14",
@@ -78,7 +78,7 @@
     "crypto-js": "^4.2.0",
     "csurf": "^1.11.0",
     "dayjs": "^1.11.7",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
     "express-session": "^1.17.3",
     "follow-redirects": "1.15.6",
