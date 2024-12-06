@@ -1,0 +1,36 @@
+{
+  "total": 1,
+  "cases": [
+    {
+      "id": 1732808403908337,
+      "jurisdiction": "CIVIL",
+      "state": "LISTING_FOR_A_HEARING",
+      "case_type_id": "GENERALAPPLICATION",
+      "created_date": "2024-11-28T15:40:03.922",
+      "last_modified": "2024-11-28T16:31:32.666",
+      "case_data": {
+        "generalAppInformOtherParty": {
+          "isWithNotice": "No"
+        },
+        "parentClaimantIsApplicant": "Yes",
+        "applicationTypes": "Other",
+        "generalAppRespondentAgreement": {
+          "hasAgreed": "No"
+        },
+        "generalAppPBADetails": {
+          "fee": {
+            "calculatedAmountInPence": "10800",
+            "code": "FEE0443",
+            "version": "2"
+          },
+          "serviceRequestReference": "2022-1655915218557",
+          "paymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          }
+        }
+      },
+      "security_classification": "PUBLIC"
+    }
+  ]
+}
