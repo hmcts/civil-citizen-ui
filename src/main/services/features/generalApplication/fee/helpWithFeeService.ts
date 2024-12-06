@@ -1,6 +1,7 @@
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
 } from 'routes/urls';
@@ -11,7 +12,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
-  getGaFeePaymentRedirectInformation,
+  getGaFeePaymentRedirectInformation, getGaFeePaymentStatus,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
@@ -22,11 +23,14 @@ import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/g
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const success = 'Success';
+const failed = 'Failed';
 
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
@@ -48,11 +52,35 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
 
     if (applyHelpWithFees.option === YesNo.NO) {
-      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      let paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
-      redirectUrl = paymentRedirectInformation?.nextUrl;
+      await saveUserId(claimId, req.session.user.id);
+      try {
+        const paymentReference = claim.generalApplication.applicationFeePaymentDetails?.paymentReference;
+        const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentReference, req);
+        logger.info(`Existing payment status for application id ${generalApplicationId}: ${paymentStatus?.status}`);
+        if (paymentStatus?.status === success) {
+          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
+          redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
+        } else if (paymentStatus?.status === failed) {
+          paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+          logger.info(`New payment ref after failed payment for application id ${generalApplicationId}: ${paymentRedirectInformation?.paymentReference}`);
+          if (!paymentRedirectInformation) {
+            redirectUrl = req.originalUrl;
+          } else {
+            claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+            await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+            redirectUrl = paymentRedirectInformation?.nextUrl;
+          }
+        } else {
+          redirectUrl = paymentRedirectInformation?.nextUrl;
+        }
+      } catch (err: unknown) {
+        logger.info(`Error retrieving payment status for application id ${generalApplicationId}, payment ref ${paymentRedirectInformation?.paymentReference}`);
+        redirectUrl = paymentRedirectInformation?.nextUrl;
+      }
     } else {
       const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
       if (req.query.appFee) {
