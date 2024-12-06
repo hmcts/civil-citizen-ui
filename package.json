@@ -177,7 +177,8 @@
     "tar": "6.2.1",
     "braces": "^3.0.3",
     "ws": "^8.17.1",
-    "axios": "^1.7.4"
+    "axios": "^1.7.4",
+    "express": "^4.21.2"
   },
   "packageManager": "yarn@3.5.0"
 }
