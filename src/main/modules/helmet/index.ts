@@ -124,6 +124,9 @@ export class Helmet {
           frameSrc: frameSrc,
         },
       }),
+      helmet.crossOriginOpenerPolicy({
+        policy: 'same-origin-allow-popups',
+      }),
     );
   }
 }
