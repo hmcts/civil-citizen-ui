@@ -12,6 +12,25 @@ class RespondentResponse {
     clickButton(buttonType.CONTINUE);
   }
 
+  respondentAgreement(claimId, appId, selectedApplicationType, option) {
+    I.amOnPage(`case/${claimId}/response/general-application/${appId}/respondent-agreement`);
+    I.see(selectedApplicationType);
+    I.see('Do you agree that the court should make the order that the other parties have requested?');
+    I.click(option);
+    clickButton(buttonType.CONTINUE);
+  }
+
+  acceptDefendantOffer(claimId, appId, option, planType) {
+    I.amOnPage(`case/${claimId}/response/general-application/${appId}/accept-defendant-offer`);
+    I.click(option);
+    if (option === 'No' && planType === 'instalments') {
+      I.click('I\'ll accept certain instalments per month');
+      I.fillField('#amountPerMonth', 100);
+      I.fillField('#reasonProposedInstalment', 'no savings');
+    }
+    clickButton(buttonType.CONTINUE);
+  }
+
   wantToUploadDocuments(claimId, appId, option) {
     I.seeInCurrentUrl(`case/${claimId}/response/general-application/${appId}/want-to-upload-document`);
     I.see('Do you want to upload documents to support your response?');
