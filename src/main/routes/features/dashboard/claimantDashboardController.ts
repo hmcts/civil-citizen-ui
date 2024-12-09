@@ -127,7 +127,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
 
-  iWantToLinks.push(getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   if(viewAllApplicationLink) {
