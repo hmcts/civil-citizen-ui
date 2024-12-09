@@ -12,13 +12,13 @@ Feature('Lip v Lip - Claimant Welsh - GA application');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createLiPClaim(config.claimantCitizenUser,'',false,'Individual', 'WELSH');
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser,'',false,'Individual', 'BOTH');
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   await api.performTranslatedDocUpload(config.caseWorker, claimRef);
   await api.assignToLipDefendant(claimRef);
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'SmallClaims', config.defenceType.rejectAllDisputeAllWithIndividual, '');
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, 'SmallClaims', config.defenceType.rejectAllDisputeAllWithIndividual);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 

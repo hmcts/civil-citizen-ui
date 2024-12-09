@@ -12,7 +12,6 @@ import {
 } from 'routes/urls';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 
 declare const appRequest: requestModels.AppRequest;

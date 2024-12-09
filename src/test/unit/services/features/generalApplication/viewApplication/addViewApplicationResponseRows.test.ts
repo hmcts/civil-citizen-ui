@@ -1,8 +1,14 @@
-import { CcdGARespondentDebtorOfferOptionsGAspec, CcdGeneralApplicationHearingDetails, CcdHearingType } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {
+  CcdGADebtorPaymentPlanGAspec,
+  CcdGARespondentDebtorOfferOptionsGAspec,
+  CcdGeneralApplicationHearingDetails,
+  CcdHearingType,
+} from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import { CcdGeneralApplicationRespondentResponse } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
 import { CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { buildResponseSummaries } from 'services/features/generalApplication/viewApplication/addViewApplicationResponseRows';
+import { YesNoUpperCamelCase } from 'form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -15,16 +21,72 @@ describe('addViewApplicationResponseRows', () => {
     it('should return No agreement row', () => {
       const application: Partial<CCDApplication> = {
         gaRespondentDebtorOffer: {
-          respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT,
+          respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.DECLINE,
           debtorObjections: 'I disagree',
-        },
-        respondentsResponses: [{ value : {}} as CcdGeneralApplicationRespondentResponse],
-      } satisfies Partial<CCDApplication>;
+          paymentPlan: CcdGADebtorPaymentPlanGAspec.PAYFULL,
+          paymentSetDate: new Date('2028-03-25'),
 
-      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
-        key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.NO'},
-      }]);
+        },
+        respondentsResponses: [{ value : {generalAppRespondent1Representative: YesNoUpperCamelCase.NO}} as CcdGeneralApplicationRespondentResponse],
+      } satisfies Partial<CCDApplication>;
+      const htmlData = '<ul class="no-list-style"><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_SET_DATE</li><li>25/03/2028</li><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li><li>I disagree</li></ul>';
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER',
+          },
+          'value': {
+            'html': 'COMMON.VARIATION_2.NO',
+          },
+        },{
+          key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+          value: {html: 'COMMON.VARIATION_2.NO'},
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+          },
+          'value': {
+            'html': htmlData,
+          },
+        },
+      ]);
+    });
+
+    it('should return No agreement row when instalments response', () => {
+      const application: Partial<CCDApplication> = {
+        gaRespondentDebtorOffer: {
+          respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.DECLINE,
+          debtorObjections: 'I disagree',
+          paymentPlan: CcdGADebtorPaymentPlanGAspec.INSTALMENT,
+          monthlyInstalment: ('12300'),
+
+        },
+        respondentsResponses: [{ value : {generalAppRespondent1Representative: YesNoUpperCamelCase.NO}} as CcdGeneralApplicationRespondentResponse],
+      } satisfies Partial<CCDApplication>;
+      const htmlData = '<ul class="no-list-style"><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_INSTALMENTS</li><li>£123</li><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li><li>I disagree</li></ul>';
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER',
+          },
+          'value': {
+            'html': 'COMMON.VARIATION_2.NO',
+          },
+        },
+        {
+          key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+          value: {html: 'COMMON.VARIATION_2.NO'},
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+          },
+          'value': {
+            'html': htmlData,
+          },
+        },
+      ]);
     });
 
     it('should return Yes agreement row', () => {
@@ -33,13 +95,18 @@ describe('addViewApplicationResponseRows', () => {
           respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT,
           debtorObjections: undefined,
         },
-        respondentsResponses: [{ value : {}}],
+        respondentsResponses: [{ value : {generalAppRespondent1Representative: YesNoUpperCamelCase.YES}}],
       } satisfies Partial<CCDApplication>;
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
+        key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER'},
+        value: {html: 'COMMON.VARIATION_2.YES'},
+      },
+      {
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.YES'},
-      }]);
+        value: {html: 'COMMON.VARIATION_2.YES'},
+      },
+      ]);
     });
 
     it('should return undefined when there are not responses', () => {
@@ -50,11 +117,12 @@ describe('addViewApplicationResponseRows', () => {
       const application: Partial<CCDApplication> = {
         respondentsResponses: [{
           value: {
+            generalAppRespondent1Representative: YesNoUpperCamelCase.NO,
             gaHearingDetails: {
               HearingPreferencesPreferredType: CcdHearingType.IN_PERSON,
               ReasonForPreferredHearingType: 'I prefer in person',
               HearingPreferredLocation: {
-                value: { label: "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"},
+                value: {label: "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"},
               },
               HearingDetailsTelephoneNumber: '07878787878',
               HearingDetailsEmailID: 'email@addre.ss',
@@ -64,10 +132,11 @@ describe('addViewApplicationResponseRows', () => {
       };
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST' },
-        value: { html: 'COMMON.VARIATION.YES' },
-      }, {
+        value: { html: 'COMMON.VARIATION_2.NO' },
+      },
+      {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
-        value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT' },
+        value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT' },
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
         value: { html: 'I prefer in person'},
@@ -106,8 +175,9 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.YES'},
-      }, {
+        value: {html: 'COMMON.VARIATION_2.NO'},
+      },
+      {
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
         value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
       }]);
@@ -129,7 +199,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION.YES'},
+        value: {html: 'COMMON.VARIATION_2.NO'},
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},
         value: {html: '<ul class="no-list-style">'

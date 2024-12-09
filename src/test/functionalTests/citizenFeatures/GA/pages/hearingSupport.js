@@ -13,10 +13,10 @@ class HearingSupport {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     this.verifyPageText();
     await this.verifyOptions();
     contactUs.verifyContactUs();
@@ -26,8 +26,8 @@ class HearingSupport {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'h1');
     I.see('Adjustments or support to attend a hearing', 'h1');
   }
 
@@ -36,7 +36,6 @@ class HearingSupport {
     I.see('You\'ll need to arrange your own language interpreter.');
     I.see('If you\'re not able to arrange your own interpreter, the court may be able to arrange one for you.');
     I.see('If you\'ll be arranging your own interpreter, you still need to tell us what language you\'ll be using by ticking the \'Language interpreter\' box below.');
-    I.see('We\'ll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the \'Sign language interpreter\' box below.');
     I.see('Find out how to get an interpreter at a court or tribunal.');
     await I.seeElement('//a[contains(text(), \'get an interpreter at a court or tribunal\')]');
   }

@@ -8,7 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl, isConfirmYouPaidCCJAppType,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications, resetClaimDataByApplicationType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -64,6 +64,10 @@ import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {OrderJudge} from 'models/generalApplication/orderJudge';
+import clearAllMocks = jest.clearAllMocks;
+import {InformOtherParties} from 'models/generalApplication/informOtherParties';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -81,6 +85,36 @@ jest.mock('../../../../../main/app/client/civilServiceClient');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockGetGaHwFDetails = getDraftGAHWFDetails as jest.Mock;
 describe('General Application service', () => {
+  beforeEach(() => {
+    clearAllMocks();
+  });
+
+  describe('removeAllOtherApplications', () => {
+    it('should keep only the first element on applicationTypes', async () => {
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = Array.of(new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
+        new ApplicationType(ApplicationTypeOption.OTHER));
+      claim.generalApplication.orderJudges = Array.of(new OrderJudge('element1'), new OrderJudge('element2'));
+      claim.generalApplication.requestingReasons = Array.of(new RequestingReason('element1'), new RequestingReason('element2'));
+
+      await removeAllOtherApplications('111', claim);
+
+      expect(spy).toBeCalled();
+      expect(claim.generalApplication.applicationTypes.length).toEqual(1);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+
+      expect(claim.generalApplication.orderJudges.length).toEqual(1);
+      expect(claim.generalApplication.orderJudges[0]).toEqual(new OrderJudge('element1'));
+
+      expect(claim.generalApplication.requestingReasons.length).toEqual(1);
+      expect(claim.generalApplication.requestingReasons[0]).toEqual(new RequestingReason('element1'));
+
+    });
+  });
+
   describe('Save application type', () => {
     it('should save application type successfully', async () => {
       //Given
@@ -618,12 +652,12 @@ describe('General Application service', () => {
     });
   });
 
-  describe('getApplicationStatus', () => {
+  describe('getApplicationStatus applicant', () => {
     it('should return IN_PROGRESS when APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', () => {
       //Given
       const applicationState = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.IN_PROGRESS);
     });
@@ -631,7 +665,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.IN_PROGRESS);
     });
@@ -639,7 +673,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.LISTING_FOR_A_HEARING;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.IN_PROGRESS);
     });
@@ -647,31 +681,23 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
-    it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
-      //Given
-      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
-      //When
-      const status = getApplicationStatus(applicationState);
-      //Then
-      expect(status).toBe(ApplicationStatus.TO_DO);
-    });
-    it('should return TO_DO when HEARING_SCHEDULED', () => {
+    it('should return IN_PROGRESS when HEARING_SCHEDULED', () => {
       //Given
       const applicationState = ApplicationState.HEARING_SCHEDULED;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
-      expect(status).toBe(ApplicationStatus.TO_DO);
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
     });
     it('should return TO_DO when AWAITING_WRITTEN_REPRESENTATIONS', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
@@ -679,7 +705,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
@@ -687,7 +713,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
@@ -695,7 +721,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.APPLICATION_ADD_PAYMENT;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
@@ -703,7 +729,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.ORDER_MADE;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.COMPLETE);
     });
@@ -711,7 +737,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.APPLICATION_DISMISSED;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.COMPLETE);
     });
@@ -719,7 +745,7 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.APPLICATION_CLOSED;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.COMPLETE);
     });
@@ -727,7 +753,114 @@ describe('General Application service', () => {
       //Given
       const applicationState = ApplicationState.PROCEEDS_IN_HERITAGE;
       //When
-      const status = getApplicationStatus(applicationState);
+      const status = getApplicationStatus(true, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+  });
+
+  describe('getApplicationStatus respondent', () => {
+    it('should return IN_PROGRESS when APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return TO_DO when AWAITING_RESPONDENT_RESPONSE', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return IN_PROGRESS when LISTING_FOR_A_HEARING', () => {
+      //Given
+      const applicationState = ApplicationState.LISTING_FOR_A_HEARING;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return IN_PROGRESS when AWAITING_APPLICATION_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return IN_PROGRESS when HEARING_SCHEDULED', () => {
+      //Given
+      const applicationState = ApplicationState.HEARING_SCHEDULED;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return TO_DO when AWAITING_WRITTEN_REPRESENTATIONS', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_ADDITIONAL_INFORMATION', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_DIRECTIONS_ORDER_DOCS', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return IN_PROGRESS when APPLICATION_ADD_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_ADD_PAYMENT;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return COMPLETE when ORDER_MADE', () => {
+      //Given
+      const applicationState = ApplicationState.ORDER_MADE;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when APPLICATION_DISMISSED', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_DISMISSED;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when APPLICATION_CLOSED', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_CLOSED;
+      //When
+      const status = getApplicationStatus(false, applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when PROCEEDS_IN_HERITAGE', () => {
+      //Given
+      const applicationState = ApplicationState.PROCEEDS_IN_HERITAGE;
+      //When
+      const status = getApplicationStatus(false, applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.COMPLETE);
     });
@@ -964,6 +1097,7 @@ describe('Should display sync warning', () => {
 });
 
 describe('Should get the application index', () => {
+
   it('should return index', async () => {
     const applicationResponse: ApplicationResponse = {
       case_data: {
@@ -1199,4 +1333,54 @@ describe('should check if the application type on the case is "Confirm CCJ debt 
       //Then
       expect(isConfirmYouPaidCCJAppType(claim)).toEqual(expectedOutput);
     });
+});
+
+describe('should Remove unnecessary data based on the type of application.', () => {
+
+  it.each`
+      applicationType                                                      | expectedOutput
+      ${ApplicationTypeOption.SETTLE_BY_CONSENT}                                    | ${undefined}
+      ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}                              | ${undefined}
+    `('should return $expectedOutput when selected type is applicationType',
+    ({ applicationType, expectedOutput}) => {
+      //When
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.informOtherParties = new InformOtherParties();
+      //given
+      resetClaimDataByApplicationType(claim, new ApplicationType(applicationType));
+
+      //Then
+      expect(claim.generalApplication.informOtherParties).toEqual(expectedOutput);
+    });
+
+  it('should remove unnecessary Data when type of application is VARY_PAYMENT_TERMS_OF_JUDGMENT', async () => {
+    //When
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.informOtherParties = new InformOtherParties();
+    claim.generalApplication.requestingReasons = Array.of(new RequestingReason());
+    claim.generalApplication.orderJudges = Array.of(new OrderJudge());
+    claim.generalApplication.applicationCosts = YesNo.NO;
+    //given
+    resetClaimDataByApplicationType(claim, new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT));
+    //Then
+    expect(claim.generalApplication.informOtherParties).toEqual(undefined);
+    expect(claim.generalApplication.requestingReasons).toEqual(undefined);
+    expect(claim.generalApplication.orderJudges).toEqual(undefined);
+    expect(claim.generalApplication.applicationCosts).toEqual(undefined);
+
+  });
+
+  it('should remove uploadN245Form Data when type of application is not VARY_PAYMENT_TERMS_OF_JUDGMENT', async () => {
+    //When
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.uploadN245Form = new UploadGAFiles();
+    //given
+    resetClaimDataByApplicationType(claim, new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
+    //Then
+    expect(claim.generalApplication.uploadN245Form).toEqual(undefined);
+  });
+
 });

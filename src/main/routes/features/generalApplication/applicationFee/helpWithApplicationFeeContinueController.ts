@@ -26,7 +26,7 @@ const hwfPropertyName = 'helpWithFeesRequested';
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
   const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  let backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+  let backLinkUrl: string;
 
   if (feeTypeFlag) {
     backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id,  req.params.appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
@@ -40,7 +40,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     form,
     backLinkUrl,
     cancelUrl,
-    applyHelpWithFeeContinueContents: getHelpApplicationFeeContinuePageContents(gaHwFDetails.applicationFee, feeTypeFlag),
+    applyHelpWithFeeContinueContents: getHelpApplicationFeeContinuePageContents(feeTypeFlag ? gaHwFDetails.additionalFee : gaHwFDetails.applicationFee, feeTypeFlag),
     applyHelpWithFeeContinueButtonContents: getButtonsContents(claimId),
   });
 }

@@ -13,6 +13,8 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import { getClaimById } from 'modules/utilityService';
 
 const respondentHearingPreferenceController = Router();
 const viewPath = 'features/generalApplication/response/respondent-hearing-preference';
@@ -24,8 +26,10 @@ respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE_URL, 
     const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
     const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);
+    const claim = await getClaimById(claimId, req, true);
+    const cancelUrl = await getCancelUrl(req.params.id, claim);
 
-    res.render(viewPath, {applicationType, backLinkUrl, continueLinkUrl});
+    res.render(viewPath, {applicationType, backLinkUrl, continueLinkUrl, cancelUrl});
   } catch (error) {
     next(error);
   }

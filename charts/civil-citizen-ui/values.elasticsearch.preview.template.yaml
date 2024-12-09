@@ -79,7 +79,7 @@ civil-service:
     image: 'hmctspublic.azurecr.io/civil/service:pr-5677'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
-    devcpuRequests: 500m
+    devcpuRequests: 1000m
     devmemoryRequests: 2048Mi
     devmemoryLimits: 4096Mi
     keyVaults:
@@ -175,6 +175,7 @@ civil-service:
       SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
+      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
@@ -187,7 +188,10 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 100m
+            cpu: 500m
+            memory: 2048Mi
+        podAnnotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
         initdb:
           scripts:
             init.sql: |
@@ -210,10 +214,9 @@ camunda-bpm:
   enabled: true
   java:
     disableKeyVaults: true
-    devcpuRequests: 500m
-    devmemoryRequests: 512Mi
-    devcpuLimits: 1
-    devmemoryLimits: 1Gi
+    devcpuRequests: 1000m
+    devmemoryRequests: 2048Mi
+    devmemoryLimits: 4096Mi
     releaseNameOverride: ${SERVICE_NAME}-camunda
     ingressHost: camunda-${SERVICE_FQDN}
     environment:
