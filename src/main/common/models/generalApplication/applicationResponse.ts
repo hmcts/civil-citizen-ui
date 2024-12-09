@@ -20,7 +20,7 @@ import {
   CcdHearingDocument,
   CcdGeneralOrderDocument,
   CcdGaDraftDocument,
-  CcdHearingNoticeDocument,
+  CcdHearingNoticeDocument, CcdDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
@@ -30,6 +30,8 @@ import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
+import {CcdGeneralApplicationOrderJudge} from 'models/ccdGeneralApplication/ccdGeneralApplicationOrderJudge';
+import {CcdGeneralApplicationRequestingReason} from 'models/ccdGeneralApplication/ccdGeneralAppRequestingReason';
 
 export class ApplicationResponse {
   id: string;
@@ -61,7 +63,9 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
   generalAppAskForCosts: YesNoUpperCamelCase;
   generalAppDetailsOfOrder: string;
+  generalAppDetailsOfOrderColl?: CcdGeneralApplicationOrderJudge[];
   generalAppReasonsOfOrder: string;
+  generalAppReasonsOfOrderColl?: CcdGeneralApplicationRequestingReason[];
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
   gaRespondentDebtorOffer?: CcdGARespondentDebtorOfferGAspec;
@@ -84,10 +88,12 @@ export interface CCDApplication extends ApplicationUpdate {
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
+  applicationIsCloaked?: YesNoUpperCamelCase;
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   generalAppNotificationDeadlineDate?: string;
-  generalAppRespondent1Representative?: string;
   certOfSC?: CcdGeneralApplicationCertOfSC;
+  generalAppN245FormUpload?: CcdDocument;
+  applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
 }
 
 export interface JudicialRequestMoreInfo {

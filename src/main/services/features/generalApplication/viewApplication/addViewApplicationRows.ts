@@ -16,6 +16,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -24,41 +25,89 @@ export const addApplicationStatus = (
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
 
-  if (application.state) {
+  if (application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT', {lng})),
+    );
+  } else if (application.state === ApplicationState.AWAITING_RESPONDENT_RESPONSE){
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE', {lng})),
+    );
+  } else if (application.state === ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION', {lng})),
+    );
+  } else if (application.state === ApplicationState.LISTING_FOR_A_HEARING) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.LISTED_FOR_HEARING', {lng})),
+    );
+  }else if (application.state === ApplicationState.HEARING_SCHEDULED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.HEARING_SCHEDULED', {lng})),
+    );
+  }else if (application.state === ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_WRITTEN_REP', {lng})),
+    );
+  }else if (application.state === ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_DIRECTION_DOCS', {lng})),
+    );
+  }else if (application.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_INFO', {lng})),
+    );
+  }else if (application.state === ApplicationState.ORDER_MADE) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ORDER_MADE', {lng})),
+    );
+  }else if (application.state === ApplicationState.APPLICATION_DISMISSED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_DISMISSED', {lng})),
+    );
+  }else if (application.state === ApplicationState.APPLICATION_CLOSED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.APPLICATION_CLOSED', {lng})),
+    );
+  }else if (application.state === ApplicationState.PROCEEDS_IN_HERITAGE) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.PROCEEDS_IN_HERITAGE', {lng})),
+    );
+  }else if (application.state === ApplicationState.APPLICATION_ADD_PAYMENT) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT', {lng})),
+    );
+  }else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), application.state),
     );
   }
   return rows;
 };
 
-export const addApplicationTypesRows = (
+export const addApplicationTypeRow = (
   application: ApplicationResponse,
+  index: number,
   lang: string,
 ): SummaryRow[] => {
   const lng = getLng(lang);
 
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppType.types) {
-    application.case_data.generalAppType?.types?.forEach(
-      (applicationType, index, arr) => {
-        const applicationTypeDisplay =
-            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+    const applicationType = application.case_data.generalAppType.types[index];
+    const applicationTypeDisplay =
+      getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
-        rows.push(
-          summaryRow(
-            t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
-              lng,
-            }),
-            t(applicationTypeDisplay, { lng }),
-            null,
-            null,
-            undefined,
-            index,
-            arr.length,
-          ),
-        );
-      },
+    rows.push(
+      summaryRow(
+        t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
+          lng,
+        }),
+        t(applicationTypeDisplay, { lng }),
+        null,
+        null,
+        undefined,
+      ),
     );
   }
   return rows;
@@ -87,8 +136,6 @@ export const addApplicationTypesAndDescriptionRows = (
             null,
             null,
             undefined,
-            index,
-            arr.length,
           ),
         );
       },
@@ -132,7 +179,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
     if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
       rows.push(
         summaryRow(
-          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
         ),
       );
@@ -141,12 +188,12 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   return rows;
 };
 
-export const addOrderJudgeRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+export const addOrderJudgeRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppDetailsOfOrder) {
+  if (application.case_data.generalAppDetailsOfOrderColl?.[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
-    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder} <br> ${t(orderForCost, {lng})}</p>`;
+    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrderColl[index].value} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
@@ -154,12 +201,12 @@ export const addOrderJudgeRows = (application: ApplicationResponse, lang: string
   return rows;
 };
 
-export const addRequestingReasonRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+export const addRequestingReasonRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppReasonsOfOrder) {
+  if (application.case_data.generalAppReasonsOfOrderColl?.[index]) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrder),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
     );
   }
   return rows;

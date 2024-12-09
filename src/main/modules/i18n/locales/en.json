@@ -2754,6 +2754,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "APPLICATION": "Application",
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
@@ -2949,7 +2950,7 @@
           "SETTLE_BY_CONSENT": "Settle by consent",
           "STAY_THE_CLAIM": "Stay the claim",
           "STRIKE_OUT": "Strike out",
-          "SUMMARY_JUDGMENT": "Summary judgment",
+          "SUMMARY_JUDGEMENT": "Summary judgment",
           "UNLESS_ORDER": "Unless order",
           "VARY_ORDER": "Vary order",
           "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Vary payment terms of judgment",
@@ -3011,7 +3012,7 @@
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
         "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
-        "TITLE": "Application from the other parties",
+        "TITLE": "Agreement from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
       "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
@@ -3036,11 +3037,10 @@
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
-        "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
         "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
         "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
         "FIND_OUT": "Find out how to",
-        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
+        "GET_INTERPRETER": "get an interpreter at a court or tribunal",
         "IF_YOU_NEED": "If you need a sign language or language interpreter",
         "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
         "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
@@ -3073,7 +3073,7 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
-        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+        "TITLE": "Do you want to upload documents to support your application?"
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -3257,6 +3257,7 @@
         "APPLICATION_DOCUMENTS": "Application Documents",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
+        "GENERAL_ORDER" : "General Order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
@@ -3272,6 +3273,7 @@
         "HEARING_ORDER" : "Hearing Order",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "GENERAL_ORDER" : "General Order",
+        "DISMISSAL_ORDER": "Dismissal order",
         "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
@@ -3292,6 +3294,18 @@
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
+          "AWAITING_JUDICIAL_DECISION": "Application submitted - awaiting judicial decision",
+          "AWAITING_APP_PAYMENT": "Pay application fee",
+          "LISTED_FOR_HEARING": "Listing for a hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "AWAITING_WRITTEN_REP": "Awaiting written representations",
+          "AWAITING_ADDL_INFO": "Awaiting additional information",
+          "AWAITING_DIRECTION_DOCS": "Awaiting directions order document",
+          "ORDER_MADE": "Order made",
+          "APPLICATION_DISMISSED": "Application dismissed",
+          "APPLICATION_CLOSED": "Application closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
+          "AWAITING_ADDL_PAYMENT": "Awaiting additional payment",
           "TITLE": "Status"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
@@ -3301,7 +3315,10 @@
         "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
-        "UPLOAD_DOCUMENTS_3": " if you need to."
+        "UPLOAD_DOCUMENTS_3": " if you need to.",
+        "UPLOAD_DOCUMENTS_TRIAL_1": "You can ",
+        "UPLOAD_DOCUMENTS_TRIAL_2": "upload documents",
+        "UPLOAD_DOCUMENTS_TRIAL_3": " you would like to be included in a trial bundle."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
@@ -4204,13 +4221,13 @@
       "TITLE": "Do you want to share an expert with the other party?"
     },
     "SPECIFIC_COURT": {
-      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing.",
+      "EXPlANATION": "You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties' circumstances when deciding where to hold the hearing. Find your nearest court by postcode : <a class='govuk-link' href='https://www.gov.uk/find-court-tribunal' target='_blank'>https://www.gov.uk/find-court-tribunal</a>.",
       "PAGE_TITLE": "Specific court",
       "SELECT_COURT": "Select a court",
-      "SELECTED_COURT": "Selected court",
+      "SELECTED_COURT": "Please select your preferred court hearing location",
       "SELECT_VALUE": "Select a value",
       "REASON": "Tell us why you want the hearing to be held at this court",
-      "TITLE": "Do you want to ask for the hearing to be held at a specific court?"
+      "TITLE": "Please select your preferred court hearing location."
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -4424,6 +4441,7 @@
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
       "TITLE": "Do you, your experts or witnesses need support to attend a hearing?",
+      "MEDIATION_TEXT": "This includes support for you or your representative at mediation.",
       "WHAT_LANGUAGE": "What language needs to be interpreted?",
       "SUPPORT_REQUIREMENTS_MESSAGE": "If you or your experts require support, but are not listed below, add them on other witness page.",
       "SUPPORT_REQUIREMENTS_HEADING": "Support requirements"
@@ -4626,11 +4644,13 @@
     "WELSH_LANGUAGE": {
       "ENGLISH": "English",
       "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "OFFICIAL_LANGUAGE_MEDIATION": "Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.",
       "PAGE_TITLE": "Welsh language",
       "WELSH": "Welsh",
       "WELSH_AND_ENGLISH": "Welsh and English",
       "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
-      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?"
+      "WHAT_LANGUAGE_SPEAK": "What languages will you, your experts and your witnesses speak at the hearing?",
+      "WHAT_LANGUAGE_SPEAK_MEDIATION": "This includes the language that you or your representative will speak at mediation."
     },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Add another job",
@@ -4850,6 +4870,7 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
+    "GA_ENTER_A_VALID_DATE": "Enter a valid date",
     "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
@@ -5291,5 +5312,10 @@
       }
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 4th December 2024 and 02:00 on 5th December 2024 due to the release of CUI Case Progression."
+    }
   }
 }

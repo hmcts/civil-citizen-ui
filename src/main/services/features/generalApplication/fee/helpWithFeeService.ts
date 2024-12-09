@@ -21,6 +21,7 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
@@ -36,7 +37,12 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       const ccdGeneralApplications = ccdClaim.generalApplications;
       const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
-      generalApplicationId = ga.value.caseLink.CaseReference;
+      generalApplicationId = ga?.value?.caseLink?.CaseReference;
+      if (!generalApplicationId) {
+        claim.paymentSyncError = true;
+        await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+        return req.originalUrl;
+      }
     } else {
       generalApplicationId = req.params.appId;
     }
@@ -53,9 +59,13 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
         gaHwFDetails.applicationFee = <string>req.query.appFee;
       }
       (<GenericYesNo>gaHwFDetails[hwfPropertyName]) = applyHelpWithFees;
-      await saveDraftGAHWFDetails(generalApplicationId + req.session.user?.id, gaHwFDetails);
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
+      if (isAdditionalFee) {
+        const additionalFeePounds = convertToPoundsFilter(applicationResponse?.case_data?.generalAppPBADetails?.fee?.calculatedAmountInPence);
+        gaHwFDetails.additionalFee = additionalFeePounds.toString();
+      }
+      await saveDraftGAHWFDetails(generalApplicationId + req.session.user?.id, gaHwFDetails);
       redirectUrl =  constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee);
     }
     return redirectUrl;
