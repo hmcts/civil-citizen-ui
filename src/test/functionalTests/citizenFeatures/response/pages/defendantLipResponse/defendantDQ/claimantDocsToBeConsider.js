@@ -10,11 +10,11 @@ const fields ={
 class ClaimantDocsToBeConsider {
 
   async SelectClaimantDocs() {
-    await I.waitForContent('Are there any documents the claimants have that you want the court to consider?', config.WaitForText);
+    await I.waitForContent('you want the court to consider?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click('Save and continue');
-    await I.waitForContent('Claimant documents to be considered', config.WaitForText);
-    await I.see('What are the documents the claimants have that you want the court to consider?');
+    await I.waitForContent('documents to be considered', config.WaitForText);
+    await I.see('you want the court to consider?');
     await I.fillField(fields.text,'Test court to consider');
     await I.click('Save and continue');
   }

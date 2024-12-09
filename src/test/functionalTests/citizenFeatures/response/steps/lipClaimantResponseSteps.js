@@ -31,8 +31,12 @@ class ClaimantResponseSteps {
     await viewDefendantResponse.verifyDefendantResponse(claimRef);
   }
 
-  async isDefendantPaid(isPaid) {
-    await yourResponse.isDefendantPaid(isPaid);
+  async settleTheClaim(isSettled, amount) {
+    await yourResponse.settleTheClaim(isSettled, amount);
+  }
+
+  async isDefendantPaid(isPaid, amount) {
+    await yourResponse.isDefendantPaid(isPaid, amount);
   }
 
   async acceptOrRejectDefendantResponse(isPaid) {
@@ -49,6 +53,10 @@ class ClaimantResponseSteps {
 
   async clickEmailChangeLink() {
     await checkYourAnswers.clickEmailChangeLink();
+  }
+
+  async submitYourResponse() {
+    await checkYourAnswers.submitYourResponse();
   }
 
   async verifyEditedEmailDetails() {
