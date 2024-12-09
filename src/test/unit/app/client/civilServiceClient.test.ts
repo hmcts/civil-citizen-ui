@@ -1393,14 +1393,14 @@ describe('Civil Service Client', () => {
   });
 
   describe('Throw errors', ()=> {
-    it('should throw error isOcmcDefendantLinked ', async () => {
+    it('should throw error isDefendantLinked ', async () => {
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
       });
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.isOcmcDefendantLinked('123')).rejects.toThrow('error');
+      await expect(civilServiceClient.isDefendantLinked('123')).rejects.toThrow('error');
     });
     it('should throw error getFeeRanges ', async () => {
       const mockGet = jest.fn().mockImplementation(() => {
