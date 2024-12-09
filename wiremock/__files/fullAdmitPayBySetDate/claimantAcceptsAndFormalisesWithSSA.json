@@ -171,9 +171,6 @@
     "applicant1AcceptFullAdmitPaymentPlanSpec": "Yes",
     "issueDate": "2024-08-14",
     "disabilityPremiumPayments": "No",
-    "respondent2OrganisationPolicy": {
-      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-    },
     "showResponseOneVOneFlag": "ONE_V_ONE_FULL_ADMIT_PAY_BY_SET_DATE",
     "systemGeneratedCaseDocuments": [
       {
