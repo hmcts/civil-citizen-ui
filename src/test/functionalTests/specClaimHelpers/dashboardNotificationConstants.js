@@ -474,4 +474,18 @@ module.exports = {
         'You can view your mediation agreement here.'],
     };
   },
+
+  caseOffline: () => {
+    return {
+      title: 'Your online account will no longer be updated',
+      content: 'Your online account will no longer be updated. If there are any further updates to your case these will be by post.',
+    };
+  },
+
+  caseOfflineAfterSDO: () => {
+    return {
+      title: 'An order has been issued by the court',
+      content: 'Please follow instructions in the order and comply with the deadlines. Please send any documents to the court named in the order if required. The claim will now proceed offline, you will receive further updates by post.',
+    };
+  },
 };
