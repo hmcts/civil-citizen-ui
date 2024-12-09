@@ -3536,9 +3536,6 @@
         "OrgPolicyReference": "Defendant policy reference",
         "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
       },
-      "respondent2OrganisationPolicy": {
-        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-      },
       "specClaimResponseTimelineList": "MANUAL",
       "applicantSolicitor1PbaAccounts": {
         "value": {

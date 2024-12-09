@@ -6309,7 +6309,7 @@
         },
         "OrgPolicyReference": "Defendant policy reference",
         "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
-      }
+      },
       "specClaimResponseTimelineList": "MANUAL",
       "applicantSolicitor1PbaAccounts": {
         "value": {
