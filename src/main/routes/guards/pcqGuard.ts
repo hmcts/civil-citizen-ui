@@ -22,7 +22,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const caseData: Claim = await getCaseDataFromStore(redisKey);
     const pcqShutterOn = await isPcqShutterOn();
 
-    if (pcqShutterOn || caseData.pcqId) {
+    if (pcqShutterOn || caseData.respondentResponsePcqId) {
       return next();
     }
 
