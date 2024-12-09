@@ -169,6 +169,8 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  eaCourt:'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+  nonEaCourt:'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
   gaCourtToBeSelected:'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS',
   localMediationTests: false,
   localNoCTests: false,
