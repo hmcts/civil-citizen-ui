@@ -691,5 +691,65 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
       expect(summaryRows.summaryList.rows[16].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
+
+    it('should build hearing requirement for Small Claim with determinationWithoutHearing set to Yes.', () => {
+      //Given
+      claim.totalClaimAmount = 1000;
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.hearing = createHearing(undefined, undefined, undefined, YesNo.YES, YesNo.YES, YesNo.NO, YesNo.NO);
+      claim.directionQuestionnaire.defendantYourselfEvidence = {
+        option: YesNo.YES,
+      };
+      claim.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
+      claim.directionQuestionnaire.vulnerabilityQuestions.vulnerability = {
+        option: YesNo.YES,
+        vulnerabilityDetails: 'Test vulnerability details',
+      };
+
+      claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
+      claim.directionQuestionnaire.welshLanguageRequirements.language = {
+        speakLanguage: LanguageOptions.ENGLISH,
+        documentsLanguage: LanguageOptions.WELSH_AND_ENGLISH,
+      };
+
+      //When
+      const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
+
+      console.log(summaryRows);
+      //Then
+      expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
+      expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE');
+      expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.VARIATION_2.NO');
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION_4.NO');
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.VARIATION_3.YES');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
+      expect(summaryRows.summaryList.rows[11].value.html).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
+      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.SPECIFIC_COURT.REASON');
+      expect(summaryRows.summaryList.rows[12].value.html).toEqual('test');
+      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[13].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[14].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[15].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+    });
   });
 });
