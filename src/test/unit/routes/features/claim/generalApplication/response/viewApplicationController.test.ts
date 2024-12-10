@@ -17,6 +17,10 @@ import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalA
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {CaseState} from 'form/models/claimDetails';
+import {getApplicationIndex} from 'services/features/generalApplication/generalApplicationService';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -26,11 +30,49 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService');
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
 const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
+const mockGetApplicationIndex = getApplicationIndex as jest.Mock;
+const applicationResponse: ApplicationResponse = {
+  case_data: {
+    applicationTypes: 'Adjourn a hearing',
+    generalAppType: { types: [ApplicationTypeOption.ADJOURN_HEARING]},
+    generalAppRespondentAgreement: {
+      hasAgreed: YesNoUpperCamelCase.YES,
+    },
+    generalAppInformOtherParty: undefined,
+    generalAppAskForCosts: undefined,
+    generalAppDetailsOfOrder: undefined,
+    generalAppReasonsOfOrder: undefined,
+    generalAppEvidenceDocument: undefined,
+    gaAddlDoc: undefined,
+    generalAppHearingDetails: undefined,
+    generalAppStatementOfTruth: undefined,
+    generalAppPBADetails: {
+      fee: undefined,
+      paymentDetails: {
+        status: 'SUCCESS',
+        reference: 'REF-123-123',
+      },
+      additionalPaymentDetails: {
+        status: 'SUCCESS',
+        reference: undefined,
+      },
+      serviceRequestReference: undefined,
+    },
+    applicationFeeAmountInPence: undefined,
+    parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+    judicialDecision: undefined,
+  },
+  created_date: '',
+  id: '',
+  last_modified: '',
+  state: undefined,
+};
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -54,10 +96,11 @@ describe('General Application - View application', () => {
     mockRespondentDocs.mockImplementation(() => []);
     jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
     (getClaimById as jest.Mock).mockResolvedValue(claim);
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
   });
 
   describe('on GET', () => {
-    it('should return Application view page', async () => {
+    it('should return Application view page without index', async () => {
       mockedSummaryRows.mockResolvedValue({summaryRows: [
         {
           key: {text: 'Application type and description'},
@@ -67,6 +110,8 @@ describe('General Application - View application', () => {
         },
       ]},
       );
+      mockGetApplicationIndex.mockImplementation(() => 1);
+
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123','1718105701451856',GA_RESPONSE_VIEW_APPLICATION_URL))
         .expect((res) => {

@@ -18,10 +18,13 @@ import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
+import {getApplicationIndex} from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
+jest.mock('../../../../../../main/services/features/generalApplication/generalApplicationService');
+
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
@@ -32,6 +35,7 @@ const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
 const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
+const mockGetApplicationIndex = getApplicationIndex as jest.Mock;
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -66,6 +70,17 @@ describe('General Application - View application', () => {
       await request(app)
         .get(GA_VIEW_APPLICATION_URL)
         .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+        });
+    });
+
+    it('should return View application page when index is undefined', async () => {
+      mockGetApplicationIndex.mockImplementation(() => 1);
+      mockedSummaryRows.mockImplementation(() => []);
+      await request(app)
+        .get(GA_VIEW_APPLICATION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
