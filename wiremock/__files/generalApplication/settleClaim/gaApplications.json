@@ -1,0 +1,36 @@
+{
+  "total": 1,
+  "cases": [
+    {
+      "id": 1732292100554027,
+      "jurisdiction": "CIVIL",
+      "state": "ORDER_MADE",
+      "case_type_id": "GENERALAPPLICATION",
+      "created_date": "2024-11-25T12:42:19.882",
+      "last_modified": "2024-11-25T15:21:48.91",
+      "case_data": {
+        "generalAppInformOtherParty": {
+          "isWithNotice": "Yes"
+        },
+        "parentClaimantIsApplicant": "No",
+        "applicationTypes": "Settle by consent",
+        "generalAppRespondentAgreement": {
+          "hasAgreed": "Yes"
+        },
+        "generalAppPBADetails": {
+          "fee": {
+            "calculatedAmountInPence": "10800",
+            "code": "FEE0443",
+            "version": "2"
+          },
+          "serviceRequestReference": "2022-1655915218557",
+          "paymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          }
+        }
+      },
+      "security_classification": "PUBLIC"
+    }
+  ]
+}

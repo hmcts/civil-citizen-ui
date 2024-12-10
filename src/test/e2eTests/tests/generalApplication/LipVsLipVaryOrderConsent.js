@@ -4,13 +4,14 @@ const RespondentResponse = require('../../genralApplication/respondentResponse')
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
 
-Feature('Lip V Lip Vary Order Consent').tag('@e2e');
+Feature('Lip V Lip Vary Order Consent').tag('@galip');
 
 Scenario('Claimant GA Application and respond to response with vary order consent ', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
 
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GaForLips', true);
+    toggleFlag('is-dashboard-enabled-for-case', true);
     const claimID = 1730984188221535;
     const appId = 1731322828021511;
     createGAApplication.start(claimID);
@@ -18,7 +19,7 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     createGAApplication.selectAgreementFromOtherParty('Yes');
     createGAApplication.applicationCosts(claimID, 'Reconsider an order', 'To apply to reconsider an order, the application fee is £14');
     createGAApplication.claimCosts(claimID, 'Yes');
-    createGAApplication.orderJudge(claimID);
+    createGAApplication.orderJudge(claimID, 'no mistake done by me to dismiss the claim');
     createGAApplication.requestingReason(claimID);
     createGAApplication.addAnotherApp(claimID, 'No');
     createGAApplication.wantToUploadDocs(claimID, 'No');
@@ -43,6 +44,7 @@ Scenario('Claimant GA Application and respond to response with vary order consen
     RespondentResponse.confirmationPage(claimID, appId);
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
     toggleFlag('cuiReleaseTwoEnabled', false);
+    toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }
 });
@@ -50,4 +52,3 @@ Scenario('Claimant GA Application and respond to response with vary order consen
 AfterSuite(async () => {
   await createGAApplication.resetWiremockScenario();
 });
-
