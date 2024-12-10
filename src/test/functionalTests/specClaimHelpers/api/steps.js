@@ -350,9 +350,9 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
     await waitForFinishedBusinessProcess(caseId);
-    // if (claimType !== 'pinInPost') {
-    //   await assignSpecCase(caseId, multipartyScenario);
-    // }
+    if (claimType !== 'pinInPost') {
+      await assignSpecCase(caseId, multipartyScenario);
+    }
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
@@ -409,33 +409,33 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
-    if (!carmEnabled) {
-      await apiRequest.setupTokens(config.systemUpdate);
-      console.log('carm not enabled, updating submitted date to past for legacy cases');
-      const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date for legacy cases');
-    }
-    if (claimType === 'Intermediate' || claimType === 'Multi') {
-      console.log('updating submitted date for minti case');
-      await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after minti date');
-    }
+    // if (!carmEnabled) {
+    //   await apiRequest.setupTokens(config.systemUpdate);
+    //   console.log('carm not enabled, updating submitted date to past for legacy cases');
+    //   const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+    //   await testingSupport.updateCaseData(caseId, submittedDate);
+    //   console.log('submitted date update to before carm date for legacy cases');
+    // }
+    // if (claimType === 'Intermediate' || claimType === 'Multi') {
+    //   console.log('updating submitted date for minti case');
+    //   await apiRequest.setupTokens(config.systemUpdate);
+    //   const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
+    //   await testingSupport.updateCaseData(caseId, submittedDate);
+    //   console.log('submitted date update to after minti date');
+    // }
 
-    await apiRequest.setupTokens(user);
-    let newPayload = {
-      event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
-      caseDataUpdate: {
-        issueDate: currentDate,
-        respondent1ResponseDeadline: currentDate,
-      },
-    };
-    await apiRequest.startEventForCitizen('', caseId, newPayload);
-    await waitForFinishedBusinessProcess(caseId, user);
-    await assignSpecCase(caseId, null);
-    return caseId;
+    // await apiRequest.setupTokens(user);
+    // let newPayload = {
+    //   event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
+    //   caseDataUpdate: {
+    //     issueDate: currentDate,
+    //     respondent1ResponseDeadline: currentDate,
+    //   },
+    // };
+    // await apiRequest.startEventForCitizen('', caseId, newPayload);
+    // await waitForFinishedBusinessProcess(caseId, user);
+    // await assignSpecCase(caseId, null);
+    // return caseId;
   },
 
   createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = false) => {

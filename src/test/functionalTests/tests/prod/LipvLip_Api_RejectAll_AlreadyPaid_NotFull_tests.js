@@ -16,8 +16,8 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-  // caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  // claimNumber = await caseData.legacyCaseReference;
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
   // await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual);
   // await api.waitForFinishedBusinessProcess();
   // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
