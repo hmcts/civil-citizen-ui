@@ -8,7 +8,7 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL,
+  CIVIL_SERVICE_CHECK_DEFENDENT_LINKED_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
   CIVIL_SERVICE_AIRLINES_URL,
   CIVIL_SERVICE_COURT_DECISION,
@@ -256,9 +256,9 @@ export class CivilServiceClient {
     }
   }
 
-  async isOcmcDefendantLinked(caseReference: string): Promise<boolean> {
+  async isDefendantLinked(caseReference: string): Promise<boolean> {
     try {
-      const response = await this.client.get(CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL //nosonar
+      const response = await this.client.get(CIVIL_SERVICE_CHECK_DEFENDENT_LINKED_URL //nosonar
         .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
       if (!response.data) {
         return false;
