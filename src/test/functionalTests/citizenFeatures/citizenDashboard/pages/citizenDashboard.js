@@ -7,6 +7,8 @@ class CitizenDashboardPage {
   }
 
   async verifyClaimNumberOnDashboard(claimNumber){
+    await I.wait(10);
+    await I.refreshPage();
     await I.waitForContent('Claim number', config.WaitForText);
     await I.see('Claimant name');
     await I.see('Claim amount');
