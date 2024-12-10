@@ -19,7 +19,10 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   ApplicationResponse,
 } from 'common/models/generalApplication/applicationResponse';
-import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getApplicationFromGAService,
+  getApplicationIndex,
+} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
@@ -34,8 +37,9 @@ const viewPath = 'features/generalApplication/view-applications';
 viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const applicationId = req.params.appId ? String(req.params.appId) : null;
     const claim: Claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index');
+    const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const statusRow = getStatusRow(applicationResponse, lang);
