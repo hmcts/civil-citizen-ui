@@ -6,7 +6,6 @@ import {GA_VIEW_APPLICATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
@@ -19,10 +18,10 @@ import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {getApplicationIndex} from 'services/features/generalApplication/generalApplicationService';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
-jest.mock('../../../../../../main/app/client/gaServiceClient');
 jest.mock('../../../../../../main/services/features/generalApplication/generalApplicationService');
 
 jest.mock('modules/utilityService', () => ({
@@ -47,26 +46,29 @@ describe('General Application - View application', () => {
   );
 
   let application : ApplicationResponse;
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(application);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   beforeEach(() => {
     const claim = new Claim();
     application = Object.assign(new ApplicationResponse(), mockApplication);
+    application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
     mockRespondentDocs.mockImplementation(() => []);
     mockedSummaryRows.mockImplementation(() => []);
-    jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(application);
     (getClaimById as jest.Mock).mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
     it('should return View application page', async () => {
       mockedSummaryRows.mockImplementation(() => []);
+      application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
       await request(app)
         .get(GA_VIEW_APPLICATION_URL)
         .query({index: '1'})
