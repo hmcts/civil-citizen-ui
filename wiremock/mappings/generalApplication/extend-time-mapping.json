@@ -1,0 +1,101 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732106154804395",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/extendTime/gaApplicationAfterPayment.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/case/1732106154804395/payment",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/paymentRedirect.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/general-application",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.applicationTypes == ['EXTEND_TIME'])]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withConsent == true)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withNotice == false)]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"calculatedAmountInPence\": \"10800\", \"code\": \"FEE0443\", \"version\": \"2\"}"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732106154804395/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'RESPOND_TO_APPLICATION_URGENT_LIP')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/respondent-response.json"
+      }
+    }
+  ]
+}

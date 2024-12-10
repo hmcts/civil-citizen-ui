@@ -72,7 +72,7 @@ describe('General Application - View application', () => {
         });
     });
 
-    it('should return view application page with pay application fee button', async () => {
+    it('should return view application page with pay application fee button, no upload additional document link', async () => {
       mockedSummaryRows.mockImplementation(() => []);
       application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
       application.case_data.generalAppPBADetails.paymentDetails = {
@@ -86,6 +86,19 @@ describe('General Application - View application', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
           expect(res.text).toContain(t('COMMON.BUTTONS.PAY_APPLICATION_FEE'));
+          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2'));
+        });
+    });
+
+    it('should return view application page with upload additional document', async () => {
+      mockedSummaryRows.mockImplementation(() => []);
+      application.state = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+      await request(app)
+        .get(GA_VIEW_APPLICATION_URL)
+        .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2'));
         });
     });
 
