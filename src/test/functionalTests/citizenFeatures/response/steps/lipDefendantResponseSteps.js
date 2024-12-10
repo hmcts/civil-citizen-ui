@@ -174,8 +174,8 @@ const assignComplexityBand = new AssignComplexityBand();
 const reasonForComplexityBand = new ReasonForComplexityBand();
 
 class ResponseSteps {
-  async AssignCaseToLip(claimNumber, securityCode){
-    await assignCaseToLip.open(claimNumber, securityCode);
+  async AssignCaseToLip(claimNumber, securityCode, manualPIP){
+    await assignCaseToLip.open(claimNumber, securityCode, manualPIP);
   }
   async RespondToClaim(claimRef, languageOption = 'en'){
     await defendantLatestUpdate.open(claimRef);
@@ -268,6 +268,10 @@ class ResponseSteps {
 
   async CheckAndSubmit(claimRef, responseType, claimType) {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
+  }
+
+  async submitResponse(responseType) {
+    await checkYourAnswersPage.submitResponse(responseType);
   }
 
   async verifyMediationDetailsInCYA(claimRef) {

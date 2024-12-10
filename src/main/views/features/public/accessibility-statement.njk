@@ -9,12 +9,8 @@
 
   <h1 class="govuk-heading-xl">{{t('PAGES.ACCESSIBILITY_STATEMENT.TITLE')}}</h1>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_1') }}
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_1_LINK', externalURLs.moneyClaimsUrl, true, '', '', carmEnabled) }}.
-    {% if carmEnabled %}
-      {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_2_CARM') }}
-    {% else %}
-      {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_2') }}
-    {% endif %}
+    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_1_LINK', externalURLs.moneyClaimsUrl, true, '', '') }}.
+    {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_2_CARM') }}
   </p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_3') }}</p>
   <ul class="govuk-list govuk-list--bullet">
@@ -29,38 +25,28 @@
   {% if getLanguage() =='cy' %}
     <p class="govuk-body">
       {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_TEXT_BEFORE') }}
-      {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true, '', '', carmEnabled) }}
+      {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true, '', '') }}
       {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10') }}
     </p>
   {% else %}
     <p class="govuk-body">
-      {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true, '', '', carmEnabled) }}
+      {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true, '', '') }}
       {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10') }}
     </p>
   {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_1')}}</h1>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_2_CARM') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_2') }}</p>
-  {% endif %}
   <ul class="govuk-list govuk-list--bullet">
     <li>{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_3') }}</li>
-    {% if carmEnabled %}
     <li>{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_4') }}</li>
     <li>{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_5') }}</li>
-    {% endif %}
   </ul>
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_FEEDBACK_1')}}</h1>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_FEEDBACK_3') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_FEEDBACK_4') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_FEEDBACK_5') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_FEEDBACK_2') }}</p>
-  {% endif %}
   <p class="govuk-body">{{t('PAGES.ACCESSIBILITY_STATEMENT.EMAIL_TITLE')}}</p>
   <p class="govuk-body">
     {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.EMAIL', 'mailto:HMCTSforms@justice.gov.uk', false) }}
@@ -69,89 +55,41 @@
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.TELEPHONE') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.MONDAY_TO_FRIDAY') }}</p>
   <p class="govuk-body">
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.FIND_OUT', externalURLs.callChargesUrl, true, '', '', carmEnabled) }}
+    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.FIND_OUT', externalURLs.callChargesUrl, true, '', '') }}
   </p>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_REPORTING_3') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_REPORTING_4') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.CONSIDER') }}</p>
-  {% endif %}
-
-  {% if carmEnabled %}
-  {% else %}
-  <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_REPORTING_1')}}</h1>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_REPORTING_2') }}</p>
-  <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.EMAIL_TITLE')}}</h1>
-  <p class="govuk-body">
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.EMAIL', 'mailto:HMCTSforms@justice.gov.uk', false) }}
-    </p>
-  <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.TELEPHONE_TITLE')}}</h1>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.TELEPHONE') }}</p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.MONDAY_TO_FRIDAY') }}</p>
-  <p class="govuk-body">
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.FIND_OUT', externalURLs.callChargesUrl, true, '', '', carmEnabled) }}
-  </p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.CONSIDER') }}</p>
-  {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_ENFORCEMENT_1')}}</h1>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_ENFORCEMENT_2') }}
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_ENFORCEMENT_3', externalURLs.equalityUrl, true, '', '', carmEnabled) }}
+    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_ENFORCEMENT_3', externalURLs.equalityUrl, true, '', '') }}
   </p>
-
-  {% if carmEnabled %}
-  {% else %}
-  <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_CONTACTING_1')}}</h1>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_CONTACTING_2') }}</p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_CONTACTING_3') }}</p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_CONTACTING_4') }}</p>
-  {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TECHNICAL_1')}}</h1>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TECHNICAL_2') }}</p>
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_COMPLIANCE_1')}}</h1>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_COMPLIANCE_2') }}
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_COMPLIANCE_3', externalURLs.complianceUrl, true, '', '', carmEnabled) }}
+    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_COMPLIANCE_3', externalURLs.complianceUrl, true, '', '') }}
     {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_COMPLIANCE_4') }}
   </p>
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_1')}}</h1>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_2') }}</p>
   <h1 class="govuk-heading-m">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_3')}}</h1>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_6') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_7') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_8') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_5') }}</p>
-  {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_1')}}</h1>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_5') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_6') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_2') }}</p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_3') }}</p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_4') }}</p>
-  {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_IMPROVE_1')}}</h1>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_IMPROVE_4') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_IMPROVE_5') }}</p>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_IMPROVE_6') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_IMPROVE_2') }}</p>
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_IMPROVE_3') }}</p>
-  {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_PREPARATION_1')}}</h1>
-  {% if carmEnabled %}
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_PREPARATION_3') }}</p>
-  {% else %}
-  <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_PREPARATION_2') }}</p>
-  {% endif %}
 {% endblock %}

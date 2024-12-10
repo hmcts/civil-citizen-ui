@@ -43,6 +43,7 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const translatedDocUpload = require('../fixtures/events/translatedDocUpload');
+const caseProceedsInCaseman = require('../fixtures/events/caseProceedsInCaseman');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {fetchCaseDetails} = require('./apiRequest');
@@ -316,7 +317,7 @@ module.exports = {
     console.log('End of submitHwfEventForUser()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType, manualPIP = false) => {
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
@@ -350,7 +351,8 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
     await waitForFinishedBusinessProcess(caseId);
-    if (claimType !== 'pinInPost') {
+
+    if (!manualPIP) {
       await assignSpecCase(caseId, multipartyScenario);
     }
 
@@ -520,8 +522,16 @@ module.exports = {
     console.log('End of createSDO()');
   },
 
-  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, claimType) => {
+  viewAndRespondToDefence: async (user, defenceType = config.defenceType.admitAllPayBySetDate, expectedState, claimType, eaCase = true) => {
     let responsePayload;
+    let location;
+
+    if (eaCase === true){
+      location = config.eaCourt;
+    } else {
+      location = config.nonEaCourt;
+    }
+
     if (defenceType === config.defenceType.admitAllPayBySetDate) {
       responsePayload = admitAllClaimantResponse.doNotAcceptAskToPayBySetDate();
     } else if (defenceType === config.defenceType.admitAllPayImmediate) {
@@ -537,7 +547,7 @@ module.exports = {
     } else if (defenceType === config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlan) {
       responsePayload = partAdmitClaimantResponse.partAdmitWithPartPaymentAsPerPlanClaimantWantsToAcceptRepaymentPlanWithoutFixedCosts();
     } else if (defenceType === config.defenceType.rejectAll) {
-      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(claimType);
+      responsePayload = claimantResponse.createClaimantIntendsToProceedResponse(claimType, location);
     } else if (defenceType === config.defenceType.rejectAllAlreadyPaid) {
       responsePayload = rejectAllClaimantResponse.rejectAllAlreadyPaidButClaimantWantsToProceed();
     } else if (defenceType === config.defenceType.rejectAllDisputeAll) {
@@ -551,12 +561,19 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '') => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '', eaCase = true) => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
+    let location;
 
     await apiRequest.setupTokens(user);
+
+    if (eaCase === true){
+      location = config.eaCourt;
+    } else {
+      location = config.nonEaCourt;
+    }
 
     if (mintiTrack === 'Intermediate') {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate();
@@ -565,7 +582,7 @@ module.exports = {
     } else if (carmEnabled) {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm();
     } else {
-      payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponse(location);
     }
 
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
@@ -663,6 +680,17 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId, user);
 
     console.log('End of uploadMediationDocumentsCui()');
+  },
+
+  caseProceedsInCaseman: async (user = config.ctscAdmin) => {
+    console.log('This is inside caseProceedsInCaseman: ' + caseId);
+    eventName = 'CASE_PROCEEDS_IN_CASEMAN';
+    const payload = caseProceedsInCaseman.caseman();
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await waitForFinishedBusinessProcess(caseId);
+    await assertSubmittedSpecEvent(config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
+    console.log('End of caseProceedsInCaseman()');
   },
 
   adjustSubmittedDateForCarm: async (caseId) => {
