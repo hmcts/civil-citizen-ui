@@ -29,13 +29,11 @@ class LoginPage {
   }
 
   async openOCMC() {
-    await I.clearCookie();
     await I.setCookie([...idamCookies, ...cmcCookies]);
     await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net');
   }
 
   async openManageCase() {
-    await I.clearCookie();
     await I.setCookie(idamCookies);
     await I.amOnPage(config.url.manageCase);
   }
