@@ -1,4 +1,4 @@
-import {CONTACT_CNBC_URL} from 'routes/urls';
+import {CONTACT_CNBC_URL} from '../../routes/urls';
 
 const cNBCConfig= {
   uuid: 'script_1191773643670e666a982030.90013235',
