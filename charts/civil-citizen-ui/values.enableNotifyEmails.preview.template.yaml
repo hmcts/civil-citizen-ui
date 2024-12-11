@@ -37,7 +37,7 @@ civil-service:
             alias: CMC_DB_USERNAME
           - name: cmc-db-host-v15
             alias: CMC_DB_HOST
-          - name: gov-notify-guest-list-api-key
+          - name: gov-notify-live-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
@@ -163,8 +163,6 @@ civil-general-applications:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
-          - name: AppInsightsInstrumentationKeyGeneralApplications
-            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
           - name: gov-notify-guest-list-api-key
