@@ -1,12 +1,12 @@
 import request from 'supertest';
 import { app } from '../../../../../main/app';
-import { CONTACT_CNBC_URL } from 'routes/urls';
+import { CONTACT_MEDIATION_URL } from 'routes/urls';
 import config from 'config';
 import nock from 'nock';
 
 jest.mock('../../../../../main/modules/oidc');
 
-describe('Contact CNBC page', () => {
+describe('Contact Mediation page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -17,10 +17,10 @@ describe('Contact CNBC page', () => {
   });
 
   describe('on GET', () => {
-    it('should display Contact CNBC page', async () => {
-      const res = await request(app).get(CONTACT_CNBC_URL);
+    it('should display Contact Mediation page', async () => {
+      const res = await request(app).get(CONTACT_MEDIATION_URL);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('Civil National Business Centre');
+      expect(res.text).toContain('Small Claims Mediation Service');
     });
   });
 });
