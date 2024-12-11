@@ -1,0 +1,36 @@
+{
+  "total": 1,
+  "cases": [
+    {
+      "id": 1732878113661799,
+      "jurisdiction": "CIVIL",
+      "state": "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
+      "case_type_id": "GENERALAPPLICATION",
+      "created_date": "2024-11-29T11:01:53.634",
+      "last_modified": "2024-11-29T12:38:24.648",
+      "case_data": {
+        "generalAppInformOtherParty": {
+          "isWithNotice": "Yes"
+        },
+        "parentClaimantIsApplicant": "No",
+        "applicationTypes": "Vary payment terms of judgment",
+        "generalAppRespondentAgreement": {
+          "hasAgreed": "Yes"
+        },
+        "generalAppPBADetails": {
+          "fee": {
+            "calculatedAmountInPence": "1400",
+            "code": "FEE0458",
+            "version": "2"
+          },
+          "serviceRequestReference": "2022-1655915218557",
+          "paymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          }
+        }
+      },
+      "security_classification": "PUBLIC"
+    }
+  ]
+}
