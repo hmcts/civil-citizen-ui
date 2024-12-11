@@ -15,10 +15,17 @@ import { ApplicationState } from 'common/models/generalApplication/applicationSu
 import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
@@ -45,10 +52,12 @@ describe('General Application - View application', () => {
   });
 
   beforeEach(() => {
+    const claim = new Claim();
     application = Object.assign(new ApplicationResponse(), mockApplication);
     mockRespondentDocs.mockImplementation(() => []);
     mockedSummaryRows.mockImplementation(() => []);
     jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
@@ -63,7 +72,7 @@ describe('General Application - View application', () => {
         });
     });
 
-    it('should return view application page with pay application fee button', async () => {
+    it('should return view application page with pay application fee button, no upload additional document link', async () => {
       mockedSummaryRows.mockImplementation(() => []);
       application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
       application.case_data.generalAppPBADetails.paymentDetails = {
@@ -77,6 +86,19 @@ describe('General Application - View application', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
           expect(res.text).toContain(t('COMMON.BUTTONS.PAY_APPLICATION_FEE'));
+          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2'));
+        });
+    });
+
+    it('should return view application page with upload additional document', async () => {
+      mockedSummaryRows.mockImplementation(() => []);
+      application.state = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+      await request(app)
+        .get(GA_VIEW_APPLICATION_URL)
+        .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2'));
         });
     });
 
@@ -201,6 +223,21 @@ describe('General Application - View application', () => {
         });
     });
 
+    it('should show case progression text when case progression state', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_PROGRESSION;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      mockedSummaryRows.mockImplementation(() => []);
+      await request(app)
+        .get(GA_VIEW_APPLICATION_URL)
+        .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_3'));
+        });
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       mockedSummaryRows.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -220,21 +257,21 @@ describe('General Application - View application', () => {
       const responseFromCourt : CourtResponseSummaryList[] = [];
       const hearingNoticeRows : SummaryRow[] = [];
       const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new Date(), new ResponseButton('Judge Direction', ''));
-      
+
       judgeDirectionRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
-      
+
       const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
       hearingNoticeRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
-      
-      responseFromCourt.push(judgeDirections); 
-      responseFromCourt.push(hearingNotices); 
-  
+
+      responseFromCourt.push(judgeDirections);
+      responseFromCourt.push(hearingNotices);
+
       return Promise.resolve(responseFromCourt);
     });
 
@@ -260,14 +297,14 @@ describe('General Application - View application', () => {
     mockResponseFromCourt.mockImplementation(() => {
       const responseFromCourt : CourtResponseSummaryList[] = [];
       const hearingNoticeRows : SummaryRow[] = [];
-         
+
       const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
       hearingNoticeRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
- 
-      responseFromCourt.push(hearingNotices);   
+
+      responseFromCourt.push(hearingNotices);
       return Promise.resolve(responseFromCourt);
     });
     application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;

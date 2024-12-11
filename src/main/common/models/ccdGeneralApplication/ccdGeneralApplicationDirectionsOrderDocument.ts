@@ -1,3 +1,4 @@
+
 export interface CcdGeneralApplicationDirectionsOrderDocument {
   id?: string,
   value: CcdDocument,
@@ -6,7 +7,8 @@ export interface CcdGeneralApplicationDirectionsOrderDocument {
 export interface CcdDocument {
   documentType: string,
   documentLink: CcdDocumentLink,
-  createdDatetime?: Date;
+  createdDatetime?: Date,
+  documentName?: string,
 }
 
 export interface CcdDocumentLink {

@@ -25,10 +25,8 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const gaAgreeWithApplicant = (): SummaryRow[] => {
-
     return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
-      yesNoFormatter(generalApplication?.generalAppRespondent1Representative === YesNoUpperCamelCase.NO ? YesNo.NO : YesNo.YES))];
-
+      yesNoFormatter(response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES ? YesNo.YES : YesNo.NO))];
   };
 
   const acceptOfferSection = (): SummaryRow[] => {
@@ -74,15 +72,15 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
       hearingDetails?.HearingDetailsEmailID),
     row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
-      unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates)),
+      unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates, lng)),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
       hearingSupportHtml(hearingDetails?.SupportRequirement))];
 
-  const unavailableDatesHtml = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[]): string => {
+  const unavailableDatesHtml = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[], lang: string): string => {
     const formatDate = (unavailableDate: CcdGeneralApplicationUnavailableHearingDatesElement): string =>
       listItem([unavailableDate.value.unavailableTrialDateFrom, unavailableDate.value.unavailableTrialDateTo]
         .filter(date => !!date)
-        .map(date => formatDateToFullDate(new Date(date)))
+        .map(date => formatDateToFullDate(new Date(date), lang))
         .join(' - '));
 
     return (unavailableDates?.length > 0)

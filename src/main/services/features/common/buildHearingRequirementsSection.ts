@@ -15,7 +15,7 @@ export const buildHearingRequirementsSection = (claim: Claim, claimId: string, l
   return buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.directionQuestionnaire, mintiApplicable);
 };
 
-export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string , directionQuestionnaire: DirectionQuestionnaire, mintiApplicable: boolean): SummarySection => {
+export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string, directionQuestionnaire: DirectionQuestionnaire, mintiApplicable: boolean): SummarySection => {
   const lng = getLng(lang);
   let hearingRequirementsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
@@ -28,13 +28,14 @@ export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: str
     });
   }
 
+  const directionQuestionnaireObj = Object.assign(new DirectionQuestionnaire(), directionQuestionnaire);
   if (claim.isSmallClaimsTrackDQ) {
-    buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);
+    buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaireObj);
   } else {
-    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire, mintiApplicable);
+    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaireObj, mintiApplicable);
   }
 
-  buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);
+  buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng, directionQuestionnaireObj);
 
   return hearingRequirementsSection;
 };

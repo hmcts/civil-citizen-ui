@@ -17,7 +17,9 @@
           {% for section in summarySections.sections %}
             {% if section.summaryList.rows %}
               <div class="govuk-!-margin-bottom-9">
+              {% if section.title %}
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+               {% endif %}
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
                     rows: section.summaryList.rows

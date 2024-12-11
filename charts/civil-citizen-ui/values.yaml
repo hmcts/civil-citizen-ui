@@ -88,7 +88,6 @@ nodejs:
     APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
     LAUNCH_DARKLY_ENV: '{{ .Values.global.environment }}'
     DYNATRACE_TAG: https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/59eec5518455ca7b_complete.js
-    TESTING_SUPPORT_ENABLED: false
 
   autoscaling:
     enabled: true

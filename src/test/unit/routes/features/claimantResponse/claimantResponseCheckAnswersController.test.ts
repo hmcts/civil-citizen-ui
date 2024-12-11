@@ -16,6 +16,8 @@ import {Task} from 'models/taskList/task';
 import {
   outstandingClaimantResponseTasks,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -111,7 +113,10 @@ describe('Claimant Response - Check answers', () => {
     it('should return errors when form is incomplete', async () => {
       (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockCivilClaimantIntention;
-      (getClaimById as jest.Mock).mockResolvedValue(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
+      const claim = Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
       const data = {isClaimantRejectedDefendantOffer: 'true'};
       await request(app)
         .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
@@ -119,6 +124,8 @@ describe('Claimant Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Tell us if you believe the hearing requirement details on this page are true');
+          expect(res.text).toContain('Select a court');
+          expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
         });
     });
 
