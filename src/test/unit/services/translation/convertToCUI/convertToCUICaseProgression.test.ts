@@ -82,10 +82,12 @@ describe('toCUICaseProgression', () => {
     ccdClaim.applicantHearingOtherComments = {hearingOtherComments: 'other trial info'};
     ccdClaim.respondent1HearingOtherComments = {hearingOtherComments: 'other trial info'};
     ccdClaim.hearingHelpFeesReferenceNumber =  '12341234123';
+    ccdClaim.courtOfficerOrder = mockFinalOrderDocument1.value;
 
     const expectedOutput = createCUIClaim();
     expectedOutput.defendantTrialArrangements = getTrialArrangementFilled();
     expectedOutput.claimantTrialArrangements = getTrialArrangementFilled();
+    expectedOutput.courtOfficerOrder = mockFinalOrderDocument1.value;
 
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
