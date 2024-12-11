@@ -14,7 +14,6 @@ import './modules/cookie/cookieConfig';
 import './assets/js/fileValidator.js';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
-import './assets/webchat/cnbc.js';
-import './assets/webchat/mediation.js';
+import './assets/js/webchat.js';
 
 initAll();
