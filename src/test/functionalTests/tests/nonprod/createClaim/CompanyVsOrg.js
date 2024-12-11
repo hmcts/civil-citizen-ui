@@ -9,7 +9,7 @@ const {payClaimFee, hwfSubmission} = require('../../../specClaimHelpers/dashboar
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount = 1600,
   claimFee = 115, claimantPartyType = 'Company';
-const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
+const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
 Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@regression-r2');
 
@@ -48,12 +48,12 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - G
   console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
-  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name');
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name');
   console.log('Creating GA app as defendant');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
-  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name');
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name');
 });
 
 Scenario('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf', async ({I, api}) => {
