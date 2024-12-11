@@ -1098,7 +1098,7 @@ describe('Should display sync warning', () => {
 
 describe('Should get the application index', () => {
 
-  it('should return index', async () => {
+  it('should return index without plus one on index.', async () => {
     const applicationResponse: ApplicationResponse = {
       case_data: {
         applicationTypes: undefined,
@@ -1130,6 +1130,40 @@ describe('Should get the application index', () => {
     const result = await getApplicationIndex('123', '1234', undefined);
     //Then
     expect(result).toEqual(0);
+  });
+
+  it('should return index with plus one on index.', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '1234',
+      last_modified: '',
+      state: undefined,
+    };
+
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([applicationResponse]);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined, true);
+    //Then
+    expect(result).toEqual(1);
   });
 
   it('should return undefine', async () => {

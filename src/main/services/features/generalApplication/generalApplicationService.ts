@@ -523,9 +523,10 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
   }
 };
 
-export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest, indexWithPlusOne = false) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  return applications.findIndex(application => application.id == applicationId);
+  const index =  applications.findIndex(application => application.id == applicationId);
+  return indexWithPlusOne? index + 1 : index;
 };
 
 export const isGaApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
