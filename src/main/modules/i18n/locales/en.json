@@ -3306,6 +3306,7 @@
           "APPLICATION_CLOSED": "Application closed",
           "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "AWAITING_ADDL_PAYMENT": "Awaiting additional payment",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "TITLE": "Status"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
