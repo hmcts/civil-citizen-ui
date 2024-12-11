@@ -175,7 +175,7 @@ describe('General Application service', () => {
 
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.informOtherParties = new InformOtherParties('no', 'dont specify to the defendant')
+      claim.generalApplication.informOtherParties = new InformOtherParties('no', 'dont specify to the defendant');
       //When
       await saveAgreementFromOtherParty('123', claim, YesNo.YES);
       //Then
