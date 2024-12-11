@@ -73,6 +73,8 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
       await renderView(res, req, form, claimId, lng);
     } else {
       const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
+      //fixing CIV-15658
+      res.cookie('lang', lng, { httpOnly: true, secure: true });
       res.redirect(redirectUrl);
     }
   }catch (error) {
