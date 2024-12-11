@@ -43,4 +43,4 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nig
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
-}).tag('@regression');
+}).tag('@regression-cui-r1');

@@ -65,4 +65,4 @@ Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression');
+}).retry(1).tag('@regression-cui-r2');
