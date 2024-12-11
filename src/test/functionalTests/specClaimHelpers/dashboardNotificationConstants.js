@@ -501,7 +501,7 @@ module.exports = {
       title: 'You must pay an additional application fee',
       content: 'The court requires you to pay an additional fee before your application can progress further.',
       nextSteps: 'Pay the additional application fee',
-     };
+    };
   },
   
   caseOffline: () => {
