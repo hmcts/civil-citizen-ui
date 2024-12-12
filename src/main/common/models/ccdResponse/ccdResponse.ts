@@ -91,4 +91,5 @@ export interface CCDResponse extends ClaimUpdate {
   specRespondent1DQDisclosureOfElectronicDocuments: CCDDisclosureOfElectronicDocuments;
   specRespondent1DQDisclosureOfNonElectronicDocuments: CCDDisclosureOfNonElectronicDocuments;
   respondent1DQClaimantDocumentsToBeConsidered: CCDDocumentsToBeConsidered;
+  respondentResponsePcqId?: string;
 }
