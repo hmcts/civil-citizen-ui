@@ -20,7 +20,7 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
-  getApplicationFromGAService, hasRespondentResponded,
+  getApplicationFromGAService, getApplicationIndex, hasRespondentResponded,
   saveApplicationTypesToGaResponse,
 } from 'services/features/generalApplication/generalApplicationService';
 import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
@@ -42,7 +42,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const claimId = req.params.id;
     const claim: Claim = await getClaimById(claimId, req, true);
     const applicationId = req.params.appId ? String(req.params.appId) : null;
-    const applicationIndex = queryParamNumber(req, 'index') ? queryParamNumber(req, 'index') : '1';
+    const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const applicationTypeCards = getResponseSummaryCardSections(applicationResponse, lang);
