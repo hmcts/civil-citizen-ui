@@ -66,7 +66,7 @@ export const TASK_LISTS = [
 const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_CHECK_ANSWERS_URL);
 
 const mockClaimWithPcqId = new Claim();
-mockClaimWithPcqId.pcqId = '123';
+mockClaimWithPcqId.respondentResponsePcqId = '123';
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
