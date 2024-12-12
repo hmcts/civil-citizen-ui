@@ -39,6 +39,7 @@
       }
     },
     {
+      "priority": 1,
       "request": {
         "method": "GET",
         "urlPattern": "/cases/1732194111758649",
