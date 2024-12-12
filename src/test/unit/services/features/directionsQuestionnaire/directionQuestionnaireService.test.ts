@@ -391,8 +391,8 @@ describe('Direction questionnaire Service', () => {
 
     it('should save defendant direction questionnaire successfully', async () => {
       //Given
+      const claim = new Claim();
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.experts = new Experts();
         claim.directionQuestionnaire.hearing = new Hearing();
@@ -405,13 +405,13 @@ describe('Direction questionnaire Service', () => {
       //When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.experts?.expertEvidence, 'expertEvidence', 'experts');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', claim);
     });
 
     it('should save claimant direction questionnaire successfully', async () => {
       //Given
+      const claim = new Claim();
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const claim = new Claim();
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
         claim.claimantResponse = new ClaimantResponse();
         const directionQuestionnaire = new DirectionQuestionnaire();
@@ -427,13 +427,13 @@ describe('Direction questionnaire Service', () => {
       //When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', claim);
     });
 
     it('should update defendant direction questionnaire successfully', async () => {
       //Given
+      const claim = new Claim();
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.experts = new Experts();
         claim.directionQuestionnaire.hearing = new Hearing();
@@ -447,13 +447,14 @@ describe('Direction questionnaire Service', () => {
       //When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', claim);
     });
 
     it('should update claimant direction questionnaire successfully', async () => {
       //Given
+      const claim = new Claim();
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const claim = new Claim();
+
         claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
         claim.claimantResponse = new ClaimantResponse();
         const directionQuestionnaire = new DirectionQuestionnaire();
@@ -470,7 +471,7 @@ describe('Direction questionnaire Service', () => {
       //When
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
       //Then
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', claim);
     });
 
     it('should update defendant`s phone or video hearing successfully', async () => {
