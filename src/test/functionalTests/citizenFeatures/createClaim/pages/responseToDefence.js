@@ -1057,7 +1057,7 @@ class ResponseToDefence {
     I.see('Free telephone mediation','h2');
     I.see('Will you try free mediation?');
     I.see('No');
-    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?\tNo');
+    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?\tYes');
     I.see('Have you already got a report written by an expert?');
     I.see('Do you want to ask for the court’s permission to use an expert?');
     I.see('Does the claim involve something an expert can still examine?');
