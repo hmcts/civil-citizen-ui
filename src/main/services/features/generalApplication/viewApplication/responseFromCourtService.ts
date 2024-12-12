@@ -49,6 +49,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
 
 export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+  console.log(claim.isClaimant());
   if (isGaApplicant(claim, applicationResponse)) {
     console.log('entered the code isGaApplicant');
     const claimId = req.params.id;
