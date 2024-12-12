@@ -330,6 +330,7 @@ class createGASteps {
   }
 
   async askToChangeHearingDateGA(caseRef, parties, communicationType = 'withoutnotice') {
+    // Adjourn a hearing
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Change a hearing date';
     let feeAmount;

@@ -24,7 +24,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests @citizenUI @nightly - @api @ga @regression', async ({I}) => {
+Scenario('LipvLip Applicant GA creation e2e tests @citizenUI @nightly - @api @ga @regression', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
@@ -34,12 +34,13 @@ Scenario('LipvLip Applicant GA creation e2e tests @citizenUI @nightly - @api @ga
     gaID = await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
     //defendant response
+    console.log('Responding to the GA as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
     
     await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to more time to do what is required by a court order', 'Miss Jane Doe v Sir John Doe');
 
-    //await api.makeOrderGA();
+    await api.makeOrderGA(gaID);
   }
 });
