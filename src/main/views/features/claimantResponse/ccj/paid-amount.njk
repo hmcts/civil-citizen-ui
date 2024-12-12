@@ -29,6 +29,9 @@
             {% set id = "option" %}
             {% set name = "option" %}
             {% set yesHtml %}
+              {{ govukInsetText({
+                text: t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET')
+              }) }}
               {{ govukInput({
                 id: "amount",
                 name: "amount",
@@ -39,10 +42,7 @@
                 },
                 label: {
                   text: t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID')
-                },
-                hint: {
-                  text: t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_HINT')
-                },
+                }
                 errorMessage: {
                   html: t(form.errorFor('amount'))
                 } if form.errorFor('amount')

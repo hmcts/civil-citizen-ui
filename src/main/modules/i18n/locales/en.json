@@ -1078,7 +1078,7 @@
       "AMOUNT_PAID": "Amount already paid",
       "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
       "TITLE": "Has the defendant paid some of the amount owed?",
-      "AMOUNT_PAID_HINT": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form N225 https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount or https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf, where you can calculate the correct interest, and send to contactocmc@justice.gov.uk."
+      "AMOUNT_PAID_INSET": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form N225 https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount or https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf, where you can calculate the correct interest, and send to contactocmc@justice.gov.uk."
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "I would like the defendant to pay:",
