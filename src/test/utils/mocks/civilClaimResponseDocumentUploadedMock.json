@@ -7,6 +7,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
+    "refreshDataForDJ": true,
     "pcqId":"123",
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {
