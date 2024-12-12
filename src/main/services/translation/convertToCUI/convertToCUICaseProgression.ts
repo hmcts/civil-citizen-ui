@@ -59,6 +59,7 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.requestForReconsiderationDeadline = ccdClaim.requestForReconsiderationDeadline;
     caseProgression.requestForReconsiderationDocument = ccdClaim.requestForReconsiderationDocument;
     caseProgression.requestForReconsiderationDocumentRes = ccdClaim.requestForReconsiderationDocumentRes;
+    caseProgression.courtOfficerOrder = ccdClaim.courtOfficerOrder;
 
     return caseProgression;
   }
