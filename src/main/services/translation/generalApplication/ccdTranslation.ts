@@ -203,6 +203,7 @@ export const fromCcdHearingType = (ccdHearingType: CcdHearingType): HearingTypeO
     case CcdHearingType.IN_PERSON : return HearingTypeOptions.PERSON_AT_COURT;
     case CcdHearingType.TELEPHONE : return HearingTypeOptions.TELEPHONE;
     case CcdHearingType.VIDEO : return HearingTypeOptions.VIDEO_CONFERENCE;
+    case CcdHearingType.WITHOUT_HEARING : return HearingTypeOptions.WITHOUT_HEARING;
     default: exhaustiveMatchingGuard(ccdHearingType);
   }
 };
