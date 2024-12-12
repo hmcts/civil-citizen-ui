@@ -1078,7 +1078,7 @@
       "AMOUNT_PAID": "Swm a dalwyd eisoes",
       "PAGE_TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
       "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
-      "AMOUNT_PAID_HINT": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen N225 https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount, https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf, lle gallwch gyfrifo’r llog cywir, a’i hanfon at contactocmc@justice.gov.uk."
+      "AMOUNT_PAID_HINT": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen N225 <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount' target='_blank'>https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount</a> neu <a class='govuk-link' href='https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf' target='_blank'>https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf</a>, lle gallwch gyfrifo’r llog cywir, a’i hanfon at <a class='govuk-link' href='contactocmc@justice.gov.uk' target='_blank'>contactocmc@justice.gov.uk</a>."
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "Hoffwn i'r diffynnydd dalu:",
