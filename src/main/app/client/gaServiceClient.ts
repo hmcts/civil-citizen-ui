@@ -122,8 +122,6 @@ export class GaServiceClient {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(GA_GET_APPLICATION_URL.replace(':caseId', applicationId), config);
-      console.log('data for ga application')
-      console.log(JSON.stringify(response.data));
       const caseData = Object.assign(new Application(), response.data.case_data);
       return new ApplicationResponse(response.data.id, caseData, response.data.state, response.data.last_modified, response.data.created_date);
     } catch (err) {
