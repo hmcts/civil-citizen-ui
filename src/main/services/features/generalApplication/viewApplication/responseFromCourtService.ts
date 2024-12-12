@@ -28,12 +28,15 @@ import {canUploadAddlDoc} from 'services/features/generalApplication/additionalD
 export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
+  const directionFromOrder = getJudgesDirectionsOrder(req, application, lang);
+  console.log('directionFromOrder');
+  console.log(JSON.stringify(directionFromOrder))
   return [
     ...getJudgeDirectionWithNotice(claim, req, application, lang),
     ...getHearingNoticeResponses(application, lang),
     ...getHearingOrderResponses(req, application, lang),
     ...getRequestMoreInfoResponse(claimId, application, lang),
-    ...getJudgesDirectionsOrder(req, application, lang),
+    ...directionFromOrder,
     ...getJudgeApproveEdit(application, lang),
     ...getJudgeDismiss(application, lang),
     ...getWrittenRepSequentialDocument(req, application, lang),
