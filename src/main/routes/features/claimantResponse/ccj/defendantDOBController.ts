@@ -10,9 +10,9 @@ import {getClaimantResponse, saveClaimantResponse} from 'services/features/claim
 import {DefendantDOB} from 'models/claimantResponse/ccj/defendantDOB';
 import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 import {DateOfBirth} from 'models/claimantResponse/ccj/dateOfBirth';
-import {getClaimById} from 'modules/utilityService';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
+import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
 
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';
@@ -27,9 +27,8 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
   });
 }
 
-defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, async (req, res, next: NextFunction) => {
+defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
   try {
-    await getClaimById(req.params.id, req, true);
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const defendantDOB = claimantResponse.ccjRequest ?
       claimantResponse.ccjRequest.defendantDOB : new DefendantDOB();
