@@ -4,7 +4,7 @@ const RespondentResponse = require('../../genralApplication/respondentResponse')
 const responseFromCourt = require('../../genralApplication/responseFromCourt');
 const config = require('../../../config');
 
-Feature('Lip V Lip Strike Out Without Notice').tag('@galip');
+Feature('Lip V Lip Strike Out Without Notice @vjrtest').tag('@galip');
 
 Scenario('Claimant GA Application and respond to response for strike out without notice to notice ', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
