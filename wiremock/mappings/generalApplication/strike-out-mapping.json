@@ -53,8 +53,11 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "bodyFileName": "generalApplication/strikeout/gaApplicationData.json"
-      }
+        "bodyFileName": "generalApplication/strikeout/gaApplicationData_1732194111758649.json"
+      },
+      "scenarioName": "strike out application data",
+      "requiredScenarioState": "Started",
+      "persistent": true
     },
     {
       "request": {
