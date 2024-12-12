@@ -28,9 +28,6 @@ import {canUploadAddlDoc} from 'services/features/generalApplication/additionalD
 export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
-  const directionFromOrder = getJudgeDirectionWithNotice(claim, req, application, lang);
-  console.log('directionFromOrder');
-  console.log(JSON.stringify(directionFromOrder))
   return [
     ...getJudgeDirectionWithNotice(claim, req, application, lang),
     ...getHearingNoticeResponses(application, lang),
@@ -49,12 +46,9 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
 
 export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  console.log(claim.isClaimant());
   if (isGaApplicant(claim, applicationResponse)) {
-    console.log('entered the code isGaApplicant');
     const claimId = req.params.id;
     const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
-    console.log(JSON.stringify(makeWithNoticeDocs));
     if (makeWithNoticeDocs) {
       courtResponseSummaryList = makeWithNoticeDocs
         .filter(makeWithNoticeDoc => {
@@ -74,8 +68,6 @@ export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, appli
             const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
             payAdditionalFeeButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE', {lng}), payAdditionalFeeUrl);
           }
-          console.log('pay additional button  url');
-          console.log(payAdditionalFeeButton);
           return new CourtResponseSummaryList(rows, createdDatetime, payAdditionalFeeButton);
         });
     }
