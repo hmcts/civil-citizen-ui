@@ -325,6 +325,9 @@ const getTranslatedDocumentName = (documentName: string, lng: string) => {
     case 'Supporting evidence':
       documentType = GaDocumentType.SUPPORTING_EVIDENCE;
       break;
+    case 'Respond evidence':
+      documentType = GaDocumentType.RESPOND_EVIDENCE;
+      break;
     default:
       documentType = null;
   }

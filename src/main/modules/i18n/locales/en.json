@@ -3265,7 +3265,8 @@
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "DOCUMENT_TYPES": {
-          "SUPPORTING_EVIDENCE": "Supporting Evidence"
+          "SUPPORTING_EVIDENCE": "Supporting evidence",
+          "RESPOND_EVIDENCE": "Respond evidence"
         },
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
