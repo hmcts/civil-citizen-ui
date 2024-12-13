@@ -1,7 +1,9 @@
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
-import {toggleViewApplicationBuilderBasedOnUserAndApplicant} from 'services/features/generalApplication/generalApplicationService';
+import {
+  isGaApplicant,
+} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -18,6 +20,7 @@ import {DocumentType} from 'models/document/documentType';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {Claim} from 'models/claim';
+import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
 
 /**
  * Creates Response from court summary list by sorting on response time.
@@ -43,7 +46,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
 
 export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  if (toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse)) {
+  if (isGaApplicant(claim, applicationResponse)) {
     const claimId = req.params.id;
     const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
     if (makeWithNoticeDocs) {
@@ -134,9 +137,11 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
 export const getHearingOrderResponses = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   const hearingOrders = applicationResponse?.case_data?.hearingOrderDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-  const uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
-
+  let uploadAddlDocsButton :ResponseButton = null;
+  if(canUploadAddlDoc(applicationResponse)) {
+    const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
+  }
   if (hearingOrders) {
     courtResponseSummaryList = hearingOrders
       .filter(directionOrderDocument => {
