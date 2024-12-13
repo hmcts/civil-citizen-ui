@@ -525,5 +525,5 @@ module.exports = {
       content: 'The judge has made an order related to the application.',
       nextSteps: 'View the order',
     };
-  }
+  },
 };
