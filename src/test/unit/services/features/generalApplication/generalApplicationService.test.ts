@@ -162,6 +162,27 @@ describe('General Application service', () => {
       expect(spy).toBeCalled();
     });
 
+    it('should delete inform other parties data upon agreement from other party is selected yes', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => {
+        return new Claim();
+      });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.informOtherParties = new InformOtherParties('no', 'dont specify to the defendant');
+      //When
+      await saveAgreementFromOtherParty('123', claim, YesNo.YES);
+      //Then
+      expect(spy).toBeCalled();
+      expect(claim.generalApplication.informOtherParties).toBeUndefined();
+    });
+
     it('should throw error when draft store throws error', async () => {
       //Given
 
