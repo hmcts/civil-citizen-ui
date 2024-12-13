@@ -125,7 +125,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).toEqual({});
+    expect(result).toEqual({refreshDataForDJ: true});
   });
   it('should throw error if not selected do not throw error', async () => {
     //Given
@@ -175,6 +175,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const expectedClaim = {
       id: CLAIM_ID,
       case_data: {
+        refreshDataForDJ: true,
         id: CLAIM_ID,
       },
     };
@@ -206,7 +207,7 @@ describe('Draft store service to save and retrieve claim', () => {
       };
       jest.clearAllMocks();
     });
-  
+
     it('should return claim IDs for a given userId', async () => {
       const userId = '123';
       const mockResult = ['claim1', 'claim2'];
@@ -215,7 +216,7 @@ describe('Draft store service to save and retrieve claim', () => {
       expect(result).toEqual(mockResult);
       expect(mockKeys).toHaveBeenCalledWith('*' + userId);
     });
-  
+
     it('should log an error and throw if the Redis client fails', async () => {
       const userId = '123';
       const mockError = new Error('Redis error');
