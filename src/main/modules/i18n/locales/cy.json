@@ -3307,6 +3307,7 @@
           "APPLICATION_CLOSED": "Cais wedi’i gau",
           "PROCEEDS_IN_HERITAGE": "Parhau yn y cyflwr etifeddiaeth",
           "AWAITING_ADDL_PAYMENT": "Aros am daliad ychwanegol",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Amser Ychwanegol ar gyfer Ymateb Wedi Dod i Ben",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
