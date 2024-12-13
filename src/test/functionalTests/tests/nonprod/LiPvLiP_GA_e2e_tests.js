@@ -4,6 +4,9 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 const respondGASteps = require('../../citizenFeatures/GA/steps/respondGASteps');
 // eslint-disable-next-line no-unused-vars
+const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
+const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
+const {orderMadeGA} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType, caseData, claimNumber, gaID;
 
@@ -42,5 +45,19 @@ Scenario('LipvLip Applicant GA creation e2e tests @citizenUI @nightly - @api @ga
     await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to more time to do what is required by a court order', 'Miss Jane Doe v Sir John Doe');
 
     await api.makeOrderGA(gaID);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMadeGA();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+    //await I.amOnPage(`/case/${gaID}/general-application/summary`);
+
   }
 });

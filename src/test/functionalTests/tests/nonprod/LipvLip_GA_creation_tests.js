@@ -23,7 +23,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga @regression', async ({I}) => {
+Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
