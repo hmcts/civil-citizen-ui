@@ -57,6 +57,16 @@ Scenario('LipvLip Applicant GA creation e2e tests @citizenUI @nightly - @api @ga
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
+
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMadeGA();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
     //await I.amOnPage(`/case/${gaID}/general-application/summary`);
 
   }
