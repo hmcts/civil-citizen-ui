@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-9">
@@ -19,6 +20,9 @@
             {{ itemContent(content,t) }}
           {% endfor %}
           </div>
+        </div>
+        <div class="govuk-grid-column-one-third">
+            {{ contactUsForHelp(t) }}
         </div>
       </div>
     </main>
