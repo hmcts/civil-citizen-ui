@@ -5,12 +5,12 @@ import {
   CcdHearingType,
 } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
-  CcdGeneralApplicationRespondentResponse
+  CcdGeneralApplicationRespondentResponse,
 } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 import {CcdSupportRequirement} from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
 import {CCDApplication} from 'common/models/generalApplication/applicationResponse';
 import {
-  buildResponseSummaries
+  buildResponseSummaries,
 } from 'services/features/generalApplication/viewApplication/addViewApplicationResponseRows';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
@@ -218,7 +218,7 @@ describe('addViewApplicationResponseRows', () => {
           'value': {
             'html': 'COMMON.NO',
           },
-        },]);
+        }]);
 
     });
 
@@ -231,23 +231,23 @@ describe('addViewApplicationResponseRows', () => {
                 {
                   value: {
                     unavailableTrialDateFrom: '2024-07-30',
-                  }
+                  },
                 },
                 {
                   value: {
                     unavailableTrialDateTo: '2024-08-07',
                     unavailableTrialDateFrom: '2024-08-01',
-                  }
+                  },
                 },
                 {
                   value: {
                     unavailableTrialDateTo: '2024-08-22',
                     unavailableTrialDateFrom: '2024-08-20',
-                  }
+                  },
                 },
-              ]
+              ],
             } as CcdGeneralApplicationHearingDetails,
-          }
+          },
         }],
       };
 
@@ -265,9 +265,9 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           },
           'value': {
-            'html': 'COMMON.NO'
+            'html': 'COMMON.NO',
           },
-        },]);
+        }]);
     });
 
     it('should include unavailable dates', () => {
@@ -279,23 +279,23 @@ describe('addViewApplicationResponseRows', () => {
                 {
                   value: {
                     unavailableTrialDateFrom: '2024-07-30',
-                  }
+                  },
                 },
                 {
                   value: {
                     unavailableTrialDateTo: '2024-08-07',
                     unavailableTrialDateFrom: '2024-08-01',
-                  }
+                  },
                 },
                 {
                   value: {
                     unavailableTrialDateTo: '2024-08-22',
                     unavailableTrialDateFrom: '2024-08-20',
-                  }
+                  },
                 },
-              ]
+              ],
             } as CcdGeneralApplicationHearingDetails,
-          }
+          },
         }],
       };
 
@@ -313,7 +313,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           },
           'value': {
-            'html': 'COMMON.NO'
+            'html': 'COMMON.NO',
           },
         }]);
     });
@@ -329,9 +329,9 @@ describe('addViewApplicationResponseRows', () => {
                 CcdSupportRequirement.HEARING_LOOPS,
                 CcdSupportRequirement.DISABLED_ACCESS,
                 CcdSupportRequirement.OTHER_SUPPORT,
-              ]
+              ],
             } as CcdGeneralApplicationHearingDetails,
-          }
+          },
         }],
       };
 
@@ -354,7 +354,7 @@ describe('addViewApplicationResponseRows', () => {
             + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li>'
             + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS</li>'
             + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER</li>'
-            + '</ul>'
+            + '</ul>',
         },
       }]);
     });
