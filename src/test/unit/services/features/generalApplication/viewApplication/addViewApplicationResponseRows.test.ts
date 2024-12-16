@@ -251,10 +251,11 @@ describe('addViewApplicationResponseRows', () => {
         }],
       };
 
-      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
-        key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO'},
-      },
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+          value: {html: 'COMMON.VARIATION_2.NO'},
+        },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
           value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
@@ -298,14 +299,16 @@ describe('addViewApplicationResponseRows', () => {
         }],
       };
 
-      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
-        key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO'},
-      },
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+          value: {html: 'COMMON.VARIATION_2.NO'},
+        },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
           value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
-        }, {
+        },
+        {
           'key': {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           },
