@@ -3,11 +3,16 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
+const {claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const partAdmit = 'partial-admission';
 const rejectAll = 'rejectAll';
 
-let claimRef, caseData, claimNumber, securityCode;
+let claimRef, caseData, claimNumber, securityCode, paidDate;
+const currentDate = new Date();
+const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
 Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey @nightly @minti');
 
@@ -18,7 +23,7 @@ Before(async () => {
   }
 });
 
-Scenario('MT Defendant and Claimant responses', async ({api}) => {
+Scenario('MT Defendant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
     console.log('LIP vs LIP MT claim has been created Successfully    <===>  ', claimRef);
@@ -73,9 +78,13 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await api.waitForFinishedBusinessProcess();
 
     // Respond as claimant user
-    // To do later
-    // await LoginSteps.EnterCitizenCredentials(config.applicantSolicitorUser.email, config.applicantSolicitorUser.password);
-    // await ResponseSteps.RespondToClaim(claimRef);
-
+    paidDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(paymentDate);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid(15000, paidDate));
+    await ClaimantResponseSteps.verifyDefendantResponse();
+    await ClaimantResponseSteps.isDefendantPaid('Yes', 15000);
+    await ClaimantResponseSteps.settleTheClaim('No', 15000);
+    await ResponseSteps.EnterClaimantDQForIntTrack(claimRef, false);
+    await ClaimantResponseSteps.submitYourResponse();
   }
 }).tag('@regression-minti').tag('@nightly');
