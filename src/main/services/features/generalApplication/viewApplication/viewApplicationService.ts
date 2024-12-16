@@ -2,7 +2,6 @@ import {
   addApplicationStatus,
   addApplicationTypesAndDescriptionRows,
   addAnotherApplicationRow,
-  addDocumentUploadRow,
   addEvidenceOfDebtPaymentRow,
   addFinalPaymentDateDetails,
   addHearingArrangementsRows,
@@ -83,7 +82,6 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
     );
   }
   applicationSections.push(
-    ...addDocumentUploadRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
@@ -110,7 +108,6 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
     );
   }
   summaryRows.push(
-    ...addDocumentUploadRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
