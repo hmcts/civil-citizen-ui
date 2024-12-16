@@ -78,6 +78,14 @@ class CheckYourAnswersPage {
     I.waitForContent('You\'ve rejected their response',config.WaitForText);
     I.see(content.confirmationSubheading[language]);
   }
+
+  async submitYourResponse() {
+    I.click('Check and submit your response');
+    const { language } = sharedData;
+    I.click(cButtons.submit[language]);
+    I.waitForContent('You\'ve rejected their response',config.WaitForText);
+    I.see(content.confirmationSubheading[language]);
+  }
 }
 
 module.exports = CheckYourAnswersPage;
