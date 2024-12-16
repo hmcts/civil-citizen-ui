@@ -371,6 +371,8 @@ const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType)
       return HearingTypeOptions.TELEPHONE;
     case CcdHearingType.VIDEO:
       return HearingTypeOptions.VIDEO_CONFERENCE;
+    case CcdHearingType.WITHOUT_HEARING:
+      return HearingTypeOptions.WITHOUT_HEARING;
     default:
       return undefined;
   }
