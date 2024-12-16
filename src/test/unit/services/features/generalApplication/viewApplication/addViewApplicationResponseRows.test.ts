@@ -134,10 +134,11 @@ describe('addViewApplicationResponseRows', () => {
         respondentsResponses: [{value: {generalAppRespondent1Representative: YesNoUpperCamelCase.YES}}],
       } satisfies Partial<CCDApplication>;
 
-      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
-        key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER'},
-        value: {html: 'COMMON.VARIATION_2.YES'},
-      },
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER'},
+          value: {html: 'COMMON.VARIATION_2.YES'},
+        },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
           value: {html: 'COMMON.VARIATION_2.YES'},
@@ -182,25 +183,26 @@ describe('addViewApplicationResponseRows', () => {
           } as unknown,
         }],
       };
-      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
-        key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO'},
-      },
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
-          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'},
-          value: {html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'},
+          key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST' },
+          value: { html: 'COMMON.VARIATION_2.NO' },
+        },
+        {
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
+          value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT' },
         }, {
-          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER'},
-          value: {html: 'I prefer in person'},
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
+          value: { html: 'I prefer in person' },
         }, {
-          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION'},
-          value: {html: "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"},
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION' },
+          value: { html: "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ" },
         }, {
-          key: {text: 'PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.PREFERRED_TELEPHONE_NUMBER'},
-          value: {html: '07878787878'},
+          key: { text: 'PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.PREFERRED_TELEPHONE_NUMBER' },
+          value: { html: '07878787878' },
         }, {
-          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL'},
-          value: {html: 'email@addre.ss'},
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL' },
+          value: { html: 'email@addre.ss' },
         }, {
           'key': {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
