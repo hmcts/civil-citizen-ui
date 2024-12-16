@@ -50,6 +50,22 @@ describe('addViewApplicationResponseRows', () => {
             'html': htmlData,
           },
         },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
       ]);
     });
 
@@ -86,6 +102,22 @@ describe('addViewApplicationResponseRows', () => {
             'html': htmlData,
           },
         },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
       ]);
     });
 
@@ -106,6 +138,22 @@ describe('addViewApplicationResponseRows', () => {
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
         value: {html: 'COMMON.VARIATION_2.YES'},
       },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
       ]);
     });
 
@@ -149,7 +197,22 @@ describe('addViewApplicationResponseRows', () => {
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL' },
         value: { html: 'email@addre.ss'},
-      }]);
+        }, {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          },
+          'value': {
+            'html': 'COMMON.NO',
+          },
+        },]);
 
     });
 
@@ -180,7 +243,61 @@ describe('addViewApplicationResponseRows', () => {
       {
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
         value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
-      }]);
+      },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          },
+          'value': {
+            'html': 'COMMON.NO'
+          },
+        },]);
+    });
+
+    it('should include unavailable dates', () => {
+      const application: Partial<CCDApplication> = {
+        respondentsResponses: [{
+          value: {
+            gaHearingDetails: {
+              generalAppUnavailableDates: [
+                {
+                  value: {
+                    unavailableTrialDateFrom: '2024-07-30',
+                  }
+                },
+                {
+                  value: {
+                    unavailableTrialDateTo: '2024-08-07',
+                    unavailableTrialDateFrom: '2024-08-01',
+                  }
+                },
+                {
+                  value: {
+                    unavailableTrialDateTo: '2024-08-22',
+                    unavailableTrialDateFrom: '2024-08-20',
+                  }
+                },
+              ]
+            } as CcdGeneralApplicationHearingDetails,
+          }
+        }],
+      };
+
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
+        key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+        value: {html: 'COMMON.VARIATION_2.NO'},
+      },
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
+          value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
+        }, {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          },
+          'value': {
+            'html': 'COMMON.NO'
+          },
+        }]);
     });
 
     it('should include all support items', () => {
@@ -200,6 +317,13 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
         value: {html: 'COMMON.VARIATION_2.NO'},
+      }, {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
+        },
+        'value': {
+          'html': 'COMMON.NO',
+        },
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},
         value: {html: '<ul class="no-list-style">'
