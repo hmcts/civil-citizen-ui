@@ -1,0 +1,43 @@
+{
+  "total": 1,
+  "cases": [
+    {
+      "id": 1732790247094419,
+      "jurisdiction": "CIVIL",
+      "state": "AWAITING_ADDITIONAL_INFORMATION",
+      "case_type_id": "GENERALAPPLICATION",
+      "created_date": "2024-11-28T10:37:27",
+      "last_modified": "2024-11-28T12:29:35.999",
+      "case_data": {
+        "generalAppInformOtherParty": {
+          "isWithNotice": "No"
+        },
+        "parentClaimantIsApplicant": "Yes",
+        "applicationTypes": "Amend a statement of case",
+        "generalAppRespondentAgreement": {
+          "hasAgreed": "No"
+        },
+        "judicialDecisionRequestMoreInfo": {
+          "judgeRecitalText": "The Judge considered the without notice application of the claimant dated 28 November 2024\n\nAnd the Judge considered the information provided by the claimant",
+          "judgeRequestMoreInfoText": "required more information",
+          "isWithNotice": "No",
+          "requestMoreInfoOption": "REQUEST_MORE_INFORMATION",
+          "judgeRequestMoreInfoByDate": "2024-12-05"
+        },
+        "generalAppPBADetails": {
+          "fee": {
+            "calculatedAmountInPence": "10800",
+            "code": "FEE0443",
+            "version": "2"
+          },
+          "serviceRequestReference": "2022-1655915218557",
+          "paymentDetails": {
+            "reference": "RC-1234-1234-1234-1234",
+            "status": "SUCCESS"
+          }
+        }
+      },
+      "security_classification": "PUBLIC"
+    }
+  ]
+}

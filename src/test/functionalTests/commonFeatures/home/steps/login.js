@@ -5,8 +5,10 @@ class LoginSteps {
     await LoginPage.acceptCookies();
   }
 
-  async EnterCitizenCredentials(username, password) {
-    await LoginPage.openCitizenLogin();
+  async EnterCitizenCredentials(username, password, manualPIP = false) {
+    if (!manualPIP) {
+      await LoginPage.openCitizenLogin();
+    }
     //await this.AcceptCookies(); -- skip as it is flaky
     await LoginPage.citizenLogin(username, password);
   }
