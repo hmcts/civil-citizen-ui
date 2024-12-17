@@ -174,6 +174,9 @@ export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim,
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    if (agreementFromOtherParty === YesNo.YES && claim.generalApplication.informOtherParties?.option) {
+      claim.generalApplication.informOtherParties = undefined;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -523,9 +526,10 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
   }
 };
 
-export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest, indexWithPlusOne = false) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  return applications.findIndex(application => application.id == applicationId);
+  const index =  applications.findIndex(application => application.id == applicationId);
+  return indexWithPlusOne? index + 1 : index;
 };
 
 export const isGaApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {

@@ -77,6 +77,10 @@ export const addApplicationStatus = (
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT', {lng})),
     );
+  }else if (application.state === ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ADDITIONAL_RESPONSE_TIME_EXPIRED', {lng})),
+    );
   }else {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), application.state),
@@ -367,6 +371,8 @@ const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType)
       return HearingTypeOptions.TELEPHONE;
     case CcdHearingType.VIDEO:
       return HearingTypeOptions.VIDEO_CONFERENCE;
+    case CcdHearingType.WITHOUT_HEARING:
+      return HearingTypeOptions.WITHOUT_HEARING;
     default:
       return undefined;
   }
