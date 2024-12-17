@@ -1077,7 +1077,12 @@
     "CCJ_PAID_AMOUNT": {
       "AMOUNT_PAID": "Amount already paid",
       "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
-      "TITLE": "Has the defendant paid some of the amount owed?"
+      "TITLE": "Has the defendant paid some of the amount owed?",
+      "AMOUNT_PAID_INSET": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form ",
+      "AMOUNT_PAID_INSET_2": ". If you have received any part payment and you are requesting a Judgment on a Part Admission response, please use form ",
+      "AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send to ",
+      "N225_LINK": "https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount",
+      "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "I would like the defendant to pay:",
@@ -3136,7 +3141,8 @@
         "HEARING_TYPE_VIEW_APPLICATION": {
           "PERSON_AT_COURT": "In person at the court",
           "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "VIDEO_CONFERENCE": "Video Conference",
+          "WITHOUT_HEARING": "Without a hearing"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",
@@ -3265,7 +3271,8 @@
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "DOCUMENT_TYPES": {
-          "SUPPORTING_EVIDENCE": "Supporting Evidence"
+          "SUPPORTING_EVIDENCE": "Supporting evidence",
+          "RESPOND_EVIDENCE": "Respond evidence"
         },
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
