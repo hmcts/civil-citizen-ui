@@ -3076,7 +3076,7 @@
         "TITLE": "Do you want to upload documents to support your application?"
       },
       "UPLOAD_DOCUMENTS": {
-        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Uploaded files",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
@@ -3101,7 +3101,7 @@
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
-        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "FILE_SIZE": "the file size is no more than 100MB",
         "FILL_ONLINE": "fill out the interactive form online, save it to your device and then upload it here",
         "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
@@ -3136,7 +3136,8 @@
         "HEARING_TYPE_VIEW_APPLICATION": {
           "PERSON_AT_COURT": "In person at the court",
           "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "VIDEO_CONFERENCE": "Video Conference",
+          "WITHOUT_HEARING": "Without a hearing"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",
@@ -3306,6 +3307,7 @@
           "APPLICATION_CLOSED": "Application closed",
           "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "AWAITING_ADDL_PAYMENT": "Awaiting additional payment",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "TITLE": "Status"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",

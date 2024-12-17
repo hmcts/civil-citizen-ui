@@ -30,11 +30,12 @@ export enum CcdHearingType {
   IN_PERSON = 'IN_PERSON',
   VIDEO = 'VIDEO',
   TELEPHONE = 'TELEPHONE',
+  WITHOUT_HEARING = 'WITHOUT_HEARING',
 }
 
 export interface CcdGARespondentDebtorOfferGAspec {
   respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec,
-  paymentPlan?: CcdGADebtorPaymentPlanGAspec, 
+  paymentPlan?: CcdGADebtorPaymentPlanGAspec,
   debtorObjections?: string,
   monthlyInstalment?: string,
   paymentSetDate?: Date,

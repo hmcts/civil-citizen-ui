@@ -5,6 +5,7 @@ export enum HearingTypeOptions {
     PERSON_AT_COURT = 'PERSON_AT_COURT',
     VIDEO_CONFERENCE = 'VIDEO_CONFERENCE',
     TELEPHONE = 'TELEPHONE',
+    WITHOUT_HEARING = 'WITHOUT_HEARING',
 }
 
 export class HearingArrangement {
