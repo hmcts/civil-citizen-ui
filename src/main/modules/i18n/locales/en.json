@@ -2774,6 +2774,7 @@
         },
         "TITLE": "Check your answers",
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "UPLOAD_DOCUMENTS_RESPONSE": "Do you want to upload documents to support your response?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?",
