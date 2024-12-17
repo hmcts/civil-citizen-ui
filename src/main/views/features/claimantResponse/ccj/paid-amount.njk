@@ -30,9 +30,10 @@
             {% set id = "option" %}
             {% set name = "option" %}
             {% set yesHtml %}
-              {{ govukInsetText({
-                text: t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET')
-              }) }}
+              <div class="govuk-inset-text">
+                <p>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET') }}<a target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount">{{  t('N225') }}</a>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_2') }}<a target="_blank" rel="noreferrer noopener" href="https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf">{{  t('N225a') }}</a>.<br/>
+                {{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_3') }}<a href="mailto:contactocmc@justice.gov.uk">{{  t('contactocmc@justice.gov.uk') }}</a>{{  t('.') }}</p>
+              </div>
               {{ govukInput({
                 id: "amount",
                 name: "amount",
