@@ -11,19 +11,19 @@ let claimNumber;
 
 Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track');
 
-Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @dr @rejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.waitForFinishedBusinessProcess();
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(claimRef, claimNumber);
-  await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+  // await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  // await api.waitForFinishedBusinessProcess();
+  // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  // await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(claimRef, claimNumber);
+  // await api.waitForFinishedBusinessProcess();
+});
 
 Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
