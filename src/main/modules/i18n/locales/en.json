@@ -1080,7 +1080,7 @@
       "TITLE": "Has the defendant paid some of the amount owed?",
       "AMOUNT_PAID_INSET": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form ",
       "AMOUNT_PAID_INSET_2": ". If you have received any part payment and you are requesting a Judgment on a Part Admission response, please use form ",
-      "AMOUNT_PAID_INSET_3": ". You can calculate the correct interest, and send to "
+      "AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send to "
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "I would like the defendant to pay:",
