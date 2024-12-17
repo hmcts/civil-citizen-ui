@@ -1,0 +1,160 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/general-application",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.applicationTypes == ['VARY_PAYMENT_TERMS_OF_JUDGMENT'])]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withConsent == true)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withNotice == false)]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"calculatedAmountInPence\": \"1400\", \"code\": \"FEE0458\", \"version\": \"2\"}"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732712467640408/userCaseRoles",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[DEFENDANT]"
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732878113661799",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/varyJudgement/generalApplicationData.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732877831207299",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/varyJudgement/mainCaseData.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732877831207299/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'INITIATE_GENERAL_APPLICATION')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/varyJudgement/mainCaseData.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/case/1732878113661799/payment",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/varyJudgement/paymentRedirect.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732877831207299/applications",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/varyJudgement/applicationSummary.json"
+      }
+    }
+  ]
+}

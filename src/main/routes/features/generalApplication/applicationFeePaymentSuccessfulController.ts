@@ -23,7 +23,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   res.render(paymentSuccessfulViewPath,
     {
-      gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, withoutFee, lng, applicationResponse),
+      gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, withoutFee, isAdditionalFee, lng, applicationResponse),
       gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), isAdditionalFee, withoutFee,
         shouldDisplaySyncWarning(applicationResponse), lng),
       gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(await getCancelUrl(claimId, claim)),
