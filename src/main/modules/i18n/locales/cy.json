@@ -1080,7 +1080,7 @@
       "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
       "AMOUNT_PAID_INSET": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen ",
       "AMOUNT_PAID_INSET_2": " neu ",
-      "AMOUNT_PAID_INSET_3": ", lle gallwch gyfrifo’r llog cywir, a’i hanfon at "
+      "AMOUNT_PAID_INSET_3": "lle gallwch gyfrifo’r llog cywir, a’i hanfon at "
 
     },
     "CCJ_PAYMENT_TYPE": {
