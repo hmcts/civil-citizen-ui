@@ -110,6 +110,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specRespondent1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.directionQuestionnaire?.hearing),
     specRespondent1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.directionQuestionnaire?.hearing),
     respondent1DQClaimantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing),
+    respondentResponsePcqId: claim.respondentResponsePcqId,
   };
 };
 
