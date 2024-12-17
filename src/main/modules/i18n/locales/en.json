@@ -3139,7 +3139,8 @@
         "HEARING_TYPE_VIEW_APPLICATION": {
           "PERSON_AT_COURT": "In person at the court",
           "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "VIDEO_CONFERENCE": "Video Conference",
+          "WITHOUT_HEARING": "Without a hearing"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",

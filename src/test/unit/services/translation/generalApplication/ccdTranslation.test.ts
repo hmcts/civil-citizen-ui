@@ -2,7 +2,7 @@ import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import {
   toCcdGeneralApplicationWithResponse,
   translateDraftApplicationToCCD,
-  translateCoScApplicationToCCD,
+  translateCoScApplicationToCCD, fromCcdHearingType,
 } from 'services/translation/generalApplication/ccdTranslation';
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
 import {
@@ -46,6 +46,13 @@ import {OrderJudge} from 'models/generalApplication/orderJudge';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 
 describe('translate draft application to ccd', () => {
+  it('should translate Hearing Type Options', () => {
+    expect(fromCcdHearingType(CcdHearingType.TELEPHONE)).toEqual(HearingTypeOptions.TELEPHONE);
+    expect(fromCcdHearingType(CcdHearingType.WITHOUT_HEARING)).toEqual(HearingTypeOptions.WITHOUT_HEARING);
+    expect(fromCcdHearingType(CcdHearingType.IN_PERSON)).toEqual(HearingTypeOptions.PERSON_AT_COURT);
+    expect(fromCcdHearingType(CcdHearingType.VIDEO)).toEqual(HearingTypeOptions.VIDEO_CONFERENCE);
+  });
+
   it('should translate application types to ccd', () => {
     //Given
     const application = new GeneralApplication();
