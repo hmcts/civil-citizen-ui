@@ -174,6 +174,9 @@ export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim,
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    if (agreementFromOtherParty === YesNo.YES && claim.generalApplication.informOtherParties?.option) {
+      claim.generalApplication.informOtherParties = undefined;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

@@ -6,7 +6,10 @@ import {
   CCDApplication,
 } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
-import { addHearingSupportRows } from 'services/features/generalApplication/viewApplication/addViewApplicationRows';
+import {
+  addHearingArrangementsRows,
+  addHearingSupportRows,
+} from 'services/features/generalApplication/viewApplication/addViewApplicationRows';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -103,5 +106,134 @@ describe('addViewApplicatiosRows', () => {
       );
     });
 
+    it('should handle addHearingArrangementsRows with CcdHearingType.VIDEO', () => {
+      caseData.generalAppHearingDetails.HearingPreferencesPreferredType = CcdHearingType.VIDEO;
+
+      const result = addHearingArrangementsRows(applicationResponse, 'en');
+
+      expect(result).toHaveLength(3);
+      expect(result[0]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.VIDEO_CONFERENCE',
+        },
+      });
+      expect(result[1]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+        },
+        'value': {
+          'html': 'test',
+        },
+      });
+      expect(result[2]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NONE',
+        },
+      });
+    });
+
+    it('should handle addHearingArrangementsRows with CcdHearingType.WITHOUT_HEARING', () => {
+      caseData.generalAppHearingDetails.HearingPreferencesPreferredType = CcdHearingType.WITHOUT_HEARING;
+
+      const result = addHearingArrangementsRows(applicationResponse, 'en');
+
+      expect(result).toHaveLength(3);
+      expect(result[0]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.WITHOUT_HEARING',
+        },
+      });
+      expect(result[1]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+        },
+        'value': {
+          'html': 'test',
+        },
+      });
+      expect(result[2]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NONE',
+        },
+      });
+    });
+
+    it('should handle addHearingArrangementsRows with CcdHearingType.VIDEO', () => {
+      caseData.generalAppHearingDetails.HearingPreferencesPreferredType = CcdHearingType.TELEPHONE;
+
+      const result = addHearingArrangementsRows(applicationResponse, 'en');
+
+      expect(result).toHaveLength(3);
+      expect(result[0]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.TELEPHONE',
+        },
+      });
+      expect(result[1]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+        },
+        'value': {
+          'html': 'test',
+        },
+      });
+      expect(result[2]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NONE',
+        },
+      });
+    });
+
+    it('should handle addHearingArrangementsRows with CcdHearingType.IN_PERSON', () => {
+      caseData.generalAppHearingDetails.HearingPreferencesPreferredType = CcdHearingType.IN_PERSON;
+
+      const result = addHearingArrangementsRows(applicationResponse, 'en');
+
+      expect(result).toHaveLength(3);
+      expect(result[0]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT',
+        },
+      });
+      expect(result[1]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+        },
+        'value': {
+          'html': 'test',
+        },
+      });
+      expect(result[2]).toEqual(  {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
+        },
+        'value': {
+          'html': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NONE',
+        },
+      });
+    });
+
   });
+
 });

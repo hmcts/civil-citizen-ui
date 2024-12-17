@@ -145,6 +145,9 @@ civil-general-applications:
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
+    devcpuRequests: 1000m
+    devmemoryRequests: 2048Mi
+    devmemoryLimits: 4096Mi
     keyVaults:
       civil:
         resourceGroup: civil
@@ -163,11 +166,9 @@ civil-general-applications:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
-          - name: AppInsightsInstrumentationKeyGeneralApplications
-            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: gov-notify-guest-list-api-key
+          - name: gov-notify-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
@@ -192,9 +193,11 @@ civil-general-applications:
       CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       REFERENCE_DATABASE_MIGRATION: false
+      DASHBOARD_API_URL: http://${SERVICE_NAME}-civil-service
       FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-general-applications.preview.platform.hmcts.net/service-request-update
@@ -206,7 +209,7 @@ civil-general-applications:
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
-      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       CUI_URL: https://${SERVICE_FQDN}
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       STITCHING_API_ENABLED: false
+
