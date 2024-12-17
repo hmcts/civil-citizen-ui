@@ -3261,7 +3261,7 @@
         "APPLICATION_DETAILS": "Manylion y cais a gyflwynwyd gan y ceisydd.",
         "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
-        "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
+        "APPLICATION_DRAFT_DOCUMENT": "Cais Drafft",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "COURT_DOCUMENT": "Court document",
@@ -3271,7 +3271,8 @@
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Dogfennau gan y llys",
         "DOCUMENT_TYPES": {
-          "SUPPORTING_EVIDENCE": "Tystiolaeth Ategol"
+          "SUPPORTING_EVIDENCE": "Tystiolaeth ategol",
+          "RESPOND_EVIDENCE": "Tystiolaeth yr atebydd"
         },
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
