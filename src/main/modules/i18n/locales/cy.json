@@ -1077,7 +1077,12 @@
     "CCJ_PAID_AMOUNT": {
       "AMOUNT_PAID": "Swm a dalwyd eisoes",
       "PAGE_TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
-      "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?"
+      "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
+      "AMOUNT_PAID_INSET": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen ",
+      "AMOUNT_PAID_INSET_2": " neu ",
+      "AMOUNT_PAID_INSET_3": "lle gallwch gyfrifo’r llog cywir, a’i hanfon at ",
+      "N225_LINK": "https://assets.publishing.service.gov.uk/media/5aa6b740e5274a3e391e3b38/n225-bil.pdf",
+      "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "Hoffwn i'r diffynnydd dalu:",
