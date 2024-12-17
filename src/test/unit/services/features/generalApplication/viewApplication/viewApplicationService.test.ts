@@ -391,7 +391,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
-      expect(result).toHaveLength(14);
+      expect(result).toHaveLength(13);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
           'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT'],
@@ -436,7 +436,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
-      expect(result).toHaveLength(15);
+      expect(result).toHaveLength(14);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
         value: { html: 'COMMON.VARIATION_5.NO'},
@@ -459,8 +459,8 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
-      
-      expect(result).toHaveLength(16);
+
+      expect(result).toHaveLength(15);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
         value: { html: 'COMMON.VARIATION_5.NO'},
@@ -485,7 +485,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
-      expect(result).toHaveLength(13);
+      expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION'],
