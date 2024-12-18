@@ -308,8 +308,9 @@ module.exports = {
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
     console.log('Creating specified claim');
+    console.log('multipartyScenario>>>>',multipartyScenario);
     eventName = 'CREATE_CLAIM_SPEC';
-
+    claimType = 'FastTrack';
     caseId = null;
     caseData = {};
     let createClaimSpecData;
