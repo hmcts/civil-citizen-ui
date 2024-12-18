@@ -61,7 +61,6 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {t} from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 import {exhaustiveMatchingGuard} from 'services/genericService';
-import {CaseState} from 'form/models/claimDetails';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
