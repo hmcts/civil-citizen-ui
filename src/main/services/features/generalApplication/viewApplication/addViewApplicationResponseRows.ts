@@ -85,7 +85,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
     return (unavailableDates?.length > 0)
       ? `<ul class="no-list-style">${unavailableDates.map(formatDate).join('')}</ul>`
-      : undefined;
+      : t('COMMON.NO', {lng});
   };
 
   const hearingSupportHtml = (supportRequirementItems: CcdSupportRequirement[]): string => {
@@ -107,7 +107,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
     return (supportRequirementItems?.length > 0)
       ? `<ul class="no-list-style">${html()}</ul>`
-      : undefined;
+      : t('COMMON.NO', {lng});
   };
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);
