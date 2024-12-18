@@ -61,6 +61,7 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {t} from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 import {exhaustiveMatchingGuard} from 'services/genericService';
+import {CaseState} from 'form/models/claimDetails';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -578,7 +579,7 @@ export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, i
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
     applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
-    if(applications && applications.length > 0) {
+    if(applications && applications.length > 0 && !claim.hasClaimTakenOffline()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
         url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
