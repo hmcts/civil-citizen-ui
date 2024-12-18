@@ -3,7 +3,7 @@ import {
   GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
   GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
   GA_REQUESTING_REASON_URL,
-  GA_UPLOAD_DOCUMENTS_URL,
+  GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_N245_FORM_URL,
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -26,14 +26,18 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 
 const wantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/want-to-upload-documents';
-const options = [ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
+const options = [ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
 
 function getBackLinkUrl(claim: Claim, claimId: string, applicationType: ApplicationTypeOption, index:number) {
 
-  if (options.indexOf(applicationType) !== -1 && claim.isClaimant()) {
+  if (options.indexOf(applicationType) !== -1) {
     return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL), index);
-  } else if(applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT && !claim.isClaimant()) {
-    return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), index);
+  } else if(applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
+    if (claim.isClaimant()) {
+      return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), index);
+    } else {
+      return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL), index);
+    }
   }
   return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), index);
 
