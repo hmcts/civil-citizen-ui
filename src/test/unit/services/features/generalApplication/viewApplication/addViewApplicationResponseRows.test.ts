@@ -40,7 +40,7 @@ describe('addViewApplicationResponseRows', () => {
           },
         },{
           key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
         },
         {
           'key': {
@@ -76,7 +76,7 @@ describe('addViewApplicationResponseRows', () => {
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
         },
         {
           'key': {
@@ -132,7 +132,7 @@ describe('addViewApplicationResponseRows', () => {
       };
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST' },
-        value: { html: 'COMMON.VARIATION_2.NO' },
+        value: { html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>' },
       },
       {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
@@ -175,7 +175,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO'},
+        value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
       },
       {
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
@@ -199,7 +199,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO'},
+        value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
       }, {
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},
         value: {html: '<ul class="no-list-style">'
