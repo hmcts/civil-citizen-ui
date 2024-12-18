@@ -2,7 +2,6 @@ import {
   addApplicationStatus,
   addApplicationTypesAndDescriptionRows,
   addAnotherApplicationRow,
-  addDocumentUploadRow,
   addEvidenceOfDebtPaymentRow,
   addFinalPaymentDateDetails,
   addHearingArrangementsRows,
@@ -83,7 +82,6 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
     );
   }
   applicationSections.push(
-    ...addDocumentUploadRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
@@ -110,7 +108,6 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
     );
   }
   summaryRows.push(
-    ...addDocumentUploadRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
@@ -324,6 +321,9 @@ const getTranslatedDocumentName = (documentName: string, lng: string) => {
   switch (documentName) {
     case 'Supporting evidence':
       documentType = GaDocumentType.SUPPORTING_EVIDENCE;
+      break;
+    case 'Respond evidence':
+      documentType = GaDocumentType.RESPOND_EVIDENCE;
       break;
     default:
       documentType = null;

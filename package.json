@@ -39,7 +39,8 @@
     "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "wiremock:start": "wiremock --root-dir ./wiremock --port 1111",
     "start:e2e": "NODE_ENV=e2eTest ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
-    "test:e2e": "MOCHAWESOME_REPORTFILENAME=e2e yarn test:functional:codeceptjs run-workers --suites 4 --grep @e2e --reporter mocha-multi --verbose"
+    "test:e2e": "yarn testgalip:e2e && MOCHAWESOME_REPORTFILENAME=e2e yarn test:functional:codeceptjs run-workers --suites 4 --grep @e2e --reporter mocha-multi --verbose",
+    "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip yarn test:functional:codeceptjs run --grep @galip --reporter mocha-multi --verbose"
   },
   "dependencies": {
     "@hmcts/cookie-manager": "^1.0.0",
@@ -176,7 +177,8 @@
     "tar": "6.2.1",
     "braces": "^3.0.3",
     "ws": "^8.17.1",
-    "axios": "^1.7.4"
+    "axios": "^1.7.4",
+    "nanoid": "^3.3.8"
   },
   "packageManager": "yarn@3.5.0"
 }

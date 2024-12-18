@@ -1077,7 +1077,12 @@
     "CCJ_PAID_AMOUNT": {
       "AMOUNT_PAID": "Swm a dalwyd eisoes",
       "PAGE_TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
-      "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?"
+      "TITLE": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
+      "AMOUNT_PAID_INSET": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen ",
+      "AMOUNT_PAID_INSET_2": " neu ",
+      "AMOUNT_PAID_INSET_3": "lle gallwch gyfrifo’r llog cywir, a’i hanfon at ",
+      "N225_LINK": "https://assets.publishing.service.gov.uk/media/5aa6b740e5274a3e391e3b38/n225-bil.pdf",
+      "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "Hoffwn i'r diffynnydd dalu:",
@@ -3076,7 +3081,7 @@
         "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?"
       },
       "UPLOAD_DOCUMENTS": {
-        "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
         "MSG1": "Dylech ond uwchlwytho dogfennau sy’n berthnasol i’ch cais.",
         "NAME_DOCUMENT": "Cyn i chi uwchlwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft, ‘Llythyr apwyntiad ysbyty’.",
@@ -3101,7 +3106,7 @@
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"llenwi ffurflen N245",
-        "FILE_FORMAT": "bod y ffeil ar ffurf DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "FILE_FORMAT": "bod y ffeil ar ffurf DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "FILE_SIZE": "bod maint y ffeil ddim mwy na 100MB",
         "FILL_ONLINE": "lenwi’r ffurflen ryngweithiol ar-lein, ei chadw ar eich dyfais ac yna ei huwchlwytho yma",
         "INCOME_AND_EXPENSE": "Byddwn yn gofyn am wybodaeth am eich incwm a’ch costau i benderfynu p’un a fyddai’r rhandaliadau hyn yn fforddiadwy i chi. Felly gall fod yn ddefnyddiol i gael dogfennau fel eich cyfriflenni banc wrth law.",
@@ -3136,7 +3141,8 @@
         "HEARING_TYPE_VIEW_APPLICATION": {
           "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
           "TELEPHONE": "Dros y ffôn",
-          "VIDEO_CONFERENCE": "Cynhadledd fideo"
+          "VIDEO_CONFERENCE": "Cynhadledd fideo",
+          "WITHOUT_HEARING": "Heb wrandawiad"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "Os bydd barnwr angen i’r gwrandawiad ddigwydd yn y llys, a oes yna leoliad llys sydd orau gennych? (dewisol)",
         "SELECT_A_LOCATION": "-- Dewiswch leoliad --",
@@ -3255,7 +3261,7 @@
         "APPLICATION_DETAILS": "Manylion y cais a gyflwynwyd gan y ceisydd.",
         "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
-        "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
+        "APPLICATION_DRAFT_DOCUMENT": "Cais Drafft",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "COURT_DOCUMENT": "Court document",
@@ -3265,7 +3271,8 @@
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Dogfennau gan y llys",
         "DOCUMENT_TYPES": {
-          "SUPPORTING_EVIDENCE": "Tystiolaeth Ategol"
+          "SUPPORTING_EVIDENCE": "Tystiolaeth ategol",
+          "RESPOND_EVIDENCE": "Tystiolaeth yr atebydd"
         },
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
@@ -3306,6 +3313,7 @@
           "APPLICATION_CLOSED": "Cais wedi’i gau",
           "PROCEEDS_IN_HERITAGE": "Parhau yn y cyflwr etifeddiaeth",
           "AWAITING_ADDL_PAYMENT": "Aros am daliad ychwanegol",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Amser Ychwanegol ar gyfer Ymateb Wedi Dod i Ben",
           "TITLE": "Statws"
         },
         "ADDITIONAL_FEE_PAID": "Mae’r ffi ychwanegol wedi’i thalu",
@@ -5303,7 +5311,7 @@
       "UPLOAD_ONE_FILE": "Rhaid ichi uwchlwytho o leiaf un ffeil.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "Mae arnoch angen dweud wrthym os ydych eisiau ychwanegu cais arall. Dewiswch opsiwn: Ydw neu Nac ydw",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich cais. Dewiswch opsiwn: Ydw neu Nac ydw",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "WHY_PREFER_THIS_HEARING_TYPE": "Mae arnoch angen dweud wrthym pam byddai'n well gennych y math hwn o wrandawiad",
       "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
       "RESPONDENT_UPLOAD_OPTION": {
         "EMPTY_OPTION": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb.",
