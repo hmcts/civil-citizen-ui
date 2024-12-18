@@ -650,6 +650,34 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
+  async EnterClaimantDQForIntTrack(claimRef, isIndividual = true) {
+    await this.SelectOptionForTriedToSettle(claimRef);
+    await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectSubjectToFrc();
+    await this.SelectFrcBandAgreed();
+    await this.SelectComplexityBand();
+    await this.TypeReasonForBand();
+    await this.SelectDisclosureOfDocuments();
+    await this.SelectAgreementReached();
+    await this.ProvideDisclosureOfElecDocumentsIssues();
+    await this.ProvideDisclosureOfNonElecDocuments();
+    await this.SelectClaimantDocsConsider();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
+
   async EnterDQForFastTrack(claimRef, isIndividual = true){
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
