@@ -14,6 +14,6 @@ export const savePcqIdClaim = async (pcqId: string, userId: string) => {
 
 export const savePcqId = async (pcqId: string, req: Request, claimId: string) => {
   const claim = await getClaimById(claimId, req,true);
-  claim.pcqId = pcqId;
+  claim.respondentResponsePcqId = pcqId;
   await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
 };
