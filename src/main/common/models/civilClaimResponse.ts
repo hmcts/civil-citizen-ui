@@ -314,8 +314,13 @@ export interface CCDClaim extends ClaimUpdate {
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
+  caseManagementLocation?: CaseManagementLocation;
 }
 
+export interface CaseManagementLocation {
+  region: string;
+  baseLocation: string;
+}
 export interface ClaimFeeData {
   calculatedAmountInPence?: number;
   code?: string;
