@@ -74,7 +74,7 @@ function setMockAdditionalDocuments() {
         'document_filename': 'CIV_13420_test_results.docx',
         'document_binary_url': 'http://dm-store:8080/documents/f0508c67-d3cf-4774-b3f3-0903f77d2664/binary',
       },
-      'documentName': 'Test resp1',
+      'documentName': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
       'createdDatetime':  new Date('2024-08-01T10:57:18'),
     },
   }];
@@ -587,7 +587,7 @@ describe('View Application service', () => {
       const result = getRespondentDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test resp1',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
@@ -616,7 +616,7 @@ describe('View Application service', () => {
       const result = getRespondentDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test resp1',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
