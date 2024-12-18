@@ -85,7 +85,7 @@ import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
-import {CaseManagementLocation} from "form/models/caseManagementLocation";
+import {CaseManagementLocation} from 'form/models/caseManagementLocation';
 
 export class Claim {
   resolvingDispute: boolean;
