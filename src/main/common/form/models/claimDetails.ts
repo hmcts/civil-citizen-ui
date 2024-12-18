@@ -26,11 +26,6 @@ export interface ClaimFee {
   version: number;
 }
 
-export interface CaseManagementLocation {
-region: string;
-baseLocation: string;
-}
-
 export interface ClaimAmountBreakup {
   value: ClaimAmountBreakupDetails,
 }

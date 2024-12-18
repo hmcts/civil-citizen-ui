@@ -14,7 +14,6 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
-  CaseManagementLocation,
   CaseState,
   CCDHelpWithFees,
   ClaimAmountBreakup,
@@ -86,6 +85,7 @@ import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
+import {CaseManagementLocation} from "form/models/caseManagementLocation";
 
 export class Claim {
   resolvingDispute: boolean;
