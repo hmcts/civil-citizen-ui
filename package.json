@@ -47,7 +47,7 @@
     "@hmcts/info-provider": "^1.2.1",
     "@hmcts/nodejs-healthcheck": "^1.8.0",
     "@hmcts/nodejs-logging": "^4.0.4",
-    "@hmcts/properties-volume": "^0.0.14",
+    "@hmcts/properties-volume": "^1.0.0",
     "@ministryofjustice/frontend": "^1.6.3",
     "@types/config": "^3.3.0",
     "@types/cookie-parser": "^1.4.3",
