@@ -22,6 +22,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const claim: Claim = await getClaimById(claimId, req, true);
     const paymentReference = claim.generalApplication?.applicationFeePaymentDetails?.paymentReference;
+    logger.info('Checking status with payment reference: ' + claim.generalApplication.applicationFeePaymentDetails.paymentReference);
     const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
