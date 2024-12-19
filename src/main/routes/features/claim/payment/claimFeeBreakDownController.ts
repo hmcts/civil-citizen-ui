@@ -7,7 +7,7 @@ import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
@@ -22,7 +22,8 @@ const failed = 'Failed';
 
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claim = await getClaimById(req.params.id, req, true);
+    const claimId = req.params.id;
+    const claim = await getClaimById(claimId, req, true);
     let paymentSyncError = false;
     if (claim.paymentSyncError) {
       paymentSyncError = true;
@@ -33,6 +34,10 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     const hasInterest = claim.claimInterest === YesNo.YES;
     const interestAmount = calculateInterestToDate(claim);
     const totalAmount = hasInterest ? (claim.totalClaimAmount + interestAmount + claimFee) : (claim.totalClaimAmount + claimFee);
+
+    const businessProcess = await getClaimBusinessProcess(req.params.id, req);
+    const hasBusinessProcessFinished = businessProcess.hasBusinessProcessFinished() || false;
+
     return res.render(viewPath, {
       totalClaimAmount: claim.totalClaimAmount?.toFixed(2),
       interest: interestAmount,
@@ -41,6 +46,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
       totalAmount: totalAmount?.toFixed(2),
       pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
       paymentSyncError,
+      hasBusinessProcessFinished,
     });
   } catch (error) {
     next(error);
