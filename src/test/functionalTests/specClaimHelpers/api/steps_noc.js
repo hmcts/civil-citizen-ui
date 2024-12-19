@@ -53,11 +53,6 @@ module.exports = {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent1OrganisationPolicy',
       buildNocAnswers('Test Company Defendant'));
   },
-  requestNoticeOfChangeForRespondent2Solicitor: async (claimRef, newSolicitor) => {
-    await requestNoticeOfChange(claimRef, newSolicitor, 'respondent2OrganisationPolicy',
-      buildNocAnswers('Dr Foo bar'),
-    );
-  },
   requestNoticeOfChangeForApplicant1Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'applicant1OrganisationPolicy',
       buildNocAnswers('Miss Jane Doe'),
@@ -66,11 +61,6 @@ module.exports = {
   requestNoticeOfChangeForApplicant2Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'applicant1OrganisationPolicy',
       buildNocAnswers('Dr Jane Doe'),
-    );
-  },
-  requestNoticeOfChangeForRespondent2SolicitorSpec: async (claimRef, newSolicitor) => {
-    await requestNoticeOfChange(claimRef, newSolicitor, 'respondent2OrganisationPolicy',
-      buildNocAnswers('Second Defendant'),
     );
   },
   requestNoticeOfChangeForLipRespondent: async (claimRef, newSolicitor) => {
