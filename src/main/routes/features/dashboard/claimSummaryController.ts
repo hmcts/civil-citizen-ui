@@ -47,6 +47,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    console.log('claim summary : ');
+    console.debug(claim.caseManagementLocation);
     const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
     const isGAFlagEnable = await isGaForLipsEnabled();
 
