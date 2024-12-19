@@ -40,7 +40,8 @@
     "wiremock:start": "wiremock --root-dir ./wiremock --port 1111",
     "start:e2e": "NODE_ENV=e2eTest ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "test:e2e": "yarn testgalip:e2e && MOCHAWESOME_REPORTFILENAME=e2e yarn test:functional:codeceptjs run-workers --suites 4 --grep @e2e --reporter mocha-multi --verbose",
-    "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip yarn test:functional:codeceptjs run --grep @galip --reporter mocha-multi --verbose"
+    "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip yarn test:functional:codeceptjs run --grep @galip --reporter mocha-multi --verbose",
+    "dummy":"dummy"
   },
   "dependencies": {
     "@hmcts/cookie-manager": "^1.0.0",
