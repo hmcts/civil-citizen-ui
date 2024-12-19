@@ -74,7 +74,7 @@ function setMockAdditionalDocuments() {
         'document_filename': 'CIV_13420_test_results.docx',
         'document_binary_url': 'http://dm-store:8080/documents/f0508c67-d3cf-4774-b3f3-0903f77d2664/binary',
       },
-      'documentName': 'Test resp1',
+      'documentName': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
       'createdDatetime':  new Date('2024-08-01T10:57:18'),
     },
   }];
@@ -405,8 +405,6 @@ describe('View Application service', () => {
           '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> </p>'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
           'reasons'],
-        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
-          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
           'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
@@ -417,6 +415,10 @@ describe('View Application service', () => {
           '01632960001'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
           'civilmoneyclaimsdemo@gmail.com'],
+        [
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND',
+          'COMMON.NO',
+        ],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
       ]);
@@ -482,6 +484,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
+
       expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
@@ -494,8 +497,6 @@ describe('View Application service', () => {
           '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS</p>'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
           'reasons'],
-        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
-          'COMMON.VARIATION_2.NO'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
           'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
@@ -506,6 +507,10 @@ describe('View Application service', () => {
           '01632960001'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
           'civilmoneyclaimsdemo@gmail.com'],
+        [
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND',
+          'COMMON.NO',
+        ],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
       ]);
@@ -591,7 +596,7 @@ describe('View Application service', () => {
       const result = getRespondentDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test resp1',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
@@ -620,7 +625,7 @@ describe('View Application service', () => {
       const result = getRespondentDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test resp1',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
