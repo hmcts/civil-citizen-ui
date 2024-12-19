@@ -9,7 +9,7 @@ import {
   saveRespondentUnavailableDates,
   getRespondToApplicationCaption,
   buildRespondentApplicationSummaryRow,
-  isApplicationVisibleToRespondent,
+  isApplicationVisibleToRespondent, hideGAAppAsRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -414,6 +414,42 @@ describe('General Application Response service', () => {
 
       expect(isApplicationVisibleToRespondent(applicationResponse)).toBeFalsy();
     });
+    it('should return false when defendant application is without notice and undefined PBA', () => {
+      const ccdApplication: CCDApplication = {
+        applicationFeeAmountInPence: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        applicationTypes: 'EXTEND_TIME',
+        generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+        generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecisionRequestMoreInfo: {
+          judgeRequestMoreInfoText: undefined,
+          judgeRequestMoreInfoByDate: undefined,
+          deadlineForMoreInfoSubmission: undefined,
+          isWithNotice: undefined,
+          judgeRecitalText: undefined,
+          requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+        },
+        generalAppPBADetails: undefined,
+      };
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        ccdApplication,
+        ApplicationState.APPLICATION_ADD_PAYMENT,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
+
+      expect(hideGAAppAsRespondentForClaimant(applicationResponse)).toBeFalsy();
+    });
   });
 
   describe('buildRespondentApplicationSummaryRow', () => {
@@ -503,5 +539,4 @@ describe('General Application Response service', () => {
         } as ApplicationSummary);
     });
   });
-
 });

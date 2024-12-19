@@ -139,6 +139,14 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   );
 };
 
+export const hideGAAppAsRespondentForClaimant = (application: ApplicationResponse): boolean => {
+  return ((application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO
+        || application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES)
+      && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
+    || (application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
+      && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS');
+};
+
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO;
   const status = getApplicationStatus(isApplicant, application.state);
