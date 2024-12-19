@@ -89,6 +89,7 @@ import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDiscl
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
+import {CaseManagementLocation} from 'form/models/caseManagementLocation';
 
 export class CivilClaimResponse {
   id: string;
@@ -110,6 +111,7 @@ export class CivilClaimResponse {
 }
 
 export interface CCDClaim extends ClaimUpdate {
+
   legacyCaseReference?: string;
   applicant1?: CCDParty;
   applicant1Represented?: YesNoUpperCamelCase,
@@ -314,6 +316,8 @@ export interface CCDClaim extends ClaimUpdate {
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
+  caseManagementLocation?: CaseManagementLocation;
+
 }
 
 export interface ClaimFeeData {

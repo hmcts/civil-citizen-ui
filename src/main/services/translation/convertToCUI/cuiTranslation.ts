@@ -113,6 +113,9 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
   claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
   claim.joIsLiveJudgmentExists = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
+  claim.caseManagementLocation = ccdClaim.caseManagementLocation;
+  console.log('case management location test');
+  console.debug(ccdClaim.caseManagementLocation);
   return claim;
 };
 
