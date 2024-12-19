@@ -53,7 +53,8 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     //exclude Applications sections
-    if (!isGAFlagEnable || claim.defendantUserDetails === undefined || !await isGaForLipsEnabledAndLocationWhiteListed(claim.caseManagementLocation.baseLocation)){
+    if (!isGAFlagEnable || claim.defendantUserDetails === undefined || (!await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
+    || claim?.caseManagementLocation?.baseLocation === undefined)){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 

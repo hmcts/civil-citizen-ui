@@ -1,4 +1,4 @@
 export interface CaseManagementLocation {
-  region: string;
-  baseLocation: string;
+  region?: string;
+  baseLocation?: string;
 }
