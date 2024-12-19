@@ -53,8 +53,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     //exclude Applications sections
-    if (!isGAFlagEnable || claim.defendantUserDetails === undefined || (!await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-    || claim?.caseManagementLocation?.baseLocation === undefined)){
+    if (!isGAFlagEnable || claim.defendantUserDetails === undefined || (!await isGaForLipsEnabledAndLocationWhiteListed(claim.caseManagementLocation.baseLocation))){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
@@ -149,8 +148,7 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 
 export const  getContactCourtLink = async (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : Promise<iWantToLinks> => {
   if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-   && claim.defendantUserDetails !== undefined && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-    || claim?.caseManagementLocation?.baseLocation === undefined) {
+   && claim.defendantUserDetails !== undefined && await isGaForLipsEnabledAndLocationWhiteListed(claim.caseManagementLocation.baseLocation)) {
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),

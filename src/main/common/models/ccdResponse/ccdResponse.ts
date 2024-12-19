@@ -33,7 +33,6 @@ import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedR
 import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
 import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
-import {CaseManagementLocation} from 'form/models/caseManagementLocation';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec?: string;
@@ -93,5 +92,4 @@ export interface CCDResponse extends ClaimUpdate {
   specRespondent1DQDisclosureOfNonElectronicDocuments: CCDDisclosureOfNonElectronicDocuments;
   respondent1DQClaimantDocumentsToBeConsidered: CCDDocumentsToBeConsidered;
   respondentResponsePcqId?: string;
-  caseManagementLocation?: CaseManagementLocation;
 }
