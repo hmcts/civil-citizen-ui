@@ -451,7 +451,57 @@ describe('General Application Response service', () => {
       expect(hideGAAppAsRespondentForClaimant(applicationResponse)).toBeFalsy();
     });
   });
+  describe('hideGAAppAsRespondentForClaimant', () => {
+    it('should return true when applicationIsCloaked is NO and state is not APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+        },
+        state: ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
+    });
 
+    it('should return true when applicationIsUncloakedOnce is YES', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.YES,
+        },
+        state: ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
+    });
+
+    it('should return false when state is APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+        },
+        state: ApplicationState.APPLICATION_ADD_PAYMENT,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(false);
+    });
+
+    it('should return true when requestMoreInfoOption is SEND_APP_TO_OTHER_PARTY and status is SUCCESS', () => {
+      const application = {
+        case_data: {
+          judicialDecisionRequestMoreInfo: {
+            requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+          },
+          generalAppPBADetails: {
+            additionalPaymentDetails: {
+              status: 'SUCCESS',
+            },
+          },
+        },
+        state: ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
+    });
+  });
   describe('buildRespondentApplicationSummaryRow', () => {
 
     it('returns row awaiting respondent response state', () => {
