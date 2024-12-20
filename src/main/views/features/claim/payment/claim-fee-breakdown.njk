@@ -16,6 +16,12 @@
                                 iconFallbackText: "Warning"
                            }) }}
                        {% endif %}
+                      {% if not hasBusinessProcessFinished %}
+                           {{ govukWarningText({
+                               text: t('PAGES.FEE_AMOUNT.CASE_PROCESSING_WARNING'),
+                                iconFallbackText: "Warning"
+                           }) }}
+                       {% endif %}
                     {{ govukSummaryList({
                         rows: [
                             {
@@ -65,8 +71,9 @@
                     <form method="post" novalidate autocomplete="off">
                         {{ csrfProtection(csrf) }}
                         {{ govukButton({
-                 text: buttonText
-              }) }}
+                           text: buttonText,
+                           disabled: not hasBusinessProcessFinished
+                        }) }}
                     </form>
                 </div>
             </div>
