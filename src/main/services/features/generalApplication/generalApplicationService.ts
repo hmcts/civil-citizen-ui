@@ -579,7 +579,7 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
 export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
   if(isGAFlagEnable) {
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
-    applications = claim.isClaimant() ? applications.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
+    applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
     if(applications && applications.length > 0 && !claim.hasClaimTakenOffline()) {
       return {
