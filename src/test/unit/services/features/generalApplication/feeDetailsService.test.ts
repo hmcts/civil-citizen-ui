@@ -96,14 +96,6 @@ describe('GA fee details', () => {
       code: 'Free',
       version: 0,
     };
-    claim.generalApplication.applicationTypes = [{
-      option: ApplicationTypeOption.ADJOURN_HEARING,
-      isOtherSelected: () => false,
-    }];
-    claim.generalApplication.agreementFromOtherParty = YesNo.YES;
-    claim.generalApplication.informOtherParties = {option: YesNo.YES};
-    claim.caseProgressionHearing = new CaseProgressionHearing();
-    claim.caseProgressionHearing.hearingDate = new Date('2028-08-28');
     jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
 
     const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
