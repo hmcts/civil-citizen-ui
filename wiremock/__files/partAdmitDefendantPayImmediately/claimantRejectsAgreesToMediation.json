@@ -158,9 +158,6 @@
     "respondent1DQHearingSmallClaim": {
       "unavailableDatesRequired": "No"
     },
-    "respondent2OrganisationPolicy": {
-      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
-    },
     "showResponseOneVOneFlag": "ONE_V_ONE_PART_ADMIT_PAY_IMMEDIATELY",
     "systemGeneratedCaseDocuments": [
       {
