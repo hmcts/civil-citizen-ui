@@ -294,6 +294,11 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
         unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng})),
     );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
+        t('COMMON.NO', {lng})),
+    );
   }
   return rows;
 };
@@ -322,6 +327,11 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
+    );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
+        t('COMMON.NO', {lng})),
     );
   }
   return rows;

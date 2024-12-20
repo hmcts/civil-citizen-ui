@@ -101,7 +101,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         rowValue = t('COMMON.VARIATION_2.NO', {lng});
       }
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE', {lng}), rowValue, href, changeLabel()),
       );
     }
     return rows;

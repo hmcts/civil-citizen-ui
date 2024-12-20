@@ -77,6 +77,13 @@ describe('addViewApplicatiosRows', () => {
     it('should return NO when no support is selected', () => {
       caseData.generalAppHearingDetails.SupportRequirement  = [];
       const result = addHearingSupportRows(applicationResponse, 'en');
+      expect(result).toHaveLength(1);
+      expect(result[0].value.html).toBe('COMMON.NO');
+    });
+
+    it('should return NO when no support is undefined', () => {
+      caseData.generalAppHearingDetails.SupportRequirement = undefined;
+      const result = addHearingSupportRows(applicationResponse, 'en');
 
       expect(result).toHaveLength(1);
       expect(result[0].value.html).toBe('COMMON.NO');

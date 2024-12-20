@@ -19,6 +19,7 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
   CONTACT_CNBC_URL,
+  CONTACT_MEDIATION_URL,
 } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -58,7 +59,7 @@ const isContactUsPage = (requestUrl: string): boolean => {
 };
 
 const isWebchatPage = (requestUrl: string): boolean => {
-  return requestUrl.startsWith(CONTACT_CNBC_URL);
+  return [CONTACT_CNBC_URL, CONTACT_MEDIATION_URL].some(url => requestUrl.startsWith(url));
 };
 
 const isTermAndConditionsPage = (requestUrl: string): boolean => {
