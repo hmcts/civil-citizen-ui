@@ -6,6 +6,7 @@ let ldClient: LDClient;
 let testData: TestData;
 
 const CUI_CASE_PROGRESSION = 'cui-case-progression';
+const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
 const CUI_RELEASE_TWO_ENABLED = 'cuiReleaseTwoEnabled';
@@ -163,4 +164,8 @@ export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
   const mintiFlag = await getFlagValue(MINTI) as boolean;
   const mintiApplicable = await getFlagValue(MULTI_OR_INTERMEDIATE_TRACK, epoch) as boolean;
   return mintiFlag && mintiApplicable;
+}
+
+export async function isCaseWorkerEventsEnabled(): Promise<boolean> {
+  return await getFlagValue(CASEWORKER_EVENTS) as boolean;
 }
