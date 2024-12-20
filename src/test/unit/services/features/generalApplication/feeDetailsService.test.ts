@@ -4,17 +4,18 @@ import { AppRequest } from 'common/models/AppRequest';
 import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import { saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import {
   gaApplicationFeeDetails,
   getGaAppFeeDetails,
-  getGaAppId,
+  getGaAppId, updateHearingDateForGAApplicationFee,
 } from 'services/features/generalApplication/feeDetailsService';
 import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import {CaseState} from 'form/models/claimDetails';
+import {ClaimFeeData} from 'models/civilClaimResponse';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn().mockReturnValueOnce('123'),
@@ -154,5 +155,57 @@ describe('GA fee details', () => {
     gaApplicationFeeDetails(claim, {} as AppRequest).catch((err) => {
       expect(err).toEqual(errMessage);
     });
+  });
+});
+
+describe('updateHearingDateForGAApplicationFee', () => {
+  let claim: Claim, req: AppRequest;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
+    claim.caseProgressionHearing = new CaseProgressionHearing();
+    req = {
+      params: {id: 'mockClaimId'},
+    } as unknown as AppRequest;
+  });
+
+  it('should update the claim if conditions are met and state is HEARING_READINESS', async () => {
+    const updatedClaim = {...claim, ccdState: CaseState.HEARING_READINESS} as Claim;
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(updatedClaim);
+
+    const result = await updateHearingDateForGAApplicationFee(claim, req);
+
+    expect(CivilServiceClient.prototype.retrieveClaimDetails).toHaveBeenCalledWith('mockClaimId', req);
+    expect(result).toEqual({...claim, ...updatedClaim});
+  });
+
+  it('should not update the claim if conditions are not met', async () => {
+    claim.generalApplication.applicationFee = {calculatedAmountInPence: 100} as ClaimFeeData;
+    const result = await updateHearingDateForGAApplicationFee(claim, req);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
+    expect(CivilServiceClient.prototype.retrieveClaimDetails).not.toHaveBeenCalled();
+    expect(result).toEqual(claim);
+  });
+
+  it('should not update the claim if selectedApplications does not include ADJOURN_HEARING', async () => {
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STRIKE_OUT)];
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
+    const result = await updateHearingDateForGAApplicationFee(claim, req);
+
+    expect(CivilServiceClient.prototype.retrieveClaimDetails).not.toHaveBeenCalled();
+    expect(result).toEqual(claim);
+  });
+
+  it('should return the original claim if state is not HEARING_READINESS', async () => {
+    const updatedClaim = {...claim, ccdState: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT} as Claim;
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(updatedClaim);
+
+    const result = await updateHearingDateForGAApplicationFee(claim, req);
+
+    expect(CivilServiceClient.prototype.retrieveClaimDetails).toHaveBeenCalledWith('mockClaimId', req);
+    expect(result).toEqual(claim);
   });
 });
