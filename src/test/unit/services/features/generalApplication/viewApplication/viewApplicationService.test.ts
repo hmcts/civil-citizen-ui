@@ -74,7 +74,7 @@ function setMockAdditionalDocuments() {
         'document_filename': 'CIV_13420_test_results.docx',
         'document_binary_url': 'http://dm-store:8080/documents/f0508c67-d3cf-4774-b3f3-0903f77d2664/binary',
       },
-      'documentName': 'Test resp1',
+      'documentName': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
       'createdDatetime':  new Date('2024-08-01T10:57:18'),
     },
   }];
@@ -391,7 +391,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
-      expect(result).toHaveLength(12);
+      expect(result).toHaveLength(13);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
           'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT'],
@@ -415,6 +415,10 @@ describe('View Application service', () => {
           '01632960001'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
           'civilmoneyclaimsdemo@gmail.com'],
+        [
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND',
+          'COMMON.NO',
+        ],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
       ]);
@@ -432,7 +436,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
-      expect(result).toHaveLength(13);
+      expect(result).toHaveLength(14);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
         value: { html: 'COMMON.VARIATION_5.NO'},
@@ -456,7 +460,7 @@ describe('View Application service', () => {
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
-      expect(result).toHaveLength(14);
+      expect(result).toHaveLength(15);
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
         value: { html: 'COMMON.VARIATION_5.NO'},
@@ -480,7 +484,8 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
-      expect(result).toHaveLength(11);
+
+      expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION'],
@@ -502,6 +507,10 @@ describe('View Application service', () => {
           '01632960001'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
           'civilmoneyclaimsdemo@gmail.com'],
+        [
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND',
+          'COMMON.NO',
+        ],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
       ]);
@@ -587,7 +596,7 @@ describe('View Application service', () => {
       const result = getRespondentDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test resp1',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
@@ -616,7 +625,7 @@ describe('View Application service', () => {
       const result = getRespondentDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'Test resp1',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENT_TYPES.RESPOND_EVIDENCE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );

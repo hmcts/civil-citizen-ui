@@ -14,6 +14,7 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
+  CaseManagementLocation,
   CaseState,
   CCDHelpWithFees,
   ClaimAmountBreakup,
@@ -115,6 +116,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
