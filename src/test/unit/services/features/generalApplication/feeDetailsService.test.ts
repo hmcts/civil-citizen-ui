@@ -69,6 +69,7 @@ const applicationResponse: ApplicationResponse = {
 describe('GA fee details', () => {
   let claim: Claim;
   beforeEach(() => {
+    jest.clearAllMocks();
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
 
@@ -94,13 +95,38 @@ describe('GA fee details', () => {
       code: 'Free',
       version: 0,
     };
-    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
-
-    claim.generalApplication.applicationTypes = [{ option: ApplicationTypeOption.ADJOURN_HEARING, isOtherSelected: () => false }];
+    claim.generalApplication.applicationTypes = [{
+      option: ApplicationTypeOption.ADJOURN_HEARING,
+      isOtherSelected: () => false,
+    }];
     claim.generalApplication.agreementFromOtherParty = YesNo.YES;
-    claim.generalApplication.informOtherParties = { option: YesNo.YES };
+    claim.generalApplication.informOtherParties = {option: YesNo.YES};
     claim.caseProgressionHearing = new CaseProgressionHearing();
     claim.caseProgressionHearing.hearingDate = new Date('2028-08-28');
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+
+    const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
+    expect(gaFeeDetails).toEqual(gaFeeData);
+    expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
+  });
+
+  it('should update the hearing date for adjourn hearing with consent', async () => {
+    const gaFeeDetails = {
+      calculatedAmountInPence: 0,
+      code: 'Free',
+      version: 0,
+    };
+    claim.generalApplication.applicationTypes = [{
+      option: ApplicationTypeOption.ADJOURN_HEARING,
+      isOtherSelected: () => false,
+    }];
+    claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+    claim.generalApplication.informOtherParties = {option: YesNo.YES};
+    claim.caseProgressionHearing = new CaseProgressionHearing();
+    const updatedClaim = Object.assign({}, claim);
+    updatedClaim.caseProgressionHearing.hearingDate = new Date('2028-08-28');
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(updatedClaim);
     const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
     expect(gaFeeDetails).toEqual(gaFeeData);
     expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
