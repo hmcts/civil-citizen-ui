@@ -4,7 +4,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import { saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import {
   gaApplicationFeeDetails,
@@ -14,6 +14,7 @@ import {
 import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {CaseState} from 'form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn().mockReturnValueOnce('123'),
@@ -69,6 +70,7 @@ const applicationResponse: ApplicationResponse = {
 describe('GA fee details', () => {
   let claim: Claim;
   beforeEach(() => {
+    jest.clearAllMocks();
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
 
@@ -94,13 +96,39 @@ describe('GA fee details', () => {
       code: 'Free',
       version: 0,
     };
-    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
-
-    claim.generalApplication.applicationTypes = [{ option: ApplicationTypeOption.ADJOURN_HEARING, isOtherSelected: () => false }];
+    claim.generalApplication.applicationTypes = [{
+      option: ApplicationTypeOption.ADJOURN_HEARING,
+      isOtherSelected: () => false,
+    }];
     claim.generalApplication.agreementFromOtherParty = YesNo.YES;
-    claim.generalApplication.informOtherParties = { option: YesNo.YES };
+    claim.generalApplication.informOtherParties = {option: YesNo.YES};
     claim.caseProgressionHearing = new CaseProgressionHearing();
     claim.caseProgressionHearing.hearingDate = new Date('2028-08-28');
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+
+    const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
+    expect(gaFeeDetails).toEqual(gaFeeData);
+    expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
+  });
+
+  it('should update the hearing date for adjourn hearing with consent', async () => {
+    const gaFeeDetails = {
+      calculatedAmountInPence: 0,
+      code: 'Free',
+      version: 0,
+    };
+    claim.generalApplication.applicationTypes = [{
+      option: ApplicationTypeOption.ADJOURN_HEARING,
+      isOtherSelected: () => false,
+    }];
+    claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+    claim.generalApplication.informOtherParties = {option: YesNo.YES};
+    claim.caseProgressionHearing = new CaseProgressionHearing();
+    const updatedClaim = {...claim} as Claim;
+    updatedClaim.ccdState = CaseState.HEARING_READINESS;
+    updatedClaim.caseProgressionHearing.hearingDate = new Date('2028-08-28');
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(updatedClaim);
     const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
     expect(gaFeeDetails).toEqual(gaFeeData);
     expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
