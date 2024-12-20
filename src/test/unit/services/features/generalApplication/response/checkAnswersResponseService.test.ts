@@ -496,12 +496,12 @@ describe('Check Answers response service', () => {
               {
                 'href': '/case/123/response/general-application/345/want-to-upload-document',
                 'text': 'COMMON.BUTTONS.CHANGE',
-                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE',
               },
             ],
           },
           'key': {
-            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE',
           },
           'value': {
             'html': html,
