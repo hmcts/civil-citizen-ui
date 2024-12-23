@@ -38,8 +38,6 @@ export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: 
   if(isJoLiveValue) {
     claimantDocumentsArray.push(...getJBAClaimantDocument(claim, claimId, lang));
   }
-
-
   return new DocumentsViewComponent('Claimant', claimantDocumentsArray);
 };
 
