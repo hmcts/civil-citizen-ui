@@ -52,6 +52,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+      logger.info('Saved claim with payment reference: ' + claim.generalApplication.applicationFeePaymentDetails.paymentReference);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
