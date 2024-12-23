@@ -104,7 +104,7 @@ export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: Upl
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   additionalDocumentsList.forEach(doc => {
     rows.push(summaryRow(toc, doc.typeOfDocument));
-    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel()));
+    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':appId', gaId), changeLabel()));
   });
   return rows;
 };
