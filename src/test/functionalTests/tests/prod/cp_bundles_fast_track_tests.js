@@ -10,54 +10,45 @@ const {bundleReady} = require('../../specClaimHelpers/dashboardNotificationConst
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const  ViewBundle = require('../../citizenFeatures/caseProgression/pages/viewBundle');
 
-const claimType = 'SmallClaims';
-const partyType = 'LiPvLiP';
-const claimAmount = '£1,500';
+const claimType = 'FastTrack';
+const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Small Claims');
+Feature('Case progression journey - Verify Bundle Page - Fast Track');
 
 Before(async ({api}) => {
-  if (['demo'].includes(config.runningEnv)) {
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  if (['demo', 'aat'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
-    await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
+    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
     await api.performBundleGeneration(config.hearingCenterAdminWithRegionId1, claimRef);
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 
-Scenario('Case progression journey - Small Claims - Verify Bundles tab', async ({I}) => {
-  if (['demo'].includes(config.runningEnv)) {
+Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I}) => {
+  if (['demo', 'aat'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     if (isDashboardServiceEnabled) {
       formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
       uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
-      //verify as claimant
       notification = bundleReady();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = viewTheBundle();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       I.click(taskListItem.title);
-      viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
-      //verify as defendant
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      I.click(taskListItem.title);
-      viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
+      viewBundlePage.verifyPageContent(formattedCaseId, '£15,000.00', uploadDate, partyType);
     } else {
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');
