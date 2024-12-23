@@ -201,6 +201,12 @@ export const addOrderJudgeRow = (application: ApplicationResponse, index: number
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
+  } else if (application.case_data?.generalAppDetailsOfOrder) {
+    //LR has only one information
+    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder}</p>`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), LrHtml),
+    );
   }
   return rows;
 };
@@ -211,6 +217,12 @@ export const addRequestingReasonRow = (application: ApplicationResponse, index: 
   if (application.case_data.generalAppReasonsOfOrderColl?.[index]) {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
+    );
+  } else if (application.case_data?.generalAppReasonsOfOrder) {
+    //LR has only one information
+    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppReasonsOfOrder}</p>`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), LrHtml),
     );
   }
   return rows;
