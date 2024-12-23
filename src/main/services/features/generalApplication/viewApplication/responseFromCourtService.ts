@@ -201,6 +201,12 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
   return courtResponseSummaryList;
 };
 
+function createResponseToRequestButtonIfTimeNotExpired(applicationResponse: ApplicationResponse, lng: string, requestWrittenRepresentationsUrl: string) {
+  if (applicationResponse.state !== ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED) {
+    return new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
+  }
+}
+
 export const getWrittenRepSequentialDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
   const claimId = req.params.id;
   const writtenRepSequentialDocs = applicationResponse?.case_data?.writtenRepSequentialDocument;
@@ -216,9 +222,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
         const createdDatetime = writtenRepSequentialDocs.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
-        const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
-
-        return new CourtResponseSummaryList(rows, createdDatetime,requestWrittenRepButton);
+        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButtonIfTimeNotExpired(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
   }
   return courtResponseSummaryList;
@@ -239,8 +243,7 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
         const createdDatetime = writtenRepConcurrentDoc.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
-        const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
-        return new CourtResponseSummaryList(rows, createdDatetime, requestWrittenRepButton);
+        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButtonIfTimeNotExpired(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
   }
   return courtResponseSummaryList;
