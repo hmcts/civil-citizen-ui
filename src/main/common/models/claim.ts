@@ -187,6 +187,7 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
+  respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
   [key: string]: any;

@@ -305,6 +305,21 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
+  it('should replace placeholders for notice of discontinuance defendant', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = setUpCaseDocument('document.pdf', DocumentType.NOTICE_OF_DISCONTINUANCE);
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{NOTICE_OF_DISCONTINUANCE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
   function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {
     return {
       'createdBy': 'Civil',
