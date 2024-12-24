@@ -501,6 +501,25 @@ describe('General Application Response service', () => {
       };
       expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
     });
+
+    it('should return false when neither cloaking/uncloaking nor judicial decision conditions are met', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+          judicialDecisionRequestMoreInfo: {
+            requestMoreInfoOption: 'OTHER_OPTION',
+          },
+          generalAppPBADetails: {
+            additionalPaymentDetails: {
+              status: 'PENDING',
+            },
+          },
+        },
+        state: ApplicationState.APPLICATION_ADD_PAYMENT,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(false);
+    });
   });
   describe('buildRespondentApplicationSummaryRow', () => {
 
