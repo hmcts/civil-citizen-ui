@@ -126,7 +126,7 @@
     "babel-loader": "^9.1.0",
     "codeceptjs": "^3.3.7",
     "copy-webpack-plugin": "^11.0.0",
-    "css-loader": "^6.7.2",
+    "css-loader": "^7.0.0",
     "debug": "^4.3.4",
     "deep-equal-in-any-order": "^2.0.2",
     "eslint": "8.33.0",
