@@ -88,6 +88,56 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
+  it('should replace placeholders with redirect url for claimant judgment by admission ', () => {
+    const claim: Claim = new Claim();
+    claim.id = '1710172392502478';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123', value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+          document_filename: 'Judgment_by_admission_claimant.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+        },
+        documentName: 'Judgment_by_admission_claimant.pdf',
+        documentSize: 65663,
+        documentType: DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT,
+        createdDatetime: new Date('2024-03-11T10:57:18'),
+      },
+    }];
+    const textToReplaceUrl = '{VIEW_JUDGMENT_BY_ADMISSION_CLAIMANT}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
+
+    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
+  });
+
+  it('should replace placeholders with redirect url for defendant judgment by admission ', () => {
+    const claim: Claim = new Claim();
+    claim.id = '1710172392502478';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123', value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+          document_filename: 'Judgment_by_admission_defendant.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+        },
+        documentName: 'Judgment_by_admission_defendant.pdf',
+        documentSize: 65663,
+        documentType: DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT,
+        createdDatetime: new Date('2024-03-11T10:57:18'),
+      },
+    }];
+    const textToReplaceUrl = '{VIEW_JUDGMENT_BY_ADMISSION_DEFENDANT}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
+
+    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
+  });
+
   it('should replace placeholders with redirect url for mediation document', () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
