@@ -1077,7 +1077,12 @@
     "CCJ_PAID_AMOUNT": {
       "AMOUNT_PAID": "Amount already paid",
       "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
-      "TITLE": "Has the defendant paid some of the amount owed?"
+      "TITLE": "Has the defendant paid some of the amount owed?",
+      "AMOUNT_PAID_INSET": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form ",
+      "AMOUNT_PAID_INSET_2": ". If you have received any part payment and you are requesting a Judgment on a Part Admission response, please use form ",
+      "AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send to ",
+      "N225_LINK": "https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount",
+      "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "I would like the defendant to pay:",
@@ -2774,6 +2779,7 @@
         },
         "TITLE": "Check your answers",
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "UPLOAD_DOCUMENTS_RESPONSE": "Do you want to upload documents to support your response?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?",
@@ -3266,7 +3272,8 @@
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "DOCUMENT_TYPES": {
-          "SUPPORTING_EVIDENCE": "Supporting Evidence"
+          "SUPPORTING_EVIDENCE": "Supporting evidence",
+          "RESPOND_EVIDENCE": "Respond evidence"
         },
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
@@ -5136,7 +5143,7 @@
     "ADDRESS_LINE_TOO_MANY_JO": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TOWN_CITY_TOO_MANY_JO": "Town or City must no longer than 35 characters",
-    "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "TEXT800_TOO_LONG": "Reason must be 800 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
