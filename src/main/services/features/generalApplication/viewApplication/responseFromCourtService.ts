@@ -89,7 +89,7 @@ export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: A
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${directionOrderDocument.value.documentLink.document_filename}</a>`;
         const createdDatetime = directionOrderDocument?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng}), createdDatetime, lng);
-        const judgeDirectionOrderButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), judgesDirectionsOrderUrl);
+        const judgeDirectionOrderButton = createResponseToRequestButton(applicationResponse, lng, judgesDirectionsOrderUrl);
         return new CourtResponseSummaryList(rows, createdDatetime, judgeDirectionOrderButton);
       });
   }
@@ -201,6 +201,16 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
   return courtResponseSummaryList;
 };
 
+function createResponseToRequestButton(applicationResponse: ApplicationResponse, lng: string, url: string) {
+  const validStates = [
+    ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED,
+    ApplicationState.ORDER_MADE,
+  ];
+  if (!validStates.includes(applicationResponse.state)) {
+    return new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), url);
+  }
+}
+
 export const getWrittenRepSequentialDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
   const claimId = req.params.id;
   const writtenRepSequentialDocs = applicationResponse?.case_data?.writtenRepSequentialDocument;
@@ -216,9 +226,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
         const createdDatetime = writtenRepSequentialDocs.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
-        const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
-
-        return new CourtResponseSummaryList(rows, createdDatetime,requestWrittenRepButton);
+        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
   }
   return courtResponseSummaryList;
@@ -239,8 +247,7 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
         const createdDatetime = writtenRepConcurrentDoc.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
-        const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
-        return new CourtResponseSummaryList(rows, createdDatetime, requestWrittenRepButton);
+        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
   }
   return courtResponseSummaryList;
