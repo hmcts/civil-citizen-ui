@@ -4994,7 +4994,7 @@ __metadata:
     follow-redirects: 1.15.6
     glob: ^10.0.0
     govuk-frontend: 5.3.1
-    helmet: ^7.0.0
+    helmet: ^8.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
     i18next: ^22.4.6
@@ -7636,10 +7636,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:*, helmet@npm:^7.0.0":
+"helmet@npm:*":
   version: 7.0.0
   resolution: "helmet@npm:7.0.0"
   checksum: 3622b8b68b7ac4736369fe7717adb5b87ddcdcda7c11c13277d79fb5670acab032e8c971835565b1d2144d234f3e0dbcd327a44249b9e61f0f64c0c753faf1bc
+  languageName: node
+  linkType: hard
+
+"helmet@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "helmet@npm:8.0.0"
+  checksum: 1a7ef94d35d8e4adae8697f65f9f85d75b3711e4c8b5db5bc7c0480de31e16cf28c92dabe8204eb98aac43db82c69951c771f685a9cd011b15415ffba6fe293b
   languageName: node
   linkType: hard
 
