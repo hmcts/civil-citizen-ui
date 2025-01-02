@@ -89,7 +89,7 @@ export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: A
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${directionOrderDocument.value.documentLink.document_filename}</a>`;
         const createdDatetime = directionOrderDocument?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng}), createdDatetime, lng);
-        const judgeDirectionOrderButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), judgesDirectionsOrderUrl);
+        const judgeDirectionOrderButton = createResponseToRequestButton(applicationResponse, lng, judgesDirectionsOrderUrl);
         return new CourtResponseSummaryList(rows, createdDatetime, judgeDirectionOrderButton);
       });
   }
@@ -201,13 +201,13 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
   return courtResponseSummaryList;
 };
 
-function createResponseToRequestButton(applicationResponse: ApplicationResponse, lng: string, requestWrittenRepresentationsUrl: string) {
+function createResponseToRequestButton(applicationResponse: ApplicationResponse, lng: string, url: string) {
   const validStates = [
     ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED,
     ApplicationState.ORDER_MADE,
   ];
   if (!validStates.includes(applicationResponse.state)) {
-    return new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
+    return new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), url);
   }
 }
 
