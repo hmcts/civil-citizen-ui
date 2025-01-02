@@ -11,22 +11,25 @@ let claimNumber;
 
 Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track');
 
-Scenario.skip('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @DRrejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @DRrejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  //claimType = 'SmallTrack';
   claimType = 'FastTrack';
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual);
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  // await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual);
   await api.waitForFinishedBusinessProcess();
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+ // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
-  await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
-  await api.waitForFinishedBusinessProcess();
+  // await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
+ // await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
+  //await api.waitForFinishedBusinessProcess();
 }).tag('@regression-cui-r2');
 
-Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario.skip('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';

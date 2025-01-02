@@ -311,12 +311,14 @@ module.exports = {
     console.log('multipartyScenario>>>>',multipartyScenario);
     eventName = 'CREATE_CLAIM_SPEC';
     claimType = 'FastTrack';
+    //claimType = 'SmallTrack';
     caseId = null;
     caseData = {};
     let createClaimSpecData;
     if (claimType === 'FastTrack') {
       console.log('Creating FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACK(multipartyScenario);
+    //  console.log(JSON.stringify(createClaimSpecData));
     } else if (claimType === 'SmallClaims' && partyType){
       console.log('Creating small claims with defendant type...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_SMALLTRACK(partyType);
