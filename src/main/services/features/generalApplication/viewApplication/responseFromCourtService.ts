@@ -28,6 +28,23 @@ import {canUploadAddlDoc} from 'services/features/generalApplication/additionalD
 export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
+  application.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
+  application.case_data.writtenRepSequentialDocument = [
+    {
+      id: '1',
+      value: {
+        documentLink: {
+          document_url: 'test',
+          document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+          document_filename: 'fileName',
+          category_id: '1',
+        },
+        documentType: DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL,
+        createdDatetime: new Date('2024-01-01'),
+        createdBy: 'test',
+      },
+    },
+  ];
   return [
     ...getJudgeDirectionWithNotice(claim, req, application, lang),
     ...getHearingNoticeResponses(application, lang),
@@ -201,8 +218,12 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
   return courtResponseSummaryList;
 };
 
-function createResponseToRequestButtonIfTimeNotExpired(applicationResponse: ApplicationResponse, lng: string, requestWrittenRepresentationsUrl: string) {
-  if (applicationResponse.state !== ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED) {
+function createResponseToRequestButton(applicationResponse: ApplicationResponse, lng: string, requestWrittenRepresentationsUrl: string) {
+  const validStates = [
+    ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED,
+    ApplicationState.ORDER_MADE,
+  ];
+  if (!validStates.includes(applicationResponse.state)) {
     return new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
   }
 }
@@ -222,7 +243,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
         const createdDatetime = writtenRepSequentialDocs.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
-        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButtonIfTimeNotExpired(applicationResponse, lng, requestWrittenRepresentationsUrl));
+        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
   }
   return courtResponseSummaryList;
@@ -243,7 +264,7 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
         const createdDatetime = writtenRepConcurrentDoc.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
-        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButtonIfTimeNotExpired(applicationResponse, lng, requestWrittenRepresentationsUrl));
+        return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
   }
   return courtResponseSummaryList;
