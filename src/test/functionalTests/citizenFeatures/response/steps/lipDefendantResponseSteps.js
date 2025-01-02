@@ -174,8 +174,8 @@ const assignComplexityBand = new AssignComplexityBand();
 const reasonForComplexityBand = new ReasonForComplexityBand();
 
 class ResponseSteps {
-  async AssignCaseToLip(claimNumber, securityCode){
-    await assignCaseToLip.open(claimNumber, securityCode);
+  async AssignCaseToLip(claimNumber, securityCode, manualPIP){
+    await assignCaseToLip.open(claimNumber, securityCode, manualPIP);
   }
   async RespondToClaim(claimRef, languageOption = 'en'){
     await defendantLatestUpdate.open(claimRef);
@@ -268,6 +268,10 @@ class ResponseSteps {
 
   async CheckAndSubmit(claimRef, responseType, claimType) {
     await checkYourAnswersPage.checkAndSubmit(claimRef, responseType, claimType);
+  }
+
+  async submitResponse(responseType) {
+    await checkYourAnswersPage.submitResponse(responseType);
   }
 
   async verifyMediationDetailsInCYA(claimRef) {
@@ -563,7 +567,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = false) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -576,10 +580,10 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(carmEnabled);
   }
 
-  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = false) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterClaimantExpertDetails();
@@ -592,7 +596,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(carmEnabled);
   }
   async EnterDQForMultiTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
@@ -619,6 +623,34 @@ class ResponseSteps {
   }
 
   async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
+    await this.SelectOptionForTriedToSettle(claimRef);
+    await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectSubjectToFrc();
+    await this.SelectFrcBandAgreed();
+    await this.SelectComplexityBand();
+    await this.TypeReasonForBand();
+    await this.SelectDisclosureOfDocuments();
+    await this.SelectAgreementReached();
+    await this.ProvideDisclosureOfElecDocumentsIssues();
+    await this.ProvideDisclosureOfNonElecDocuments();
+    await this.SelectClaimantDocsConsider();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
+
+  async EnterClaimantDQForIntTrack(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
     await this.SelectSubjectToFrc();
@@ -718,8 +750,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption() {
-    await welshLanguage.selectLanguageOption();
+  async SelectLanguageOption(carmEnabled = false) {
+    await welshLanguage.selectLanguageOption(carmEnabled);
   }
 
   async SelectOptionForTriedToSettle(claimRef){

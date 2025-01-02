@@ -69,10 +69,11 @@ export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
     .build());
 };
 
-export const getWhatAreFixedRecoverableCostsContent = () => {
+export const getWhatAreFixedRecoverableCostsContent = (lang: string) => {
   const FIXED_RECOVERABLE_COSTS = 'WHAT_ARE_FIXED_RECOVERABLE_COSTS.';
   return new DetailsComponent(`${FIXED_RECOVERABLE_COSTS}TITLE`, new DetailsComponentContentBuilder()
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_1`)
+    .addTitle(`${FIXED_RECOVERABLE_COSTS}PARA_2_1`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_2`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_3`)
     .addLink(`${FIXED_RECOVERABLE_COSTS}URL.TEXT`,
@@ -81,12 +82,37 @@ export const getWhatAreFixedRecoverableCostsContent = () => {
       `${FIXED_RECOVERABLE_COSTS}URL.AFTER`,
       null,
       true)
+    .addTitle(`${FIXED_RECOVERABLE_COSTS}PARA_4_1`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_4`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_5`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_5_1', {lng: lang})}</li>
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_5_2', {lng: lang})}</li>
+            </ul>`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_5_3`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_6`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_6_1', {lng: lang})}</li>
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_6_2', {lng: lang})}</li>
+            </ul>`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_6_3`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_7`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_7_1', {lng: lang})}</li>
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_7_2', {lng: lang})}</li>
+            </ul>`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_7_3`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_8`)
-    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_9`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_8_1', {lng: lang})}</li>
+                <li>${t(FIXED_RECOVERABLE_COSTS+'PARA_8_2', {lng: lang})}</li>
+            </ul>`)
+    .addTitle(`${FIXED_RECOVERABLE_COSTS}PARA_9`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_9_1`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_10`)
     .build());
 };

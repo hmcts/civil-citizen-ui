@@ -7,14 +7,20 @@ import {
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
-  ApplicationTypeOption, ApplicationTypeOptionSelection, getApplicationTypeOptionByTypeAndDescription,
-
+  ApplicationTypeOption,
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL} from 'routes/urls';
+import {
+  CANCEL_URL,
+  GA_APPLICATION_RESPONSE_SUMMARY_URL,
+  GA_APPLICATION_SUMMARY_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_VIEW_APPLICATION_URL,
+} from 'routes/urls';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {CANCEL_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -50,12 +56,13 @@ import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
-import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
-import { t } from 'i18next';
+import {isApplicationVisibleToRespondent} from './response/generalApplicationResponseService';
+import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
+import {t} from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
+import {exhaustiveMatchingGuard} from 'services/genericService';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
 const generalApplicationClient = new GaServiceClient(baseUrl);
@@ -64,6 +71,19 @@ export const saveApplicationType = async (claimId: string, claim: Claim, applica
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
+    resetClaimDataByApplicationType(claim, applicationType);
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const removeAllOtherApplications = async (claimId: string, claim: Claim): Promise<void> => {
+  try {
+    claim.generalApplication.applicationTypes = [claim.generalApplication.applicationTypes[0]];
+    claim.generalApplication.orderJudges = [claim.generalApplication.orderJudges[0]];
+    claim.generalApplication.requestingReasons = [claim.generalApplication.requestingReasons[0]];
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -154,6 +174,9 @@ export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim,
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    if (agreementFromOtherParty === YesNo.YES && claim.generalApplication.informOtherParties?.option) {
+      claim.generalApplication.informOtherParties = undefined;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -382,33 +405,61 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
   };
 };
 
-export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
-  switch (status) {
-    case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
-    case ApplicationState.LISTING_FOR_A_HEARING:
-    case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
-      return ApplicationStatus.IN_PROGRESS;
-    case ApplicationState.AWAITING_APPLICATION_PAYMENT:
-    case ApplicationState.HEARING_SCHEDULED:
-    case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
-    case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
-    case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
-    case ApplicationState.APPLICATION_ADD_PAYMENT:
-      return ApplicationStatus.TO_DO;
-    case ApplicationState.ORDER_MADE:
-    case ApplicationState.APPLICATION_DISMISSED:
-    case ApplicationState.APPLICATION_CLOSED:
-    case ApplicationState.PROCEEDS_IN_HERITAGE:
-      return ApplicationStatus.COMPLETE;
-    default:
-      return ApplicationStatus.TO_DO;
+export const getApplicationStatus = (isApplicant: boolean, status: ApplicationState): ApplicationStatus => {
+  if (isApplicant) {
+    switch (status) {
+      case ApplicationState.PENDING_APPLICATION_ISSUED:
+      case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_PROVIDED:
+      case ApplicationState.LISTING_FOR_A_HEARING:
+      case ApplicationState.HEARING_SCHEDULED:
+        return ApplicationStatus.IN_PROGRESS;
+      case ApplicationState.APPLICATION_ADD_PAYMENT:
+      case ApplicationState.APPLICATION_PAYMENT_FAILED:
+      case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
+      case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
+      case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
+      case ApplicationState.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION:
+        return ApplicationStatus.TO_DO;
+      case ApplicationState.ORDER_MADE:
+      case ApplicationState.APPLICATION_DISMISSED:
+      case ApplicationState.APPLICATION_CLOSED:
+      case ApplicationState.PROCEEDS_IN_HERITAGE:
+        return ApplicationStatus.COMPLETE;
+      default:
+        exhaustiveMatchingGuard(status);
+    }
+  } else {
+    switch (status) {
+      case ApplicationState.PENDING_APPLICATION_ISSUED:
+      case ApplicationState.APPLICATION_ADD_PAYMENT:
+      case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED:
+      case ApplicationState.LISTING_FOR_A_HEARING:
+      case ApplicationState.HEARING_SCHEDULED:
+      case ApplicationState.APPLICATION_PAYMENT_FAILED:
+      case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+        return ApplicationStatus.IN_PROGRESS;
+      case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
+      case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      case ApplicationState.ADDITIONAL_RESPONSE_TIME_PROVIDED:
+      case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
+      case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
+      case ApplicationState.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION:
+        return ApplicationStatus.TO_DO;
+      case ApplicationState.ORDER_MADE:
+      case ApplicationState.APPLICATION_DISMISSED:
+      case ApplicationState.APPLICATION_CLOSED:
+      case ApplicationState.PROCEEDS_IN_HERITAGE:
+        return ApplicationStatus.COMPLETE;
+      default:
+        exhaustiveMatchingGuard(status);
+    }
   }
 };
-
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
-  (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
-    ? ApplicationStatus.TO_DO
-    : ApplicationStatus.IN_PROGRESS;
 
 export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
   return await generalApplicationClient.getApplication(req, applicationId);
@@ -475,14 +526,28 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
   }
 };
 
-export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest, indexWithPlusOne = false) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  return applications.findIndex(application => application.id == applicationId);
+  const index =  applications.findIndex(application => application.id == applicationId);
+  return indexWithPlusOne? index + 1 : index;
+};
+
+export const isGaApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+    || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
 export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  if (hasRespondentResponded(application)) {
+    return true;
+  }
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
       || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+
+export const hasRespondentResponded = (application: ApplicationResponse) : boolean => {
+  const responses = application.case_data.respondentsResponses;
+  return (responses?.length > 0) && !!responses[0].value;
 };
 
 export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {
@@ -513,7 +578,7 @@ export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, i
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
     applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
-    if(applications && applications.length > 0) {
+    if(applications && applications.length > 0 && !claim.hasClaimTakenOffline()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
         url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
@@ -536,3 +601,27 @@ export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
   const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
   return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
 };
+
+export const resetClaimDataByApplicationType = (claim: Claim, applicationType: ApplicationType): void => {
+
+  const { option } = applicationType;
+  const generalApplication = claim.generalApplication;
+
+  switch (option) {
+    case ApplicationTypeOption.SETTLE_BY_CONSENT:
+    case ApplicationTypeOption.SET_ASIDE_JUDGEMENT:
+      delete generalApplication['informOtherParties'];
+      break;
+    case ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT:
+      delete generalApplication['requestingReasons'];
+      delete generalApplication['orderJudges'];
+      delete generalApplication['informOtherParties'];
+      delete generalApplication['applicationCosts'];
+      break;
+  }
+
+  if (option !== ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
+    delete generalApplication['uploadN245Form'];
+  }
+};
+

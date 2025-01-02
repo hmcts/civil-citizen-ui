@@ -941,10 +941,11 @@ class ResponseToDefence {
 
   async verifyHearingAtSpecificCourt(){
     I.waitForContent('The court will consider both parties\' circumstances when deciding where to hold the hearing.',60);
-    I.see('Do you want to ask for the hearing to be held at a specific court?', 'h1');
     I.see('You can ask for the hearing to be held at a specific court,');
-    I.see('for example, if you spend weekdays a long distance from your home.');
-    await I.click(paths.options.no);
+    I.see('Select a court');
+    I.selectOption('select[name="courtLocation"]', 'Barnet Civil And Family Courts Centre - St Mary\'s Court, Regents Park Road - N3 1BQ');
+    I.see('Tell us why you want the hearing to be held at this court');
+    I.fillField('#reason', 'nearest location');
     await I.click(paths.buttons.save_and_continue);
   }
 
@@ -1056,7 +1057,7 @@ class ResponseToDefence {
     I.see('Free telephone mediation','h2');
     I.see('Will you try free mediation?');
     I.see('No');
-    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?\tNo');
+    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?\tYes');
     I.see('Have you already got a report written by an expert?');
     I.see('Do you want to ask for the court’s permission to use an expert?');
     I.see('Does the claim involve something an expert can still examine?');
@@ -1066,7 +1067,8 @@ class ResponseToDefence {
     I.see('Do you want to ask for a telephone or video hearing?');
     I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?');
     I.see('Do you, your experts or witnesses need support to attend a hearing?');
-    I.see('Do you want to ask for the hearing to be held at a specific court?');
+    I.see('Please select your preferred court hearing location');
+    I.see('Tell us why you want the hearing to be held at this court');
     I.see('Welsh language');
     I.see('What languages will you, your experts and your witnesses speak at the hearing?');
     I.see('English');

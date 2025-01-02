@@ -143,7 +143,7 @@ describe('UploadN245 Form service', () => {
             children: [
             ],
             constraints: {
-              isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE',
+              isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE_V2',
             },
           },
         ],

@@ -14,6 +14,7 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
+  CaseManagementLocation,
   CaseState,
   CCDHelpWithFees,
   ClaimAmountBreakup,
@@ -115,6 +116,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
@@ -126,6 +128,7 @@ export class Claim {
   claimantBilingualLanguagePreference: ClaimBilingualLanguagePreference;
   id: string;
   pcqId: string;
+  respondentResponsePcqId?: string;
   sdoOrderDocument?: SystemGeneratedCaseDocuments;
   caseProgression?: CaseProgression;
   respondent1LiPResponse?: CCDRespondentLiPResponse;
@@ -184,7 +187,7 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
-
+  refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -1066,6 +1069,12 @@ export class Claim {
 
   getIntentionToProceed(): string{
     return this.claimantResponse?.intentionToProceed?.option;
+  }
+
+  isCaseProgressionCaseState(): boolean {
+    return [CaseState.CASE_PROGRESSION, CaseState.HEARING_READINESS,
+      CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
+      CaseState.All_FINAL_ORDERS_ISSUED].includes(this.ccdState);
   }
 }
 

@@ -13,10 +13,10 @@ class AddAnotherApplication {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     await this.verifyOptions();
     contactUs.verifyContactUs();
   }
@@ -25,8 +25,8 @@ class AddAnotherApplication {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'span');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'span');
     I.see('Do you want to add another application?', 'h1');
   }
 

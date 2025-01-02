@@ -4,15 +4,12 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/button.njk" import addButton %}
-{% from "../../../macro/external-link.njk" import externalLink %}
 {% from "../../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
-
-{% import "external-urls.njk" as externalURLs %}
 
 {% block nestedContent %}
 
@@ -34,8 +31,8 @@
       },
       classes: "govuk-!-width-one-half",
       value: '' + form.model.amountPerMonth,
-      errorMessage: { 
-        text:  t(form.errorFor('amountPerMonth')) 
+      errorMessage: {
+        text:  t(form.errorFor('amountPerMonth'))
       } if form.hasFieldError('amountPerMonth')
     }) }}
     {{ govukTextarea({
@@ -52,7 +49,7 @@
       } if form.hasFieldError('reasonProposedInstalment')
     }) }}
   {% endset %}
-  
+
   {% set bySetDateHtml %}
     <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSED_SET_DATE') }}</h3>
     {{ govukDateInput({
@@ -146,13 +143,16 @@
       } if form.hasFieldError('type')
     }) }}
   {% endset %}
-  
+
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
-    {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.HEADER', 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE') }}
+    {{ headingWithCaption(t, caption, 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE') }}
     <p class="govuk-body">
       {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_BEFORE') }}
-      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245', externalURLs.formN245Url, false) }}
+      <a class="govuk-link"
+        href="{{ n245 }}">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245') }}
+        <span class="govuk-visually-hidden">
+      </a>
       {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_AFTER') }}
     </p>
     {{ yesNoRadioButton(t, 'option', 'option', null, form, null, {yesHtml: yesHtml, noHtml: noHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}

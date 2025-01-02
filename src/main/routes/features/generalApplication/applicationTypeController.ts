@@ -29,12 +29,15 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const linkFrom = req.query.linkFrom;
+    const applicationIndex = queryParamNumber(req, 'index');
+
     if (linkFrom === LinKFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
     }
+
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index');
+
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
@@ -60,7 +63,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
 
-    const applicationIndex = queryParamNumber(req, 'index');
+    let applicationIndex = queryParamNumber(req, 'index');
+
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
@@ -79,10 +83,15 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
+
+      if(!applicationIndex) {
+        applicationIndex = claim.generalApplication.applicationTypes.length - 1;
+      }
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL ));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
+          + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
       }
     }
   } catch (error) {

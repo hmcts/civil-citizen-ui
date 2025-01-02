@@ -1,0 +1,220 @@
+{
+  "mappings": [
+    {
+      "scenarioName": "create-ga-application-hearingdate",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-submission",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732014426677369",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/mainCaseForGA.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/dashboard/taskList/1732014426677369/role/CLAIMANT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/claimantDashboardTaskList.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/dashboard/notifications/1732014426677369/role/CLAIMANT",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/claimantDashboardNotifications.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732014426677369/userCaseRoles",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[CLAIMANT]"
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/general-application",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.applicationTypes == ['ADJOURN_HEARING'])]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withConsent == false)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.withNotice == false)]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"calculatedAmountInPence\": \"11900\", \"code\": \"FEE0443\", \"version\": \"2\"}"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1732014426677369/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.event == 'INITIATE_GENERAL_APPLICATION')]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/applicationSubmission.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732014426677369/applications",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/applications.json"
+      }
+    },
+    {
+      "scenarioName": "create-ga-application-hearingdate",
+      "requiredScenarioState": "Post-submission",
+      "newScenarioState": "Post-submission",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732014426677369",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/post-submission.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1732018301268558",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/gaApplicationAfterPayment.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/case/1732018301268558/payment",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "generalApplication/hearingdate/paymentRedirect.json"
+      }
+    }
+  ]
+}

@@ -17,8 +17,11 @@ import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuard';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {ValidationError, Validator} from 'class-validator';
+import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 
 const checkAnswersViewPath = 'features/response/check-answers';
+const validator = new Validator();
 const checkAnswersController = Router();
 
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false, mintiApplicable = false) {
@@ -49,12 +52,17 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
   try {
     const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
     const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
+
+    if (claim?.directionQuestionnaire?.hearing && !claim.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
+      form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
+    }
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(redisKey);
+
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(redisKey, form.model);
@@ -69,3 +77,6 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
 
 export default checkAnswersController;
 
+const validateFields = (genericForm: GenericForm<any>, formErrors: ValidationError[]): ValidationError[] => {
+  return [...formErrors, ...validator.validateSync(genericForm.model)];
+};

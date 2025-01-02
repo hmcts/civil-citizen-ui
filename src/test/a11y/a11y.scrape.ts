@@ -12,7 +12,6 @@ import {mockCivilClaim, mockResponseFullAdmitPayBySetDate} from '../utils/mockDr
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {CivilClaimResponse, ClaimFeeData} from 'models/civilClaimResponse';
-import * as courtLocationCache from 'modules/draft-store/courtLocationCache';
 
 const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 jest.mock('../../main/modules/oidc');
@@ -79,7 +78,6 @@ describe('Accessibility', () => {
 
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('1645882162449409');
     jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockReturnValue(Promise.resolve(claim));
-    jest.spyOn(courtLocationCache, 'getCourtLocationsFromCache').mockReturnValue(Promise.resolve([{code: 'code', label: 'label'}]));
   });
 
   scraper(urlsList).then();

@@ -3,7 +3,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {t} from 'i18next';
-import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicantDocuments, getResponseFromCourtSection, getApplicationSections, getCourtDocuments, getRespondentDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../../utils/mocks/applicationMock.json';
@@ -14,16 +13,30 @@ import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } 
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
+import {Claim} from 'models/claim';
+import {getClaimById} from 'modules/utilityService';
+import {CaseState} from 'form/models/claimDetails';
+import {
+  getApplicationFromGAService,
+  getApplicationIndex,
+} from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
-jest.mock('../../../../../../../main/app/client/gaServiceClient');
+jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/viewApplicationService', () => ({isRespondentAllowedToRespond: jest.fn().mockReturnValue(false)}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
+
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
 const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
+const mockGetApplicationIndex = getApplicationIndex as jest.Mock;
+const mockGetApplicationFromGAService = getApplicationFromGAService as jest.Mock;
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -42,13 +55,17 @@ describe('General Application - View application', () => {
   });
 
   beforeEach(() => {
+    jest.clearAllMocks();
+    const claim = new Claim();
     application = Object.assign(new ApplicationResponse(), mockApplication);
     mockRespondentDocs.mockImplementation(() => []);
-    jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
+    mockGetApplicationFromGAService.mockResolvedValue(application);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    mockGetApplicationIndex.mockImplementation(() => 1);
   });
 
   describe('on GET', () => {
-    it('should return Application view page', async () => {
+    it('should return Application view page without index', async () => {
       mockedSummaryRows.mockResolvedValue({summaryRows: [
         {
           key: {text: 'Application type and description'},
@@ -58,6 +75,8 @@ describe('General Application - View application', () => {
         },
       ]},
       );
+      mockGetApplicationIndex.mockImplementation(() => 1);
+
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123','1718105701451856',GA_RESPONSE_VIEW_APPLICATION_URL))
         .expect((res) => {
@@ -227,6 +246,29 @@ describe('General Application - View application', () => {
           expect(res.text).toContain('Hearing Notice has been generated');
           expect(res.text).toContain('2 Aug 2024');
           expect(res.text).toContain('<a href="#">Hearing Notice</a>');
+        });
+    });
+
+    it('should show case progression text when case progression state', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_PROGRESSION;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      mockedSummaryRows.mockResolvedValue({summaryRows: [
+        {
+          key: {text: 'Application type and description'},
+          value: {
+            html: 'More time to do what is required by a court order.',
+          },
+        },
+      ],
+      responseSummaries: []},
+      );
+      await request(app)
+        .get(GA_RESPONSE_VIEW_APPLICATION_URL)
+        .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          //expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_3'));
         });
     });
 

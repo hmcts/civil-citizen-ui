@@ -24,7 +24,10 @@ import {YesNo} from 'form/models/yesNo';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { APPLICATION_TYPE_URL } from 'routes/urls';
-import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {
+  isGaForLipsEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed,
+} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -50,7 +53,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     //exclude Applications sections
-    if (!isGAFlagEnable || claim.defendantUserDetails === undefined){
+    if (!isGAFlagEnable || claim.defendantUserDetails === undefined || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
@@ -143,8 +146,9 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   return undefined;
 }
 
-export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
-  if (claim.ccdState && !claim.isCaseIssuedPending() && claim.defendantUserDetails !== undefined) {
+export const  getContactCourtLink = async (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : Promise<iWantToLinks> => {
+  if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+   && claim.defendantUserDetails !== undefined && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) ) {
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
@@ -165,6 +169,19 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
 
 export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {
   dashboardNotifications.items?.sort((notification1, notification2) => {
+
+    const priorityTitles = ['The case has been stayed', 'The stay has been lifted'];
+
+    if (priorityTitles.includes(notification1.titleEn) && !priorityTitles.includes(notification2.titleEn)) {
+      return -1;
+    }
+    if (priorityTitles.includes(notification2.titleEn) && !priorityTitles.includes(notification1.titleEn)) {
+      return 1;
+    }
+    if (priorityTitles.includes(notification1.titleEn) && priorityTitles.includes(notification2.titleEn)) {
+      return 0; // Maintain original order if both are priority titles
+    }
+
     if (notification1.deadline) {
       if (!notification2.deadline) {
         // Only notification 1 has a deadline

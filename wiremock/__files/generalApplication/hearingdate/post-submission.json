@@ -1,0 +1,239 @@
+{
+  "id": 1732014426677369,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-11-19T11:07:06",
+  "last_modified": "2024-11-19T12:11:45",
+  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+  "case_data": {
+    "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+    "caseManagementLocation": {
+      "region": "2",
+      "baseLocation": "000000"
+    },
+    "generalAppAskForCosts": "No",
+    "hearingDate": "2024-11-23",
+    "totalClaimAmount": 9000,
+    "claimantGaAppDetails": [
+      {
+        "id": "e146813b-527b-4b58-b25f-b6349404b2d6",
+        "value": {
+          "caseLink": {
+            "CaseReference": "1732018301268558"
+          },
+          "caseState": "Awaiting Application Payment",
+          "generalApplicationType": "Adjourn a hearing",
+          "generalAppSubmittedDateGAspec": "2024-11-19T12:11:39"
+        }
+      }
+    ],
+    "submittedDate": "2024-11-19T11:07:06",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-12-17T16:00:00",
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "id": "dc90f783-f626-464d-ba75-a85556447384",
+      "email": "citizen.user2@gmail.com"
+    },
+    "applicant1": {
+      "type": "INDIVIDUAL",
+      "partyName": "Mr Claimant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "primaryAddress": {
+        "PostCode": "S12eu",
+        "PostTown": "sheffield",
+        "AddressLine1": "123",
+        "AddressLine2": "Fake Street"
+      },
+      "individualTitle": "Mr",
+      "individualLastName": "person",
+      "individualFirstName": "Claimant",
+      "individualDateOfBirth": "1993-08-28",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "timelineOfEvents": [
+      {
+        "id": "0",
+        "value": {
+          "timelineDate": "2000-01-01",
+          "timelineDescription": "test"
+        }
+      }
+    ],
+    "serviceRequestReference": "2022-1655915218557",
+    "issueDate": "2024-11-19",
+    "applicant1Represented": "No",
+    "detailsOfClaim": "Injury",
+    "claimFee": {
+      "code": "FEE0208",
+      "version": "3",
+      "calculatedAmountInPence": "45500"
+    },
+    "respondent2OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORTWO]"
+    },
+    "systemGeneratedCaseDocuments": [
+      {
+        "id": "f4dd97d9-8e51-4f36-add1-875dfe1cff20",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "detailsOfClaim",
+            "document_url": "http://dm-store:8080/documents/78717e5a-7139-4810-8163-f3b3bb7ee979",
+            "document_filename": "000MC022-claim-form-claimant-copy.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/78717e5a-7139-4810-8163-f3b3bb7ee979/binary"
+          },
+          "documentName": "000MC022-claim-form-claimant-copy.pdf",
+          "documentSize": 34313,
+          "documentType": "CLAIMANT_CLAIM_FORM",
+          "createdDatetime": "2024-11-19T11:07:14"
+        }
+      },
+      {
+        "id": "80a3df0a-01a0-4d8c-8bc4-1c35a5721acf",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "detailsOfClaim",
+            "document_url": "http://dm-store:8080/documents/e01178c4-73ad-4f7c-bce8-6ef139d43af5",
+            "document_filename": "000MC022-sealed-claim-form.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/e01178c4-73ad-4f7c-bce8-6ef139d43af5/binary"
+          },
+          "documentName": "000MC022-sealed-claim-form.pdf",
+          "documentSize": 42902,
+          "documentType": "SEALED_CLAIM",
+          "createdDatetime": "2024-11-19T11:07:15"
+        }
+      }
+    ],
+    "locationName": "Barnet Civil and Family Centre",
+    "claimNotificationDate": "2024-11-19T11:07:17",
+    "helpWithFees": {
+      "helpWithFee": "No"
+    },
+    "claimInterest": "No",
+    "applicant1AdditionalLipPartyDetails": {
+      "correspondenceAddress": {
+        "PostCode": "L7 2pz",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Test Street"
+      }
+    },
+    "claimantUserDetails": {
+      "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+      "email": "civilmoneyclaimsdemo@gmail.com"
+    },
+    "legacyCaseReference": "000MC022",
+    "respondent1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+    },
+    "caseNameHmctsInternal": "'Claimant person' v 'defendant person'",
+    "respondent1Represented": "No",
+    "respondent1DetailsForClaimDetailsTab": {
+      "type": "INDIVIDUAL",
+      "partyName": "mr defendant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "primaryAddress": {
+        "PostCode": "L7 2PZ",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Claim Road"
+      },
+      "individualTitle": "mr",
+      "individualLastName": "person",
+      "individualFirstName": "defendant",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "claimIssuedPBADetails": {
+      "fee": {
+        "code": "FEE0208",
+        "version": "3",
+        "calculatedAmountInPence": "45500"
+      },
+      "serviceRequestReference": "2022-1655915218557"
+    },
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "CREATE_CLAIM_SPEC_AFTER_PAYMENT"
+    },
+    "respondent1": {
+      "type": "INDIVIDUAL",
+      "partyName": "mr defendant person",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "primaryAddress": {
+        "PostCode": "L7 2PZ",
+        "PostTown": "Liverpool",
+        "AddressLine1": "123",
+        "AddressLine2": "Claim Road"
+      },
+      "individualTitle": "mr",
+      "individualLastName": "person",
+      "individualFirstName": "defendant",
+      "partyTypeDisplayValue": "Individual"
+    },
+    "respondent1PinToPostLRspec": {
+      "accessCode": "EENXRLAZMVEN",
+      "expiryDate": "2025-05-18",
+      "respondentCaseRole": "[DEFENDANT]"
+    },
+    "generalApplications": [
+      {
+        "id": "c7bac70a-5a8a-467c-9a82-67841e0d58e5",
+        "value": {
+          "caseLink": {
+            "CaseReference": "1732018301268558"
+          },
+          "generalAppType": {
+            "types": [
+              "ADJOURN_HEARING"
+            ]
+          },
+          "businessProcess": {
+            "status": "FINISHED",
+            "camundaEvent": "CREATE_GENERAL_APPLICATION_CASE",
+            "processInstanceId": "6e6443e4-a66f-11ef-b2df-0242ac120006"
+          },
+          "isGaApplicantLip": "Yes",
+          "litigiousPartyID": "001",
+          "caseNameGaInternal": "'Claimant person' v 'defendant person'",
+          "isGaRespondentOneLip": "Yes",
+          "isGaRespondentTwoLip": "No",
+          "generalAppAskForCosts": "No",
+          "caseManagementLocation": {
+            "region": "2",
+            "address": "St Mary's Court, Regents Park Road",
+            "postcode": "N3 1BQ",
+            "siteName": "Barnet Civil and Family Centre",
+            "baseLocation": "000000"
+          },
+          "generalAppDateDeadline": "2024-11-24T16:00:00",
+          "parentClaimantIsApplicant": "Yes",
+          "generalAppSubmittedDateGAspec": "2024-11-19T12:11:39"
+        }
+      }
+    ],
+    "claimNotificationDeadline": "2025-03-19T23:59:59",
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "caseNamePublic": "'Claimant person' v 'defendant person'",
+    "claimIssuedPaymentDetails": {
+      "status": "SUCCESS",
+      "reference": "RC-1234-1234-1234-1234"
+    },
+    "isFlightDelayClaim": "No",
+    "claimAmountBreakup": [
+      {
+        "id": "0",
+        "value": {
+          "claimAmount": "900000",
+          "claimReason": "Injury"
+        }
+      }
+    ]
+  },
+  "security_classification": "PUBLIC"
+}
