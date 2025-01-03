@@ -8,7 +8,7 @@ import {
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import {
   addHearingArrangementsRows,
-  addHearingSupportRows,
+  addHearingSupportRows, addOrderJudgeRow, addRequestingReasonRow,
 } from 'services/features/generalApplication/viewApplication/addViewApplicationRows';
 
 jest.mock('../../../../../../main/modules/i18n');
@@ -17,41 +17,42 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-describe('addViewApplicatiosRows', () => {
-  describe('build addHearingSupportRows', () => {
-    const caseData: CCDApplication =  {
-      applicationTypes: 'test',
-      generalAppType: null,
-      generalAppRespondentAgreement: null,
-      generalAppInformOtherParty: null,
-      generalAppAskForCosts: YesNoUpperCamelCase.NO,
-      generalAppDetailsOfOrder: 'test',
-      generalAppReasonsOfOrder: 'test',
-      generalAppEvidenceDocument: [],
-      gaAddlDoc: [],
-      generalAppStatementOfTruth: null,
-      generalAppPBADetails: null,
-      applicationFeeAmountInPence: 'test',
-      parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
-      generalAppHearingDetails: {
-        HearingPreferencesPreferredType: CcdHearingType.IN_PERSON,
-        ReasonForPreferredHearingType: 'test',
-        HearingPreferredLocation: null,
-        HearingDetailsTelephoneNumber: 'test',
-        HearingDetailsEmailID: 'test',
-        unavailableTrialRequiredYesOrNo: null,
-        generalAppUnavailableDates: null,
-        SupportRequirement: [],
-        SupportRequirementSignLanguage: 'ASL',
-        SupportRequirementLanguageInterpreter: 'Spanish',
-        SupportRequirementOther: 'Wheelchair assistance',
-      },
-      judicialDecision: undefined,
-    };
+const caseData: CCDApplication =  {
+  applicationTypes: 'test',
+  generalAppType: null,
+  generalAppRespondentAgreement: null,
+  generalAppInformOtherParty: null,
+  generalAppAskForCosts: YesNoUpperCamelCase.NO,
+  generalAppDetailsOfOrder: null,
+  generalAppReasonsOfOrder: null,
+  generalAppEvidenceDocument: [],
+  gaAddlDoc: [],
+  generalAppStatementOfTruth: null,
+  generalAppPBADetails: null,
+  applicationFeeAmountInPence: 'test',
+  parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+  generalAppHearingDetails: {
+    HearingPreferencesPreferredType: CcdHearingType.IN_PERSON,
+    ReasonForPreferredHearingType: 'test',
+    HearingPreferredLocation: null,
+    HearingDetailsTelephoneNumber: 'test',
+    HearingDetailsEmailID: 'test',
+    unavailableTrialRequiredYesOrNo: null,
+    generalAppUnavailableDates: null,
+    SupportRequirement: [],
+    SupportRequirementSignLanguage: 'ASL',
+    SupportRequirementLanguageInterpreter: 'Spanish',
+    SupportRequirementOther: 'Wheelchair assistance',
+  },
+  judicialDecision: undefined,
+};
 
-    const applicationResponse = new ApplicationResponse(
-      '123', caseData, ApplicationState.AWAITING_RESPONDENT_RESPONSE, null, null,
-    );
+const applicationResponse = new ApplicationResponse(
+  '123', caseData, ApplicationState.AWAITING_RESPONDENT_RESPONSE, null, null,
+);
+
+describe('addViewApplicationsRows', () => {
+  describe('build addHearingSupportRows', () => {
 
     it('should return a summary row with selected supports', () => {
       caseData.generalAppHearingDetails.SupportRequirement = [
@@ -232,6 +233,96 @@ describe('addViewApplicatiosRows', () => {
           'html': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NONE',
         },
       });
+    });
+
+  });
+
+  describe('build addOrderJudgeRow', () => {
+
+    it('should return a summary row with generalAppAskForCosts = yes addOrderJudgeRow Lip v Lip', () => {
+      applicationResponse.case_data.generalAppDetailsOfOrderColl = Array.of({ value: 'test1'});
+      applicationResponse.case_data.generalAppAskForCosts = YesNoUpperCamelCase.YES;
+      const result = addOrderJudgeRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(  {
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER' },
+        value: {
+          html: '<p class="govuk-body">test1 <br> PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS</p>',
+        },
+      });
+    });
+
+    it('should return a summary row with generalAppAskForCosts = no addOrderJudgeRow Lip v Lip', () => {
+      applicationResponse.case_data.generalAppDetailsOfOrderColl = Array.of({ value: 'test1'});
+      applicationResponse.case_data.generalAppAskForCosts = YesNoUpperCamelCase.NO;
+      const result = addOrderJudgeRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(  {
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER' },
+        value: {
+          html: '<p class="govuk-body">test1 <br> </p>',
+        },
+      });
+    });
+
+    it('should return a summary row with addOrderJudgeRow LR v Lip', () => {
+      applicationResponse.case_data.generalAppDetailsOfOrderColl = [];
+      applicationResponse.case_data.generalAppAskForCosts = null;
+      applicationResponse.case_data.generalAppDetailsOfOrder = 'generalAppDetailsOfOrder';
+      const result = addOrderJudgeRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(  {
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER' },
+        value: {
+          html: '<p class="govuk-body">generalAppDetailsOfOrder</p>',
+        },
+      });
+    });
+
+    it('should return not return row', () => {
+      applicationResponse.case_data.generalAppDetailsOfOrderColl = [];
+      applicationResponse.case_data.generalAppAskForCosts = null;
+      applicationResponse.case_data.generalAppDetailsOfOrder = null;
+      const result = addOrderJudgeRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(0);
+    });
+
+  });
+
+  describe('build addRequestingReasonRow', () => {
+
+    it('should return a summary row with generalAppReasonsOfOrderColl Lip v Lip', () => {
+      applicationResponse.case_data.generalAppReasonsOfOrderColl = Array.of({ value: 'test1'});
+      const result = addRequestingReasonRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(  {
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING' },
+        value: {
+          html: 'test1',
+        },
+      });
+    });
+
+    it('should return a summary row with addOrderJudgeRow LR v Lip', () => {
+      applicationResponse.case_data.generalAppReasonsOfOrderColl = [];
+      applicationResponse.case_data.generalAppReasonsOfOrder = 'generalAppReasonsOfOrder';
+
+      const result = addRequestingReasonRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(  {
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING' },
+        value: {
+          html: '<p class="govuk-body">generalAppReasonsOfOrder</p>',
+        },
+      });
+    });
+
+    it('should return not return row', () => {
+      applicationResponse.case_data.generalAppReasonsOfOrderColl = [];
+      applicationResponse.case_data.generalAppReasonsOfOrder = null;
+
+      const result = addRequestingReasonRow(applicationResponse, 0,'en');
+      expect(result).toHaveLength(0);
     });
 
   });
