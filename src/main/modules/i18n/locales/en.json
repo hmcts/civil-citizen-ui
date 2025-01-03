@@ -3209,6 +3209,7 @@
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
+        "GA_ADD_ANOTHER_DATE": "Add another date or date range",
         "FROM": "From",
         "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
         "LONGER_PERIOD": "A longer period of time",
