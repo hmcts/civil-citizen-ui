@@ -22,6 +22,7 @@
       }
     },
     {
+      "priority": 100,
       "request": {
         "method": "POST",
         "urlPattern": "/cases/.*?/citizen/.*?/event",
@@ -42,6 +43,7 @@
       }
     },
     {
+      "priority": 100,
       "request": {
         "method": "GET",
         "urlPattern": "/cases/.*/userCaseRoles",

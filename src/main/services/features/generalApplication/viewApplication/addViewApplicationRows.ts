@@ -77,6 +77,10 @@ export const addApplicationStatus = (
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT', {lng})),
     );
+  }else if (application.state === ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ADDITIONAL_RESPONSE_TIME_EXPIRED', {lng})),
+    );
   }else {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), application.state),
@@ -290,6 +294,11 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
         unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng})),
     );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
+        t('COMMON.NO', {lng})),
+    );
   }
   return rows;
 };
@@ -318,6 +327,11 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
+    );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
+        t('COMMON.NO', {lng})),
     );
   }
   return rows;
@@ -367,6 +381,8 @@ const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType)
       return HearingTypeOptions.TELEPHONE;
     case CcdHearingType.VIDEO:
       return HearingTypeOptions.VIDEO_CONFERENCE;
+    case CcdHearingType.WITHOUT_HEARING:
+      return HearingTypeOptions.WITHOUT_HEARING;
     default:
       return undefined;
   }

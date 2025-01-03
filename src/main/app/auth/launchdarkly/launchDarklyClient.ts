@@ -17,6 +17,7 @@ const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
 const IS_COSC_ENABLED = 'isCoSCEnabled';
+const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -36,6 +37,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_COSC_ENABLED).booleanFlag().variationForAll(false));
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
@@ -67,12 +69,44 @@ async function getUser(epoch: string): Promise<LDUser> {
   return user;
 }
 
+async function getUserLocation(location: string): Promise<LDUser> {
+  const launchDarklyEnv = config.get<string>('services.launchDarkly.env');
+  let user: LDUser = {'name': 'civil-service', 'key': 'civil-service'};
+
+  if (launchDarklyEnv) {
+    user = {
+      'name': 'civil-service', 'key': 'civil-service',
+      'custom': {
+        environment: launchDarklyEnv,
+        location: location,
+      },
+    };
+
+  }
+  return user;
+}
+
 export async function getFlagValue(
   key: string, epoch?: string,
 ): Promise<LDFlagValue> {
   if (!ldClient) await getClient();
   if (ldClient)
     return await ldClient.variation(key, await getUser(epoch), false);
+}
+
+export async function getEaFlagValueForGaLips(
+  key: string, location?: string,
+): Promise<LDFlagValue> {
+  if (!ldClient) await getClient();
+  if (ldClient)
+    return await ldClient.variation(key, await getUserLocation(location), false);
+}
+
+export async function isGaForLipsEnabledAndLocationWhiteListed(location: string): Promise<boolean> {
+
+  const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
+  const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
+  return gaLipsFlag && eaFlagForGaLips;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
