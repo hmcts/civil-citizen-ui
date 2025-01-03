@@ -125,7 +125,7 @@
     "@typescript-eslint/parser": "^5.50.0",
     "babel-loader": "^9.1.0",
     "codeceptjs": "^3.3.7",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^12.0.0",
     "css-loader": "^6.7.2",
     "debug": "^4.3.4",
     "deep-equal-in-any-order": "^2.0.2",
