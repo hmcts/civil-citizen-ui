@@ -4976,7 +4976,7 @@ __metadata:
     class-validator: ^0.14.0
     codeceptjs: ^3.3.7
     config: ^3.3.8
-    connect-redis: ^7.1.0
+    connect-redis: ^8.0.0
     cookie-parser: ^1.4.6
     cookie-session: ^2.0.0
     copy-webpack-plugin: ^11.0.0
@@ -5413,12 +5413,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "connect-redis@npm:7.1.0"
+"connect-redis@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "connect-redis@npm:8.0.1"
   peerDependencies:
     express-session: ">=1"
-  checksum: fb493fae8910a2d61e3babd579c6344c56d7d31d67669d9941465ef00eb54ef9c1a35ccfa761136d36fa38d1f82ebe48c2b10888f292d55b4aadb8ecf1fddf34
+  checksum: 34bb1203e28fb186af9a2dfb01ad19773ab7dbd21d8ddee8f1aed332441abd19621798b2c160a65ceb65dcb610baf5af13c609454a40cfb5b4fa5528ee264a96
   languageName: node
   linkType: hard
 
