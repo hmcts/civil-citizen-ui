@@ -2942,7 +2942,7 @@
         "CONFIRM_YOU_PAID_DESCRIPTION": "Os ydych wedi talu'r ddyled o ddyfarniad llys sirol (CCJ) yn llawn, gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau, benthycwyr ac asiantaethau archwilio credyd. Gelwir hyn yn gais am dystysgrif canslo neu dystysgrif diwallu."
       },
       "SUMMARY": {
-        "APP_REQUESTED": "Cais yw gofyn am newid i’r achos.",
+        "APP_REQUESTED": "Y diffiniad o gais yn y cyd-destun hwn yw gofyn am newid i’r achos.",
         "APPLICATION": "Cais",
         "APPLICATION_ID": "Rhif adnabod y cais",
         "APPLICATION_TYPE": "Math o gais",
