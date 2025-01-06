@@ -121,6 +121,18 @@ describe('General Application - Do you have a help with fees reference number', 
         });
     });
 
+    it('should show error for additional application fee if help fee is not entered', async () => {
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      await request(app)
+        .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
+        .query({additionalFeeTypeFlag: 'true'})
+        .send({option: YesNo.YES, referenceNumber: ''})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER'))
+        });
+    });
+
     it('should show error message if no value selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
 
