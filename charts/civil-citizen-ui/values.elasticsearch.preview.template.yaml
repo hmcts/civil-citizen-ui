@@ -4,7 +4,7 @@ ccd:
       enabled: true
     ras:
       enabled: true
-
+  
   ccd-data-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
