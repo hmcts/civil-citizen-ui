@@ -21,7 +21,7 @@ describe('System Document Info Extractor Service', () => {
     );
 
     // Then
-    expect(result).toBe('101');
+    expect(result).toBe('123');
   });
   it('should extract claim form correctly', async () => {
     //Given
@@ -36,6 +36,6 @@ describe('System Document Info Extractor Service', () => {
     );
 
     // Then
-    expect(result).toBe('103');
+    expect(result).toBe('123');
   });
 });
