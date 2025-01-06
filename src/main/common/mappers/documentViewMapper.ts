@@ -8,8 +8,7 @@ import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {getSystemGeneratedCaseDocumentIdByType,
-  SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {
   MediationUploadDocumentsCCD,
@@ -18,6 +17,8 @@ import {
   isMediationDocumentsReferred,
   isMediationNonAttendanceDocs,
 } from 'services/features/document/mediation/mediationDocumentService';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('documentViewMapper');
 
 export const mapperMediationAgreementToDocumentView = (documentTitle: string, mediationAgreement: MediationAgreement, mediationSettlementAgreedAt: Date, claimId: string, lang: string) => {
 
@@ -40,7 +41,7 @@ export const mapperDefendantResponseToDocumentView = (documentTitle: string, fil
       new DocumentLinkInformation(
         CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
           .replace(':documentId',
-            getDocumentId(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, 'Stitched')),
+            getDocumentId(claim, 'Stitched')),
         `defendant-response-${caseId}.pdf`))));
 };
 
@@ -66,18 +67,24 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
   }
 };
 
-export function getDocumentId(systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, stitchedDoc?: string): string {
+export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
   let documentId;
+  const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
+  const documentType = claim.isLRDefendant()
+    ? DocumentType.SEALED_CLAIM
+    : DocumentType.DEFENDANT_DEFENCE;
   if (systemGeneratedCaseDocuments?.length > 0) {
     systemGeneratedCaseDocuments.forEach(doc => {
+      logger.info(doc.value.documentType + ' ' + doc.value.documentName);
       if (doc.value.documentType == documentType) {
         if (doc.value.documentName.startsWith(stitchedDoc)) {
+          logger.info('Found ' + doc.value.documentName);
           documentId = documentIdExtractor(doc.value?.documentLink?.document_binary_url);
         }
       }
     });
     if(documentId === undefined) {
-      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType);
+      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, 'defendant');
     }
     return documentId;
   } else {
