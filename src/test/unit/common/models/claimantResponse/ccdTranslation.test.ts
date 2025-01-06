@@ -227,4 +227,29 @@ describe('translate draft claim to ccd version', () => {
     // then
     expect(ccdClaim.repaymentSuggestion).toBeUndefined();
   });
+
+  it('should get repaymentSummaryObject for default judgement', () => {
+    const claim = new Claim();
+    claim.claimFee = {
+      calculatedAmountInPence: 5000,
+      code: 'fbeee',
+      version: 2
+    };
+    claim.totalClaimAmount = 9000;
+
+    // when
+    const ccdClaim = translateClaimantResponseDJToCCD(claim);
+
+    // Normalize strings
+    const expectedString = 'The judgment will order the defendants to pay £9050.00, including the claim fee and interest, if applicable, as shown: ### Claim amount £9000 ### Claim fee amount £50 ## Subtotal £9050.00 ## Total still owed £9050.00';
+    const normalizedExpectedString = normalizeWhitespace(expectedString);
+    const normalizedReceivedString = normalizeWhitespace(ccdClaim.repaymentSummaryObject);
+
+    // then
+    expect(normalizedReceivedString).toContain(normalizedExpectedString);
+  });
 });
+
+function normalizeWhitespace(str: string) {
+  return str.replace(/\s+/g, ' ').trim();
+}
