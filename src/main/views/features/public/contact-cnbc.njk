@@ -12,7 +12,11 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Webchat</h2>
-          <div id="__8x8-chat-button-container-script_1191773643670e666a982030.90013235"></div>
+          {% if isProd %}
+            <div id="__8x8-chat-button-container-script_1191773643670e666a982030.90013235"></div>
+          {% else %}
+            <div id="__8x8-chat-button-container-script_35780229675c3e23dcdd66.11858382"></div>
+          {% endif %}
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">Telephone</h2>
           <p class="govuk-body govuk-!-margin-bottom-0">0300 123 1056</p>
           <h2 class="govuk-heading-m govuk-!-margin-top-6">Opening Times</h2>
