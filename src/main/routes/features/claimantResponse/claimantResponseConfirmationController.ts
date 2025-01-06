@@ -19,7 +19,7 @@ claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, c
     const claim = await getClaimById(req.params.id, req, true);
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
     const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
-    const isMultiOrIntermediateTrack = isIntermediateTrack(claim.totalClaimAmount, mintiEnabled) || isMultiTrack(claim.totalClaimAmount, mintiEnabled)
+    const isMultiOrIntermediateTrack = isIntermediateTrack(claim.totalClaimAmount, mintiEnabled) || isMultiTrack(claim.totalClaimAmount, mintiEnabled);
     const respondToSettlementAgreementDeadLine = await getRespondToSettlementAgreementDeadline(req, claim);
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang), carmApplicable, isMultiOrIntermediateTrack, respondToSettlementAgreementDeadLine);
     res.render('features/claimantResponse/claimant-response-confirmation', {
