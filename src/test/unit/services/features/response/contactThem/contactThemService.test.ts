@@ -73,7 +73,7 @@ describe('contact them service', () => {
     it('should return solicitor address', () => {
       //Given
       const claim = new Claim();
-      claim.respondentSolDetails= {
+      claim.respondentSolicitorDetails= {
         'address': {
           'PostCode': 'NN3 9SS',
           'PostTown': 'NORTHAMPTON',

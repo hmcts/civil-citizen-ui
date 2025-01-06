@@ -16,7 +16,7 @@ const viewDefendantInformationController = Router();
 async function renderView(res: Response, claim: Claim, claimId: string) {
 
   const pageTitle = 'PAGES.CONTACT_THEM.PAGE_TITLE_DEFENDANT';
-  const defendantLRName = claim.isLRDefendant() ? claim?.respondentSolDetails.orgName : undefined;
+  const defendantLRName = claim.isLRDefendant() ? claim.respondentSolicitorDetails?.orgName : undefined;
   const otherPartyName = claim.isLRDefendant() ? 'PAGES.CONTACT_THEM.DEFENDANT_LR' : claim?.getDefendantFullName();
   const party =  claim.isLRDefendant() ? undefined : claim?.respondent1;
   const solicitorEmailId = claim?.respondentSolicitor1EmailAddress;

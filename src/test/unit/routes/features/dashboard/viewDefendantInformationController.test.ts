@@ -48,7 +48,7 @@ describe('View Defendant Information', () => {
   it('should return contact defendant LR details from claim when NOC submitted for LiP Defendant ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     caseData.specRespondent1Represented = YesNoUpperCamelCase.YES;
-    caseData.respondentSolDetails= {
+    caseData.respondentSolicitorDetails= {
       'address': {
         'PostCode': 'NN3 9SS',
         'PostTown': 'NORTHAMPTON',
@@ -72,7 +72,7 @@ describe('View Defendant Information', () => {
   it('should return contact defendant LR correspondence address details after NOC submitted and sol details updated ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     caseData.specRespondent1Represented = YesNoUpperCamelCase.YES;
-    caseData.respondentSolDetails= {
+    caseData.respondentSolicitorDetails= {
       'address': {
         'PostCode': 'NN3 9SS',
         'PostTown': 'NORTHAMPTON',

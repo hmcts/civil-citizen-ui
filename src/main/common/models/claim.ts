@@ -78,13 +78,13 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
-import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
-import {RespondentGaAppDetail} from './generalApplication/response/respondentGaAppDetail';
+import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 
 export class Claim {

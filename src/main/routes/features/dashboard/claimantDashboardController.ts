@@ -62,10 +62,11 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
         await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
         if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
-          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressRequired', claim.specRespondentCorrespondenceAddressRequired);
           await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+        } else if(claim?.respondentSolicitorDetails) {
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
         }
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim.respondentSolicitor1EmailAddress);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
