@@ -233,7 +233,7 @@ describe('translate draft claim to ccd version', () => {
     claim.claimFee = {
       calculatedAmountInPence: 5000,
       code: 'fbeee',
-      version: 2
+      version: 2,
     };
     claim.totalClaimAmount = 9000;
 
