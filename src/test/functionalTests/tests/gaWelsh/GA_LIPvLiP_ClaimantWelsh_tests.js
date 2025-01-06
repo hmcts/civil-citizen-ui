@@ -2,7 +2,7 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
-const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
+const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 
 let claimRef;
 let caseData;
@@ -27,11 +27,11 @@ Scenario('Response with RejectAll and DisputeAll - Claimant Welsh - GA (Ask for 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe');
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe');
     console.log('Creating GA app as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe');
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe');
   }
 });

@@ -7,7 +7,7 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseRef, selectedHWF;
 
-const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
+const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
 Feature('Create Lip v Company claim - Individual vs Company @claimCreationc').tag('@regression-r2');
 
@@ -38,10 +38,10 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
   console.log('Creating GA app as defendant');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
 });
