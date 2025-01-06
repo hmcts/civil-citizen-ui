@@ -11,7 +11,7 @@ export const SystemGeneratedCaseDocumentsWithSDOMock = () : SystemGeneratedCaseD
         documentLink: {
           document_url: 'url1',
           document_filename: 'filename1',
-          document_binary_url: 'documents/101/binary',
+          document_binary_url: 'documents/123/binary',
         },
         documentName: 'documentName',
         createdDatetime: new Date(Date.now()),
@@ -30,7 +30,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentLink:  {
           document_url: 'url1',
           document_filename: 'filename1',
-          document_binary_url: 'documents/102/binary',
+          document_binary_url: 'documents/123/binary',
         },
         documentName: 'documentName',
         createdDatetime: new Date(Date.now()),
@@ -48,7 +48,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentLink:  {
           document_url: 'url1',
           document_filename: 'filename1',
-          document_binary_url: 'documents/103/binary',
+          document_binary_url: 'documents/123/binary',
         },
         documentName: 'documentName',
         createdDatetime: new Date(Date.now()),
@@ -63,7 +63,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentLink:  {
           document_url: 'url2',
           document_filename: 'filename2',
-          document_binary_url: 'documents/104/binary',
+          document_binary_url: 'documents/124/binary',
         },
         documentName: 'documentName',
         createdDatetime: new Date(Date.now()),
@@ -78,7 +78,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentLink:  {
           document_url: 'url3',
           document_filename: 'filename3',
-          document_binary_url: 'documents/105/binary',
+          document_binary_url: 'documents/123/binary',
         },
         documentName: 'documentName',
         createdDatetime: new Date(Date.now()),
