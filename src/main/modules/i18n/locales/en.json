@@ -2823,7 +2823,7 @@
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
         "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee",
-        "SUBTITLE_YES": "Enter your help with fees reference number"
+        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",

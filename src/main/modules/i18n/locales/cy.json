@@ -2823,7 +2823,7 @@
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Ffi ychwanegol i wneud cais",
         "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi ychwanegol i wneud cais",
-        "SUBTITLE_YES": "Rhowch eich rhif help i dalu ffioedd 11 nod"
+        "VALID_ENTER_REFERENCE_NUMBER": "Rhowch eich rhif help i dalu ffioedd 11 nod"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Cais y ffi i’w thalu:",

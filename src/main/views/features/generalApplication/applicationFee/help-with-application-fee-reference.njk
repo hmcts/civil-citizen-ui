@@ -25,7 +25,7 @@
                   text: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.HINT_YES')
                 },
                 label: {
-                  html: t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING')
+                  html: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.SUBTITLE_YES')
                 },
                 errorMessage: {
                   html: t(form.errorFor('referenceNumber'))
@@ -45,7 +45,7 @@
                 <li class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.LIST_ITEMS.APPLICATION_FEE_FIFTH')}}</li>
               </ol>
             {% endset %}
-            {{ yesNoRadioButton(t,'option','option','',form,'',{yesHtml: yesHtml, yes: 'COMMON.VARIATION_8.YES', noHtml: noHtml, no: 'COMMON.VARIATION_8.NO'}) }}
+           {{ yesNoRadioButton(t,'option','option','',form,'',{yesHtml: yesHtml, yes: 'COMMON.VARIATION_8.YES', noHtml: noHtml, no: 'COMMON.VARIATION_8.NO'}) }}
             {% for content in applyHelpWithFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
