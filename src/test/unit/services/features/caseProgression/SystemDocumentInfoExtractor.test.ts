@@ -2,7 +2,10 @@ import {
   getSystemGeneratedCaseDocumentIdByType,
   SystemGeneratedCaseDocuments,
 } from 'models/document/systemGeneratedCaseDocuments';
-import {SystemGeneratedCaseDocumentsWithSDOMock} from '../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
+import {
+  SystemGeneratedCaseDocumentsWithSDOMock,
+  SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
+} from '../../../../utils/mocks/SystemGeneratedCaseDocumentsMock';
 import {DocumentType} from 'models/document/documentType';
 
 describe('System Document Info Extractor Service', () => {
@@ -18,6 +21,21 @@ describe('System Document Info Extractor Service', () => {
     );
 
     // Then
-    expect(result).toBe('123');
+    expect(result).toBe('101');
+  });
+  it('should extract claim form correctly', async () => {
+    //Given
+    const systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[] = SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock();
+    const documentType = DocumentType.SEALED_CLAIM;
+
+    // when
+    const result = getSystemGeneratedCaseDocumentIdByType(
+      systemGeneratedCaseDocuments,
+      documentType,
+      'claimant'
+    );
+
+    // Then
+    expect(result).toBe('103');
   });
 });
