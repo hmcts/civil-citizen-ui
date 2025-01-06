@@ -1926,7 +1926,8 @@
       "PAGE_TITLE_DEFENDANT": "Gweld yr wybodaeth am y diffynnydd",
       "PHONE": "Rhif ffôn",
       "THE_CLAIM": "Yr hawliad",
-      "THE_RESPONSE": "Yr ymateb"
+      "THE_RESPONSE": "Yr ymateb",
+      "DEFENDANT_LR": "Cynrychiolydd cyfreithiol y diffynnydd"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",

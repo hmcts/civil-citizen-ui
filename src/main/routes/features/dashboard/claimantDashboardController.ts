@@ -28,6 +28,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -60,6 +61,11 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         claimIdPrettified = caseNumberPrettify(claimId);
         claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
         await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
+        if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressRequired', claim.specRespondentCorrespondenceAddressRequired);
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+        }
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim.respondentSolicitor1EmailAddress);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();

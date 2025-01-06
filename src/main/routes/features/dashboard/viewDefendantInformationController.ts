@@ -6,7 +6,7 @@ import {
 } from '../../urls';
 import { Claim } from 'models/claim';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { getAddress } from 'services/features/response/contactThem/contactThemService';
+import {getAddress, getRespondentSolicitorAddress} from 'services/features/response/contactThem/contactThemService';
 import { getClaimById } from 'modules/utilityService';
 import { caseNumberPrettify } from 'common/utils/stringUtils';
 
@@ -16,17 +16,21 @@ const viewDefendantInformationController = Router();
 async function renderView(res: Response, claim: Claim, claimId: string) {
 
   const pageTitle = 'PAGES.CONTACT_THEM.PAGE_TITLE_DEFENDANT';
-  const otherPartyName = claim?.getDefendantFullName();
-  const party = claim?.respondent1;
+  const defendantLRName = claim.isLRDefendant() ? claim?.respondentSolDetails.orgName : undefined;
+  const otherPartyName = claim.isLRDefendant() ? 'PAGES.CONTACT_THEM.DEFENDANT_LR' : claim?.getDefendantFullName();
+  const party =  claim.isLRDefendant() ? undefined : claim?.respondent1;
+  const solicitorEmailId = claim?.respondentSolicitor1EmailAddress;
 
   res.render(viewDefendantInformation, {
-    address: getAddress(party),
+    address: claim.isLRDefendant() ? getRespondentSolicitorAddress(claim) : getAddress(party),
     party,
     otherPartyName,
     pageCaption: 'PAGES.CONTACT_THEM.THE_RESPONSE',
     pageTitle,
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
+    solicitorEmailId,
+    defendantLRName,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
 }
