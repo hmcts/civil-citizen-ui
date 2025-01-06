@@ -1,24 +1,20 @@
-import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import { MediationAgreement } from 'models/mediation/mediationAgreement';
 import {
   DocumentInformation,
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {documentIdExtractor} from 'common/utils/stringUtils';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {Claim} from 'models/claim';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
-import {DocumentType} from 'models/document/documentType';
-import {
-  MediationUploadDocumentsCCD,
-} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { documentIdExtractor } from 'common/utils/stringUtils';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
+import { Claim } from 'models/claim';
+import { getSystemGeneratedCaseDocumentIdByType } from 'models/document/systemGeneratedCaseDocuments';
+import { DocumentType } from 'models/document/documentType';
+import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {
   isMediationDocumentsReferred,
   isMediationNonAttendanceDocs,
 } from 'services/features/document/mediation/mediationDocumentService';
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('documentViewMapper');
 
 export const mapperMediationAgreementToDocumentView = (documentTitle: string, mediationAgreement: MediationAgreement, mediationSettlementAgreedAt: Date, claimId: string, lang: string) => {
 
@@ -70,21 +66,20 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
 export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
   let documentId;
   const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
-  const documentType = claim.isLRDefendant()
-    ? DocumentType.SEALED_CLAIM
-    : DocumentType.DEFENDANT_DEFENCE;
   if (systemGeneratedCaseDocuments?.length > 0) {
     systemGeneratedCaseDocuments.forEach(doc => {
-      logger.info(doc.value.documentType + ' ' + doc.value.documentName);
-      if (doc.value.documentType == documentType) {
+      if (doc.value.documentType == DocumentType.DEFENDANT_DEFENCE) {
         if (doc.value.documentName.startsWith(stitchedDoc)) {
-          logger.info('Found ' + doc.value.documentName);
           documentId = documentIdExtractor(doc.value?.documentLink?.document_binary_url);
         }
       }
     });
-    if(documentId === undefined) {
-      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, 'defendant');
+    if (documentId === undefined) {
+      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
+    }
+    // If stitching is not enabled, generated document has type SEALED_CLAIM so will not have been found above
+    if (documentId === undefined) {
+      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
     }
     return documentId;
   } else {
