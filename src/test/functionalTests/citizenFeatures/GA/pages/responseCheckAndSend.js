@@ -49,8 +49,8 @@ class ResponseCheckAndSend {
   }
 
   async uploadDocument() {
-    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Do you want to upload documents to support your application\')]';
-    I.see('Do you want to upload documents to support your application?', applicatonTypeSelector);
+    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Do you want to upload documents to support your response?\')]';
+    I.see('Do you want to upload documents to support your response?', applicatonTypeSelector);
     I.see('No', applicatonTypeSelector);
     await I.see('Change', applicatonTypeSelector);
   }
