@@ -43,6 +43,7 @@
       }
     },
     {
+      "priority": 100,
       "request": {
         "method": "GET",
         "urlPattern": "/cases/.*/userCaseRoles",
