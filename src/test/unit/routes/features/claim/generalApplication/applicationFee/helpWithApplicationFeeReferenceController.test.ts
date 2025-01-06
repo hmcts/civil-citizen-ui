@@ -129,7 +129,7 @@ describe('General Application - Do you have a help with fees reference number', 
         .send({option: YesNo.YES, referenceNumber: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER'))
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER'));
         });
     });
 
