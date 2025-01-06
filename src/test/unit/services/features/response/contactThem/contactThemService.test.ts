@@ -84,9 +84,9 @@ describe('contact them service', () => {
       //When
       const address = getRespondentSolicitorAddress(claim);
       //Then
-      expect(address.addressLine1).toBe(claim.respondentSolDetails.address.AddressLine1);
-      expect(address.city).toBe(claim.respondentSolDetails.address.PostTown);
-      expect(address.postCode).toBe(claim.respondentSolDetails.address.PostCode);
+      expect(address.addressLine1).toBe(claim.respondentSolicitorDetails.address.AddressLine1);
+      expect(address.city).toBe(claim.respondentSolicitorDetails.address.PostTown);
+      expect(address.postCode).toBe(claim.respondentSolicitorDetails.address.PostCode);
     });
     it('should return solicitor correspondence address', () => {
       //Given
