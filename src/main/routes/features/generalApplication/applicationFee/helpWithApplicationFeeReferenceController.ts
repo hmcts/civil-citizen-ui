@@ -94,9 +94,9 @@ function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: b
 function replaceErrorConstraintsForAdditionFee(data: ValidationError[]): void {
   data.forEach(item => {
     const constraints = item.constraints;
-    for (let key in constraints) {
-      if (constraints[key] === "ERRORS.VALID_ENTER_REFERENCE_NUMBER") {
-        constraints[key] = "PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER";
+    for (const key in constraints) {
+      if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER') {
+        constraints[key] = 'PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER';
       }
     }
   });
