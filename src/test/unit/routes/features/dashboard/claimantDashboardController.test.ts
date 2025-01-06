@@ -26,8 +26,9 @@ import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
-import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import {ApplicationResponse, CCDApplication} from 'common/models/generalApplication/applicationResponse';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -412,7 +413,10 @@ describe('claimant Dashboard Controller', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponses : ApplicationResponse[] = [new ApplicationResponse()];
+      const applicationResponses: ApplicationResponse[] = [new ApplicationResponse('123', {
+        applicationIsCloaked: YesNoUpperCamelCase.YES,
+        applicationIsUncloakedOnce: YesNoUpperCamelCase.YES,
+      } as CCDApplication, ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION)];
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
