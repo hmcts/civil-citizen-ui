@@ -32,7 +32,7 @@ describe('System Document Info Extractor Service', () => {
     const result = getSystemGeneratedCaseDocumentIdByType(
       systemGeneratedCaseDocuments,
       documentType,
-      'claimant'
+      'claimant',
     );
 
     // Then
