@@ -4,7 +4,7 @@ import {
   formatAmountTwoDecimalPlaces,
 } from 'services/translation/claim/moneyConversation';
 
-describe('translate draft claim to ccd version', () => {
+describe('Money Conversion', () => {
   it.each([[100, 10000], [1, 100], [123, 12300], [8330.38, 833038], [312.90, 31290], [308.71, 30871], [281.78, 28178], [281.22, 28122]])('should convert money to pence', (amountInPounds, expectedAmount)=>{
     //Given
     //When
