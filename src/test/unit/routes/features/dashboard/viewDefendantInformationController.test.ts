@@ -72,13 +72,13 @@ describe('View Defendant Information', () => {
   it('should return contact defendant LR correspondence address details after NOC submitted and sol details updated ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     caseData.specRespondent1Represented = YesNoUpperCamelCase.YES;
+    caseData.respondentSolicitor1EmailAddress = 'abc@gmail.com';
     caseData.respondentSolicitorDetails= {
       'address': {
         'PostCode': 'NN3 9SS',
         'PostTown': 'NORTHAMPTON',
         'AddressLine1': '29, SEATON DRIVE',
       },
-      'orgName': 'Civil - Organisation 3',
     };
     caseData.specRespondentCorrespondenceAddressRequired = YesNoUpperCamelCase.YES;
     caseData.specRespondentCorrespondenceAddressdetails= {
@@ -96,6 +96,8 @@ describe('View Defendant Information', () => {
         expect(res.text).toContain('26, SEATON DRIVE');
         expect(res.text).toContain('ABC');
         expect(res.text).toContain('L7 2PZ');
+        expect(res.text).toContain('Email');
+        expect(res.text).toContain('abc@gmail.com');
       });
   });
 });
