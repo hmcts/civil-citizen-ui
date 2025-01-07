@@ -70,12 +70,13 @@
     }
   ]), applicantDocRows) %}
   {% for item in applicantDocuments.documents %}
+    {% set applicantFileName = t(item.fileName) %}
     {% set applicantDocRows = (applicantDocRows.push([
       {
-        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, applicantFileName, t(item.uploadDate))
       },
       {
-        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text, t('COMMON.APPLICATION_DOCUMENTS.APPLICANT') + applicantFileName)
       }]), applicantDocRows) %}
   {% endfor %}
 {% endif %}
@@ -91,12 +92,13 @@
     }
   ]), respondentDocRows) %}
   {% for item in respondentDocuments.documents %}
+    {% set respondentFileName = t(item.fileName) %}
     {% set respondentDocRows = (respondentDocRows.push([
       {
-        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, respondentFileName, t(item.uploadDate))
       },
       {
-        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text, t('COMMON.APPLICATION_DOCUMENTS.RESPONDENT') + respondentFileName)
       }]), respondentDocRows) %}
   {% endfor %}
 {% endif %}
