@@ -21,7 +21,7 @@ describe('translate draft claim to ccd version', () => {
     expect(amount).toBe(expectedAmount);
   });
 
-  it.each([[100, 100.00], [1, 1.00], [123, 123.00], [8330.380, 8330.38], [312.9, 312.90], [270.725, 270.73]])('should convert money to two decimal places value', (amountInPounds, expectedAmount)=>{
+  it.each([[100, 100.00], [1, 1.00], [123, 123.00], [8330.380, 8330.38], [312.9, 312.90], [270.725, 270.73]])('should format amount value with two decimal places', (amountInPounds, expectedAmount)=>{
     //Given
     //When
     const amount = formatAmountTwoDecimalPlaces(amountInPounds);
