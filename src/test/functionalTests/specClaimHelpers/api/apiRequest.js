@@ -9,9 +9,9 @@ const TASK_MAX_RETRIES = 20;
 const TASK_RETRY_TIMEOUT_MS = 20000;
 
 const tokens = {};
-const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
-const getCcdCaseUrl = (userId, caseId) => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
-const getCaseDetailsUrl = (userId, caseId) => `${config.url.ccdDataStore}/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}/cases/${caseId}`;
+const getCcdDataStoreBaseUrl = (caseType = 'CIVIL') => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${caseType}`;
+const getCcdCaseUrl = (userId, caseId, caseType = 'CIVIL') => `${config.url.ccdDataStore}/aggregated/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${caseType}/cases/${caseId}`;
+const getCaseDetailsUrl = (userId, caseId, caseType = 'CIVIL') => `${config.url.ccdDataStore}/caseworkers/${userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${caseType}/cases/${caseId}`;
 //const getXUIURL = () => `${config.url.manageCase}/data/case-types/CIVIL`;
 const getRequestHeaders = (userAuth) => {
   return {
@@ -54,8 +54,8 @@ module.exports = {
       .then(response => response.json());
   },
 
-  startEvent: async (eventName, caseId) => {
-    let url = getCcdDataStoreBaseUrl();
+  startEvent: async (eventName, caseId, caseType='CIVIL') => {
+    let url = getCcdDataStoreBaseUrl(caseType);
     if (caseId) {
       url += `/cases/${caseId}`;
     }
@@ -115,8 +115,8 @@ module.exports = {
       }, 'POST', expectedStatus);
   },
 
-  submitEvent: async (eventName, caseData, caseId) => {
-    let url = `${getCcdDataStoreBaseUrl()}/cases`;
+  submitEvent: async (eventName, caseData, caseId, caseType='CIVIL') => {
+    let url = `${getCcdDataStoreBaseUrl(caseType)}/cases`;
     if (caseId) {
       url += `/${caseId}/events`;
     }
