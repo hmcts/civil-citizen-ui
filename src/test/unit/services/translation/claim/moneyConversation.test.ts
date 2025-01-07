@@ -1,4 +1,8 @@
-import {convertToPence, convertToPenceFromString} from 'services/translation/claim/moneyConversation';
+import {
+  convertToPence,
+  convertToPenceFromString,
+  formatAmountTwoDecimalPlaces,
+} from 'services/translation/claim/moneyConversation';
 
 describe('translate draft claim to ccd version', () => {
   it.each([[100, 10000], [1, 100], [123, 12300], [8330.38, 833038], [312.90, 31290], [308.71, 30871], [281.78, 28178], [281.22, 28122]])('should convert money to pence', (amountInPounds, expectedAmount)=>{
@@ -13,6 +17,14 @@ describe('translate draft claim to ccd version', () => {
     //Given
     //When
     const amount = convertToPenceFromString(amountInPounds.toString());
+    //Then
+    expect(amount).toBe(expectedAmount);
+  });
+
+  it.each([[100, 100.00], [1, 1.00], [123, 123.00], [8330.380, 8330.38], [312.9, 312.90], [270.725, 270.73]])('should convert money to two decimal places value', (amountInPounds, expectedAmount)=>{
+    //Given
+    //When
+    const amount = formatAmountTwoDecimalPlaces(amountInPounds);
     //Then
     expect(amount).toBe(expectedAmount);
   });
