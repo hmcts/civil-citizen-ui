@@ -1634,12 +1634,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.20.6":
-  version: 7.21.0
-  resolution: "@babel/runtime@npm:7.21.0"
+"@babel/runtime@npm:^7.23.2":
+  version: 7.26.0
+  resolution: "@babel/runtime@npm:7.26.0"
   dependencies:
-    regenerator-runtime: ^0.13.11
-  checksum: 7b33e25bfa9e0e1b9e8828bb61b2d32bdd46b41b07ba7cb43319ad08efc6fda8eb89445193e67d6541814627df0ca59122c0ea795e412b99c5183a0540d338ab
+    regenerator-runtime: ^0.14.0
+  checksum: c8e2c0504ab271b3467a261a8f119bf2603eb857a0d71e37791f4e3fae00f681365073cc79f141ddaa90c6077c60ba56448004ad5429d07ac73532be9f7cf28a
   languageName: node
   linkType: hard
 
@@ -4997,7 +4997,7 @@ __metadata:
     helmet: ^7.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
-    i18next: ^22.4.6
+    i18next: ^24.0.0
     i18next-fs-backend: ^2.1.1
     i18next-http-middleware: ^3.2.1
     ioredis: ^5.3.2
@@ -7852,12 +7852,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^22.4.6":
-  version: 22.5.1
-  resolution: "i18next@npm:22.5.1"
+"i18next@npm:^24.0.0":
+  version: 24.2.1
+  resolution: "i18next@npm:24.2.1"
   dependencies:
-    "@babel/runtime": ^7.20.6
-  checksum: 175f8ab7fac2abcee147b00cc2d8e7d4fa9b05cdc227f02cac841fc2fd9545ed4a6d88774f594f8ad12dc944e4d34cc8e88aa00c8b9947baef9e859d93abd305
+    "@babel/runtime": ^7.23.2
+  peerDependencies:
+    typescript: ^5
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 6c4b0e5829381fb66f360ec1827db4181335ecb87529710cca3175eaebbbc037f919eb230f07d09a62a00d7bd8b9912c32123fb8a168ca275b8ca916048c763f
   languageName: node
   linkType: hard
 
@@ -11643,13 +11648,6 @@ __metadata:
   version: 1.4.2
   resolution: "regenerate@npm:1.4.2"
   checksum: 3317a09b2f802da8db09aa276e469b57a6c0dd818347e05b8862959c6193408242f150db5de83c12c3fa99091ad95fb42a6db2c3329bfaa12a0ea4cbbeb30cb0
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.11":
-  version: 0.13.11
-  resolution: "regenerator-runtime@npm:0.13.11"
-  checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
   languageName: node
   linkType: hard
 
