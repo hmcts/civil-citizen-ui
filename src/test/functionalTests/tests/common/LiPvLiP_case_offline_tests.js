@@ -6,7 +6,7 @@ const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2
 const {caseOffline, caseOfflineAfterSDO} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
-let caseData, claimNumber, claimRef, notification, onlineNotification;
+let caseData, claimNumber, claimRef, notification;
 
 Feature('Lip v Lip - Case Offline Tests');
 
