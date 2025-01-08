@@ -4,7 +4,7 @@ ccd:
       enabled: true
     ras:
       enabled: true
-  
+
   ccd-data-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
@@ -13,6 +13,12 @@ ccd:
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
         DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      secrets:
+        DATA_STORE_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
+
   am-role-assignment-service:
     java:
       releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
@@ -28,6 +34,7 @@ ccd:
           secrets:
             - name: role-assignment-service-LD-SDK-KEY
               alias: LD_SDK_KEY
+
   ccd-definition-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
@@ -39,6 +46,12 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
+      secrets:
+        DEFINITION_STORE_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
+
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     imageTag: "7.17.1"
@@ -87,7 +100,6 @@ ccd:
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
-
 
 civil-service:
   enabled: true
