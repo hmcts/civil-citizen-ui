@@ -121,7 +121,10 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 25m
+            cpu: 500m
+            memory: 2048Mi
+        podAnnotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
         initdb:
           scripts:
             init.sql: |
@@ -134,6 +137,8 @@ civil-service:
               CREATE DATABASE "wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "wa_workflow_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "cft_task_db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "cft_task_db_replica" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "role-assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       auth:
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
