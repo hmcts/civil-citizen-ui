@@ -6,7 +6,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
+const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 
 let claimRef;
 let caseData;
@@ -34,7 +34,7 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citiz
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
   }
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);

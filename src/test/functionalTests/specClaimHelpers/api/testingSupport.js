@@ -81,6 +81,33 @@ module.exports = {
       throw new Error(`Business process failed for case: ${caseId}, incident message: ${incidentMessage}`);
   },
 
+  waitForGAFinishedBusinessProcess: async (caseId, user) => {
+    const authToken = await idamHelper.accessToken(user);
+    console.log('** Start waitForGAFinishedBusinessProcess to wait for GA Camunda Tasks to Start and Finish **');
+
+    await retry(() => {
+      return restHelper.request(
+        `${config.url.generalApplication}/testing-support/case/${caseId}/business-process/ga`,
+        {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        }, null, 'GET')
+        .then(async response => await response.json()).then(response => {
+          let businessProcess = response.businessProcess;
+          if (response.incidentMessage) {
+            incidentMessage = response.incidentMessage;
+          } else if (businessProcess && businessProcess.status !== 'FINISHED') {
+            throw new Error(`Ongoing business process: ${businessProcess.camundaEvent}, case id: ${caseId}, status: ${businessProcess.status},`
+              + ` process instance: ${businessProcess.processInstanceId}, last finished activity: ${businessProcess.activityId}`);
+          }
+        });
+    }, MAX_RETRIES, RETRY_TIMEOUT_MS);
+    console.log('** End of waitForGAFinishedBusinessProcess **');
+
+    if (incidentMessage)
+      throw new Error(`Business process failed for case: ${caseId}, incident message: ${incidentMessage}`);
+  },
+
   assignCaseToDefendant: async (caseId, caseRole, user) => {
     const authToken = await idamHelper.accessToken(user);
 
