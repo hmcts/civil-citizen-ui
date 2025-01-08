@@ -114,12 +114,14 @@
     }
   ]), courtDocRows) %}
   {% for item in courtDocuments.documents %}
+  {% set courtFileName = t(item.fileName) %}
+
     {% set courtDocRows = (courtDocRows.push([
       {
-        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, courtFileName, t(item.uploadDate))
       },
       {
-        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text, courtFileName)
       }]), courtDocRows) %}
   {% endfor %}
 {% endif %}
