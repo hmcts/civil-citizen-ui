@@ -18,7 +18,6 @@ let caseData, claimNumber, claimRef, taskListItem, notification, deadline, today
 Feature('Case progression - Request for reconsideration');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -30,11 +29,9 @@ Before(async ({api}) => {
     deadline = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(1));
     formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
     todayDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
-  }
 });
 
 Scenario('Claimant LR performs Request for reconsideration and Defendant LiP adds a comment', async ({I, api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     //claimant performs request for reconsideration
     await api.performRequestForReconsideration(config.applicantSolicitorUser, claimRef);
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -51,12 +48,10 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
       await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
-    }
   }
 }).tag('@nightly-regression-cp');
 
 Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
@@ -76,6 +71,5 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
       await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
       await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
-    }
   }
 }).tag('@nightly-regression-cp');

@@ -15,7 +15,6 @@ Feature('Case progression journey - Verify latest Update page For an Order being
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -26,11 +25,9 @@ Before(async ({api}) => {
     await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  }
 });
 
 Scenario('Case progression journey - Fast Track - Verify latest Update page for an Order being Created', async ({I}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       const notification = orderMade();
@@ -45,6 +42,5 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
     } else {
       CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
     }
-  }
 }).tag('@nightly-regression-cp');
 

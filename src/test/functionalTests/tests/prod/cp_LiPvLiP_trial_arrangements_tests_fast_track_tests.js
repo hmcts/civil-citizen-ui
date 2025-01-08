@@ -17,7 +17,6 @@ let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromTo
 Feature('Case progression - Lip v Lip - Trial Arrangements journey - Fast Track');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -34,11 +33,9 @@ Before(async ({api}) => {
     await api.performTrialArrangementsCitizen(config.defendantCitizenUser, claimRef);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  }
 });
 
 Scenario('Both parties complete their trial arrangements - Fast Track', async ({I}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       // claimant checks notifications other party trial arrangements completed and complete your trial arrangements
@@ -59,6 +56,5 @@ Scenario('Both parties complete their trial arrangements - Fast Track', async ({
       notification = otherSideTrialArrangements();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
-    }
   }
 }).tag('@nightly-regression-cp');

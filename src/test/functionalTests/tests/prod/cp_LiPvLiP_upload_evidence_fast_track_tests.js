@@ -16,7 +16,6 @@ let claimRef,caseData, claimNumber, taskListItem, notification, formattedCaseId,
 Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -28,11 +27,9 @@ Before(async ({api}) => {
     await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  }
 });
 
 Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     if (isDashboardServiceEnabled) {
       notification = orderMade();
@@ -50,7 +47,6 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
       taskListItem = viewDocuments();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-    }
   }
 }).tag('@nightly-regression-cp');
 

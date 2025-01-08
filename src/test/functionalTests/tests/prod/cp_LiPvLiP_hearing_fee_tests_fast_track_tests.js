@@ -7,19 +7,18 @@ const StringUtilsComponent = require('../../citizenFeatures/caseProgression/util
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { hearingScheduled, payTheHearingFeeClaimant, hearingFeePaidFull} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { hearingScheduled, payTheHearingFeeClaimant, hearingFeePaidFull } = require('../../specClaimHelpers/dashboardNotificationConstants');
 const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashboardTasklistConstants');
 
-const claimType = 'SmallClaims';
-const claimAmount = '£1,500';
-const feeAmount = '123';
+const claimType = 'FastTrack';
+const claimAmount = '£15,000';
+const feeAmount = '545';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
+    fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
     hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
     hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -29,15 +28,13 @@ Before(async ({api}) => {
     claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  }
 });
 
-Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
+Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       notification = hearingScheduled(hearingDate);
@@ -64,11 +61,9 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
     }
-  }
 }).tag('@nightly-regression-cp');
 
-Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
+Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
@@ -78,12 +73,9 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
       notification = hearingFeePaidFull();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
     }
-  }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');

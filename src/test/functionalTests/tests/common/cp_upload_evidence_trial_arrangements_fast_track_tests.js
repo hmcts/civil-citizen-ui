@@ -17,7 +17,6 @@ let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId
 Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track ');
 
 Before(async ({api}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
     trialArrangementsDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fourWeeksFromToday);
@@ -33,11 +32,9 @@ Before(async ({api}) => {
     await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  }
 });
 
 Scenario('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     if (isDashboardServiceEnabled) {
       // claimant checks notifications for orders, upload docs and other party trial arrangements completed
@@ -71,6 +68,5 @@ Scenario('Fast Track Response with RejectAll and DisputeAll - both parties uploa
       await I.click(claimNumber);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
     }
-  }
-}).tag('@nightly-regression-cp');
+}).tag('@regression-cp');
 
