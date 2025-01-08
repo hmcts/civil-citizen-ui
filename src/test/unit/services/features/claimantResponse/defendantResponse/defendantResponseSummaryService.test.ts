@@ -362,7 +362,7 @@ describe("Defendant's response summary service", () => {
             document_url: 'http://dm-store:8080/documents/123',
             document_filename: 'doc.pdf',
             document_binary_url: 'http://dm-store:8080/documents/123/binary',
-          }
+          },
         },
       },
     ];
