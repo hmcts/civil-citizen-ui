@@ -120,14 +120,14 @@ export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection
   const evidenceDocId = getSystemGeneratedCaseDocumentIdByType(claim.defendantResponseDocuments, DocumentType.DEFENDANT_DEFENCE);
   if (evidenceDocId) {
     const evidenceDocName = claim.defendantResponseDocuments
-        .find(doc => doc.value.documentLink.document_url.includes(evidenceDocId))
-        .value.documentName;
+      .find(doc => doc.value.documentLink.document_url.includes(evidenceDocId))
+      .value.documentName;
     const evidenceDocFileType = evidenceDocName.lastIndexOf('.') !== -1
-        ? evidenceDocName.slice(evidenceDocName.lastIndexOf('.') + 1)
-        : undefined;
+      ? evidenceDocName.slice(evidenceDocName.lastIndexOf('.') + 1)
+      : undefined;
     const evidenceDocumentLinkText = evidenceDocFileType
-        ? `${t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng})} (${evidenceDocFileType.toUpperCase()})`
-        : t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng});
+      ? `${t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng})} (${evidenceDocFileType.toUpperCase()})`
+      : t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng});
     const evidenceDocumentLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', evidenceDocId);
     return [
       {
