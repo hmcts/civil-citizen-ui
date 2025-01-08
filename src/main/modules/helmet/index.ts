@@ -2,6 +2,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import * as express from 'express';
 import {HelmetOptions,default as helmet} from 'helmet';
 import config from 'config';
+import {Response} from 'express';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
 const self = "'self'";
@@ -20,7 +21,7 @@ const scriptSrcElem = [
   ...webChat,
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
   (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
-  (req: AppRequest) => `'nonce-${req.cookies.nonceCNBCWebChat}'`,
+  (_req: AppRequest, res: Response) => `'nonce-${res.locals.nonceCNBCWebChat}'`,
 ];
 
 const styleSrc = [

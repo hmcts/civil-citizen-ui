@@ -114,7 +114,6 @@ export class Nunjucks {
 
     const nonceValue = crypto.randomBytes(16).toString('base64');
     const nonceDataLayer = crypto.randomBytes(16).toString('base64');
-    const nonceCNBCWebChat = crypto.randomBytes(16).toString('base64');
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
@@ -163,7 +162,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
     nunjucksEnv.addGlobal('nonceDataLayer', nonceDataLayer);
-    nunjucksEnv.addGlobal('nonceCNBCWebChat', nonceCNBCWebChat);
     nunjucksEnv.addGlobal('TaskStatus', TaskStatus);
     nunjucksEnv.addGlobal('ApplicationTypeOption', ApplicationTypeOption);
     nunjucksEnv.addGlobal('HearingTypeOptions', HearingTypeOptions);
@@ -176,8 +174,8 @@ export class Nunjucks {
       res.locals.pagePath = req.path;
       req.cookies.nonceValue = nonceValue;
       req.cookies.nonceDataLayer = nonceDataLayer;
-      req.cookies.nonceCNBCWebChat = nonceCNBCWebChat;
       res.locals.user=req.session.user;
+      res.locals.nonceCNBCWebChat = crypto.randomBytes(16).toString('base64');
       next();
     });
   }
