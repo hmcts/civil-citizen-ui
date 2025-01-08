@@ -48,10 +48,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
       let dashboardId;
+      const userId = (<AppRequest>req)?.session?.user?.id.toString();
 
       if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
-        const userId = (<AppRequest>req)?.session?.user?.id.toString();
         claim = await getClaimById(userId, req, true);
         dashboardId = userId;
       } else {
@@ -67,6 +67,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
           await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
         }
         await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
