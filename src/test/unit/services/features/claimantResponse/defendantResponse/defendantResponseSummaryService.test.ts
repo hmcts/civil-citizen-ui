@@ -140,6 +140,8 @@ describe("Defendant's response summary service", () => {
         text: 'disagree text',
       };
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.defendantResponseTimelineDocument = undefined;
+      claim.defendantResponseDocuments = undefined;
     });
     it('Part admission - Not paid - Instalments scenario', () => {
       // Given
