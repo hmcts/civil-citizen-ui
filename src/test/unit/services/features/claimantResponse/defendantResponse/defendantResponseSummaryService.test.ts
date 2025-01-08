@@ -333,6 +333,6 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[2].data?.text).toEqual('1 January 2040');
     expect(defendantsResponseContent[3].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID');
     expect(defendantsResponseContent[4].data?.text).toEqual('Cash');
-    expect(defendantsResponseContent[5]).toBeUndefined();
+    expect(defendantsResponseContent[5].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
   });
 });
