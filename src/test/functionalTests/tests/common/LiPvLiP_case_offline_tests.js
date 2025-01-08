@@ -6,7 +6,7 @@ const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2
 const {caseOffline, caseOnline, caseOfflineAfterSDO} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
-let caseData, claimNumber, claimRef, notification;
+let caseData, claimNumber, claimRef, notification, onlineNotification;
 
 Feature('Lip v Lip - Case Offline Tests');
 
@@ -23,8 +23,7 @@ Before(async ({api}) => {
 
 Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-  // After Noc for full defence case remains online
-  notification = caseOnline();
+
   if (isDashboardServiceEnabled) {
     await api.caseProceedsInCaseman();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -36,10 +35,12 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
 
 Scenario('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  // After Noc for full defence case remains online
+  onlineNotification = caseOnline();
   if (isDashboardServiceEnabled) {
     await noc.requestNoticeOfChangeForLipRespondent(claimRef, config.applicantSolicitorUser);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
 }).tag('@regression');
 
