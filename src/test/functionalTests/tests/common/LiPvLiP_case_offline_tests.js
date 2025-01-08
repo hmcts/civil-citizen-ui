@@ -3,7 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { createAccount } = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {caseOffline, caseOnline, caseOfflineAfterSDO} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
@@ -23,6 +23,8 @@ Before(async ({api}) => {
 
 Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  // After Noc for full defence case remains online
+  notification = caseOnline();
   if (isDashboardServiceEnabled) {
     await api.caseProceedsInCaseman();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
