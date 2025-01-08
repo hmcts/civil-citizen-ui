@@ -12,11 +12,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Webchat</h2>
-          {% if isProd %}
-            <div id="__8x8-chat-button-container-script_1191773643670e666a982030.90013235"></div>
-          {% else %}
-            <div id="__8x8-chat-button-container-script_35780229675c3e23dcdd66.11858382"></div>
-          {% endif %}
+          <div id="{{ webChat.buttonContainerId }}"></div>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">Telephone</h2>
           <p class="govuk-body govuk-!-margin-bottom-0">0300 123 1056</p>
           <h2 class="govuk-heading-m govuk-!-margin-top-6">Opening Times</h2>
@@ -33,4 +29,29 @@
       </div>
     </main>
   </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+
+  <script type="text/javascript" nonce="{{ nonceCNBCWebChat }}">
+    window.__8x8Chat = {
+      uuid: '{{ webChat.uuid }}',
+      tenant: '{{ webChat.tenant }}',
+      channel: '{{ webChat.channel }}',
+      channelUuid: '{{ webChat.channelUuid }}',
+      domain: "https://vcc-eu4.8x8.com",
+      path: "/.",
+      buttonContainerId: '{{ webChat.buttonContainerId }}',
+      align: "right"
+    };
+    (function() {
+      var se = document.createElement("script");
+      se.type = "text/javascript";
+      se.async = true;
+      se.src = window.__8x8Chat.domain + window.__8x8Chat.path + "/CHAT/common/js/chat.js";
+      var os = document.getElementsByTagName("script")[0];
+      os.parentNode.insertBefore(se, os);
+    })();
+  </script>
 {% endblock %}
