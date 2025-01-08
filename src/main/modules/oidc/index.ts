@@ -29,7 +29,11 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
 };
 
 const isPaymentConfirmationUrl = (req: Request): boolean => {
-  const paymentUrls = ['/hearing-payment-confirmation', '/claim-issued-payment-confirmation'];
+  const paymentUrls = [
+    '/hearing-payment-confirmation',
+    '/claim-issued-payment-confirmation',
+    '/general-application/payment-confirmation',
+  ];
   return paymentUrls.some(url => req.originalUrl.startsWith(url));
 };
 
@@ -215,8 +219,9 @@ export const getPaymentConfirmationUrl = async (userId: string, app: Application
 };
 
 const getClaimId = (originalUrl: string) => {
-  const extractClaimId = originalUrl?.split('/')[2];
-  if (extractClaimId && extractClaimId.length === 16) {
-    return extractClaimId;
+  const regex = /\/(\d{16})\//;
+  const match = originalUrl?.match(regex);
+  if (match && match.length >=2 && match[1].length === 16) {
+    return match[1];
   }
 };
