@@ -366,8 +366,8 @@
       "NO": "Nac oes"
     },
     "APPLICATION_DOCUMENTS": {
-      "Applicant": "Applicant ",
-      "Respondent": "Respondent "
+      "APPLICANT": "Applicant ",
+      "RESPONDENT": "Respondent "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
