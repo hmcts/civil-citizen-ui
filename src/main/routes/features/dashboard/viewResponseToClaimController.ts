@@ -31,7 +31,6 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
     claim,
     claimId,
     lang);
-
   switch (claim.respondent1.responseType) {
     case ResponseType.PART_ADMISSION:
       responseType = 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_PART';
@@ -41,6 +40,9 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
       break;
     case ResponseType.FULL_DEFENCE:
       responseType = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL';
+      break;
+    case ResponseType.COUNTER_CLAIM:
+      responseType = 'PAGES.CITIZEN_RESPONSE_TYPE.COUNTER_CLAIM';
       break;
     default:
       responseType = null;
