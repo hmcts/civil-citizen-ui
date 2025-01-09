@@ -14,8 +14,15 @@ type WebChat = {
 };
 
 contactCNBCController.get(CONTACT_CNBC_URL, (req, res) => {
-  const webChat = config.get<WebChat>('webChat.cnbc');
-  res.render(contactUsViewPath, { pageTitle: 'Civil National Business Centre', webChat });
+  const webChatCNBC = config.get<WebChat>('webChat.cnbc');
+  const webChatConfig: WebChat = {
+    uuid: webChatCNBC.uuid,
+    tenant: webChatCNBC.tenant,
+    channel: webChatCNBC.channel,
+    channelUuid: webChatCNBC.channelUuid,
+    buttonContainerId: webChatCNBC.buttonContainerId,
+  };
+  res.render(contactUsViewPath, { pageTitle: 'Civil National Business Centre', webChatConfig });
 });
 
 export default contactCNBCController;

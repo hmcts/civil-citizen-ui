@@ -12,7 +12,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Webchat</h2>
-          <div id="{{ webChat.buttonContainerId }}"></div>
+          <div id="{{ webChatConfig.buttonContainerId }}"></div>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">Telephone</h2>
           <p class="govuk-body govuk-!-margin-bottom-0">0300 123 1056</p>
           <h2 class="govuk-heading-m govuk-!-margin-top-6">Opening Times</h2>
@@ -36,13 +36,13 @@
 
   <script type="text/javascript" nonce="{{ nonceCNBCWebChat }}">
     window.__8x8Chat = {
-      uuid: '{{ webChat.uuid }}',
-      tenant: '{{ webChat.tenant }}',
-      channel: '{{ webChat.channel }}',
-      channelUuid: '{{ webChat.channelUuid }}',
+      uuid: '{{ webChatConfig.uuid }}',
+      tenant: '{{ webChatConfig.tenant }}',
+      channel: '{{ webChatConfig.channel }}',
+      channelUuid: '{{ webChatConfig.channelUuid }}',
       domain: "https://vcc-eu4.8x8.com",
       path: "/.",
-      buttonContainerId: '{{ webChat.buttonContainerId }}',
+      buttonContainerId: '{{ webChatConfig.buttonContainerId }}',
       align: "right"
     };
     (function() {
