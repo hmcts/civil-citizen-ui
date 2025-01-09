@@ -175,7 +175,7 @@ export class Nunjucks {
       req.cookies.nonceValue = nonceValue;
       req.cookies.nonceDataLayer = nonceDataLayer;
       res.locals.user=req.session.user;
-      res.locals.nonceCNBCWebChat = crypto.randomBytes(16).toString('base64');
+      res.locals.nonceWebChat = crypto.randomBytes(16).toString('base64');
       next();
     });
   }
