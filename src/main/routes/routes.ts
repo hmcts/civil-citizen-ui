@@ -428,8 +428,7 @@ import defendantFinalPaymentDateController from 'routes/features/generalApplicat
 import coscCheckAnswersController from 'routes/features/generalApplication/certOfSorC/checkAnswersController';
 import submitCoScApplicationConfirmationController
   from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
-import gaUnavailabilityDatesConfirmationController
-  from 'routes/features/generalApplication/ApplicationUnavailabilityNextThreeMonthsConfirmationController';
+import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 
 export default [
   homeController,
