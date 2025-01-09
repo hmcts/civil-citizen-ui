@@ -18,64 +18,64 @@ let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromTo
 Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
 
 Before(async ({api}) => {
-    fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
-    hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
-    hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
-    await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
+  hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
+  hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
+  await api.waitForFinishedBusinessProcess();
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
 Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      notification = hearingScheduled(hearingDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-      await ResponseSteps.SignOut();
-      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-      await I.click(claimNumber);
-      await I.dontSee(notification.title);
-      notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      taskListItem = viewHearings();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
-      await I.click(notification.nextSteps2);
-    }
-    formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
-    await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
-    await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceEnabled) {
-      await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
-      taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
-    }
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  if (isDashboardServiceEnabled) {
+    notification = hearingScheduled(hearingDate);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+    await ResponseSteps.SignOut();
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.click(claimNumber);
+    await I.dontSee(notification.title);
+    notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    taskListItem = viewHearings();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    taskListItem = payTheHearingFee(hearingFeeDueDate);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
+    await I.click(notification.nextSteps2);
+  }
+  formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
+  await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
+  await api.waitForFinishedBusinessProcess();
+  if (isDashboardServiceEnabled) {
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    taskListItem = payTheHearingFee(hearingFeeDueDate);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
+  }
 }).tag('@nightly-regression-cp');
 
 Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-    }
-    await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
-    await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceEnabled) {
-      notification = hearingFeePaidFull();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
-    }
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  if (isDashboardServiceEnabled) {
+    notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+  }
+  await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+  await api.waitForFinishedBusinessProcess();
+  if (isDashboardServiceEnabled) {
+    notification = hearingFeePaidFull();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    taskListItem = payTheHearingFee(hearingFeeDueDate);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
+  }
 }).tag('@nightly-regression-cp');

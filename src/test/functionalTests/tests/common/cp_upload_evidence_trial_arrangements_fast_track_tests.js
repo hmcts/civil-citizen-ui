@@ -17,56 +17,56 @@ let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId
 Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track ');
 
 Before(async ({api}) => {
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
-    trialArrangementsDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fourWeeksFromToday);
-    claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
-    await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
-    await api.triggerTrialArrangementsNotifications(config.applicantSolicitorUser, claimRef);
-    await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
-    await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
+  trialArrangementsDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fourWeeksFromToday);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+  await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
+  await api.triggerTrialArrangementsNotifications(config.applicantSolicitorUser, claimRef);
+  await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
+  await api.waitForFinishedBusinessProcess();
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
 Scenario('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
-    if (isDashboardServiceEnabled) {
-      // claimant checks notifications for orders, upload docs and other party trial arrangements completed
-      notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      notification = otherSideTrialArrangements();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      taskListItem = uploadHearingDocuments();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
-      notification = uploadDocuments('defence');
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-    }
-    formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
-    uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
-    //defendant uploads documents
-    await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£15,000', uploadDate);
-    if (isDashboardServiceEnabled) {
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
-      taskListItem = viewDocuments();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      notification = confirmTrialArrangements(trialArrangementsDueDate);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      taskListItem = addTrialArrangements(trialArrangementsDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
-      await I.click(notification.nextSteps);
-      //defendant completes trial arrangements
-      await TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, formattedCaseId, '£15,000', trialArrangementsDueDate, 'Yes', partyType);
-      await TrialArrangementSteps.verifyTrialArrangementsMade('Yes');
-      await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
-    }
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
+  if (isDashboardServiceEnabled) {
+    // claimant checks notifications for orders, upload docs and other party trial arrangements completed
+    notification = orderMade();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    notification = otherSideTrialArrangements();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    taskListItem = uploadHearingDocuments();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
+    notification = uploadDocuments('defence');
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+  }
+  formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
+  uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
+  //defendant uploads documents
+  await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£15,000', uploadDate);
+  if (isDashboardServiceEnabled) {
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
+    taskListItem = viewDocuments();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    notification = confirmTrialArrangements(trialArrangementsDueDate);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    taskListItem = addTrialArrangements(trialArrangementsDueDate);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
+    await I.click(notification.nextSteps);
+    //defendant completes trial arrangements
+    await TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, formattedCaseId, '£15,000', trialArrangementsDueDate, 'Yes', partyType);
+    await TrialArrangementSteps.verifyTrialArrangementsMade('Yes');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
+  }
 }).tag('@regression-cp');
 

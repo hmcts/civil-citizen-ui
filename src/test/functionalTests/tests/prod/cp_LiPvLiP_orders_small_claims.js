@@ -12,40 +12,40 @@ let caseData, claimNumber, claimRef, taskListItem, notification;
 Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims');
 
 Before(async ({api}) => {
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-    await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
-    await api.waitForFinishedBusinessProcess();
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
+  await api.waitForFinishedBusinessProcess();
 });
 
 Scenario('Case progression journey - Small Claims - Claimant and Defendant verify Dashboard an Order being Created', async ({I}) => {
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      //Claimant verifies dashboard
-      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-      notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      taskListItem = ordersAndNotices();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      await I.click(notification.nextSteps);
-      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-      await I.click(claimNumber);
-      await I.dontSee(notification.title);
-      //Defendant verifies dashboard
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      taskListItem = ordersAndNotices();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      await I.click(notification.nextSteps);
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      await I.click(claimNumber);
-      await I.dontSee(notification.title);
-    }
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  if (isDashboardServiceEnabled) {
+    //Claimant verifies dashboard
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    notification = orderMade();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    taskListItem = ordersAndNotices();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    await I.click(notification.nextSteps);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.click(claimNumber);
+    await I.dontSee(notification.title);
+    //Defendant verifies dashboard
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    notification = orderMade();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    taskListItem = ordersAndNotices();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    await I.click(notification.nextSteps);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.click(claimNumber);
+    await I.dontSee(notification.title);
+  }
 }).tag('@nightly-regression-cp');
 

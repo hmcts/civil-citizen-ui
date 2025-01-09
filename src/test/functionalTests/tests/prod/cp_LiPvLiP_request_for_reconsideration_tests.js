@@ -18,82 +18,82 @@ let caseData, claimNumber, claimRef, taskListItem, notification, deadline, today
 Feature('Case progression - Lip v Lip - Request for reconsideration');
 
 Before(async ({api}) => {
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.legalAdvisor, claimRef, claimType);
-    await api.waitForFinishedBusinessProcess();
-    deadline = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(1));
-    formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
-    todayDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.performCaseProgressedToSDO(config.legalAdvisor, claimRef, claimType);
+  await api.waitForFinishedBusinessProcess();
+  deadline = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(1));
+  formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
+  todayDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
 });
 
 Scenario('Claimant performs Request for reconsideration and Defendant adds a comment', async ({I}) => {
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  if (isDashboardServiceEnabled) {
+    //claimant performs request for reconsideration
+    notification = orderMadeLA(deadline);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+    await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Sir John Doe', deadline);
+    //defendant adds a comment to the claimant's request
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    notification = reviewRequested(deadline);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+    await RequestForReconsideraionSteps.initiateAddYourComments(formattedCaseId, claimAmount, 'Miss Jane Doe');
+    taskListItem = ordersAndNotices();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    await I.click(taskListItem.title);
+    await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
+    //claimant checks defendant's comment
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      //claimant performs request for reconsideration
-      notification = orderMadeLA(deadline);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-      await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Sir John Doe', deadline);
-      //defendant adds a comment to the claimant's request
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      notification = reviewRequested(deadline);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-      await RequestForReconsideraionSteps.initiateAddYourComments(formattedCaseId, claimAmount, 'Miss Jane Doe');
-      taskListItem = ordersAndNotices();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      await I.click(taskListItem.title);
-      await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
-      //claimant checks defendant's comment
-      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-      notification = commentMadeOnRequest();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      await I.click(taskListItem.title);
-      await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
+    notification = commentMadeOnRequest();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    await I.click(taskListItem.title);
+    await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
 }).tag('@nightly-regression-cp');
 
 Scenario('Defendant performs Request for reconsideration and Claimant adds a comment', async ({I}) => {
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  if (isDashboardServiceEnabled) {
+    //defendant performs request for reconsideration
+    notification = orderMadeLA(deadline);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+    await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Miss Jane Doe', deadline);
+    //claimant adds a comment to the defendant's request
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    notification = reviewRequested(deadline);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await I.click(notification.nextSteps);
+    await RequestForReconsideraionSteps.initiateAddYourComments(formattedCaseId, claimAmount, 'Sir John Doe');
+    taskListItem = ordersAndNotices();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    await I.click(taskListItem.title);
+    await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
+    //defendant checks claimant's comment
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      //defendant performs request for reconsideration
-      notification = orderMadeLA(deadline);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-      await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Miss Jane Doe', deadline);
-      //claimant adds a comment to the defendant's request
-      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-      notification = reviewRequested(deadline);
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await I.click(notification.nextSteps);
-      await RequestForReconsideraionSteps.initiateAddYourComments(formattedCaseId, claimAmount, 'Sir John Doe');
-      taskListItem = ordersAndNotices();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      await I.click(taskListItem.title);
-      await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
-      //defendant checks claimant's comment
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      notification = commentMadeOnRequest();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-      await I.click(taskListItem.title);
-      await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
-      await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
+    notification = commentMadeOnRequest();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+    await I.click(taskListItem.title);
+    await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
+    await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
 }).tag('@nightly-regression-cp');
