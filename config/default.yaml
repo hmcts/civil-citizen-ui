@@ -74,4 +74,11 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
+webChat:
+  cnbc:
+    uuid: 'script_35780229675c3e23dcdd66.11858382'
+    tenant: 'aG1jdHNzdGFnaW5nMDE'
+    channel: 'CNBC Webchat STAGING'
+    channelUuid: 'QG-Cq97KTguzQz5H7T_n6g'
+    buttonContainerId: '__8x8-chat-button-container-script_35780229675c3e23dcdd66.11858382'
 
