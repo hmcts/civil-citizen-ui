@@ -2701,7 +2701,7 @@
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydy’",
-        "RESPOND_TO": "Ymateb i gais i {{applicationType}}",
+        "RESPOND_TO": "Ymateb i gais i / i’r {{applicationType}}",
         "RESPOND_TO_MULTIPLE": "Ymateb i gais",
         "TITLE": "Mae’r partïon eraill wedi dweud eich bod wedi cytuno i’r gorchymyn maent wedi gwneud cais amdano. A yw hyn yn gywir?"
       },
