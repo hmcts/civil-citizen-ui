@@ -366,8 +366,8 @@
       "NO": "Nac oes"
     },
     "APPLICATION_DOCUMENTS": {
-      "APPLICANT": "Applicant ",
-      "RESPONDENT": "Respondent "
+      "APPLICANT": "Ceisydd ",
+      "RESPONDENT": "Atebydd "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
