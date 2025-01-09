@@ -4,7 +4,7 @@ import config from 'config';
 import {WebChat} from 'routes/features/contact/contactCNBCController';
 
 const contactMediationController = Router();
-const contactUsViewPath = 'features/contact/contact-mediation';
+const contactServiceViewPath = 'features/public/contact-service';
 
 contactMediationController.get(CONTACT_MEDIATION_URL, (req, res) => {
   const webChatMediation = config.get<WebChat>('webChat.mediation');
@@ -15,7 +15,7 @@ contactMediationController.get(CONTACT_MEDIATION_URL, (req, res) => {
     channelUuid: webChatMediation.channelUuid,
     buttonContainerId: webChatMediation.buttonContainerId,
   };
-  res.render(contactUsViewPath, {
+  res.render(contactServiceViewPath, {
     pageTitle: 'Small Claims Mediation Service',
     telephone: '0300 123 4593',
     webChatConfig,

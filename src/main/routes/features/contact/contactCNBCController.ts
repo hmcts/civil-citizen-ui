@@ -3,7 +3,7 @@ import {CONTACT_CNBC_URL} from '../../urls';
 import config from 'config';
 
 const contactCNBCController = Router();
-const contactUsViewPath = 'features/contact/contact-cnbc';
+const contactServiceViewPath = 'features/public/contact-service';
 
 export type WebChat = {
   uuid: string;
@@ -22,7 +22,7 @@ contactCNBCController.get(CONTACT_CNBC_URL, (req, res) => {
     channelUuid: webChatCNBC.channelUuid,
     buttonContainerId: webChatCNBC.buttonContainerId,
   };
-  res.render(contactUsViewPath, {
+  res.render(contactServiceViewPath, {
     pageTitle: 'Civil National Business Centre',
     telephone: '0300 123 1056',
     webChatConfig,
