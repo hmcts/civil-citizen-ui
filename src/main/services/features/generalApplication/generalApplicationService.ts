@@ -628,3 +628,15 @@ export const resetClaimDataByApplicationType = (claim: Claim, applicationType: A
   }
 };
 
+export const savaUnavailabilityDatesConfirmation = async (claimId: string, applicationCosts: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.hasUnavailableDatesHearing = applicationCosts;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+

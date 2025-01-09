@@ -428,6 +428,8 @@ import defendantFinalPaymentDateController from 'routes/features/generalApplicat
 import coscCheckAnswersController from 'routes/features/generalApplication/certOfSorC/checkAnswersController';
 import submitCoScApplicationConfirmationController
   from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
+import gaUnavailabilityDatesConfirmationController
+  from 'routes/features/generalApplication/ApplicationUnavailabilityNextThreeMonthsConfirmationController';
 
 export default [
   homeController,
@@ -772,4 +774,5 @@ export default [
   debtPaymentEvidenceController,
   coscCheckAnswersController,
   submitCoScApplicationConfirmationController,
+  gaUnavailabilityDatesConfirmationController,
 ];

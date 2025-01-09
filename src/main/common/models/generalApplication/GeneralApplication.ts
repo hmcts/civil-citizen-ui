@@ -27,6 +27,7 @@ export class GeneralApplication {
   orderJudges?: OrderJudge[];
   uploadN245Form?: UploadGAFiles;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
+  hasUnavailableDatesHearing?: YesNo;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
   wantToUploadDocuments?: YesNo;
