@@ -139,6 +139,22 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   );
 };
 
+export const hideGAAppAsRespondentForClaimant = (application: ApplicationResponse): boolean => {
+  const applicationIsCloaked = application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO || application.case_data?.applicationIsCloaked === undefined;
+  const applicationIsUncloakedOnce = application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES || application.case_data?.applicationIsUncloakedOnce === undefined;
+
+  const isCloakedOrUncloakedOnceValid = (
+    (applicationIsCloaked || applicationIsUncloakedOnce) &&
+    application.state !== ApplicationState.APPLICATION_ADD_PAYMENT
+  );
+
+  const isJudicialDecisionValid = (
+    application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
+    && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS'
+  );
+  return isCloakedOrUncloakedOnceValid || isJudicialDecisionValid;
+};
+
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO;
   const status = getApplicationStatus(isApplicant, application.state);
