@@ -3081,6 +3081,10 @@
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
         "TITLE": "Do you want to upload documents to support your application?"
       },
+      "GA_UNAVAILABLE_DATES_CONFIRMATION": {
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months?",
+        "DESCRIPTION": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked."
+      },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Uploaded files",
@@ -5275,6 +5279,7 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ERROR_UNAVAILABLE_DATE_CONFIRMATION": "Select yes if there are any dates in the next 3 months when you cannot go to a hearing.",
       "ACCEPT_DEFENDANT_OFFER": {
         "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
         "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",

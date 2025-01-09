@@ -3081,6 +3081,10 @@
         "MSG1": "Os ydych chi wedi dewis sawl cais, dylech uwchlwytho’r dogfennau sy’n ymwneud â phob un ohonynt.",
         "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?"
       },
+      "GA_UNAVAILABLE_DATES_CONFIRMATION": {
+        "TITLE": "A oes unrhyw ddyddiadau lle na allwch fynychu gwrandawiad yn ystod y 3 mis nesaf?",
+        "DESCRIPTION": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig, fel apwyntiadau meddygol, gwrandawiadau llys eraill, neu wyliau rydych eisoes wedi’u harchebu."
+      },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
@@ -5275,6 +5279,7 @@
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
+      "ERROR_UNAVAILABLE_DATE_CONFIRMATION": "Dewiswch ‘Oes’ os oes unrhyw ddyddiadau yn y 3 mis nesaf pan na allwch fynd i wrandawiad",
       "ACCEPT_DEFENDANT_OFFER": {
         "ERROR_ACCEPT": "Mae arnoch angen dweud wrthym os ydych yn derbyn cynnig y diffynnydd. Dewiswch opsiwn Ydw neu Nac ydw",
         "ERROR_CHOOSE": "Mae arnoch angen cynnig cynllun talu. Dewiswch un ai rhandaliadau bob mis neu talu'n llawn erbyn dyddiad penodol.",

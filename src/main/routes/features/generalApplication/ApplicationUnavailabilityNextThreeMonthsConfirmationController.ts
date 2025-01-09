@@ -1,52 +1,45 @@
 import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   GA_UNAVAILABILITY_CONFIRMATION_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
-
+  GA_HEARING_SUPPORT_URL, GA_HEARING_CONTACT_DETAILS_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
-import {AppRequest} from 'common/models/AppRequest';
-import {t} from 'i18next';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {
+  constructResponseUrlWithIdParams,
+  constructUrlWithIndex,
+} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import {
-  getDraftGARespondentResponse,
-} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {
-  getRespondToApplicationCaption,
-} from 'services/features/generalApplication/response/generalApplicationResponseService';
+  getCancelUrl,
+  getDynamicHeaderForMultipleApplications,
+} from 'services/features/generalApplication/generalApplicationService';
 import {Claim} from 'models/claim';
+import {queryParamNumber} from 'common/utils/requestUtils';
+import {YesNo} from 'form/models/yesNo';
 
-const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
+const viewPath = 'features/generalApplication/unavailable-dates-confirmation.njk';
 const gaUnavailabilityDatesConfirmationController = Router();
-const MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE = 'PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.';
 
-const renderView = async (claimId: string, claim: Claim, form: GenericForm<GenericYesNo>, res: Response, req: Request) => {
-  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const pageTitle = `${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TITLE`;
-  const pageText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TEXT`, {lng: lang});
-  const pageHintText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_HINT_TEXT`, {lng: lang});
-  const variation = {
-    yes: 'COMMON.VARIATION_8.YES',
-    no: 'COMMON.VARIATION_8.NO',
-  };
-  const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+const renderView = async (claimId: string, claim: Claim, form: GenericForm<GenericYesNo>, res: Response, req: Request, index: number) => {
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const caption: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_VIEW_APPLICATION_URL);
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText, variation, caption, backLinkUrl, cancelUrl});
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index);
+  res.render(viewPath, {
+    form,
+    backLinkUrl,
+    cancelUrl,
+    headerTitle: getDynamicHeaderForMultipleApplications(claim),
+    index});
 };
 
 gaUnavailabilityDatesConfirmationController.get(GA_UNAVAILABILITY_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.hasUnavailableDatesHearing));
-    await renderView(claimId, claim, form, res, req);
+    await renderView(claimId, claim, form, res, req, index);
   } catch (error) {
     next(error);
   }
@@ -58,10 +51,11 @@ gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_
     const claimId = req.params.id;
     const optionSelected = req.body.option;
     const claim = await getClaimById(claimId, req, true);
-    const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.VALID_YES_NO_OPTION_CARM_OES_NAC_OES'));
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.GENERAL_APPLICATION.ERROR_UNAVAILABLE_DATE_CONFIRMATION'));
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(claimId, claim, form, res, req);
+      await renderView(claimId, claim, form, res, req, index);
     } else {
       //const redisKey = generateRedisKey(<AppRequest>req);
       //const redisKey = generateRedisKey(<AppRequest>req);
@@ -70,11 +64,13 @@ gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_
       //const isClaimantResponse = claim.isClaimantIntentionPending();
       //const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
       //await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      //if (optionSelected === YesNo.NO){
-      //  res.redirect(constructResponseUrlWithIdParams(claimId, url));
-      //} else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL));
-      //}
+      let redirectUrl;
+      if (optionSelected === YesNo.NO){
+        redirectUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), index);
+      } else {
+        redirectUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), index);
+      }
+      res.redirect(redirectUrl);
     }
   } catch (error) {
     next(error);
