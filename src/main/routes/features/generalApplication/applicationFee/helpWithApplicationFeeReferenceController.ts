@@ -20,6 +20,7 @@ import {getHelpWithApplicationFeeReferenceContents,getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithFeeReferenceContents';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {ValidationError} from 'class-validator';
 
 const applyHelpWithFeeReferenceViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-reference';
 const helpWithApplicationFeeReferenceController: Router = Router();
@@ -63,8 +64,11 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     await form.validate();
     if (form.hasErrors()) {
+      if (isAdditionalFeeType) {
+        replaceErrorConstraintsForAdditionFee(form.errors);
+      }
       const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE+ '?additionalFeeTypeFlag='+ isAdditionalFeeType);
-      await renderView(res, req, form, claimId, redirectUrl, false);
+      await renderView(res, req, form, claimId, redirectUrl, isAdditionalFeeType);
     } else {
       const redisKey = generateRedisKeyForGA(<AppRequest>req);
       await saveHelpWithFeesDetails(redisKey, new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber), hwfPropertyName);
@@ -85,4 +89,15 @@ function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: b
     return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLICATION_FEE_CONFIRMATION_URL + '?additionalFeeTypeFlag=' + feeType);
   }
   return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION  + '?additionalFeeTypeFlag='+ feeType );
+}
+
+function replaceErrorConstraintsForAdditionFee(data: ValidationError[]): void {
+  data.forEach(item => {
+    const constraints = item.constraints;
+    for (const key in constraints) {
+      if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER') {
+        constraints[key] = 'PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER';
+      }
+    }
+  });
 }
