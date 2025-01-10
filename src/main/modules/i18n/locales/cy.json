@@ -2822,8 +2822,9 @@
         "OR": "neu"
       },
       "PAY_ADDITIONAL_FEE": {
-        "HEADING": "Ffi gwneud cais ychwanegol",
-        "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi gwneud cais ychwanegol"
+        "HEADING": "Ffi ychwanegol i wneud cais",
+        "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi ychwanegol i wneud cais",
+        "VALID_ENTER_REFERENCE_NUMBER": "Rhowch eich rhif help i dalu ffioedd 11 nod"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Cais y ffi i’w thalu:",
@@ -2942,7 +2943,7 @@
         "CONFIRM_YOU_PAID_DESCRIPTION": "Os ydych wedi talu'r ddyled o ddyfarniad llys sirol (CCJ) yn llawn, gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau, benthycwyr ac asiantaethau archwilio credyd. Gelwir hyn yn gais am dystysgrif canslo neu dystysgrif diwallu."
       },
       "SUMMARY": {
-        "APP_REQUESTED": "Cais yw gofyn am newid i’r achos.",
+        "APP_REQUESTED": "Y diffiniad o gais yn y cyd-destun hwn yw gofyn am newid i’r achos.",
         "APPLICATION": "Cais",
         "APPLICATION_ID": "Rhif adnabod y cais",
         "APPLICATION_TYPE": "Math o gais",
@@ -3236,11 +3237,12 @@
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys. Rhowch ‘ffi cais’ ac yna esboniad byr, er enghraifft ‘ffi gwneud cais am gais i roi dyfarniad o'r naill du' (canslo).",
+        "APPLICATION_FEE_PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais newydd am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod newydd i chi. Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
         "CONTENT_PAGE_TITLE": "Apply for help with fees",
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
         "CONFIRMATION_TITLE": "Mae eich cais am help i dalu'r ffi gwneud cais wedi’i gwblhau",
-        "CONFIRMATION_ADDITIONAL_TITLE": "Mae eich cais am help i dalu'r ffi gwneud cais ychwanegol wedi’i gwblhau",
+        "CONFIRMATION_ADDITIONAL_TITLE": "Mae eich cais am help i dalu’r ffi ychwanegol i wneud cais wedi’i gwblhau",
         "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r cais yw: £{{ feeAmount }}</span>",
         "HEADING": "Ffi gwneud cais",
         "REFERENCE_NUMBER": {
