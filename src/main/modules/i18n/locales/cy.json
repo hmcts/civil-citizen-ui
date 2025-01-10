@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Oes",
       "NO": "Nac oes"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Ceisydd ",
+      "RESPONDENT": "Atebydd "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
