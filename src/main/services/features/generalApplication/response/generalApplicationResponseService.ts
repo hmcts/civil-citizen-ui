@@ -55,8 +55,7 @@ export function getRespondToApplicationCaption(generalAppTypes: ApplicationTypeO
     return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO_MULTIPLE', { lng: getLng(lng) });
   }
   const applicationType = t(getApplicationTypeOptionByTypeAndDescription(getLast(generalAppTypes),ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ), {lng: getLng(lng)}).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO',
-    { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType});
+  return t(`PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO.${applicationType}`,{ lng: getLng(lng) });
 }
 
 export function getUnavailableHearingDateCaption(lng: string): string {

@@ -2702,7 +2702,22 @@
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydy’",
-        "RESPOND_TO": "Ymateb i gais i / i’r {{applicationType}}",
+        "RESPOND_TO": {
+          "CANCEL_JUDGMENT": "Ymateb i gais Rhoi dyfarniad o’r naill du (ei ddileu)",
+          "CHANGE_CLAIM": "Ymateb i gais Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
+          "CHANGE_HEARING": "Ymateb i gais Newid dyddiad gwrandawiad",
+          "CONFIRM_YOU_PAID_CCJ": "Ymateb i gais Cadarnhewch eich bod wedi talu dyled dyfarniad",
+          "IMPOSE_SANCTION": "Ymateb i gais i’r llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
+          "MORE_TIME": "Ymateb i gais Mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
+          "NOT_ON_LIST": "Ymateb i gais i’r llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
+          "PAUSE": "Ymateb i gais i’r llys i atal hawliad",
+          "RECONSIDER": "Ymateb i gais Ailystyried gorchymyn",
+          "RELIEF_PENALTY": "Ymateb i gais Rhyddhad o gosb rydych wedi’i chael gan y llys",
+          "SETTLING": "Ymateb i gais i’r Llys i wneud gorchymyn i setlo'r hawliad drwy gydsyniad",
+          "STRIKE_OUT": "Ymateb i gais i’r llys i ddileu achos y partïon eraill yn gyfan gwbl, neu ddileu rhan ohono, heb gynnal treial",
+          "SUMMARY_JUDGMENT": "Ymateb i gais i’r llys i wneud dyfarniad diannod mewn achos",
+          "VARY_JUDGMENT": "Ymateb i gais Amrywio dyfarniad"
+        },
         "RESPOND_TO_MULTIPLE": "Ymateb i gais",
         "TITLE": "Mae’r partïon eraill wedi dweud eich bod wedi cytuno i’r gorchymyn maent wedi gwneud cais amdano. A yw hyn yn gywir?"
       },
