@@ -3220,7 +3220,7 @@
         "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Select a date or dates you cannot attend a hearing",
         "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months?",
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {

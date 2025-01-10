@@ -3220,7 +3220,7 @@
         "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Dewiswch ddyddiad neu ddyddiadau pan na allwch fynychu gwrandawiad",
         "SINGLE_DATE": "Dyddiad unigol",
-        "TITLE": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf (dewisol)?",
+        "TITLE": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf?",
         "TO": "At"
       },
       "CONFIRMATION_PAGE": {
