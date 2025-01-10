@@ -2763,6 +2763,7 @@
         "APPLICATION_TYPE": "Math o gais",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
         "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
+        "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau lle na allwch fynychu gwrandawiad yn ystod y 3 mis nesaf?",
         "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
         "INFORM_OTHER_PARTIES": "A ydych chi eisiau i’r llys hysbysu’r partïon eraill?",
         "NAME": "Enw",

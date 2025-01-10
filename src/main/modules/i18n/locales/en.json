@@ -2763,6 +2763,7 @@
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months ?",
         "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
         "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
         "NAME": "Name",
