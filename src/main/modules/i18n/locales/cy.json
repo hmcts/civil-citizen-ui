@@ -2701,7 +2701,7 @@
         "WITHOUT_NOTICE": "Cyflwynwyd eich cais heb roi rhybudd i’r partïon eraill."
       },
       "AGREE_TO_ORDER": {
-        "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydw’",
+        "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydy’",
         "RESPOND_TO": "Ymateb i gais i {{applicationType}}",
         "RESPOND_TO_MULTIPLE": "Ymateb i gais",
         "TITLE": "Mae’r partïon eraill wedi dweud eich bod wedi cytuno i’r gorchymyn maent wedi gwneud cais amdano. A yw hyn yn gywir?"
@@ -2894,7 +2894,7 @@
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
         "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
         "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
-        "PAUSE": "Y llys i oedi hawliad",
+        "PAUSE": "’r llys i atal hawliad",
         "RECONSIDER": "Ailystyried gorchymyn",
         "RELIEF_PENALTY": "Rhyddhad o gosb rydych wedi’i chael gan y llys",
         "SETTLING": "Llys i wneud gorchymyn i setlo'r hawliad drwy gydsyniad",
@@ -3210,7 +3210,7 @@
         "MSG1": "Dylech ond uwchlwytho dogfennau sy’n berthnasol i’ch ymateb i’r cais."
       },
       "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Ychwanegu dyddiad neu ystod o ddyddiadau arall",
+        "ADD_ANOTHER_DATE": "Ychwanegu dyddiad neu ystod o ddyddiadau eraill",
         "FROM": "Oddi wrth",
         "IMPORTANT_EVENTS": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau llys eraill neu wyliau rydych eisoes wedi trefnu.",
         "LONGER_PERIOD": "Cyfnod hirach o amser",
@@ -5290,7 +5290,7 @@
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "Ni allwch ddewis \"Gofyn i amrywio dyfarniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
-      "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydy neu Nac ydy",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
       "APPLY_HELP_WITH_FEES": "Mae angen i chi ddweud wrthym os ydych am wneud cais am help i dalu ffioedd. Dewis opsiwn Ydw neu Nac ydw",
