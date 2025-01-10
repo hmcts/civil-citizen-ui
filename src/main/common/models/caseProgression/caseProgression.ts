@@ -28,4 +28,5 @@ export class CaseProgression{
   requestForReconsiderationDeadline?: Date;
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
+  courtOfficerOrder?: CaseDocument;
 }
