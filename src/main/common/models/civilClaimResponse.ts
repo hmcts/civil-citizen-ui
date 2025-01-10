@@ -315,6 +315,7 @@ export interface CCDClaim extends ClaimUpdate {
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
+  repaymentSummaryObject?:string;
 }
 
 export interface ClaimFeeData {
