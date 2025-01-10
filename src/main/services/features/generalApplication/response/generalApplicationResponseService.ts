@@ -30,7 +30,7 @@ import {
 } from 'common/models/generalApplication/applicationSummary';
 import { dateTimeFormat } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
-import {displayToEnumKey} from "services/translation/convertToCUI/cuiTranslation";
+import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
