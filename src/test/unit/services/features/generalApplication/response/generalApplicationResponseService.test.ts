@@ -551,8 +551,37 @@ describe('General Application Response service', () => {
         } as ApplicationSummary);
     });
 
-    it('returns row in awaiting judicial decision state', () => {
+    it('returns row awaiting respondent response state', () => {
+      const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE,false, false, true);
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+          },
+        },
+      ];
+
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
+        .toStrictEqual({
+          state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
+          status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
+          statusColor: 'govuk-tag--red',
+          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER',
+          id: '6789',
+          createdDate: '29 May 2024, 2:39:28 pm',
+          applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
+        } as ApplicationSummary);
+    });
+
+    it('returns row in awaiting judicial decision state with multiples applications type', () => {
       const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,false, false, true);
+      appResponse.case_data.applicationTypes = 'Vary order, Extend time';
       const ccdClaim = new Claim();
       ccdClaim.caseRole = CaseRole.DEFENDANT;
       ccdClaim.generalApplications = [
@@ -572,7 +601,7 @@ describe('General Application Response service', () => {
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
           statusColor: 'govuk-tag--green',
-          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER',
+          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER, PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.EXTEND_TIME',
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
