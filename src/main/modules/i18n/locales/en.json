@@ -1376,6 +1376,7 @@
       "CLAIMANT_RECEIPT": "You should ask the claimant to give you a receipt.",
       "CLAIMANT_REJECT_OFFER": "If the claimant rejects your offer, they can ask the court to enter a CCJ against you. The court will then decide the repayment plan.",
       "CLAIMANT_REJECT_PART_ADMISSION": "If they reject your offer, the court will decide a repayment plan.",
+      "COUNTER_CLAIM": "Reject all of the claim and counterclaim",
       "FULL_ADMISSION": "I admit all of the claim",
       "FULL_ADMISSION_HINT": "You agree you owe the full amount claimed.",
       "FULL_DEFENCE_HINT": "You've either paid what you believe you owe or you reject the claim.",
@@ -2822,7 +2823,8 @@
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
-        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
+        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee",
+        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -3235,6 +3237,7 @@
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "APPLICATION_FEE_PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
         "CONTENT_PAGE_TITLE": "Apply for help with fees",
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
@@ -5143,7 +5146,7 @@
     "ADDRESS_LINE_TOO_MANY_JO": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TOWN_CITY_TOO_MANY_JO": "Town or City must no longer than 35 characters",
-    "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "TEXT800_TOO_LONG": "Reason must be 800 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
