@@ -4637,7 +4637,8 @@
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
-      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt"
+      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
+      "COURT_OFFICER_ORDER":"Court Officer Order"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
