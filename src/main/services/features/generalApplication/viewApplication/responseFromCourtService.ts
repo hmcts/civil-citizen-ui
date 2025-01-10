@@ -192,7 +192,7 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng}) ,createdDatetime, lng);
         const respondToRequestHref = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_RESPOND_ADDITIONAL_INFO_URL);
         let respondToRequestButton = null;
-        if (!documentName.includes('Translated')) {
+        if (!documentName.includes('Translated') && applicationResponse.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION) {
           respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), respondToRequestHref);
         }
         return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);

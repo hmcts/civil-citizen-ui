@@ -128,6 +128,32 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
 describe('View Application service', () => {
 
   const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
+  describe('Respond to the request button for request more info', () => {
+    it('should show respond to the request button for awaiting additional information for request more information', async () => {
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.state = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
+      application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      //when
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST');
+    });
+    it('should not show respond to the request button for awaiting additional information for request more information', async () => {
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
+      application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      //when
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      expect(result[1].responseButton).toEqual(null);
+    });
+  });
   describe('getJudgeResponseSummary', () => {
     let applicationResponse : ApplicationResponse;
     beforeEach(() => {
