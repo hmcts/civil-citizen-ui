@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Applicant ",
+      "RESPONDENT": "Respondent "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -1927,7 +1931,8 @@
       "PAGE_TITLE_DEFENDANT": "View information about the defendant",
       "PHONE": "Phone",
       "THE_CLAIM": "The claim",
-      "THE_RESPONSE": "The response"
+      "THE_RESPONSE": "The response",
+      "DEFENDANT_LR": "Defendant's legal representative"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
