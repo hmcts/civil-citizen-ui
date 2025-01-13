@@ -1,5 +1,5 @@
 import {CCDClaim} from 'common/models/civilClaimResponse';
-import {displayToEnumKey, translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {TimeLineDocument, Document} from 'common/models/document/document';
 import { InterestClaimFromType, InterestEndDateType } from 'common/form/models/claimDetails';
 import { CCDInterestType } from 'common/models/ccdResponse/ccdInterestType';
@@ -19,7 +19,6 @@ import { CCDRepaymentPlanFrequency } from 'common/models/ccdResponse/ccdRepaymen
 import { CCDEvidenceType } from 'common/models/ccdResponse/ccdEvidence';
 import { EvidenceItem } from 'common/form/models/evidence/evidenceItem';
 import { EvidenceType } from 'common/models/evidence/evidenceType';
-import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -482,14 +481,5 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.respondentGaAppDetails).toEqual([{ generalAppTypes: ['STRIKE_OUT'], gaApplicationId: '1234567', caseState: 'awaiting respondent response', generalAppSubmittedDateGAspec: dateString }]);
-  });
-
-  it('should display Enum to Enum key', () => {
-
-    // When
-    const result = displayToEnumKey('Adjourn a hearing');
-
-    //Then
-    expect(ApplicationTypeOption.ADJOURN_HEARING).toEqual(result);
   });
 });
