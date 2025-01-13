@@ -7,8 +7,11 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {toCCDDJPaymentFrequency} from 'services/translation/response/convertToCCDDJPaymentFrequency';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
+import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
+  const summaryDetails = getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en');
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
@@ -23,5 +26,6 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
     repaymentFrequency: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claim.getCCJRepaymentPlanFrequency()) : undefined,
     repaymentDue:claim.hasDefendantPaid() ? (claim.getCCJTotalAmount() - claim.getDefendantPaidAmount()).toString() : undefined,
     repaymentSuggestion: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? convertToPence(claim.getCCJRepaymentPlanAmount()).toString() : undefined,
+    repaymentSummaryObject: `The judgment will order the defendants to pay £${summaryDetails.total}, including the claim fee and interest, if applicable, as shown:\n### Claim amount \n £${claim.totalClaimAmount}\n### Claim fee amount \n £${summaryDetails.claimFeeAmount}\n ## Subtotal \n £${summaryDetails.subTotal}\n\n ## Total still owed \n £${summaryDetails.total}`,
   };
 };
