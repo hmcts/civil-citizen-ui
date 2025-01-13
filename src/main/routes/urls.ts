@@ -401,3 +401,4 @@ export const GA_UPLOAD_DOCUMENTS_COSC_URL =`${BASE_COSC_URL}/upload-documents`;
 export const COSC_FINAL_PAYMENT_DATE_URL = `${BASE_COSC_URL}/final-payment-date`;
 export const GA_COSC_CONFIRM_URL = `${BASE_COSC_URL}/submit-general-application-confirmation`;
 export const GA_UNAVAILABILITY_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/unavailability-confirmation`;
+export const GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/unavailability-confirmation`;

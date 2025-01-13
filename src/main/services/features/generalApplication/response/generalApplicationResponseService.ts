@@ -32,7 +32,6 @@ import {
 } from 'common/models/generalApplication/applicationSummary';
 import { dateTimeFormat } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
-
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
@@ -107,6 +106,20 @@ export const saveRespondentUnavailableDates = async (redisKey: string, unavailab
       unavailableDates?.items.pop();
     }
     gaResponse.unavailableDatesHearing = unavailableDates;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveResponseUnavailabilityDatesConfirmation = async (redisKey: string, hasUnavailableDatesHearing: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
+    if (hasUnavailableDatesHearing === YesNo.NO) {
+      delete gaResponse.unavailableDatesHearing;
+    }
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);

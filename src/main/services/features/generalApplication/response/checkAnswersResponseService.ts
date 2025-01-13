@@ -13,7 +13,7 @@ import {
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
-  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
 
 export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
@@ -120,23 +120,31 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   };
 
   const unavailableDatesSection = (): SummaryRow[] => {
+    const rows: SummaryRow[] = [];
     const unavailableDates = gaResponse?.unavailableDatesHearing?.items;
+    rows.push(
+      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+        t(`COMMON.VARIATION_8.${gaResponse.hasUnavailableDatesHearing.toUpperCase()}`, {lng}),
+        GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
+      ));
     if (unavailableDates?.length > 0) {
       const unavailableDatesHtml = unavailableDates
         .map(({type, from, until}) => (type === UnavailableDateType.SINGLE_DATE)
           ? listItem(formatDateToFullDate(from, lng))
           : listItem(`${formatDateToFullDate(from, lng)} - ${formatDateToFullDate(until, lng)}`))
         .join('');
-      return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+      rows.push(row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         `<ul class="no-list-style">${unavailableDatesHtml}</ul>`,
         GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
-      )];
+      ));
     } else {
-      return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
-        ' ',
-        GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
-      )];
+      rows.push(
+        row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+          ' ',
+          GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+        ));
     }
+    return rows;
   };
 
   const hearingSupportSection = (): SummaryRow[] => {
