@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Oes",
       "NO": "Nac oes"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Ceisydd ",
+      "RESPONDENT": "Atebydd "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -1927,7 +1931,8 @@
       "PAGE_TITLE_DEFENDANT": "Gweld yr wybodaeth am y diffynnydd",
       "PHONE": "Rhif ffôn",
       "THE_CLAIM": "Yr hawliad",
-      "THE_RESPONSE": "Yr ymateb"
+      "THE_RESPONSE": "Yr ymateb",
+      "DEFENDANT_LR": "Cynrychiolydd cyfreithiol y diffynnydd"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",
@@ -4637,7 +4642,8 @@
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
-      "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad"
+      "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
