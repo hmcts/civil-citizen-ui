@@ -29,7 +29,7 @@ class ViewBundle {
   }
 
   verifyHeadingDetails() {
-    I.see('Hearings', 'span');
+    I.see('Hearing', 'span');
     I.see('View the bundle', 'h1');
   }
 
