@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Oes",
       "NO": "Nac oes"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Ceisydd ",
+      "RESPONDENT": "Atebydd "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -2837,8 +2841,9 @@
         "OR": "neu"
       },
       "PAY_ADDITIONAL_FEE": {
-        "HEADING": "Ffi gwneud cais ychwanegol",
-        "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi gwneud cais ychwanegol"
+        "HEADING": "Ffi ychwanegol i wneud cais",
+        "WANT_TO_APPLY_HWF_TITLE": "Talu’r ffi ychwanegol i wneud cais",
+        "VALID_ENTER_REFERENCE_NUMBER": "Rhowch eich rhif help i dalu ffioedd 11 nod"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Cais y ffi i’w thalu:",
@@ -3252,11 +3257,12 @@
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys. Rhowch ‘ffi cais’ ac yna esboniad byr, er enghraifft ‘ffi gwneud cais am gais i roi dyfarniad o'r naill du' (canslo).",
+        "APPLICATION_FEE_PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais newydd am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod newydd i chi. Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
         "CONTENT_PAGE_TITLE": "Apply for help with fees",
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
         "CONFIRMATION_TITLE": "Mae eich cais am help i dalu'r ffi gwneud cais wedi’i gwblhau",
-        "CONFIRMATION_ADDITIONAL_TITLE": "Mae eich cais am help i dalu'r ffi gwneud cais ychwanegol wedi’i gwblhau",
+        "CONFIRMATION_ADDITIONAL_TITLE": "Mae eich cais am help i dalu’r ffi ychwanegol i wneud cais wedi’i gwblhau",
         "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r cais yw: £{{ feeAmount }}</span>",
         "HEADING": "Ffi gwneud cais",
         "REFERENCE_NUMBER": {
@@ -4651,7 +4657,8 @@
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
-      "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad"
+      "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
