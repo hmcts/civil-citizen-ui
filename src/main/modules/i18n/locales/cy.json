@@ -1740,6 +1740,10 @@
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "Rydych wedi cytuno i roi cynnig ar gyfryngu am ddim.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod."
+        },
+        "MINTI":  {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "Rydych wedi penderfynu peidio â derbyn cynnig y diffynnydd ac yn dymuno parhau â'r hawliad.",
+          "REVIEW_CASE": "Byddwn yn adolygu’r achos. Mi wnawn gysylltu â chi i ddweud wrthych beth i’w wneud nesaf."
         }
       },
       "MEDIATION": {
