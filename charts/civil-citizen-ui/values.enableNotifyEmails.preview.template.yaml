@@ -108,6 +108,7 @@ civil-service:
       SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
+      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
@@ -120,7 +121,10 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 25m
+            cpu: 500m
+            memory: 2048Mi
+        podAnnotations:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
         initdb:
           scripts:
             init.sql: |
@@ -133,6 +137,8 @@ civil-service:
               CREATE DATABASE "wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "wa_workflow_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
               CREATE DATABASE "cft_task_db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "cft_task_db_replica" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "role-assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       auth:
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
@@ -212,4 +218,3 @@ civil-general-applications:
       CUI_URL: https://${SERVICE_FQDN}
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       STITCHING_API_ENABLED: false
-
