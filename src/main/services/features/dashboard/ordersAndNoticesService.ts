@@ -12,7 +12,7 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {
-  isCaseProgressionV1Enable, isCoSCEnabled,
+  isCaseProgressionV1Enable, isCaseWorkerEventsEnabled, isCoSCEnabled,
   isGaForLipsEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
@@ -58,7 +58,12 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
 
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
+  const isCaseworkerEventsEnabled = await isCaseWorkerEventsEnabled();
   const courtDocumentsArray: DocumentInformation[] = [];
+
+  if (isCaseworkerEventsEnabled) {
+    courtDocumentsArray.push(...getCourtOfficerOrder(claim, claimId, lang));
+  }
 
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
@@ -264,6 +269,15 @@ const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
       const document = documentElement.value;
       caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER'));
     });
+  }
+  return caseDocuments;
+};
+
+const getCourtOfficerOrder = (claim: Claim, claimId: string, lang: string) => {
+  const document = claim.caseProgression?.courtOfficerOrder;
+  const caseDocuments: DocumentInformation[] = [];
+  if (document) {
+    caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
   }
   return caseDocuments;
 };
