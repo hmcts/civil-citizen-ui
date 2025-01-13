@@ -3,7 +3,7 @@ import {Claim} from 'common/models/claim';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
 import {
-  getPAPayImmediatelyAcceptedNextSteps,
+  getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseMintiTracksNextSteps,
   getRejectedResponseNoMediationNextSteps,
   getRejectedResponseYesMediationNextSteps,
 } from './partAdmitConfirmationContentBuilder';
@@ -44,7 +44,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
 
-export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean, respondToSettlementAgreementDeadLine?: Date): ClaimSummarySection[] {
+export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean, mintiApplicable: boolean, respondToSettlementAgreementDeadLine?: Date): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
@@ -57,6 +57,11 @@ export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable
   const rejectedAndJudgeDecideRepaymentPlan = getCCJNextStepsForJudgeDecideRepaymentPlan(claim, lang);
   const sendFinancialDetails = getSendFinancialDetails(claim, lang);
   const acceptedResponseToSettle = getClaimSettleNextSteps(claim, lang);
+  const rejectedResponseMultiIntTrackNextSteps = getRejectedResponseMintiTracksNextSteps(lang);
+
+  if (mintiApplicable && claim.hasClaimantNotSettled()) {
+    return rejectedResponseMultiIntTrackNextSteps;
+  }
 
   if (carmApplicable && claim.hasClaimantNotSettled()) {
     return RejectedResponseCarmMediationNextSteps;
