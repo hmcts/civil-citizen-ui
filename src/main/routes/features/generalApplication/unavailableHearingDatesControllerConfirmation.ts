@@ -14,10 +14,13 @@ import {getClaimById} from 'modules/utilityService';
 import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  saveUnavailabilityDatesConfirmation,
 } from 'services/features/generalApplication/generalApplicationService';
 import {Claim} from 'models/claim';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {YesNo} from 'form/models/yesNo';
+import {AppRequest} from 'models/AppRequest';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const viewPath = 'features/generalApplication/unavailable-dates-confirmation.njk';
 const gaUnavailabilityDatesConfirmationController = Router();
@@ -47,7 +50,6 @@ gaUnavailabilityDatesConfirmationController.get(GA_UNAVAILABILITY_CONFIRMATION_U
 
 gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-
     const claimId = req.params.id;
     const optionSelected = req.body.option;
     const claim = await getClaimById(claimId, req, true);
@@ -57,19 +59,14 @@ gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, res, req, index);
     } else {
-      //const redisKey = generateRedisKey(<AppRequest>req);
-      //const redisKey = generateRedisKey(<AppRequest>req);
-      //const claimId = req.params.id;
-      //const claim = await getCaseDataFromStore(redisKey);
-      //const isClaimantResponse = claim.isClaimantIntentionPending();
-      //const url = isClaimantResponse ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
-      //await saveRequestingReason(redisKey, requestingReason, applicationIndex);
+      const redisKey = generateRedisKey(<AppRequest>req);
       let redirectUrl;
       if (optionSelected === YesNo.NO){
         redirectUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), index);
       } else {
         redirectUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), index);
       }
+      await saveUnavailabilityDatesConfirmation(redisKey, optionSelected);
       res.redirect(redirectUrl);
     }
   } catch (error) {
