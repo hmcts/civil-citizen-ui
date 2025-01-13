@@ -96,7 +96,6 @@ xui-webapp:
       JURISDICTIONS: CIVIL
       LAUNCH_DARKLY_CLIENT_ID: ~
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
-      CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
 
 ccd:
   enabled: true
@@ -154,7 +153,7 @@ ccd:
       devmemoryRequests: 2048Mi
       devmemoryLimits: 4096Mi
       environment:
-        CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
+        CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
         DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
