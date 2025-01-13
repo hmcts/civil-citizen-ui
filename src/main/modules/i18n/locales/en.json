@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Applicant ",
+      "RESPONDENT": "Respondent "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
