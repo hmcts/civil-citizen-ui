@@ -96,7 +96,7 @@ function replaceErrorConstraintsForAdditionFee(data: ValidationError[], isAdditi
       if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER' && isAdditionalFeeType) {
         constraints[key] = 'PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER';
       } else if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER') {
-        constraints[key] = 'ERRORS.VALID_ENTER_REFERENCE_NUMBER_GA_HWF'
+        constraints[key] = 'ERRORS.VALID_ENTER_REFERENCE_NUMBER_GA_HWF';
       }
     }
   });
