@@ -11,6 +11,11 @@
 <div class="govuk-grid-row govuk-!-margin-top-0">
   <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h2>
+    <p class="govuk-body govuk-!-margin-top-0">
+      {% if defendantLRName %}
+      {{  defendantLRName }}<br>
+      {% endif %}
+    </p>
     <div>
       {% if address %}
         <p class="govuk-body govuk-!-margin-bottom-6">
@@ -41,6 +46,10 @@
       {% endif %}
       {% if email.emailAddress %}
         <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
+        </div>
+      {% endif %}
+      {% if solicitorEmailId %}
+        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ solicitorEmailId }}'>{{ solicitorEmailId }}</a>
         </div>
       {% endif %}
     </div>
