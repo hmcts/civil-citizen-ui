@@ -62,9 +62,15 @@ class CheckYourAnswersPage {
     await I.see(content.confirmationSubheading[language]);
   }
 
-  async submitResponse(responseType='') {
+  async submitResponse(claimRef, responseType='') {
     const { language } = sharedData;
     await I.click(links.checkAndSubmit[language]);
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if(url.includes('pcq')){
+      await I.amOnPage('/case/'+claimRef+'/response/task-list');
+      await I.click(links.checkAndSubmit[language]);
+    }
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
