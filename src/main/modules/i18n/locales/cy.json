@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Oes",
       "NO": "Nac oes"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Ceisydd ",
+      "RESPONDENT": "Atebydd "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -4637,7 +4641,8 @@
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
-      "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad"
+      "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
