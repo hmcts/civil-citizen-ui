@@ -12,7 +12,11 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h2>
-          <div id="{{ webChatConfig.buttonContainerId }}"></div>
+          {% if webChatEnabled %}
+            <div id="{{ webChatConfig.buttonContainerId }}"></div>
+          {% else %}
+            <p class="govuk-body govuk-!-margin-bottom-0">Web chat unavailable</p>
+          {% endif %}
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.TELEPHONE')}}</h2>
           <p class="govuk-body govuk-!-margin-bottom-0">{{t(telephone)}}</p>
           <h2 class="govuk-heading-m govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.OPENING_TIMES')}}</h2>
@@ -33,24 +37,26 @@
 {% block bodyEnd %}
   {{ super() }}
 
-  <script type="text/javascript" nonce="{{ nonceWebChat }}">
-    window.__8x8Chat = {
-      uuid: '{{ webChatConfig.uuid }}',
-      tenant: '{{ webChatConfig.tenant }}',
-      channel: '{{ webChatConfig.channel }}',
-      channelUuid: '{{ webChatConfig.channelUuid }}',
-      domain: "https://vcc-eu4.8x8.com",
-      path: "/.",
-      buttonContainerId: '{{ webChatConfig.buttonContainerId }}',
-      align: "right"
-    };
-    (function() {
-      var se = document.createElement("script");
-      se.type = "text/javascript";
-      se.async = true;
-      se.src = window.__8x8Chat.domain + window.__8x8Chat.path + "/CHAT/common/js/chat.js";
-      var os = document.getElementsByTagName("script")[0];
-      os.parentNode.insertBefore(se, os);
-    })();
-  </script>
+  {% if webChatEnabled %}
+    <script type="text/javascript" nonce="{{ nonceWebChat }}">
+      window.__8x8Chat = {
+        uuid: '{{ webChatConfig.uuid }}',
+        tenant: '{{ webChatConfig.tenant }}',
+        channel: '{{ webChatConfig.channel }}',
+        channelUuid: '{{ webChatConfig.channelUuid }}',
+        domain: "https://vcc-eu4.8x8.com",
+        path: "/.",
+        buttonContainerId: '{{ webChatConfig.buttonContainerId }}',
+        align: "right"
+      };
+      (function() {
+        var se = document.createElement("script");
+        se.type = "text/javascript";
+        se.async = true;
+        se.src = window.__8x8Chat.domain + window.__8x8Chat.path + "/CHAT/common/js/chat.js";
+        var os = document.getElementsByTagName("script")[0];
+        os.parentNode.insertBefore(se, os);
+      })();
+    </script>
+  {% endif %}
 {% endblock %}
