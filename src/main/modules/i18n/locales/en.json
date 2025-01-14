@@ -1490,7 +1490,8 @@
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
         "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
-        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made"
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Continue until the claim is settled or judgment made",
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE_HINT": "This journey is not yet complete, if you wish to continue use MCOL and file paper judgment"
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {

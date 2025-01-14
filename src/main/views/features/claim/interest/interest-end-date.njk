@@ -40,7 +40,10 @@
                   {
                     value: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
                     html: '<strong>' + t('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE') + '</strong>',
-                    checked: form.model.option === InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE
+                    checked: form.model.option === InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE,
+                    hint: {
+                      text: t('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE_HINT')
+                    }
                   }
                 ],
                 errorMessage: {
