@@ -12,7 +12,11 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Webchat</h2>
-          <div id="{{ webChatConfig.buttonContainerId }}"></div>
+          {% if webChatEnabled %}
+            <div id="{{ webChatConfig.buttonContainerId }}"></div>
+          {% else %}
+            <p class="govuk-body govuk-!-margin-bottom-0">Web chat unavailable</p>
+          {% endif %}
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">Telephone</h2>
           <p class="govuk-body govuk-!-margin-bottom-0">0300 123 1056</p>
           <h2 class="govuk-heading-m govuk-!-margin-top-6">Opening Times</h2>
@@ -20,7 +24,7 @@
           <p class="govuk-body govuk-!-margin-bottom-0">Monday to Friday, 9am to 5pm</p>
           <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Webchat</h3>
           <p class="govuk-body govuk-!-margin-bottom-0">Monday to Friday, 9am to 5pm</p>
-          <p class="govuk-body govuk-!-margin-bottom-0">Telephone and webchat closed on Saturdays, Sundays and bank holidays</p>
+          <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">Telephone and webchat closed on Saturdays, Sundays and bank holidays</p>
           <p class="govuk-body">
             {{ externalLink(t, 'Find out about call charges (opens in a new window)', 'https://www.gov.uk/call-charges', false) }}
           </p>
