@@ -76,6 +76,7 @@ appInsights:
   instrumentationKey:
 webChat:
   cnbc:
+    enabled: false
     uuid: 'script_35780229675c3e23dcdd66.11858382'
     tenant: 'aG1jdHNzdGFnaW5nMDE'
     channel: 'CNBC Webchat STAGING'

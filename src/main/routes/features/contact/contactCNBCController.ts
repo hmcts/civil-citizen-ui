@@ -6,6 +6,7 @@ const contactCNBCController = Router();
 const contactUsViewPath = 'features/public/contact-cnbc';
 
 type WebChat = {
+  enabled: boolean;
   uuid: string;
   tenant: string;
   channel: string;
@@ -15,14 +16,15 @@ type WebChat = {
 
 contactCNBCController.get(CONTACT_CNBC_URL, (req, res) => {
   const webChatCNBC = config.get<WebChat>('webChat.cnbc');
-  const webChatConfig: WebChat = {
+  const webChatEnabled = webChatCNBC.enabled;
+  const webChatConfig: Partial<WebChat> = {
     uuid: webChatCNBC.uuid,
     tenant: webChatCNBC.tenant,
     channel: webChatCNBC.channel,
     channelUuid: webChatCNBC.channelUuid,
     buttonContainerId: webChatCNBC.buttonContainerId,
   };
-  res.render(contactUsViewPath, { pageTitle: 'Civil National Business Centre', webChatConfig });
+  res.render(contactUsViewPath, { pageTitle: 'Civil National Business Centre', webChatEnabled, webChatConfig });
 });
 
 export default contactCNBCController;

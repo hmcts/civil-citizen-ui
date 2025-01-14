@@ -50,6 +50,7 @@ appInsights:
   instrumentationKey: APPINSIGHTS_KEY
 webChat:
   cnbc:
+    enabled: WEB_CHAT_CNBC_ENABLED
     uuid: WEB_CHAT_CNBC_UUID
     tenant: WEB_CHAT_CNBC_TENANT
     channel: WEB_CHAT_CNBC_CHANNEL
