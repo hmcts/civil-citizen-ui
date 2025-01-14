@@ -8,7 +8,8 @@ const contactServiceViewPath = 'features/public/contact-service';
 
 contactMediationController.get(CONTACT_MEDIATION_URL, (req, res) => {
   const webChatMediation = config.get<WebChat>('webChat.mediation');
-  const webChatConfig: WebChat = {
+  const webChatEnabled = webChatMediation.enabled;
+  const webChatConfig: Partial<WebChat> = {
     uuid: webChatMediation.uuid,
     tenant: webChatMediation.tenant,
     channel: webChatMediation.channel,
@@ -18,6 +19,7 @@ contactMediationController.get(CONTACT_MEDIATION_URL, (req, res) => {
   res.render(contactServiceViewPath, {
     pageTitle: 'Small Claims Mediation Service',
     telephone: '0300 123 4593',
+    webChatEnabled,
     webChatConfig,
   });
 });
