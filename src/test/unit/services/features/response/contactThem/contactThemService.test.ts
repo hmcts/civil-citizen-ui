@@ -1,12 +1,13 @@
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {
-  getAddress,
+  getAddress, getRespondentSolicitorAddress,
   getSolicitorName,
 } from 'services/features/response/contactThem/contactThemService';
 import {Party} from 'models/party';
 import {PartyDetails} from 'form/models/partyDetails';
 import {Address} from 'form/models/address';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('contact them service', () => {
   describe('getAddress', () => {
@@ -66,6 +67,42 @@ describe('contact them service', () => {
       const name = getSolicitorName(claim);
       //Then
       expect(name).toBeUndefined();
+    });
+  });
+  describe('getSolicitore Address after NOC ', () => {
+    it('should return solicitor address', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondentSolicitorDetails= {
+        'address': {
+          'PostCode': 'NN3 9SS',
+          'PostTown': 'NORTHAMPTON',
+          'AddressLine1': '29, SEATON DRIVE',
+        },
+        'orgName': 'Civil - Organisation 3',
+      };
+      //When
+      const address = getRespondentSolicitorAddress(claim);
+      //Then
+      expect(address.addressLine1).toBe(claim.respondentSolicitorDetails.address.AddressLine1);
+      expect(address.city).toBe(claim.respondentSolicitorDetails.address.PostTown);
+      expect(address.postCode).toBe(claim.respondentSolicitorDetails.address.PostCode);
+    });
+    it('should return solicitor correspondence address', () => {
+      //Given
+      const claim = new Claim();
+      claim.specRespondentCorrespondenceAddressRequired = YesNoUpperCamelCase.YES;
+      claim.specRespondentCorrespondenceAddressdetails= {
+        'PostCode': 'NN3 9SS',
+        'PostTown': 'NORTHAMPTON',
+        'AddressLine1': '29, SEATON DRIVE',
+      };
+      //When
+      const address = getRespondentSolicitorAddress(claim);
+      //Then
+      expect(address.addressLine1).toBe(claim.specRespondentCorrespondenceAddressdetails.AddressLine1);
+      expect(address.city).toBe(claim.specRespondentCorrespondenceAddressdetails.PostTown);
+      expect(address.postCode).toBe(claim.specRespondentCorrespondenceAddressdetails.PostCode);
     });
   });
 });
