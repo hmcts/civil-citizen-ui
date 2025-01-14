@@ -5,9 +5,9 @@ import {
   buildNextStepsSection,
 } from './confirmationContentBuilder/confirmationContentBuilder';
 
-export const getClaimantResponseConfirmationContent = (claim: Claim, lang: string, carmApplicable: boolean, respondToSettlementAgreementDeadLine?: Date): ClaimSummarySection[] => {
+export const getClaimantResponseConfirmationContent = (claim: Claim, lang: string, carmApplicable: boolean, mintiCase: boolean, respondToSettlementAgreementDeadLine?: Date): ClaimSummarySection[] => {
   const claimantResponseSection = buildClaimantResponseSection(claim, lang);
-  const nextStepsSection = buildNextStepsSection(claim, lang, carmApplicable, respondToSettlementAgreementDeadLine);
+  const nextStepsSection = buildNextStepsSection(claim, lang, carmApplicable, mintiCase, respondToSettlementAgreementDeadLine);
 
   return [
     claimantResponseSection,
