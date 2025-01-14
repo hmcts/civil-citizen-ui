@@ -15,7 +15,7 @@
           {% if webChatEnabled %}
             <div id="{{ webChatConfig.buttonContainerId }}"></div>
           {% else %}
-            <p class="govuk-body govuk-!-margin-bottom-0">Web chat unavailable</p>
+            <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT_UNAVAILABLE')}}</p>
           {% endif %}
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.TELEPHONE')}}</h2>
           <p class="govuk-body govuk-!-margin-bottom-0">{{t(telephone)}}</p>
@@ -24,7 +24,7 @@
           <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.OPENING_HOURS')}}</p>
           <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h3>
           <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.OPENING_HOURS')}}</p>
-          <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.CLOSED_HOURS')}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{t('PAGES.CONTACT_WEBCHAT.CLOSED_HOURS')}}</p>
           <p class="govuk-body">
             {{ externalLink(t, 'PAGES.CONTACT_WEBCHAT.CALL_CHARGES', 'https://www.gov.uk/call-charges', false) }}
           </p>
