@@ -2802,7 +2802,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
-        "PREFERRED_LOCATION": "Preferred location",
+        "PREFERRED_LOCATION": "Preferred court location",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
@@ -2812,7 +2812,7 @@
           "CHECKBOX": "I believe that the facts stated in this response form are true.",
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
-        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+        "UNAVAILABLE_DATES": "Dates when you cannot attend a hearing"
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
