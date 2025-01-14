@@ -1740,6 +1740,10 @@
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "Rydych wedi cytuno i roi cynnig ar gyfryngu am ddim.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod."
+        },
+        "MINTI":  {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "Rydych wedi penderfynu peidio â derbyn cynnig y diffynnydd ac yn dymuno parhau â'r hawliad.",
+          "REVIEW_CASE": "Byddwn yn adolygu’r achos. Mi wnawn gysylltu â chi i ddweud wrthych beth i’w wneud nesaf."
         }
       },
       "MEDIATION": {
@@ -1931,7 +1935,8 @@
       "PAGE_TITLE_DEFENDANT": "Gweld yr wybodaeth am y diffynnydd",
       "PHONE": "Rhif ffôn",
       "THE_CLAIM": "Yr hawliad",
-      "THE_RESPONSE": "Yr ymateb"
+      "THE_RESPONSE": "Yr ymateb",
+      "DEFENDANT_LR": "Cynrychiolydd cyfreithiol y diffynnydd"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",
@@ -2837,7 +2842,7 @@
       },
       "ORDER_JUDGE": {
         "ADD_INFO_MORE_TIME": "Bydd arnoch angen ychwanegu gwybodaeth i’r blwch, fel beth rydych angen mwy o amser i’w wneud a nodi terfyn amser newydd.",
-        "ADD_INFO_STAY_THE_CLAIM": "YBydd arnoch angen ychwanegu gwybodaeth i’r blwch, fel tan pryd yr hoffech i’r hawliad gael ei oedi.",
+        "ADD_INFO_STAY_THE_CLAIM": "Bydd arnoch angen ychwanegu gwybodaeth i’r blwch, fel tan pryd yr hoffech i’r hawliad gael ei oedi.",
         "ADD_OR_ALTER": "Gallwch ychwanegu testun neu addasu’r testun os oes arnoch angen gwneud hynny.",
         "ADJOURN_HEARING_HINT_TEXT": "Y gwrandawiad a drefnwyd ar gyfer [enter date] i’w symud i’r dyddiad cyntaf sydd ar gael ar ôl [enter date], gan osgoi [enter dates to avoid].",
         "CHANGE_CLAIM_HINT_TEXT": "Rwy’n gofyn am ganiatâd i wneud newid i [specify the document you’d like to change].",
@@ -2943,7 +2948,7 @@
         "TITLE": "Dewiswch gais",
         "WHEN_YOU_REQUEST": "Pan fyddwch yn gofyn am newid i’ch achos, neu’n cysylltu â’r llys i gymryd cam penodol, gelwir hyn yn gwneud ‘cais’ i’r llys am orchymyn.",
         "ASK_MORE_TIME_DESCRIPTION": "Er enghraifft, gofyn i’r terfyn amser ar gyfer uwchlwytho dogfennau cyn treial neu wrandawiad gael ei ymestyn. Bydd arnoch angen darparu rheswm dilys dros beidio â bodloni’r terfyn amser gwreiddiol.  Gellir ond gwneud y cais cyn i’r terfyn amser gwreiddiol basio.  Gelwir hyn hefyd yn gais i ymestyn amser. Yn hytrach na gwneud cais, gallwch gael cytundeb ysgrifenedig gan y partïon eraill i gael mwy o amser i wneud yr hyn sy’n ofynnol gan y llys. I wneud hyn, rhaid i’r cais am estyniad amser fod am gyfnod o lai na 28 diwrnod ac ni ddylai effeithio ar ddyddiad y gwrandawiad.",
-        "CONFIRM_YOU_PAID": "Cadarnhewch eich bod wedi talu dyled dyfarniad (CCJ)",
+        "CONFIRM_YOU_PAID": "Cadarnhau eich bod wedi talu dyled dyfarniad (CCJ)",
         "CONFIRM_YOU_PAID_DESCRIPTION": "Os ydych wedi talu'r ddyled o ddyfarniad llys sirol (CCJ) yn llawn, gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau, benthycwyr ac asiantaethau archwilio credyd. Gelwir hyn yn gais am dystysgrif canslo neu dystysgrif diwallu."
       },
       "SUMMARY": {
@@ -3237,7 +3242,7 @@
         "COSC_PAY_FEE": "Talu'r ffi",
         "COSC_APPLICATION_SUBMITTED": "Unwaith y bydd eich cais wedi'i gyflwyno, bydd y llys yn gofyn i'r unigolyn neu'r busnes yr oedd arnoch arian iddynt gadarnhau eu bod wedi cael eu talu. Os byddant yn cytuno neu ddim yn ymateb o fewn mis, bydd y gofrestr gyhoeddus yn cael ei diweddaru a bydd tystysgrif yn cael ei chyhoeddi.",
         "COSC_APPLICATION_SUBMITTED_NEXT": "Os nad yw'r unigolyn neu'r busnes yr oedd arnoch arian iddynt yn cytuno, bydd yr achos hwn yn symud all-lein a bydd y cais yn cael ei ystyried gan farnwr rhanbarth. Bydd unrhyw ddiweddariadau pellach yn digwydd drwy'r post.",
-        "WHAT_NEXT": "What happens next"
+        "WHAT_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys. Rhowch ‘ffi cais’ ac yna esboniad byr, er enghraifft ‘ffi gwneud cais am gais i roi dyfarniad o'r naill du' (canslo).",
@@ -5035,6 +5040,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Rhoi manylion y dogfennau",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
     "VALID_ENTER_REFERENCE_NUMBER": "Nodwch eich Rhif Help i Dalu Ffioedd 11 nod",
+    "VALID_ENTER_REFERENCE_NUMBER_GA_HWF": "Rhowch eich cyfeirnod Help i Dalu Ffioedd 11 nod",
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
@@ -5296,7 +5302,7 @@
       "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydw neu Nac ydw",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
-      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
+      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i’r atebydd gytuno ar setlo drwy gydsyniad cyn gwneud y cais.",
       "APPLY_HELP_WITH_FEES": "Mae angen i chi ddweud wrthym os ydych am wneud cais am help i dalu ffioedd. Dewis opsiwn Ydw neu Nac ydw",
       "CHOOSE_HEARING_TYPE": "Dewiswch y math o wrandawiad a ffafrir gennych",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau gofyn am gael eich costau'n ôl. Dewiswch opsiwn: Ydw neu Nac ydw",
