@@ -61,7 +61,7 @@ class ApplicationCosts {
         break;
       case 'Court to strike out all or part of the other parties\' case without a trial':
         //I.see(`To apply to the court to strike out all or part of the other parties' case, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
-        I.see(`To apply to the court to strike out all or part of the other parties’ case, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
+        I.see(`To apply to the court to strike out all or part of the other parties' case, the application fee is £${feeAmount}. If you'll be selecting multiple applications, this fee will not change.`);
         //The incorrect type of apostrophe is used in the content here - if that is fixed then top line will need to be used instead
         break;
       case 'Court to pause a claim':
