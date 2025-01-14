@@ -128,6 +128,32 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
 describe('View Application service', () => {
 
   const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
+  describe('Respond to the request button for request more info', () => {
+    it('should show respond to the request button for awaiting additional information for request more information', async () => {
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.state = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
+      application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      //when
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST');
+    });
+    it('should not show respond to the request button for awaiting additional information for request more information', async () => {
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
+      application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      //when
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      expect(result[1].responseButton).toEqual(null);
+    });
+  });
   describe('getJudgeResponseSummary', () => {
     let applicationResponse : ApplicationResponse;
     beforeEach(() => {
@@ -705,7 +731,7 @@ describe('View Application service', () => {
       expect(result[2].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[2].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[2].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[2].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
       expect(result[3].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[3].rows[0].value.html).toEqual('2 March 2024');
       expect(result[3].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
@@ -739,7 +765,7 @@ describe('View Application service', () => {
       expect(result[2].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[2].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[2].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[2].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
     });
   });
 
@@ -758,7 +784,7 @@ describe('View Application service', () => {
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[0].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[0].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
     });
 
     describe('getRequestWrittenRepresentations', () => {

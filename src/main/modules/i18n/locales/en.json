@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Applicant ",
+      "RESPONDENT": "Respondent "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -1736,6 +1740,10 @@
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+        },
+        "MINTI":  {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+          "REVIEW_CASE": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
       "MEDIATION": {
@@ -1927,7 +1935,8 @@
       "PAGE_TITLE_DEFENDANT": "View information about the defendant",
       "PHONE": "Phone",
       "THE_CLAIM": "The claim",
-      "THE_RESPONSE": "The response"
+      "THE_RESPONSE": "The response",
+      "DEFENDANT_LR": "Defendant's legal representative"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
@@ -4637,7 +4646,8 @@
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
-      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt"
+      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
+      "COURT_OFFICER_ORDER":"Court Officer Order"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
@@ -5030,6 +5040,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
     "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+    "VALID_ENTER_REFERENCE_NUMBER_GA_HWF": "Enter your 11 character Help with Fees number",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
