@@ -1490,7 +1490,8 @@
         "PAGE_TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad",
-        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Parhau nes bod yr hawliad wedi'i setlo neu ddyfarniad wedi ei roi"
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE": "Parhau nes bod yr hawliad wedi'i setlo neu ddyfarniad wedi ei roi",
+        "UNTIL_SETTLED_OR_JUDGEMENT_MADE_HINT": "This journey is not yet complete, if you wish to continue use MCOL and file paper judgment"
       },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
