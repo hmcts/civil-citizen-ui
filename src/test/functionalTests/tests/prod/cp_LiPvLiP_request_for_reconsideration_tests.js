@@ -63,7 +63,7 @@ Scenario('Claimant performs Request for reconsideration and Defendant adds a com
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
-}).tag('@nightly-regression-cp');
+}).tag('@reconsideration-regression');
 
 Scenario('Defendant performs Request for reconsideration and Claimant adds a comment', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -96,4 +96,4 @@ Scenario('Defendant performs Request for reconsideration and Claimant adds a com
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
-}).tag('@nightly-regression-cp');
+}).tag('@reconsideration-regression');
