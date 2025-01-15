@@ -2809,7 +2809,8 @@
           "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen ymateb hon yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi’r\", datganiad gwirionedd hwn."
         },
-        "UNAVAILABLE_DATES": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf (dewisol)?"
+        "UNAVAILABLE_DATES": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf?",
+        "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad"
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "A oes gennych dystiolaeth o'r taliad dyled?",
