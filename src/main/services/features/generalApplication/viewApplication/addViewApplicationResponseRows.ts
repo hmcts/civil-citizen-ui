@@ -1,4 +1,4 @@
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'common/form/models/yesNo';
 import {
   CcdGADebtorPaymentPlanGAspec, CcdGARespondentDebtorOfferOptionsGAspec,
   CcdGeneralApplicationHearingDetails,
@@ -65,6 +65,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const hearingDetailsSections = (hearingDetails: CcdGeneralApplicationHearingDetails | undefined): SummaryRow[] =>
+
     [formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
       hearingDetails?.HearingPreferencesPreferredType,
       value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${fromCcdHearingType(value)}`, {lng})),
@@ -77,6 +78,8 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
       hearingDetails?.HearingDetailsEmailID),
     row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
+      t(`COMMON.VARIATION_8.${hasUnavailableDates? YesNoUpperCase.YES: YesNoUpperCase.NO}`, {lng})),
+    row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND',
       unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates, lng)),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
       hearingSupportHtml(hearingDetails?.SupportRequirement))];
@@ -88,10 +91,12 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
         .map(date => formatDateToFullDate(new Date(date), lang))
         .join(' - '));
 
-    return (unavailableDates?.length > 0)
+    return (hasUnavailableDates)
       ? `<ul class="no-list-style">${unavailableDates.map(formatDate).join('')}</ul>`
-      : t('COMMON.NO', {lng});
+      : '';
   };
+
+  const hasUnavailableDates = (hearingDetails: CcdGeneralApplicationHearingDetails) => (hearingDetails.generalAppUnavailableDates ?? []).length > 0;
 
   const hearingSupportHtml = (supportRequirementItems: CcdSupportRequirement[]): string => {
     const supportCaption = (supportItem: CcdSupportRequirement): string => {

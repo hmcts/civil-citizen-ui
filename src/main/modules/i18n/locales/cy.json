@@ -3305,6 +3305,7 @@
           "OTHER_PARTIES_RESPONSE": "Ymateb y partïon eraill i’r cais.",
           "TITLE": "Ymateb gan y partïon eraill",
           "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?",
+          "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
         },
         "RESPOND_TO_REQUEST": "Ymateb i’r cais",
