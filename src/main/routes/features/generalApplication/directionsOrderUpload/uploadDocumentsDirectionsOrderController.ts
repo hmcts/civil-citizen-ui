@@ -39,7 +39,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, req: AppRequest, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-  const backLinkUrl = `${constructResponseUrlWithIdParams(claimId, GA_RESPONSE_VIEW_APPLICATION_URL)}?applicationId=${gaId}&index=1`;
+  const backLinkUrl = `${constructResponseUrlWithIdAndAppIdParams(claimId,gaId, GA_RESPONSE_VIEW_APPLICATION_URL)}?applicationId=${gaId}&index=1`;
   const applicationResponse = await getApplicationFromGAService(req, gaId);
   const directionOrderDocUrl = getDirectionOrderDocumentUrl(claimId, applicationResponse);
   res.render(viewPath, {
