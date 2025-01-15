@@ -2801,7 +2801,7 @@
         }
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
-        "CLAIM_REFERENCE": "Case reference: ",
+        "CLAIM_REFERENCE": "Claim reference: ",
         "PREFERRED_LOCATION": "Preferred court location",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
