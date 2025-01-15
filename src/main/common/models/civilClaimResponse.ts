@@ -311,10 +311,12 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDeadline?: Date;
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
+  previewCourtOfficerOrder?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
+  repaymentSummaryObject?:string;
 }
 
 export interface ClaimFeeData {
