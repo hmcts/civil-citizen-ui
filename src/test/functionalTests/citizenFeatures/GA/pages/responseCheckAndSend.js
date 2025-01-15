@@ -37,7 +37,7 @@ class ResponseCheckAndSend {
   verifyHeadingDetails(applicationType, caseNumber, parties) {
     I.see(applicationType, 'h1');
     I.see('Check your answers', 'h1');
-    I.see('Claim reference: ' + caseNumber);
+    I.see('Case reference: ' + caseNumber);
     I.see(parties);
   }
 
