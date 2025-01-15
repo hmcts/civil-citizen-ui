@@ -23,9 +23,9 @@ Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+}).tag('@nightly');
 
-Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll  - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
@@ -37,4 +37,4 @@ Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @n
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAll(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-});
+}).tag('@nightly');

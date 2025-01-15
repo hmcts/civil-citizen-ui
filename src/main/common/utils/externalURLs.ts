@@ -8,7 +8,7 @@ export const smartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_Feedback/?pag
 export const essentialCookiesUrl = 'https://hmcts-access.service.gov.uk/cookies';
 export const countyCourtJudgmentsUri = 'https://www.gov.uk/county-court-judgments-ccj-for-debt';
 export const courtFeesUri = 'https://www.gov.uk/make-court-claim-for-money/court-fees';
-export const countyCourtBusinessCentreUri = 'https://www.find-court-tribunal.service.gov.uk/courts/county-court-business-centre-ccbc';
+export const countyCourtBusinessCentreUri = 'https://www.find-court-tribunal.service.gov.uk/courts/civil-national-business-centre-cnbc';
 export const enforceJudgementUrl = 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment';
 export const claimCreationSmartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_ExitSurvey_Claimant/?pageUrl=/claim/claimId/confirmation';
 export const callChargesUrl = 'https://www.gov.uk/call-charges';
