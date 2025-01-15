@@ -1740,6 +1740,10 @@
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+        },
+        "MINTI":  {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+          "REVIEW_CASE": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
       "MEDIATION": {
@@ -5052,6 +5056,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
     "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+    "VALID_ENTER_REFERENCE_NUMBER_GA_HWF": "Enter your 11 character Help with Fees number",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
