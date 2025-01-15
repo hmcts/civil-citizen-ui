@@ -70,7 +70,7 @@ class ResponseCheckAndSend {
   }
 
   async courtLocation() {
-    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Preferred location\')]';
+    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Preferred court location\')]';
     I.see('Preferred court location', applicatonTypeSelector);
     I.see('Birmingham Civil and Family Justice Centre', applicatonTypeSelector);
     await I.see('Change', applicatonTypeSelector);
@@ -91,7 +91,7 @@ class ResponseCheckAndSend {
   }
 
   async unavailableDates() {
-    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Are there any dates when you cannot attend a hearing within the next 3 months\')]';
+    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Dates when you cannot attend a hearing\')]';
     I.see('Dates when you cannot attend a hearing', applicatonTypeSelector);
     await I.see('Change', applicatonTypeSelector);
   }
