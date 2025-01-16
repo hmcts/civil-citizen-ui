@@ -21,6 +21,11 @@ jest.mock('../../../../../../../main/services/features/generalApplication/respon
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - inform other parties', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

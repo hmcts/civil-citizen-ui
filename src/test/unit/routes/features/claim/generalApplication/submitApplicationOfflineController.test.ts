@@ -6,6 +6,11 @@ import config from 'config';
 import nock from 'nock';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Application costs', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
