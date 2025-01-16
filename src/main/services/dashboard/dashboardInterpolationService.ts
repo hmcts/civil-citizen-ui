@@ -42,7 +42,7 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_RESPONDENT_INFORMATION_URL,
   MAKE_APPLICATION_TO_COURT,
-  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_SUBMIT_OFFLINE,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -127,7 +127,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', REQUEST_FOR_RECONSIDERATION_COMMENTS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_SDO_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)));
-  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', claim.isAnyPartyBilingual() ? GA_SUBMIT_OFFLINE : APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocument(claim))));

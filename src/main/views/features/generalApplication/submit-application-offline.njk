@@ -1,0 +1,13 @@
+
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+
+{% set pageTitle = t('PAGES.GENERAL_APPLICATION.SUBMIT_APPLICATION_OFFLINE.TITLE') %}
+
+{% block nestedContent %}
+  {% for content in pageContent %}
+    {{ itemContent(content,t) }}
+  {% endfor %}
+{% endblock %}
+

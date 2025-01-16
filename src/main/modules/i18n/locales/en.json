@@ -3375,6 +3375,11 @@
         "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
         "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
         "FORM_HEADER_1" : "Enter the date of the final payment"
+      },
+      "SUBMIT_APPLICATION_OFFLINE": {
+        "TITLE": "Welsh Case",
+        "N244_LINK": "N244 form",
+        "SUMMARY": "A party in this case has asked for their case documents to be in Welsh. For this reason, the case cannot proceed online and if you want to make an application to the court you must use the N244_LINK. There are guidance notes on the N244 page to help you fill in the form."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
