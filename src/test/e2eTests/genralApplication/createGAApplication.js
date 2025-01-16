@@ -3,6 +3,10 @@ const {buttonType} = require('../commons/buttonVariables');
 const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wiremock');
 const I = actor();
 
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+2));
+const month = newDate.getMonth() + 1;
+const year = newDate.getFullYear();
+
 class CreateGAApplication {
 
   start(claimId) {
@@ -121,8 +125,16 @@ class CreateGAApplication {
   }
 
   unavailableDates(claimId) {
+    I.seeInCurrentUrl(`case/${claimId}/general-application/unavailability-confirmation`);
+    I.see('Are there any dates when you cannot attend a hearing within the next 3 months?');
+    I.click('Yes');
+    clickButton(buttonType.CONTINUE);
     I.seeInCurrentUrl(`case/${claimId}/general-application/unavailable-dates`);
-    I.see('Are there any dates when you cannot attend a hearing within the next 3 months (optional)?');
+    I.see('Are there any dates when you cannot attend a hearing within the next 3 months?');
+    I.click('#items-0-single-date');
+    I.fillField('input[name="items[0][single][start][day]', 1);
+    I.fillField('input[name="items[0][single][start][month]', month);
+    I.fillField('input[name="items[0][single][start][year]', year);
     clickButton(buttonType.CONTINUE);
   }
 
