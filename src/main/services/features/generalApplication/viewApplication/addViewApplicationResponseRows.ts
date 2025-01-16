@@ -78,7 +78,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
       hearingDetails?.HearingDetailsEmailID),
     row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
-      t(`COMMON.VARIATION_8.${hasUnavailableDates? YesNoUpperCase.YES: YesNoUpperCase.NO}`, {lng})),
+      t(`COMMON.VARIATION_8.${hasUnavailableDates(hearingDetails?.generalAppUnavailableDates)? YesNoUpperCase.YES: YesNoUpperCase.NO}`, {lng})),
     row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND',
       unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates, lng)),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
@@ -91,12 +91,12 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
         .map(date => formatDateToFullDate(new Date(date), lang))
         .join(' - '));
 
-    return (hasUnavailableDates)
+    return (hasUnavailableDates(unavailableDates))
       ? `<ul class="no-list-style">${unavailableDates.map(formatDate).join('')}</ul>`
       : '';
   };
 
-  const hasUnavailableDates = (hearingDetails: CcdGeneralApplicationHearingDetails) => (hearingDetails.generalAppUnavailableDates ?? []).length > 0;
+  const hasUnavailableDates = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[]) => unavailableDates?.length > 0;
 
   const hearingSupportHtml = (supportRequirementItems: CcdSupportRequirement[]): string => {
     const supportCaption = (supportItem: CcdSupportRequirement): string => {
