@@ -51,7 +51,7 @@ describe('HearingDurationFormatter', () => {
           return '';
         },
         hearingDuration: HearingDuration.MINUTES_60,
-        hearingDurationInMinutesAHN: '60' // or any value, won't be used
+        hearingDurationInMinutesAHN: '60', // or any value, won't be used
       };
 
       // When
@@ -79,7 +79,7 @@ describe('HearingDurationFormatter', () => {
           return '';
         },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '60'
+        hearingDurationInMinutesAHN: '60',
       };
 
       // When
@@ -107,7 +107,7 @@ describe('HearingDurationFormatter', () => {
           return '';
         },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '135'
+        hearingDurationInMinutesAHN: '135',
       };
 
       const result = HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
@@ -129,7 +129,7 @@ describe('HearingDurationFormatter', () => {
           return '';
         },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '420'
+        hearingDurationInMinutesAHN: '420',
       };
 
       const result = HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
@@ -149,7 +149,7 @@ describe('HearingDurationFormatter', () => {
           return '';
         },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '0'
+        hearingDurationInMinutesAHN: '0',
       };
 
       const result = HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
@@ -168,7 +168,7 @@ describe('HearingDurationFormatter', () => {
           return '';
         },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: 'not-a-number'
+        hearingDurationInMinutesAHN: 'not-a-number',
       };
 
       expect(() => {
