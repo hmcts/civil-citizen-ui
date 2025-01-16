@@ -198,7 +198,15 @@
       "MINUTES_180": "3 awr",
       "MINUTES_240": "4 awr",
       "DAY_1": "1 diwrnod",
-      "DAY_2": "2 ddiwrnod"
+      "DAY_2": "2 ddiwrnod",
+      "DAY": "dydd",
+      "DAYS": "dyddiau",
+      "HOUR": "awr",
+      "HOURS": "oriau",
+      "MINUTE": "munud",
+      "MINUTES": "munudau",
+      "AND": "a",
+      "AND_VOWEL": "ac"
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
