@@ -83,7 +83,7 @@ export class HearingDurationFormatter {
       hoursText = this.formatValueWithLabel(hours, t('COMMON.HEARING_DURATION.HOURS', { lng }));
     }
 
-    let minutesText = this.formatMinutes(minutes, lng);
+    const minutesText = this.formatMinutes(minutes, lng);
 
     return this.concatWithAnd([hoursText, minutesText], lng);
   }
@@ -134,7 +134,7 @@ export class HearingDurationFormatter {
    * @param label - The label (e.g., 'day', 'hour')
    */
   private static formatValueWithLabel(value: number, label: string): string {
-      return `${value} ${label}`;
+    return `${value} ${label}`;
   }
 
   /**

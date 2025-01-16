@@ -56,7 +56,7 @@ describe('HearingDurationFormatter', () => {
       // Also verify that `t` was called with the right key:
       expect(t).toHaveBeenCalledWith(
         'COMMON.HEARING_DURATION.' + mockHearing.hearingDuration.toString(),
-        { lng: 'en' }
+        { lng: 'en' },
       );
     });
 
@@ -131,7 +131,7 @@ describe('HearingDurationFormatter', () => {
 
       expect(() => {
         HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
-      }).toThrowError(`Cannot parse "not-a-number" as a valid number.`);
+      }).toThrowError('Cannot parse "not-a-number" as a valid number.');
     });
   });
 });
