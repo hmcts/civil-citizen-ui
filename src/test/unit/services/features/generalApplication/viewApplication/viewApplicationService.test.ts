@@ -416,8 +416,8 @@ describe('View Application service', () => {
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
           'civilmoneyclaimsdemo@gmail.com'],
         [
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND',
-          'COMMON.NO',
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UNAVAILABLE_DATES',
+          'COMMON.VARIATION_8.NO',
         ],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
@@ -508,8 +508,8 @@ describe('View Application service', () => {
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
           'civilmoneyclaimsdemo@gmail.com'],
         [
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND',
-          'COMMON.NO',
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UNAVAILABLE_DATES',
+          'COMMON.VARIATION_8.NO',
         ],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
