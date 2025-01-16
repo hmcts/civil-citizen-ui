@@ -56,9 +56,9 @@
     {% set object = '' %}
     {% if content.data.variables %}
         {% set object = content.data.variables %}
-        <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</p>
+        <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object) | safe}}</p>
     {% else %}
-      <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</p>
+      <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) | safe }}</p>
     {% endif %}
   {% endif %}
 
