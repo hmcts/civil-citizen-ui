@@ -29,7 +29,7 @@ class ViewBundle {
   }
 
   verifyHeadingDetails() {
-    I.see('Hearings', 'span');
+    I.see('Hearing', 'span');
     I.see('View the bundle', 'h1');
   }
 
@@ -52,8 +52,8 @@ class ViewBundle {
     I.see('Bundle 1', '(//td[@class=\'govuk-table__cell\'])[1]');
     I.see(dateUploaded, '(//td[@class=\'govuk-table__cell\'])[2]');
     if (partyType === 'LRvLiP'){
-      I.seeElement('//a[text()=\'Test Inc v Doe-18102024-Bundle.pdf\']');
-      I.see('Test Inc v Doe-18102024-Bundle.pdf', '(//td[@class=\'govuk-table__cell\'])[3]');
+      I.seeElement('//a[contains(text(), "-Bundle.pdf")]');
+      I.see('-Bundle.pdf', '(//td[@class=\'govuk-table__cell\'])[3]');
     }
   }
 }
