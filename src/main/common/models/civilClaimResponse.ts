@@ -305,6 +305,7 @@ export interface CCDClaim extends ClaimUpdate {
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   mediationSettlementAgreedAt?: Date;
   defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
+  specResponseTimelineDocumentFiles?: Document;
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
   flightDelayDetails?: CCDFlightDelayDetails;

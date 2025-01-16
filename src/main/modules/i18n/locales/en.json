@@ -1740,6 +1740,10 @@
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+        },
+        "MINTI":  {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+          "REVIEW_CASE": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
       "MEDIATION": {
@@ -2707,7 +2711,22 @@
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
-        "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "RESPOND_TO": {
+          "SET_ASIDE_JUDGEMENT": "Respond to an application to set aside (remove) a judgment",
+          "AMEND_A_STMT_OF_CASE": "Respond to an application to make a change to your claim or defence that you've submitted",
+          "ADJOURN_HEARING": "Respond to an application to change a hearing date",
+          "CONFIRM_CCJ_DEBT_PAID": "Respond to an application to Confirm you've paid a judgment debt",
+          "UNLESS_ORDER": "Respond to an application to court to impose a sanction on the other parties unless they do a specific action",
+          "EXTEND_TIME": "Respond to an application to more time to do what is required by a court order",
+          "OTHER": "Respond to an application to court to do something that's not on this list",
+          "STAY_THE_CLAIM": "Respond to an application to court to pause a claim",
+          "VARY_ORDER": "Respond to an application to reconsider an order",
+          "RELIEF_FROM_SANCTIONS": "Respond to an application to relief from a penalty you've been given by the court",
+          "SETTLE_BY_CONSENT": "Respond to an application to court to make an order settling the claim by consent",
+          "STRIKE_OUT": "Respond to an application to court to strike out all or part of the other parties' case without a trial",
+          "SUMMARY_JUDGEMENT": "Respond to an application to court to make a summary judgment on a case",
+          "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Respond to an application to vary a judgment"
+        },
         "RESPOND_TO_MULTIPLE": "Respond to an application",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
@@ -3216,6 +3235,7 @@
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
+        "GA_ADD_ANOTHER_DATE": "Add another date or date range",
         "FROM": "From",
         "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
         "LONGER_PERIOD": "A longer period of time",
@@ -4096,7 +4116,9 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
+      "DOWNLOAD_EVIDENCE": "Download their evidence",
       "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
+      "DOWNLOAD_TIMELINE": "Download their timeline of events (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
@@ -5036,6 +5058,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
     "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+    "VALID_ENTER_REFERENCE_NUMBER_GA_HWF": "Enter your 11 character Help with Fees number",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
