@@ -20,7 +20,7 @@ const scriptSrcElem = [
   ...webChat,
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
   (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
-  (_req: AppRequest, res: express.Response) => `'nonce-${res.locals.nonceCNBCWebChat}'`,
+  (_req: AppRequest, res: express.Response) => `'nonce-${res.locals.nonceWebChat}'`,
 ];
 
 const styleSrc = [

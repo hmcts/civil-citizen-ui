@@ -11,22 +11,22 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Webchat</h2>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h2>
           {% if webChatEnabled %}
             <div id="{{ webChatConfig.buttonContainerId }}"></div>
           {% else %}
-            <p class="govuk-body govuk-!-margin-bottom-0">Web chat unavailable</p>
+            <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT_UNAVAILABLE')}}</p>
           {% endif %}
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">Telephone</h2>
-          <p class="govuk-body govuk-!-margin-bottom-0">0300 123 1056</p>
-          <h2 class="govuk-heading-m govuk-!-margin-top-6">Opening Times</h2>
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Telephone</h3>
-          <p class="govuk-body govuk-!-margin-bottom-0">Monday to Friday, 9am to 5pm</p>
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Webchat</h3>
-          <p class="govuk-body govuk-!-margin-bottom-0">Monday to Friday, 9am to 5pm</p>
-          <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">Telephone and webchat closed on Saturdays, Sundays and bank holidays</p>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.TELEPHONE')}}</h2>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{t(telephone)}}</p>
+          <h2 class="govuk-heading-m govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.OPENING_TIMES')}}</h2>
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.TELEPHONE')}}</h3>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.OPENING_HOURS')}}</p>
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h3>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.OPENING_HOURS')}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{t('PAGES.CONTACT_WEBCHAT.CLOSED_HOURS')}}</p>
           <p class="govuk-body">
-            {{ externalLink(t, 'Find out about call charges (opens in a new window)', 'https://www.gov.uk/call-charges', false) }}
+            {{ externalLink(t, 'PAGES.CONTACT_WEBCHAT.CALL_CHARGES', 'https://www.gov.uk/call-charges', false) }}
           </p>
         </div>
       </div>
@@ -38,7 +38,7 @@
   {{ super() }}
 
   {% if webChatEnabled %}
-    <script type="text/javascript" nonce="{{ nonceCNBCWebChat }}">
+    <script type="text/javascript" nonce="{{ nonceWebChat }}">
       window.__8x8Chat = {
         uuid: '{{ webChatConfig.uuid }}',
         tenant: '{{ webChatConfig.tenant }}',

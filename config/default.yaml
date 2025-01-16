@@ -82,4 +82,11 @@ webChat:
     channel: 'CNBC Webchat STAGING'
     channelUuid: 'QG-Cq97KTguzQz5H7T_n6g'
     buttonContainerId: '__8x8-chat-button-container-script_35780229675c3e23dcdd66.11858382'
+  mediation:
+    enabled: false
+    uuid: 'script_202736819566d85c96c386f8.18964185'
+    tenant: 'aG1jdHN4MTAx'
+    channel: 'NBC_Mediation_Webchat'
+    channelUuid: 'EfkT-IMvRReo_VGNJ5ietQ'
+    buttonContainerId: '__8x8-chat-button-container-script_202736819566d85c96c386f8.18964185'
 
