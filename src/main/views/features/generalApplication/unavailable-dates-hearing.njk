@@ -20,7 +20,7 @@
       {{ unavailableDateRow(unavailableDate, 'PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.SELECT', 0, form.errorFor, t, {hidden:true, noJs: true}, today, false) }}
     {% endfor %}
     {{ govukButton({
-      text: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.ADD_ANOTHER_DATE'),
+      text: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.GA_ADD_ANOTHER_DATE'),
       classes: "append-row",
       name: 'action',
       value: 'add_another-unavailableDates'
