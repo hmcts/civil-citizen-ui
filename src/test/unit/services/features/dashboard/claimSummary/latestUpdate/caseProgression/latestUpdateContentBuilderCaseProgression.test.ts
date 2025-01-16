@@ -40,7 +40,7 @@ describe('Latest Update Content Builder Case Progression', () => {
     },
   };
   claim.systemGeneratedCaseDocuments = SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock();
-  const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', '123');
+  const sdoUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', '124');
 
   describe('test buildEvidenceUploadSection', () => {
     it('should have evidence upload content with bundle deadline', () => {

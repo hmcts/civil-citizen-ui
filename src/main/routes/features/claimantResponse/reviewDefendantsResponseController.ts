@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
-import {DocumentType} from 'common/models/document/documentType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   constructRepaymentPlanSection,
@@ -10,10 +9,10 @@ import {
 } from 'services/features/claimantResponse/claimantResponseService';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
+  getDefendantResponseLink,
   getDefendantsResponseContent, getResponseContentForHowTheyWantToPay,
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import { getSystemGeneratedCaseDocumentIdByType } from 'common/models/document/systemGeneratedCaseDocuments';
 import { getClaimById } from 'modules/utilityService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
@@ -46,7 +45,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getClaimById(claimId, req, true);
-    const downloadResponseLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE));
+    const downloadResponseLink = getDefendantResponseLink(claim);
     const financialDetails = getFinancialDetails(claim, lang);
     const defendantsResponseContent = getDefendantsResponseContent(claim, getLng(lang));
     const repaymentPlan = constructRepaymentPlanSection(claim, getLng(lang));
