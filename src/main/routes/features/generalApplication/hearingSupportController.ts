@@ -19,7 +19,7 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {interpreterUrl} from 'common/utils/externalURLs';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 const hearingSupportController = Router();
 const viewPath = 'features/generalApplication/hearing-support';

@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   GA_HEARING_SUPPORT_URL,
   GA_UNAVAILABILITY_CONFIRMATION_URL,
-  GA_UNAVAILABLE_HEARING_DATES_URL
+  GA_UNAVAILABLE_HEARING_DATES_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';

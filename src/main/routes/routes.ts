@@ -430,7 +430,7 @@ import submitCoScApplicationConfirmationController
   from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
-  from "routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation";
+  from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
 
 export default [
   homeController,
