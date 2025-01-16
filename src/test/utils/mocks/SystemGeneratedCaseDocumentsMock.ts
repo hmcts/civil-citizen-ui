@@ -63,7 +63,7 @@ export const SystemGeneratedCaseDocumentsWithSEALEDCLAIMMock = () : SystemGenera
         documentLink:  {
           document_url: 'url2',
           document_filename: 'filename2',
-          document_binary_url: 'documents/123/binary',
+          document_binary_url: 'documents/124/binary',
         },
         documentName: 'documentName',
         createdDatetime: new Date(Date.now()),
