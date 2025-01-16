@@ -43,8 +43,15 @@ describe('HearingDurationFormatter', () => {
     it('should use the translation directly when hearingDuration is set', () => {
       // Given a hearing with a known hearingDuration
       const mockHearing: CaseProgressionHearing = {
+        hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+          return 0;
+        }, getHearingDateFormatted(lang: string): string {
+          return '';
+        }, getHearingTimeHourMinuteFormatted(): string {
+          return '';
+        },
         hearingDuration: HearingDuration.MINUTES_60,
-        hearingDurationInMinutesAHN: '60', // or any value, won't be used
+        hearingDurationInMinutesAHN: '60' // or any value, won't be used
       };
 
       // When
@@ -64,8 +71,15 @@ describe('HearingDurationFormatter', () => {
       // Given a hearing where hearingDuration is null
       // but hearingDurationInMinutesAHN is "60"
       const mockHearing: CaseProgressionHearing = {
+        hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+          return 0;
+        }, getHearingDateFormatted(lang: string): string {
+          return '';
+        }, getHearingTimeHourMinuteFormatted(): string {
+          return '';
+        },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '60',
+        hearingDurationInMinutesAHN: '60'
       };
 
       // When
@@ -85,8 +99,15 @@ describe('HearingDurationFormatter', () => {
     it('should format multiple hours/minutes (e.g. 135 minutes = 2 hours and 15 minutes)', () => {
       // 135 minutes -> 2 hours, 15 minutes
       const mockHearing: CaseProgressionHearing = {
+        hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+          return 0;
+        }, getHearingDateFormatted(lang: string): string {
+          return '';
+        }, getHearingTimeHourMinuteFormatted(): string {
+          return '';
+        },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '135',
+        hearingDurationInMinutesAHN: '135'
       };
 
       const result = HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
@@ -100,8 +121,15 @@ describe('HearingDurationFormatter', () => {
       // Let's say we have 420 minutes => 7 hours
       // => 1 day and 1 hour
       const mockHearing: CaseProgressionHearing = {
+        hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+          return 0;
+        }, getHearingDateFormatted(lang: string): string {
+          return '';
+        }, getHearingTimeHourMinuteFormatted(): string {
+          return '';
+        },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '420',
+        hearingDurationInMinutesAHN: '420'
       };
 
       const result = HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
@@ -113,8 +141,15 @@ describe('HearingDurationFormatter', () => {
 
     it('should handle 0 minutes (resulting in empty string for hours/minutes)', () => {
       const mockHearing: CaseProgressionHearing = {
+        hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+          return 0;
+        }, getHearingDateFormatted(lang: string): string {
+          return '';
+        }, getHearingTimeHourMinuteFormatted(): string {
+          return '';
+        },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: '0',
+        hearingDurationInMinutesAHN: '0'
       };
 
       const result = HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
@@ -125,8 +160,15 @@ describe('HearingDurationFormatter', () => {
 
     it('should throw an error for invalid string input', () => {
       const mockHearing: CaseProgressionHearing = {
+        hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+          return 0;
+        }, getHearingDateFormatted(lang: string): string {
+          return '';
+        }, getHearingTimeHourMinuteFormatted(): string {
+          return '';
+        },
         hearingDuration: null,
-        hearingDurationInMinutesAHN: 'not-a-number',
+        hearingDurationInMinutesAHN: 'not-a-number'
       };
 
       expect(() => {
