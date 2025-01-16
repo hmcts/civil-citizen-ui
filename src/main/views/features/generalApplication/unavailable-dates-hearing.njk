@@ -8,6 +8,7 @@
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.PAGE_TITLE') }}
 {% endblock %}
+{% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
 
 {% block nestedContent %}
   {{ headingWithCaption(t, headerTitle, headingTitle) }}
