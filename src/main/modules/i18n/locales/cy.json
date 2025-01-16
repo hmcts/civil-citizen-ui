@@ -2687,7 +2687,7 @@
       "ADDITIONAL_DOCUMENTS": {
         "ADDITIONAL_DOCUMENTS_CAPTION": "Uwchlwytho dogfennau ychwanegol",
         "ADDITIONAL_DOCUMENTS_ROW1": "Dylech ond uwchlwytho dogfennau sy’n berthnasol i’ch cais, er enghraifft, os yw’r barnwr wedi gorchymyn gwrandawiad ac wedi'ch cyfarwyddo i ddarparu dogfennau cyn hyn.",
-        "ADDITIONAL_DOCUMENTS_ROW2": "Cyn i chi uwchlwytho’r ddogfen bydd angen i chi ddisgrifio’r math o ddogfen rydych chi’n ei huwchlwytho, er enghraifft, Bwndel, datgani ad tyst neu atodlen gostau.",
+        "ADDITIONAL_DOCUMENTS_ROW2": "Cyn i chi uwchlwytho’r ddogfen bydd angen i chi ddisgrifio’r math o ddogfen rydych chi’n ei huwchlwytho, er enghraifft, Bwndel, datganiad tyst neu atodlen gostau.",
         "JUDGE_WILL_REVIEW": "Bydd barnwr yn adolygu’r dogfennau ychwanegol rydych wedi’u huwchlwytho. Byddwch yn cael diweddariad gyda’u penderfyniad neu’r camau nesaf.",
         "TYPE_OF_DOCUMENT_HINT": "Er enghraifft, contract, derbynneb anfoneb, e-bost, neges testun, llun, neges ar y cyfryngau cymdeithasol",
         "TYPE_OF_DOCUMENT": "Math o ddogfen",
@@ -2710,8 +2710,23 @@
         "WITHOUT_NOTICE": "Cyflwynwyd eich cais heb roi rhybudd i’r partïon eraill."
       },
       "AGREE_TO_ORDER": {
-        "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydw’",
-        "RESPOND_TO": "Ymateb i gais i {{applicationType}}",
+        "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydy’",
+        "RESPOND_TO": {
+          "SET_ASIDE_JUDGEMENT": "Ymateb i gais i rhoi dyfarniad o’r naill du (ei ddileu)",
+          "AMEND_A_STMT_OF_CASE": "Ymateb i gais i gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
+          "ADJOURN_HEARING": "Ymateb i gais i newid dyddiad gwrandawiad",
+          "CONFIRM_CCJ_DEBT_PAID": "Ymateb i gais i cadarnhewch eich bod wedi talu dyled dyfarniad",
+          "UNLESS_ORDER": "Ymateb i gais i’r llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
+          "EXTEND_TIME": "Ymateb i gais i mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
+          "OTHER": "Ymateb i gais i’r llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
+          "STAY_THE_CLAIM": "Ymateb i gais i’r llys i atal hawliad",
+          "VARY_ORDER": "Ymateb i gais i ailystyried gorchymyn",
+          "RELIEF_FROM_SANCTIONS": "Ymateb i gais i rhyddhad o gosb rydych wedi’i chael gan y llys",
+          "SETTLE_BY_CONSENT": "Ymateb i gais i’r llys i wneud gorchymyn i setlo'r hawliad drwy gydsyniad",
+          "STRIKE_OUT": "Ymateb i gais i’r llys i ddileu achos y partïon eraill yn gyfan gwbl, neu ddileu rhan ohono, heb gynnal treial",
+          "SUMMARY_JUDGEMENT": "Ymateb i gais i’r llys i wneud dyfarniad diannod mewn achos",
+          "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Ymateb i gais i amrywio dyfarniad"
+        },
         "RESPOND_TO_MULTIPLE": "Ymateb i gais",
         "TITLE": "Mae’r partïon eraill wedi dweud eich bod wedi cytuno i’r gorchymyn maent wedi gwneud cais amdano. A yw hyn yn gywir?"
       },
@@ -2903,7 +2918,7 @@
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
         "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
         "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
-        "PAUSE": "Y llys i oedi hawliad",
+        "PAUSE": "Y llys i atal hawliad",
         "RECONSIDER": "Ailystyried gorchymyn",
         "RELIEF_PENALTY": "Rhyddhad o gosb rydych wedi’i chael gan y llys",
         "SETTLING": "Llys i wneud gorchymyn i setlo'r hawliad drwy gydsyniad",
@@ -3220,6 +3235,7 @@
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Ychwanegu dyddiad neu ystod o ddyddiadau arall",
+        "GA_ADD_ANOTHER_DATE": "Ychwanegu dyddiad arall neu ystod o ddyddiadau eraill",
         "FROM": "Oddi wrth",
         "IMPORTANT_EVENTS": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau llys eraill neu wyliau rydych eisoes wedi trefnu.",
         "LONGER_PERIOD": "Cyfnod hirach o amser",
@@ -3285,7 +3301,7 @@
         "DOCUMENTS_FROM_COURT": "Dogfennau gan y llys",
         "DOCUMENT_TYPES": {
           "SUPPORTING_EVIDENCE": "Tystiolaeth ategol",
-          "RESPOND_EVIDENCE": "Tystiolaeth yr atebydd"
+          "RESPOND_EVIDENCE": "Tystiolaeth ymateb"
         },
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
@@ -5302,7 +5318,7 @@
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "Ni allwch ddewis \"Gofyn i amrywio dyfarniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
-      "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydy neu Nac ydy",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i’r atebydd gytuno ar setlo drwy gydsyniad cyn gwneud y cais.",
       "APPLY_HELP_WITH_FEES": "Mae angen i chi ddweud wrthym os ydych am wneud cais am help i dalu ffioedd. Dewis opsiwn Ydw neu Nac ydw",
