@@ -192,6 +192,7 @@ ccd:
       keyVaults: []
   ccd-data-store-api:
     java:
+      disableKeyVaults: true
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 1000m
@@ -202,7 +203,6 @@ ccd:
         DATA_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}data-store"
         DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
         DATA_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-        DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
         DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
         DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
@@ -217,12 +217,18 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
+      secrets:
+        DATA_STORE_DB_PASSWORD:
+          secretRef: postgres
+          key: PASSWORD
+          disabled: false
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_NAME}.preview.platform.hmcts.net
 
 
   ccd-definition-store-api:
     java:
+      disableKeyVaults: true
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
       environment:
@@ -237,7 +243,11 @@ ccd:
         DEFINITION_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}definition-store"
         DEFINITION_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
         DEFINITION_STORE_DB_USERNAME: '{{ tpl .Values.global.postgresUsername $}}'
-        DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      secrets:
+        DEFINITION_STORE_DB_PASSWORD:
+          secretRef: postgres
+          key: PASSWORD
+          disabled: false
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
   elasticsearch:
