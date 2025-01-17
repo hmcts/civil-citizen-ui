@@ -5,8 +5,8 @@ const defaultPassword = process.env.CITIZEN_PASSWORD || 'Password12!';
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD || 'Password12';
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD || 'Hmcts1234';
 // const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
-// const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-5158.preview.platform.hmcts.net';
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.aat.platform.hmcts.net';
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-5427.preview.platform.hmcts.net';
+// const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.aat.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false;
 
 if (!process.env.TEST_PASSWORD) {
@@ -24,23 +24,23 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    manageCase: process.env.URL || 'https://manage-case.aat.platform.hmcts.net/',
-    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-aat.service.core-compute-aat.internal',
-    dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
-    idamApi: process.env.IDAM_API_URL || 'https://idam-api.aat.platform.hmcts.net',
-    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
-    civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-aat.service.core-compute-aat.internal',
-    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-aat.service.core-compute-aat.internal',
-    paymentApi: process.env.PAYMENT_API_URL || 'http://payment-api-aat.service.core-compute-aat.internal',
-
-    // manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-5158.preview.platform.hmcts.net',
+    // manageCase: process.env.URL || 'https://manage-case.aat.platform.hmcts.net/',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-5158.preview.platform.hmcts.net',
+    // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-aat.service.core-compute-aat.internal',
     // dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
-    // idamApi:  'https://idam-api.aat.platform.hmcts.net',
+    // idamApi: process.env.IDAM_API_URL || 'https://idam-api.aat.platform.hmcts.net',
     // idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
-    // civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-5158-civil-service.preview.platform.hmcts.net',
+    // civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-aat.service.core-compute-aat.internal',
+    // waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-aat.service.core-compute-aat.internal',
+    // paymentApi: process.env.PAYMENT_API_URL || 'http://payment-api-aat.service.core-compute-aat.internal',
+
+    manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-5427.preview.platform.hmcts.net',
+    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
+    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-5427.preview.platform.hmcts.net',
+    dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
+    idamApi:  'https://idam-api.aat.platform.hmcts.net',
+    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
+    civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-5427-civil-service.preview.platform.hmcts.net',
     
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
@@ -94,8 +94,8 @@ module.exports = {
   },
   defendantLRCitizenUser:{
     password: defaultPassword,
-    // email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
-    email: 'youonlytestonce1@gmail.com',
+    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    // email: 'youonlytestonce1@gmail.com',
     type: 'defendant',
   },
   adminUser: {
