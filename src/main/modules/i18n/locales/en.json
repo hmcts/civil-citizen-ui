@@ -205,8 +205,8 @@
       "HOURS": "hours",
       "MINUTE": "minute",
       "MINUTES": "minutes",
-      "AND": "and",
-      "AND_VOWEL": "and"
+      "AND": " and ",
+      "AND_VOWEL": " and "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps below.",

@@ -205,8 +205,8 @@
       "HOURS": "oriau",
       "MINUTE": "munud",
       "MINUTES": "munudau",
-      "AND": "a",
-      "AND_VOWEL": "ac"
+      "AND": " a ",
+      "AND_VOWEL": " ac "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
