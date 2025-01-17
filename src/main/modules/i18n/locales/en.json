@@ -2486,7 +2486,7 @@
     },
     "ELIGIBILITY_USEFUL_INFO_FEES": {
       "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
-      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.",
+      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.",
       "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
@@ -2711,7 +2711,22 @@
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
-        "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "RESPOND_TO": {
+          "SET_ASIDE_JUDGEMENT": "Respond to an application to set aside (remove) a judgment",
+          "AMEND_A_STMT_OF_CASE": "Respond to an application to make a change to your claim or defence that you've submitted",
+          "ADJOURN_HEARING": "Respond to an application to change a hearing date",
+          "CONFIRM_CCJ_DEBT_PAID": "Respond to an application to Confirm you've paid a judgment debt",
+          "UNLESS_ORDER": "Respond to an application to court to impose a sanction on the other parties unless they do a specific action",
+          "EXTEND_TIME": "Respond to an application to more time to do what is required by a court order",
+          "OTHER": "Respond to an application to court to do something that's not on this list",
+          "STAY_THE_CLAIM": "Respond to an application to court to pause a claim",
+          "VARY_ORDER": "Respond to an application to reconsider an order",
+          "RELIEF_FROM_SANCTIONS": "Respond to an application to relief from a penalty you've been given by the court",
+          "SETTLE_BY_CONSENT": "Respond to an application to court to make an order settling the claim by consent",
+          "STRIKE_OUT": "Respond to an application to court to strike out all or part of the other parties' case without a trial",
+          "SUMMARY_JUDGEMENT": "Respond to an application to court to make a summary judgment on a case",
+          "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Respond to an application to vary a judgment"
+        },
         "RESPOND_TO_MULTIPLE": "Respond to an application",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
@@ -2729,7 +2744,7 @@
         "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
-        "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
+        "STRIKE_OUT": "the court to strike out all or part of the other parties' case",
         "SUMMARY_JUDGEMENT": "the court to make a summary judgment",
         "STAY_THE_CLAIM": "the court to pause a claim",
         "TITLE": "Application costs",
@@ -3220,11 +3235,11 @@
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
+        "GA_ADD_ANOTHER_DATE": "Add another date or date range",
         "FROM": "From",
         "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
         "LONGER_PERIOD": "A longer period of time",
         "PAGE_TITLE": "Unavailable hearing dates",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Select a date or dates you cannot attend a hearing",
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
@@ -4100,7 +4115,9 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
+      "DOWNLOAD_EVIDENCE": "Download their evidence",
       "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
+      "DOWNLOAD_TIMELINE": "Download their timeline of events (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
@@ -4647,7 +4664,9 @@
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
-      "COURT_OFFICER_ORDER":"Court Officer Order"
+      "COURT_OFFICER_ORDER":"Court Officer Order",
+      "JBA_DEFENDANT":"Judgment by admission defendant",
+      "JBA_CLAIMANT":"Judgment by admission claimant"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
