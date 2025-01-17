@@ -2,6 +2,10 @@ const {clickButton} = require('../commons/clickButton');
 const {buttonType} = require('../commons/buttonVariables');
 const I = actor();
 
+const newDate = new Date(new Date().setMonth(new Date().getMonth()+2));
+const month = newDate.getMonth() + 1;
+const year = newDate.getFullYear();
+
 class RespondentResponse {
 
   agreeToOrder(option, selectedApplicationType, claimId, appId) {
