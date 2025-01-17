@@ -1,5 +1,4 @@
 const ContactUs = require('../../common/contactUs');
-const config = require('../../../../config');
 const I = actor();
 
 const contactUs = new ContactUs();
