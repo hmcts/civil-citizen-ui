@@ -4827,6 +4827,15 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
+    },
+    "CONTACT_WEBCHAT": {
+      "WEBCHAT": "Webchat",
+      "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
+      "TELEPHONE": "Telephone",
+      "OPENING_TIMES": "Opening Times",
+      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
     }
   },
   "FOOTER":{
