@@ -3239,8 +3239,7 @@
         "FROM": "Oddi wrth",
         "IMPORTANT_EVENTS": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau llys eraill neu wyliau rydych eisoes wedi trefnu.",
         "LONGER_PERIOD": "Cyfnod hirach o amser",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
+        "PAGE_TITLE": "Dyddiadau gwrandawiad lle nad ydych ar gael",
         "SELECT": "Dewiswch ddyddiad neu ddyddiadau pan na allwch fynychu gwrandawiad",
         "SINGLE_DATE": "Dyddiad unigol",
         "TITLE": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf (dewisol)?",
@@ -4665,7 +4664,9 @@
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
-      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
+      "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
+      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
@@ -4826,6 +4827,15 @@
       "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
       "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
       "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos"
+    },
+    "CONTACT_WEBCHAT": {
+      "WEBCHAT": "Webchat",
+      "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
+      "TELEPHONE": "Telephone",
+      "OPENING_TIMES": "Opening Times",
+      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
     }
   },
   "FOOTER": {
