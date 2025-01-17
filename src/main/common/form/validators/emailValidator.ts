@@ -7,7 +7,7 @@ import validator from 'validator';
 @ValidatorConstraint({name: 'emailValidator', async: false})
 export class EmailValidator implements ValidatorConstraintInterface {
   //eslint-disable-next-line
-  readonly EMAIL_REGEX = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+  readonly EMAIL_REGEX = /^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/;
   readonly EMAIL_MAX_LENGTH = 320;
 
   validate(value: string) {
