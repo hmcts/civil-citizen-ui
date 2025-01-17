@@ -4664,7 +4664,9 @@
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
-      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
+      "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
+      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
