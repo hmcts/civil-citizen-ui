@@ -9,10 +9,12 @@ const ResponseUploadDocument = require('../pages/responseUploadDocuments.js');
 const ResponseHearingArrangementsGuidance = require('../pages/responseHearingArrangementsGuidance.js');
 const HearingArrangement = require('../pages/hearingArrangement.js');
 const HearingContactDetails = require('../pages/hearingContactDetails.js');
+
 const UnavailableDates = require('../pages/unavailableDates.js');
 const HearingSupport = require('../pages/hearingSupport.js');
 const ResponseCheckAndSend = require('../pages/responseCheckAndSend.js');
 const ResponseGAConfirmation = require('../pages/responseGAConfirmation.js');
+const UnavailableDatesConfirmation = require('../pages/unavailableDatesConfirmation');
 
 const respondentInformationPage = new RespondentInformation();
 const viewApplicationPage = new ViewApplication();
@@ -21,6 +23,7 @@ const responseUploadDocumentsPage = new ResponseUploadDocument();
 const responseHearingArrangementsGuidancePage = new ResponseHearingArrangementsGuidance();
 const hearingArrangementPage = new HearingArrangement();
 const hearingContactDetailsPage = new HearingContactDetails();
+const unavailableDatesConfirmationPage = new UnavailableDatesConfirmation();
 const unavailableDatesPage = new UnavailableDates();
 const hearingSupportPage = new HearingSupport();
 const responseCheckAndSendPage = new ResponseCheckAndSend();
@@ -60,8 +63,13 @@ class respondGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
