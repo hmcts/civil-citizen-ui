@@ -37,7 +37,7 @@ class ResponseCheckAndSend {
   verifyHeadingDetails(applicationType, caseNumber, parties) {
     I.see(applicationType, 'h1');
     I.see('Check your answers', 'h1');
-    I.see('Claim reference: ' + caseNumber);
+    I.see('Case reference: ' + caseNumber);
     I.see(parties);
   }
 
@@ -70,8 +70,8 @@ class ResponseCheckAndSend {
   }
 
   async courtLocation() {
-    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Preferred location\')]';
-    I.see('Preferred location', applicatonTypeSelector);
+    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Preferred court location\')]';
+    I.see('Preferred court location', applicatonTypeSelector);
     I.see('Birmingham Civil and Family Justice Centre', applicatonTypeSelector);
     await I.see('Change', applicatonTypeSelector);
   }
@@ -91,8 +91,8 @@ class ResponseCheckAndSend {
   }
 
   async unavailableDates() {
-    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Are there any dates when you cannot attend a hearing within the next 3 months\')]';
-    I.see('Are there any dates when you cannot attend a hearing within the next 3 months', applicatonTypeSelector);
+    const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Dates when you cannot attend a hearing\')]';
+    I.see('Dates when you cannot attend a hearing', applicatonTypeSelector);
     await I.see('Change', applicatonTypeSelector);
   }
 
