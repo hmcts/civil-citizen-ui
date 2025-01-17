@@ -2744,7 +2744,7 @@
         "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
-        "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
+        "STRIKE_OUT": "the court to strike out all or part of the other parties' case",
         "SUMMARY_JUDGEMENT": "the court to make a summary judgment",
         "STAY_THE_CLAIM": "the court to pause a claim",
         "TITLE": "Application costs",
@@ -3240,7 +3240,6 @@
         "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
         "LONGER_PERIOD": "A longer period of time",
         "PAGE_TITLE": "Unavailable hearing dates",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Select a date or dates you cannot attend a hearing",
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
@@ -4665,7 +4664,9 @@
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
-      "COURT_OFFICER_ORDER":"Court Officer Order"
+      "COURT_OFFICER_ORDER":"Court Officer Order",
+      "JBA_DEFENDANT":"Judgment by admission defendant",
+      "JBA_CLAIMANT":"Judgment by admission claimant"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
