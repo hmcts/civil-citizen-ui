@@ -62,8 +62,16 @@ class RespondentResponse {
   }
 
   unavailableDates(claimId, appId) {
+    I.seeInCurrentUrl(`case/${claimId}/response/general-application/${appId}/unavailability-confirmation`);
+    I.see('Are there any dates when you cannot attend a hearing within the next 3 months?');
+    I.click('Yes');
+    clickButton(buttonType.CONTINUE);
     I.seeInCurrentUrl(`case/${claimId}/response/general-application/${appId}/unavailable-dates`);
-    I.see('Are there any dates when you cannot attend a hearing within the next 3 months (optional)?');
+    I.see('Are there any dates when you cannot attend a hearing within the next 3 months?');
+    I.click('#items-0-single-date');
+    I.fillField('input[name="items[0][single][start][day]"]', 1);
+    I.fillField('input[name="items[0][single][start][month]"]', month);
+    I.fillField('input[name="items[0][single][start][year]"]', year);
     clickButton(buttonType.CONTINUE);
   }
 
