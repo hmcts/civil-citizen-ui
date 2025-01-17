@@ -4664,7 +4664,9 @@
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
-      "COURT_OFFICER_ORDER":"Court Officer Order"
+      "COURT_OFFICER_ORDER":"Court Officer Order",
+      "JBA_DEFENDANT":"Judgment by admission defendant",
+      "JBA_CLAIMANT":"Judgment by admission claimant"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
