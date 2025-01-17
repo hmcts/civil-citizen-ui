@@ -45,6 +45,7 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
       uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
       //verify as claimant
       notification = bundleReady();
+      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = viewTheBundle();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
