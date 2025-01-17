@@ -9,7 +9,7 @@ import {
   saveRespondentUnavailableDates,
   getRespondToApplicationCaption,
   buildRespondentApplicationSummaryRow,
-  isApplicationVisibleToRespondent,
+  isApplicationVisibleToRespondent, hideGAAppAsRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -414,8 +414,113 @@ describe('General Application Response service', () => {
 
       expect(isApplicationVisibleToRespondent(applicationResponse)).toBeFalsy();
     });
-  });
+    it('should return false when defendant application is without notice and undefined PBA', () => {
+      const ccdApplication: CCDApplication = {
+        applicationFeeAmountInPence: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        applicationTypes: 'EXTEND_TIME',
+        generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+        generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecisionRequestMoreInfo: {
+          judgeRequestMoreInfoText: undefined,
+          judgeRequestMoreInfoByDate: undefined,
+          deadlineForMoreInfoSubmission: undefined,
+          isWithNotice: undefined,
+          judgeRecitalText: undefined,
+          requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+        },
+        generalAppPBADetails: undefined,
+      };
+      const applicationResponse = new ApplicationResponse(
+        '6789',
+        ccdApplication,
+        ApplicationState.APPLICATION_ADD_PAYMENT,
+        '2024-05-29T14:39:28.483971',
+        '2024-05-29T14:39:28.483971',
+      );
 
+      expect(hideGAAppAsRespondentForClaimant(applicationResponse)).toBeFalsy();
+    });
+  });
+  describe('hideGAAppAsRespondentForClaimant', () => {
+    it('should return true when applicationIsCloaked is NO and state is not APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+        },
+        state: ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
+    });
+
+    it('should return true when applicationIsUncloakedOnce is YES', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.YES,
+        },
+        state: ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
+    });
+
+    it('should return false when state is APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+        },
+        state: ApplicationState.APPLICATION_ADD_PAYMENT,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(false);
+    });
+
+    it('should return true when requestMoreInfoOption is SEND_APP_TO_OTHER_PARTY and status is SUCCESS', () => {
+      const application = {
+        case_data: {
+          judicialDecisionRequestMoreInfo: {
+            requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+          },
+          generalAppPBADetails: {
+            additionalPaymentDetails: {
+              status: 'SUCCESS',
+            },
+          },
+        },
+        state: ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(true);
+    });
+
+    it('should return false when neither cloaking/uncloaking nor judicial decision conditions are met', () => {
+      const application = {
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.NO,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+          judicialDecisionRequestMoreInfo: {
+            requestMoreInfoOption: 'OTHER_OPTION',
+          },
+          generalAppPBADetails: {
+            additionalPaymentDetails: {
+              status: 'PENDING',
+            },
+          },
+        },
+        state: ApplicationState.APPLICATION_ADD_PAYMENT,
+      };
+      expect(hideGAAppAsRespondentForClaimant(application as ApplicationResponse)).toBe(false);
+    });
+  });
   describe('buildRespondentApplicationSummaryRow', () => {
 
     it('returns row awaiting respondent response state', () => {
@@ -439,15 +544,44 @@ describe('General Application Response service', () => {
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
           statusColor: 'govuk-tag--red',
-          types: 'Vary order',
+          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER',
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
 
-    it('returns row in awaiting judicial decision state', () => {
+    it('returns row awaiting respondent response state', () => {
+      const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE,false, false, true);
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+          },
+        },
+      ];
+
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
+        .toStrictEqual({
+          state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
+          status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
+          statusColor: 'govuk-tag--red',
+          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER',
+          id: '6789',
+          createdDate: '29 May 2024, 2:39:28 pm',
+          applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
+        } as ApplicationSummary);
+    });
+
+    it('returns row in awaiting judicial decision state with multiples applications type', () => {
       const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,false, false, true);
+      appResponse.case_data.applicationTypes = 'Vary order, Extend time';
       const ccdClaim = new Claim();
       ccdClaim.caseRole = CaseRole.DEFENDANT;
       ccdClaim.generalApplications = [
@@ -467,7 +601,7 @@ describe('General Application Response service', () => {
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
           statusColor: 'govuk-tag--green',
-          types: 'Vary order',
+          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER, PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.EXTEND_TIME',
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
@@ -496,12 +630,11 @@ describe('General Application Response service', () => {
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
           statusColor: 'govuk-tag--green',
-          types: 'Vary order',
+          types: 'PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.VARY_ORDER',
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
   });
-
 });

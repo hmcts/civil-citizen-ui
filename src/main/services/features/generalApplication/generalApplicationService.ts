@@ -56,7 +56,10 @@ import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {isApplicationVisibleToRespondent} from './response/generalApplicationResponseService';
+import {
+  hideGAAppAsRespondentForClaimant,
+  isApplicationVisibleToRespondent,
+} from './response/generalApplicationResponseService';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {t} from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
@@ -174,6 +177,9 @@ export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim,
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    if (agreementFromOtherParty === YesNo.YES && claim.generalApplication.informOtherParties?.option) {
+      claim.generalApplication.informOtherParties = undefined;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -523,9 +529,10 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
   }
 };
 
-export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest, indexWithPlusOne = false) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  return applications.findIndex(application => application.id == applicationId);
+  const index =  applications.findIndex(application => application.id == applicationId);
+  return indexWithPlusOne? index + 1 : index;
 };
 
 export const isGaApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
@@ -572,9 +579,9 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
 export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
   if(isGAFlagEnable) {
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
-    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
-    if(applications && applications.length > 0) {
+    if(applications && applications.length > 0 && !claim.hasClaimTakenOffline()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
         url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),

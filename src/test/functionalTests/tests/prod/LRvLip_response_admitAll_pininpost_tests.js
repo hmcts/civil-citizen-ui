@@ -27,11 +27,11 @@ Before(async ({api}) => {
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode, manualPIP);
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password, manualPIP);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nightly', async ({api}) => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll ', async ({api}) => {
   await CitizenDashboardSteps.CitizenDashboardPage();
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
@@ -43,4 +43,4 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nig
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
-}).tag('@regression-cui-r1');
+}).tag('@nightly');

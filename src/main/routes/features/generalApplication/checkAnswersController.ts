@@ -22,6 +22,7 @@ import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {YesNo} from 'form/models/yesNo';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -79,11 +80,16 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
 
 function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number,genAppId: string ): string {
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
+    && isWithConsent(claim)
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
   } else {
     return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
   }
+}
+
+function isWithConsent(claim: Claim): boolean {
+  return claim.generalApplication?.agreementFromOtherParty === YesNo.YES;
 }
 
 function hearingMoreThan14DaysInFuture(claim: Claim): boolean {

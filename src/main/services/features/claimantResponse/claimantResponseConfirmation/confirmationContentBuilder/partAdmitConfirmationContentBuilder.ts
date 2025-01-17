@@ -53,6 +53,29 @@ export const getRejectedResponseNoMediationNextSteps = (lang: string) => {
   ];
 };
 
+export const getRejectedResponseMintiTracksNextSteps = (lang: string) => {
+  return [
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MINTI.WHAT_HAPPENS_NEXT_TEXT_PARA_1', {lng: lang}),
+      },
+    },
+    {
+      type: ClaimSummaryType.TITLE,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}),
+      },
+    },
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MINTI.REVIEW_CASE', {lng: lang}),
+      },
+    },
+  ];
+};
+
 export const getRejectedResponseYesMediationNextSteps = (lang: string) => {
   return [
     {
