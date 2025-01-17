@@ -23,8 +23,7 @@
   {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.TITLE') }}
   {% if claimIdPrettified %}
     <p class="govuk-body-m govuk-!-margin-bottom-0">
-        {{ t('COMMON.CASE_NUMBER') }}
-        {{ claimIdPrettified }}
+        {{ t('COMMON.CASE_REFERENCE',{claimId: claimIdPrettified}) }}
     </p>
   {% endif %}
   {% if claimantName and defendantName %}

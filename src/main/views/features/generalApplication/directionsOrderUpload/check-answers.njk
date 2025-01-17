@@ -19,8 +19,7 @@
   {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.PAGE_TITLE', 'PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.CHECK_YOUR_ANSWER') }}
   {% if claimIdPrettified %}
     <p class="govuk-body-m govuk-!-margin-bottom-0">
-      {{ t('COMMON.CASE_NUMBER') }}
-      {{ claimIdPrettified }}
+      {{ t('COMMON.CASE_REFERENCE',{claimId: claimIdPrettified}) }}
     </p>
   {% endif %}
   {% if claimantName and defendantName %}
