@@ -3239,8 +3239,7 @@
         "FROM": "Oddi wrth",
         "IMPORTANT_EVENTS": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau llys eraill neu wyliau rydych eisoes wedi trefnu.",
         "LONGER_PERIOD": "Cyfnod hirach o amser",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
+        "PAGE_TITLE": "Dyddiadau gwrandawiad lle nad ydych ar gael",
         "SELECT": "Dewiswch ddyddiad neu ddyddiadau pan na allwch fynychu gwrandawiad",
         "SINGLE_DATE": "Dyddiad unigol",
         "TITLE": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf (dewisol)?",
@@ -4116,7 +4115,9 @@
       "DEBTS": "Dyledion",
       "DEBTS_BEHIND_ON": "Oes ganddyn nhw unrhyw ddyledion maen nhw ar ei hôl hi yn eu talu?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Oes ganddyn nhw ddyledion benthyciadau neu gardiau credyd?",
+      "DOWNLOAD_EVIDENCE": "Lawrlwytho eu tystiolaeth",
       "DOWNLOAD_RESPONSE": "Lawrlwythwch eu hymateb llawn (PDF)",
+      "DOWNLOAD_TIMELINE": "Lawrlwytho eu llinell amser o ddigwyddiadau (PDF)",
       "EMPLOYED": "Oes ganddynt swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno’r holl arian rydych chi wedi'i hawlio.",
@@ -4663,7 +4664,9 @@
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
-      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
+      "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
+      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",

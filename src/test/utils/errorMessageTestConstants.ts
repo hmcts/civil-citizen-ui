@@ -193,7 +193,7 @@ export const enum TestMessages {
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_PAGE_TITLE = 'Confirm that you&#39;ve been paid - Confirmation',
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_YOU_CONFIRMED = 'You&#39;ve confirmed that you&#39;ve been paid',
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_WHAT_NEXT = 'What happens next',
-  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_NO_FURTHER = 'There&#39;s no further action you need to take.',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_NO_FURTHER = 'There\'s no further action you need to take.',
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_CLOSE_AND_RETURN = 'Close and return to case details',
   ERRORS_CORRECT_DATE_NOT_IN_FUTURE = 'Correct the date. You can’t use a future date.',
   ERRORS_VALID_DATE = 'Please enter a valid date',
