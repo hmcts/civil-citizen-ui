@@ -176,6 +176,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  defendantResponseTimelineDocument?: Document;
   responseClaimMediationSpecRequired?: YesNo;
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;

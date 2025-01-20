@@ -265,7 +265,6 @@ class EligibilityCheck {
     await I.see('(NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number).');
     await I.see('You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court.');
     await I.see('This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.');
-    await I.see('The claim will stop here unless you change your mind within 95 days.');
     await I.see('You may be asked by the court to email evidence in support of your application before your claim is issued.');
     await I.see('Do you wish to continue to make a Help with Fees Application?');
     await I.click(fields.hwfReferenceYes);

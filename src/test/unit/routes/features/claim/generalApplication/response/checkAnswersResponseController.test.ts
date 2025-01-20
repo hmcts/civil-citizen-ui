@@ -19,6 +19,7 @@ import {ApplicationTypeOption} from 'common/models/generalApplication/applicatio
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {submitApplicationResponse} from 'services/features/generalApplication/response/submitApplicationResponse';
 import {getClaimById} from 'modules/utilityService';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -70,7 +71,7 @@ describe('General application - response - check your answers', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.CLAIM_REFERENCE'));
+          expect(res.text).toContain(t('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify('1234567')}));
           expect(res.text).toContain('1234 567');
         });
     });

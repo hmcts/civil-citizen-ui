@@ -38,6 +38,7 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService', () 
 
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
   getCancelUrl: jest.fn(),
+  getApplicationIndex: jest.fn(),
 }));
 jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
