@@ -1,22 +1,25 @@
-import { GA_RESPONSE_CHECK_ANSWERS_URL } from 'routes/urls';
+import {GA_RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { app } from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {t} from 'i18next';
-import { getCaseDataFromStore, generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
-import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import { Claim } from 'common/models/claim';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { YesNo } from 'common/form/models/yesNo';
-import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
+import {generateRedisKeyForGA, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import * as gaStoreResponseService
+  from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {Claim} from 'common/models/claim';
+import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {YesNo} from 'common/form/models/yesNo';
+import {HearingSupport, SupportType} from 'common/models/generalApplication/hearingSupport';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {submitApplicationResponse} from 'services/features/generalApplication/response/submitApplicationResponse';
+import {getClaimById} from 'modules/utilityService';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -27,15 +30,15 @@ jest.mock('../../../../../../../main/services/features/generalApplication/respon
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('../../../../../../../main/modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKeyForGA as jest.Mock;
 const mockSubmitApplicationResponse = submitApplicationResponse as jest.Mock;
+const mockGetClaimId = getClaimById as jest.Mock;
 
 describe('General application - response - check your answers', () => {
 
@@ -47,6 +50,9 @@ describe('General application - response - check your answers', () => {
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
     mockSubmitApplicationResponse.mockResolvedValue(undefined);
+    const claim = new Claim();
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
+    mockGetClaimId.mockResolvedValue(claim);
   });
 
   afterAll(() => jest.clearAllMocks());
