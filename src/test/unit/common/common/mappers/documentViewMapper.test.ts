@@ -56,7 +56,7 @@ describe('Test of Document View Mapper', () => {
         new DocumentLinkInformation(
           CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
             .replace(':documentId',
-              getDocumentId(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, 'Stitched')),
+              getDocumentId(claim, 'Stitched')),
           'defendant-response-000MC001.pdf'))));
     //When
     const result = mapperDefendantResponseToDocumentView(
@@ -96,7 +96,7 @@ describe('Test of Document View Mapper', () => {
         new DocumentLinkInformation(
           CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
             .replace(':documentId',
-              getDocumentId(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, 'Stitched')),
+              getDocumentId(claim, 'Stitched')),
           'defendant-response-000MC001.pdf'))));
     //When
     const result = mapperDefendantResponseToDocumentView(

@@ -18,6 +18,8 @@ import {
   CONTACT_US_URL,
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
+  CONTACT_CNBC_URL,
+  CONTACT_MEDIATION_URL,
 } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -28,7 +30,11 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
 };
 
 const isPaymentConfirmationUrl = (req: Request): boolean => {
-  const paymentUrls = ['/hearing-payment-confirmation', '/claim-issued-payment-confirmation'];
+  const paymentUrls = [
+    '/hearing-payment-confirmation',
+    '/claim-issued-payment-confirmation',
+    '/general-application/payment-confirmation',
+  ];
   return paymentUrls.some(url => req.originalUrl.startsWith(url));
 };
 
@@ -54,6 +60,10 @@ const isAccessibilityStatementPage = (requestUrl: string): boolean => {
 
 const isContactUsPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(CONTACT_US_URL);
+};
+
+const isWebchatPage = (requestUrl: string): boolean => {
+  return [CONTACT_CNBC_URL, CONTACT_MEDIATION_URL].some(url => requestUrl.startsWith(url));
 };
 
 const isTermAndConditionsPage = (requestUrl: string): boolean => {
@@ -164,7 +174,8 @@ export class OidcMiddleware {
           isAccessibilityStatementPage(req.originalUrl) ||
           isContactUsPage(req.originalUrl) ||
           isTermAndConditionsPage(req.originalUrl) ||
-          isPrivacyPolicyPage(req.originalUrl)
+          isPrivacyPolicyPage(req.originalUrl) ||
+          isWebchatPage(req.originalUrl)
         ) {
           return next();
         }
@@ -209,8 +220,9 @@ export const getPaymentConfirmationUrl = async (userId: string, app: Application
 };
 
 const getClaimId = (originalUrl: string) => {
-  const extractClaimId = originalUrl?.split('/')[2];
-  if (extractClaimId && extractClaimId.length === 16) {
-    return extractClaimId;
+  const regex = /\/(\d{16})\//;
+  const match = originalUrl?.match(regex);
+  if (match && match.length >=2 && match[1].length === 16) {
+    return match[1];
   }
 };
