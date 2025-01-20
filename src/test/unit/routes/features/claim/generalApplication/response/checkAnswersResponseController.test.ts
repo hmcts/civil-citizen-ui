@@ -17,6 +17,7 @@ import { StatementOfTruthForm } from 'common/models/generalApplication/statement
 import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -60,7 +61,7 @@ describe('General application - response - check your answers', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.CLAIM_REFERENCE'));
+          expect(res.text).toContain(t('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify('1234567')}));
           expect(res.text).toContain('1234 567');
         });
     });

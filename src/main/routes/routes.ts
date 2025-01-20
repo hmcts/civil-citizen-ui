@@ -428,6 +428,8 @@ import defendantFinalPaymentDateController from 'routes/features/generalApplicat
 import coscCheckAnswersController from 'routes/features/generalApplication/certOfSorC/checkAnswersController';
 import submitCoScApplicationConfirmationController
   from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
+import contactCNBCController from 'routes/features/contact/contactCNBCController';
+import contactMediationController from 'routes/features/contact/contactMediationController';
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
@@ -775,6 +777,8 @@ export default [
   debtPaymentEvidenceController,
   coscCheckAnswersController,
   submitCoScApplicationConfirmationController,
+  contactCNBCController,
+  contactMediationController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
 ];

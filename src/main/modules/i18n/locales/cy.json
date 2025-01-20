@@ -2818,7 +2818,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Cyfeirnod yr hawliad: ",
-        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
+        "PREFERRED_LOCATION": "Lleoliad llys a ffafrir",
         "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig fesul mis",
         "PROPOSED_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_SET_DATE": "Taliad llawn arfaethedig erbyn dyddiad penodol",
@@ -3245,7 +3245,7 @@
         "FROM": "Oddi wrth",
         "IMPORTANT_EVENTS": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiadau llys eraill neu wyliau rydych eisoes wedi trefnu.",
         "LONGER_PERIOD": "Cyfnod hirach o amser",
-        "PAGE_TITLE": "Unavailable hearing dates",
+        "PAGE_TITLE": "Dyddiadau gwrandawiad lle nad ydych ar gael",
         "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Dewiswch ddyddiad neu ddyddiadau pan na allwch fynychu gwrandawiad",
         "SINGLE_DATE": "Dyddiad unigol",
@@ -4123,7 +4123,9 @@
       "DEBTS": "Dyledion",
       "DEBTS_BEHIND_ON": "Oes ganddyn nhw unrhyw ddyledion maen nhw ar ei hôl hi yn eu talu?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Oes ganddyn nhw ddyledion benthyciadau neu gardiau credyd?",
+      "DOWNLOAD_EVIDENCE": "Lawrlwytho eu tystiolaeth",
       "DOWNLOAD_RESPONSE": "Lawrlwythwch eu hymateb llawn (PDF)",
+      "DOWNLOAD_TIMELINE": "Lawrlwytho eu llinell amser o ddigwyddiadau (PDF)",
       "EMPLOYED": "Oes ganddynt swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno’r holl arian rydych chi wedi'i hawlio.",
@@ -4670,7 +4672,9 @@
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
-      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys"
+      "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
+      "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
+      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
@@ -4831,6 +4835,15 @@
       "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
       "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
       "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos"
+    },
+    "CONTACT_WEBCHAT": {
+      "WEBCHAT": "Webchat",
+      "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
+      "TELEPHONE": "Telephone",
+      "OPENING_TIMES": "Opening Times",
+      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
     }
   },
   "FOOTER": {
