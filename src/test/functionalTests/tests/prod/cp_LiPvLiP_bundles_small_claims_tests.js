@@ -36,7 +36,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Small Claims - Verify Bundles tab', async ({I}) => {
+Scenario('Case progression journey - Small Claims - Verify Bundles tab', async ({I, api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     if (isDashboardServiceEnabled) {
@@ -44,6 +44,8 @@ Scenario('Case progression journey - Small Claims - Verify Bundles tab', async (
       uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
       //verify as claimant
       notification = bundleReady();
+      await api.waitForFinishedBusinessProcess();
+      await I.wait(10);
       await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = viewTheBundle();
