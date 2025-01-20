@@ -156,7 +156,7 @@ ccd:
     postgresql:
       enabled: false
     ras:
-      enabled: false
+      enabled: true
     userProfileImporter:
       enabled: false
     userProfile:
