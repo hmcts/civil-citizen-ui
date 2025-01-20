@@ -64,9 +64,7 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     await form.validate();
     if (form.hasErrors()) {
-      if (isAdditionalFeeType) {
-        replaceErrorConstraintsForAdditionFee(form.errors);
-      }
+      replaceErrorConstraintsForAdditionFee(form.errors, isAdditionalFeeType);
       const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE+ '?additionalFeeTypeFlag='+ isAdditionalFeeType);
       await renderView(res, req, form, claimId, redirectUrl, isAdditionalFeeType);
     } else {
@@ -91,12 +89,14 @@ function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: b
   return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION  + '?additionalFeeTypeFlag='+ feeType );
 }
 
-function replaceErrorConstraintsForAdditionFee(data: ValidationError[]): void {
+function replaceErrorConstraintsForAdditionFee(data: ValidationError[], isAdditionalFeeType: boolean): void {
   data.forEach(item => {
     const constraints = item.constraints;
     for (const key in constraints) {
-      if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER') {
+      if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER' && isAdditionalFeeType) {
         constraints[key] = 'PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.VALID_ENTER_REFERENCE_NUMBER';
+      } else if (constraints[key] === 'ERRORS.VALID_ENTER_REFERENCE_NUMBER') {
+        constraints[key] = 'ERRORS.VALID_ENTER_REFERENCE_NUMBER_GA_HWF';
       }
     }
   });
