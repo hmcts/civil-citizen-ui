@@ -14,6 +14,7 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
+  CaseManagementLocation,
   CaseState,
   CCDHelpWithFees,
   ClaimAmountBreakup,
@@ -115,6 +116,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
@@ -174,6 +176,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  defendantResponseTimelineDocument?: Document;
   responseClaimMediationSpecRequired?: YesNo;
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
@@ -185,6 +188,7 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
+  respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
   [key: string]: any;

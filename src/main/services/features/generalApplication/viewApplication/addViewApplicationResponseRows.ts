@@ -25,8 +25,13 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const gaAgreeWithApplicant = (): SummaryRow[] => {
+    const hasApplicantAgreed = response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES;
+    let html =  yesNoFormatter(hasApplicantAgreed ? YesNo.YES : YesNo.NO);
+    if (!hasApplicantAgreed){
+      html += `<ul class="no-list-style">${response.gaRespondentResponseReason}</ul>`;
+    }
     return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
-      yesNoFormatter(response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES ? YesNo.YES : YesNo.NO))];
+      html)];
   };
 
   const acceptOfferSection = (): SummaryRow[] => {
@@ -85,7 +90,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
     return (unavailableDates?.length > 0)
       ? `<ul class="no-list-style">${unavailableDates.map(formatDate).join('')}</ul>`
-      : undefined;
+      : t('COMMON.NO', {lng});
   };
 
   const hearingSupportHtml = (supportRequirementItems: CcdSupportRequirement[]): string => {
@@ -107,7 +112,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
     return (supportRequirementItems?.length > 0)
       ? `<ul class="no-list-style">${html()}</ul>`
-      : undefined;
+      : t('COMMON.NO', {lng});
   };
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);
