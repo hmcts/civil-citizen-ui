@@ -2817,7 +2817,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Cyfeirnod yr hawliad: ",
-        "PREFERRED_LOCATION": "Y lleoliad a ffafrir",
+        "PREFERRED_LOCATION": "Lleoliad llys a ffafrir",
         "PROPOSED_INSTALMENTS": "Rhandaliadau arfaethedig fesul mis",
         "PROPOSED_PAYMENT_PLAN": "Cynllun talu arfaethedig",
         "PROPOSED_SET_DATE": "Taliad llawn arfaethedig erbyn dyddiad penodol",
@@ -2827,7 +2827,7 @@
           "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen ymateb hon yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi’r\", datganiad gwirionedd hwn."
         },
-        "UNAVAILABLE_DATES": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf (dewisol)?"
+        "UNAVAILABLE_DATES": "Dyddiadau pan na allwch fynychu gwrandawiad"
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "A oes gennych dystiolaeth o'r taliad dyled?",
@@ -3317,7 +3317,7 @@
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
           "OTHER_PARTIES_RESPONSE": "Ymateb y partïon eraill i’r cais.",
           "TITLE": "Ymateb gan y partïon eraill",
-          "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?",
+          "UNAVAILABLE_DATES": "Dyddiadau pan na allwch fynychu gwrandawiad",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
         },
         "RESPOND_TO_REQUEST": "Ymateb i’r cais",
@@ -4827,6 +4827,15 @@
       "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
       "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
       "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos"
+    },
+    "CONTACT_WEBCHAT": {
+      "WEBCHAT": "Webchat",
+      "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
+      "TELEPHONE": "Telephone",
+      "OPENING_TIMES": "Opening Times",
+      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
     }
   },
   "FOOTER": {
@@ -5176,7 +5185,6 @@
     "ADDRESS_LINE_TOO_MANY_JO": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 35 o nodau",
     "TOWN_CITY_TOO_MANY": "Ni ddylai tref neu ddinas fod yn hirach na 50 o nodau",
     "TOWN_CITY_TOO_MANY_JO": "Ni ddylai tref neu ddinas fod yn hirach na 35 o nodau",
-    "TEXT800_TOO_LONG": "Rhaid i'r rheswm fod yn 800 o nodau neu'n llai",
     "THERE_IS_A_PROBLEM": "Mae yna broblem",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu teipiwch y cyfeiriad.",
