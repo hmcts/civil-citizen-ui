@@ -431,6 +431,9 @@ import submitCoScApplicationConfirmationController
 import contactCNBCController from 'routes/features/contact/contactCNBCController';
 import contactMediationController from 'routes/features/contact/contactMediationController';
 import submitApplicationOfflineController from 'routes/features/generalApplication/submitApplicationOfflineController';
+import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
+import gaUnavailabilityDatesResponseConfirmationController
+  from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
 
 export default [
   homeController,
@@ -778,4 +781,6 @@ export default [
   contactCNBCController,
   contactMediationController,
   submitApplicationOfflineController,
+  gaUnavailabilityDatesConfirmationController,
+  gaUnavailabilityDatesResponseConfirmationController,
 ];

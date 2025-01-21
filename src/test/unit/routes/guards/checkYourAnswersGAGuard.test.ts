@@ -56,6 +56,7 @@ describe('Check your Answers GA Guard', () => {
       YesNo.YES,
       new RequestingReason('test'),
       new OrderJudge('test'),
+
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
@@ -66,6 +67,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.NO, 'no'),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
 
     mockGetCaseData.mockImplementation(async () => claim);

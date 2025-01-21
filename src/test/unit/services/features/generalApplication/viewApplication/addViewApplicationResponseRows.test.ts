@@ -58,7 +58,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -110,7 +110,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -147,7 +147,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -207,7 +207,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -257,6 +257,10 @@ describe('addViewApplicationResponseRows', () => {
         },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
+          value: {html: 'COMMON.VARIATION_8.YES'},
+        },
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND'},
           value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
         },
         {
@@ -305,6 +309,10 @@ describe('addViewApplicationResponseRows', () => {
         },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
+          value: {html: 'COMMON.VARIATION_8.YES'},
+        },
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND'},
           value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
         },
         {
@@ -342,7 +350,7 @@ describe('addViewApplicationResponseRows', () => {
           'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': 'COMMON.NO',
+          'html': 'COMMON.VARIATION_8.NO',
         },
       }, {
         key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},

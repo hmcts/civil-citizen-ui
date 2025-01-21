@@ -64,6 +64,7 @@ describe('General application - response - check your answers', () => {
       const mockClaim = new Claim();
       const gaResponse = new GaResponse();
       gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      gaResponse.hasUnavailableDatesHearing = YesNo.YES;
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
@@ -81,6 +82,7 @@ describe('General application - response - check your answers', () => {
       gaResponse.respondentAgreement = new RespondentAgreement(YesNo.YES);
       gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
       gaResponse.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP]);
+      gaResponse.hasUnavailableDatesHearing = YesNo.NO;
       const mockClaim = new Claim();
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
@@ -128,6 +130,7 @@ describe('General application - response - check your answers', () => {
       mockGetCaseData.mockResolvedValueOnce(new Claim());
       const gaResponse = new GaResponse();
       gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      gaResponse.hasUnavailableDatesHearing = YesNo.YES;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(GA_RESPONSE_CHECK_ANSWERS_URL)

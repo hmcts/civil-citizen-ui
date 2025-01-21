@@ -95,6 +95,24 @@ describe('General Application - Unavailable hearing dates', () => {
         });
     });
 
+    it('should return errors when no information is provided', async () => {
+      const unavailableDates = new UnavailableDatesGaHearing(
+        [new UnavailableDatePeriodGaHearing(undefined,
+          {'day': undefined, 'month': undefined, 'year': undefined})],
+      );
+      getUnavailableDatesHearingFormMock.mockImplementation(() => {
+        return unavailableDates;
+      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
+        .send()
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'));
+        });
+    });
+
     it('should add another period if add another clicked', async () => {
       const unavailableDates = new UnavailableDatesGaHearing(
         [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,

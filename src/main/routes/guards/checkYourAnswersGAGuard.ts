@@ -46,10 +46,10 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
       generalApp.applicationFee &&
       (generalApp.wantToUploadDocuments === YesNo.NO ||
         (generalApp.wantToUploadDocuments === YesNo.YES && generalApp.uploadEvidenceForApplication.length)) &&
-      generalApp.unavailableDatesHearing?.items &&
+      (generalApp.hasUnavailableDatesHearing === YesNo.NO ||
+        (generalApp.hasUnavailableDatesHearing === YesNo.YES && generalApp.unavailableDatesHearing?.items)) &&
       generalApp.hearingContactDetails &&
       generalApp.hearingArrangement?.option?.length &&
       generalApp.hearingArrangement.reasonForPreferredHearingType;
   }
-
 };
