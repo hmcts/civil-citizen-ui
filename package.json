@@ -137,7 +137,7 @@
     "jest-junit": "^15.0.0",
     "jest-launchdarkly-mock": "^2.0.3",
     "mini-css-extract-plugin": "^2.7.2",
-    "mocha": "^10.2.0",
+    "mocha": "^11.0.0",
     "mocha-junit-reporter": "^2.2.1",
     "mocha-multi": "1.1.7",
     "mochawesome": "7.1.3",
