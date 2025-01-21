@@ -158,7 +158,7 @@ ccd:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
         DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
-        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications
+        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
         OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
@@ -178,6 +178,38 @@ ccd:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: true
+
+  am-role-assignment-service:
+    java:
+      devmemoryRequests: 2048Mi
+      devcpuRequests: 2000m
+      devmemoryLimits: 4096Mi
+      devcpuLimits: 4000m
+      releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
+      imagePullPolicy: Always
+      image: hmctspublic.azurecr.io/am/role-assignment-service:pr-2441
+      ingressHost: am-role-assignment-${SERVICE_FQDN}
+      environment:
+        RELEASE_REVISION: "{{ .Release.Revision }}"
+        ROLE_ASSIGNMENT_DB_PASSWORD: ${POSTGRES_PASSWORD}
+        ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+        CCD_DATA_STORE_URL: http://${SERVICE_NAME}-ccd-data-store-api
+        #        CCD_DATA_STORE_URL: http://ccd-data-store-api-${SERVICE_NAME}.preview.platform.hmcts.net
+        ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer,sscs,fis_hmc_api,et_cos,civil_service
+        RUN_LD_ON_STARTUP: false
+      keyVaults:
+        am:
+          secrets:
+            - name: am-role-assignment-service-s2s-secret
+              alias: AM_ROLE_ASSIGNMENT_SERVICE_SECRET
+            - name: app-insights-connection-string
+              alias: app-insights-connection-string
+            - name: role-assignment-service-IDAM-CLIENT-SECRET
+              alias: ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET
+            - name: role-assignment-service-IDAM-ADMIN-SECRET
+              alias: ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD
+            - name: role-assignment-service-LD-SDK-KEY
+              alias: LD_SDK_KEY
 
   ccd-definition-store-api:
     java:
@@ -214,7 +246,7 @@ civil-wa:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1652'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
