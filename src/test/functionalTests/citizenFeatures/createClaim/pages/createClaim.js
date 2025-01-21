@@ -580,7 +580,7 @@ class CreateClaim {
     I.see('card payment');
     I.see('Total amount:');
     I.fillField('#card-no' ,'4444333322221111');
-    I.fillField('#expiry-month' ,new Date().getMonth());
+    I.fillField('#expiry-month' ,new Date().getMonth()+1);
     I.fillField('#expiry-year' ,new Date().getFullYear()+1);
     I.fillField('#cardholder-name','Test Name');
     I.fillField('#cvc', '444');

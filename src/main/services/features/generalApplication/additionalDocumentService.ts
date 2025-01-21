@@ -16,6 +16,8 @@ import { GeneralApplication } from 'common/models/generalApplication/GeneralAppl
 import { PaymentSuccessfulSectionBuilder } from '../claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 const { v4: uuIdv4 } = require('uuid');
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -102,7 +104,7 @@ export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: Upl
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   additionalDocumentsList.forEach(doc => {
     rows.push(summaryRow(toc, doc.typeOfDocument));
-    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel()));
+    rows.push(summaryRow(uf, doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':appId', gaId), changeLabel()));
   });
   return rows;
 };
@@ -124,4 +126,20 @@ export const getContentForCloseButton = (redirectUrl: string) => {
   return new PaymentSuccessfulSectionBuilder()
     .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', redirectUrl)
     .build();
+};
+
+export const canUploadAddlDoc = (applicationResponse: ApplicationResponse): boolean => {
+  const availableStates: ApplicationState[] = [ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,
+    ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+    ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS,
+    ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS,
+    ApplicationState.AWAITING_ADDITIONAL_INFORMATION,
+    ApplicationState.APPLICATION_ADD_PAYMENT,
+    ApplicationState.LISTING_FOR_A_HEARING,
+    ApplicationState.HEARING_SCHEDULED,
+  ];
+  if(availableStates.includes(applicationResponse.state)) {
+    return true;
+  }
+  return false;
 };

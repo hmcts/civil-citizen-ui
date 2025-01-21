@@ -50,7 +50,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true, true);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  await ResponseSteps.submitResponse(claimRef, partAdmit);
   await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
 });
 

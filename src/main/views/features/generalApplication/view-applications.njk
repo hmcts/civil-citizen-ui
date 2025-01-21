@@ -13,6 +13,20 @@
 {% set applicationHtml %}
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS') }}</p>
+    {% if statusRow %}
+      <div class="govuk-form-group">
+        {{ govukSummaryList({
+          rows: statusRow
+        }) }}
+      </div>
+    {% endif %}
+    {% if applicationTypeCards %}
+      <div class="govuk-form-group">
+        {% for summaryCard in applicationTypeCards %}
+          {{ govukSummaryList(summaryCard) }}
+        {% endfor %}
+      </div>
+    {% endif %}
     <div class="govuk-form-group">
       {{ govukSummaryList({
         rows: summaryRows
@@ -56,12 +70,13 @@
     }
   ]), applicantDocRows) %}
   {% for item in applicantDocuments.documents %}
+    {% set applicantFileName = t(item.fileName) %}
     {% set applicantDocRows = (applicantDocRows.push([
       {
-        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, applicantFileName, t(item.uploadDate))
       },
       {
-        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text, t('COMMON.APPLICATION_DOCUMENTS.APPLICANT') + applicantFileName)
       }]), applicantDocRows) %}
   {% endfor %}
 {% endif %}
@@ -77,12 +92,13 @@
     }
   ]), respondentDocRows) %}
   {% for item in respondentDocuments.documents %}
+    {% set respondentFileName = t(item.fileName) %}
     {% set respondentDocRows = (respondentDocRows.push([
       {
-        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, respondentFileName, t(item.uploadDate))
       },
       {
-        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text, t('COMMON.APPLICATION_DOCUMENTS.RESPONDENT') + respondentFileName)
       }]), respondentDocRows) %}
   {% endfor %}
 {% endif %}
@@ -98,12 +114,14 @@
     }
   ]), courtDocRows) %}
   {% for item in courtDocuments.documents %}
+  {% set courtFileName = t(item.fileName) %}
+
     {% set courtDocRows = (courtDocRows.push([
       {
-        html: addDateUploadedFileInformation(t, t(item.fileName), t(item.uploadDate))
+        html: addDateUploadedFileInformation(t, courtFileName, t(item.uploadDate))
       },
       {
-        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text, courtFileName)
       }]), courtDocRows) %}
   {% endfor %}
 {% endif %}
@@ -114,11 +132,11 @@
 
 {% set applicationDocumentsHtml %}
   {{ createDocumentsTableWithoutTableCaption(applicantDocRows) }}
-  {% if applicantDocuments.documents.length > 0 %}
-  {{ govukButton({
-    text: t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS'),
-    href: additionalDocUrl
-  }) }}
+  {% if applicantDocuments.documents.length > 0 and additionalDocUrl %}
+    {{ govukButton({
+      text: t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS'),
+      href: additionalDocUrl
+    }) }}
   {% endif %}
   {{ createDocumentsTableWithoutTableCaption(respondentDocRows) }}
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
@@ -146,7 +164,9 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.SUBMITTED') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.EITHER_PARTIES') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_SECTIONS') }}</p>
-  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}" class="govuk-link">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
+  {% if additionalDocUrl %}
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}" class="govuk-link">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
+  {% endif %}
   {% if caseProgressionCaseState %}
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_1')}}<a href="{{uploadDocsTrialUrl}}" class="govuk-link">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_3') }}</p>
   {% endif %}

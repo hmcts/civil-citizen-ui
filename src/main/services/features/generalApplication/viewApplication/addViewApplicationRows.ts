@@ -77,6 +77,10 @@ export const addApplicationStatus = (
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_ADDL_PAYMENT', {lng})),
     );
+  }else if (application.state === ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.ADDITIONAL_RESPONSE_TIME_EXPIRED', {lng})),
+    );
   }else {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), application.state),
@@ -85,33 +89,29 @@ export const addApplicationStatus = (
   return rows;
 };
 
-export const addApplicationTypesRows = (
+export const addApplicationTypeRow = (
   application: ApplicationResponse,
+  index: number,
   lang: string,
 ): SummaryRow[] => {
   const lng = getLng(lang);
 
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppType.types) {
-    application.case_data.generalAppType?.types?.forEach(
-      (applicationType, index, arr) => {
-        const applicationTypeDisplay =
-            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+    const applicationType = application.case_data.generalAppType.types[index];
+    const applicationTypeDisplay =
+      getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
-        rows.push(
-          summaryRow(
-            t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
-              lng,
-            }),
-            t(applicationTypeDisplay, { lng }),
-            null,
-            null,
-            undefined,
-            index,
-            arr.length,
-          ),
-        );
-      },
+    rows.push(
+      summaryRow(
+        t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
+          lng,
+        }),
+        t(applicationTypeDisplay, { lng }),
+        null,
+        null,
+        undefined,
+      ),
     );
   }
   return rows;
@@ -140,8 +140,6 @@ export const addApplicationTypesAndDescriptionRows = (
             null,
             null,
             undefined,
-            index,
-            arr.length,
           ),
         );
       },
@@ -185,7 +183,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
     if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
       rows.push(
         summaryRow(
-          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}), 
+          t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
         ),
       );
@@ -194,25 +192,37 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   return rows;
 };
 
-export const addOrderJudgeRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+export const addOrderJudgeRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppDetailsOfOrder) {
+  if (application.case_data.generalAppDetailsOfOrderColl?.[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
-    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder} <br> ${t(orderForCost, {lng})}</p>`;
+    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrderColl[index].value} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
+    );
+  } else if (application.case_data?.generalAppDetailsOfOrder) {
+    //LR has only one information
+    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder}</p>`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), LrHtml),
     );
   }
   return rows;
 };
 
-export const addRequestingReasonRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+export const addRequestingReasonRow = (application: ApplicationResponse, index: number, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppReasonsOfOrder) {
+  if (application.case_data.generalAppReasonsOfOrderColl?.[index]) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrder),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
+    );
+  } else if (application.case_data?.generalAppReasonsOfOrder) {
+    //LR has only one information
+    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppReasonsOfOrder}</p>`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), LrHtml),
     );
   }
   return rows;
@@ -296,6 +306,11 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
         unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng})),
     );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
+        t('COMMON.NO', {lng})),
+    );
   }
   return rows;
 };
@@ -324,6 +339,11 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
         supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
+    );
+  } else {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
+        t('COMMON.NO', {lng})),
     );
   }
   return rows;
@@ -373,6 +393,8 @@ const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType)
       return HearingTypeOptions.TELEPHONE;
     case CcdHearingType.VIDEO:
       return HearingTypeOptions.VIDEO_CONFERENCE;
+    case CcdHearingType.WITHOUT_HEARING:
+      return HearingTypeOptions.WITHOUT_HEARING;
     default:
       return undefined;
   }

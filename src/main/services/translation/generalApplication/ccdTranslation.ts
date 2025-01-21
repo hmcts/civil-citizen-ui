@@ -46,6 +46,8 @@ import {
 } from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 import {Document} from 'models/document/document';
+import {CcdGeneralApplicationOrderJudge} from 'models/ccdGeneralApplication/ccdGeneralApplicationOrderJudge';
+import {CcdGeneralApplicationRequestingReason} from 'models/ccdGeneralApplication/ccdGeneralAppRequestingReason';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -62,9 +64,9 @@ export const translateDraftApplicationToCCD = (
     ),
     generalAppAskForCosts: toCCDYesNo(application.applicationCosts),
     generalAppDetailsOfOrder: toCCDDetailsOfOrder(application.orderJudges),
-    generalAppReasonsOfOrder: toCCDReasonsOfOrder(
-      application.requestingReasons,
-    ),
+    generalAppDetailsOfOrderColl: toCCDDetailsOfOrderColl(application.orderJudges),
+    generalAppReasonsOfOrder: toCCDReasonsOfOrder(application.requestingReasons),
+    generalAppReasonsOfOrderColl: toCCDReasonsOfOrderColl(application.requestingReasons),
     generalAppEvidenceDocument: toCCDEvidenceDocuments(
       application.wantToUploadDocuments,
       application.uploadEvidenceForApplication,
@@ -125,6 +127,22 @@ const toCCDDetailsOfOrder = (orderJudges: OrderJudge[]): string => {
   return orderJudges?.map(orderJudge => orderJudge.text)?.join('\n\n');
 };
 
+const toCCDDetailsOfOrderColl = (orderJudges: OrderJudge[]): CcdGeneralApplicationOrderJudge[] => {
+  return orderJudges?.map(orderJudge => {
+    return {
+      value: orderJudge.text,
+    };
+  });
+};
+
+const toCCDReasonsOfOrderColl = (requestingReasons: RequestingReason[]): CcdGeneralApplicationRequestingReason[] => {
+  return requestingReasons?.map(requestingReason => {
+    return {
+      value: requestingReason.text,
+    };
+  });
+};
+
 const toCCDReasonsOfOrder = (requestingReasons: RequestingReason[]): string => {
   return requestingReasons?.map(requestingReason => requestingReason.text)?.join('\n\n');
 };
@@ -175,6 +193,8 @@ const toCCDHearingPreferencesPreferredType = (hearingTypeOption: HearingTypeOpti
       return CcdHearingType.TELEPHONE;
     case HearingTypeOptions.VIDEO_CONFERENCE:
       return CcdHearingType.VIDEO;
+    case HearingTypeOptions.WITHOUT_HEARING:
+      return CcdHearingType.WITHOUT_HEARING;
     default:
       return undefined;
   }
@@ -185,6 +205,7 @@ export const fromCcdHearingType = (ccdHearingType: CcdHearingType): HearingTypeO
     case CcdHearingType.IN_PERSON : return HearingTypeOptions.PERSON_AT_COURT;
     case CcdHearingType.TELEPHONE : return HearingTypeOptions.TELEPHONE;
     case CcdHearingType.VIDEO : return HearingTypeOptions.VIDEO_CONFERENCE;
+    case CcdHearingType.WITHOUT_HEARING : return HearingTypeOptions.WITHOUT_HEARING;
     default: exhaustiveMatchingGuard(ccdHearingType);
   }
 };

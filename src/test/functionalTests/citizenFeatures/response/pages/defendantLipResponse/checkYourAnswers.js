@@ -60,8 +60,25 @@ class CheckYourAnswersPage {
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
     await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
-    await I.amOnPage('/dashboard?lang=en');
-    await I.see('Your money claims account');
+  }
+
+  async submitResponse(claimRef, responseType='') {
+    const { language } = sharedData;
+    await I.click(links.checkAndSubmit[language]);
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if(url.includes('pcq')){
+      await I.amOnPage('/case/'+claimRef+'/response/task-list');
+      await I.click(links.checkAndSubmit[language]);
+    }
+    await I.waitForContent(content.heading[language], config.WaitForText);
+    await I.waitForElement(fields.cyaSigned);
+    await I.checkOption(fields.cyaSigned);
+    if (responseType === 'partial-admission' || responseType === 'rejectAll') {
+      await I.waitForElement(fields.directionsQuestionnaireSigned);
+      await I.checkOption(fields.directionsQuestionnaireSigned);
+    }
+    await I.click(cButtons.submit[language]);
   }
 
   async verifyMediationDetailsInCYA(claimRef) {

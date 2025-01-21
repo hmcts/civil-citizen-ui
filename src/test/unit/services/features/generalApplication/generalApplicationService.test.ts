@@ -8,7 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications, resetClaimDataByApplicationType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -66,6 +66,8 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {OrderJudge} from 'models/generalApplication/orderJudge';
 import clearAllMocks = jest.clearAllMocks;
+import {InformOtherParties} from 'models/generalApplication/informOtherParties';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -158,6 +160,27 @@ describe('General Application service', () => {
       await saveAgreementFromOtherParty('123', claim, YesNo.NO);
       //Then
       expect(spy).toBeCalled();
+    });
+
+    it('should delete inform other parties data upon agreement from other party is selected yes', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => {
+        return new Claim();
+      });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.informOtherParties = new InformOtherParties('no', 'dont specify to the defendant');
+      //When
+      await saveAgreementFromOtherParty('123', claim, YesNo.YES);
+      //Then
+      expect(spy).toBeCalled();
+      expect(claim.generalApplication.informOtherParties).toBeUndefined();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -1096,7 +1119,7 @@ describe('Should display sync warning', () => {
 
 describe('Should get the application index', () => {
 
-  it('should return index', async () => {
+  it('should return index without plus one on index.', async () => {
     const applicationResponse: ApplicationResponse = {
       case_data: {
         applicationTypes: undefined,
@@ -1128,6 +1151,40 @@ describe('Should get the application index', () => {
     const result = await getApplicationIndex('123', '1234', undefined);
     //Then
     expect(result).toEqual(0);
+  });
+
+  it('should return index with plus one on index.', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '1234',
+      last_modified: '',
+      state: undefined,
+    };
+
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([applicationResponse]);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined, true);
+    //Then
+    expect(result).toEqual(1);
   });
 
   it('should return undefine', async () => {
@@ -1331,4 +1388,54 @@ describe('should check if the application type on the case is "Confirm CCJ debt 
       //Then
       expect(isConfirmYouPaidCCJAppType(claim)).toEqual(expectedOutput);
     });
+});
+
+describe('should Remove unnecessary data based on the type of application.', () => {
+
+  it.each`
+      applicationType                                                      | expectedOutput
+      ${ApplicationTypeOption.SETTLE_BY_CONSENT}                                    | ${undefined}
+      ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}                              | ${undefined}
+    `('should return $expectedOutput when selected type is applicationType',
+    ({ applicationType, expectedOutput}) => {
+      //When
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.informOtherParties = new InformOtherParties();
+      //given
+      resetClaimDataByApplicationType(claim, new ApplicationType(applicationType));
+
+      //Then
+      expect(claim.generalApplication.informOtherParties).toEqual(expectedOutput);
+    });
+
+  it('should remove unnecessary Data when type of application is VARY_PAYMENT_TERMS_OF_JUDGMENT', async () => {
+    //When
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.informOtherParties = new InformOtherParties();
+    claim.generalApplication.requestingReasons = Array.of(new RequestingReason());
+    claim.generalApplication.orderJudges = Array.of(new OrderJudge());
+    claim.generalApplication.applicationCosts = YesNo.NO;
+    //given
+    resetClaimDataByApplicationType(claim, new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT));
+    //Then
+    expect(claim.generalApplication.informOtherParties).toEqual(undefined);
+    expect(claim.generalApplication.requestingReasons).toEqual(undefined);
+    expect(claim.generalApplication.orderJudges).toEqual(undefined);
+    expect(claim.generalApplication.applicationCosts).toEqual(undefined);
+
+  });
+
+  it('should remove uploadN245Form Data when type of application is not VARY_PAYMENT_TERMS_OF_JUDGMENT', async () => {
+    //When
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.uploadN245Form = new UploadGAFiles();
+    //given
+    resetClaimDataByApplicationType(claim, new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
+    //Then
+    expect(claim.generalApplication.uploadN245Form).toEqual(undefined);
+  });
+
 });

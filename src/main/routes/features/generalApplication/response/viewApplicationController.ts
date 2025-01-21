@@ -15,12 +15,12 @@ import {
   getApplicationSections,
   getCourtDocuments,
   getRespondentDocuments,
-  getResponseFromCourtSection,
+  getResponseFromCourtSection, getResponseSummaryCardSections,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
-  getApplicationFromGAService, hasRespondentResponded,
+  getApplicationFromGAService, getApplicationIndex, hasRespondentResponded,
   saveApplicationTypesToGaResponse,
 } from 'services/features/generalApplication/generalApplicationService';
 import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
@@ -31,6 +31,7 @@ import {deleteDraftClaimFromStore, generateRedisKeyForGA} from 'modules/draft-st
 import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
+import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
 
 const viewApplicationToRespondentController = Router();
 const viewPathPreResponse = 'features/generalApplication/response/view-application';
@@ -41,16 +42,16 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const claimId = req.params.id;
     const claim: Claim = await getClaimById(claimId, req, true);
     const applicationId = req.params.appId ? String(req.params.appId) : null;
-    const applicationIndex = queryParamNumber(req, 'index') ? queryParamNumber(req, 'index') : '1';
+    const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationId, lang);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+    const applicationTypeCards = getResponseSummaryCardSections(applicationResponse, lang);
+    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationResponse, lang);
     const redirectUrl = await getRedirectUrl(applicationResponse, applicationId, claimId);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const applicantDocuments: DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
-    const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
@@ -58,11 +59,16 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const viewPath = hasRespondentResponded(applicationResponse) ? viewPathPostResponse : viewPathPreResponse;
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
+    let additionalDocUrl : string = null;
+    if(canUploadAddlDoc(applicationResponse)) {
+      additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    }
     await deleteDraftClaimFromStore(claimId);
 
     await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {
       backLinkUrl,
+      applicationTypeCards,
       summaryRows,
       responseSummaries,
       pageTitle,
@@ -91,7 +97,7 @@ async function getRedirectUrl(applicationResponse: ApplicationResponse, applicat
   if (isClaimantRespondent && claimantRespondingToDefendantVaryAJudgment) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
   }
-  if (withConsent) {
+  if (withConsent && !claimantRespondingToDefendantVaryAJudgment) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL);
   }
   return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);

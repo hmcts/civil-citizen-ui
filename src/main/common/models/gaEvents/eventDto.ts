@@ -19,6 +19,8 @@ import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGeneralApplicationCertOfSC';
 import {Document} from 'models/document/document';
+import {CcdGeneralApplicationOrderJudge} from 'models/ccdGeneralApplication/ccdGeneralApplicationOrderJudge';
+import {CcdGeneralApplicationRequestingReason} from 'models/ccdGeneralApplication/ccdGeneralAppRequestingReason';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -33,7 +35,9 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppInformOtherParty?: CcdGeneralApplicationInformOtherParty;
   generalAppAskForCosts?: YesNoUpperCamelCase;
   generalAppDetailsOfOrder?: string;
+  generalAppDetailsOfOrderColl?: CcdGeneralApplicationOrderJudge[];
   generalAppReasonsOfOrder?: string;
+  generalAppReasonsOfOrderColl?: CcdGeneralApplicationRequestingReason[];
   generalAppEvidenceDocument?: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails?: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth?: CcdGeneralApplicationStatementOfTruth;

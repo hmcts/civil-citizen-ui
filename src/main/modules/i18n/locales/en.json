@@ -364,6 +364,10 @@
     "VARIATION_8": {
       "YES": "Yes",
       "NO": "No"
+    },
+    "APPLICATION_DOCUMENTS": {
+      "APPLICANT": "Applicant ",
+      "RESPONDENT": "Respondent "
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -1077,7 +1081,12 @@
     "CCJ_PAID_AMOUNT": {
       "AMOUNT_PAID": "Amount already paid",
       "PAGE_TITLE": "Has the defendant paid some of the amount owed?",
-      "TITLE": "Has the defendant paid some of the amount owed?"
+      "TITLE": "Has the defendant paid some of the amount owed?",
+      "AMOUNT_PAID_INSET": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form ",
+      "AMOUNT_PAID_INSET_2": ". If you have received any part payment and you are requesting a Judgment on a Part Admission response, please use form ",
+      "AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send to ",
+      "N225_LINK": "https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount",
+      "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
     "CCJ_PAYMENT_TYPE": {
       "WOULD_PAY": "I would like the defendant to pay:",
@@ -1371,6 +1380,7 @@
       "CLAIMANT_RECEIPT": "You should ask the claimant to give you a receipt.",
       "CLAIMANT_REJECT_OFFER": "If the claimant rejects your offer, they can ask the court to enter a CCJ against you. The court will then decide the repayment plan.",
       "CLAIMANT_REJECT_PART_ADMISSION": "If they reject your offer, the court will decide a repayment plan.",
+      "COUNTER_CLAIM": "Reject all of the claim and counterclaim",
       "FULL_ADMISSION": "I admit all of the claim",
       "FULL_ADMISSION_HINT": "You agree you owe the full amount claimed.",
       "FULL_DEFENCE_HINT": "You've either paid what you believe you owe or you reject the claim.",
@@ -1730,6 +1740,10 @@
         "YES_MEDIATION": {
           "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You agreed to try free mediation.",
           "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Your mediation appointment will be arranged within 28 days."
+        },
+        "MINTI":  {
+          "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
+          "REVIEW_CASE": "We'll review the case. We'll contact you to tell you what to do next."
         }
       },
       "MEDIATION": {
@@ -1921,7 +1935,8 @@
       "PAGE_TITLE_DEFENDANT": "View information about the defendant",
       "PHONE": "Phone",
       "THE_CLAIM": "The claim",
-      "THE_RESPONSE": "The response"
+      "THE_RESPONSE": "The response",
+      "DEFENDANT_LR": "Defendant's legal representative"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
@@ -2471,7 +2486,7 @@
     },
     "ELIGIBILITY_USEFUL_INFO_FEES": {
       "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
-      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.",
+      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.",
       "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
       "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
       "TITLE": "Some useful information about Help with Fees"
@@ -2696,7 +2711,22 @@
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
-        "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "RESPOND_TO": {
+          "SET_ASIDE_JUDGEMENT": "Respond to an application to set aside (remove) a judgment",
+          "AMEND_A_STMT_OF_CASE": "Respond to an application to make a change to your claim or defence that you've submitted",
+          "ADJOURN_HEARING": "Respond to an application to change a hearing date",
+          "CONFIRM_CCJ_DEBT_PAID": "Respond to an application to Confirm you've paid a judgment debt",
+          "UNLESS_ORDER": "Respond to an application to court to impose a sanction on the other parties unless they do a specific action",
+          "EXTEND_TIME": "Respond to an application to more time to do what is required by a court order",
+          "OTHER": "Respond to an application to court to do something that's not on this list",
+          "STAY_THE_CLAIM": "Respond to an application to court to pause a claim",
+          "VARY_ORDER": "Respond to an application to reconsider an order",
+          "RELIEF_FROM_SANCTIONS": "Respond to an application to relief from a penalty you've been given by the court",
+          "SETTLE_BY_CONSENT": "Respond to an application to court to make an order settling the claim by consent",
+          "STRIKE_OUT": "Respond to an application to court to strike out all or part of the other parties' case without a trial",
+          "SUMMARY_JUDGEMENT": "Respond to an application to court to make a summary judgment on a case",
+          "VARY_PAYMENT_TERMS_OF_JUDGMENT": "Respond to an application to vary a judgment"
+        },
         "RESPOND_TO_MULTIPLE": "Respond to an application",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
@@ -2714,7 +2744,7 @@
         "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
-        "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
+        "STRIKE_OUT": "the court to strike out all or part of the other parties' case",
         "SUMMARY_JUDGEMENT": "the court to make a summary judgment",
         "STAY_THE_CLAIM": "the court to pause a claim",
         "TITLE": "Application costs",
@@ -2754,6 +2784,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "APPLICATION": "Application",
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
@@ -2773,6 +2804,7 @@
         },
         "TITLE": "Check your answers",
         "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "UPLOAD_DOCUMENTS_RESPONSE": "Do you want to upload documents to support your response?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?",
@@ -2785,7 +2817,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
-        "PREFERRED_LOCATION": "Preferred location",
+        "PREFERRED_LOCATION": "Preferred court location",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
@@ -2795,7 +2827,7 @@
           "CHECKBOX": "I believe that the facts stated in this response form are true.",
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
-        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+        "UNAVAILABLE_DATES": "Dates when you cannot attend a hearing"
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
@@ -2815,7 +2847,8 @@
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
-        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
+        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee",
+        "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -3072,10 +3105,10 @@
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
-        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+        "TITLE": "Do you want to upload documents to support your application?"
       },
       "UPLOAD_DOCUMENTS": {
-        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Uploaded files",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
@@ -3100,7 +3133,7 @@
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
-        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "FILE_SIZE": "the file size is no more than 100MB",
         "FILL_ONLINE": "fill out the interactive form online, save it to your device and then upload it here",
         "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
@@ -3135,7 +3168,8 @@
         "HEARING_TYPE_VIEW_APPLICATION": {
           "PERSON_AT_COURT": "In person at the court",
           "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "VIDEO_CONFERENCE": "Video Conference",
+          "WITHOUT_HEARING": "Without a hearing"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
         "SELECT_A_LOCATION": "-- Select a location --",
@@ -3201,11 +3235,11 @@
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
+        "GA_ADD_ANOTHER_DATE": "Add another date or date range",
         "FROM": "From",
         "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
         "LONGER_PERIOD": "A longer period of time",
         "PAGE_TITLE": "Unavailable hearing dates",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
         "SELECT": "Select a date or dates you cannot attend a hearing",
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
@@ -3227,6 +3261,7 @@
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "APPLICATION_FEE_PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
         "CONTENT_PAGE_TITLE": "Apply for help with fees",
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
@@ -3264,7 +3299,8 @@
         "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "DOCUMENT_TYPES": {
-          "SUPPORTING_EVIDENCE": "Supporting Evidence"
+          "SUPPORTING_EVIDENCE": "Supporting evidence",
+          "RESPOND_EVIDENCE": "Respond evidence"
         },
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
@@ -3281,7 +3317,7 @@
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
           "OTHER_PARTIES_RESPONSE": "The other parties' response to the application.",
           "TITLE": "Response from the other parties",
-          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing",
+          "UNAVAILABLE_DATES": "Dates when you cannot attend a hearing",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
@@ -3305,6 +3341,7 @@
           "APPLICATION_CLOSED": "Application closed",
           "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "AWAITING_ADDL_PAYMENT": "Awaiting additional payment",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "TITLE": "Status"
         },
         "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
@@ -4078,7 +4115,9 @@
       "DEBTS": "Debts",
       "DEBTS_BEHIND_ON": "Do they have any debts they are behind on?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Do they have loan or credit card debts?",
+      "DOWNLOAD_EVIDENCE": "Download their evidence",
       "DOWNLOAD_RESPONSE": "Download their full response (PDF)",
+      "DOWNLOAD_TIMELINE": "Download their timeline of events (PDF)",
       "EMPLOYED": "Do they have a job?",
       "FINANCIAL_SUPPORT": "Financial support",
       "FULL_ADMISSION": "{{ defendant }} admits they owe all the money you’ve claimed.",
@@ -4624,7 +4663,10 @@
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
-      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt"
+      "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
+      "COURT_OFFICER_ORDER":"Court Officer Order",
+      "JBA_DEFENDANT":"Judgment by admission defendant",
+      "JBA_CLAIMANT":"Judgment by admission claimant"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
@@ -4785,6 +4827,15 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
+    },
+    "CONTACT_WEBCHAT": {
+      "WEBCHAT": "Webchat",
+      "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
+      "TELEPHONE": "Telephone",
+      "OPENING_TIMES": "Opening Times",
+      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
     }
   },
   "FOOTER":{
@@ -5017,6 +5068,7 @@
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "HELP_WITH_FEES_REFERENCE_REQUIRED": "Enter your Help With Fees reference number",
     "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
+    "VALID_ENTER_REFERENCE_NUMBER_GA_HWF": "Enter your 11 character Help with Fees number",
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
@@ -5133,7 +5185,6 @@
     "ADDRESS_LINE_TOO_MANY_JO": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TOWN_CITY_TOO_MANY_JO": "Town or City must no longer than 35 characters",
-    "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
@@ -5311,5 +5362,10 @@
       }
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+  },
+  "BANNERS" : {
+    "CUI_CP" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 4th December 2024 and 02:00 on 5th December 2024 due to the release of CUI Case Progression."
+    }
   }
 }

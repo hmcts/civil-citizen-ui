@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -29,6 +30,10 @@
             {% set id = "option" %}
             {% set name = "option" %}
             {% set yesHtml %}
+              <div class="govuk-inset-text">
+                <p>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET') }}<a target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225_LINK') }}>{{  t('N225') }}</a>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_2') }}<a target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225A_LINK') }}>{{  t('N225a') }}</a>.<br/>
+                {{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_3') }}<a href="mailto:contactocmc@justice.gov.uk">{{  t('contactocmc@justice.gov.uk') }}</a>{{  t('.') }}</p>
+              </div>
               {{ govukInput({
                 id: "amount",
                 name: "amount",

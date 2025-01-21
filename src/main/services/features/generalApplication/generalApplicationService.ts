@@ -4,15 +4,15 @@ import {
   getCaseDataFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
   ApplicationTypeOption,
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
-import { HearingSupport } from 'models/generalApplication/hearingSupport';
-import { Claim } from 'models/claim';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import {Claim} from 'models/claim';
 import {
   CANCEL_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
@@ -20,53 +20,49 @@ import {
   GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_VIEW_APPLICATION_URL,
 } from 'routes/urls';
-import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
-import { AppRequest } from 'common/models/AppRequest';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ValidationError } from 'class-validator';
-import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
-import {
-  constructResponseUrlWithIdAndAppIdParams,
-  constructResponseUrlWithIdParams,
-} from 'common/utils/urlFormatter';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { OrderJudge } from 'common/models/generalApplication/orderJudge';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
-import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
-import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {AppRequest} from 'common/models/AppRequest';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ValidationError} from 'class-validator';
+import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from 'common/models/generalApplication/orderJudge';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {
   AcceptDefendantOffer,
   ProposedPaymentPlanOption,
 } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import {
-  ApplicationState,
-  ApplicationStatus,
-} from 'common/models/generalApplication/applicationSummary';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
-import { GaServiceClient } from 'client/gaServiceClient';
+import {GaServiceClient} from 'client/gaServiceClient';
 import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from './response/generalApplicationResponseStoreService';
-import { CCDGaHelpWithFees } from 'models/gaEvents/eventDto';
-import { triggerNotifyHwfEvent } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
-import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
-import { toCCDYesNo } from 'services/translation/response/convertToCCDYesNo';
-import { getClaimById } from 'modules/utilityService';
+import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {
-  getDraftGAHWFDetails,
-  saveDraftGAHWFDetails,
-} from 'modules/draft-store/gaHwFeesDraftStore';
-import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
-import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
-import { t } from 'i18next';
-import { GeneralAppUrgencyRequirement } from 'models/generalApplication/response/urgencyRequirement';
+  triggerNotifyHwfEvent,
+} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
+import {getClaimById} from 'modules/utilityService';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {
+  hideGAAppAsRespondentForClaimant,
+  isApplicationVisibleToRespondent,
+} from './response/generalApplicationResponseService';
+import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
+import {t} from 'i18next';
+import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 import {exhaustiveMatchingGuard} from 'services/genericService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -78,6 +74,7 @@ export const saveApplicationType = async (claimId: string, claim: Claim, applica
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
+    resetClaimDataByApplicationType(claim, applicationType);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -180,6 +177,9 @@ export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim,
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    if (agreementFromOtherParty === YesNo.YES && claim.generalApplication.informOtherParties?.option) {
+      claim.generalApplication.informOtherParties = undefined;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -529,9 +529,15 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
   }
 };
 
-export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest, indexWithPlusOne = false) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  return applications.findIndex(application => application.id == applicationId);
+  const index =  applications.findIndex(application => application.id == applicationId);
+  return indexWithPlusOne? index + 1 : index;
+};
+
+export const isGaApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+    || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
 export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
@@ -573,9 +579,9 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
 export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
   if(isGAFlagEnable) {
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
-    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
-    if(applications && applications.length > 0) {
+    if(applications && applications.length > 0 && !claim.hasClaimTakenOffline()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
         url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
@@ -598,3 +604,27 @@ export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
   const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
   return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
 };
+
+export const resetClaimDataByApplicationType = (claim: Claim, applicationType: ApplicationType): void => {
+
+  const { option } = applicationType;
+  const generalApplication = claim.generalApplication;
+
+  switch (option) {
+    case ApplicationTypeOption.SETTLE_BY_CONSENT:
+    case ApplicationTypeOption.SET_ASIDE_JUDGEMENT:
+      delete generalApplication['informOtherParties'];
+      break;
+    case ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT:
+      delete generalApplication['requestingReasons'];
+      delete generalApplication['orderJudges'];
+      delete generalApplication['informOtherParties'];
+      delete generalApplication['applicationCosts'];
+      break;
+  }
+
+  if (option !== ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
+    delete generalApplication['uploadN245Form'];
+  }
+};
+
