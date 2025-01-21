@@ -18,7 +18,7 @@ Scenario('Claimant GA Application and respond to response for strike out without
     createGAApplication.selectApplicationType('Other applications', 'Ask the court to strike out all or part of the other parties\' case without a trial');
     createGAApplication.selectAgreementFromOtherParty('No');
     createGAApplication.InformOtherParties('No');
-    createGAApplication.applicationCosts(claimID, 'Court to strike out all or part of the other parties\' case without a trial', 'To apply to the court to strike out all or part of the other parties’ case, the application fee is £108');
+    createGAApplication.applicationCosts(claimID, 'Court to strike out all or part of the other parties\' case without a trial', 'To apply to the court to strike out all or part of the other parties\' case, the application fee is £108');
     createGAApplication.claimCosts(claimID, 'Yes');
     createGAApplication.orderJudge(claimID, 'strike out the application');
     createGAApplication.requestingReason(claimID);
