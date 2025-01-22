@@ -82,9 +82,7 @@ module.exports = {
   makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
     console.log('Make an Order of GA: ' + gaCaseId);
     eventName = 'MAKE_DECISION';
-
     const document = await uploadDocument();
-
     switch(courtResponseType){
       case 'approveOrEdit':
         payload = makeAnOrderGA.makeAnOrderGA(document);
@@ -99,32 +97,11 @@ module.exports = {
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
     }
-
     await apiRequest.setupTokens(user);
-
     caseData = payload['caseDataUpdate'];
-
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
-
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
-
-  // dismissOrderGA: async (gaCaseId, user = config.judgeUserWithRegionId2) => {
-  //   console.log('Dismiss an order of GA: ' + gaCaseId);
-  //   eventName = 'MAKE_DECISION';
-  //
-  //   const document = await uploadDocument();
-  //
-  //   const payload = makeAnOrderGA.dismissAnOrderGA(document);
-  //
-  //   await apiRequest.setupTokens(user);
-  //
-  //   caseData = payload['caseDataUpdate'];
-  //
-  //   await waitForGAFinishedBusinessProcess(gaCaseId, user);
-  //
-  //   await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
-  // },
 
   performBundleGeneration: async (user, caseId) => {
     console.log('This is inside performBundleGeneration() : ' + caseId);
