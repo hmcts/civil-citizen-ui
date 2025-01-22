@@ -17,7 +17,7 @@ import {
   COSC_FINAL_PAYMENT_DATE_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
-  GA_ADD_ANOTHER_APPLICATION_URL, GA_UPLOAD_N245_FORM_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL, GA_UPLOAD_N245_FORM_URL, GA_UNAVAILABILITY_CONFIRMATION_URL,
 } from 'routes/urls';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
@@ -229,6 +229,11 @@ export const addUnavailableDatesRows = (claimId: string, claim: Claim, lang: str
   const lng = getLng(lang);
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UNAVAILABLE_DATES', {lng}),
+      t(`COMMON.VARIATION_8.${claim.generalApplication.hasUnavailableDatesHearing.toUpperCase()}`, {lng}),
+      constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), changeLabel()),
+  );
   if (claim.generalApplication?.unavailableDatesHearing) {
     let unavailableDatesHtml = '<ul class="no-list-style">';
     claim.generalApplication.unavailableDatesHearing.items.forEach((value, index) => {
