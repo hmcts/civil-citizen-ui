@@ -67,109 +67,7 @@ describe('Check Answers service', () => {
       generalApplication.agreementFromOtherParty = YesNo.YES;
       generalApplication.informOtherParties = new InformOtherParties();
       generalApplication.informOtherParties.option = YesNo.YES;
-      generalApplication.unavailableDatesHearing = new UnavailableDatesGaHearing();
-      generalApplication.unavailableDatesHearing.items = [
-        new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE, {year: '2024', month: '1', day: '1'}),
-        new UnavailableDatePeriodGaHearing(UnavailableDateType.LONGER_PERIOD, {year: '2024', month: '1', day: '1'}, {year: '2024', month: '1', day: '1'}),
-      ];
-      generalApplication.applicationCosts = YesNo.NO;
-      generalApplication.orderJudges = [
-        new OrderJudge('test1'),
-        new OrderJudge('test2'),
-        new OrderJudge('test3'),
-      ];
-      generalApplication.requestingReasons = [
-        new RequestingReason('test1'),
-        new RequestingReason('test2'),
-        new RequestingReason('test3'),
-      ];
-      generalApplication.wantToUploadDocuments = YesNo.YES;
-      generalApplication.uploadEvidenceForApplication = [new UploadGAFiles()];
-      generalApplication.uploadEvidenceForApplication[0].caseDocument = {
-        createdBy: '',
-        createdDatetime: undefined,
-        documentLink: undefined,
-        documentName: 'test.pdf',
-        documentSize: 0,
-        documentType: undefined,
-      };
-      generalApplication.hearingContactDetails = new HearingContactDetails();
-      generalApplication.hearingContactDetails.emailAddress = 'a@b.com';
-      generalApplication.hearingContactDetails.telephoneNumber = '12345';
-    });
-
-    it('should give correct row count for multiple application types', () => {
-      const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(12);
-      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
-      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
-    });
-
-    it('should give correct row count for single application type', () => {
-      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
-      generalApplication.orderJudges = [new OrderJudge('test1')];
-      generalApplication.requestingReasons = [new RequestingReason('test1')];
-      const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(15);
-      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
-      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
-    });
-
-    it('should give no summary cards for single application type', () => {
-      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
-      generalApplication.orderJudges = [new OrderJudge('test1')];
-      generalApplication.requestingReasons = [new RequestingReason('test1')];
-      const result = getSummaryCardSections('12345', claim, 'en');
-      expect(result).toBeNull();
-    });
-
-    it('should give summary cards for multiple application types', () => {
-      const result = getSummaryCardSections('12345', claim, 'en');
-      expect(result).toHaveLength(3);
-      expect(result[0].card.title.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION 1');
-      expect(result[0].rows.length).toEqual(3);
-      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
-      expect(result[0].rows[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME');
-      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[0].rows[1].value.html).toEqual('test1');
-      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
-      expect(result[0].rows[2].value.html).toEqual('test1');
-    });
-
-    it('should give correct row count for application type = SETTLE_BY_CONSENT', () => {
-      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT)];
-      generalApplication.orderJudges = [new OrderJudge('test1')];
-      generalApplication.requestingReasons = [new RequestingReason('test1')];
-      const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(14);
-      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
-      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
-    });
-  });
-
-  describe('Build check answers for submit general application without', () => {
-    let claim: Claim;
-    let generalApplication: GeneralApplication;
-    beforeEach(() => {
-      claim = new Claim();
-      generalApplication = new GeneralApplication();
-      claim.generalApplication = generalApplication;
-      generalApplication.applicationTypes = [
-        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
-        new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
-        new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
-      ];
-      generalApplication.hearingArrangement = new HearingArrangement();
-      generalApplication.hearingArrangement.option = HearingTypeOptions.TELEPHONE;
-      generalApplication.hearingArrangement.reasonForPreferredHearingType = 'test';
-      generalApplication.hearingArrangement.courtLocation = 'Court 1';
-      generalApplication.hearingSupport = new HearingSupport([
-        SupportType.HEARING_LOOP, SupportType.STEP_FREE_ACCESS, SupportType.LANGUAGE_INTERPRETER, SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT,
-      ]);
-      generalApplication.agreementFromOtherParty = YesNo.NO;
-      generalApplication.informOtherParties = new InformOtherParties();
-      generalApplication.informOtherParties.option = YesNo.NO;
-      generalApplication.informOtherParties.reasonForCourtNotInformingOtherParties = 'test';
+      generalApplication.hasUnavailableDatesHearing= YesNo.YES;
       generalApplication.unavailableDatesHearing = new UnavailableDatesGaHearing();
       generalApplication.unavailableDatesHearing.items = [
         new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE, {year: '2024', month: '1', day: '1'}),
@@ -206,8 +104,123 @@ describe('Check Answers service', () => {
       expect(result).toHaveLength(13);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
+    });
+
+    it('should give correct row count for multiple application types without unavailable dates', () => {
+      const newClaim = claim;
+      newClaim.generalApplication.hasUnavailableDatesHearing= YesNo.NO;
+      delete newClaim.generalApplication.unavailableDatesHearing;
+      const result = getSummarySections('12345', newClaim, 'en');
+      expect(result).toHaveLength(12);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
+    });
+
+    it('should give correct row count for single application type', () => {
+      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      generalApplication.orderJudges = [new OrderJudge('test1')];
+      generalApplication.requestingReasons = [new RequestingReason('test1')];
+      const result = getSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(16);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
+    });
+
+    it('should give no summary cards for single application type', () => {
+      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      generalApplication.orderJudges = [new OrderJudge('test1')];
+      generalApplication.requestingReasons = [new RequestingReason('test1')];
+      const result = getSummaryCardSections('12345', claim, 'en');
+      expect(result).toBeNull();
+    });
+
+    it('should give summary cards for multiple application types', () => {
+      const result = getSummaryCardSections('12345', claim, 'en');
+      expect(result).toHaveLength(3);
+      expect(result[0].card.title.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION 1');
+      expect(result[0].rows.length).toEqual(3);
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[0].rows[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
+      expect(result[0].rows[1].value.html).toEqual('test1');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
+      expect(result[0].rows[2].value.html).toEqual('test1');
+    });
+
+    it('should give correct row count for application type = SETTLE_BY_CONSENT', () => {
+      generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT)];
+      generalApplication.orderJudges = [new OrderJudge('test1')];
+      generalApplication.requestingReasons = [new RequestingReason('test1')];
+      const result = getSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(15);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
+    });
+  });
+
+  describe('Build check answers for submit general application without', () => {
+    let claim: Claim;
+    let generalApplication: GeneralApplication;
+    beforeEach(() => {
+      claim = new Claim();
+      generalApplication = new GeneralApplication();
+      claim.generalApplication = generalApplication;
+      generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
+        new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
+      ];
+      generalApplication.hearingArrangement = new HearingArrangement();
+      generalApplication.hearingArrangement.option = HearingTypeOptions.TELEPHONE;
+      generalApplication.hearingArrangement.reasonForPreferredHearingType = 'test';
+      generalApplication.hearingArrangement.courtLocation = 'Court 1';
+      generalApplication.hearingSupport = new HearingSupport([
+        SupportType.HEARING_LOOP, SupportType.STEP_FREE_ACCESS, SupportType.LANGUAGE_INTERPRETER, SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT,
+      ]);
+      generalApplication.agreementFromOtherParty = YesNo.NO;
+      generalApplication.informOtherParties = new InformOtherParties();
+      generalApplication.informOtherParties.option = YesNo.NO;
+      generalApplication.informOtherParties.reasonForCourtNotInformingOtherParties = 'test';
+      generalApplication.hasUnavailableDatesHearing = YesNo.YES;
+      generalApplication.unavailableDatesHearing = new UnavailableDatesGaHearing();
+      generalApplication.unavailableDatesHearing.items = [
+        new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE, {year: '2024', month: '1', day: '1'}),
+        new UnavailableDatePeriodGaHearing(UnavailableDateType.LONGER_PERIOD, {year: '2024', month: '1', day: '1'}, {year: '2024', month: '1', day: '1'}),
+      ];
+      generalApplication.applicationCosts = YesNo.NO;
+      generalApplication.orderJudges = [
+        new OrderJudge('test1'),
+        new OrderJudge('test2'),
+        new OrderJudge('test3'),
+      ];
+      generalApplication.requestingReasons = [
+        new RequestingReason('test1'),
+        new RequestingReason('test2'),
+        new RequestingReason('test3'),
+      ];
+      generalApplication.wantToUploadDocuments = YesNo.YES;
+      generalApplication.uploadEvidenceForApplication = [new UploadGAFiles()];
+      generalApplication.uploadEvidenceForApplication[0].caseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: 'test.pdf',
+        documentSize: 0,
+        documentType: undefined,
+      };
+      generalApplication.hearingContactDetails = new HearingContactDetails();
+      generalApplication.hearingContactDetails.emailAddress = 'a@b.com';
+      generalApplication.hearingContactDetails.telephoneNumber = '12345';
+    });
+
+    it('should give correct row count for multiple application types', () => {
+      const result = getSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(14);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
       expect(result[1].value.html).toEqual('COMMON.VARIATION_5.NO');
     });
+
   });
 
   describe('Build check answers for submit cosc general application type', () => {

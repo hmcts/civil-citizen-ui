@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BACK_URL,
   GA_HEARING_CONTACT_DETAILS_URL,
-  GA_UNAVAILABLE_HEARING_DATES_URL,
+  GA_UNAVAILABILITY_CONFIRMATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -50,7 +50,7 @@ hearingContactDetailsController.post(GA_HEARING_CONTACT_DETAILS_URL, (async (req
       await renderView(claimId, claim, form, res, index);
     } else {
       await saveHearingContactDetails(redisKey, hearingContactDetails);
-      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), index));
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), index));
     }
   } catch (error) {
     next(error);

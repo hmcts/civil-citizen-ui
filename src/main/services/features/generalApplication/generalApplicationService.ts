@@ -634,6 +634,21 @@ export const resetClaimDataByApplicationType = (claim: Claim, applicationType: A
   }
 };
 
+export const saveUnavailabilityDatesConfirmation = async (claimId: string, hasUnavailableDatesHearing: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
+    if (hasUnavailableDatesHearing === YesNo.NO) {
+      delete claim.generalApplication.unavailableDatesHearing;
+    }
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, claim: Claim): string => {
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
   const applicationIndex = queryParamNumber(req, 'index');

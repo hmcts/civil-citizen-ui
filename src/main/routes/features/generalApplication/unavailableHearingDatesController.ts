@@ -37,7 +37,7 @@ unavailableHearingDatesController.get(GA_UNAVAILABLE_HEARING_DATES_URL, (async (
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
-    const unavailableDates = claim.generalApplication?.unavailableDatesHearing || new UnavailableDatesGaHearing();
+    const unavailableDates = claim.generalApplication?.unavailableDatesHearing;
     const form = new GenericForm(unavailableDates);
     const cancelUrl = await getCancelUrl(claimId, claim);
     await renderView(claimId, claim, form, res, cancelUrl, lng, index);
