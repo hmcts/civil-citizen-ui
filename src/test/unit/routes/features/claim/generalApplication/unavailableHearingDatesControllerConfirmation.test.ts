@@ -22,6 +22,11 @@ jest.mock('../../../../../../main/modules/draft-store');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Unavailable hearing dates confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
