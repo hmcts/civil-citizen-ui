@@ -287,3 +287,5 @@ civil-general-applications:
       CUI_URL: https://${SERVICE_FQDN}
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       STITCHING_API_ENABLED: false
+      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+
