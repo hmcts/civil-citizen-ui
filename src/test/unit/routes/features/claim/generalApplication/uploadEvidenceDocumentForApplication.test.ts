@@ -7,9 +7,11 @@ import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { app } from '../../../../../../main/app';
 import {
-  GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
+  BACK_URL,
+  GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
-  GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
+  GA_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
@@ -68,8 +70,8 @@ describe('General Application - upload evidence docs to support application', ()
   describe('on GET', () => {
     it.each`
     requestUrl                        | expectedBackUrl                       | selectedApplicationType                         | expectedText
-    ${GA_UPLOAD_DOCUMENTS_URL}        | ${GA_WANT_TO_UPLOAD_DOCUMENTS_URL}    | ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'}
-    ${GA_UPLOAD_DOCUMENTS_COSC_URL}   | ${GA_DEBT_PAYMENT_EVIDENCE_COSC_URL}  | ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}  | ${'Confirm you&#39;ve paid a judgment debt'}
+    ${GA_UPLOAD_DOCUMENTS_URL}        | ${BACK_URL}    | ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'}
+    ${GA_UPLOAD_DOCUMENTS_COSC_URL}   | ${BACK_URL}  | ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}  | ${'Confirm you&#39;ve paid a judgment debt'}
     `('should return upload document page for $requestUrl with corresponding back url ($expectedUrl)'
       , async ({requestUrl, expectedBackUrl, selectedApplicationType, expectedText}) => {
         //Given
