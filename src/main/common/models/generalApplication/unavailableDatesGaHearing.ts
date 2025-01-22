@@ -1,5 +1,6 @@
 import {
   IsDate,
+  IsIn,
   Max,
   MaxDate,
   Min,
@@ -31,8 +32,8 @@ export class UnavailableDatesGaHearing {
 }
 
 export class UnavailableDatePeriodGaHearing {
-
-  type?: UnavailableDateType;
+  @IsIn(Object.values(UnavailableDateType), {message: 'ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'})
+    type?: UnavailableDateType;
 
   @ValidateIf(o => o.type && ((!!o.startDay && o.startDay < 32 && !!o.startMonth && o.startMonth < 13 && o.startYear > 999) ||
     (!o.startDay && !o.startMonth && !o.startYear)))
