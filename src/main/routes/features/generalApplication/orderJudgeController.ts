@@ -16,7 +16,6 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 import { buildPageContent } from 'services/features/generalApplication/orderJudgePageBuilder';
-import { orderJudgeGuard } from 'routes/guards/generalApplication/orderJudgeGuard';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -24,7 +23,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';
 
-orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+orderJudgeController.get(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -51,7 +50,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppReque
   }
 }) as RequestHandler);
 
-orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+orderJudgeController.post(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;

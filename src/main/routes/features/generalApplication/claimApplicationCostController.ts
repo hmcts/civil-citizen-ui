@@ -2,22 +2,24 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BACK_URL,
   GA_CLAIM_APPLICATION_COST_URL,
-  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getCancelUrl, getLast, saveApplicationCosts} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getCancelUrl,
+  getClaimApplicationCostNextUrl,
+  getLast,
+  saveApplicationCosts,
+} from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {claimApplicationCostGuard} from 'routes/guards/generalApplication/claimApplicationCostGuard';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
-import {queryParamNumber} from 'common/utils/requestUtils';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
@@ -50,7 +52,6 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicat
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
     await form.validate();
 
@@ -58,8 +59,7 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicat
       await renderView(form, claim, claimId, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-
-      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index));
+      res.redirect(getClaimApplicationCostNextUrl(req, claim));
     }
   } catch (error) {
     next(error);

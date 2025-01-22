@@ -1,7 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   BACK_URL,
-  GA_ADD_ANOTHER_APPLICATION_URL,
   GA_REQUESTING_REASON_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
@@ -13,11 +12,11 @@ import {
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
+  getRequestingReasonNextUrl,
   saveRequestingReason,
 } from 'services/features/generalApplication/generalApplicationService';
 import { buildRequestingReasonPageContent } from 'services/features/generalApplication/requestingReasonPageBuilder';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
 import {
   ApplicationTypeOptionSelection,
@@ -78,7 +77,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
       });
     } else {
       await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) + `?index=${applicationIndex}`); //add index param
+      res.redirect(getRequestingReasonNextUrl(req, claim));
     }
   } catch (error) {
     next(error);
