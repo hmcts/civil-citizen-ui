@@ -2788,6 +2788,7 @@
         "APPLICATION_TYPE": "Application type",
         "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months ?",
         "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
         "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
         "NAME": "Name",
@@ -2817,7 +2818,7 @@
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
-        "PREFERRED_LOCATION": "Preferred location",
+        "PREFERRED_LOCATION": "Preferred court location",
         "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
         "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
         "PROPOSED_SET_DATE": "Proposed payment in full by set date",
@@ -2827,7 +2828,8 @@
           "CHECKBOX": "I believe that the facts stated in this response form are true.",
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
-        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months?",
+        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing"
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
@@ -3107,6 +3109,10 @@
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
         "TITLE": "Do you want to upload documents to support your application?"
       },
+      "GA_UNAVAILABLE_DATES_CONFIRMATION": {
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months?",
+        "DESCRIPTION": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked."
+      },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Uploaded files",
@@ -3242,7 +3248,7 @@
         "PAGE_TITLE": "Unavailable hearing dates",
         "SELECT": "Select a date or dates you cannot attend a hearing",
         "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months?",
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
@@ -3317,7 +3323,8 @@
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
           "OTHER_PARTIES_RESPONSE": "The other parties' response to the application.",
           "TITLE": "Response from the other parties",
-          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing",
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing?",
+          "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
@@ -3390,6 +3397,11 @@
         "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
         "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
         "FORM_HEADER_1" : "Enter the date of the final payment"
+      },
+      "SUBMIT_APPLICATION_OFFLINE": {
+        "TITLE": "Welsh Case",
+        "N244_LINK": "N244 form",
+        "SUMMARY": "A party in this case has asked for their case documents to be in Welsh. For this reason, the case cannot proceed online and if you want to make an application to the court you must use the N244_LINK. There are guidance notes on the N244 page to help you fill in the form."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4827,6 +4839,15 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
+    },
+    "CONTACT_WEBCHAT": {
+      "WEBCHAT": "Webchat",
+      "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
+      "TELEPHONE": "Telephone",
+      "OPENING_TIMES": "Opening Times",
+      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
     }
   },
   "FOOTER":{
@@ -5176,7 +5197,6 @@
     "ADDRESS_LINE_TOO_MANY_JO": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TOWN_CITY_TOO_MANY_JO": "Town or City must no longer than 35 characters",
-    "TEXT800_TOO_LONG": "Reason must be 800 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TRY_AGAIN": "Try again or enter the address manually.",
@@ -5308,6 +5328,7 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ERROR_UNAVAILABLE_DATE_CONFIRMATION": "Select yes if there are any dates in the next 3 months when you cannot go to a hearing.",
       "ACCEPT_DEFENDANT_OFFER": {
         "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
         "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",

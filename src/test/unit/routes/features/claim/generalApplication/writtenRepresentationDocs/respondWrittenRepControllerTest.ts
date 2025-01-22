@@ -30,6 +30,11 @@ jest.mock('../../../../../../../main/services/features/generalApplication/genera
   getCancelUrl: jest.fn(),
   saveWrittenRepText: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - uploadDocumentsForWrittenRepController', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -23,6 +23,11 @@ jest.mock('../../../../../../main/services/features/generalApplication/response/
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 

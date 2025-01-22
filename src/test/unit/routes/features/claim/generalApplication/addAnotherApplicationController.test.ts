@@ -14,6 +14,11 @@ import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - add another application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
