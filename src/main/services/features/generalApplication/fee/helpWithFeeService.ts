@@ -53,7 +53,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
 
     if (applyHelpWithFees.option === YesNo.NO) {
       let paymentRedirectInformation;
-      if (claim.generalApplication.applicationFeePaymentDetails?.paymentReference){
+      if (claim.generalApplication?.applicationFeePaymentDetails?.paymentReference){
         logger.info(`Existing paymentReference ${claim.generalApplication.applicationFeePaymentDetails?.paymentReference}`);
         paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
       } else {
