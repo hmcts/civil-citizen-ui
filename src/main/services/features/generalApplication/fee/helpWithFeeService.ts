@@ -52,7 +52,16 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
 
     if (applyHelpWithFees.option === YesNo.NO) {
-      let paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      let paymentRedirectInformation;
+      if (claim.generalApplication.applicationFeePaymentDetails?.paymentReference){
+        logger.info(`Existing paymentReference ${claim.generalApplication.applicationFeePaymentDetails?.paymentReference}`);
+        paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
+      } else {
+        paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+        claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+        logger.info(`New paymentReference ${claim.generalApplication.applicationFeePaymentDetails?.paymentReference}`);
+      }
+
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
