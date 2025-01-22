@@ -14,13 +14,18 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
 jest.mock('../../../../../../main/services/features/generalApplication/feeDetailsService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGaApplicationFeeDetails = gaApplicationFeeDetails as jest.Mock;
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
