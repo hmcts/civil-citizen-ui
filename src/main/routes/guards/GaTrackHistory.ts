@@ -8,9 +8,9 @@ export const GaTrackHistory = async (req: AppRequest, res: Response, next: NextF
       if (!req.session.history) {
         req.session.history = [];
       }
-      //removing lang from originalUrl
-      const cleanUrl = req.originalUrl;
-      if (req.session.history.length === 0 || req.session.history[req.session.history.length - 1] !== cleanUrl) {
+      const lastHistory = req.session.history[req.session.history.length - 1];
+      // Compare last item current url without query params.  Ensures file upload pages are not duplicated in history
+      if (req.session.history.length === 0 || lastHistory?.replace(/\?.*$/, '') !== req.originalUrl.replace(/\?.*$/, '')) {
         req.session.history.push(req.originalUrl);
       }
     }
