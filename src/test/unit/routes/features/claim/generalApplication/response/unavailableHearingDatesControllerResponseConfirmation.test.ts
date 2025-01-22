@@ -23,7 +23,7 @@ jest.mock('../../../../../../../main/services/features/generalApplication/respon
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
     next();
   }),
