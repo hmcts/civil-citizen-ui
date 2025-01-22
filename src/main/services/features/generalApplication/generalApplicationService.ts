@@ -660,7 +660,7 @@ export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim:
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
   const isOrderJudgeNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
   if (isOrderJudgeNotAllowed) {
-    return constructResponseUrlWithIdParams(req.params.id, GA_ADD_ANOTHER_APPLICATION_URL);
+    return getRequestingReasonNextUrl(req, claim);
   } else {
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, ORDER_JUDGE_URL), index);
