@@ -198,3 +198,4 @@ xui-webapp:
   nodejs:
     environment:
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
+      SERVICES_ROLE_ASSIGNMENT_MAPPING_API: https://am-org-role-mapping-service-${SERVICE_FQDN}

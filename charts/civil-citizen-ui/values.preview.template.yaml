@@ -96,6 +96,8 @@ xui-webapp:
       JURISDICTIONS: CIVIL
       LAUNCH_DARKLY_CLIENT_ID: ~
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
+      SERVICES_TRANSLATION_API_URL: http://${SERVICE_NAME}-translation-service
+      SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
 
 ccd:
   enabled: true

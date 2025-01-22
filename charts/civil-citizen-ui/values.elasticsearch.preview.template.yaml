@@ -5,20 +5,20 @@ ccd:
     ras:
       enabled: true
 
-  ccd-data-store-api:
-    java:
-      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
-      environment:
-        ELASTIC_SEARCH_ENABLED: true
-        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
-        ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
-        DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
-        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
-      secrets:
-        DATA_STORE_DB_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
+#  ccd-data-store-api:
+#    java:
+#      releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
+#      environment:
+#        ELASTIC_SEARCH_ENABLED: true
+#        ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
+#        ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
+#        DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+#        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+#      secrets:
+#        DATA_STORE_DB_PASSWORD:
+#          secretRef: "{{ .Values.global.postgresSecret }}"
+#          key: PASSWORD
+#          disabled: true
 
   am-role-assignment-service:
     java:
@@ -51,8 +51,6 @@ ccd:
               alias: ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD
             - name: role-assignment-service-LD-SDK-KEY
               alias: LD_SDK_KEY
-
-
   ccd-definition-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
@@ -284,7 +282,7 @@ camunda-bpm:
         key: PASSWORD
         disabled: true
 
-xui-webapp:
-  nodejs:
-    environment:
-      SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
+#xui-webapp:
+#  nodejs:
+#    environment:
+#      SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
