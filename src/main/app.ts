@@ -75,7 +75,7 @@ import {OidcMiddleware} from 'modules/oidc';
 import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
-import {GaTrackHistory} from "routes/guards/GaTrackHistory";
+import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
