@@ -19,6 +19,11 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
   saveDraftGAHWFDetails: jest.fn(),
   getDraftGAHWFDetails: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
