@@ -13,6 +13,7 @@ const WantToUploadDocuments = require('../pages/wantToUploadDocuments.js');
 const HearingArrangementsGuidance = require('../pages/hearingArrangementsGuidance.js');
 const HearingArrangement = require('../pages/hearingArrangement.js');
 const HearingContactDetails = require('../pages/hearingContactDetails.js');
+const UnavailableDatesConfirmation = require('../pages/unavailableDatesConfirmation');
 const UnavailableDates = require('../pages/unavailableDates.js');
 const HearingSupport = require('../pages/hearingSupport.js');
 const PayingForApplication = require('../pages/payingForApplication.js');
@@ -36,6 +37,7 @@ const wantToUploadDocumentsPage = new WantToUploadDocuments();
 const hearingArrangementsGuidancePage = new HearingArrangementsGuidance();
 const hearingArrangementPage = new HearingArrangement();
 const hearingContactDetailsPage = new HearingContactDetails();
+const unavailableDatesConfirmationPage = new UnavailableDatesConfirmation();
 const unavailableDatesPage = new UnavailableDates();
 const hearingSupportPage = new HearingSupport();
 const payingForApplicationPage = new PayingForApplication();
@@ -71,7 +73,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -100,8 +102,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -184,8 +191,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -222,7 +234,7 @@ class createGASteps {
     //Vary order
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Reconsider an order';
-    
+
     let feeAmount;
 
     switch(communicationType) {
@@ -263,7 +275,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -296,8 +308,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -373,7 +390,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -406,8 +423,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -515,8 +537,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -553,7 +580,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Relief from a penalty you\'ve been given by the court';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -565,7 +592,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -592,7 +619,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -625,8 +652,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -665,7 +697,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Make a change to your claim or defence that you\'ve submitted';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -677,7 +709,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -706,7 +738,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -739,8 +771,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -776,7 +813,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to make a summary judgment on a case';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -788,7 +825,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -817,7 +854,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -850,8 +887,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -887,7 +929,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to strike out all or part of the other parties\' case without a trial';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -899,7 +941,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -928,7 +970,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -961,8 +1003,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -998,7 +1045,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to pause a claim';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -1010,7 +1057,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -1039,7 +1086,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -1072,8 +1119,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1109,7 +1161,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to impose a sanction on the other parties unless they do a specific action';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -1121,7 +1173,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -1150,7 +1202,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -1183,8 +1235,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1221,7 +1278,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to make an order settling the claim by consent';
     const feeAmount = '119';
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -1237,7 +1294,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -1266,8 +1323,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1303,7 +1365,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to do something that\'s not on this list';
     let feeAmount;
-    
+
     switch(communicationType) {
       case 'consent':
         feeAmount = '119';
@@ -1315,7 +1377,7 @@ class createGASteps {
         feeAmount = '119';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -1344,7 +1406,7 @@ class createGASteps {
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
     await applicationCostsPage.nextAction('Start now');
-    
+
     await claimApplicationCostPage.verifyPageContent(applicationType);
     await claimApplicationCostPage.selectAndVerifyYesOption();
     await claimApplicationCostPage.nextAction('Continue');
@@ -1377,8 +1439,13 @@ class createGASteps {
     await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
     await hearingContactDetailsPage.nextAction('Continue');
 
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
     await unavailableDatesPage.verifyPageContent(applicationType);
-    await unavailableDatesPage.nextAction('Continue');
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');

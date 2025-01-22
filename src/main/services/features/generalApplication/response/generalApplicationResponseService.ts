@@ -112,6 +112,20 @@ export const saveRespondentUnavailableDates = async (redisKey: string, unavailab
   }
 };
 
+export const saveResponseUnavailabilityDatesConfirmation = async (redisKey: string, hasUnavailableDatesHearing: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
+    if (hasUnavailableDatesHearing === YesNo.NO) {
+      delete gaResponse.unavailableDatesHearing;
+    }
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
