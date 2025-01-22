@@ -20,6 +20,11 @@ jest.mock('../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/services/features/generalApplication/applicationCostsService');
 jest.mock('../../../../../../main/services/features/generalApplication/feeDetailsService');
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 

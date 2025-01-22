@@ -5,6 +5,7 @@ import {getClaimById} from 'modules/utilityService';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {ApplicationTypeOption, LinKFromValues} from 'models/generalApplication/applicationType';
 import {YesNo} from 'form/models/yesNo';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 
 export const checkYourAnswersGAGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,6 +14,8 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
 
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     const hasRequiredFields = isGARequiredFieldsPresent(claim);
+    //If mainCase has bilingual party submission is not allowed.
+    if (claim.isAnyPartyBilingual()) return res.redirect(await getCancelUrl(claimId, null));
 
     if (!applicationTypes.length) return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`));
 

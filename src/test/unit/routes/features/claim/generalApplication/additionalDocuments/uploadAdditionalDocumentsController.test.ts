@@ -40,7 +40,11 @@ jest.mock('../../../../../../../main/services/features/generalApplication/genera
   getCancelUrl: jest.fn(),
   getApplicationIndex: jest.fn(),
 }));
-
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 describe('uploadAdditionalDocumentsController', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

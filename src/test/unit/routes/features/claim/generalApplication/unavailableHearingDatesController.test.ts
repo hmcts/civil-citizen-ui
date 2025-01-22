@@ -21,6 +21,11 @@ jest.mock('../../../../../../main/services/features/claim/details/claimDetailsSe
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/services/features/generalApplication/unavailableHearingDatesService');
 const getUnavailableDatesHearingFormMock = getUnavailableDatesForHearingForm as jest.Mock;
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Unavailable hearing dates', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
