@@ -83,9 +83,16 @@ export class GaServiceClient {
     const config = this.getConfig(req);
     try {
       const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
-      logger.info(`response from payment service ${JSON.stringify(response)}`);
-
-      return plainToInstance(PaymentInformation, response.data);
+      logger.info(`response from payment service ${response}`);
+      const rsult = plainToInstance(PaymentInformation, response.data);
+      logger.info(`result -> ${rsult}`);
+      try {
+        const jsonData = JSON.stringify(response);
+        console.log(jsonData);
+      } catch (error) {
+        console.error('Error stringifying object:', error.message);
+      }
+      return rsult;
     } catch (err: unknown) {
       logger.error('Error when getting fee payment redirect information' + err);
       throw err;
