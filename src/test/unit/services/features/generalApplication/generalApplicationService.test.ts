@@ -8,13 +8,17 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl, isConfirmYouPaidCCJAppType, removeAllOtherApplications, resetClaimDataByApplicationType,
+  getViewApplicationUrl,
+  isConfirmYouPaidCCJAppType,
+  removeAllOtherApplications,
+  resetClaimDataByApplicationType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
   saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
-  saveApplicationType, saveApplicationTypesToGaResponse,
+  saveApplicationType,
+  saveApplicationTypesToGaResponse,
   saveHearingArrangement,
   saveHearingContactDetails,
   saveHearingSupport,
@@ -22,22 +26,26 @@ import {
   saveRequestingReason,
   saveRespondentAgreement,
   saveRespondentWantToUploadDoc,
-  saveUnavailableDates, saveWrittenRepText,
+  saveUnavailabilityDatesConfirmation,
+  saveUnavailableDates,
+  saveWrittenRepText,
   shouldDisplaySyncWarning,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
 } from 'services/features/generalApplication/generalApplicationService';
-import * as gaResponseDraftService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import * as gaResponseDraftService
+  from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {
-  ApplicationType,
-  ApplicationTypeOption,
-} from 'common/models/generalApplication/applicationType';
-import { TestMessages } from '../../../../utils/errorMessageTestConstants';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { CaseRole } from 'common/form/models/caseRoles';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {CaseRole} from 'common/form/models/caseRoles';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CANCEL_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
@@ -60,14 +68,10 @@ import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {AppRequest} from 'models/AppRequest';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {
-  getDraftGARespondentResponse,
-  saveDraftGARespondentResponse,
-} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {OrderJudge} from 'models/generalApplication/orderJudge';
-import clearAllMocks = jest.clearAllMocks;
 import {InformOtherParties} from 'models/generalApplication/informOtherParties';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import clearAllMocks = jest.clearAllMocks;
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -87,6 +91,47 @@ const mockGetGaHwFDetails = getDraftGAHWFDetails as jest.Mock;
 describe('General Application service', () => {
   beforeEach(() => {
     clearAllMocks();
+  });
+
+  describe('should save unavailable dates confirmation ', () => {
+    it('should return save with yes ', async () => {
+      //When
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const claim = new Claim();
+      claim.id = '123456';
+      claim.generalApplication = new GeneralApplication();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //given
+      await saveUnavailabilityDatesConfirmation(claim.id, YesNo.YES);
+      //Then
+      expect(claim.generalApplication.hasUnavailableDatesHearing).toEqual('yes');
+      expect(spy).toBeCalled();
+    });
+
+    it('should return save with no and remove all the unavailable dates if exists ', async () => {
+      //When
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const claim = new Claim();
+      claim.id = '123456';
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.unavailableDatesHearing = new UnavailableDatesGaHearing();
+
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+
+      //given
+      await saveUnavailabilityDatesConfirmation(claim.id, YesNo.NO);
+      //Then
+      expect(claim.generalApplication.hasUnavailableDatesHearing).toEqual('no');
+      expect(claim.generalApplication.unavailableDatesHearing).toEqual(undefined);
+      expect(spy).toBeCalled();
+    });
+
   });
 
   describe('removeAllOtherApplications', () => {

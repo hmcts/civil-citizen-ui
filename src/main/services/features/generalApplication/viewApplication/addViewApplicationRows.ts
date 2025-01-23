@@ -292,7 +292,13 @@ export const addHearingContactDetailsRows = (application: ApplicationResponse, l
 export const addUnavailableDatesRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppHearingDetails.generalAppUnavailableDates) {
+  const hasUnavailableDates = (application.case_data.generalAppHearingDetails.generalAppUnavailableDates ?? []).length > 0;
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UNAVAILABLE_DATES', {lng}),
+      t(`COMMON.VARIATION_8.${hasUnavailableDates? YesNoUpperCase.YES: YesNoUpperCase.NO}`, {lng}),
+    ));
+  if (hasUnavailableDates) {
     let unavailableDatesHtml = '<ul class="no-list-style">';
     application.case_data.generalAppHearingDetails.generalAppUnavailableDates.forEach((value) => {
       if (value.value.unavailableTrialDateTo === undefined) {
@@ -302,14 +308,10 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
       }
     });
     unavailableDatesHtml += '</ul>';
+
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
-        unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng})),
-    );
-  } else {
-    rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
-        t('COMMON.NO', {lng})),
+        unavailableDatesHtml),
     );
   }
   return rows;

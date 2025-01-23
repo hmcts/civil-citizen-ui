@@ -2788,6 +2788,7 @@
         "APPLICATION_TYPE": "Math o gais",
         "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau'n ôl?",
         "CHOOSE_PREFERRED_TYPE": "Dewiswch y math o wrandawiad a ffafrir",
+        "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau lle na allwch fynychu gwrandawiad yn ystod y 3 mis nesaf?",
         "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
         "INFORM_OTHER_PARTIES": "A ydych chi eisiau i’r llys hysbysu’r partïon eraill?",
         "NAME": "Enw",
@@ -2827,7 +2828,8 @@
           "CHECKBOX": "Credaf fod y ffeithiau a nodir yn y ffurflen ymateb hon yn wir.",
           "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic yn y blwch isod ac ysgrifennu eich enw i \"lofnodi’r\", datganiad gwirionedd hwn."
         },
-        "UNAVAILABLE_DATES": "Dyddiadau pan na allwch fynychu gwrandawiad"
+        "UNAVAILABLE_DATES": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf?",
+        "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad"
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "A oes gennych dystiolaeth o'r taliad dyled?",
@@ -3107,6 +3109,10 @@
         "MSG1": "Os ydych chi wedi dewis sawl cais, dylech uwchlwytho’r dogfennau sy’n ymwneud â phob un ohonynt.",
         "TITLE": "Ydych chi eisiau uwchlwytho dogfennau i gefnogi’ch cais?"
       },
+      "GA_UNAVAILABLE_DATES_CONFIRMATION": {
+        "TITLE": "A oes unrhyw ddyddiadau lle na allwch fynychu gwrandawiad yn ystod y 3 mis nesaf?",
+        "DESCRIPTION": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig, fel apwyntiadau meddygol, gwrandawiadau llys eraill, neu wyliau rydych eisoes wedi’u harchebu."
+      },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
@@ -3242,7 +3248,7 @@
         "PAGE_TITLE": "Dyddiadau gwrandawiad lle nad ydych ar gael",
         "SELECT": "Dewiswch ddyddiad neu ddyddiadau pan na allwch fynychu gwrandawiad",
         "SINGLE_DATE": "Dyddiad unigol",
-        "TITLE": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf (dewisol)?",
+        "TITLE": "A oes yna unrhyw ddyddiadau pan na allwch fynychu gwrandawiad o fewn y 3 mis nesaf?",
         "TO": "At"
       },
       "CONFIRMATION_PAGE": {
@@ -3317,7 +3323,8 @@
           "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Ydych chi’n cytuno y dylai’r llys wneud y gorchymyn y mae’r ceisydd wedi gofyn amdano?",
           "OTHER_PARTIES_RESPONSE": "Ymateb y partïon eraill i’r cais.",
           "TITLE": "Ymateb gan y partïon eraill",
-          "UNAVAILABLE_DATES": "Dyddiadau pan na allwch fynychu gwrandawiad",
+          "UNAVAILABLE_DATES": "A oes unrhyw ddyddiadau pan na allwch fynychu gwrandawiad?",
+          "DATES_CANNOT_ATTEND": "Dyddiadau pan na allwch fynychu gwrandawiad",
           "DEFENDANT_OFFER": "Do you accept the defendant's offer?"
         },
         "RESPOND_TO_REQUEST": "Ymateb i’r cais",
@@ -3390,6 +3397,11 @@
         "PARAGRAPH_TEXT_1" : "Mae angen i ni wybod hyn i ganslo'r ddyled os gwnaethoch dalu o fewn mis neu ei dangos fel un sydd wedi’i diwallu os gwnaethoch dalu ar ôl mis.",
         "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
         "FORM_HEADER_1" : "Nodwch ddyddiad y taliad terfynol"
+      },
+      "SUBMIT_APPLICATION_OFFLINE": {
+        "TITLE": "Achos Cymraeg",
+        "N244_LINK": "ffurflen N244",
+        "SUMMARY": "Mae parti yn yr achos hwn wedi gofyn am gael dogfennau eu hachos yn y Gymraeg. Am y rheswm hwn, ni all yr achos fwrw ymlaen ar-lein ar hyn o bryd ac os ydych eisiau gwneud cais i’r llys bydd arnoch angen llenwi’r N244_LINK . Ceir nodiadau canllaw ar y dudalen N244 i’ch helpu i lenwi’r ffurflen."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -5185,7 +5197,6 @@
     "ADDRESS_LINE_TOO_MANY_JO": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 35 o nodau",
     "TOWN_CITY_TOO_MANY": "Ni ddylai tref neu ddinas fod yn hirach na 50 o nodau",
     "TOWN_CITY_TOO_MANY_JO": "Ni ddylai tref neu ddinas fod yn hirach na 35 o nodau",
-    "TEXT800_TOO_LONG": "Rhaid i'r rheswm fod yn 800 o nodau neu'n llai",
     "THERE_IS_A_PROBLEM": "Mae yna broblem",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TRY_AGAIN": "Rhowch gynnig arall arni neu teipiwch y cyfeiriad.",
@@ -5317,6 +5328,7 @@
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
+      "ERROR_UNAVAILABLE_DATE_CONFIRMATION": "Dewiswch ‘Oes’ os oes unrhyw ddyddiadau yn y 3 mis nesaf pan na allwch fynd i wrandawiad",
       "ACCEPT_DEFENDANT_OFFER": {
         "ERROR_ACCEPT": "Mae arnoch angen dweud wrthym os ydych yn derbyn cynnig y diffynnydd. Dewiswch opsiwn Ydw neu Nac ydw",
         "ERROR_CHOOSE": "Mae arnoch angen cynnig cynllun talu. Dewiswch un ai rhandaliadau bob mis neu talu'n llawn erbyn dyddiad penodol.",
