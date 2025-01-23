@@ -22,6 +22,11 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   getApplicationFromGAService: jest.fn(),
   getApplicationIndex: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
