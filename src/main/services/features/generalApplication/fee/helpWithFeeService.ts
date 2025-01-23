@@ -37,8 +37,11 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     let redirectUrl;
     let generalApplicationId: string;
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getClaimById(redisKey, req, true);
-    logger.info(`information of claim fields ${JSON.stringify(claim)}`);
+    const redisClaim: Claim = await getClaimById(redisKey, req, true);
+    logger.info(`information of claim fields on redis with redisKey ${JSON.stringify(redisClaim)}`);
+
+    const claim: Claim = await getClaimById(claimId, req, true);
+    logger.info(`information of claim fields on redis with claimID ${JSON.stringify(claim)}`);
 
     const testCcdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     logger.info(`information of ccdClaim fields at first ${JSON.stringify(testCcdClaim)}`);
