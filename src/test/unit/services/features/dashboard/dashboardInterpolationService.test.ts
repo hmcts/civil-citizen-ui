@@ -141,7 +141,7 @@ describe('dashboardInterpolationService', () => {
   it('should replace placeholders with redirect url for claimant Default judgment', () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
-    claim.systemGeneratedCaseDocuments = [{
+    claim.defaultJudgmentDocuments = [{
       id: '123', value: {
         createdBy: 'Civil',
         documentLink: {
@@ -166,7 +166,7 @@ describe('dashboardInterpolationService', () => {
   it('should replace placeholders with redirect url for defendant Default judgment', () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
-    claim.systemGeneratedCaseDocuments = [{
+    claim.defaultJudgmentDocuments = [{
       id: '123', value: {
         createdBy: 'Civil',
         documentLink: {
