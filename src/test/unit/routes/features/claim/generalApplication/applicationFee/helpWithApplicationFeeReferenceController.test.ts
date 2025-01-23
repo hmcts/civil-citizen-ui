@@ -21,7 +21,11 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
   getDraftGAHWFDetails: jest.fn(),
 }));
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', ()=> ({saveAndTriggerNotifyGaHwfEvent:jest.fn(), saveHelpWithFeesDetails:jest.fn() }));
-
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 const mockSaveHelpWithFeesDetails = saveHelpWithFeesDetails as jest.Mock;
 
