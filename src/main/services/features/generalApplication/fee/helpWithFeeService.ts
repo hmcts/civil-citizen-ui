@@ -37,12 +37,20 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     let redirectUrl;
     let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
+    logger.info(`information of claim fields ${JSON.stringify(claim)}`);
+
     if (req.query?.id) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      logger.info(`information of ccdClaim fields ${JSON.stringify(ccdClaim)}`);
+
       const ccdGeneralApplications = ccdClaim.generalApplications;
+      logger.info(`information of ccdGeneralApplications fields ${JSON.stringify(ccdGeneralApplications)}`);
       const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
+      logger.info(`information of ccdGeneralApplications fields ${JSON.stringify(ga)}`);
       generalApplicationId = ga?.value?.caseLink?.CaseReference;
       if (!generalApplicationId) {
+        logger.info(`claim.paymentSyncError ${generalApplicationId}`);
+
         claim.paymentSyncError = true;
         await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
         return req.originalUrl;
@@ -50,7 +58,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-
+    logger.info(`claim data before call option no ${JSON.stringify(claim)}`);
     if (applyHelpWithFees.option === YesNo.NO) {
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       logger.info(`information of GA fields ${JSON.stringify(claim.generalApplication)}`);
