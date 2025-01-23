@@ -3397,6 +3397,11 @@
         "PARAGRAPH_TEXT_1" : "Mae angen i ni wybod hyn i ganslo'r ddyled os gwnaethoch dalu o fewn mis neu ei dangos fel un sydd wedi’i diwallu os gwnaethoch dalu ar ôl mis.",
         "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
         "FORM_HEADER_1" : "Nodwch ddyddiad y taliad terfynol"
+      },
+      "SUBMIT_APPLICATION_OFFLINE": {
+        "TITLE": "Achos Cymraeg",
+        "N244_LINK": "ffurflen N244",
+        "SUMMARY": "Mae parti yn yr achos hwn wedi gofyn am gael dogfennau eu hachos yn y Gymraeg. Am y rheswm hwn, ni all yr achos fwrw ymlaen ar-lein ar hyn o bryd ac os ydych eisiau gwneud cais i’r llys bydd arnoch angen llenwi’r N244_LINK . Ceir nodiadau canllaw ar y dudalen N244 i’ch helpu i lenwi’r ffurflen."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {

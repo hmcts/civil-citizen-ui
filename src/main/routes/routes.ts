@@ -430,6 +430,7 @@ import submitCoScApplicationConfirmationController
   from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 import contactCNBCController from 'routes/features/contact/contactCNBCController';
 import contactMediationController from 'routes/features/contact/contactMediationController';
+import submitApplicationOfflineController from 'routes/features/generalApplication/submitApplicationOfflineController';
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
@@ -779,6 +780,7 @@ export default [
   submitCoScApplicationConfirmationController,
   contactCNBCController,
   contactMediationController,
+  submitApplicationOfflineController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
 ];

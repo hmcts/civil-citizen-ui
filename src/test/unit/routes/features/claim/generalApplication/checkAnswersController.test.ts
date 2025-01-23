@@ -33,6 +33,11 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/routes/guards/checkYourAnswersGAGuard', () => ({
   checkYourAnswersGAGuard: jest.fn((req, res, next) => next()),
 }));
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;

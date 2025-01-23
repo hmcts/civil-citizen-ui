@@ -24,6 +24,11 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   getCancelUrl: jest.fn(),
   getApplicationFromGAService: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',

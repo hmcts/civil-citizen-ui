@@ -23,6 +23,11 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   getApplicationFromGAService: jest.fn(),
   shouldDisplaySyncWarning: jest.fn(),
 }));
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('Claim fee payment confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
