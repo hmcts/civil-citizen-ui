@@ -87,7 +87,7 @@ export class GaServiceClient {
 
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
-      logger.error('Error when getting fee payment redirect information');
+      logger.error('Error when getting fee payment redirect information' + err);
       throw err;
     }
   }
