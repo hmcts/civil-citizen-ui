@@ -492,6 +492,11 @@ export class Claim {
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
+    } else if (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1) {
+      const djDoc = this.defaultJudgmentDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return djDoc.value;
     }
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
