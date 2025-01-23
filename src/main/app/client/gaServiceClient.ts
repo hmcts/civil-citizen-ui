@@ -83,6 +83,8 @@ export class GaServiceClient {
     const config = this.getConfig(req);
     try {
       const response = await this.client.post(GA_FEES_PAYMENT_URL.replace(':claimId', claimId),'', config);
+      logger.info(`response from payment service ${JSON.stringify(response)}`);
+
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment redirect information');
