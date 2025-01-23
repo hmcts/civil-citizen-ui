@@ -21,6 +21,12 @@ jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService');
 const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
 
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+
 describe('General Application - CoSorC - debt payment evidence controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');

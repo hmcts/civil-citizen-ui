@@ -1,31 +1,34 @@
-import * as draftStoreService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import * as draftStoreService
+  from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {
+  buildRespondentApplicationSummaryRow,
+  getRespondToApplicationCaption,
+  hideGAAppAsRespondentForClaimant,
+  isApplicationVisibleToRespondent,
   saveRespondentAgreeToOrder,
   saveRespondentHearingArrangement,
   saveRespondentHearingContactDetails,
   saveRespondentHearingSupport,
   saveRespondentUnavailableDates,
-  getRespondToApplicationCaption,
-  buildRespondentApplicationSummaryRow,
-  isApplicationVisibleToRespondent, hideGAAppAsRespondentForClaimant,
+  saveResponseUnavailabilityDatesConfirmation,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {t} from 'i18next';
 import {
   ApplicationResponse,
   CCDApplication,
   JudicialDecisionRequestMoreInfoOptions,
 } from 'common/models/generalApplication/applicationResponse';
-import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
-import { Claim } from 'common/models/claim';
-import { CaseRole } from 'common/form/models/caseRoles';
+import {ApplicationState, ApplicationSummary} from 'common/models/generalApplication/applicationSummary';
+import {Claim} from 'common/models/claim';
+import {CaseRole} from 'common/form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -168,6 +171,35 @@ describe('General Application Response service', () => {
       mockSaveGaResponse.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       //Then
       await expect(saveRespondentUnavailableDates('123', new UnavailableDatesGaHearing())).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save respondent unavailable hearing dates confirmation', () => {
+    it('should save unavailable hearing dates confirmation with NO', async () => {
+      //Given
+      const spy = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
+      //When
+      await saveResponseUnavailabilityDatesConfirmation('123', YesNo.NO);
+      //Then
+      expect(spy).toBeCalledWith('123', {'acceptDefendantOffer': undefined, 'agreeToOrder': undefined, 'hasUnavailableDatesHearing': 'no', 'hearingArrangement': undefined, 'hearingContactDetails': undefined, 'hearingSupport': undefined, 'respondentAgreement': undefined, 'statementOfTruth': undefined, 'uploadEvidenceDocuments': [], 'wantToUploadDocuments': undefined});
+    });
+
+    it('should save unavailable hearing dates confirmation with YES', async () => {
+      //Given
+      const spy = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
+      //When
+      await saveResponseUnavailabilityDatesConfirmation('123', YesNo.YES);
+      //Then
+      expect(spy).toBeCalledWith('123', {'acceptDefendantOffer': undefined, 'agreeToOrder': undefined, 'hasUnavailableDatesHearing': 'yes', 'hearingArrangement': undefined, 'hearingContactDetails': undefined, 'hearingSupport': undefined, 'respondentAgreement': undefined, 'statementOfTruth': undefined, 'uploadEvidenceDocuments': [], 'wantToUploadDocuments': undefined});
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      const mockSaveGaResponse = draftStoreService.saveDraftGARespondentResponse as jest.Mock;
+      //When
+      mockSaveGaResponse.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
+      //Then
+      await expect(saveResponseUnavailabilityDatesConfirmation('123', YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 

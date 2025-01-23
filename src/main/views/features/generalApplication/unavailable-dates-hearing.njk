@@ -8,7 +8,8 @@
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.PAGE_TITLE') }}
 {% endblock %}
-
+{% set rowNumberToShowRemoveButton = 2 %}
+{% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
 {% block nestedContent %}
   {{ headingWithCaption(t, headerTitle, headingTitle) }}
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.IMPORTANT_EVENTS') }}</p>
