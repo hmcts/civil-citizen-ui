@@ -73,7 +73,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly @regression', async ({I, api}) => {
+Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly @nightly', async ({I, api}) => {
   courtResponseType = 'dismissAnOrder';
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -99,7 +99,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly @regression', async ({I, api}) => {
+Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({I, api}) => {
   courtResponseType = 'giveDirections';
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -114,6 +114,32 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMadeGA();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+  }
+});
+
+Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly @regression', async ({I, api}) => {
+  courtResponseType = 'freeFormOrder';
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+
+    console.log('Creating an Adjourn Hearing Order GA app as Defendant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
+
+    await api.makeOrderGA(gaID, courtResponseType);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
 

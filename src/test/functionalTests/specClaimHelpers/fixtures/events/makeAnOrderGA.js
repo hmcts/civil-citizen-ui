@@ -131,4 +131,35 @@ module.exports = {
       },
     };
   },
+  freeFormOrder: (document) => {
+    return {
+      event: 'FREE_FORM_ORDER',
+      caseDataUpdate: {
+        judicialDecision: {
+          decision: 'FREE_FORM_ORDER',
+        },
+        judgeTitle: 'judgeb birmin',
+        bilingualHint: 'No',
+        isDocumentVisible: 'No',
+        orderOnCourtsList: 'ORDER_WITHOUT_NOTICE',
+        CaseAccessCategory: 'SPEC_CLAIM',
+        applicantPartyName: 'Sir John Doe',
+        caseNameGaInternal: 'Jane Doe v John Doe',
+        claimant1PartyName: 'Miss Jane Doe',
+        orderWithoutNotice:{
+          withoutNoticeSelectionDate: '2026-01-30',
+          withoutNoticeSelectionTextArea: 'If you were not notified of the application before this order was made, you may apply to set aside, vary, or stay the order. Any such application must be made by 4pm on',
+        },
+        defendant1PartyName: 'Sir John Doe',
+        freeFormOrderedText: 'test test',
+        freeFormRecitalText: 'test test',
+        gaFinalOrderDocPreview:{
+          document_url: document.document_url,
+          document_filename: document.document_filename,
+          document_binary_url: document.document_binary_url,
+          document_hash: document.document_hash,
+        },
+      },
+    };
+  },
 };

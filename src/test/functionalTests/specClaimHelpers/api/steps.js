@@ -93,6 +93,9 @@ module.exports = {
       case 'giveDirections':
         payload = makeAnOrderGA.giveDirections(document);
         break;
+      case 'freeFormOrder':
+        payload = makeAnOrderGA.freeFormOrder(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
