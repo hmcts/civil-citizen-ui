@@ -1,33 +1,39 @@
-import { Claim } from 'models/claim';
-import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
-import { HearingFeeInformation } from 'models/caseProgression/hearingFee/hearingFee';
-import { FIXED_DATE } from '../../../../utils/dateUtils';
+import {Claim} from 'models/claim';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
 import {
   extractOrderDocumentIdFromNotification,
   getContactCourtLink,
   getDashboardForm,
-  getNotifications, sortDashboardNotifications,
+  getNotifications,
+  sortDashboardNotifications,
 } from 'services/dashboard/dashboardService';
-import { CaseRole } from 'form/models/caseRoles';
-import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
-import { AppRequest } from 'common/models/AppRequest';
-import axios, { AxiosInstance } from 'axios';
-import { req } from '../../../../utils/UserDetails';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { DashboardNotification } from 'models/dashboard/dashboardNotification';
-import { plainToInstance } from 'class-transformer';
-import { Dashboard } from 'models/dashboard/dashboard';
-import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
-import { ClaimantOrDefendant } from 'models/partyType';
-import { CivilServiceDashboardTask } from 'models/dashboard/taskList/civilServiceDashboardTask';
-import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
-import { DashboardTaskStatus } from 'models/dashboard/taskList/dashboardTaskStatus';
-import { YesNo } from 'form/models/yesNo';
+import {CaseRole} from 'form/models/caseRoles';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {AppRequest} from 'common/models/AppRequest';
+import axios, {AxiosInstance} from 'axios';
+import {req} from '../../../../utils/UserDetails';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {plainToInstance} from 'class-transformer';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {ClaimantOrDefendant} from 'models/partyType';
+import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
+import {YesNo} from 'form/models/yesNo';
 import {CaseLink} from 'models/generalApplication/CaseLink';
-import { CaseState } from 'common/form/models/claimDetails';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
+import {CaseState} from 'common/form/models/claimDetails';
+import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
-import {isGaForLipsEnabled, isGaForLipsEnabledAndLocationWhiteListed} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {
+  isGaForLipsEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {GA_SUBMIT_OFFLINE} from 'routes/urls';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -528,6 +534,28 @@ describe('dashboardService', () => {
         //Then
         expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
         expect(result.url).toContain(applicationNoticeUrl);
+      });
+
+      it('getContactCourtLink when any party is Bilingual', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        //When
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toContain(GA_SUBMIT_OFFLINE);
       });
 
     });
