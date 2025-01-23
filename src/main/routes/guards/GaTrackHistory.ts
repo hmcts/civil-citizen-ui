@@ -10,7 +10,7 @@ export const GaTrackHistory = async (req: AppRequest, res: Response, next: NextF
       }
       const lastHistory = req.session.history[req.session.history.length - 1];
       // Compare last item current url without query params.  Ensures file upload pages are not duplicated in history
-      if (req.session.history.length === 0 || lastHistory?.replace(/\?.*$/, '') !== req.originalUrl.replace(/\?.*$/, '')) {
+      if (req.session.history.length === 0 || lastHistory?.split('?')[0] !== req.originalUrl.split('?')[0]) {
         req.session.history.push(req.originalUrl);
       }
     }
