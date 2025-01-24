@@ -492,7 +492,7 @@ export class Claim {
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
-    } else if (this.hasDefaultJudgmentDocuments() && (this.this.documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
+    } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
       const djDoc = this.defaultJudgmentDocuments.find(document => {
         return document.value.documentType === documentType;
       });
