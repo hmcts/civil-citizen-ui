@@ -51,7 +51,6 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       generalApplicationId = req.params.appId;
     }
     if (applyHelpWithFees.option === YesNo.NO) {
-      claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       let paymentRedirectInformation;
       if (claim.generalApplication?.applicationFeePaymentDetails?.paymentReference){
         paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
