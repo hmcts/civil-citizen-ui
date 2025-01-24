@@ -36,28 +36,13 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
   try {
     let redirectUrl;
     let generalApplicationId: string;
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const redisClaim: Claim = await getClaimById(redisKey, req, true);
-    logger.info(`information of claim fields on redis with redisKey ${JSON.stringify(redisClaim)}`);
-
     const claim: Claim = await getClaimById(claimId, req, true);
-    logger.info(`information of claim fields on redis with claimID ${JSON.stringify(claim)}`);
-
-    const testCcdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    logger.info(`information of ccdClaim fields at first ${JSON.stringify(testCcdClaim)}`);
-
     if (req.query?.id) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-      logger.info(`information of ccdClaim fields ${JSON.stringify(ccdClaim)}`);
-
       const ccdGeneralApplications = ccdClaim.generalApplications;
-      logger.info(`information of ccdGeneralApplications fields ${JSON.stringify(ccdGeneralApplications)}`);
       const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
-      logger.info(`information of ccdGeneralApplications fields ${JSON.stringify(ga)}`);
       generalApplicationId = ga?.value?.caseLink?.CaseReference;
       if (!generalApplicationId) {
-        logger.info(`claim.paymentSyncError ${generalApplicationId}`);
-
         claim.paymentSyncError = true;
         await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
         return req.originalUrl;
@@ -65,31 +50,24 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-    logger.info(`claim data before call option no ${JSON.stringify(claim)}`);
     if (applyHelpWithFees.option === YesNo.NO) {
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-      logger.info(`information of GA fields ${JSON.stringify(claim.generalApplication)}`);
       let paymentRedirectInformation;
       if (claim.generalApplication?.applicationFeePaymentDetails?.paymentReference){
-        logger.info(`Existing paymentReference ${claim.generalApplication.applicationFeePaymentDetails?.paymentReference}`);
         paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
       } else {
         paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
         claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
-        logger.info(`New paymentReference ${claim.generalApplication.applicationFeePaymentDetails?.paymentReference}`);
       }
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       await saveUserId(claimId, req.session.user.id);
       try {
         const paymentReference = claim.generalApplication.applicationFeePaymentDetails?.paymentReference;
         const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentReference, req);
-        logger.info(`Existing payment status for application id ${generalApplicationId}: ${paymentStatus?.status}`);
         if (paymentStatus?.status === success) {
-          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
           redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
         } else if (paymentStatus?.status === failed) {
           paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-          logger.info(`New payment ref after failed payment for application id ${generalApplicationId}: ${paymentRedirectInformation?.paymentReference}`);
           if (!paymentRedirectInformation) {
             redirectUrl = req.originalUrl;
           } else {
