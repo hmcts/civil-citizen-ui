@@ -73,26 +73,36 @@ const data = {
 
 };
 
-let caseId, eventName;
+let caseId, eventName, payload;
 let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
-  makeOrderGA: async (gaCaseId, user = config.judgeUserWithRegionId2) => {
-    console.log('Creating an order without notice on ga of id: ' + gaCaseId);
+  makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
+    console.log('Make an Order of GA: ' + gaCaseId);
     eventName = 'MAKE_DECISION';
-
     const document = await uploadDocument();
-
-    const payload = makeAnOrderGA.makeAnOrderGA(document);
-
+    switch(courtResponseType){
+      case 'approveOrEdit':
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+      case 'dismissAnOrder':
+        payload = makeAnOrderGA.dismissAnOrderGA(document);
+        break;
+      case 'giveDirections':
+        payload = makeAnOrderGA.giveDirections(document);
+        break;
+      case 'freeFormOrder':
+        payload = makeAnOrderGA.freeFormOrder(document);
+        break;
+      default:
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+    }
     await apiRequest.setupTokens(user);
-
     caseData = payload['caseDataUpdate'];
-
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
-
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
 
