@@ -288,7 +288,7 @@ function buildMockClaim(): Claim {
         createdDatetime: new Date('2022-06-21T14:15:19'),
       },
     },
-    ];
+  ];
   _mockClaim.respondent1ResponseDeadline = new Date('2022-08-20T00:00:00');
   _mockClaim.responseDeadline = {
     option: ResponseOptions.YES,
