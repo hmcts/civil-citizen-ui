@@ -1,22 +1,26 @@
-import { GA_RESPONSE_CHECK_ANSWERS_URL } from 'routes/urls';
+import {GA_RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { app } from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {t} from 'i18next';
-import { getCaseDataFromStore, generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
-import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import { Claim } from 'common/models/claim';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { YesNo } from 'common/form/models/yesNo';
-import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
+import {generateRedisKeyForGA, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import * as gaStoreResponseService
+  from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {Claim} from 'common/models/claim';
+import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {YesNo} from 'common/form/models/yesNo';
+import {HearingSupport, SupportType} from 'common/models/generalApplication/hearingSupport';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {submitApplicationResponse} from 'services/features/generalApplication/response/submitApplicationResponse';
+import {getClaimById} from 'modules/utilityService';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -27,10 +31,15 @@ jest.mock('../../../../../../../main/services/features/generalApplication/respon
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../../../../main/modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKeyForGA as jest.Mock;
 const mockSubmitApplicationResponse = submitApplicationResponse as jest.Mock;
+const mockGetClaimId = getClaimById as jest.Mock;
 
 describe('General application - response - check your answers', () => {
 
@@ -42,6 +51,9 @@ describe('General application - response - check your answers', () => {
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
     mockSubmitApplicationResponse.mockResolvedValue(undefined);
+    const claim = new Claim();
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
+    mockGetClaimId.mockResolvedValue(claim);
   });
 
   afterAll(() => jest.clearAllMocks());
@@ -52,6 +64,7 @@ describe('General application - response - check your answers', () => {
       const mockClaim = new Claim();
       const gaResponse = new GaResponse();
       gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      gaResponse.hasUnavailableDatesHearing = YesNo.YES;
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
@@ -59,7 +72,7 @@ describe('General application - response - check your answers', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.CLAIM_REFERENCE'));
+          expect(res.text).toContain(t('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify('1234567')}));
           expect(res.text).toContain('1234 567');
         });
     });
@@ -69,6 +82,7 @@ describe('General application - response - check your answers', () => {
       gaResponse.respondentAgreement = new RespondentAgreement(YesNo.YES);
       gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
       gaResponse.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP]);
+      gaResponse.hasUnavailableDatesHearing = YesNo.NO;
       const mockClaim = new Claim();
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
@@ -116,6 +130,7 @@ describe('General application - response - check your answers', () => {
       mockGetCaseData.mockResolvedValueOnce(new Claim());
       const gaResponse = new GaResponse();
       gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      gaResponse.hasUnavailableDatesHearing = YesNo.YES;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(GA_RESPONSE_CHECK_ANSWERS_URL)

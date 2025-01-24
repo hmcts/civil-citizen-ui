@@ -17,6 +17,11 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   getCancelUrl: jest.fn(),
   getApplicationFromGAService: jest.fn(),
 }));
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('Claim fee unsuccessful payment confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
