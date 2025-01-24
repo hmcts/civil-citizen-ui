@@ -22,6 +22,11 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',

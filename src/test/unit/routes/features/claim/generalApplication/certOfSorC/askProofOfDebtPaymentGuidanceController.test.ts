@@ -15,6 +15,11 @@ jest.mock('modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/feeDetailsService');
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
