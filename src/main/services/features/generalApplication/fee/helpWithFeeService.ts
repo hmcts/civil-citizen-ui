@@ -57,6 +57,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
         paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
       } else {
         paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+        claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
         claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       }
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
@@ -64,10 +65,13 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       try {
         const paymentReference = claim.generalApplication.applicationFeePaymentDetails?.paymentReference;
         const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentReference, req);
+        logger.info(`Existing payment status for application id ${generalApplicationId}: ${paymentStatus?.status}`);
         if (paymentStatus?.status === success) {
+          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
           redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
         } else if (paymentStatus?.status === failed) {
           paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+          logger.info(`New payment ref after failed payment for application id ${generalApplicationId}: ${paymentRedirectInformation?.paymentReference}`);
           if (!paymentRedirectInformation) {
             redirectUrl = req.originalUrl;
           } else {
