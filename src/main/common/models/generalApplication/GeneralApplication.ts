@@ -27,6 +27,7 @@ export class GeneralApplication {
   orderJudges?: OrderJudge[];
   uploadN245Form?: UploadGAFiles;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
+  hasUnavailableDatesHearing?: YesNo;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
   wantToUploadDocuments?: YesNo;
@@ -57,7 +58,8 @@ export class GeneralApplication {
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
     applicationFee?: ClaimFeeData,
-    certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation) {
+    certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation,
+    hasUnavailableDatesHearing?: YesNo) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
@@ -74,5 +76,6 @@ export class GeneralApplication {
     this.informOtherParties = informOtherParties;
     this.applicationFee = applicationFee;
     this.certificateOfSatisfactionOrCancellation = certificateOfSatisfactionOrCancellation;
+    this.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
   }
 }

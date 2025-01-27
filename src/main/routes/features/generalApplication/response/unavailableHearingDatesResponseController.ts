@@ -1,8 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
-  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -33,7 +32,7 @@ async function renderView(claim: Claim, form: GenericForm<UnavailableDatesGaHear
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', {lng}) });
 }
 
