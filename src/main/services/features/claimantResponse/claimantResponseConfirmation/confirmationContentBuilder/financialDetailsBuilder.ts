@@ -4,7 +4,7 @@ import {t} from 'i18next';
 
 export const getSendFinancialDetails = (claim: Claim, lang: string) => {
 
-  const email = 'ocmcnton@justice.gov.uk';
+  const email = 'contactocmc@justice.gov.uk';
 
   return new LatestUpdateSectionBuilder()
     .addTitle(t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}))
