@@ -221,6 +221,7 @@ civil-service:
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+      ASSIGN_ROLES_ON_STARTUP: true
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql

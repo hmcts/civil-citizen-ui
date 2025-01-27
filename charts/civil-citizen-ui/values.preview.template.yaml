@@ -287,5 +287,3 @@ civil-general-applications:
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
-      ASSIGN_ROLES_ON_STARTUP: true
-
