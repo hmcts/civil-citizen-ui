@@ -96,8 +96,6 @@ xui-webapp:
       JURISDICTIONS: CIVIL
       LAUNCH_DARKLY_CLIENT_ID: ~
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
-      SERVICES_TRANSLATION_API_URL: http://${SERVICE_NAME}-translation-service
-      SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
 
 ccd:
   enabled: true
@@ -174,13 +172,14 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
-#      keyVaults: []
+      keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
       secrets:
         DATA_STORE_DB_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: true
+
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
@@ -289,5 +288,5 @@ civil-general-applications:
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
-      ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
+      ASSIGN_ROLES_ON_STARTUP: true
 
