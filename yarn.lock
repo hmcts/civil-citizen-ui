@@ -1921,13 +1921,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hmcts/info-provider@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@hmcts/info-provider@npm:1.2.1"
+"@hmcts/info-provider@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@hmcts/info-provider@npm:1.2.2"
   dependencies:
     express: ^4.19.2
     js-yaml: ^4.1.0
-  checksum: ec2f55f05691f4501846a584c8fe55a614f5213692e5e350e09537a75a4876dd78d684cb229ea0304bdb8298eeacbd0a89e1c6701491e4771a95b71fd42c980a
+  checksum: 2d9dc7bb58ff4c078307c3267ce5ac6ca7b174b97667bcb3a841cbca64d35fe39ec821b1a11f4e4d7bd42d802af112df979528d5ec17aa49810ce15c8a0a797e
   languageName: node
   linkType: hard
 
@@ -4939,7 +4939,7 @@ __metadata:
     "@babel/eslint-parser": ^7.19.1
     "@babel/preset-env": ^7.20.2
     "@hmcts/cookie-manager": ^1.0.0
-    "@hmcts/info-provider": ^1.2.1
+    "@hmcts/info-provider": ^1.2.2
     "@hmcts/nodejs-healthcheck": ^1.8.0
     "@hmcts/nodejs-logging": ^4.0.4
     "@hmcts/properties-volume": ^0.0.14
@@ -10317,12 +10317,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.8":
-  version: 3.3.8
-  resolution: "nanoid@npm:3.3.8"
+"nanoid@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "nanoid@npm:5.0.9"
   bin:
-    nanoid: bin/nanoid.cjs
-  checksum: dfe0adbc0c77e9655b550c333075f51bb28cfc7568afbf3237249904f9c86c9aaaed1f113f0fddddba75673ee31c758c30c43d4414f014a52a7a626efc5958c9
+    nanoid: bin/nanoid.js
+  checksum: 8a3f9104f81095e3e4785f58caae47a05755599824b8611b9730cbf73db706b664f100e6189f8303f08764f144d499613d8e4a39e83125c53f4b4986d6576621
   languageName: node
   linkType: hard
 
