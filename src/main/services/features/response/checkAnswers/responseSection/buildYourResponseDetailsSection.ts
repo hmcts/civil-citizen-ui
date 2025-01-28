@@ -23,14 +23,8 @@ import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evid
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const addTimeline = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
+const addTimeline = (timeline: DefendantTimeline = new DefendantTimeline([], ''), claimId: string, lang: string , section: SummarySection) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
-  let timeline  = new DefendantTimeline([], '');
-  if(claim.partialAdmission !== undefined) {
-    timeline = claim.partialAdmission.timeline ? claim.partialAdmission.timeline : new DefendantTimeline([], '');
-  } else if(claim.rejectAllOfClaim !== undefined) {
-    timeline = claim.rejectAllOfClaim.timeline ? claim.rejectAllOfClaim.timeline : new DefendantTimeline([], '');
-  }
 
   section.summaryList.rows.push(
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', {lng: getLng(lang)}), '', yourTimelineHref, changeLabel(lang)),
@@ -121,12 +115,12 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
   switch (claim.respondent1.responseType) {
     case ResponseType.PART_ADMISSION:
       getSummaryRowsForPartAdmission(claim, claimId, lang, yourResponseDetailsSection);
-      addTimeline(claim, claimId, lang, yourResponseDetailsSection);
+      addTimeline(claim.partialAdmission.timeline, claimId, lang, yourResponseDetailsSection);
       addEvidence(claim, claimId, lang, yourResponseDetailsSection);
       break;
     case ResponseType.FULL_DEFENCE:
       getSummaryRowsForFullReject(claim, claimId, lang, yourResponseDetailsSection);
-      addTimeline(claim, claimId, lang, yourResponseDetailsSection);
+      addTimeline(claim.rejectAllOfClaim.timeline, claimId, lang, yourResponseDetailsSection);
       addEvidence(claim, claimId, lang, yourResponseDetailsSection);
       break;
   }
