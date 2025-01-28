@@ -1,17 +1,12 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import {
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
-  GA_APPLICATION_SUBMITTED_URL,
-  GA_PAYMENT_SUCCESSFUL_URL,
-} from 'routes/urls';
+import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
 import { AppRequest } from 'models/AppRequest';
 import { getGaPaymentSuccessfulBodyContent, getGaPaymentSuccessfulButtonContent, getGaPaymentSuccessfulPanelContent } from 'services/features/generalApplication/applicationFeePaymentConfirmationContent';
 import {
   getApplicationFromGAService,
-  shouldDisplaySyncWarning,
+  getCancelUrl, shouldDisplaySyncWarning,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const applicationFeePaymentSuccessfulController: Router = Router();
 
 const paymentSuccessfulViewPath = 'features/generalApplication/payment-successful';
@@ -31,9 +26,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
       gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, withoutFee, isAdditionalFee, lng, applicationResponse),
       gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), isAdditionalFee, withoutFee,
         shouldDisplaySyncWarning(applicationResponse), lng),
-      gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(claim.isClaimant() ?
-        constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)
-        : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)),
+      gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(await getCancelUrl(claimId, claim)),
       noCrumbs: true,
       pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
     });

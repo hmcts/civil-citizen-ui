@@ -3,13 +3,11 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
 import {getCancelUrl, isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION} from 'routes/urls';
 import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getGeneralApplicationConfirmationContent = (async (claimId: string, genAppId: string, claim: Claim, lng: string, applicationFee: number) => {
-  const dashboardUrl = claim.isClaimant() ?
-    constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)
-    : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const dashboardUrl = await getCancelUrl(claimId, claim);
   let payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION);
   payApplicationFeeUrl = genAppId ? payApplicationFeeUrl + `?id=${genAppId}` : payApplicationFeeUrl;
   payApplicationFeeUrl = payApplicationFeeUrl + '&appFee=' + applicationFee;
