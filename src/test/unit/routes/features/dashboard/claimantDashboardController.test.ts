@@ -26,8 +26,9 @@ import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
-import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import {ApplicationResponse, CCDApplication} from 'common/models/generalApplication/applicationResponse';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -323,7 +324,70 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
       });
     });
+    it('should return defendant dashboard page with defendant solicitor correspondence address details', async () => {
 
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.specRespondentCorrespondenceAddressRequired = YesNoUpperCamelCase.YES;
+      claim.specRespondentCorrespondenceAddressdetails= {
+        'PostCode': 'NN3 9SS',
+        'PostTown': 'NORTHAMPTON',
+        'AddressLine1': '29, SEATON DRIVE',
+      };
+      claim.totalClaimAmount=500;
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.caseProgression = new CaseProgression();
+
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(data);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      });
+    });
+    it('should return defendant dashboard page with defendant solicitor address/email details', async () => {
+
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.respondentSolicitorDetails= {
+        'address': {
+          'PostCode': 'NN3 9SS',
+          'PostTown': 'NORTHAMPTON',
+          'AddressLine1': '29, SEATON DRIVE',
+        },
+      };
+      claim.respondentSolicitor1EmailAddress = 'abc@gmail.com';
+      claim.totalClaimAmount=500;
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.caseProgression = new CaseProgression();
+
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(data);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      });
+    });
     it('should show support links for claimant', async () => {
 
       const claim = new Claim();
@@ -412,7 +476,10 @@ describe('claimant Dashboard Controller', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponses : ApplicationResponse[] = [new ApplicationResponse()];
+      const applicationResponses: ApplicationResponse[] = [new ApplicationResponse('123', {
+        applicationIsCloaked: YesNoUpperCamelCase.YES,
+        applicationIsUncloakedOnce: YesNoUpperCamelCase.YES,
+      } as CCDApplication, ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION)];
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);

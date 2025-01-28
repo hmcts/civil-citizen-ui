@@ -145,6 +145,7 @@ ccd:
       ingressHost: gateway-${SERVICE_NAME}.preview.platform.hmcts.net
       ingressIP: ${INGRESS_IP}
       keyVaults: []
+
   ccd-data-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api

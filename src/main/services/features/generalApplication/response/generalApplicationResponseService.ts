@@ -1,7 +1,5 @@
 import {
   ApplicationTypeOption,
-  ApplicationTypeOptionSelection,
-  getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
 import { YesNo, YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { t } from 'i18next';
@@ -32,6 +30,7 @@ import {
 } from 'common/models/generalApplication/applicationSummary';
 import { dateTimeFormat } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
+import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -54,9 +53,8 @@ export function getRespondToApplicationCaption(generalAppTypes: ApplicationTypeO
   if (generalAppTypes?.length > 1) {
     return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO_MULTIPLE', { lng: getLng(lng) });
   }
-  const applicationType = t(getApplicationTypeOptionByTypeAndDescription(getLast(generalAppTypes),ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ), {lng: getLng(lng)}).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO',
-    { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType});
+  const applicationType = getLast(generalAppTypes);
+  return t(`PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO.${applicationType}`,{ lng: getLng(lng) });
 }
 
 export function getUnavailableHearingDateCaption(lng: string): string {
@@ -114,6 +112,20 @@ export const saveRespondentUnavailableDates = async (redisKey: string, unavailab
   }
 };
 
+export const saveResponseUnavailabilityDatesConfirmation = async (redisKey: string, hasUnavailableDatesHearing: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
+    if (hasUnavailableDatesHearing === YesNo.NO) {
+      delete gaResponse.unavailableDatesHearing;
+    }
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
@@ -139,15 +151,37 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   );
 };
 
+export const hideGAAppAsRespondentForClaimant = (application: ApplicationResponse): boolean => {
+  const applicationIsCloaked = application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO || application.case_data?.applicationIsCloaked === undefined;
+  const applicationIsUncloakedOnce = application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES || application.case_data?.applicationIsUncloakedOnce === undefined;
+
+  const isCloakedOrUncloakedOnceValid = (
+    (applicationIsCloaked || applicationIsUncloakedOnce) &&
+    application.state !== ApplicationState.APPLICATION_ADD_PAYMENT
+  );
+
+  const isJudicialDecisionValid = (
+    application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
+    && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS'
+  );
+  return isCloakedOrUncloakedOnceValid || isJudicialDecisionValid;
+};
+
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO;
   const status = getApplicationStatus(isApplicant, application.state);
   const createDate = getApplicationCreatedDate(ccdClaim, application.id);
+  const type = displayToEnumKey(application.case_data?.applicationTypes);
+  let typeString = t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${type}`, {lng});
+  if (application.case_data?.applicationTypes.includes(',')) {
+    const types = application.case_data?.applicationTypes.split(',').map((applicationType: string) => displayToEnumKey(applicationType.trim()));
+    typeString = types.map(tp => t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${tp}`, {lng})).join(', ');
+  }
   return {
     state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
     status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
     statusColor: StatusColor[status],
-    types: application.case_data?.applicationTypes,
+    types: typeString,
     id: application.id,
     createdDate: dateTimeFormat(createDate, lng),
     applicationUrl: getViewApplicationUrl(claimId, ccdClaim, application, index),

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { Claim } from 'common/models/claim';
-import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import {AppRequest} from 'models/AppRequest';
+import {getClaimById} from 'modules/utilityService';
 
 export const isGAForLiPEnabled = async (
   req: Request,
@@ -10,10 +10,13 @@ export const isGAForLiPEnabled = async (
   next: NextFunction,
 ): Promise<void> => {
   const isGAFlagEnable = await isGaForLipsEnabled();
-  if (isGAFlagEnable) {
+  const claim = await getClaimById(req.params.id, <AppRequest>req);
+  //If the application was originally created in English and the respondent replied in Welsh,
+  // a new application will not be generated; however, the existing application will still be accessible online.
+  const allowAppAccess = claim.generalApplications?.length > 0 ;
+  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || allowAppAccess) {
     next();
   } else {
-    const claim: Claim = await getClaimById(req.params.id, req, true);
     res.redirect(await getCancelUrl(req.params.id, claim));
   }
 };
