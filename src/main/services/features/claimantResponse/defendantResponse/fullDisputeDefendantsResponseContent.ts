@@ -11,7 +11,7 @@ import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {CCDHowWasThisAmountPaid} from "models/ccdResponse/ccdRespondToClaim";
+import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
