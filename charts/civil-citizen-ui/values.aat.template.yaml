@@ -124,7 +124,7 @@ civil-service:
       CMC_DB_USERNAME: ${POSTGRES_USER}
       CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       REFERENCE_DATABASE_MIGRATION: true
-      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://camunda-api-aat.service.core-compute-aat.internal/engine-rest/ 
       POLLING_EVENT_EMITTER_ENABLED: false
       STITCHING_API_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
@@ -413,21 +413,21 @@ ccd:
 
 
 camunda-bpm:
-  enabled: true
-  java:
-    ingressHost: civil-cui-camunda-staging.aat.platform.hmcts.net
-    disableKeyVaults: true
-    releaseNameOverride: ${SERVICE_NAME}-camunda
-    environment:
-      CAMUNDA_API_AUTH_ENABLED: false
-      CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
-      CAMUNDA_DB_NAME: camunda
-      CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
-      CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
-      S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-      CAMUNDA_DB_CONN_OPTIONS: ""
-      RELEASE_REVISION: "{{ .Release.Revision }}"
+  enabled: false
+  # java:
+  #   ingressHost: civil-cui-camunda-staging.aat.platform.hmcts.net
+  #   disableKeyVaults: true
+  #   releaseNameOverride: ${SERVICE_NAME}-camunda
+  #   environment:
+  #     CAMUNDA_API_AUTH_ENABLED: false
+  #     CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+  #     CAMUNDA_DB_NAME: camunda
+  #     CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
+  #     CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
+  #     CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
+  #     S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+  #     CAMUNDA_DB_CONN_OPTIONS: ""
+  #     RELEASE_REVISION: "{{ .Release.Revision }}"
 
 civil-general-applications:
   enabled: true
@@ -478,7 +478,8 @@ civil-general-applications:
     environment:
       LAUNCH_DARKLY_ENV: service-staging
       PAY_CALLBACK_URL: https://civil-cui-general-applications.aat.platform.hmcts.net/service-request-update
-      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      # CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://camunda-api-aat.service.core-compute-aat.internal/engine-rest/ 
       DASHBOARD_API_URL: http://${SERVICE_NAME}-java
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal

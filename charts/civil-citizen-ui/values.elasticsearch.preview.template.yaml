@@ -198,7 +198,8 @@ civil-service:
       CMC_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
       CMC_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
       REFERENCE_DATABASE_MIGRATION: true
-      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      # CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://camunda-api-aat.service.core-compute-aat.internal/engine-rest/ 
       POLLING_EVENT_EMITTER_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
       STITCHING_API_ENABLED: false
@@ -243,28 +244,28 @@ civil-service:
         postgresPassword: ${POSTGRES_PASSWORD}
 
 camunda-bpm:
-  enabled: true
-  java:
-    disableKeyVaults: true
-    devcpuRequests: 1000m
-    devmemoryRequests: 2048Mi
-    devmemoryLimits: 4096Mi
-    releaseNameOverride: ${SERVICE_NAME}-camunda
-    ingressHost: camunda-${SERVICE_FQDN}
-    environment:
-      CAMUNDA_API_AUTH_ENABLED: false
-      CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
-      CAMUNDA_DB_NAME: camunda
-      CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
-      CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified"
-      CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
-      TEMP_VAR: false
-    secrets:
-      CAMUNDA_DB_PASSWORD:
-        secretRef: postgres
-        key: PASSWORD
-        disabled: true
+  enabled: false
+  # java:
+  #   disableKeyVaults: true
+  #   devcpuRequests: 1000m
+  #   devmemoryRequests: 2048Mi
+  #   devmemoryLimits: 4096Mi
+  #   releaseNameOverride: ${SERVICE_NAME}-camunda
+  #   ingressHost: camunda-${SERVICE_FQDN}
+  #   environment:
+  #     CAMUNDA_API_AUTH_ENABLED: false
+  #     CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+  #     CAMUNDA_DB_NAME: camunda
+  #     CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
+  #     CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
+  #     CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified"
+  #     CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
+  #     TEMP_VAR: false
+  #   secrets:
+  #     CAMUNDA_DB_PASSWORD:
+  #       secretRef: postgres
+  #       key: PASSWORD
+  #       disabled: true
 
 xui-webapp:
   nodejs:
