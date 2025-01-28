@@ -22,6 +22,11 @@ jest.mock('../../../../../../../main/services/features/generalApplication/additi
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
   getCancelUrl: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - additional docs check answer controller ', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

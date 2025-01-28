@@ -78,6 +78,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.app1MediationNonAttendanceDocs = ccdClaim.app1MediationNonAttendanceDocs;
   claim.defendantResponseDocuments = ccdClaim.defendantResponseDocuments;
   claim.responseClaimMediationSpecRequired = toCUIYesNo(ccdClaim.responseClaimMediationSpecRequired);
+  claim.defendantResponseTimelineDocument = ccdClaim.specResponseTimelineDocumentFiles;
 
   if (claim.isFullAdmission()) {
     translateFullAdmission(claim, ccdClaim, claimantResponse);

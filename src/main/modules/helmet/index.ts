@@ -9,6 +9,7 @@ const loginUrl: string = config.get('services.idam.authorizationURL');
 const govPayUrl: string = config.get('services.govPay.url');
 const ocmcBaseUrl: string = config.get('services.cmc.url');
 const dynatraceDomain = '*.dynatrace.com';
+const webChat = ['vcc-eu4.8x8.com', 'vcc-eu4-cf.8x8.com'];
 
 const scriptSrcElem = [
   self,
@@ -16,8 +17,10 @@ const scriptSrcElem = [
   '*.googletagmanager.com',
   dynatraceDomain,
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
+  ...webChat,
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
   (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
+  (_req: AppRequest, res: express.Response) => `'nonce-${res.locals.nonceWebChat}'`,
 ];
 
 const styleSrc = [
@@ -32,8 +35,7 @@ const imgSrc = [
   self,
   googleAnalyticsDomain,
   '*.analytics.google.com',
-  'vcc-eu4.8x8.com',
-  'vcc-eu4b.8x8.com',
+  ...webChat,
   'ssl.gstatic.com',
   '*.gstatic.com',
   '*.g.doubleclick.net',
@@ -46,8 +48,7 @@ const imgSrc = [
 
 const mediaSrc = [
   self,
-  'vcc-eu4.8x8.com',
-  'vcc-eu4b.8x8.com',
+  ...webChat,
   'ssl.gstatic.com',
   'www.gstatic.com',
   '*.g.doubleclick.net',
@@ -62,11 +63,14 @@ const connectSrc = [
   googleAnalyticsDomain,
   '*.analytics.google.com',
   dynatraceDomain,
+  'cloud8-cc-geo.8x8.com',
 ];
 
 const manifestSrc = [
   self,
 ];
+
+const frameSrc = [...webChat];
 
 /**
  * Module that enables helmet in the application
@@ -98,26 +102,32 @@ export class Helmet {
 
   private setContentSecurityPolicy(app: express.Express): void {
     app.use(
-      helmet.contentSecurityPolicy({
-        directives: {
-          connectSrc: connectSrc,
-          mediaSrc: mediaSrc,
-          defaultSrc: ["'none'"],
-          fontSrc: [self, 'data:', 'fonts.gstatic.com'],
-          imgSrc: imgSrc,
-          objectSrc: [self],
-          scriptSrc: [
-            self,
-            googleAnalyticsDomain,
-            dynatraceDomain,
-            "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-            (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
-            (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
-          ],
-          scriptSrcElem: scriptSrcElem,
-          styleSrc: styleSrc,
-          manifestSrc: manifestSrc,
-          formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            connectSrc: connectSrc,
+            mediaSrc: mediaSrc,
+            defaultSrc: ["'none'"],
+            fontSrc: [self, 'data:', 'fonts.gstatic.com'],
+            imgSrc: imgSrc,
+            objectSrc: [self],
+            scriptSrc: [
+              self,
+              googleAnalyticsDomain,
+              dynatraceDomain,
+              "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
+              (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
+              (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
+            ],
+            scriptSrcElem: scriptSrcElem,
+            styleSrc: styleSrc,
+            manifestSrc: manifestSrc,
+            formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
+            frameSrc: frameSrc,
+          },
+        },
+        crossOriginOpenerPolicy: {
+          policy: 'same-origin-allow-popups',
         },
       }),
     );

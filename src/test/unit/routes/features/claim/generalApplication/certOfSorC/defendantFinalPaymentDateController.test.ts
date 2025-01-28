@@ -15,6 +15,11 @@ jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
 jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService');
 const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('CoSorS - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
