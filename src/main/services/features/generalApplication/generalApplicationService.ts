@@ -56,7 +56,10 @@ import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {isApplicationVisibleToRespondent} from './response/generalApplicationResponseService';
+import {
+  hideGAAppAsRespondentForClaimant,
+  isApplicationVisibleToRespondent,
+} from './response/generalApplicationResponseService';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {t} from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
@@ -576,7 +579,7 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
 export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
   if(isGAFlagEnable) {
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
-    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
     if(applications && applications.length > 0 && !claim.hasClaimTakenOffline()) {
       return {
@@ -622,6 +625,21 @@ export const resetClaimDataByApplicationType = (claim: Claim, applicationType: A
 
   if (option !== ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
     delete generalApplication['uploadN245Form'];
+  }
+};
+
+export const saveUnavailabilityDatesConfirmation = async (claimId: string, hasUnavailableDatesHearing: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
+    if (hasUnavailableDatesHearing === YesNo.NO) {
+      delete claim.generalApplication.unavailableDatesHearing;
+    }
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
   }
 };
 

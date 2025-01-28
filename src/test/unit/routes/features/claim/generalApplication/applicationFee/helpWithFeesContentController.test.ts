@@ -6,6 +6,11 @@ import {GA_APPLY_HELP_WITH_FEES_START} from 'routes/urls';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -30,7 +30,7 @@ let chai, expect, assert;
 });
 
 const {
-  waitForFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
+  waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -56,6 +56,7 @@ const createLipClaimDefendantCompany = require('../fixtures/events/createLiPClai
 const createLipClaimDefendantSoleTrader = require('../fixtures/events/createLiPClaimDefendantSoleTrader.js');
 const createLipClaimSoleTraderVCompany = require('../fixtures/events/createLiPClaimSoleTraderVCompany.js');
 const createLipClaimIndVOrg = require('../fixtures/events/createLiPClaimIndVOrg.js');
+const makeAnOrderGA = require('../fixtures/events/makeAnOrderGA.js');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -72,11 +73,38 @@ const data = {
 
 };
 
-let caseId, eventName;
+let caseId, eventName, payload;
 let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
+
+  makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
+    console.log('Make an Order of GA: ' + gaCaseId);
+    eventName = 'MAKE_DECISION';
+    const document = await uploadDocument();
+    switch(courtResponseType){
+      case 'approveOrEdit':
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+      case 'dismissAnOrder':
+        payload = makeAnOrderGA.dismissAnOrderGA(document);
+        break;
+      case 'giveDirections':
+        payload = makeAnOrderGA.giveDirections(document);
+        break;
+      case 'freeFormOrder':
+        payload = makeAnOrderGA.freeFormOrder(document);
+        break;
+      default:
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+    }
+    await apiRequest.setupTokens(user);
+    caseData = payload['caseDataUpdate'];
+    await waitForGAFinishedBusinessProcess(gaCaseId, user);
+    await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
+  },
 
   performBundleGeneration: async (user, caseId) => {
     console.log('This is inside performBundleGeneration() : ' + caseId);
@@ -893,6 +921,23 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     console.log('Case created: ' + caseId);
   }
   await waitForFinishedBusinessProcess(caseId);
+  if (expectedState) {
+    assert.equal(responseBody.state, expectedState);
+  }
+};
+
+const assertSubmittedGASpecEvent = async (gaCaseId, expectedState, user, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
+  await apiRequest.startEvent(eventName, gaCaseId, 'GENERALAPPLICATION');
+
+  const response = await apiRequest.submitEvent(eventName, caseData, gaCaseId, 'GENERALAPPLICATION');
+  const responseBody = await response.json();
+  assert.equal(response.status, 201);
+  if (hasSubmittedCallback && submittedCallbackResponseContains) {
+    assert.equal(responseBody.callback_response_status_code, 200);
+    assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
+    assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
+  }
+  await waitForGAFinishedBusinessProcess(gaCaseId, user);
   if (expectedState) {
     assert.equal(responseBody.state, expectedState);
   }

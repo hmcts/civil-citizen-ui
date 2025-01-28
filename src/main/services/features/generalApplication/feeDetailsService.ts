@@ -11,6 +11,7 @@ import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStore
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
+import {CaseState} from 'form/models/claimDetails';
 export interface GAFeeRequestBody {
   applicationTypes: ApplicationTypeOption[],
   withConsent: boolean,
@@ -32,6 +33,7 @@ const feeRequestBody = (gaDetails: GeneralApplication, hearingDate: Date): GAFee
 };
 
 export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Promise<ClaimFeeData> => {
+  claim = await updateHearingDateForGAApplicationFee(claim, req);
   const feeRequestDetails = feeRequestBody(claim.generalApplication, claim?.caseProgressionHearing?.hearingDate);
   const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestDetails, req);
   if (gaFeeData) {
@@ -40,6 +42,18 @@ export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Pr
     saveDraftClaim(generateRedisKey(req), claim);
     return gaFeeData;
   }
+};
+
+export const updateHearingDateForGAApplicationFee = async (claim: Claim, req: AppRequest) => {
+  const selectedApplications = claim.generalApplication.applicationTypes.map(applicationType => applicationType.option);
+  const isAllowedToUpdateClaim = !claim?.caseProgressionHearing?.hearingDate && !claim.generalApplication?.applicationFee && selectedApplications.includes(ApplicationTypeOption.ADJOURN_HEARING);
+  if (isAllowedToUpdateClaim) {
+    const updatedClaim = await civilServiceClient.retrieveClaimDetails(req.params?.id, req);
+    if (updatedClaim.ccdState === CaseState.HEARING_READINESS) {
+      return Object.assign(claim, updatedClaim);
+    }
+  }
+  return claim;
 };
 
 export const getGaAppFeeDetails = async (claimId: string, req: AppRequest): Promise<CcdFee> => {
