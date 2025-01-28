@@ -107,7 +107,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6063'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
@@ -245,6 +245,7 @@ civil-service:
 camunda-bpm:
   enabled: true
   java:
+    image: hmctsprivatetemp.azurecr.io/camunda/bpm:latest
     disableKeyVaults: true
     devcpuRequests: 1000m
     devmemoryRequests: 2048Mi
