@@ -25,7 +25,12 @@ const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: 
 
 const addTimeline = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
-  const timeline = claim.partialAdmission?.timeline ? claim.partialAdmission.timeline : new DefendantTimeline([], '');
+  let timeline  = new DefendantTimeline([], '');
+  if(claim.partialAdmission !== undefined) {
+    timeline = claim.partialAdmission.timeline ? claim.partialAdmission.timeline : new DefendantTimeline([], '');
+  } else if(claim.rejectAllOfClaim !== undefined) {
+    timeline = claim.rejectAllOfClaim.timeline ? claim.rejectAllOfClaim.timeline : new DefendantTimeline([], '');
+  }
 
   section.summaryList.rows.push(
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', {lng: getLng(lang)}), '', yourTimelineHref, changeLabel(lang)),
@@ -121,10 +126,8 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
       break;
     case ResponseType.FULL_DEFENCE:
       getSummaryRowsForFullReject(claim, claimId, lang, yourResponseDetailsSection);
-      if (isPaidAmountEqulGreaterThanTotalAmount(claim)) {
-        addTimeline(claim, claimId, lang, yourResponseDetailsSection);
-        addEvidence(claim, claimId, lang, yourResponseDetailsSection);
-      }
+      addTimeline(claim, claimId, lang, yourResponseDetailsSection);
+      addEvidence(claim, claimId, lang, yourResponseDetailsSection);
       break;
   }
 
