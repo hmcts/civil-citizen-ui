@@ -41,6 +41,7 @@ export const getHearingDocumentsCaseDocumentIdByType = ((hearingDocuments: CaseP
 
 export class CaseProgressionHearing {
   hearingDocuments?: CaseProgressionHearingDocuments[];
+  hearingDocumentsWelsh?: CaseProgressionHearingDocuments[];
   hearingLocation?: HearingLocation;
   hearingDate?: Date;
   hearingTimeHourMinute?: string;

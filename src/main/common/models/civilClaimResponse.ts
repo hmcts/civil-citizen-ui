@@ -214,6 +214,7 @@ export interface CCDClaim extends ClaimUpdate {
   detailsOfWhyDoesYouDisputeTheClaim?: string;
   respondToAdmittedClaimOwingAmount?: string;
   hearingDocuments?: CaseProgressionHearingDocuments[];
+  hearingDocumentsWelsh?: CaseProgressionHearingDocuments[];
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
