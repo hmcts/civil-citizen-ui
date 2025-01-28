@@ -4679,8 +4679,8 @@
       "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
       "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
       "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd",
-      "DJ_DEFENDANT":"Default Judgment defendant",
-      "DJ_CLAIMANT":"Default Judgment claimant"
+      "DJ_DEFENDANT":"Dyfarniad trwy ddiffyg - diffynnydd",
+      "DJ_CLAIMANT":"Dyfarniad trwy ddiffyg - hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
