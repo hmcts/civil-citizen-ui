@@ -15,7 +15,7 @@ import { AppSession } from 'common/models/AppRequest';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
+const mockFullClaim = { 'id': 1662129391355637, 'case_data': { }};
 describe('Respond to Claim - Pin Controller', () => {
 
   const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -56,6 +56,23 @@ describe('Respond to Claim - Pin Controller', () => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
         expect(((app.request.session) as AppSession).firstContact.claimReference).toBe('000MC000');
+      });
+    });
+
+    it('should now allow to assign the claim when its LiP v LR claim (NOC is submitted def LiP)', async () => {
+      mockFullClaim.case_data = {
+        'respondent1Represented': 'Yes',
+        'applicant1Represented': 'No',
+      };
+      nock(civilServiceUrl)
+        .post('/assignment/reference/000MC000')
+        .reply(200, mockFullClaim);
+
+      app.locals.draftStoreClient = mockCivilClaim;
+      app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
+      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.PIN.CLAIM_ASSIGNED_TO_LR'));
       });
     });
 

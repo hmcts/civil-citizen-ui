@@ -1083,6 +1083,11 @@ export class Claim {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
       || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
   }
+
+  isLiPvLRClaim() : boolean {
+    return this.respondent1Represented === YesNoUpperCamelCase.YES
+      && this.applicant1Represented === YesNoUpperCamelCase.NO;
+  }
 }
 
 export interface StatementOfTruth {
