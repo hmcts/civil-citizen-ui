@@ -56,15 +56,17 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
     }
   }
 
-  for(const hearingDocumentWelsh of hearingDocumentsWelsh){
-    if ((claim.isClaimant() && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH)
-      || (claim.isDefendant() && claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH')) {
+  if(claim.caseProgressionHearing?.hearingDocumentsWelsh) {
+    for(const hearingDocumentWelsh of hearingDocumentsWelsh){
+      if ((claim.isClaimant() && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH)
+        || (claim.isDefendant() && claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH')) {
 
-      if(hearingDocumentWelsh?.value) {
-        const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocumentWelsh.value?.documentName, claim.id, hearingDocumentWelsh.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
-        const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
-        hearingRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'}, value:{html: hearingDocumentLink},
-        });
+        if(hearingDocumentWelsh?.value) {
+          const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocumentWelsh.value?.documentName, claim.id, hearingDocumentWelsh.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
+          const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
+          hearingRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'}, value:{html: hearingDocumentLink},
+          });
+        }
       }
     }
   }
