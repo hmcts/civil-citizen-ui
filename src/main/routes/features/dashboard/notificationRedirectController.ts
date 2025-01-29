@@ -58,7 +58,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId);
       break;
     case 'VIEW_HEARING_NOTICE':
-      if (claim?.caseProgressionHearing?.hearingDocumentsWelsh[0]) {
+      if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim?.caseProgressionHearing?.hearingDocumentsWelsh[0]) {
         if ((claim?.isClaimant() && claim?.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH)
           || (claim?.isDefendant() && claim?.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH')) {
           redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(

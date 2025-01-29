@@ -13,6 +13,9 @@ import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import * as StringUtils from 'common/utils/stringUtils';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {CaseRole} from 'form/models/caseRoles';
+import {CCDRespondentLiPResponse, CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -355,4 +358,72 @@ describe('Notification Redirect Controller - Get', () => {
         expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/undefined');
       });
   });
+
+  it('Redirect to view welsh hearing notice claimant', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    claim.caseProgressionHearing.hearingDocumentsWelsh = claim.caseProgressionHearing.hearingDocuments;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    claim.caseRole = CaseRole.CLAIMANT;
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6');
+      });
+  });
+
+  it('Redirect to view welsh hearing notice defendant', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    const ccdRespondLipResponse : CCDRespondentLiPResponse = {
+      respondent1MediationLiPResponse: undefined,
+      respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH,
+    };
+
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    claim.caseProgressionHearing.hearingDocumentsWelsh = claim.caseProgressionHearing.hearingDocuments;
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.respondent1LiPResponse = ccdRespondLipResponse;
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6');
+      });
+  });
 });
+
+
