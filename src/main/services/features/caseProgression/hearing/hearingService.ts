@@ -10,6 +10,7 @@ import {CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgre
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {alignText} from 'form/models/alignText';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 export function getHearingContent(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent[] {
 
@@ -42,6 +43,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
 
   const hearingRows = [] as SummaryRow[];
   const hearingDocuments :CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocuments;
+  const hearingDocumentsWelsh: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocumentsWelsh;
 
   for(const hearingDocument of hearingDocuments){
 
@@ -52,6 +54,20 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
         value:{html: hearingDocumentLink},
       });
     }
+  }
+
+  for(const hearingDocumentWelsh of hearingDocumentsWelsh){
+
+      if ((claim.isClaimant() && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH)
+        || (claim.isDefendant() && claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH')) {
+        if(hearingDocumentWelsh?.value) {
+          const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocumentWelsh.value?.documentName, claim.id, hearingDocumentWelsh.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
+          const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
+          hearingRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'},
+            value:{html: hearingDocumentLink},
+          });
+        }
+      }
   }
 
   return {type:ClaimSummaryType.SUMMARY, data:{rows:hearingRows}};
