@@ -20,7 +20,8 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(form: GenericForm<CitizenDate>, res: Response): void {
-  res.render(datePaidViewPath, {form, today: new Date(), pageTitle: 'PAGES.CLAIMANT_SETTLE_DATE.PAGE_TITLE'});}
+  res.render(datePaidViewPath, {form, today: new Date(), pageTitle: 'PAGES.CLAIMANT_SETTLE_DATE.PAGE_TITLE'});
+}
 
 datePaidViewController.get(DATE_PAID_URL, (async (req: Request,res: Response,next: NextFunction) => {
   try {
