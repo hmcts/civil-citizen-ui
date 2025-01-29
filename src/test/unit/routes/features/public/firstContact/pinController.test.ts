@@ -59,7 +59,7 @@ describe('Respond to Claim - Pin Controller', () => {
       });
     });
 
-    it('should now allow to assign the claim when its LiP v LR claim (NOC is submitted def LiP)', async () => {
+    it('should not allow to assign the claim when its LiP v LR claim (NOC is submitted def LiP)', async () => {
       mockFullClaim.case_data = {
         'respondent1Represented': 'Yes',
         'applicant1Represented': 'No',
