@@ -225,7 +225,6 @@ ccd:
           disabled: false
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_NAME}.preview.platform.hmcts.net
-
   am-role-assignment-service:
     java:
       releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
