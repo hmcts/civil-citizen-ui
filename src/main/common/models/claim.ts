@@ -1044,7 +1044,8 @@ export class Claim {
   }
 
   isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES ||
+    this.respondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
@@ -1082,11 +1083,6 @@ export class Claim {
   isAnyPartyBilingual() : boolean {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
       || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
-  }
-
-  isLiPvLRClaim() : boolean {
-    return this.respondent1Represented === YesNoUpperCamelCase.YES
-      && this.applicant1Represented === YesNoUpperCamelCase.NO;
   }
 }
 

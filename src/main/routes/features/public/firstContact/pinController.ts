@@ -46,7 +46,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
         res.redirect(redirectUrl);
       } else if (firstContact?.claimReference) {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, firstContact?.claimReference);
-        if (claim.isLiPvLRClaim()) {
+        if (claim.isLRDefendant()) {
           const pinForm = new GenericForm(new PinType());
           await pinForm.validate();
           pinForm.errors = undefined;
