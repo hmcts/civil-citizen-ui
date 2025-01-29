@@ -23,7 +23,7 @@ import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evid
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const addTimeline = ( claimId: string, lang: string , section: SummarySection, timeline: DefendantTimeline = new DefendantTimeline([], '')) => {
+const addTimeline = (claimId: string, lang: string , section: SummarySection, timeline: DefendantTimeline = new DefendantTimeline([], '')) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
 
   section.summaryList.rows.push(
