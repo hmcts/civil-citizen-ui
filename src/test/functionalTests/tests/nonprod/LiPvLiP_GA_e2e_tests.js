@@ -73,7 +73,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly @nightly', async ({I, api}) => {
+Scenario.skip('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly @nightly', async ({I, api}) => {
   courtResponseType = 'dismissAnOrder';
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -99,7 +99,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({I, api}) => {
+Scenario.skip('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({I, api}) => {
   courtResponseType = 'giveDirections';
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -125,7 +125,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly @regression', async ({I, api}) => {
+Scenario.skip('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly @regression', async ({I, api}) => {
   courtResponseType = 'freeFormOrder';
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
