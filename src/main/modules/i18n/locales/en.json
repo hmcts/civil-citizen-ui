@@ -1512,7 +1512,7 @@
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "The interest will then be calculated up until the claim is settled or a Judgement has been made.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
         "REASON": "Explain why you're claiming for this date?",
