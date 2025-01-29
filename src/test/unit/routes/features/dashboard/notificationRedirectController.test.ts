@@ -425,5 +425,3 @@ describe('Notification Redirect Controller - Get', () => {
       });
   });
 });
-
-
