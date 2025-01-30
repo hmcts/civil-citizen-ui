@@ -156,13 +156,6 @@ describe('checkWelshHearingNotice', () => {
 });
 
 jest.mock('common/utils/formatDocumentURL');
-jest.mock('services/features/caseProgression/hearing/hearingService', () => {
-  const originalModule = jest.requireActual('services/features/caseProgression/hearing/hearingService');
-  return {
-    ...originalModule,
-    checkWelshHearingNotice: jest.fn(),
-  };
-});
 
 describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
   const lang = 'en';
@@ -218,7 +211,6 @@ describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
   });
 
   it('should do nothing if checkWelshHearingNotice returns false', () => {
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(false);
     claim.caseProgressionHearing.hearingDocumentsWelsh = [hearingDocWelsh];
     const content = getHearingContent(claim.id, claim, lang, dashboardUrl);
     const rows = (content[0].contentSections[1].data as any).rows;
@@ -226,7 +218,6 @@ describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
   });
 
   it('should do nothing if checkWelshHearingNotice is true but hearingDocumentWelsh has no value', () => {
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
     claim.caseProgressionHearing.hearingDocumentsWelsh = [{id:'docWelshNoValue', value: undefined}];
     const content = getHearingContent(claim.id, claim, lang, dashboardUrl);
     const rows = (content[0].contentSections[1].data as any).rows;
@@ -234,7 +225,6 @@ describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
   });
 
   it('should add a row if checkWelshHearingNotice is true and hearingDocumentWelsh has a valid value', () => {
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
     claim.caseProgressionHearing.hearingDocumentsWelsh = [hearingDocWelsh];
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
@@ -250,7 +240,6 @@ describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
   });
 
   it('should add multiple rows if there are multiple hearingDocumentsWelsh, checkWelshHearingNotice is true, and each has a value', () => {
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
     claim.caseProgressionHearing.hearingDocumentsWelsh = [hearingDocWelsh, hearingDocWelsh];
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
