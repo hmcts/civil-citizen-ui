@@ -1044,7 +1044,8 @@ export class Claim {
   }
 
   isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES ||
+    this.respondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
