@@ -16,7 +16,7 @@ import {YesNo} from 'form/models/yesNo';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -60,10 +60,10 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       break;
     case 'VIEW_HEARING_NOTICE':
       if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
-        if ((claim.isClaimant() && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH)
-          || (claim.isDefendant() && claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH')) {
+        if (checkWelshHearingNotice(claim)) {
           redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
             ':documentId', documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url));
+          break;
         }
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(

@@ -2,15 +2,13 @@ import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {
-  formatDocumentAlignedViewURL,
-  formatDocumentWithHintText,
-} from 'common/utils/formatDocumentURL';
+import {formatDocumentAlignedViewURL, formatDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {alignText} from 'form/models/alignText';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 
 export function getHearingContent(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent[] {
 
@@ -57,10 +55,8 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
   }
 
   if(claim.caseProgressionHearing?.hearingDocumentsWelsh) {
-    for(const hearingDocumentWelsh of hearingDocumentsWelsh){
-      if ((claim.isClaimant() && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH)
-        || (claim.isDefendant() && claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH')) {
-
+    for(const hearingDocumentWelsh of hearingDocumentsWelsh) {
+      if (checkWelshHearingNotice(claim)) {
         if(hearingDocumentWelsh?.value) {
           const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocumentWelsh.value?.documentName, claim.id, hearingDocumentWelsh.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
           const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
@@ -80,4 +76,23 @@ function getButton(claimId: string, claim: Claim, lang: string, redirectUrl:stri
     .build();
 
   return {contentSections: buttonSection, hasDivider: false};
+}
+
+export function checkWelshHearingNotice(claim: Claim): boolean {
+
+  const isWelshLanguage = (lang?: LanguageOptions): boolean => {
+    return lang === LanguageOptions.WELSH || lang === LanguageOptions.WELSH_AND_ENGLISH;
+  };
+
+  const docsLanguage = claim?.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage;
+  const isDocsLanguageWelsh = isWelshLanguage(docsLanguage);
+
+  const isClaimantWelshBilingual =
+    claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+
+  const isDefendantLipResponseBoth =
+    claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+
+  return ((claim.isClaimant() && (isClaimantWelshBilingual || isDocsLanguageWelsh)) ||
+    (claim.isDefendant() && (isDefendantLipResponseBoth || isDocsLanguageWelsh)));
 }
