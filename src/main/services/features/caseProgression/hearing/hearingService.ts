@@ -84,8 +84,10 @@ export function checkWelshHearingNotice(claim: Claim): boolean {
     return lang === LanguageOptions.WELSH || lang === LanguageOptions.WELSH_AND_ENGLISH;
   };
 
-  const docsLanguage = claim?.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage;
-  const isDocsLanguageWelsh = isWelshLanguage(docsLanguage);
+  const docsLanguageClaimant = claim?.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage;
+  const docsLanguageDefendant = claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage;
+  const isDocsLanguageWelsh = isWelshLanguage(docsLanguageClaimant);
+  const isDocsLanguageWelshDefendant = isWelshLanguage(docsLanguageDefendant);
 
   const isClaimantWelshBilingual =
     claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -94,5 +96,5 @@ export function checkWelshHearingNotice(claim: Claim): boolean {
     claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
 
   return ((claim.isClaimant() && (isClaimantWelshBilingual || isDocsLanguageWelsh)) ||
-    (claim.isDefendant() && (isDefendantLipResponseBoth || isDocsLanguageWelsh)));
+    (claim.isDefendant() && (isDefendantLipResponseBoth || isDocsLanguageWelshDefendant)));
 }
