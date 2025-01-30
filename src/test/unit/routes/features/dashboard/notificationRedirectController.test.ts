@@ -572,6 +572,6 @@ describe('notificationRedirectController - VIEW_HEARING_NOTICE (Welsh block)', (
     (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
     const res = await request(app).get(`${baseUrl}?lang=cy`).send();
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Found. Redirecting to /case/123/view-documents/undefined`);
+    expect(res.text).toContain('Found. Redirecting to /case/123/view-documents/undefined');
   });
 });

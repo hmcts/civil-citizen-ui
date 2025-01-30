@@ -186,7 +186,6 @@ describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
     claim.caseProgressionHearing.hearingDocuments = [];
     claim.caseProgressionHearing.hearingDocumentsWelsh = [];
 
-
     hearingDocWelsh = {
       id: 'docWelshId',
       value: {
@@ -205,12 +204,10 @@ describe('getHearingsSummary - hearingDocumentsWelsh block', () => {
 
     (formatDocumentAlignedViewURL as jest.Mock).mockImplementation(
       (name: string, id: string, binUrl: string, align: alignText) =>
-        `<a href="${binUrl}" class="${align}">${name}</a>`
-    );
+        `<a href="${binUrl}" class="${align}">${name}</a>`);
 
     (formatDocumentWithHintText as jest.Mock).mockImplementation(
-      (label: string, date: Date) => `${label} - ${date?.toISOString()}`
-    );
+      (label: string, date: Date) => `${label} - ${date?.toISOString()}`);
   });
 
   it('should do nothing if hearingDocumentsWelsh is empty', () => {
