@@ -7,9 +7,9 @@ import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 const generalAppApiBaseUrl = config.get<string>('services.generalApplication.url');
 const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUrl);
 
-export const getGaFeePaymentRedirectInformation = async (claimId: string, req: AppRequest): Promise<PaymentInformation> => {
+export const getGaFeePaymentRedirectInformation = async (claimId: string, lang: string, req: AppRequest): Promise<PaymentInformation> => {
 
-  return await gaServiceClient.getGaFeePaymentRedirectInformation(claimId, req);
+  return await gaServiceClient.getGaFeePaymentRedirectInformation(claimId,lang, req);
 
 };
 

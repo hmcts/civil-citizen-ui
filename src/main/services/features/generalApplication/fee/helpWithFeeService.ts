@@ -34,6 +34,7 @@ const failed = 'Failed';
 
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     let redirectUrl;
     let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
@@ -52,7 +53,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
 
     if (applyHelpWithFees.option === YesNo.NO) {
-      let paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      let paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, lang, req);
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
@@ -65,7 +66,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
           logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
           redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
         } else if (paymentStatus?.status === failed) {
-          paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+          paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, lang, req);
           logger.info(`New payment ref after failed payment for application id ${generalApplicationId}: ${paymentRedirectInformation?.paymentReference}`);
           if (!paymentRedirectInformation) {
             redirectUrl = req.originalUrl;
