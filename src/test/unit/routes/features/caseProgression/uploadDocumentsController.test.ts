@@ -607,6 +607,42 @@ describe('on POST', () => {
       });
   });
 
+  it('should upload file documentsForDisclosure', async () => {
+    const file = {
+      fieldname: 'documentsForDisclosure[0][fileUpload]',
+      originalname: 'test.txt',
+      mimetype: 'text/plain',
+      size: 123,
+      buffer: Buffer.from('Test file content'),
+    };
+
+    const mockCaseDocument: CaseDocument = <CaseDocument>{  createdBy: 'test',
+      documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+      documentName: 'name',
+      documentType: null,
+      documentSize: 12345,
+      createdDatetime: new Date()};
+
+    const civilServiceUrl = config.get<string>('services.civilService.url');
+    nock(civilServiceUrl)
+      .post('/case/document/generateAnyDoc')
+      .reply(200, mockCaseDocument);
+    const validDate = new DateInputFields('12', '11', '2020');
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .field('action', 'documentsForDisclosure[0][uploadButton]')
+      .field('documentsForDisclosure[0][dateInputFields]', JSON.stringify(validDate))
+      .field('documentsForDisclosure[0][typeOfDocument]', 'test document')
+      .attach('documentsForDisclosure[0][fileUpload]', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      })
+      .expect((res: express.Response) => {
+        expect(res.status).toBe(200);
+      });
+  });
+
   it('should return 500 error page for failure', async () => {
     (getClaimById as jest.Mock).mockReturnValue(new Error());
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(undefined);
