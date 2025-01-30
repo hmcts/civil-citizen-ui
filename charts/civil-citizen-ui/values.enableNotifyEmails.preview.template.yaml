@@ -3,7 +3,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:pr-6073'
+    image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 500m
@@ -37,7 +37,7 @@ civil-service:
             alias: CMC_DB_USERNAME
           - name: cmc-db-host-v15
             alias: CMC_DB_HOST
-          - name: gov-notify-live-api-key
+          - name: gov-notify-pretends-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
