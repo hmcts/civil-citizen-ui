@@ -16,6 +16,8 @@ import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/m
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CaseRole} from 'form/models/caseRoles';
 import {CCDRespondentLiPResponse, CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
+import {CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -487,5 +489,89 @@ describe('Notification Redirect Controller - Get', () => {
         expect(res.status).toBe(302);
         expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6');
       });
+  });
+});
+
+jest.mock('client/civilServiceClient');
+jest.mock('services/features/caseProgression/hearing/hearingService', () => {
+  const originalModule = jest.requireActual('services/features/caseProgression/hearing/hearingService');
+  return {
+    ...originalModule,
+    checkWelshHearingNotice: jest.fn(),
+  };
+});
+
+describe('notificationRedirectController - VIEW_HEARING_NOTICE (Welsh block)', () => {
+  const mockCivilServiceClient = new CivilServiceClient(config.get('services.civilService.url'));
+  const baseUrl = DASHBOARD_NOTIFICATION_REDIRECT
+    .replace(':id', '123')
+    .replace(':notificationId', '456')
+    .replace(':locationName', 'VIEW_HEARING_NOTICE');
+
+  let claim: Claim;
+
+  beforeEach(() => {
+    claim = new Claim();
+    claim.id = '123';
+    claim.caseProgressionHearing = {
+      hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
+        return 0;
+      }, getHearingDateFormatted(lang: string): string {
+        return '';
+      }, getHearingDurationFormatted(lng: string): string {
+        return '';
+      }, getHearingTimeHourMinuteFormatted(): string {
+        return '';
+      }, hearingDocuments: [], hearingDocumentsWelsh: [] };
+    mockCivilServiceClient.retrieveClaimDetails = jest.fn().mockResolvedValue(claim);
+    CivilServiceClient.prototype.recordClick = jest.fn().mockResolvedValue({});
+    CivilServiceClient.prototype.retrieveClaimDetails = mockCivilServiceClient.retrieveClaimDetails;
+    (checkWelshHearingNotice as jest.Mock).mockReturnValue(false);
+  });
+
+  it('should not redirect to Welsh doc if hearingDocumentsWelsh is empty', async () => {
+    claim.caseProgressionHearing.hearingDocumentsWelsh = [];
+    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
+    const res = await request(app).get(`${baseUrl}?lang=cy`).send();
+    expect(res.status).toBe(302);
+    expect(res.text).toContain('/case/123/view-documents/undefined');
+  });
+
+  it('should not redirect to Welsh doc if first item is missing', async () => {
+    claim.caseProgressionHearing.hearingDocumentsWelsh = null;
+    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
+    const res = await request(app).get(`${baseUrl}?lang=cy`).send();
+    expect(res.status).toBe(302);
+    expect(res.text).toContain('/case/123/view-documents/undefined');
+  });
+
+  it('should not redirect to Welsh doc if lang != cy', async () => {
+    claim.caseProgressionHearing.hearingDocumentsWelsh = [
+      { id: 'wDoc', value: { documentLink: { document_binary_url: 'http://doc/binary' } } } as CaseProgressionHearingDocuments,
+    ];
+    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
+    const res = await request(app).get(baseUrl).send();
+    expect(res.status).toBe(302);
+    expect(res.text).toContain('/case/123/view-documents/undefined');
+  });
+
+  it('should not redirect to Welsh doc if checkWelshHearingNotice is false', async () => {
+    claim.caseProgressionHearing.hearingDocumentsWelsh = [
+      { id: 'wDoc', value: { documentLink: { document_binary_url: 'http://dm-store/binary' } } } as CaseProgressionHearingDocuments,
+    ];
+    (checkWelshHearingNotice as jest.Mock).mockReturnValue(false);
+    const res = await request(app).get(`${baseUrl}?lang=cy`).send();
+    expect(res.status).toBe(302);
+    expect(res.text).toContain('/case/123/view-documents/undefined');
+  });
+
+  it('should redirect to Welsh doc if doc exists, lang=cy and checkWelshHearingNotice is true', async () => {
+    claim.caseProgressionHearing.hearingDocumentsWelsh = [
+      { id: 'wDoc', value: { documentLink: { document_binary_url: 'http://dm-store/binary' } } } as CaseProgressionHearingDocuments,
+    ];
+    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
+    const res = await request(app).get(`${baseUrl}?lang=cy`).send();
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Found. Redirecting to /case/123/view-documents/undefined`);
   });
 });
