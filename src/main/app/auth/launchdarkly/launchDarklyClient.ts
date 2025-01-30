@@ -130,7 +130,7 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
 }
 
 export async function isMintiEnabled(): Promise<boolean> {
-  return await getFlagValue(MINTI) as boolean;
+  return true;
 }
 
 export async function isCoSCEnabled(): Promise<boolean> {
@@ -158,12 +158,7 @@ export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
 }
 
 export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
-  const { DateTime } = require('luxon');
-  const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const mintiFlag = await getFlagValue(MINTI) as boolean;
-  const mintiApplicable = await getFlagValue(MULTI_OR_INTERMEDIATE_TRACK, epoch) as boolean;
-  return mintiFlag && mintiApplicable;
+  return true;
 }
 
 export async function isCaseWorkerEventsEnabled(): Promise<boolean> {
