@@ -28,6 +28,22 @@ const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
+const multer = require('multer');
+const fileSize = Infinity;
+
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
   const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   const target = `${category}[${index}][fileUpload]`;
@@ -100,7 +116,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) => {
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const action = req.body.action;

@@ -627,6 +627,7 @@ describe('on POST', () => {
     nock(civilServiceUrl)
       .post('/case/document/generateAnyDoc')
       .reply(200, mockCaseDocument);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     const validDate = new DateInputFields('12', '11', '2020');
 
     await request(app)
