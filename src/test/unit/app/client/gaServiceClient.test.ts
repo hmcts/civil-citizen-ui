@@ -81,7 +81,7 @@ describe('GA Service Client', () => {
       const gaServiceClient = new GaServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await gaServiceClient.getGaFeePaymentRedirectInformation(claimId, appReq);
+      const paymentInformationResponse: PaymentInformation = await gaServiceClient.getGaFeePaymentRedirectInformation(claimId,'en', appReq);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -96,7 +96,7 @@ describe('GA Service Client', () => {
       const gaServiceClient = new GaServiceClient(baseUrl);
 
       //Then
-      await expect(gaServiceClient.getGaFeePaymentRedirectInformation(claimId, appReq)).rejects.toThrow('error');
+      await expect(gaServiceClient.getGaFeePaymentRedirectInformation(claimId,'en', appReq)).rejects.toThrow('error');
     });
   });
 
