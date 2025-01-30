@@ -162,4 +162,40 @@ module.exports = {
       },
     };
   },
+  requestMoreInformation: (document) => {
+    return {
+      event: 'REQUEST_MORE_INFO',
+      caseDataUpdate: {
+        judicialDecision: {
+          decision: 'REQUEST_MORE_INFO',
+        },
+        judgeTitle: 'judgeb birmin',
+        bilingualHint: 'No',
+        judicialDecisionRequestMoreInfo: {
+          isWithNotice: 'Yes',
+          judgeRecitalText: 'The Judge considered the application of the claimant dated 29 January 2025',
+          judgeRequestMoreInfoByDate: '2026-02-05',
+          judgeRequestMoreInfoText: 'Test request for more information',
+        },
+        requestForInformationDocument: [
+          {
+            id: '1ebaf4dd-a1e5-4d8e-801d-bf27a1a3fa99',
+            value: {
+              createdBy: 'Civil',
+              createdDatetime: '2025-01-29T10:43:42.716255484',
+              documentLink: {
+                category_id: 'applications',
+                document_binary_url: document.document_binary_url,
+                document_filename: document.document_filename,
+                document_url: document.document_url,
+              },
+              documentName: 'Request_for_information_for_application_2025-01-29 10:43:42.pdf',
+              documentSize: 56542,
+              documentType: 'REQUEST_FOR_INFORMATION',
+            },
+          },
+        ],
+      },
+    };
+  },
 };

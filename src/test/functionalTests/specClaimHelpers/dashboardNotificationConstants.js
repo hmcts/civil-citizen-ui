@@ -533,4 +533,13 @@ module.exports = {
       nextSteps: 'View the order',
     };
   },
+
+  // Request for more information
+  orderMoreInformation: () => {
+    return {
+      title: 'You must provide more information',
+      content: 'The court has responded to the application. You must upload a document providing more information to the court by 4pm on 5 February 2026.',
+      nextSteps: 'providing more information',
+    };
+  },
 };

@@ -96,6 +96,9 @@ module.exports = {
       case 'freeFormOrder':
         payload = makeAnOrderGA.freeFormOrder(document);
         break;
+      case 'requestMoreInformation':
+        payload = makeAnOrderGA.requestMoreInformation(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;

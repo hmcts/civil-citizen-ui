@@ -6,7 +6,7 @@ const respondGASteps = require('../../citizenFeatures/GA/steps/respondGASteps');
 // eslint-disable-next-line no-unused-vars
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {orderMadeGA} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {orderMadeGA, orderMoreInformation} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
@@ -21,6 +21,7 @@ Before(async ({api}) => {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    console.log('CLAIM NUMBER', claimNumber);
 
     await api.assignToLipDefendant(claimRef);
     await api.waitForFinishedBusinessProcess();
@@ -148,5 +149,42 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
+  }
+});
+
+Scenario('LipvLip Applicant GA creation e2e tests - Request further information @citizenUI - @api @ga @nightly', async ({I, api}) => {
+  courtResponseType = 'requestMoreInformation';
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+    console.log('Creating an Adjourn Hearing Order GA app as Claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+
+    console.log('Responding to the GA as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to change a hearing date', 'Miss Jane Doe v Sir John Doe');
+
+    console.log('Request more information as the Judge');
+    await api.makeOrderGA(gaID, courtResponseType);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMoreInformation();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+
+    await I.amOnPage(`/case/${claimRef}/general-application/${gaID}/view-application`);
+    await I.click('.govuk-heading-m >> text=Application');
+    await I.see('Awaiting additional information', '.govuk-summary-list__value');
   }
 });
