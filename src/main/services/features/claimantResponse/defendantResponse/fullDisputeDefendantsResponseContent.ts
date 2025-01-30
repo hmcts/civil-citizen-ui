@@ -11,6 +11,7 @@ import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
@@ -232,6 +233,7 @@ export const getPaymentDate = (paymentDate: Date, lng: string): ClaimSummarySect
 };
 
 export const getHowTheyPaid = (text: string, lng: string): ClaimSummarySection[] => {
+  const textTranslated = (text === CCDHowWasThisAmountPaid.BACS || text === CCDHowWasThisAmountPaid.CREDIT_CARD || text === CCDHowWasThisAmountPaid.CHEQUE) ? t(`COMMON.TYPE_OF_PAYMENT.${text}`, {lng}) : text;
   return [
     {
       type: ClaimSummaryType.SUBTITLE,
@@ -242,7 +244,7 @@ export const getHowTheyPaid = (text: string, lng: string): ClaimSummarySection[]
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: text,
+        text: textTranslated,
       },
     },
   ];
