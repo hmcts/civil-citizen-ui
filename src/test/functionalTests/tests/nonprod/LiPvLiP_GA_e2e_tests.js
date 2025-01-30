@@ -21,7 +21,6 @@ Before(async ({api}) => {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    console.log('CLAIM NUMBER', claimNumber);
 
     await api.assignToLipDefendant(claimRef);
     await api.waitForFinishedBusinessProcess();
