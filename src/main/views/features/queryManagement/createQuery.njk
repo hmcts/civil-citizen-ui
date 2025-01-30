@@ -1,0 +1,47 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+
+{% block content %}
+  <div>
+    <h1 class="govuk-heading-xl">Whats up doc?</h1>
+  </div>
+  <form action="/{{ claimId }}/create-query" method="POST">
+    {{ csrfProtection(csrf) }}
+  <div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {{ govukInput({
+      label: {
+        text: "Query subject",
+        isPageHeading: false
+      },
+      hint: {
+        text: "The subject should be a summary of your query"
+      },
+      id: "query-subject-input",
+      name: "query-subject-input-name"
+    }) }}
+
+    {{ govukTextarea({
+      label: {
+        text: "Query detail",
+        isPageHeading: false
+      },
+      hint: {
+        text: "Include as many details as possible so case workers can respond to your query"
+      },
+      id: "query-details-input",
+      name: "query-details-input-name"
+    }) }}
+
+    {{ govukButton({
+      text: "Submit"
+    }) }}
+
+  </div>
+  </div>
+  </form>
+{% endblock %}
