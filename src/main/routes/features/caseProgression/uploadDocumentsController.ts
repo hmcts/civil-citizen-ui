@@ -28,7 +28,7 @@ const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
-async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
+async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
   const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   const target = `${category}[${index}][fileUpload]`;
   const inputFile = (req.files as Express.Multer.File[]).filter(file =>
@@ -110,7 +110,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('[uploadButton]')) {
-      await uploadSingleFile(req, res, claimId, action, form);
+      await uploadSingleFile(req, action, form);
       return await renderView(res, claim, claimId, form);
     }
 
