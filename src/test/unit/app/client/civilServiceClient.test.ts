@@ -844,6 +844,30 @@ describe('Civil Service Client', () => {
       expect(claim).toEqual(new Claim());
     });
   });
+  describe('calculateClaimInterest', () => {
+    it('should get calculate claim interest', async () => {
+      //Given
+      const mockData = 0.02;
+      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //When
+      const interest = await civilServiceClient.calculateClaimInterest({}, appReq);
+      //Then
+      expect(interest).toEqual(mockData);
+    });
+
+    it('should throw error on calculate claim interest', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({ post: mockGet } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.calculateClaimInterest({}, appReq)).rejects.toThrow('error');
+    });
+  });
 
   describe('getFeePaymentRedirectInformation', () => {
     const claimId = '1';
