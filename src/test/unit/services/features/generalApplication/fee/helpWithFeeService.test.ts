@@ -45,7 +45,7 @@ jest.mock('services/features/generalApplication/applicationFee/generalApplicatio
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
-mockedAppRequest.params = {id:'1'};
+mockedAppRequest.params = {id:'1', lang:'en'};
 const claimId = '1';
 const nextUrl= 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960';
 let claim: Claim;
@@ -146,7 +146,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    mockedAppRequest.query = {id: 'test'};
+    mockedAppRequest.query = {id: 'test', lang: 'en'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
     //Then
@@ -166,7 +166,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    mockedAppRequest.query = {id: 'test'};
+    mockedAppRequest.query = {id: 'test', lang:'en'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
     //Then
@@ -180,7 +180,7 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
     mockedAppRequest.params = {appId: '12345667'};
-    mockedAppRequest.query = {appFee: '1400'};
+    mockedAppRequest.query = {appFee: '1400', lang:'en'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), 'applyHelpWithFees', mockedAppRequest);
     //Then
@@ -194,7 +194,7 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
-    mockedAppRequest.params = {appId: '12345667'};
+    mockedAppRequest.params = {appId: '12345667', lang: 'en'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), 'applyHelpWithFees', mockedAppRequest);
     //Then
@@ -224,7 +224,7 @@ describe('apply help with application fee selection', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(ccdClaimNoGARef);
-    mockedAppRequest.query = {id: 'abcdef'};
+    mockedAppRequest.query = {id: 'abcdef', lang: 'en'};
     mockedAppRequest.params = {appId: '123456678'};
     mockedAppRequest.originalUrl = originalUrl;
     applicationResponse = new ApplicationResponse();
@@ -244,7 +244,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    mockedAppRequest.query = {id: 'test'};
+    mockedAppRequest.query = {id: 'test', lang: 'en'};
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentStatus').mockResolvedValueOnce({status: 'Success'});
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
@@ -262,7 +262,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    mockedAppRequest.query = {id: 'test'};
+    mockedAppRequest.query = {id: 'test', lang: 'en'};
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
     //when
@@ -282,7 +282,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    mockedAppRequest.query = {id: 'test'};
+    mockedAppRequest.query = {id: 'test', lang: 'en'};
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(undefined);
     //when
@@ -302,7 +302,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    mockedAppRequest.query = {id: 'test'};
+    mockedAppRequest.query = {id: 'test', lang: 'en'};
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentStatus').mockRejectedValueOnce(new Error('something went wrong'));
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
