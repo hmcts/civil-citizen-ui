@@ -261,6 +261,11 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Credit card",
+      "CHEQUE": "Cheque",
+      "BACS": "BACS"
+    },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Every 2 Weeks Payments",
       "FOUR_WEEKLY": "Every 4 Weeks Payments",
@@ -3983,7 +3988,8 @@
       "FIND_PIN": "You can find it on the email or letter we sent you.",
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
       "SECURITY_CODE": "Security code",
-      "TITLE": "Enter security code"
+      "TITLE": "Enter security code",
+      "CLAIM_ASSIGNED_TO_LR": "You cannot access this claim as it has been assigned to your legal representative."
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
