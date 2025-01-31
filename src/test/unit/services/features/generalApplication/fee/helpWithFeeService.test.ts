@@ -18,6 +18,7 @@ import {AppSession, UserDetails} from 'models/AppRequest';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import * as feePaymentServiceModule from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -134,9 +135,29 @@ describe('apply help with application fee selection', () => {
     mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1235'}};
     mockGAHwFDraftStore.mockResolvedValueOnce(new GaHelpWithFees());
   });
-  it('should return test url if applyHelpWithFees option is No', async () => {
+  it('should return test url if applyHelpWithFees option is No without exists reference', async () => {
     //given
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(ccdClaim);
+    const mockClaimFeePaymentRedirectInfo = {
+      status: 'initiated',
+      nextUrl: nextUrl,
+    };
+    jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
+    mockedAppRequest.query = {id: 'test'};
+    //when
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
+    //Then
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, nextUrl));
+  });
+
+  it('should return test url if applyHelpWithFees option is No with exists reference', async () => {
+    //given
+    const newClaim = claim;
+    newClaim.generalApplication.applicationFeePaymentDetails = new PaymentInformation('test','test', 'test', nextUrl);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(newClaim);
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(ccdClaim);
@@ -199,7 +220,7 @@ describe('apply help with application fee selection', () => {
   it('should enable the warning text if claim not updated with GA ref', async () => {
     const originalUrl = '/case/1/general-application/apply-help-fee-selection?id=abcdef&appFee=275';
     claim.paymentSyncError = false;
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(ccdClaimNoGARef);
