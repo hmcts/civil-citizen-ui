@@ -5,8 +5,8 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
+import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -28,7 +28,8 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
     let interestToDate = 0;
 
     if (claim.hasInterest()) {
-      interestToDate = calculateInterestToDate(claim);
+      const caseData = translateDraftClaimToCCD(claim, req);
+      interestToDate = await civilServiceClient.calculateClaimInterest(caseData, req);
     }
 
     const form = {
