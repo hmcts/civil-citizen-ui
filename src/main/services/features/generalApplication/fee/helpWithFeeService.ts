@@ -50,11 +50,15 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-
     if (applyHelpWithFees.option === YesNo.NO) {
-      let paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-      claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-      claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+      let paymentRedirectInformation;
+      if (claim.generalApplication?.applicationFeePaymentDetails?.paymentReference){
+        paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
+      } else {
+        paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+        claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+        claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+      }
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       await saveUserId(claimId, req.session.user.id);
       try {
