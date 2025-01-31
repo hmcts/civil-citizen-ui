@@ -71,11 +71,6 @@ export const IGNORED_URLS = [
   urls.VIEW_RESPONSE_TO_CLAIM,
   urls.VIEW_THE_JUDGMENT_URL,  //TODO: remove this once finished the page
 
-  urls.GENERAL_APPLICATION_CONFIRM_URL,  //TODO: remove this once finished the page
-  urls.GA_APPLICATION_SUMMARY_URL, //TODO: remove this once finished the page
-  urls.GA_VIEW_APPLICATION_URL, //TODO: remove this once finished the page
-  urls.GA_PAY_ADDITIONAL_FEE_URL, //TODO: remove this once finished the page
-  urls.GA_PROVIDE_MORE_INFORMATION_URL, //TODO: remove this once finished the page
   urls.GA_CHECK_YOUR_ANSWERS_COSC_URL,  //TODO: remove this once finished the page
   urls.GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   urls.GA_COSC_CONFIRM_URL,
