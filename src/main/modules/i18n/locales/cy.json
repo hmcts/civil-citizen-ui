@@ -261,6 +261,11 @@
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Cerdyn credyd",
+      "CHEQUE": "Siec",
+      "BACS": "BACS"
+    },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Taliadau bob 2 wythnos",
       "FOUR_WEEKLY": "Taliadau bob 4 wythnos",
@@ -3983,7 +3988,8 @@
       "FIND_PIN": "Gellir ei weld ar yr e-bost neu'r llythyr a anfonwyd gennym.",
       "FOR_A_NEW_SECURITY_CODE": "am god diogelwch newydd.",
       "SECURITY_CODE": "Cod diogelwch",
-      "TITLE": "Nodwch y cod diogelwch"
+      "TITLE": "Nodwch y cod diogelwch",
+      "CLAIM_ASSIGNED_TO_LR": "Ni allwch gael mynediad at yr hawliad hwn oherwydd mae wedi’i neilltuo i’ch cynrychiolydd cyfreithiol."
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
