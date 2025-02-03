@@ -441,7 +441,7 @@ class Response {
 
   yourRepaymentPlan(isPartial){
     let futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 1);
+    futureDate.setDate(futureDate.getDate() + 2);
 
     I.click(responseTaskListItems.YOUR_REPAYMENT_PLAN, checkTaskList(responseTaskListItems.YOUR_REPAYMENT_PLAN, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/payment-plan');
