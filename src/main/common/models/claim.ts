@@ -1044,7 +1044,8 @@ export class Claim {
   }
 
   isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES ||
+    this.respondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
@@ -1077,6 +1078,11 @@ export class Claim {
     return [CaseState.CASE_PROGRESSION, CaseState.HEARING_READINESS,
       CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
       CaseState.All_FINAL_ORDERS_ISSUED].includes(this.ccdState);
+  }
+
+  isAnyPartyBilingual() : boolean {
+    return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
   }
 }
 

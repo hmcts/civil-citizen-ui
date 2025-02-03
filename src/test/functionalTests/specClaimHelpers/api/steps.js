@@ -73,26 +73,36 @@ const data = {
 
 };
 
-let caseId, eventName;
+let caseId, eventName, payload;
 let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
-  makeOrderGA: async (gaCaseId, user = config.judgeUserWithRegionId2) => {
-    console.log('Creating an order without notice on ga of id: ' + gaCaseId);
+  makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
+    console.log('Make an Order of GA: ' + gaCaseId);
     eventName = 'MAKE_DECISION';
-
     const document = await uploadDocument();
-
-    const payload = makeAnOrderGA.makeAnOrderGA(document);
-
+    switch(courtResponseType){
+      case 'approveOrEdit':
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+      case 'dismissAnOrder':
+        payload = makeAnOrderGA.dismissAnOrderGA(document);
+        break;
+      case 'giveDirections':
+        payload = makeAnOrderGA.giveDirections(document);
+        break;
+      case 'freeFormOrder':
+        payload = makeAnOrderGA.freeFormOrder(document);
+        break;
+      default:
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+    }
     await apiRequest.setupTokens(user);
-
     caseData = payload['caseDataUpdate'];
-
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
-
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
 
@@ -429,20 +439,20 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
-    // if (!carmEnabled) {
-    //   await apiRequest.setupTokens(config.systemUpdate);
-    //   console.log('carm not enabled, updating submitted date to past for legacy cases');
-    //   const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
-    //   await testingSupport.updateCaseData(caseId, submittedDate);
-    //   console.log('submitted date update to before carm date for legacy cases');
-    // }
-    // if (claimType === 'Intermediate' || claimType === 'Multi') {
-    //   console.log('updating submitted date for minti case');
-    //   await apiRequest.setupTokens(config.systemUpdate);
-    //   const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
-    //   await testingSupport.updateCaseData(caseId, submittedDate);
-    //   console.log('submitted date update to after minti date');
-    // }
+    if (!carmEnabled) {
+      await apiRequest.setupTokens(config.systemUpdate);
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
+      const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date for legacy cases');
+    }
+    if (claimType === 'Intermediate' || claimType === 'Multi') {
+      console.log('updating submitted date for minti case');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to after minti date');
+    }
 
     // await apiRequest.setupTokens(user);
     // let newPayload = {

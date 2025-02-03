@@ -19,6 +19,11 @@ import { FileUpload } from 'models/caseProgression/fileUpload';
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService');
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
