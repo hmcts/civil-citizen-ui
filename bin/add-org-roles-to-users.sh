@@ -32,8 +32,8 @@ echo "Setting up Users with role assignments..."
 ./bin/utils/organisational-role-assignment.sh "ga_ctsc_team_leader_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "case-allocator" '{"jurisdiction":"CIVIL","primaryLocation":"283922"}' "CTSC"
 ./bin/utils/organisational-role-assignment.sh "ga_ctsc_team_leader_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "ctsc-team-leader" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests"}' "CTSC"
 
-./bin/utils/organisational-role-assignment.sh "tribunal_legal_caseworker_reg2@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests,hearing_work"}' "LEGAL_OPERATIONS"
-./bin/utils/organisational-role-assignment.sh "tribunal_legal_caseworker_reg4@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests,hearing_work}' "LEGAL_OPERATIONS"
+./bin/utils/organisational-role-assignment.sh "tribunal_legal_caseworker_reg2@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests,hearing_work"}' "legal-operations"
+./bin/utils/organisational-role-assignment.sh "tribunal_legal_caseworker_reg4@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests,hearing_work}' "legal-operations"
 
 ./bin/utils/organisational-role-assignment.sh "4924221EMP-@ejudiciary.net" "${JUDGE_PASSWORD}" "PUBLIC" "hmcts-judiciary" '{"jurisdiction":"CIVIL","primaryLocation":"455174"}' "JUDICIAL"
 ./bin/utils/organisational-role-assignment.sh "4924221EMP-@ejudiciary.net" "${JUDGE_PASSWORD}" "PUBLIC" "hearing-viewer" '{"jurisdiction":"CIVIL","primaryLocation":"455174"}' "JUDICIAL"
