@@ -237,7 +237,7 @@ class createGASteps {
 
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -352,7 +352,7 @@ class createGASteps {
     const applicationType = 'Change a hearing date';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -466,7 +466,7 @@ class createGASteps {
     const applicationType = 'More time to do what is required by a court order';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -581,7 +581,7 @@ class createGASteps {
     const applicationType = 'Relief from a penalty you\'ve been given by the court';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -698,7 +698,7 @@ class createGASteps {
     const applicationType = 'Make a change to your claim or defence that you\'ve submitted';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -814,7 +814,7 @@ class createGASteps {
     const applicationType = 'Court to make a summary judgment on a case';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -930,7 +930,7 @@ class createGASteps {
     const applicationType = 'Court to strike out all or part of the other parties\' case without a trial';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1046,7 +1046,7 @@ class createGASteps {
     const applicationType = 'Court to pause a claim';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1162,7 +1162,7 @@ class createGASteps {
     const applicationType = 'Court to impose a sanction on the other parties unless they do a specific action';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1366,7 +1366,7 @@ class createGASteps {
     const applicationType = 'Court to do something that\'s not on this list';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1475,6 +1475,18 @@ class createGASteps {
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
+  }
+
+  async additionalPayment(feeAmount) {
+    await applyHelpFeeSelectionPage.verifyPageContentForAdditionalFee();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    await govPay.addValidCardDetails(feeAmount);
+    govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyAdditionalPaymentPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
   }
 }
 
