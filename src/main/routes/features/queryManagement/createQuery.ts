@@ -16,23 +16,27 @@ queryManagementController.get('/:claimId/create-query', (async (req: AppRequest,
 
 queryManagementController.post('/:claimId/create-query', (async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.claimId;
-  const queryData = req.body;
+  // const queryData = req.body;
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
   claim.qmApplicantCitizenQueries = {
     partyName: 'bob smith',
     roleOnCase: 'leader',
-    caseMessageCollection: [{
-      id: '321',
-      subject: queryData['query-subject-input'],
-      name: 'Bob',
-      body: queryData['query-details-input'],
-      isHearingRelated: YesNoUpperCamelCase.NO,
-      createdOn: Date.now(),
-      createdBy: 'Bob',
+    caseMessages: [{
+      id: '0c590a44-7fe3-49fd-a419-036395d821a4',
+      value: {
+        id: '098285d4-248b-45af-9023-d5612c305e5f',
+        subject: 'sub',
+        name: 'Bob',
+        body: 'bodyyyy',
+        isHearingRelated: YesNoUpperCamelCase.NO,
+        createdOn: Date.now(),
+        createdBy: '0c590a44-7fe3-49fd-a419-036395d821a4',
+      },
     }],
   };
   const updatedClaim = {...claim} as ClaimUpdate;
   console.log(updatedClaim);
+  console.log(updatedClaim.qmApplicantCitizenQueries.caseMessages);
   const response = await civilServiceClient.submitQueryManagementRaiseQuery(claimId, updatedClaim, req);
   console.log(response);
 }));

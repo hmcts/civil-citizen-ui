@@ -434,6 +434,7 @@ import submitApplicationOfflineController from 'routes/features/generalApplicati
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
+import queryManagementController from 'routes/features/queryManagement/createQuery';
 
 export default [
   homeController,
@@ -783,4 +784,5 @@ export default [
   submitApplicationOfflineController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
+  queryManagementController
 ];
