@@ -261,6 +261,11 @@
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Cerdyn credyd",
+      "CHEQUE": "Siec",
+      "BACS": "BACS"
+    },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Taliadau bob 2 wythnos",
       "FOUR_WEEKLY": "Taliadau bob 4 wythnos",

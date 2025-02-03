@@ -261,6 +261,11 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Credit card",
+      "CHEQUE": "Cheque",
+      "BACS": "BACS"
+    },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Every 2 Weeks Payments",
       "FOUR_WEEKLY": "Every 4 Weeks Payments",
