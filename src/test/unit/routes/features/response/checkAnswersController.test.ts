@@ -20,6 +20,8 @@ import {Claim} from 'common/models/claim';
 import {Party} from 'common/models/party';
 import {PartyType} from 'common/models/partyType';
 import {Email} from 'common/models/Email';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -64,7 +66,7 @@ export const TASK_LISTS = [
 const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_CHECK_ANSWERS_URL);
 
 const mockClaimWithPcqId = new Claim();
-mockClaimWithPcqId.pcqId = '123';
+mockClaimWithPcqId.respondentResponsePcqId = '123';
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -159,6 +161,11 @@ describe('Response - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicRespondentDetails();
       });
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        mockClaimWithPcqId.directionQuestionnaire = new DirectionQuestionnaire();
+        mockClaimWithPcqId.directionQuestionnaire.hearing = new Hearing();
+        return mockClaimWithPcqId;
+      });
       const data = {signed: ''};
       await request(app)
         .post(respondentCheckAnswersUrl)
@@ -166,9 +173,12 @@ describe('Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
+          expect(res.text).toContain('Select a court');
+          expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
         });
     });
     it('should return 500 when error in service', async () => {
+      mockGetCaseDataFromDraftStore.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       mockSaveStatementOfTruth.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

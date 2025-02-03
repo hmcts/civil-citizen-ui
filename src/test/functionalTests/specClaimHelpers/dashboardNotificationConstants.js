@@ -474,4 +474,63 @@ module.exports = {
         'You can view your mediation agreement here.'],
     };
   },
+
+  caseOffline: () => {
+    return {
+      title: 'Your online account will no longer be updated',
+      content: 'Your online account will no longer be updated. If there are any further updates to your case these will be by post.',
+    };
+  },
+
+  caseOnline: () => {
+    return {
+      title: 'Response to the claim',
+      content: 'Sir John Doe has rejected the claim and refused the mediation',
+    };
+  },
+
+  caseOfflineAfterSDO: () => {
+    return {
+      title: 'An order has been issued by the court',
+      content: 'Please follow instructions in the order and comply with the deadlines. Please send any documents to the court named in the order if required. The claim will now proceed offline, you will receive further updates by post.',
+    };
+  },
+
+  // General application notifications below:
+  // Pay application fee
+  payApplicationFeeGA: (feeAmount) => {
+    return {
+      title: 'Pay application fee',
+      content: `To finish making your application, you must pay the application fee of £${feeAmount}.00 as soon as possible. Your application will be paused and will not be sent to the other parties or considered by a judge until you’ve paid the fee.`,
+      nestSteps: 'Pay application fee',
+    };
+  },
+
+  // Application being processed
+  applicationBeingProcessedGA: () => {
+    return {
+      title: 'Application is being processed',
+      content: ['A judge will consider the application.',
+        'The other parties can respond within 5 working days after the application is submitted, unless you\'ve chosen not to inform them. If you have a hearing in the next 10 days, your application will be treated urgently.'],
+      nextSteps: 'View application documents',
+    };
+  },
+
+  // Additional application fee
+  payAdditionalApplicationFeeGA: () => {
+    return {
+      title: 'You must pay an additional application fee',
+      content: 'The court requires you to pay an additional fee before your application can progress further.',
+      nextSteps: 'Pay the additional application fee',
+    };
+  },
+
+  // An order has been made
+  orderMadeGA: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order related to the application.',
+      nextSteps: 'View the order',
+    };
+  },
 };

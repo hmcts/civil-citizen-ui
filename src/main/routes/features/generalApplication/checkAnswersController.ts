@@ -13,14 +13,16 @@ import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/d
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
+import {getSummaryCardSections, getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {queryParamNumber} from 'common/utils/requestUtils';
+import {YesNo} from 'form/models/yesNo';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -28,14 +30,16 @@ const viewPath = 'features/generalApplication/check-answers';
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const claimIdPrettified = caseNumberPrettify(claimId);
+  const index  = queryParamNumber(req, 'index');
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const applicationTypeCards = getSummaryCardSections(claimId, claim, lang);
   const summaryRows = getSummarySections(claimId, claim, lang);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
 
   const backLinkUrl = claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber
-    ? constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE)
-    : constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
+    ? constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE), index)
+    : constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL), index);
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -76,11 +80,16 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
 
 function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number,genAppId: string ): string {
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
+    && isWithConsent(claim)
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
   } else {
     return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
   }
+}
+
+function isWithConsent(claim: Claim): boolean {
+  return claim.generalApplication?.agreementFromOtherParty === YesNo.YES;
 }
 
 function hearingMoreThan14DaysInFuture(claim: Claim): boolean {

@@ -22,6 +22,11 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
@@ -232,8 +237,8 @@ describe('General Application - upload evidence docs to support application', ()
 
     it.each`
     selectedApplicationType                                                     | expectedUrl
-    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_UPLOAD_DOCUMENTS_URL}
-    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_UPLOAD_DOCUMENTS_COSC_URL}
+    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_UPLOAD_DOCUMENTS_URL+'?index=undefined'}
+    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_UPLOAD_DOCUMENTS_COSC_URL+'?index=undefined'}
     `('should redirect to current page ($expectedUrl) when application type is $selectedApplicationType',
       async ({ selectedApplicationType, expectedUrl}) => {
         //Given
@@ -257,8 +262,8 @@ describe('General Application - upload evidence docs to support application', ()
 
     it.each`
     selectedApplicationType                                                     | expectedUrl
-    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_HEARING_ARRANGEMENTS_GUIDANCE_URL}
-    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_CHECK_YOUR_ANSWERS_COSC_URL}
+    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_HEARING_ARRANGEMENTS_GUIDANCE_URL+'?index=undefined'}
+    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_CHECK_YOUR_ANSWERS_COSC_URL+'?index=undefined'}
     `('should redirect to next page ($expectedUrl) when application type is $selectedApplicationType', async ({ selectedApplicationType, expectedUrl}) => {
       //Given
       claim = new Claim();

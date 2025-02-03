@@ -1,33 +1,39 @@
-import { Claim } from 'models/claim';
-import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
-import { HearingFeeInformation } from 'models/caseProgression/hearingFee/hearingFee';
-import { FIXED_DATE } from '../../../../utils/dateUtils';
+import {Claim} from 'models/claim';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
 import {
   extractOrderDocumentIdFromNotification,
   getContactCourtLink,
   getDashboardForm,
-  getNotifications, sortDashboardNotifications,
+  getNotifications,
+  sortDashboardNotifications,
 } from 'services/dashboard/dashboardService';
-import { CaseRole } from 'form/models/caseRoles';
-import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
-import { AppRequest } from 'common/models/AppRequest';
-import axios, { AxiosInstance } from 'axios';
-import { req } from '../../../../utils/UserDetails';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { DashboardNotification } from 'models/dashboard/dashboardNotification';
-import { plainToInstance } from 'class-transformer';
-import { Dashboard } from 'models/dashboard/dashboard';
-import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
-import { ClaimantOrDefendant } from 'models/partyType';
-import { CivilServiceDashboardTask } from 'models/dashboard/taskList/civilServiceDashboardTask';
-import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
-import { DashboardTaskStatus } from 'models/dashboard/taskList/dashboardTaskStatus';
-import { YesNo } from 'form/models/yesNo';
+import {CaseRole} from 'form/models/caseRoles';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {AppRequest} from 'common/models/AppRequest';
+import axios, {AxiosInstance} from 'axios';
+import {req} from '../../../../utils/UserDetails';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {plainToInstance} from 'class-transformer';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {ClaimantOrDefendant} from 'models/partyType';
+import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
+import {YesNo} from 'form/models/yesNo';
 import {CaseLink} from 'models/generalApplication/CaseLink';
-import { CaseState } from 'common/form/models/claimDetails';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
+import {CaseState} from 'common/form/models/claimDetails';
+import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
-import {isGaForLipsEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {
+  isGaForLipsEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {GA_SUBMIT_OFFLINE} from 'routes/urls';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -223,6 +229,7 @@ describe('dashboardService', () => {
       it('Notifications', async () => {
         //Given
         (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
         const notificationList: DashboardNotification[] = mockNotificationInfo;
         const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
         const applicantNotificationItems = plainToInstance(DashboardNotification, notificationList);
@@ -349,7 +356,8 @@ describe('dashboardService', () => {
 
       });
 
-      it('getContactCourtLink when Gaflag is enable', async () => {
+      it('getContactCourtLink when Gaflag is enable and not whitelisted', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
         //Given
         const claim = new Claim();
         claim.id = '1234567890';
@@ -357,45 +365,34 @@ describe('dashboardService', () => {
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
         claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
         //When
-        const result = getContactCourtLink(claim.id, claim, true, 'en');
+        const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
         //Then
-        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
-        expect(result.url).toContain('/case/1234567890/general-application/application-type');
+        expect(result).toBeUndefined();
       });
 
-      it('getContactCourtLink when Gaflag is not enable', async () => {
+      it('Hide getContactCourtLink when CASE_SETTLED', async () => {
         //Given
         const claim = new Claim();
         claim.id = '1234567890';
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
-        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.ccdState = CaseState.CASE_SETTLED;
         claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
         //Then
-        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
-        expect(result.url).toContain(applicationNoticeUrl);
-      });
-
-      it('getContactCourtLink when claim is taken offline', async () => {
-        //Given
-        const claim = new Claim();
-        claim.id = '1234567890';
-        claim.caseRole = CaseRole.DEFENDANT;
-        claim.totalClaimAmount = 900;
-        claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-        claim.takenOfflineDate = new Date();
-        claim.defendantUserDetails = {};
-        //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
-
-        //Then
-        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
-        expect(result.url).toBeUndefined();
+        expect(result).toBeUndefined();
       });
 
       it('getContactCourtLink when claim is in Pending Case Issued state', async () => {
@@ -407,8 +404,12 @@ describe('dashboardService', () => {
         claim.ccdState = CaseState.PENDING_CASE_ISSUED;
         claim.takenOfflineDate = new Date();
         claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -423,8 +424,12 @@ describe('dashboardService', () => {
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
         claim.takenOfflineDate = new Date();
         claim.defendantUserDetails = undefined;
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -437,8 +442,12 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         claim.takenOfflineDate = new Date();
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
@@ -453,11 +462,100 @@ describe('dashboardService', () => {
         claim.ccdState = CaseState.PENDING_CASE_ISSUED;
         claim.takenOfflineDate = new Date();
         claim.defendantUserDetails = undefined;
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
         //When
-        const result = getContactCourtLink(claim.id, claim, false, 'en');
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
         expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when claim is taken offline', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+        claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        //When
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when Gaflag is enable and  whitelisted', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        //When
+        const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toContain('/case/1234567890/general-application/application-type');
+      });
+
+      it('getContactCourtLink when Gaflag is not enable', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        //When
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toContain(applicationNoticeUrl);
+      });
+
+      it('getContactCourtLink when any party is Bilingual', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        //When
+        const result = await getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toContain(GA_SUBMIT_OFFLINE);
       });
 
     });
@@ -489,9 +587,10 @@ describe('dashboardService', () => {
           , new DashboardTaskList('test', 'test', []),
         ));
 
-      it('Application section when GaFlag enabled and the case is not assigned to defendant', async () => {
+      it('Application section when GaFlag enabled and location not whitelisted and the case is not assigned to defendant', async () => {
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
 
         const claim = new Claim();
         claim.id = '1234567890';
@@ -511,9 +610,37 @@ describe('dashboardService', () => {
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
 
-      it('Application section when GaFlag disabled and the case is assigned to defendant', async () => {
+      it('Application section when GaFlag enabled and location whitelisted and the case is not assigned to defendant', async () => {
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when GaFlag disabled  and court whitelisted and the case is assigned to defendant', async () => {
 
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
         const claim = new Claim();
@@ -535,15 +662,20 @@ describe('dashboardService', () => {
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
 
-      it('Application section when GaFlag disabled and the case is not assigned to defendant', async () => {
+      it('Application section when GaFlag disabled court whitelisted and the case is not assigned to defendant', async () => {
 
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
         const claim = new Claim();
         claim.id = '1234567890';
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
 
         //When
         const claimantDashboard = await getDashboardForm(
@@ -565,6 +697,7 @@ describe('dashboardService', () => {
             , new DashboardTaskList('test', 'test', [])
             , new DashboardTaskList('Applications', 'Applications', []),
           ));
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
@@ -573,6 +706,44 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , false);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when GaFlag enabled and ea not whitelisted and the case is assigned to defendant', async () => {
+
+        const dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
 
         dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
 
@@ -682,6 +853,23 @@ describe('dashboardService', () => {
       expect(notificationsList.items[0].id).toEqual('2');
       expect(notificationsList.items[1].id).toEqual('3');
       expect(notificationsList.items[2].id).toEqual('1');
+    });
+
+    it('should prioritize notifications with titles "The case has been stayed" and "The stay has been lifted"', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', 'The case has been stayed', '', '', '', '', undefined, undefined, '', '');
+      const notification2 = new DashboardNotification('2', 'Other title', '', '', '', '', undefined, undefined, '', '');
+      const notification3 = new DashboardNotification('3', 'The stay has been lifted', '', '', '', '', undefined, undefined, '', '');
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2, notification3];
+
+      // When
+      sortDashboardNotifications(notificationsList, []);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('1');
+      expect(notificationsList.items[1].id).toEqual('3');
+      expect(notificationsList.items[2].id).toEqual('2');
     });
   });
 });

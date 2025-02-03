@@ -25,6 +25,7 @@ jest.mock('i18next', () => ({
 
 const claimAndResponse = () => {
   const response = new GaResponse();
+  response.hasUnavailableDatesHearing = YesNo.YES;
   return { response };
 };
 
@@ -35,22 +36,24 @@ const unavailableHearingDate = (dateType: UnavailableDateType, from: string, unt
   return unavailableDate;
 };
 
+const gaResponse = new GaResponse();
+gaResponse.hasUnavailableDatesHearing = YesNo.YES;
 describe('Check Answers response service', () => {
 
   describe('getSummarySections', () => {
 
     it('returns no sections when no general application', () => {
-      expect(getSummarySections('123', '345', new GaResponse(), 'en')).toEqual([{
+      expect(getSummarySections('123', '345', gaResponse, 'en')).toEqual([{
         'key': {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -60,17 +63,17 @@ describe('Check Answers response service', () => {
     });
 
     it('returns no sections when general application is empty', () => {
-      expect(getSummarySections('123', '345', new GaResponse(), 'en')).toEqual([{
+      expect(getSummarySections('123', '345', gaResponse, 'en')).toEqual([{
         'key': {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -82,7 +85,7 @@ describe('Check Answers response service', () => {
     it('returns accept offer rows - yes', () => {
       const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
-
+      response.hasUnavailableDatesHearing = YesNo.YES;
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE' },
         value: { html: 'COMMON.VARIATION_2.YES' },
@@ -99,12 +102,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -117,7 +120,6 @@ describe('Check Answers response service', () => {
     it('returns accept offer rows - yes (ignoring other fields)', () => {
       const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500', 'reason');
-
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE' },
         value: { html: 'COMMON.VARIATION_2.YES' },
@@ -134,12 +136,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -152,7 +154,6 @@ describe('Check Answers response service', () => {
     it('returns accept offer rows - no - installments', () => {
       const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.NO, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500.05', 'Reason Proposed Instalments');
-
       const expectedPaymentHtml = '<ul class="no-list-style">'
         + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_INSTALMENTS</li>'
         + '<li>£500.05</li>'
@@ -186,12 +187,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -209,7 +210,6 @@ describe('Check Answers response service', () => {
         proposedSetDate: new Date('2024-02-29'),
         reasonProposedSetDate: 'reason for set day proposal',
       } as AcceptDefendantOffer);
-
       const expectedPaymentHtml = '<ul class="no-list-style">'
         + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_SET_DATE</li>'
         + '<li>29/02/2024</li>'
@@ -244,12 +244,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -262,7 +262,6 @@ describe('Check Answers response service', () => {
     it('returns respondent agreement rows', () => {
       const { response } = claimAndResponse();
       response.respondentAgreement = new RespondentAgreement(YesNo.YES);
-
       expect(getSummarySections('123', '345', response, 'en')).toEqual([{
         key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' },
         value: { html: 'COMMON.VARIATION_2.YES' },
@@ -279,12 +278,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -297,7 +296,6 @@ describe('Check Answers response service', () => {
     it('returns respondent agreement rows - disagree', () => {
       const { response } = claimAndResponse();
       response.respondentAgreement = new RespondentAgreement(YesNo.NO, 'reason for disagreement');
-
       expect(getSummarySections('123', '345', response, 'en')).toEqual(
         [{
           key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' },
@@ -315,12 +313,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -376,12 +374,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -412,12 +410,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -460,12 +458,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -496,12 +494,12 @@ describe('Check Answers response service', () => {
               {
                 'href': '/case/123/response/general-application/345/want-to-upload-document',
                 'text': 'COMMON.BUTTONS.CHANGE',
-                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE',
               },
             ],
           },
           'key': {
-            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE',
           },
           'value': {
             'html': html,
@@ -511,7 +509,7 @@ describe('Check Answers response service', () => {
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -521,7 +519,7 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
         },
       ]);
@@ -566,12 +564,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -589,13 +587,30 @@ describe('Check Answers response service', () => {
       const href = '/case/123/response/general-application/345/unavailable-dates';
       expect(getSummarySections('123', '345', response, 'en')).toEqual([
         {
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES' },
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.VARIATION_8.YES',
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              },
+            ],
+          },
+        },
+        {
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND' },
           value: { html: '<ul class="no-list-style"><li>1 January 2024</li></ul>' },
           actions: {
             items: [{
               href,
               text: 'COMMON.BUTTONS.CHANGE',
-              visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND',
             }],
           },
         },
@@ -610,13 +625,30 @@ describe('Check Answers response service', () => {
       const href = '/case/123/response/general-application/345/unavailable-dates';
       expect(getSummarySections('123', '345', response, 'en')).toEqual([
         {
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES' },
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.VARIATION_8.YES',
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              },
+            ],
+          },
+        },
+        {
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND' },
           value: { html: '<ul class="no-list-style"><li>1 January 2024 - 29 February 2024</li></ul>' },
           actions: {
             items: [{
               href,
               text: 'COMMON.BUTTONS.CHANGE',
-              visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND',
             }],
           },
         },
@@ -634,13 +666,30 @@ describe('Check Answers response service', () => {
       const href = '/case/123/response/general-application/345/unavailable-dates';
       expect(getSummarySections('123', '345', response, 'en')).toEqual([
         {
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES' },
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+          },
+          'value': {
+            'html': 'COMMON.VARIATION_8.YES',
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              },
+            ],
+          },
+        },
+        {
+          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND' },
           value: { html: '<ul class="no-list-style"><li>1 January 2024 - 29 February 2024</li><li>1 March 2024</li><li>1 May 2024 - 1 June 2024</li></ul>' },
           actions: {
             items: [{
               href,
               text: 'COMMON.BUTTONS.CHANGE',
-              visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND',
             }],
           },
         },
@@ -656,12 +705,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },
@@ -680,12 +729,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -707,7 +756,7 @@ describe('Check Answers response service', () => {
 
     it('returns selected support options - several', () => {
       const { response } = claimAndResponse();
-      response.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT, SupportType.SIGN_LANGUAGE_INTERPRETER]);
+      response.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT, SupportType.SIGN_LANGUAGE_INTERPRETER], 'reason A', 'reason B', 'reason C');
 
       expect(getSummarySections('123', '345', response, 'en')).toEqual([
         {
@@ -715,12 +764,12 @@ describe('Check Answers response service', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' ',
+            'html': 'COMMON.VARIATION_8.YES',
           },
           'actions': {
             'items': [
               {
-                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'href': '/case/123/response/general-application/345/unavailability-confirmation',
                 'text': 'COMMON.BUTTONS.CHANGE',
                 'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
               },
@@ -732,9 +781,9 @@ describe('Check Answers response service', () => {
           value: {
             html: '<ul class="no-list-style">'
               + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li>'
-              + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER</li>'
-              + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER</li>'
-              + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER</li>'
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'reason A'</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER - 'reason B'</li>"
+              + "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER - 'reason C'</li>"
               + '</ul>',
           },
           actions: {
@@ -756,12 +805,12 @@ describe('Check Answers response service', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': ' ',
+          'html': 'COMMON.VARIATION_8.YES',
         },
         'actions': {
           'items': [
             {
-              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'href': '/case/123/response/general-application/345/unavailability-confirmation',
               'text': 'COMMON.BUTTONS.CHANGE',
               'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             },

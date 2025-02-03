@@ -18,7 +18,11 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/generalApplication/checkAnswers/checkAnswersService');
 jest.mock('../../../../../../../main/services/features/generalApplication/submitApplication');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;

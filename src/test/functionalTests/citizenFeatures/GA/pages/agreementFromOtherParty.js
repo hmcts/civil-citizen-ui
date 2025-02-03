@@ -13,10 +13,10 @@ class AgreementFromOtherParty {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     this.verifyPageText();
     await this.verifyOptions();
     contactUs.verifyContactUs();
@@ -26,9 +26,9 @@ class AgreementFromOtherParty {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
-    I.see('Application from the other parties', 'h1');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'h1');
+    I.see('Agreement from the other parties', 'h1');
   }
 
   async verifyPageText() {
@@ -41,7 +41,6 @@ class AgreementFromOtherParty {
     I.see('The application fee will be reduced, unless this is an application to:');
     I.see('set aside (remove) a judgment', 'li');
     I.see('vary a judgment', 'li');
-    I.see('reconsider an order', 'li');
     await I.see('There may also be no need for a hearing to make a decision on the application. You\'ll see the final application fee amount before you pay.');
   }
 

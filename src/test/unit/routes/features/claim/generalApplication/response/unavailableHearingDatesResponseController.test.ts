@@ -94,6 +94,25 @@ describe('General Application Response- Unavailable hearing dates', () => {
         });
     });
 
+    it('should return errors when no information is provided', async () => {
+      getUnavailableDatesHearingFormMock.mockImplementation(() => {
+        return new UnavailableDatesGaHearing(
+          [new UnavailableDatePeriodGaHearing(undefined,
+            {'day': undefined, 'month': undefined, 'year': undefined})],
+        );
+      });
+      const mockGaResponse = new GaResponse();
+      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
+      await request(app)
+        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
+        .send()
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'));
+        });
+    });
+
     it('should send action add_another-unavailableDates', async () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return new UnavailableDatesGaHearing(
@@ -145,7 +164,7 @@ describe('General Application Response- Unavailable hearing dates', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GA_ENTER_DAY_FOR_UNAVAILABILITY'));
+          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
         });
     });
 

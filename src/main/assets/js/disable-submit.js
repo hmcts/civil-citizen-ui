@@ -1,8 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Regular expression to match URLs in the format "/claim/{id}/fee"
-  const urlPattern = /^\/claim\/\d+\/fee$/;
+  // Regular expression to match URLs corresponding to pages linking to payment portal"
+  const urlPatterns = [
+    /^\/claim\/\d+\/fee$/,
+    /^\/case\/\d+\/case-progression\/pay-hearing-fee\/apply-help-fee-selection$/,
+    /^\/case\/\d+\/case-progression\/make-payment-again$/,
+    /^\/case\/\d+\/general-application\/\d*\/?apply-help-fee-selection$/,
+    /^\/case\/\d+\/general-application\/\d+\/apply-help-additional-fee-selection$/,
+  ];
   const path = window.location.pathname;
-  if (urlPattern.test(path)) {
+  if (urlPatterns.some(pattern => pattern.test(path))) {
     const form = document.getElementsByTagName('form')[0];
     if (form) {
       form.onsubmit = handleSubmit;

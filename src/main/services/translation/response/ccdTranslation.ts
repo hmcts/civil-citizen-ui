@@ -49,6 +49,7 @@ import {
   toCCDDisclosureOfNonElectronicDocuments,
 } from 'services/translation/response/convertToCCDDisclosureOfDocuments';
 import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
+import {convertToPence} from 'services/translation/claim/moneyConversation';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -67,7 +68,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondToAdmittedClaim: toCCDRespondToClaim(claim.partialAdmission?.howMuchHaveYouPaid),
     specDefenceAdmittedRequired: toCCDYesNoFromGenericYesNo(claim.partialAdmission?.alreadyPaid),
     respondToAdmittedClaimOwingAmountPounds: claim.partialAdmission?.howMuchDoYouOwe?.amount?.toString(),
-    respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount ? (claim.partialAdmission?.howMuchDoYouOwe?.amount * 100).toString(): undefined,
+    respondToAdmittedClaimOwingAmount: claim.partialAdmission?.howMuchDoYouOwe?.amount ? convertToPence(claim.partialAdmission?.howMuchDoYouOwe?.amount).toString(): undefined,
     detailsOfWhyDoesYouDisputeTheClaim: claim.detailsOfWhyYouDisputeTheClaim(),
     specClaimResponseTimelineList: TimelineUploadTypeSpec.MANUAL, // sets to manual cause CUI do not have other option
     specResponseTimelineOfEvents: toCCDResponseTimelineOfEvents(claim),
@@ -109,6 +110,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specRespondent1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.directionQuestionnaire?.hearing),
     specRespondent1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.directionQuestionnaire?.hearing),
     respondent1DQClaimantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing),
+    respondentResponsePcqId: claim.respondentResponsePcqId,
   };
 };
 

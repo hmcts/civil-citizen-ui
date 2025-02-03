@@ -7,24 +7,29 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {t} from 'i18next';
 import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
-import * as cache from 'modules/draft-store/courtLocationCache';
 import {Claim} from 'common/models/claim';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CourtLocation} from 'models/courts/courtLocations';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
+jest.mock('services/features/directionsQuestionnaire/hearing/specificCourtLocationService');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockCachedLocations = cache.getCourtLocationsFromCache as jest.Mock;
+const mockListOfCourtLocations = getListOfCourtLocations as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
@@ -52,7 +57,7 @@ describe('General Application Response - Application hearing arrangements', () =
   describe('on GET', () => {
     it('should return Application hearing arrangements page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockCachedLocations.mockImplementation( async ()=> courtLocation);
+      mockListOfCourtLocations.mockImplementation( async ()=> courtLocation);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_ARRANGEMENT_URL))
         .expect((res) => {

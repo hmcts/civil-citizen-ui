@@ -45,6 +45,9 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
             </legend>
+            {% if carmEnabled %}
+              <div id="hint" class="govuk-hint">{{t('PAGES.SUPPORT_REQUIRED.MEDIATION_TEXT')}}</div>
+            {% endif %}
             {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
             <div class="govuk-form-group">
               {{ govukButton({

@@ -14,26 +14,30 @@ import {
 import {SupportRequiredList} from 'common/models/directionsQuestionnaire/supportRequired';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const supportRequiredController = Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required-list';
 const dqPropertyName = 'supportRequiredList';
 const dqParentName = 'hearing';
 
-async function renderView(form: GenericForm<SupportRequiredList>, claimId: string, lang: string, res: Response) {
+async function renderView(form: GenericForm<SupportRequiredList>, claimId: string, lang: string, res: Response, carmEnabled: boolean) {
   const selectedNames = form.model?.items?.map(item => item.fullName);
   const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
   const claim = await getCaseDataFromStore(claimId);
-  res.render(supportRequiredViewPath, { form, peopleLists, isDefendant: claim.isDefendantNotResponded(), pageTitle: 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE'});
+  res.render(supportRequiredViewPath, { form, peopleLists, isDefendant: claim.isDefendantNotResponded(),
+    pageTitle: 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE', carmEnabled: carmEnabled});
 }
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = await getSupportRequired(redisKey);
     const form = new GenericForm(supportRequiredList);
-    renderView(form, redisKey, lang, res);
+    renderView(form, redisKey, lang, res, carmApplicable);
   } catch (error) {
     next(error);
   }
@@ -43,12 +47,14 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = getSupportRequiredForm(req);
     const form = new GenericForm(supportRequiredList);
     form.validateSync();
     if (form.hasErrors()) {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      renderView(form, redisKey, lang, res);
+      renderView(form, redisKey, lang, res, carmApplicable);
     } else {
       await saveDirectionQuestionnaire(redisKey, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL));

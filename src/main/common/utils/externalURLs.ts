@@ -8,7 +8,7 @@ export const smartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_Feedback/?pag
 export const essentialCookiesUrl = 'https://hmcts-access.service.gov.uk/cookies';
 export const countyCourtJudgmentsUri = 'https://www.gov.uk/county-court-judgments-ccj-for-debt';
 export const courtFeesUri = 'https://www.gov.uk/make-court-claim-for-money/court-fees';
-export const countyCourtBusinessCentreUri = 'https://www.find-court-tribunal.service.gov.uk/courts/county-court-business-centre-ccbc';
+export const countyCourtBusinessCentreUri = 'https://www.find-court-tribunal.service.gov.uk/courts/civil-national-business-centre-cnbc';
 export const enforceJudgementUrl = 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment';
 export const claimCreationSmartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_ExitSurvey_Claimant/?pageUrl=/claim/claimId/confirmation';
 export const callChargesUrl = 'https://www.gov.uk/call-charges';
@@ -31,3 +31,4 @@ export const table14 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/
 export const cpr26 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part26#16';
 export const certificateN443Url = 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation';
 export const makeAClaimUrl = 'https://www.gov.uk/make-court-claim-for-money/make-claim';
+export const interpreterUrl = 'https://www.gov.uk/get-interpreter-at-court-or-tribunal';

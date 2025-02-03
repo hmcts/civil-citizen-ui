@@ -1,5 +1,5 @@
 module.exports = {
-  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language) => {
+  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language, respondentLanguage) => {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
@@ -44,7 +44,7 @@ module.exports = {
           respondent1DQHearingSupportLip: {
             supportRequirementLip: 'No',
           },
-          respondent1ResponseLanguage: language,
+          respondent1ResponseLanguage: respondentLanguage,
         },
         detailsOfWhyDoesYouDisputeTheClaim: 'Testreason',
         specClaimResponseTimelineList: 'MANUAL',

@@ -150,7 +150,7 @@ class EligibilityCheck {
 
   async eligibilityClaimantAddressValidations(){
     await I.seeInCurrentUrl('/eligibility/claimant-address');
-    await I.waitForContent('Do you have a postal address in the UK?');
+    await I.waitForContent('Do you have a postal address in England or Wales?');
     await I.click(fields.claimantAddressNo);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claimant-address');
@@ -160,7 +160,7 @@ class EligibilityCheck {
   }
 
   async eligibilityClaimantAddress() {
-    await I.waitForContent('Do you have a postal address in the UK?');
+    await I.waitForContent('Do you have a postal address in England or Wales?');
     await I.click(fields.claimantAddressYes);
     await I.click('Save and continue');
   }
@@ -265,7 +265,6 @@ class EligibilityCheck {
     await I.see('(NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number).');
     await I.see('You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court.');
     await I.see('This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.');
-    await I.see('The claim will stop here unless you change your mind within 95 days.');
     await I.see('You may be asked by the court to email evidence in support of your application before your claim is issued.');
     await I.see('Do you wish to continue to make a Help with Fees Application?');
     await I.click(fields.hwfReferenceYes);
@@ -275,7 +274,8 @@ class EligibilityCheck {
   async eligibilityApplyForHWF(){
     await I.seeInCurrentUrl('/eligibility/apply-for-help-with-fees');
     await I.waitForContent('Apply For Help With Fees');
-    await I.see('If you have already applied for Help with Fees in respect of THIS CLAIM,');
+    await I.see('If you have already applied for Help with Fees in respect of');
+    await I.see('THIS CLAIM,');
     await I.see('you may already have a reference number.');
     await I.see('If so, you can save and continue and enter it when asked.');
     await I.see('Do not use a Help With Fees reference number related a different claim or to any application fees.');
@@ -311,7 +311,8 @@ class EligibilityCheck {
     await I.waitForContent('Do you have a Help With Fees reference number?');
     await I.click(fields.hwfReferenceNo);
     await I.waitForContent('Decide whether to apply for Help with Fees');
-    await I.see('Apply for Help with Fees (opens in a new window) and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.');
+    await I.seeElement('//a[contains(normalize-space(), \'Apply for Help with Fees (opens in a new window)\')]');
+    await I.see('and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.');
     await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.');
     await I.see('Make a note of the Help with Fees number when you make an application.');
     await I.see('You will need this number to make your claim when you are returned to this service.');
@@ -319,7 +320,8 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/hwf-eligible');
     await I.see('You can use this service');
     await I.see('Based on your answers you can make a money claim using this service.');
-    await I.see('You will have to pay court fees unless you are eligible for Help with Fees. Find out more about Help with Fees (opens in a new window) .');
+    await I.see('You will have to pay court fees unless you are eligible for Help with Fees.');
+    await I.seeElement('//a[contains(normalize-space(), \'Find out more about Help with Fees (opens in a new window)\')]');
     await I.click('Continue');
   }
 

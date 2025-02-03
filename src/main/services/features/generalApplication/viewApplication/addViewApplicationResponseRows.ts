@@ -1,4 +1,4 @@
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'common/form/models/yesNo';
 import {
   CcdGADebtorPaymentPlanGAspec, CcdGARespondentDebtorOfferOptionsGAspec,
   CcdGeneralApplicationHearingDetails,
@@ -22,9 +22,16 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
       return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER',
         yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.respondentDebtorOffer === CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT ? YesNo.YES : YesNo.NO))];
     }
-    return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
-      yesNoFormatter(generalApplication?.generalAppRespondent1Representative === YesNoUpperCamelCase.NO ? YesNo.NO : YesNo.YES))];
+  };
 
+  const gaAgreeWithApplicant = (): SummaryRow[] => {
+    const hasApplicantAgreed = response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES;
+    let html =  yesNoFormatter(hasApplicantAgreed ? YesNo.YES : YesNo.NO);
+    if (!hasApplicantAgreed){
+      html += `<ul class="no-list-style">${response.gaRespondentResponseReason}</ul>`;
+    }
+    return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
+      html)];
   };
 
   const acceptOfferSection = (): SummaryRow[] => {
@@ -58,9 +65,10 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const hearingDetailsSections = (hearingDetails: CcdGeneralApplicationHearingDetails | undefined): SummaryRow[] =>
+
     [formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
       hearingDetails?.HearingPreferencesPreferredType,
-      value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${fromCcdHearingType(value)}`, {lng})),
+      value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${fromCcdHearingType(value)}`, {lng})),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
       hearingDetails?.ReasonForPreferredHearingType),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
@@ -70,21 +78,25 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
       hearingDetails?.HearingDetailsEmailID),
     row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
-      unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates)),
+      t(`COMMON.VARIATION_8.${hasUnavailableDates(hearingDetails?.generalAppUnavailableDates)? YesNoUpperCase.YES: YesNoUpperCase.NO}`, {lng})),
+    row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND',
+      unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates, lng)),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
       hearingSupportHtml(hearingDetails?.SupportRequirement))];
 
-  const unavailableDatesHtml = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[]): string => {
+  const unavailableDatesHtml = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[], lang: string): string => {
     const formatDate = (unavailableDate: CcdGeneralApplicationUnavailableHearingDatesElement): string =>
       listItem([unavailableDate.value.unavailableTrialDateFrom, unavailableDate.value.unavailableTrialDateTo]
         .filter(date => !!date)
-        .map(date => formatDateToFullDate(new Date(date)))
+        .map(date => formatDateToFullDate(new Date(date), lang))
         .join(' - '));
 
-    return (unavailableDates?.length > 0)
+    return (hasUnavailableDates(unavailableDates))
       ? `<ul class="no-list-style">${unavailableDates.map(formatDate).join('')}</ul>`
-      : undefined;
+      : '';
   };
+
+  const hasUnavailableDates = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[]) => unavailableDates?.length > 0;
 
   const hearingSupportHtml = (supportRequirementItems: CcdSupportRequirement[]): string => {
     const supportCaption = (supportItem: CcdSupportRequirement): string => {
@@ -105,7 +117,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
     return (supportRequirementItems?.length > 0)
       ? `<ul class="no-list-style">${html()}</ul>`
-      : undefined;
+      : t('COMMON.NO', {lng});
   };
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);
@@ -120,10 +132,10 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   const listItemCaption = (caption: string, cssClass?: string) =>
     `<li${cssClass ? ` class="${cssClass}"` : ''}>${t(caption, {lng})}</li>`;
 
-  const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
+  const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION_2.${yesNo.toUpperCase()}`, {lng});
 
   return response
-    ? [gaRespondentDebtorOfferSection(), acceptOfferSection(),
+    ? [gaRespondentDebtorOfferSection(),gaAgreeWithApplicant(), acceptOfferSection(),
       hearingDetailsSections(response?.gaHearingDetails)]
       .flat(1).filter(row => !!row)
     : undefined;

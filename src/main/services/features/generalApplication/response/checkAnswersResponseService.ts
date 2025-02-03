@@ -1,5 +1,4 @@
 import {YesNo} from 'common/form/models/yesNo';
-import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
@@ -14,9 +13,8 @@ import {
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
-  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
-import { exhaustiveMatchingGuard } from 'services/genericService';
 
 export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
 
@@ -103,7 +101,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         rowValue = t('COMMON.VARIATION_2.NO', {lng});
       }
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE', {lng}), rowValue, href, changeLabel()),
       );
     }
     return rows;
@@ -122,57 +120,47 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   };
 
   const unavailableDatesSection = (): SummaryRow[] => {
+    const rows: SummaryRow[] = [];
     const unavailableDates = gaResponse?.unavailableDatesHearing?.items;
+    rows.push(
+      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+        t(`COMMON.VARIATION_8.${gaResponse.hasUnavailableDatesHearing.toUpperCase()}`, {lng}),
+        GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
+      ));
     if (unavailableDates?.length > 0) {
       const unavailableDatesHtml = unavailableDates
         .map(({type, from, until}) => (type === UnavailableDateType.SINGLE_DATE)
           ? listItem(formatDateToFullDate(from, lng))
           : listItem(`${formatDateToFullDate(from, lng)} - ${formatDateToFullDate(until, lng)}`))
         .join('');
-      return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+      rows.push(row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND',
         `<ul class="no-list-style">${unavailableDatesHtml}</ul>`,
         GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
-      )];
-    } else {
-      return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
-        ' ',
-        GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
-      )];
+      ));
     }
+    return rows;
   };
 
   const hearingSupportSection = (): SummaryRow[] => {
-
-    const getCaption = (supportType: SupportType): string => {
-      switch (supportType) {
-        case SupportType.HEARING_LOOP: return 'HEARING_LOOP';
-        case SupportType.LANGUAGE_INTERPRETER: return 'LANGUAGE_INTERPRETER';
-        case SupportType.OTHER_SUPPORT: return 'OTHER';
-        case SupportType.SIGN_LANGUAGE_INTERPRETER: return 'SIGN_LANGUAGE_INTERPRETER';
-        case SupportType.STEP_FREE_ACCESS: return 'STEP_FREE_ACCESS';
-        default: exhaustiveMatchingGuard(supportType);
-      }
-    };
-
     const hearingSupport = gaResponse?.hearingSupport;
-    if (hearingSupport) {
-      const selectedHtml = Object.keys(hearingSupport)
-        .filter((key: keyof HearingSupport) => !!hearingSupport[key].selected)
-        .map(key => listItemCaption(`PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.${getCaption(key as SupportType)}`))
-        .join('');
-      const noSupport = yesNoFormatter(YesNo.NO);
-      return selectedHtml
-        ? [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          `<ul class="no-list-style">${selectedHtml}</ul>`,
-          GA_RESPONSE_HEARING_SUPPORT_URL)]
-        : [row(
-          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-          noSupport,
-          GA_RESPONSE_HEARING_SUPPORT_URL)];
-    } else {
-      return [];
-    }
+    if (!hearingSupport) return [];
+
+    const supportOptions = [
+      { selected: hearingSupport.stepFreeAccess?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS' },
+      { selected: hearingSupport.hearingLoop?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP' },
+      { selected: hearingSupport.signLanguageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', content: hearingSupport.signLanguageInterpreter?.content },
+      { selected: hearingSupport.languageInterpreter?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', content: hearingSupport.languageInterpreter?.content },
+      { selected: hearingSupport.otherSupport?.selected, text: 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', content: hearingSupport.otherSupport?.content },
+    ];
+
+    const selectedHtml = supportOptions
+      .filter(option => option.selected)
+      .map(option => `<li>${t(option.text, { lng })}${option.content ? ` - '${option.content}'` : ''}</li>`)
+      .join('');
+    const noSupport = yesNoFormatter(YesNo.NO);
+    const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : noSupport;
+
+    return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', resultHtml, GA_RESPONSE_HEARING_SUPPORT_URL)];
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);

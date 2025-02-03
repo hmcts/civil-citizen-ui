@@ -13,10 +13,10 @@ class InformOtherParties {
     I.click(nextAction);
   }
 
-  async verifyPageContent() {
+  async verifyPageContent(applicationType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(applicationType);
     this.verifyPageText();
     await this.verifyOptions();
     contactUs.verifyContactUs();
@@ -26,8 +26,8 @@ class InformOtherParties {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('More time to do what is required by a court order', 'h1');
+  verifyHeadingDetails(applicationType) {
+    I.see(applicationType, 'h1');
     I.see('Informing the other parties', 'h1');
   }
 
@@ -50,6 +50,12 @@ class InformOtherParties {
     await I.waitForContent('Should the court inform the other parties about this application', 60);
     await I.click('No');
     await I.fillField('#reasonForCourtNotInformingOtherParties', 'Do not need to inform');
+    await I.click('Continue');
+  }
+
+  async selectAndVerifyDoInformOption() {
+    await I.waitForContent('Should the court inform the other parties about this application', 60);
+    await I.click('Yes');
     await I.click('Continue');
   }
 }

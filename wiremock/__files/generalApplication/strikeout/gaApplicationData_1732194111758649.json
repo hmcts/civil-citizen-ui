@@ -1,0 +1,167 @@
+{
+  "id": 1732194111758649,
+  "jurisdiction": "CIVIL",
+  "state": "APPLICATION_ADD_PAYMENT",
+  "case_type_id": "GENERALAPPLICATION",
+  "created_date": "2024-11-21T15:59:00.735716",
+  "last_modified": "2024-11-21T16:01:55.980664",
+  "case_data": {
+    "generalAppUrgencyRequirement": {
+      "generalAppUrgency": "No"
+    },
+    "generalAppNotificationDeadlineDate": "2024-11-26T16:00:00",
+    "caseManagementLocation": {
+      "region": "2",
+      "address": "St Mary's Court, Regents Park Road",
+      "postcode": "N3 1BQ",
+      "siteName": "Barnet Civil and Family Centre",
+      "baseLocation": "000000"
+    },
+    "generalAppAskForCosts": "No",
+    "generalAppApplnSolicitor": {
+      "id": "a94414bc-7e63-44f9-be66-b28edb106843",
+      "email": "civilmoneyclaimsdemo@gmail.com",
+      "surname": "Citizen",
+      "forename": "civilmoneyclaimsdemo@gmail.com"
+    },
+    "parentClaimantIsApplicant": "Yes",
+    "judicialDecision": {
+      "decision": "REQUEST_MORE_INFO"
+    },
+    "isGaApplicantLip": "Yes",
+    "caseManagementCategory": {
+      "value": {
+        "code": "Civil",
+        "label": "Civil"
+      },
+      "list_items": [
+        {
+          "id": "eda5cee9-b0a2-4fde-92a3-02c31d9b37fd",
+          "value": {
+            "code": "Civil",
+            "label": "Civil"
+          }
+        }
+      ]
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "parentCaseReference": "1732192997720139",
+    "generalAppRespondentSolicitors": [
+      {
+        "id": "53dcb517-55e9-4080-ad6c-6d8d21e5d165",
+        "value": {
+          "id": "dc90f783-f626-464d-ba75-a85556447384",
+          "email": "citizen.user2@gmail.com",
+          "surname": "person",
+          "forename": "defendant"
+        }
+      }
+    ],
+    "isDocumentVisible": "No",
+    "generalAppParentCaseLink": {
+      "CaseReference": "1732192997720139"
+    },
+    "generalAppRespondentAgreement": {
+      "hasAgreed": "No"
+    },
+    "requestForInformationDocument": [
+      {
+        "id": "314fc315-d904-48f0-82a2-f03c0be0bf47",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "applications",
+            "document_url": "http://dm-store:8080/documents/3e87869e-3958-44b6-bdb3-ded9d4712763",
+            "document_filename": "make-with-notice_2024-11-21 16:01:52.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/3e87869e-3958-44b6-bdb3-ded9d4712763/binary"
+          },
+          "documentName": "make-with-notice_2024-11-21 16:01:52.pdf",
+          "documentSize": 28248,
+          "documentType": "SEND_APP_TO_OTHER_PARTY",
+          "createdDatetime": "2024-11-21T16:01:53.1956783"
+        }
+      }
+    ],
+    "judicialDecisionRequestMoreInfo": {
+      "isWithNotice": "No",
+      "judgeRecitalText": "The Judge considered the without notice application of the claimant dated 21 November 2024\n\nAnd the Judge considered the information provided by the claimant",
+      "requestMoreInfoOption": "SEND_APP_TO_OTHER_PARTY",
+      "judgeRequestMoreInfoByDate": "2024-11-28"
+    },
+    "applicantPartyName": "Mr Claimant person",
+    "generalAppSuperClaimType": "SPEC_CLAIM",
+    "generalAppPBADetails": {
+      "fee": {
+        "code": "FEE0444",
+        "version": "2",
+        "calculatedAmountInPence": "16700"
+      },
+      "paymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234"
+      },
+      "additionalPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234"
+      },
+      "serviceRequestReference": "2022-1655915218557",
+      "additionalPaymentServiceRef": "2022-1655915218557"
+    },
+    "generalAppDetailsOfOrder": "test",
+    "applicationFeeAmountInPence": "10800",
+    "isGaRespondentTwoLip": "No",
+    "locationName": "Barnet Civil and Family Centre",
+    "claimant1PartyName": "Mr Claimant person",
+    "caseNameGaInternal": "'Claimant person' v 'defendant person'",
+    "generalAppHearingDetails": {
+      "HearingDetailsEmailID": "civilmoneyclaimsdemo@gmail.com",
+      "HearingDetailsTelephoneNumber": "07557350542",
+      "ReasonForPreferredHearingType": "test",
+      "HearingPreferencesPreferredType": "IN_PERSON",
+      "unavailableTrialRequiredYesOrNo": "No"
+    },
+    "isGaRespondentOneLip": "Yes",
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "MAKE_DECISION"
+    },
+    "applicationIsCloaked": "No",
+    "defendant1PartyName": "mr defendant person",
+    "generalAppInformOtherParty": {
+      "isWithNotice": "No",
+      "reasonsForWithoutNotice": "test"
+    },
+    "generalAppType": {
+      "types": [
+        "STRIKE_OUT"
+      ]
+    },
+    "generalAppReasonsOfOrder": "test",
+    "applicationTypes": "Strike out",
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "gaDraftDocument": [
+      {
+        "id": "6b11aae6-0f1a-46e9-8a6c-fe1c2b26620a",
+        "value": {
+          "createdBy": "Civil",
+          "documentLink": {
+            "category_id": "applications",
+            "document_url": "http://dm-store:8080/documents/7dad6a2f-2651-40fa-bdf6-d88a85061151",
+            "document_filename": "Draft_application_2024-11-21 15:59:08.pdf",
+            "document_binary_url": "http://dm-store:8080/documents/7dad6a2f-2651-40fa-bdf6-d88a85061151/binary"
+          },
+          "documentName": "Draft_application_2024-11-21 15:59:08.pdf",
+          "documentSize": 44681,
+          "documentType": "GENERAL_APPLICATION_DRAFT",
+          "createdDatetime": "2024-11-21T15:59:10.0101164"
+        }
+      }
+    ],
+    "isMultiParty": "No",
+    "isCcmccLocation": "Yes",
+    "gaApplicantDisplayName": "Mr Claimant person - Claimant"
+  },
+  "security_classification": "PUBLIC"
+}

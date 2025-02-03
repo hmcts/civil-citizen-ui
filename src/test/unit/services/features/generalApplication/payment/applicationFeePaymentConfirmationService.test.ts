@@ -4,18 +4,17 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
+  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_PAYMENT_SUCCESSFUL_URL,
   GA_PAYMENT_UNSUCCESSFUL_URL,
-  GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
 } from 'routes/urls';
-import { getRedirectUrl } from 'services/features/generalApplication/payment/applicationFeePaymentConfirmationService';
-import { GaServiceClient } from 'client/gaServiceClient';
+import {getRedirectUrl} from 'services/features/generalApplication/payment/applicationFeePaymentConfirmationService';
+import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('modules/draft-store');
-jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
   getApplicationFromGAService: jest.fn(), getGaFeePaymentRedirectInformation: jest.fn(),
@@ -23,9 +22,11 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+mockedAppRequest.query = {lang:'en'};
 const claimId = '1';
 const applicationId = '12';
 let applicationResponse: ApplicationResponse;
+const lang = '?lang=en';
 
 describe('Application Fee PaymentConfirmation Service', () => {
   beforeEach(() => {
@@ -57,7 +58,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
       state: undefined,
     };
   });
-
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
@@ -82,7 +82,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL);
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+lang);
   });
 
   it('should return to additional payment successful screen if payment is successful', async () => {
@@ -107,7 +107,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL);
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL+lang);
   });
 
   it('should return to Payment Unsuccessful page when payment has failed', async () => {
@@ -130,7 +130,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_UNSUCCESSFUL_URL);
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_UNSUCCESSFUL_URL+lang);
   });
 
   it('should return to help with fees page when payment is canceled by user', async () => {
@@ -153,7 +153,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_WITH_FEE_SELECTION);
+    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_WITH_FEE_SELECTION+lang);
   });
 
   it('should return to additional payment help with fees page when payment is canceled by user', async () => {
@@ -177,7 +177,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
+    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL+lang);
   });
 
   it('should return 500 error page for any service error', async () => {

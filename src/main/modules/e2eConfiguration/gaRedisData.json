@@ -1,0 +1,97 @@
+[
+  {
+    "id": "1731322828021511someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "VARY_ORDER"
+      ]
+    }
+  },
+  {
+    "id": "1732106154804395someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "Yes",
+        "reasonsForUrgency": "There is a hearing on the main case within 10 days",
+        "urgentAppConsiderationDate": "2024-11-23"
+      },
+      "generalApplicationType": [
+        "EXTEND_TIME"
+      ]
+    }
+  },
+  {
+    "id": "1732194111758649someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "STRIKE_OUT"
+      ]
+    }
+  },
+  {
+    "id": "1732292100554027someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "SETTLE_BY_CONSENT"
+      ]
+    }
+  },
+  {
+    "id": "1732553590764925someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "RELIEF_FROM_SANCTIONS"
+      ]
+    }
+  },
+  {
+    "id": "1732878113661799someID",
+    "value": {
+      "uploadEvidenceDocuments": [],
+      "generalAppUrgencyRequirement": {
+        "generalAppUrgency": "No"
+      },
+      "generalApplicationType": [
+        "VARY_PAYMENT_TERMS_OF_JUDGMENT"
+      ]
+    }
+  },
+  {
+    "id": "courtLocations",
+    "value": [
+      {
+        "code": "7a99abd0-314b-487d-8de4-87455d96ba86",
+        "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"
+      },
+      {
+        "code": "e9d8bbfa-5972-42c5-8810-6138fe34e12a",
+        "label": "Central London County Court - THOMAS MORE BUILDING, ROYAL COURTS OF JUSTICE, STRAND, LONDON - WC2A 2LL"
+      },
+      {
+        "code": "bc1c8607-7349-4281-9127-74f759b785b8",
+        "label": "High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR"
+      },
+      {
+        "code": "dac300ef-83f7-4c59-b120-965d9f6b9171",
+        "label": "Liverpool Civil and Family Court - 35, Vernon Street, City Square - L2 2BX"
+      }
+    ]
+  }
+]
