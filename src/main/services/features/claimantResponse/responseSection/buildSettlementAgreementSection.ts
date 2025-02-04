@@ -22,6 +22,7 @@ import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {AppRequest} from 'models/AppRequest';
 
 export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const date = claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate;
@@ -74,8 +75,8 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   }
 };
 
-export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lng);
+export const buildJudgmentRequestSection = async (claim: Claim, claimId: string, lng: string, claimFee: number, req: AppRequest): Promise<SummarySection> => {
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lng, req);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
 

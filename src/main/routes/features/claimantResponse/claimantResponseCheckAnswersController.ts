@@ -29,7 +29,7 @@ const claimantResponseCheckAnswersController = Router();
 async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean, isMintiApplicable: boolean) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-  const summarySections = getSummarySections(req.params.id, claim, lang, claimFee, isCarmApplicable, isMintiApplicable);
+  const summarySections = await getSummarySections(req.params.id, claim, req, lang, claimFee, isCarmApplicable, isMintiApplicable);
 
   res.render(checkAnswersViewPath, {
     form,

@@ -84,7 +84,7 @@ export const calculateInterest = (amount: number, interest: number, startDate: D
   return Number(interestForPerDay) * days;
 };
 
-export const getInterestData = (claim: Claim, lang: string) => {
+export const getInterestData = async (claim: Claim, lang: string, req: AppRequest) => {
   let interestStrtDate = getInterestStartDate(claim);
   const interestEndDate1 = getInterestEndDate(claim);
   if (claim.isInterestFromClaimSubmitDate()) {
@@ -93,7 +93,7 @@ export const getInterestData = (claim: Claim, lang: string) => {
   const endDate = isAfter4PM(interestEndDate1) ? addDaysToDate(interestEndDate1, 2) : addDaysToDate(interestEndDate1, 1);
   const numberOfDays = Math.abs(getNumberOfDaysBetweenTwoDays(interestStrtDate, endDate));
   const interestStartDate = formatDateToFullDate(interestStrtDate, getLng(lang));
-  const interestToDate = calculateInterestToDate(claim).toFixed(2);
+  const interestToDate = (await calculateInterestToDate(claim, req)).toFixed(2);
   const interestRate = getInterestRate(claim);
   const isBreakDownInterest = claim.isInterestClaimOptionsBreakDownInterest();
   const howInterestIsCalculatedReason = isBreakDownInterest ? claim.getHowTheInterestCalculatedReason() : undefined;
