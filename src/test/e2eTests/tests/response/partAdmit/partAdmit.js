@@ -3,7 +3,7 @@ const PartAdmit = require('../../../response/steps/response');
 const {paymentType} = require('../../../commons/responseVariables');
 const {yesAndNoCheckBoxOptionValue} = require('../../../commons/eligibleVariables');
 
-Feature('Response journey defendant Part Admin').tag('@e2e');
+Feature('Response journey defendant Part Admit').tag('@e2e');
 
 Scenario('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
