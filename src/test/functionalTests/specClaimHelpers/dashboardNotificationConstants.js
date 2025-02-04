@@ -541,6 +541,8 @@ module.exports = {
       title: 'You must provide more information',
       content: 'The court has responded to the application. You must upload a document providing more information to the court by 4pm on 5 February 2026.',
       nextSteps: 'providing more information',
+    };
+  },
 
   // The other parties have requested a change
   otherPartiesRequestedChange: () => {
@@ -548,7 +550,6 @@ module.exports = {
       title: 'The other parties have requested a change to the case',
       content: 'Review their request and respond to it by 4pm on',
       nextSteps: 'Review and respond to the request',
-
     };
   },
 };
