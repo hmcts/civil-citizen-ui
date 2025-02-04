@@ -21,6 +21,11 @@ jest.mock('../../../../../../main/services/features/claim/details/claimDetailsSe
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/services/features/generalApplication/unavailableHearingDatesService');
 const getUnavailableDatesHearingFormMock = getUnavailableDatesForHearingForm as jest.Mock;
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Unavailable hearing dates', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -87,6 +92,24 @@ describe('General Application - Unavailable hearing dates', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+        });
+    });
+
+    it('should return errors when no information is provided', async () => {
+      const unavailableDates = new UnavailableDatesGaHearing(
+        [new UnavailableDatePeriodGaHearing(undefined,
+          {'day': undefined, 'month': undefined, 'year': undefined})],
+      );
+      getUnavailableDatesHearingFormMock.mockImplementation(() => {
+        return unavailableDates;
+      });
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
+        .send()
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'));
         });
     });
 

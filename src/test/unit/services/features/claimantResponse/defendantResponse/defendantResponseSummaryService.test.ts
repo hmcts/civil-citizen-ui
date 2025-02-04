@@ -1,18 +1,20 @@
-import {Claim} from 'common/models/claim';
-import {StatementOfMeans} from 'common/models/statementOfMeans';
-import {ResponseType} from 'common/form/models/responseType';
-import {PartyType} from 'common/models/partyType';
-import {Party} from 'common/models/party';
-import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import { Claim } from 'common/models/claim';
+import { StatementOfMeans } from 'common/models/statementOfMeans';
+import { ResponseType } from 'common/form/models/responseType';
+import { PartyType } from 'common/models/partyType';
+import { Party } from 'common/models/party';
+import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {
-  getDefendantsResponseContent, getResponseContentForHowTheyWantToPay,
+  getDefendantsResponseContent,
+  getResponseContentForHowTheyWantToPay,
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
-import {mockClaim} from '../../../../../utils/mockClaim';
-import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
-import {FullAdmission} from 'common/models/fullAdmission';
+import { mockClaim } from '../../../../../utils/mockClaim';
+import { PaymentIntention } from 'common/form/models/admission/paymentIntention';
+import { FullAdmission } from 'common/models/fullAdmission';
 import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
-import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
-import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import { HowMuchHaveYouPaid } from 'form/models/admission/howMuchHaveYouPaid';
+import { HowMuchDoYouOwe } from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import { DocumentType } from 'models/document/documentType';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -138,6 +140,8 @@ describe("Defendant's response summary service", () => {
         text: 'disagree text',
       };
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.defendantResponseTimelineDocument = undefined;
+      claim.defendantResponseDocuments = undefined;
     });
     it('Part admission - Not paid - Instalments scenario', () => {
       // Given
@@ -333,6 +337,49 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[2].data?.text).toEqual('1 January 2040');
     expect(defendantsResponseContent[3].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID');
     expect(defendantsResponseContent[4].data?.text).toEqual('Cash');
-    expect(defendantsResponseContent[5]).toBeUndefined();
+    expect(defendantsResponseContent[5].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
+  });
+
+  describe('Full dispute Paid full scenario - uploaded toe and evidence', () => {
+    // Given
+    const claim = mockClaim;
+    const totalClaimAmount = 4000;
+    claim.totalClaimAmount = totalClaimAmount;
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.defendantResponseTimelineDocument = {
+      document_url: 'http://dm-store:8080/documents/123',
+      document_filename: 'doc.pdf',
+      document_binary_url: 'http://dm-store:8080/documents/123/binary',
+    };
+    claim.defendantResponseDocuments = [
+      {
+        id: '123',
+        value: {
+          createdBy: '',
+          documentName: 'doc.pdf',
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          documentSize: 123,
+          createdDatetime: new Date(),
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/123',
+            document_filename: 'doc.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/123/binary',
+          },
+        },
+      },
+    ];
+
+    // When
+    const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
+    // Then
+    expect(defendantsResponseContent[0].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT');
+    expect(defendantsResponseContent[1].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHEN_THEY_PAID_THIS_AMOUNT');
+    expect(defendantsResponseContent[2].data?.text).toEqual('1 January 2040');
+    expect(defendantsResponseContent[3].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_PAID');
+    expect(defendantsResponseContent[4].data?.text).toEqual('Cash');
+    expect(defendantsResponseContent[5].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE');
+    expect(defendantsResponseContent[6].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE');
+    expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
+    expect(defendantsResponseContent[8].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE (PDF)');
   });
 });

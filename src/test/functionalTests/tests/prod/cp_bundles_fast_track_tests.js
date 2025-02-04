@@ -18,7 +18,7 @@ let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId
 Feature('Case progression journey - Verify Bundle Page - Fast Track');
 
 Before(async ({api}) => {
-  if (['demo'].includes(config.runningEnv)) {
+  if (['demo', 'aat'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
@@ -36,7 +36,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I}) => {
-  if (['demo'].includes(config.runningEnv)) {
+  if (['demo', 'aat'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     if (isDashboardServiceEnabled) {
       formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
@@ -51,4 +51,4 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly-regression-cp');

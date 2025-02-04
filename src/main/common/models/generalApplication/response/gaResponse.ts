@@ -16,6 +16,7 @@ export class GaResponse {
   hearingContactDetails?: HearingContactDetails;
   hearingSupport?: HearingSupport;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
+  hasUnavailableDatesHearing?: YesNo;
   agreeToOrder?: YesNo;
   respondentAgreement?: RespondentAgreement;
   acceptDefendantOffer?: AcceptDefendantOffer;
@@ -30,7 +31,8 @@ export class GaResponse {
   generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
   constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo,
     hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
-    acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm, wantToUploadDocuments?: YesNo, uploadEvidenceDocuments?: UploadGAFiles) {
+    acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm, wantToUploadDocuments?: YesNo, uploadEvidenceDocuments?: UploadGAFiles,
+    hasUnavailableDatesHearing?: YesNo) {
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
     this.agreeToOrder = agreeToOrder;
@@ -41,5 +43,6 @@ export class GaResponse {
     this.statementOfTruth = statementOfTruth;
     this.wantToUploadDocuments = wantToUploadDocuments;
     this.uploadEvidenceDocuments = uploadEvidenceDocuments ? [uploadEvidenceDocuments] : [];
+    this.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
   }
 }

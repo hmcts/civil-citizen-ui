@@ -59,3 +59,5 @@ variable "capacity" {
   default     = "1"
   description = "The size of the Redis cache to deploy. Valid values are 1, 2, 3, 4, 5"
 }
+
+variable "aks_subscription_id" {}

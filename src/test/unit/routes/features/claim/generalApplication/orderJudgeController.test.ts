@@ -17,6 +17,11 @@ jest.mock('../../../../../../main/routes/guards/generalApplication/orderJudgeGua
     next();
   }),
 }));
+jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

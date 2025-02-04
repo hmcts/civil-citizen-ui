@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
-  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+  GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -57,7 +57,7 @@ hearingContactDetailsResponseController.post(GA_RESPONSE_HEARING_CONTACT_DETAILS
       await renderView(claim, form, gaResponse, req, res);
     } else {
       await saveRespondentHearingContactDetails(generateRedisKeyForGA(<AppRequest>req), hearingContactDetails);
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL));
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);

@@ -7,6 +7,11 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
 import {getLng} from 'common/utils/languageToggleUtils';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {DocumentType} from 'models/document/documentType';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
@@ -40,6 +45,25 @@ const getResponseStatement = (name: string, text: string, amount?: number) => {
 };
 
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  if (claim.defendantResponseTimelineDocument) {
+    const timelineDocId = documentIdExtractor(claim.defendantResponseTimelineDocument.document_binary_url);
+    const timelineDocumentLink= CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', timelineDocId);
+    return [
+      {
+        type: ClaimSummaryType.SUBTITLE,
+        data: {
+          text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_TOE',
+        },
+      },
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE',
+          href: timelineDocumentLink,
+        },
+      },
+    ];
+  }
   const theirTOERows = claim.isPartialAdmission()
     ? claim.partialAdmission?.timeline?.rows
     : claim.rejectAllOfClaim?.timeline?.rows;
@@ -94,6 +118,34 @@ export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string):
 };
 
 export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection[] => {
+  const evidenceDocId = getSystemGeneratedCaseDocumentIdByType(claim.defendantResponseDocuments, DocumentType.DEFENDANT_DEFENCE);
+  if (evidenceDocId) {
+    const evidenceDocName = claim.defendantResponseDocuments
+      .find(doc => doc.value.documentLink.document_url.includes(evidenceDocId))
+      .value.documentName;
+    const evidenceDocFileType = evidenceDocName.lastIndexOf('.') !== -1
+      ? evidenceDocName.slice(evidenceDocName.lastIndexOf('.') + 1)
+      : undefined;
+    const evidenceDocumentLinkText = evidenceDocFileType
+      ? `${t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng})} (${evidenceDocFileType.toUpperCase()})`
+      : t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng});
+    const evidenceDocumentLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', evidenceDocId);
+    return [
+      {
+        type: ClaimSummaryType.SUBTITLE,
+        data: {
+          text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE',
+        },
+      },
+      {
+        type: ClaimSummaryType.LINK,
+        data: {
+          text: evidenceDocumentLinkText,
+          href: evidenceDocumentLink,
+        },
+      },
+    ];
+  }
   const evidenceRows = claim.evidence?.evidenceItem;
   if (!evidenceRows?.length) {
     return [];
@@ -181,6 +233,7 @@ export const getPaymentDate = (paymentDate: Date, lng: string): ClaimSummarySect
 };
 
 export const getHowTheyPaid = (text: string, lng: string): ClaimSummarySection[] => {
+  const textTranslated = (text === CCDHowWasThisAmountPaid.BACS || text === CCDHowWasThisAmountPaid.CREDIT_CARD || text === CCDHowWasThisAmountPaid.CHEQUE) ? t(`COMMON.TYPE_OF_PAYMENT.${text}`, {lng}) : text;
   return [
     {
       type: ClaimSummaryType.SUBTITLE,
@@ -191,7 +244,7 @@ export const getHowTheyPaid = (text: string, lng: string): ClaimSummarySection[]
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: text,
+        text: textTranslated,
       },
     },
   ];
@@ -242,6 +295,8 @@ export const buildFullDisputePaidFullResponseContent = (claim: Claim, lng: strin
     ...getResponseStatement(claim.getDefendantFullName(), t('PAGES.REVIEW_DEFENDANTS_RESPONSE.REJECT_CLAIM_PAID_FULL_STATEMENT', {lng}), claim.isRejectAllOfClaimAlreadyPaid()),
     ...getPaymentDate(claim.getRejectAllOfClaimPaidLessPaymentDate(), lng),
     ...getHowTheyPaid(claim.getRejectAllOfClaimPaidLessPaymentMode(), lng),
+    ...getTheirTOEs(claim, lng),
+    ...getTheirEvidence(claim, lng),
   ];
 };
 

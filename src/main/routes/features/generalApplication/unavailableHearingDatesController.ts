@@ -1,5 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_HEARING_CONTACT_DETAILS_URL, GA_HEARING_SUPPORT_URL, GA_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
+import {
+  GA_HEARING_SUPPORT_URL,
+  GA_UNAVAILABILITY_CONFIRMATION_URL,
+  GA_UNAVAILABLE_HEARING_DATES_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveUnavailableDates} from 'services/features/generalApplication/generalApplicationService';
@@ -21,7 +25,7 @@ const unavailableHearingDatesController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, res: Response, cancelUrl: string, lng: string, index: number): Promise<void> {
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index);
+  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), index);
   res.render(viewPath, { form, cancelUrl, backLinkUrl,
     headerTitle: getDynamicHeaderForMultipleApplications(claim),
     headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', {lng}) });
@@ -33,7 +37,7 @@ unavailableHearingDatesController.get(GA_UNAVAILABLE_HEARING_DATES_URL, (async (
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
-    const unavailableDates = claim.generalApplication?.unavailableDatesHearing || new UnavailableDatesGaHearing();
+    const unavailableDates = claim.generalApplication?.unavailableDatesHearing;
     const form = new GenericForm(unavailableDates);
     const cancelUrl = await getCancelUrl(claimId, claim);
     await renderView(claimId, claim, form, res, cancelUrl, lng, index);
