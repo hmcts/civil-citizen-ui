@@ -8,10 +8,9 @@ import {toCCDDJPaymentFrequency} from 'services/translation/response/convertToCC
 import {convertToPence} from 'services/translation/claim/moneyConversation';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {AppRequest} from 'models/AppRequest';
 
-export const translateClaimantResponseDJToCCD = async (claim: Claim, req: AppRequest): Promise<CCDClaim> => {
-  const summaryDetails = await getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en', req);
+export const translateClaimantResponseDJToCCD = async (claim: Claim): Promise<CCDClaim> => {
+  const summaryDetails = await getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en');
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),

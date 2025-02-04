@@ -62,7 +62,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
   }
   const claimantAcceptedPaidAmount = claimantResponse.ccjRequest?.paidAmount;
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
-  const ccjJudgmentLipInterest = await calculateInterestToDate(claim, req) || 0;
+  const ccjJudgmentLipInterest = await calculateInterestToDate(claim) || 0;
   return {
     ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
     ccjPaymentPaidSomeAmount,
@@ -75,11 +75,11 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
   };
 };
 
-export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = async (claim: Claim, claimFee: number, req: AppRequest): Promise<ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD> => {
+export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = async (claim: Claim, claimFee: number): Promise<ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD> => {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const claimantAcceptedPaidAmount = claimantResponse.ccjRequest?.paidAmount;
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
-  const ccjJudgmentLipInterest = await calculateInterestToDate(claim, req) || 0;
+  const ccjJudgmentLipInterest = await calculateInterestToDate(claim) || 0;
   const paymentOption = claimantResponse.ccjRequest?.ccjPaymentOption?.type;
   return {
     ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
