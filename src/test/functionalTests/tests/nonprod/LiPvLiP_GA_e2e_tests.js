@@ -182,11 +182,12 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request further information 
     await api.makeOrderGA(gaID, courtResponseType);
 
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    
-    const notification = orderMoreInformation();
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    await I.click(notification.nextSteps);
 
+    if (isDashboardServiceEnabled) {
+      const notification = orderMoreInformation();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
     await I.amOnPage(`/case/${claimRef}/general-application/${gaID}/view-application`);
     await I.click('.govuk-heading-m >> text=Application');
     await I.see('Awaiting additional information', '.govuk-summary-list__value');
