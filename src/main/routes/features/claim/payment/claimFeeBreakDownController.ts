@@ -31,7 +31,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
-    const interestAmount = await calculateInterestToDate(claim, req);
+    const interestAmount = await calculateInterestToDate(claim);
     const totalAmount = hasInterest ? (claim.totalClaimAmount + interestAmount + claimFee) : (claim.totalClaimAmount + claimFee);
     return res.render(viewPath, {
       totalClaimAmount: claim.totalClaimAmount?.toFixed(2),
