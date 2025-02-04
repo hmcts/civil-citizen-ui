@@ -585,7 +585,7 @@
       "COMBO_BOX" : {
         "TITLE": "A ddaethpwyd i gytundeb rhwng y partïon sy’n ymwneud â’r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
         "ITEM1": {
-          "TEXT": "Ie"
+          "TEXT": "Do"
         },
         "ITEM2": {
           "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
@@ -1923,7 +1923,7 @@
       "PARAGRAPH_2.2": "Er enghraifft, nid yw e-bost wedi’i argraffu yn ddogfen electronig.",
       "TITLE_3": "Rhagor o wybodaeth",
       "URL": {
-        "BEFORE": "Rhagor o wybodaeth ",
+        "BEFORE": "Rhagor o wybodaeth ar ",
         "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       },
