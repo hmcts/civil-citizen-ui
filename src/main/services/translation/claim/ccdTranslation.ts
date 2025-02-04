@@ -72,3 +72,18 @@ export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDCl
   ccdClaim.claimantBilingualLanguagePreference = toCCDLanguage(claim.claimantBilingualLanguagePreference);
   return ccdClaim;
 };
+
+export const translateDraftClaimToCCDInterest = (claim: Claim): CCDClaim => {
+  return {
+    totalClaimAmount: roundOffTwoDecimals(claim.totalClaimAmount),
+    claimInterest: toCCDYesNo(claim.claimInterest),
+    interestClaimOptions: toCCDInterestType(claim.interest?.interestClaimOptions),
+    breakDownInterestTotal: claim.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST ? claim.interest?.totalInterest?.amount : undefined,
+    breakDownInterestDescription: claim.interest?.interestClaimOptions === InterestClaimOptionsType.BREAK_DOWN_INTEREST ? claim.interest?.totalInterest?.reason : undefined,
+    sameRateInterestSelection: toCCDSameRateInterestSelection(claim.interest?.sameRateInterestSelection),
+    interestClaimFrom: claim.interest?.interestClaimFrom,
+    interestFromSpecificDate: claim.isInterestFromASpecificDate() ? DateTime.fromJSDate(new Date(claim.interest?.interestStartDate?.date)).toFormat('yyyy-MM-dd') : undefined,
+    interestFromSpecificDateDescription: claim.isInterestFromASpecificDate() ? claim.interest?.interestStartDate?.reason : undefined,
+    interestClaimUntil: claim.interest?.interestEndDate,
+  };
+};

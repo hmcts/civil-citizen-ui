@@ -20,7 +20,7 @@ const ccjCheckAnswersController = Router();
 
 async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = await getSummarySections(req.params.id, claim, lang, req);
+  const summarySections = await getSummarySections(req.params.id, claim, lang);
   const signatureType = form.model?.type;
   res.render(checkAnswersViewPath, {
     form,

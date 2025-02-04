@@ -16,7 +16,7 @@ const judgmentAmountSummaryExtendedController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 
 async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
-  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang, req);
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang);
   const claimAmountAccepted: number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claimAmountAccepted,

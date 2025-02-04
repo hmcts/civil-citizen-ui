@@ -389,10 +389,9 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateClaimInterest(claim: ClaimUpdate, req: AppRequest): Promise<number> {
-    const config = this.getConfig(req);
+  async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
     try {
-      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_CLAIM_INTEREST, claim, config);
+      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_CLAIM_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating extended response deadline');

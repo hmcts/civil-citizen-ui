@@ -9,15 +9,14 @@ import {InterestClaimFromType} from 'form/models/claimDetails';
 import {getLng} from 'common/utils/languageToggleUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from 'models/AppRequest';
-import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
+import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const INTEREST_8 = 8;
 
-export const getInterestDetails = async (claim: Claim, req: AppRequest) => {
+export const getInterestDetails = async (claim: Claim) => {
   if (claim?.claimInterest === YesNo.NO) {
     return undefined;
   }
@@ -25,7 +24,7 @@ export const getInterestDetails = async (claim: Claim, req: AppRequest) => {
   const interestToDate = getInterestToDate(claim);
   const numberOfDays = getNumberOfDaysBetweenTwoDays(interestFromDate, interestToDate);
   const rate = getInterestRate(claim);
-  const interest = await calculateInterestToDate(claim, req);
+  const interest = await calculateInterestToDate(claim);
 
   return {interestFromDate, interestToDate, numberOfDays, interest, rate};
 };
@@ -72,9 +71,9 @@ export const getInterestEndDate = (claim: Claim): Date => {
   return interestEndDate;
 };
 
-export const calculateInterestToDate = async (claim: Claim, req: AppRequest): Promise<number> => {
-  const caseData = translateDraftClaimToCCD(claim, req);
-  return await civilServiceClient.calculateClaimInterest(caseData, req);
+export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
+  const caseDataInterest = translateDraftClaimToCCDInterest(claim);
+  return await civilServiceClient.calculateClaimInterest(caseDataInterest);
 };
 
 export const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
@@ -84,7 +83,7 @@ export const calculateInterest = (amount: number, interest: number, startDate: D
   return Number(interestForPerDay) * days;
 };
 
-export const getInterestData = async (claim: Claim, lang: string, req: AppRequest) => {
+export const getInterestData = async (claim: Claim, lang: string) => {
   let interestStrtDate = getInterestStartDate(claim);
   const interestEndDate1 = getInterestEndDate(claim);
   if (claim.isInterestFromClaimSubmitDate()) {
@@ -93,7 +92,7 @@ export const getInterestData = async (claim: Claim, lang: string, req: AppReques
   const endDate = isAfter4PM(interestEndDate1) ? addDaysToDate(interestEndDate1, 2) : addDaysToDate(interestEndDate1, 1);
   const numberOfDays = Math.abs(getNumberOfDaysBetweenTwoDays(interestStrtDate, endDate));
   const interestStartDate = formatDateToFullDate(interestStrtDate, getLng(lang));
-  const interestToDate = (await calculateInterestToDate(claim, req)).toFixed(2);
+  const interestToDate = (await calculateInterestToDate(claim)).toFixed(2);
   const interestRate = getInterestRate(claim);
   const isBreakDownInterest = claim.isInterestClaimOptionsBreakDownInterest();
   const howInterestIsCalculatedReason = isBreakDownInterest ? claim.getHowTheInterestCalculatedReason() : undefined;

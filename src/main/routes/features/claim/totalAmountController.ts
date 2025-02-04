@@ -28,7 +28,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
     let interestToDate = 0;
 
     if (claim.hasInterest()) {
-      interestToDate = await calculateInterestToDate(claim, req);
+      interestToDate = await calculateInterestToDate(claim);
     }
 
     const form = {
