@@ -188,7 +188,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request further information 
     const notification = orderMoreInformation();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     await I.click(notification.nextSteps);
-    }
 
     await I.amOnPage(`/case/${claimRef}/general-application/${gaID}/view-application`);
     await I.click('.govuk-heading-m >> text=Application');
@@ -226,8 +225,8 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
     }
 
     await I.amOnPage('/case/'+claimRef+'/general-application/'+gaID+'/pay-additional-fee');
-    // await I.click('Response from the court');
-    // await I.click('Pay the additional fee');
+    await I.click('Response from the court');
+    await I.click('Pay the additional fee');
     await I.click('Make the payment');
     await createGASteps.additionalPayment(feeAmount);
 
