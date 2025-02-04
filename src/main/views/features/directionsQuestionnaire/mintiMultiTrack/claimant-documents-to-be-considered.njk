@@ -30,7 +30,7 @@
               {{ createPageTitle(componentText,t, 'm') }}
             <form method="post" novalidate>
               {{ csrfProtection(csrf) }}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: variation.yes, no: variation.no}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_8.YES', no: 'COMMON.VARIATION_8.NO'}) }}
 
               {{ addButton(t, 'SAVE_AND_CONTINUE') }}
               {{ contactUsForHelp(t) }}
