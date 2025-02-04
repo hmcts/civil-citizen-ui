@@ -12,17 +12,18 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
+import {AppRequest} from 'models/AppRequest';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
-export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
+export const buildPaymentDetailsSection = async (claim: Claim, claimId: string, lang: string, req: AppRequest): Promise<SummarySection> => {
   const lng = getLng(lang);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
   const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION_5.${paymentOption.toUpperCase()}` : '';
   const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang, req);
   const paymentDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_TITLE', {lng}),
     summaryRows: [

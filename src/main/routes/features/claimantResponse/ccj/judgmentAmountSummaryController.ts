@@ -13,8 +13,8 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 
-function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
+async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang, req);
   const claimAmountAccepted: number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claimAmountAccepted.toFixed(2),
@@ -29,7 +29,7 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-    renderView(req, res, claim, lang, claimFee);
+    await renderView(req, res, claim, lang, claimFee);
   } catch (error) {
     next(error);
   }

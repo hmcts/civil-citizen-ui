@@ -9,22 +9,23 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {isCounterpartyIndividual} from 'common/utils/taskList/tasks/taskListHelpers';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string ): SummarySections => {
+const buildSummarySections = async (claim: Claim, claimId: string, lang: string, req: AppRequest): Promise<SummarySections> => {
 
   return {
     sections: [
       buildTheirDetailsSection(claim, claimId, lang),
-      buildPaymentDetailsSection(claim, claimId, lang),
+      await buildPaymentDetailsSection(claim, claimId, lang, req),
     ],
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string ): SummarySections => {
-  return buildSummarySections(claim, claimId, lang);
+export const getSummarySections = async (claimId: string, claim: Claim, lang: string, req: AppRequest): Promise<SummarySections> => {
+  return await buildSummarySections(claim, claimId, lang, req);
 };
 
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {

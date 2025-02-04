@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CCJ_CHECK_AND_SEND_URL, CCJ_CONFIRMATION_URL} from 'routes/urls';
 import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -18,9 +18,9 @@ import {getClaimById} from 'modules/utilityService';
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
 
-function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
+async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = getSummarySections(req.params.id, claim, lang);
+  const summarySections = await getSummarySections(req.params.id, claim, lang, req);
   const signatureType = form.model?.type;
   res.render(checkAnswersViewPath, {
     form,
@@ -35,13 +35,13 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(req, res, form, claim);
+      await renderView(req, res, form, claim);
     } catch (error) {
       next(error);
     }
   });
 
-ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const claimId = req.params.id;
@@ -52,7 +52,7 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
-      renderView(req, res, form, claim);
+      await renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
