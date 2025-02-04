@@ -534,7 +534,6 @@ module.exports = {
     };
   },
 
-
   // Request for more information
   orderMoreInformation: () => {
     return {
