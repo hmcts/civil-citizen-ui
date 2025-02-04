@@ -96,6 +96,9 @@ module.exports = {
       case 'freeFormOrder':
         payload = makeAnOrderGA.freeFormOrder(document);
         break;
+      case 'withoutNoticeToWith':
+        payload = makeAnOrderGA.withoutNoticeToWith(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
