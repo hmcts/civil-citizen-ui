@@ -8,7 +8,6 @@ const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/te
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {orderMadeGA, payAdditionalApplicationFeeGA, applicationBeingProcessedGA, otherPartiesRequestedChange, orderMoreInformation} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
-
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
 Feature('Lip v Lip GA e2e Tests');
@@ -163,7 +162,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
   }
 });
 
-
 Scenario('LipvLip Applicant GA creation e2e tests - Request further information @citizenUI - @api @ga @nightly', async ({I, api}) => {
   courtResponseType = 'requestMoreInformation';
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -195,8 +193,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request further information 
   }
 });
 
-    
-    
 Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice @citizenUI - @api @ga @nightly', async ({
   I,
   api,
@@ -247,4 +243,3 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
     }
   }
 });
-
