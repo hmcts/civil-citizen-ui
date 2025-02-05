@@ -44,7 +44,7 @@ describe('Translate claimant ccj request to ccd', () => {
     claim.totalClaimAmount = 1000;
   });
 
-  it('should translate ccj request for judgment admission into the CCD response', () => {
+  it('should translate ccj request for judgment admission into the CCD response', async () => {
     const paymentDate = new Date();
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(
       ChooseHowProceed.REQUEST_A_CCJ,
@@ -64,7 +64,7 @@ describe('Translate claimant ccj request to ccd', () => {
       },
     };
     const ccdResponse =
-      translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(
+      await translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(
         claim,
         300,
       );
@@ -83,7 +83,7 @@ describe('Translate claimant ccj request to ccd', () => {
       },
     });
   });
-  it('should translate ccj request for judgment admission into the CCD response without paid amount', () => {
+  it('should translate ccj request for judgment admission into the CCD response without paid amount', async () => {
     const paymentDate = new Date();
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(
       ChooseHowProceed.REQUEST_A_CCJ,
@@ -109,7 +109,7 @@ describe('Translate claimant ccj request to ccd', () => {
       },
     };
     const ccdResponse =
-      translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(
+      await translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(
         claim,
         300,
       );
@@ -149,7 +149,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     claim.totalClaimAmount = 1000;
   });
 
-  it('should translate ccj request for judgment admission into the CCD response', () => {
+  it('should translate ccj request for judgment admission into the CCD response', async () => {
     claim.claimantResponse.ccjRequest = {
       defendantPaymentDate: paymentDate,
       ccjPaymentOption: new CcjPaymentOption(PaymentOptionType.BY_SET_DATE),
@@ -158,7 +158,7 @@ describe('Translate claimant default ccj request to ccd', () => {
         amount: 50,
       },
     };
-    const ccdResponse = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdResponse = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
     expect(ccdResponse).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
       'ccjJudgmentLipInterest': '0',
@@ -181,7 +181,7 @@ describe('Translate claimant default ccj request to ccd', () => {
       'repaymentSuggestion': undefined,
     });
   });
-  it('should translate ccj request for judgment admission into the CCD response without paid amount', () => {
+  it('should translate ccj request for judgment admission into the CCD response without paid amount', async () => {
     const firstPaymentDate: Record<string, string> = {};
     firstPaymentDate['year'] = '2024';
     firstPaymentDate['month'] = '1';
@@ -198,7 +198,7 @@ describe('Translate claimant default ccj request to ccd', () => {
         amount: 0,
       },
     };
-    const ccdResponse = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdResponse = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
     expect(ccdResponse).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
       'ccjJudgmentLipInterest': '0',
@@ -223,9 +223,9 @@ describe('Translate claimant default ccj request to ccd', () => {
     });
   });
 
-  it('should not translate ccj request for judgment admission into the CCD response when ccj Request is not present', () => {
+  it('should not translate ccj request for judgment admission into the CCD response when ccj Request is not present', async () => {
     claim.claimantResponse = new ClaimantResponse();
-    const ccdResponse = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdResponse = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
     expect(ccdResponse).toEqual({
       'ccjJudgmentAmountClaimFee': '300',
       'ccjJudgmentLipInterest': '0',
@@ -245,7 +245,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     });
   });
 
-  it('should translate the partial payment amount when option is Yes', () => {
+  it('should translate the partial payment amount when option is Yes', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -258,13 +258,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.partialPaymentAmount).toEqual('1000');
   });
 
-  it('should not translate the partial payment amount when option is No', () => {
+  it('should not translate the partial payment amount when option is No', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -277,13 +277,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.partialPaymentAmount).toBeUndefined();
   });
 
-  it('should not translate the partial payment amount when option is not present', () => {
+  it('should not translate the partial payment amount when option is not present', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -291,14 +291,14 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.partialPayment).toBeUndefined();
     expect(ccdClaim.partialPaymentAmount).toBeUndefined();
   });
 
-  it('should not translate when ccjPaymentOption is not presentthe payment type selection', () => {
+  it('should not translate when ccjPaymentOption is not presentthe payment type selection', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -308,7 +308,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim).toEqual({
@@ -332,7 +332,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     });
   });
 
-  it('should translate the payment type selection', () => {
+  it('should translate the payment type selection', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -344,13 +344,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.paymentTypeSelection).toEqual('IMMEDIATELY');
   });
 
-  it('should translate the payment set date when payment option type is BY_SET_DATE', () => {
+  it('should translate the payment set date when payment option type is BY_SET_DATE', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -365,13 +365,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.paymentSetDate).toEqual('2022-01-01');
   });
 
-  it('should not translate the payment set date when payment option type is not BY_SET_DATE', () => {
+  it('should not translate the payment set date when payment option type is not BY_SET_DATE', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -386,13 +386,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.paymentSetDate).toBeUndefined();
   });
 
-  it('should translate the repayment due when option is Yes', () => {
+  it('should translate the repayment due when option is Yes', async () => {
   // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -406,12 +406,12 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     expect(ccdClaim.repaymentDue).toEqual('10');
   });
 
-  it('should not translate the repayment due when option is No', () => {
+  it('should not translate the repayment due when option is No', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -425,13 +425,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.repaymentDue).toBeUndefined();
   });
 
-  it('should translate the repayment suggestion when payment option type is INSTALMENTS', () => {
+  it('should translate the repayment suggestion when payment option type is INSTALMENTS', async () => {
   // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -446,13 +446,13 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.repaymentSuggestion).toEqual('10000');
   });
 
-  it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', () => {
+  it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', async () => {
     // given
     const claim = new Claim();
     claim.claimantResponse = {
@@ -467,7 +467,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     } as any;
 
     // when
-    const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
+    const ccdClaim = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
     expect(ccdClaim.repaymentSuggestion).toBeUndefined();
