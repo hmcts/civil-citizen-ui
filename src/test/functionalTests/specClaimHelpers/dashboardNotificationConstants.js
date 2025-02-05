@@ -533,4 +533,13 @@ module.exports = {
       nextSteps: 'View the order',
     };
   },
+
+  // The other parties have requested a change
+  otherPartiesRequestedChange: () => {
+    return {
+      title: 'The other parties have requested a change to the case',
+      content: 'Review their request and respond to it by 4pm on',
+      nextSteps: 'Review and respond to the request',
+    };
+  },
 };
