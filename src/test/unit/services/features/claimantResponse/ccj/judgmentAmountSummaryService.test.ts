@@ -8,10 +8,10 @@ describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
   const claimFee = 50;
 
-  it('get summary details when claimInterest=Yes.', () => {
+  it('get summary details when claimInterest=Yes.', async () => {
 
     //When
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = await getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
@@ -21,11 +21,11 @@ describe('Get Judgment amount summary', () => {
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
-  it('get summary details when claimInterest=No.', () => {
+  it('get summary details when claimInterest=No.', async () => {
 
     //When
     claim.claimInterest = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = await getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
@@ -36,12 +36,12 @@ describe('Get Judgment amount summary', () => {
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
-  it('get summary details when defendant has not paid any amount.', () => {
+  it('get summary details when defendant has not paid any amount.', async () => {
 
     //When
     claim.claimInterest = YesNo.YES;
     claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = await getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
@@ -50,12 +50,12 @@ describe('Get Judgment amount summary', () => {
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
-  it('get summary details when defendant has not paid any amount and claimInterest=No.', () => {
+  it('get summary details when defendant has not paid any amount and claimInterest=No.', async () => {
 
     //When
     claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.NO;
     claim.claimInterest = YesNo.NO;
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = await getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
@@ -64,7 +64,7 @@ describe('Get Judgment amount summary', () => {
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
-  it('get summary details when there is Hwf', () => {
+  it('get summary details when there is Hwf', async () => {
 
     //When
     claim.helpWithFees = {
@@ -74,20 +74,20 @@ describe('Get Judgment amount summary', () => {
     claim.claimIssuedHwfDetails = {
       outstandingFeeInPounds: '100',
     };
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = await getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.claimFeeAmount).toEqual(Number(claim.claimIssuedHwfDetails.outstandingFeeInPounds));
   });
 
-  it('get summary details when there is no Hwf', () => {
+  it('get summary details when there is no Hwf', async () => {
 
     //When
     claim.helpWithFees = {
       helpWithFee: YesNoUpperCamelCase.NO,
       helpWithFeesReferenceNumber : undefined,
     };
-    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+    const result = await getJudgmentAmountSummary(claim, claimFee, 'en');
 
     //Then
     expect(result.claimFeeAmount).toEqual(Number(claimFee));

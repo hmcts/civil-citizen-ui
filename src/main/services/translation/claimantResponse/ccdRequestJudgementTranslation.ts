@@ -16,7 +16,6 @@ import {convertToPence} from '../claim/moneyConversation';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {toCCDDJPaymentFrequency} from '../response/convertToCCDDJPaymentFrequency';
 import {toCCDDJPaymentOption} from './convertToCCDDJPaymentOption';
-import {AppRequest} from 'models/AppRequest';
 
 export interface ClaimantResponsePaymentPlanDetails {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
@@ -34,7 +33,7 @@ export interface ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD
   ccjJudgmentLipInterest?: string;
 }
 
-export const translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD = async (claim: Claim, claimFee: number, req: AppRequest): Promise<ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD> => {
+export const translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD = async (claim: Claim, claimFee: number): Promise<ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD> => {
   let paymentPlanDetails: ClaimantResponsePaymentPlanDetails;
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   if (claimantResponse.isCCJRequested) {

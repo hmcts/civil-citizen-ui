@@ -852,7 +852,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //When
-      const interest = await civilServiceClient.calculateClaimInterest({}, appReq);
+      const interest = await civilServiceClient.calculateClaimInterest({});
       //Then
       expect(interest).toEqual(mockData);
     });
@@ -865,7 +865,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({ post: mockGet } as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
-      await expect(civilServiceClient.calculateClaimInterest({}, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.calculateClaimInterest({})).rejects.toThrow('error');
     });
   });
 

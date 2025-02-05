@@ -72,7 +72,7 @@ describe('Claim details page', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+      const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
       await request(app)
         .get('/case/1111/response/claim-details')
@@ -139,9 +139,12 @@ describe('Claim details page', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
         .reply(200, [CaseRole.CLAIMANT]);
+      nock(civilServiceUrl)
+        .get('/fees/claim/interest')
+        .reply(200, 0);
       isReleaseTwo.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+      const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
 
       await request(app)
