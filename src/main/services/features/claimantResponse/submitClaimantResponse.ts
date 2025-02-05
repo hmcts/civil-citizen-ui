@@ -20,7 +20,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     if (claimantResponse.isCCJRequested && hasRespondTypeWithCCJRequest(claim)) {
       const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
-      const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee, req);
+      const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee);
       ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }
     logger.info('Submitting claimant intention...');
