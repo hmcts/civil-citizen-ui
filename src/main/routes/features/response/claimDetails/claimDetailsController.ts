@@ -35,6 +35,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const interestData = await getInterestDetails(claim);
     const totalAmount = await getTotalAmountWithInterestAndFees(claim);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
@@ -42,7 +43,6 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     const sealedClaimPdfUrl = getTheClaimFormUrl(req.params.id, claim, claimFormUrl);
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
     const claimDetailsViewPath = (isCUIReleaseTwo) ? claimDetailsViewPathNew : claimDetailsViewPathOld;
-    const interestData = await getInterestDetails(claim);
     if (claim.hasInterest()) {
       claim.totalInterest = interestData.interest;
     }
