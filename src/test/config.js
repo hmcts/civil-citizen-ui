@@ -96,6 +96,13 @@ module.exports = {
     roleCategory: 'JUDICIAL',
     regionId: '1',
   },
+  circuitJudgeUserWithRegionId1: {
+    password: judgeDefaultPassword,
+    email: '4917924EMP-@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1'
+  },
   legalAdvisor: {
     password: defaultPassword,
     email: 'tribunal_legal_caseworker_reg2@justice.gov.uk',
