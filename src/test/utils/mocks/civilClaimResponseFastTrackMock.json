@@ -196,7 +196,7 @@
     "respondent1ResponseDeadline": "2025-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 15000,
-    "claimInterest": "Yes",
+    "_claimInterest": "Yes",
     "continueClaimingInterest": "Yes",
     "submittedDate": "2022-05-23T17:02:02.38407",
     "totalInterest": 15,
