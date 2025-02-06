@@ -75,6 +75,13 @@ describe('Submit claimant response to ccd', () => {
   describe('Submit claimant response with CCJ data to ccd', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
     claim.respondent1 = new Party();
+
+    beforeEach(() => {
+      nock(citizenBaseUrl)
+        .post('/fees/claim/interest')
+        .reply(200, '0');
+    });
+
     it('should submit claimant response with ccj data successfully when there are no errors', async () => {
       //Given
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
