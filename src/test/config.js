@@ -99,9 +99,9 @@ module.exports = {
   circuitJudgeUserWithRegionId1: {
     password: judgeDefaultPassword,
     email: '4917924EMP-@ejudiciary.net',
-    type: 'judge',
+    type: 'circuit-judge',
     roleCategory: 'JUDICIAL',
-    regionId: '1'
+    regionId: '1',
   },
   legalAdvisor: {
     password: defaultPassword,
