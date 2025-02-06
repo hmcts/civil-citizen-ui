@@ -1477,6 +1477,18 @@ class createGASteps {
     return generalApplicationID;
   }
 
+  async additionalPayment(feeAmount) {
+    await applyHelpFeeSelectionPage.verifyPageContentForAdditionalFee();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    await govPay.addValidCardDetails(feeAmount);
+    govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyAdditionalPaymentPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
+  }
+  
   async createMultipleApplications(caseRef, parties, communicationType = 'consent') {
     
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
@@ -1623,12 +1635,6 @@ class createGASteps {
     return generalApplicationID;
   }  
     
-  async additionalPayment(feeAmount) {
-    await applyHelpFeeSelectionPage.verifyPageContentForAdditionalFee();
-    await paymentConfirmationPage.verifyAdditionalPaymentPageContent();
-    await paymentConfirmationPage.nextAction('Close and return to dashboard');
-
-  }
 }
 
 module.exports = new createGASteps();
