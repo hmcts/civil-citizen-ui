@@ -17,14 +17,24 @@
     {{ t('PAGES.PIN.FOR_A_NEW_SECURITY_CODE') }}
   </p>
   {% endif %}
+  {% if form.isLRDefendant %}
+    <p class="govuk-body">
+      {{ t('PAGES.PIN.CLAIM_ASSIGNED_TO_LR') }}
+    </p>
+  {% endif %}
+{% endset %}
+{% set customErrorMessageTitle %}
+  {% if form.isPinEmpty %}
+      {{ t('ERRORS.SECURITY_CODE_WRONG_OR_EXPIRED') }}
+  {% endif %}
 {% endset %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(errors, t, null, customErrorMessage, 'ERRORS.SECURITY_CODE_WRONG_OR_EXPIRED') }}
+      {% if form.hasErrors() or form.isLRDefendant %}
+        {{ errorSummary(errors, t, null, customErrorMessage, customErrorMessageTitle) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
