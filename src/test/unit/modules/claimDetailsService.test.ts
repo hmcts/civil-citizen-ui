@@ -6,13 +6,17 @@ import {createClaimWithBasicRespondentDetails} from '../../utils/mockClaimForChe
 import {Party} from '../../../main/common/models/party';
 import {ResponseType} from '../../../main/common/form/models/responseType';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
+import nock from 'nock';
+import config from 'config';
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Claim Details service', () => {
   const mockClaim = require('../../utils/mocks/civilClaimResponseMock.json');
   describe('getTotalAmountWithInterestAndFees', () => {
     const caseData = mockClaim.case_data;
 
-    it('should return total claim amount including fees and interest', () => {
+    it('should return total claim amount including fees and interest', async () => {
       //when
       const claim = {
         totalClaimAmount: 110,
@@ -23,19 +27,23 @@ describe('Claim Details service', () => {
           version: 4,
           calculatedAmountInPence: 7000,
         },
+        isInterestFromASpecificDate: () => false,
       };
+      nock(civilServiceUrl)
+        .post('/fees/claim/interest')
+        .reply(200, claim.interest.totalInterest.amount.toString());
 
-      const totalAmount = getTotalAmountWithInterestAndFees(claim as Claim);
+      const totalAmount = await getTotalAmountWithInterestAndFees(claim as Claim);
       //Then
       expect(totalAmount).toEqual(claim.totalClaimAmount + claim.interest.totalInterest.amount + convertToPoundsFilter(claim.claimFee.calculatedAmountInPence));
     });
 
-    it('should return total claim amount including fees', () => {
+    it('should return total claim amount including fees', async () => {
       //when
       const claimWithoutInterest = deepCopy(caseData);
       claimWithoutInterest.totalInterest = 0;
       claimWithoutInterest['hasInterest'] = () => false;
-      const totalAmount = getTotalAmountWithInterestAndFees(claimWithoutInterest);
+      const totalAmount = await getTotalAmountWithInterestAndFees(claimWithoutInterest);
       //Then
       expect(totalAmount).toEqual(caseData.totalClaimAmount + convertToPoundsFilter(caseData.claimFee.calculatedAmountInPence));
     });
