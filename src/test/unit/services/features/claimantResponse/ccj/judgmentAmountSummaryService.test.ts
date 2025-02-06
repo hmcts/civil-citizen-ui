@@ -3,10 +3,20 @@ import {deepCopy} from '../../../../../utils/deepCopy';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import nock from 'nock';
+import config from 'config';
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
   const claimFee = 50;
+
+  beforeEach(() => {
+    nock(civilServiceUrl)
+      .post('/fees/claim/interest')
+      .reply(200, '0.15');
+  });
 
   it('get summary details when claimInterest=Yes.', async () => {
 

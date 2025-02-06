@@ -28,6 +28,8 @@ import { CcjPaymentOption } from 'form/models/claimantResponse/ccj/ccjPaymentOpt
 import { InstalmentFirstPaymentDate } from 'models/claimantResponse/ccj/instalmentFirstPaymentDate';
 import { TransactionSchedule } from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
+import nock from 'nock';
+import config from 'config';
 
 describe('Translate claimant ccj request to ccd', () => {
   let claim: Claim;
@@ -134,6 +136,8 @@ describe('Translate claimant ccj request to ccd', () => {
 });
 
 describe('Translate claimant default ccj request to ccd', () => {
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+
   let claim: Claim;
   const paymentDate = new PaymentDate('2024', '1', '1');
   beforeEach(() => {
@@ -147,6 +151,10 @@ describe('Translate claimant default ccj request to ccd', () => {
     claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
     claim.respondent1 = claim.applicant1;
     claim.totalClaimAmount = 1000;
+
+    nock(civilServiceUrl)
+      .post('/fees/claim/interest')
+      .reply(200, '0');
   });
 
   it('should translate ccj request for judgment admission into the CCD response', async () => {
