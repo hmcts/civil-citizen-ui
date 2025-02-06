@@ -2,7 +2,6 @@ const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
-// eslint-disable-next-line no-unused-vars
 
 let claimRef, claimType, caseData, claimNumber;
 
@@ -49,6 +48,9 @@ Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga', a
 
     console.log('Creating change claim or defence GA app as claimant');
     await createGASteps.askToChangeSubmittedGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
+
+    console.log('Creating multiple applications as claimant');
+    await createGASteps.createMultipleApplications(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
   }
 });
 
