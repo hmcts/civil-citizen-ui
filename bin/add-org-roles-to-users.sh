@@ -42,6 +42,10 @@ echo "Setting up Users with role assignments..."
 ./bin/utils/organisational-role-assignment.sh "tribunal_legal_caseworker_reg2@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-manager" '{"jurisdiction":"CIVIL","primaryLocation":"366774"}' "LEGAL_OPERATIONS"
 ./bin/utils/organisational-role-assignment.sh "tribunal_legal_caseworker_reg2@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"366774","workTypes":"decision_making_work"}' "LEGAL_OPERATIONS"
 
+./bin/utils/organisational-role-assignment.sh "4924221EMP-@ejudiciary.net" "${JUDGE_PASSWORD}" "PUBLIC" "hmcts-judiciary" '{"jurisdiction":"CIVIL","primaryLocation":"455174"}' "JUDICIAL"
+./bin/utils/organisational-role-assignment.sh "4924221EMP-@ejudiciary.net" "${JUDGE_PASSWORD}" "PUBLIC" "hearing-viewer" '{"jurisdiction":"CIVIL","primaryLocation":"455174"}' "JUDICIAL"
+./bin/utils/organisational-role-assignment.sh "4924221EMP-@ejudiciary.net" "${JUDGE_PASSWORD}" "PUBLIC" "judge" '{"jurisdiction":"CIVIL","primaryLocation":"455174","workTypes":"hearing_work,decision_making_work,applications"}' "JUDICIAL"
+
 ./bin/utils/organisational-role-assignment.sh "4917924EMP-@ejudiciary.net" "${JUDGE_DEFAULT_PASSWORD}" "PUBLIC" "hmcts-judiciary" '{"jurisdiction":"CIVIL","primaryLocation":"20262"}' "JUDICIAL"
 ./bin/utils/organisational-role-assignment.sh "4917924EMP-@ejudiciary.net" "${JUDGE_DEFAULT_PASSWORD}" "PUBLIC" "circuit-judge" '{"jurisdiction":"CIVIL","primaryLocation":"20262","workTypes":"hearing_work,decision_making_work,applications,multi_track_decision_making_work,intermediate_track_decision_making_work"}' "JUDICIAL"
 ./bin/utils/organisational-role-assignment.sh "4917924EMP-@ejudiciary.net" "${JUDGE_DEFAULT_PASSWORD}" "PUBLIC" "task-supervisor" '{"jurisdiction":"CIVIL","primaryLocation":"20262","workTypes":"hearing_work,decision_making_work,applications"}' "JUDICIAL"
