@@ -50,6 +50,9 @@ describe('on GET', () => {
     nock(civilServiceUrl)
       .post('/fees/claim/calculate-interest')
       .reply(200, '100');
+    nock(civilServiceUrl)
+      .post('/fees/claim/interest')
+      .reply(200, '100');
   });
 
   it('should handle the get call of fee summary details', async () => {
