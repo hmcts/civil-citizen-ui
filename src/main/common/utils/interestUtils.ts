@@ -76,13 +76,6 @@ export const calculateInterestToDate = async (claim: Claim): Promise<number> => 
   return await civilServiceClient.calculateClaimInterest(caseDataInterest);
 };
 
-export const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
-  const days = Math.abs(getNumberOfDaysBetweenTwoDays(startDate, endDate));
-  const interestForPerYear = amount * (interest / 100);
-  const interestForPerDay = (interestForPerYear / 365).toFixed(2);
-  return Number(interestForPerDay) * days;
-};
-
 export const getInterestData = async (claim: Claim, lang: string) => {
   let interestStrtDate = getInterestStartDate(claim);
   const interestEndDate1 = getInterestEndDate(claim);
