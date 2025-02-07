@@ -27,7 +27,7 @@ properties([
     ])
 ])
 
-@Library("Infrastructure")
+@Library("InfrastructureDO-NOT-MERGE-FT-TIMEOUT-EXTENSION")
 
 def type = "nodejs"
 def product = "civil"
