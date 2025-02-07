@@ -514,11 +514,10 @@ describe('notificationRedirectController - VIEW_HEARING_NOTICE (Welsh block)', (
     claim = new Claim();
     claim.id = '123';
     claim.caseProgressionHearing = {
+      hearingDurationInMinutesAHN: '',
       hearingFeePaymentDetails: undefined, getDurationOfDaysForHearing(): number {
         return 0;
       }, getHearingDateFormatted(lang: string): string {
-        return '';
-      }, getHearingDurationFormatted(lng: string): string {
         return '';
       }, getHearingTimeHourMinuteFormatted(): string {
         return '';
