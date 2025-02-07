@@ -2,7 +2,7 @@ import {NextFunction, Router, Response, Request, RequestHandler} from 'express';
 import {
   GA_UNAVAILABILITY_CONFIRMATION_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
-  GA_HEARING_SUPPORT_URL, GA_HEARING_CONTACT_DETAILS_URL,
+  GA_HEARING_SUPPORT_URL, BACK_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -27,7 +27,7 @@ const gaUnavailabilityDatesConfirmationController = Router();
 
 const renderView = async (claimId: string, claim: Claim, form: GenericForm<GenericYesNo>, res: Response, req: Request, index: number) => {
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
     backLinkUrl,

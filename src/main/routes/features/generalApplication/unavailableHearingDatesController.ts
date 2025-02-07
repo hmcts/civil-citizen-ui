@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_HEARING_SUPPORT_URL,
-  GA_UNAVAILABILITY_CONFIRMATION_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
@@ -25,7 +25,7 @@ const unavailableHearingDatesController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, res: Response, cancelUrl: string, lng: string, index: number): Promise<void> {
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), index);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, { form, cancelUrl, backLinkUrl,
     headerTitle: getDynamicHeaderForMultipleApplications(claim),
     headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', {lng}) });

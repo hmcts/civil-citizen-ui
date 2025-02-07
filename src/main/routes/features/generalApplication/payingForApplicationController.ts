@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_CHECK_ANSWERS_URL, GA_HEARING_SUPPORT_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
+import {BACK_URL, GA_CHECK_ANSWERS_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications} from 'services/features/generalApplication/generalApplicationService';
@@ -21,7 +21,7 @@ payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppR
     const gaFeeData = await gaApplicationFeeDetails(claim, req);
     const applicationFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence);
     const nextPageUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL), index);
-    const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), index);
+    const backLinkUrl = BACK_URL;
     res.render(viewPath, { applicationFee, cancelUrl, backLinkUrl, headerTitle, nextPageUrl});
 
   } catch (error) {
