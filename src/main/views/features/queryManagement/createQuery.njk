@@ -4,12 +4,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 
 {% block content %}
   <div>
     <h1 class="govuk-heading-xl">Whats up doc?</h1>
   </div>
-  <form action="/{{ claimId }}/create-query" method="POST">
+  <form action="/{{ claimId }}/create-query?_csrf={{ csrf }}" method="POST" enctype="multipart/form-data">
     {{ csrfProtection(csrf) }}
   <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
@@ -35,6 +36,12 @@
       },
       id: "query-details-input",
       name: "query-details-input-name"
+    }) }}
+
+    {{ govukFileUpload({
+      id: 'queryFileUpload',
+      name: 'queryFileUpload',
+      label: 'Attach a document to the query'
     }) }}
 
     {{ govukButton({

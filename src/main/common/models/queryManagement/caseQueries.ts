@@ -1,5 +1,5 @@
-import {CaseDocument} from 'models/document/caseDocument';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {Document} from 'models/document/document';
 
 export interface CaseQueries {
   caseMessages: QueryMessage[];
@@ -17,10 +17,15 @@ export interface CaseMessage {
   subject: string;
   name: string;
   body: string;
-  attachments?: CaseDocument[];
+  attachments?: FormDocument[];
   isHearingRelated: YesNoUpperCamelCase;
-  hearingDate?: Date;
-  createdOn: number;
+  hearingDate?: string;
+  createdOn: string;
   createdBy: string;
   parentId?: string;
+}
+
+export interface FormDocument {
+  id: string;
+  value: Document;
 }

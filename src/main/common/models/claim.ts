@@ -86,6 +86,7 @@ import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
+import {CaseQueries} from "models/queryManagement/caseQueries";
 
 export class Claim {
   resolvingDispute: boolean;
@@ -192,6 +193,9 @@ export class Claim {
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
   [key: string]: any;
+  //Query management
+  qmApplicantCitizenQueries?: CaseQueries;
+  qmRespondentCitizenQueries?: CaseQueries;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

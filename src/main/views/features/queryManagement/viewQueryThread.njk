@@ -1,0 +1,20 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% block content %}
+
+  {% set rows = [[{text: 'Query'}, {text: query.parentQuery.body}]] %}
+  {% for response in query.responses %}
+    {% set row = [{text: 'Response'}, {text: response.body}] %}
+    {% set rows = (rows.push(row), rows) %}
+  {% endfor %}
+
+  <div>
+    {{ govukTable({
+      caption: query.parentQuery.subject,
+      captionClasses: "govuk-table__caption--l",
+      firstCellIsHeader: true,
+      rows: rows
+    }) }}
+  </div>
+{% endblock %}

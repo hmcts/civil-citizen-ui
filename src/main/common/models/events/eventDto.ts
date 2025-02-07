@@ -31,4 +31,5 @@ export interface ClaimUpdate {
   applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
   applicant1ClaimSettledDate?: Date;
   qmApplicantCitizenQueries?: CaseQueries;
+  qmRespondentCitizenQueries?: CaseQueries;
 }

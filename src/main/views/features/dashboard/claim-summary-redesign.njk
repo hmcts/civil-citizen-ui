@@ -37,7 +37,13 @@
          </div>
   <div>
     <h2 class="govuk-heading-m">Queries</h2>
-    <a class="govuk-link" href="/{{ claimId }}/create-query">Create query</a>
+    <div>
+      <a class="govuk-link" href="/{{ claimId }}/create-query">Create query</a>
+    </div>
+    <div>
+      <a class="govuk-link" href="/{{ claimId }}/view-queries">View queries</a>
+    </div>
+
   </div>
           {% for taskList in dashboardTaskList.items %}
             <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
