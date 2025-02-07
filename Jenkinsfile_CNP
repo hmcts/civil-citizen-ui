@@ -9,7 +9,7 @@ def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
-def waStandaloneBranch = "master"
+def waStandaloneBranch = "feat/civ0000-fix-schedule-hearing-task-issue"
 def ccdBranch = "master"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
