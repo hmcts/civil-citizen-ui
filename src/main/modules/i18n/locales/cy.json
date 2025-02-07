@@ -269,6 +269,11 @@
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Cerdyn credyd",
+      "CHEQUE": "Siec",
+      "BACS": "BACS"
+    },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Taliadau bob 2 wythnos",
       "FOUR_WEEKLY": "Taliadau bob 4 wythnos",
@@ -588,7 +593,7 @@
       "COMBO_BOX" : {
         "TITLE": "A ddaethpwyd i gytundeb rhwng y partïon sy’n ymwneud â’r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
         "ITEM1": {
-          "TEXT": "Ie"
+          "TEXT": "Do"
         },
         "ITEM2": {
           "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
@@ -1926,7 +1931,7 @@
       "PARAGRAPH_2.2": "Er enghraifft, nid yw e-bost wedi’i argraffu yn ddogfen electronig.",
       "TITLE_3": "Rhagor o wybodaeth",
       "URL": {
-        "BEFORE": "Rhagor o wybodaeth ",
+        "BEFORE": "Rhagor o wybodaeth ar ",
         "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       },
@@ -3991,7 +3996,8 @@
       "FIND_PIN": "Gellir ei weld ar yr e-bost neu'r llythyr a anfonwyd gennym.",
       "FOR_A_NEW_SECURITY_CODE": "am god diogelwch newydd.",
       "SECURITY_CODE": "Cod diogelwch",
-      "TITLE": "Nodwch y cod diogelwch"
+      "TITLE": "Nodwch y cod diogelwch",
+      "CLAIM_ASSIGNED_TO_LR": "Ni allwch gael mynediad at yr hawliad hwn oherwydd mae wedi’i neilltuo i’ch cynrychiolydd cyfreithiol."
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
