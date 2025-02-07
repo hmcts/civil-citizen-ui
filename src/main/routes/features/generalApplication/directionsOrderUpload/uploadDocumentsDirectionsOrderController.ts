@@ -1,7 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
-  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, GA_VIEW_APPLICATION_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -38,7 +39,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, req: AppRequest, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-  const backLinkUrl = `${constructResponseUrlWithIdAndAppIdParams(claimId,gaId, GA_VIEW_APPLICATION_URL)}?applicationId=${gaId}&index=1`;
+  const backLinkUrl = BACK_URL;
   const applicationResponse = await getApplicationFromGAService(req, gaId);
   const directionOrderDocUrl = getDirectionOrderDocumentUrl(claimId, applicationResponse);
   res.render(viewPath, {
