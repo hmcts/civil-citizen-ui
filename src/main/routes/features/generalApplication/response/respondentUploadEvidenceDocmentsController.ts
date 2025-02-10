@@ -1,8 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_RESPONDENT_HEARING_PREFERENCE_URL,
   GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
-  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -40,7 +40,7 @@ async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, cla
   const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
     formattedSummary,

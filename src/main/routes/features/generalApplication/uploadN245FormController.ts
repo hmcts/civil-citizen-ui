@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {
-  GA_APPLICATION_COSTS_URL,
+  BACK_URL,
   GA_UPLOAD_N245_FORM_URL,
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
@@ -42,7 +42,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
     const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(uploadedN245Details);
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
-    const backLinkUrl = getBackLinkUrl(claimId);
+    const backLinkUrl = BACK_URL;
     if (req.query?.action === removeDoc) {
       saveN245Form(redisKey, claim, undefined);
       documentName = undefined;
@@ -70,7 +70,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const contentList = getUploadFormContent(lng);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = getBackLinkUrl(claimId);
+    const backLinkUrl = BACK_URL;
     if (req.body.action === uploadButton) {
       const { form, documentName } = await uploadSelectedFile(req, claim);
       return res.render(viewPath, {
@@ -104,9 +104,5 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     next(error);
   }
 }) as RequestHandler);
-
-function getBackLinkUrl(claimId: string) {
-  return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
-}
 
 export default uploadN245FormController;
