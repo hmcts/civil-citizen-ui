@@ -1,5 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_AGREE_TO_ORDER_URL,
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
@@ -32,7 +33,7 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caption: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_VIEW_APPLICATION_URL);
+    const backLinkUrl = BACK_URL;
 
     const form = new GenericForm(new GenericYesNo(gaResponse?.agreeToOrder));
 
