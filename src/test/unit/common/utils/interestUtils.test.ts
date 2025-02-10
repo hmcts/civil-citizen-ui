@@ -97,7 +97,7 @@ describe('Interest Utils', () => {
   it('calculateInterestToDate should return correct interest to date', async () => {
     //Given
     nock(civilServiceUrl)
-      .post('/fees/claim/interest')
+      .post('/fees/claim/calculate-interest')
       .reply(200, '200');
 
     const claim = new Claim();

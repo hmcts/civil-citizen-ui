@@ -153,7 +153,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     claim.totalClaimAmount = 1000;
 
     nock(civilServiceUrl)
-      .post('/fees/claim/interest')
+      .post('/fees/claim/calculate-interest')
       .reply(200, '0');
   });
 

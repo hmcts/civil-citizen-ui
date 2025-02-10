@@ -69,7 +69,7 @@ describe('Claim details page', () => {
     });
     it('should return your claim details page with values from civil-service', async () => {
       nock(civilServiceUrl)
-        .post('/fees/claim/interest')
+        .post('/fees/claim/calculate-interest')
         .times(3)
         .reply(200, '0');
       const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
@@ -95,7 +95,7 @@ describe('Claim details page', () => {
     });
     it('should retrieve claim from redis when claim exists in redis', async () => {
       nock(civilServiceUrl)
-        .post('/fees/claim/interest')
+        .post('/fees/claim/calculate-interest')
         .times(2)
         .reply(200, '0');
       const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
@@ -117,7 +117,7 @@ describe('Claim details page', () => {
     });
     it('should display Download and view their Timeline', async () => {
       nock(civilServiceUrl)
-        .post('/fees/claim/interest')
+        .post('/fees/claim/calculate-interest')
         .times(2)
         .reply(200, '0');
       const claim = Object.assign(new Claim(), civilClaimResponsePDFTimeline.case_data);
@@ -152,7 +152,7 @@ describe('Claim details page', () => {
         .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
         .reply(200, [CaseRole.CLAIMANT]);
       nock(civilServiceUrl)
-        .post('/fees/claim/interest')
+        .post('/fees/claim/calculate-interest')
         .times(3)
         .reply(200, '0');
       isReleaseTwo.mockResolvedValue(true);
