@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
-  APPLICATION_TYPE_URL, GA_ADD_ANOTHER_APPLICATION_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
+  APPLICATION_TYPE_URL, BACK_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -42,7 +42,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = await getBackLinkUrl(claimId, <string>req.query.linkFrom, cancelUrl);
+    const backLinkUrl = BACK_URL;
     const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     res.render(viewPath, {
       form,
@@ -76,7 +76,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
-    const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
+    const backLinkUrl = BACK_URL;
 
     const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     if (form.hasErrors()) {
@@ -90,17 +90,18 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
+        if (claim?.generalApplication?.applicationTypes?.length > 1){
+          res.redirect(constructResponseUrlWithIdParams(req.params.id,ORDER_JUDGE_URL )
+            + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
           + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
+        }
       }
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-
-async function getBackLinkUrl(claimId: string, linkFrom: string, cancelUrl: string) {
-  return linkFrom === LinKFromValues.addAnotherApp ? constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) : cancelUrl;
-}
 
 export default applicationTypeController;

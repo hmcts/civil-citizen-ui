@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_RESPONDENT_HEARING_PREFERENCE_URL,
-  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -25,7 +25,7 @@ respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE_URL, 
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
     const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);
+    const backLinkUrl = BACK_URL;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
 
