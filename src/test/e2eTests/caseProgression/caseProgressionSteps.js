@@ -107,6 +107,7 @@ class CaseProgressionSteps {
     I.fillField('witnessStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[0][dateInputFields][dateYear]', '2023');
     I.attachFile('witnessStatement[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOC.doc');
+    I.click('witnessStatement[0][uploadButton]');
 
     I.see('Cancel', 'a.govuk-link');
     clickButton(buttonType.CONTINUE);
