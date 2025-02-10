@@ -13,7 +13,8 @@ import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
-  GA_RESPONSE_HEARING_CONTACT_DETAILS_URL, GA_RESPONSE_HEARING_SUPPORT_URL, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+  BACK_URL,
+  GA_RESPONSE_HEARING_SUPPORT_URL, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
   GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {
@@ -31,7 +32,7 @@ const gaUnavailabilityDatesResponseConfirmationController = Router();
 const renderView = async (claimId: string, gaResponse: GaResponse, claim: Claim, form: GenericForm<GenericYesNo>, res: Response, req: Request, lng: string) => {
 
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
     backLinkUrl,
