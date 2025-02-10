@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {
-  GA_PROVIDE_MORE_INFORMATION_URL,
+  BACK_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
 } from 'routes/urls';
@@ -33,7 +33,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_PROVIDE_MORE_INFORMATION_URL);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
     formattedSummary,

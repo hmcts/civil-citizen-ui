@@ -96,6 +96,9 @@ module.exports = {
       case 'freeFormOrder':
         payload = makeAnOrderGA.freeFormOrder(document);
         break;
+      case 'withoutNoticeToWith':
+        payload = makeAnOrderGA.withoutNoticeToWith(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
@@ -450,7 +453,7 @@ module.exports = {
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
+      const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after minti date');
     }
