@@ -784,5 +784,5 @@ export default [
   submitApplicationOfflineController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
-  queryManagementController
+  queryManagementController,
 ];

@@ -7,8 +7,8 @@ import {ClaimUpdate} from 'models/events/eventDto';
 import {CaseMessage, CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {Claim} from 'models/claim';
 import {v4 as uuidv4} from 'uuid';
-import {TypeOfDocumentSectionMapper} from "services/features/caseProgression/TypeOfDocumentSectionMapper";
-import {CaseDocument} from "models/document/caseDocument";
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {CaseDocument} from 'models/document/caseDocument';
 
 const queryManagementController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
