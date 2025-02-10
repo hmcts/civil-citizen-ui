@@ -30,7 +30,7 @@ describe('Claim Details service', () => {
         isInterestFromASpecificDate: () => false,
       };
       nock(civilServiceUrl)
-        .post('/fees/claim/interest')
+        .post('/fees/claim/calculate-interest')
         .reply(200, claim.interest.totalInterest.amount.toString());
 
       const totalAmount = await getTotalAmountWithInterestAndFees(claim as Claim);

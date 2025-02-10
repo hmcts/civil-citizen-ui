@@ -26,7 +26,7 @@ describe('Judgment Amount Summary Extended', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     nock(civilServiceUrl)
-      .post('/fees/claim/interest')
+      .post('/fees/claim/calculate-interest')
       .reply(200, '0.15');
   });
 
