@@ -74,11 +74,11 @@ export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
         }
       }
     });
-    if (documentId === undefined) {
+    if (!documentId) {
       documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
     }
     // If stitching is not enabled, generated document has type SEALED_CLAIM so will not have been found above
-    if (documentId === undefined) {
+    if (!documentId) {
       documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
     }
     return documentId;
