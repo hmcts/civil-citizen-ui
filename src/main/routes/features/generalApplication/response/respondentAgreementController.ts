@@ -3,10 +3,9 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import { generateRedisKey, generateRedisKeyForGA, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {
-  GA_AGREE_TO_ORDER_URL,
+  BACK_URL,
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {getCancelUrl, saveRespondentAgreement} from 'services/features/generalApplication/generalApplicationService';
 import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
@@ -23,7 +22,7 @@ const viewPath = 'features/generalApplication/respondent-agreement';
 
 const renderView = async (claimId: string, claim: Claim, form: GenericForm<RespondentAgreement>, lng: string, appId: string, gaResponse: GaResponse, res: Response): Promise<void> => {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = !gaResponse.agreeToOrder ? constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_AGREE_TO_ORDER_URL);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     cancelUrl,
     caption: getRespondToApplicationCaption(gaResponse.generalApplicationType, lng),
