@@ -47,7 +47,7 @@ describe('on GET', () => {
 
   beforeEach(() => {
     nock(civilServiceUrl)
-      .post('/fees/claim/interest')
+      .post('/fees/claim/calculate-interest')
       .reply(200, '100');
   });
 

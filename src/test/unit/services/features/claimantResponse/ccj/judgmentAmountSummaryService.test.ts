@@ -14,7 +14,7 @@ describe('Get Judgment amount summary', () => {
 
   beforeEach(() => {
     nock(civilServiceUrl)
-      .post('/fees/claim/interest')
+      .post('/fees/claim/calculate-interest')
       .reply(200, '0.15');
   });
 

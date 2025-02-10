@@ -18,7 +18,7 @@ describe('First contact - claim summary controller', () => {
   });
   it('should render page successfully if cookie has correct values', async () => {
     nock(civilServiceUrl)
-      .post('/fees/claim/interest')
+      .post('/fees/claim/calculate-interest')
       .times(2)
       .reply(200, '0');
     app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s=' } } as unknown as Session;
