@@ -1,12 +1,16 @@
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls';
+import {
+  BACK_URL,
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+} from 'routes/urls';
 import multer from 'multer';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import {getApplicationIndex, getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
 
 const uploadAdditionalDocumentsController = Router();
@@ -39,8 +43,7 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
       await removeSelectedDocument(redisKey, claim, Number(index) - 1);
     }
     const cancelUrl = await getCancelUrl(id, claim);
-    const index = await getApplicationIndex(id, gaId, req);
-    const backLinkUrl = `${constructResponseUrlWithIdAndAppIdParams(id, gaId, GA_VIEW_APPLICATION_URL)}?index=${index + 1}`;
+    const backLinkUrl = BACK_URL;
     const formattedSummary = getSummaryList(gaDetails.uploadAdditionalDocuments, id, gaId, lng);
     res.render(viewPath, { cancelUrl, backLinkUrl, form, formattedSummary });
   } catch (err) {
