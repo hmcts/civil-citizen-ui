@@ -410,14 +410,14 @@ class UploadYourDocument {
     I.fillField('documentsForDisclosure[1][dateInputFields][dateMonth]', '02');
     I.fillField('documentsForDisclosure[1][dateInputFields][dateYear]', '2023');
     I.attachFile('documentsForDisclosure[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOC.doc');
-    I.click('(//*[@value="documentsForDisclosure[1][uploadButton]"])');
+    I.click('(//*[@value="documentsForDisclosure[0][uploadButton]"])[1]');
 
     //Disclosure list - Subsection
     I.attachFile('disclosureList[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOCX.docx');
     I.click('(//*[@value="disclosureList[0][uploadButton]"])');
     I.click('(//*[@id="add-another-disclosure-list"])[2]');
     I.attachFile('//*[@id="disclosureList[1][fileUpload]"]', 'citizenFeatures/caseProgression/data/TestPDF.pdf');
-    I.click('(//*[@value="disclosureList[1][uploadButton]"])');
+    I.click('(//*[@value="disclosureList[0][uploadButton]"])[1]');
 
     //Witness Section
     //Witness Statement - Subsection
@@ -433,7 +433,7 @@ class UploadYourDocument {
     I.fillField('witnessStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[1][dateInputFields][dateYear]', '2023');
     I.attachFile('witnessStatement[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestCSV.csv');
-    I.click('(//*[@value="witnessStatement[1][uploadButton]"])');
+    I.click('(//*[@value="witnessStatement[0][uploadButton]"])[1]');
 
     //Witness Summary - Subsection
     I.fillField('witnessSummary[0][witnessName]', 'Witness Summary - Witness Name 1');
@@ -448,7 +448,7 @@ class UploadYourDocument {
     I.fillField('witnessSummary[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[1][dateInputFields][dateYear]', '2023');
     I.attachFile('witnessSummary[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOCX.docx');
-    I.click('(//*[@value="witnessSummary[1][uploadButton]"])');
+    I.click('(//*[@value="witnessSummary[0][uploadButton]"])[1]');
 
     //Notice of Intention - Subsection
     I.fillField('noticeOfIntention[0][witnessName]', 'Notice of intention witness name 1');
@@ -463,7 +463,7 @@ class UploadYourDocument {
     I.fillField('noticeOfIntention[1][dateInputFields][dateMonth]', '02');
     I.fillField('noticeOfIntention[1][dateInputFields][dateYear]', '2023');
     I.attachFile('noticeOfIntention[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTIF.tif');
-    I.click('(//*[@value="noticeOfIntention[1][uploadButton]"])');
+    I.click('(//*[@value="noticeOfIntention[0][uploadButton]"])[1]');
 
     //Documents Referred to in the statement - Subsection
     I.fillField('documentsReferred[0][witnessName]', 'Documents referred witness name 1');
@@ -480,7 +480,7 @@ class UploadYourDocument {
     I.fillField('documentsReferred[1][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[1][dateInputFields][dateYear]', '2023');
     I.attachFile('documentsReferred[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestJPG.jpg');
-    I.click('(//*[@value="documentsReferred[1][uploadButton]"])');
+    I.click('(//*[@value="documentsReferred[0][uploadButton]"])[1]');
 
     //Evidences Section
     //Expert's report - Subsection
@@ -498,7 +498,7 @@ class UploadYourDocument {
     I.fillField('expertReport[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[1][dateInputFields][dateYear]', '2023');
     I.attachFile('expertReport[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestPNG.png');
-    I.click('(//*[@value="expertReport[1][uploadButton]"])');
+    I.click('(//*[@value="expertReport[0][uploadButton]"])[1]');
 
     //Joint Statement of Experts - Subsection
     I.fillField('expertStatement[0][expertName]', 'Expert Statement - Expert Name 1');
@@ -515,7 +515,7 @@ class UploadYourDocument {
     I.fillField('expertStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[1][dateInputFields][dateYear]', '2023');
     I.attachFile('expertStatement[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestRTF.rtf');
-    I.click('(//*[@value="expertStatement[1][uploadButton]"])');
+    I.click('(//*[@value="expertStatement[0][uploadButton]"])[1]');
 
     //Questions For Other Party - Subsection
     I.fillField('questionsForExperts[0][expertName]', 'Questions for Expert 1');
@@ -530,7 +530,7 @@ class UploadYourDocument {
     I.fillField('questionsForExperts[1][questionDocumentName]', 'Questions for Expert Document Name 2');
     I.attachFile('questionsForExperts[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.selectOption('questionsForExperts[1][otherPartyName]', 'Sir John Doe');
-    I.click('(//*[@value="questionsForExperts[1][uploadButton]"])');
+    I.click('(//*[@value="questionsForExperts[0][uploadButton]"])[1]');
 
     //Answers to Questions By Other Party - Subsection
     I.fillField('answersForExperts[0][expertName]', 'Answers for Expert 1');
@@ -545,7 +545,7 @@ class UploadYourDocument {
     I.fillField('answersForExperts[1][otherPartyQuestionsDocumentName]', 'Answers for Expert Document Name 2');
     I.attachFile('answersForExperts[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.selectOption('answersForExperts[1][otherPartyName]', 'Sir John Doe');
-    I.click('(//*[@value="answersForExperts[1][uploadButton]"])');
+    I.click('(//*[@value="answersForExperts[0][uploadButton]"])[1]');
 
     //Trial Documents - Section
     //Case Summary
@@ -553,28 +553,28 @@ class UploadYourDocument {
     I.click('(//*[@value="trialCaseSummary[0][uploadButton]"])');
     I.click('(//*[@id="add-another-trial-list"])[1]');
     I.attachFile('trialCaseSummary[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
-    I.click('(//*[@value="trialCaseSummary[1][uploadButton]"])');
+    I.click('(//*[@value="trialCaseSummary[0][uploadButton]"])[1]');
 
     //Skeleton
     I.attachFile('trialSkeletonArgument[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('(//*[@value="trialSkeletonArgument[0][uploadButton]"])');
     I.click('(//*[@id="add-another-trial-list"])[2]');
     I.attachFile('trialSkeletonArgument[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
-    I.click('(//*[@value="trialSkeletonArgument[1][uploadButton]"])');
+    I.click('(//*[@value="trialSkeletonArgument[0][uploadButton]"])[1]');
 
     //Trial Authorities
     I.attachFile('trialAuthorities[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestXLS.xls');
     I.click('(//*[@value="trialAuthorities[0][uploadButton]"])');
     I.click('(//*[@id="add-another-trial-list"])[3]');
     I.attachFile('trialAuthorities[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestXLSX.xlsx');
-    I.click('(//*[@value="trialAuthorities[1][uploadButton]"])');
+    I.click('(//*[@value="trialAuthorities[0][uploadButton]"])[1]');
 
     //Costs
     I.attachFile('trialCosts[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('(//*[@value="trialCosts[0][uploadButton]"])');
     I.click('(//*[@id="add-another-trial-list"])[4]');
     I.attachFile('trialCosts[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
-    I.click('(//*[@value="trialCosts[1][uploadButton]"])');
+    I.click('(//*[@value="trialCosts[0][uploadButton]"])[1]');
 
     //Documentary Evidence For Trial
     I.fillField('trialDocumentary[0][typeOfDocument]', 'Documentary evidence for the hearing - Type of Document 1');
@@ -589,7 +589,7 @@ class UploadYourDocument {
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[1][dateInputFields][dateYear]', '2023');
     I.attachFile('trialDocumentary[1][fileUpload]','citizenFeatures/caseProgression/data/TestTIFF.tiff');
-    I.click('(//*[@value="trialDocumentary[1][uploadButton]"])');
+    I.click('(//*[@value="trialDocumentary[0][uploadButton]"])[1]');
   }
 
   inputDataForSmallClaimsSections() {
