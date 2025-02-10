@@ -1,7 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL,
-  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
@@ -29,7 +30,7 @@ gaDirectionOrderCheckAnswersController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_C
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const additionalDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+    const backLinkUrl = BACK_URL;
     const summaryRows = buildSummarySection(additionalDocuments, claimId, appId, lng);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
   } catch (error) {
