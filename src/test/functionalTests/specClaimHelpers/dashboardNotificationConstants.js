@@ -542,4 +542,13 @@ module.exports = {
       nextSteps: 'Review and respond to the request',
     };
   },
+
+  // Request for more information
+  orderMoreInformation: () => {
+    return {
+      title: 'You must provide more information',
+      content: 'The court has responded to the application. You must upload a document providing more information to the court by 4pm on',
+      nextSteps: 'providing more information',
+    };
+  },
 };
