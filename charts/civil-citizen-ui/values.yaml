@@ -84,7 +84,7 @@ nodejs:
     ENFORCEJUDGMENT_URL: https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment
     CIVILMONEYCLAIMS_TELEPHONE: '0300 123 7050'
     CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE: '0300 303 5174'
-    CIVILMONEYCLAIMS_COURT_EMAIL_ID: 'ocmcnton@justice.gov.uk'
+    CIVILMONEYCLAIMS_COURT_EMAIL_ID: 'contactocmc@justice.gov.uk'
     APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
     LAUNCH_DARKLY_ENV: '{{ .Values.global.environment }}'
     DYNATRACE_TAG: https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/59eec5518455ca7b_complete.js
