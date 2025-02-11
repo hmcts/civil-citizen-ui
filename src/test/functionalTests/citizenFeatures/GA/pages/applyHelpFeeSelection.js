@@ -21,6 +21,14 @@ class ApplyHelpFeeSelection {
     contactUs.verifyContactUs();
   }
 
+  async verifyPageContentForAdditionalFee(){
+    this.checkPageFullyLoaded();
+    this.verifyBreadcrumbs();
+    this.verifyHeadingDetailsForAdditionalFee();
+    await this.verifyPageText();
+    contactUs.verifyContactUs();
+  }
+
   verifyBreadcrumbs() {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
@@ -28,6 +36,11 @@ class ApplyHelpFeeSelection {
   verifyHeadingDetails() {
     I.see('Application fee', 'span');
     I.see('Pay application fee', 'h1');
+  }
+
+  verifyHeadingDetailsForAdditionalFee() {
+    I.see('Additional application fee', 'span');
+    I.see('Pay additional application fee', 'h1');
   }
 
   async verifyPageText() {

@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONDENT_HEARING_PREFERENCE_URL,
+  BACK_URL,
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
 } from 'routes/urls';
@@ -30,7 +30,7 @@ async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericFor
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
+  const backLinkUrl = BACK_URL;
 
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, courtLocations });
 }
