@@ -99,6 +99,9 @@ module.exports = {
       case 'withoutNoticeToWith':
         payload = makeAnOrderGA.withoutNoticeToWith(document);
         break;
+      case 'requestMoreInformation':
+        payload = makeAnOrderGA.requestMoreInformation(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
