@@ -11,7 +11,7 @@ Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    
+
     claimType = 'FastTrack';
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
