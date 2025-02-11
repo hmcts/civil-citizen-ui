@@ -11,7 +11,7 @@ export class IsNotEmptyForParty implements ValidatorConstraintInterface {
     const property = validationArguments.constraints[0];
     const mandatoryForParty = (validationArguments.object as any)[property];
     if (mandatoryForParty) {
-      return input !== null && input !== undefined;
+      return input !== null && input !== undefined && input !== '';
     }
     return true;
   }
