@@ -6,7 +6,7 @@ const respondGASteps = require('../../citizenFeatures/GA/steps/respondGASteps');
 // eslint-disable-next-line no-unused-vars
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {orderMadeGA, payAdditionalApplicationFeeGA, applicationBeingProcessedGA, otherPartiesRequestedChange} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {orderMadeGA, payAdditionalApplicationFeeGA, applicationBeingProcessedGA, otherPartiesRequestedChange, writtenRepresentations } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
@@ -74,7 +74,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
     //await I.amOnPage(`/case/${gaID}/general-application/summary`);
 
   }
-});
+}).tag('@regression-cp');
 
 Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly', async ({
   I,
@@ -103,7 +103,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
       await I.click(notification.nextSteps);
     }
   }
-});
+}).tag('@regression-cp');
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
   I,
@@ -132,7 +132,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
       await I.click(notification.nextSteps);
     }
   }
-});
+}).tag('@regression-cp');
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
   I,
@@ -160,7 +160,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
       await I.click(notification.nextSteps);
     }
   }
-});
+}).tag('@regression-cp');
 
 Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice @citizenUI - @api @ga @nightly', async ({
   I,
@@ -211,4 +211,51 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
       await I.click(notification.nextSteps);
     }
   }
-});
+}).tag('@regression-cp');
+
+Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representations @citizenUI - @api @ga @nightly', async ({
+  I,
+  api,
+}) => {
+  courtResponseType = 'writtenRepresentations';
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+    console.log('Creating an Adjourn Hearing Order GA app as Claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+
+    console.log('Responding to the GA as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to change a hearing date', 'Miss Jane Doe v Sir John Doe');
+
+    console.log('Request written representations as the Judge');
+    await api.makeOrderGA(gaID, courtResponseType);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = writtenRepresentations();
+      await I.wait(10);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = writtenRepresentations();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+  }
+}).tag('@regression-cp');

@@ -99,6 +99,9 @@ module.exports = {
       case 'withoutNoticeToWith':
         payload = makeAnOrderGA.withoutNoticeToWith(document);
         break;
+      case 'writtenRepresentations':
+        payload = makeAnOrderGA.writtenRepresentations(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
