@@ -62,7 +62,7 @@ services:
     url: 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment'
   civilMoneyClaims:
     telephone: '0300 123 7050'
-    courtEmailId: 'ocmcnton@justice.gov.uk'
+    courtEmailId: 'contactocmc@justice.gov.uk'
     welshspeaker:
       telephone: '0300 303 5174'
   applyForCertificate:
@@ -74,4 +74,19 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
+webChat:
+  cnbc:
+    enabled: false
+    uuid: 'script_35780229675c3e23dcdd66.11858382'
+    tenant: 'aG1jdHNzdGFnaW5nMDE'
+    channel: 'CNBC Webchat STAGING'
+    channelUuid: 'QG-Cq97KTguzQz5H7T_n6g'
+    buttonContainerId: '__8x8-chat-button-container-script_35780229675c3e23dcdd66.11858382'
+  mediation:
+    enabled: false
+    uuid: 'script_202736819566d85c96c386f8.18964185'
+    tenant: 'aG1jdHN4MTAx'
+    channel: 'NBC_Mediation_Webchat'
+    channelUuid: 'EfkT-IMvRReo_VGNJ5ietQ'
+    buttonContainerId: '__8x8-chat-button-container-script_202736819566d85c96c386f8.18964185'
 

@@ -48,3 +48,18 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
+webChat:
+  cnbc:
+    enabled: WEB_CHAT_CNBC_ENABLED
+    uuid: WEB_CHAT_CNBC_UUID
+    tenant: WEB_CHAT_CNBC_TENANT
+    channel: WEB_CHAT_CNBC_CHANNEL
+    channelUuid: WEB_CHAT_CNBC_CHANNEL_UUID
+    buttonContainerId: WEB_CHAT_CNBC_BUTTON_ID
+  mediation:
+    enabled: WEB_CHAT_MEDIATION_ENABLED
+    uuid: WEB_CHAT_MEDIATION_UUID
+    tenant: WEB_CHAT_MEDIATION_TENANT
+    channel: WEB_CHAT_MEDIATION_CHANNEL
+    channelUuid: WEB_CHAT_MEDIATION_CHANNEL_UUID
+    buttonContainerId: WEB_CHAT_MEDIATION_BUTTON_ID

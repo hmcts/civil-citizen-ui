@@ -12,12 +12,13 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {
-  isCaseProgressionV1Enable, isCoSCEnabled,
-  isGaForLipsEnabled,
+  isCaseProgressionV1Enable, isCaseWorkerEventsEnabled, isCoSCEnabled,
+  isGaForLipsEnabled,isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
+  const isJoLiveValue = await isJudgmentOnlineLive();
   const claimantDocumentsArray: DocumentInformation[] = [];
   claimantDocumentsArray.push(...getClaimantDirectionQuestionnaire(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantSealClaimForm(claim, claimId, lang));
@@ -34,19 +35,27 @@ export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: 
   claimantDocumentsArray.push(...getClaimantParticularsOfClaim(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantTimelineEventsDocument(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantResponseToDefenceDocument(claim, claimId, lang));
-
+  if(isJoLiveValue) {
+    claimantDocumentsArray.push(...getJBAClaimantDocument(claim, claimId, lang));
+    claimantDocumentsArray.push(...getDJClaimantDocument(claim, claimId, lang));
+  }
   return new DocumentsViewComponent('Claimant', claimantDocumentsArray);
 };
 
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCoSCEnabledValue = await isCoSCEnabled();
+  const isJoLiveValue = await isJudgmentOnlineLive();
   const defendantDocumentsArray: DocumentInformation[] = [];
   defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantRequestForReconsideration(claim, claimId, lang));
   if (isCaseProgressionEnabled) {
     defendantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, false));
+  }
+  if(isJoLiveValue) {
+    defendantDocumentsArray.push(...getJBADefendantDocument(claim, claimId, lang));
+    defendantDocumentsArray.push(...getDJDefendantDocument(claim, claimId, lang));
   }
   // Documents for LR only
   defendantDocumentsArray.push(...getDefendantSupportDocument(claim, claimId, lang));
@@ -58,7 +67,12 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
 
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
+  const isCaseworkerEventsEnabled = await isCaseWorkerEventsEnabled();
   const courtDocumentsArray: DocumentInformation[] = [];
+
+  if (isCaseworkerEventsEnabled) {
+    courtDocumentsArray.push(...getCourtOfficerOrder(claim, claimId, lang));
+  }
 
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
@@ -226,6 +240,30 @@ const getCoSCDocument = (claim: Claim, claimId: string, lang: string) => {
     setUpDocumentLinkObject(coscDoc.documentLink, coscDoc.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COSC')) : [];
 };
 
+const getJBADefendantDocument = (claim: Claim, claimId: string, lang: string) => {
+  const jbaDoc = claim.getDocumentDetails(DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT);
+  return jbaDoc ? Array.of(
+    setUpDocumentLinkObject(jbaDoc.documentLink, jbaDoc.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.JBA_DEFENDANT')) : [];
+};
+
+const getJBAClaimantDocument = (claim: Claim, claimId: string, lang: string) => {
+  const jbaDoc = claim.getDocumentDetails(DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT);
+  return jbaDoc ? Array.of(
+    setUpDocumentLinkObject(jbaDoc.documentLink, jbaDoc.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.JBA_CLAIMANT')) : [];
+};
+
+const getDJDefendantDocument = (claim: Claim, claimId: string, lang: string) => {
+  const djDoc = claim.getDocumentDetails(DocumentType.DEFAULT_JUDGMENT_DEFENDANT1);
+  return djDoc ? Array.of(
+    setUpDocumentLinkObject(djDoc.documentLink, djDoc.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DJ_DEFENDANT')) : [];
+};
+
+const getDJClaimantDocument = (claim: Claim, claimId: string, lang: string) => {
+  const djDoc = claim.getDocumentDetails(DocumentType.DEFAULT_JUDGMENT_CLAIMANT1);
+  return djDoc ? Array.of(
+    setUpDocumentLinkObject(djDoc.documentLink, djDoc.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DJ_CLAIMANT')) : [];
+};
+
 const getClaimantRequestForReconsideration = (claim: Claim, claimId: string, lang: string) => {
   const document = claim.caseProgression?.requestForReconsiderationDocument;
   return document ? Array.of(
@@ -264,6 +302,15 @@ const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
       const document = documentElement.value;
       caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER'));
     });
+  }
+  return caseDocuments;
+};
+
+const getCourtOfficerOrder = (claim: Claim, claimId: string, lang: string) => {
+  const document = claim.caseProgression?.courtOfficerOrder;
+  const caseDocuments: DocumentInformation[] = [];
+  if (document) {
+    caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
   }
   return caseDocuments;
 };

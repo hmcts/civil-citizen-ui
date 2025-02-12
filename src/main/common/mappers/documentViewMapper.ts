@@ -1,19 +1,16 @@
-import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import { MediationAgreement } from 'models/mediation/mediationAgreement';
 import {
   DocumentInformation,
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {documentIdExtractor} from 'common/utils/stringUtils';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {Claim} from 'models/claim';
-import {getSystemGeneratedCaseDocumentIdByType,
-  SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
-import {DocumentType} from 'models/document/documentType';
-import {
-  MediationUploadDocumentsCCD,
-} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { documentIdExtractor } from 'common/utils/stringUtils';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
+import { Claim } from 'models/claim';
+import { getSystemGeneratedCaseDocumentIdByType } from 'models/document/systemGeneratedCaseDocuments';
+import { DocumentType } from 'models/document/documentType';
+import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {
   isMediationDocumentsReferred,
   isMediationNonAttendanceDocs,
@@ -40,7 +37,7 @@ export const mapperDefendantResponseToDocumentView = (documentTitle: string, fil
       new DocumentLinkInformation(
         CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
           .replace(':documentId',
-            getDocumentId(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, 'Stitched')),
+            getDocumentId(claim, 'Stitched')),
         `defendant-response-${caseId}.pdf`))));
 };
 
@@ -66,18 +63,23 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
   }
 };
 
-export function getDocumentId(systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, stitchedDoc?: string): string {
+export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
   let documentId;
+  const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
   if (systemGeneratedCaseDocuments?.length > 0) {
     systemGeneratedCaseDocuments.forEach(doc => {
-      if (doc.value.documentType == documentType) {
+      if (doc.value.documentType == DocumentType.DEFENDANT_DEFENCE) {
         if (doc.value.documentName.startsWith(stitchedDoc)) {
           documentId = documentIdExtractor(doc.value?.documentLink?.document_binary_url);
         }
       }
     });
-    if(documentId === undefined) {
-      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType);
+    if (!documentId) {
+      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
+    }
+    // If stitching is not enabled, generated document has type SEALED_CLAIM so will not have been found above
+    if (!documentId) {
+      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
     }
     return documentId;
   } else {

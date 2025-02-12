@@ -217,6 +217,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDurationInMinutesAHN?:string;
   hearingDuration?: HearingDuration;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
@@ -305,15 +306,19 @@ export interface CCDClaim extends ClaimUpdate {
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   mediationSettlementAgreedAt?: Date;
   defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
+  specResponseTimelineDocumentFiles?: Document;
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
   flightDelayDetails?: CCDFlightDelayDetails;
   requestForReconsiderationDeadline?: Date;
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
+  previewCourtOfficerOrder?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
+  respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
+  repaymentSummaryObject?:string;
 }
 
 export interface ClaimFeeData {

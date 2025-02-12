@@ -31,7 +31,7 @@ module.exports = {
     return {
       title: 'The claim is settled',
       content: ['The claimant has confirmed that this case was settled on 1 January 2020.',
-        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at ocmcnton@justice.gov.uk'],
+        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at contactocmc@justice.gov.uk'],
     };
   },
 
@@ -482,10 +482,73 @@ module.exports = {
     };
   },
 
+  caseOnline: () => {
+    return {
+      title: 'Response to the claim',
+      content: 'Sir John Doe has rejected the claim and refused the mediation',
+    };
+  },
+
   caseOfflineAfterSDO: () => {
     return {
       title: 'An order has been issued by the court',
       content: 'Please follow instructions in the order and comply with the deadlines. Please send any documents to the court named in the order if required. The claim will now proceed offline, you will receive further updates by post.',
+    };
+  },
+
+  // General application notifications below:
+  // Pay application fee
+  payApplicationFeeGA: (feeAmount) => {
+    return {
+      title: 'Pay application fee',
+      content: `To finish making your application, you must pay the application fee of £${feeAmount}.00 as soon as possible. Your application will be paused and will not be sent to the other parties or considered by a judge until you’ve paid the fee.`,
+      nestSteps: 'Pay application fee',
+    };
+  },
+
+  // Application being processed
+  applicationBeingProcessedGA: () => {
+    return {
+      title: 'Application is being processed',
+      content: ['A judge will consider the application.',
+        'The other parties can respond within 5 working days after the application is submitted, unless you\'ve chosen not to inform them. If you have a hearing in the next 10 days, your application will be treated urgently.'],
+      nextSteps: 'View application documents',
+    };
+  },
+
+  // Additional application fee
+  payAdditionalApplicationFeeGA: () => {
+    return {
+      title: 'You must pay an additional application fee',
+      content: 'The court requires you to pay an additional fee before your application can progress further.',
+      nextSteps: 'Pay the additional application fee',
+    };
+  },
+
+  // An order has been made
+  orderMadeGA: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order related to the application.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  // The other parties have requested a change
+  otherPartiesRequestedChange: () => {
+    return {
+      title: 'The other parties have requested a change to the case',
+      content: 'Review their request and respond to it by 4pm on',
+      nextSteps: 'Review and respond to the request',
+    };
+  },
+
+  // Request for more information
+  orderMoreInformation: () => {
+    return {
+      title: 'You must provide more information',
+      content: 'The court has responded to the application. You must upload a document providing more information to the court by 4pm on',
+      nextSteps: 'providing more information',
     };
   },
 };

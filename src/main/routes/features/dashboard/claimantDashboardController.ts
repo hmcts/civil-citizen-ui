@@ -28,6 +28,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -47,10 +48,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
       let dashboardId;
+      const userId = (<AppRequest>req)?.session?.user?.id.toString();
 
       if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
-        const userId = (<AppRequest>req)?.session?.user?.id.toString();
         claim = await getClaimById(userId, req, true);
         dashboardId = userId;
       } else {
@@ -60,6 +61,13 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         claimIdPrettified = caseNumberPrettify(claimId);
         claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
         await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
+        if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+        } else if(claim?.respondentSolicitorDetails) {
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
+        }
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const caseProgressionEnabled = await isCaseProgressionV1Enable();
@@ -127,7 +135,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
 
-  iWantToLinks.push(getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   if(viewAllApplicationLink) {

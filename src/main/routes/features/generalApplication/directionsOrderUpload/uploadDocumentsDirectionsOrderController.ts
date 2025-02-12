@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONSE_VIEW_APPLICATION_URL,
+  BACK_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
@@ -12,7 +12,7 @@ import {
   getCancelUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
@@ -39,7 +39,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, req: AppRequest, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-  const backLinkUrl = `${constructResponseUrlWithIdParams(claimId, GA_RESPONSE_VIEW_APPLICATION_URL)}?applicationId=${gaId}&index=1`;
+  const backLinkUrl = BACK_URL;
   const applicationResponse = await getApplicationFromGAService(req, gaId);
   const directionOrderDocUrl = getDirectionOrderDocumentUrl(claimId, applicationResponse);
   res.render(viewPath, {

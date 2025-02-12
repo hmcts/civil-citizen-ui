@@ -29,9 +29,8 @@ describe('addViewApplicationResponseRows', () => {
           debtorObjections: 'I disagree',
           paymentPlan: CcdGADebtorPaymentPlanGAspec.PAYFULL,
           paymentSetDate: new Date('2028-03-25'),
-
         },
-        respondentsResponses: [{value: {generalAppRespondent1Representative: YesNoUpperCamelCase.NO}} as CcdGeneralApplicationRespondentResponse],
+        respondentsResponses: [{value: {generalAppRespondent1Representative: YesNoUpperCamelCase.NO, gaRespondentResponseReason: 'test'}} as CcdGeneralApplicationRespondentResponse],
       } satisfies Partial<CCDApplication>;
       const htmlData = '<ul class="no-list-style"><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_SET_DATE</li><li>25/03/2028</li><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li><li>I disagree</li></ul>';
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
@@ -42,9 +41,9 @@ describe('addViewApplicationResponseRows', () => {
           'value': {
             'html': 'COMMON.VARIATION_2.NO',
           },
-        }, {
-          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO'},
+        },{
+          key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">test</ul>'},
         },
         {
           'key': {
@@ -59,7 +58,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -95,8 +94,8 @@ describe('addViewApplicationResponseRows', () => {
           },
         },
         {
-          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO'},
+          key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
         },
         {
           'key': {
@@ -111,7 +110,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -148,7 +147,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -186,7 +185,7 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST' },
-          value: { html: 'COMMON.VARIATION_2.NO' },
+          value: { html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>' },
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
@@ -208,7 +207,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': 'COMMON.NO',
+            'html': 'COMMON.VARIATION_8.NO',
           },
         },
         {
@@ -254,10 +253,14 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
         },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
+          value: {html: 'COMMON.VARIATION_8.YES'},
+        },
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND'},
           value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
         },
         {
@@ -302,10 +305,14 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
         },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
+          value: {html: 'COMMON.VARIATION_8.YES'},
+        },
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND'},
           value: {html: '<ul class="no-list-style"><li>30 July 2024</li><li>1 August 2024 - 7 August 2024</li><li>20 August 2024 - 22 August 2024</li></ul>'},
         },
         {
@@ -337,13 +344,13 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO'},
+        value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
       }, {
         'key': {
           'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
         },
         'value': {
-          'html': 'COMMON.NO',
+          'html': 'COMMON.VARIATION_8.NO',
         },
       }, {
         key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},

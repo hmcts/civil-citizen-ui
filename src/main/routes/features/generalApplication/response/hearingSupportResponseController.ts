@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_RESPONSE_CHECK_ANSWERS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
-  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -31,7 +31,7 @@ async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericFor
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
+  const backLinkUrl = BACK_URL;
   const headingTitle = getHearingSupportCaption(lang);
   const pageContent = getPageContent();
   res.render(viewPath, { form, cancelUrl, backLinkUrl, pageContent, headerTitle, headingTitle });

@@ -1,16 +1,13 @@
-import { Dashboard } from 'models/dashboard/dashboard';
-import { ApplicantOrRespondent, ClaimantOrDefendant } from 'models/partyType';
-import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
-import { AppRequest } from 'models/AppRequest';
-import { Claim } from 'models/claim';
-import {
-  objectToMap,
-  replaceDashboardPlaceholders,
-} from 'services/dashboard/dashboardInterpolationService';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {ApplicantOrRespondent, ClaimantOrDefendant} from 'models/partyType';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
-import { t } from 'i18next';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {t} from 'i18next';
 import {
   applicationNoticeUrl,
   feesHelpUrl,
@@ -21,10 +18,13 @@ import {
   whatToExpectUrl,
 } from 'common/utils/externalURLs';
 import {YesNo} from 'form/models/yesNo';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
-import { APPLICATION_TYPE_URL } from 'routes/urls';
-import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
+import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
+import {
+  isGaForLipsEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed,
+} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -50,7 +50,10 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     //exclude Applications sections
-    if (!isGAFlagEnable || claim.defendantUserDetails === undefined){
+    if (!isGAFlagEnable
+      || claim.defendantUserDetails === undefined
+      || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
+      || (claim.isAnyPartyBilingual() && claim.generalApplications.length === 0)) {
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
@@ -143,20 +146,24 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   return undefined;
 }
 
-export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
+export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
   if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-   && claim.defendantUserDetails !== undefined) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
+   && claim.defendantUserDetails !== undefined && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) ) {
+    if (claim.isAnyPartyBilingual()) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: GA_SUBMIT_OFFLINE,
+      };
+    } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
       };
-    } else if(claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
+    } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       };
     }
-
     return {
       text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }),
       url: applicationNoticeUrl,

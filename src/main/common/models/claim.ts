@@ -14,6 +14,7 @@ import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
+  CaseManagementLocation,
   CaseState,
   CCDHelpWithFees,
   ClaimAmountBreakup,
@@ -115,6 +116,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
@@ -174,6 +176,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  defendantResponseTimelineDocument?: Document;
   responseClaimMediationSpecRequired?: YesNo;
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
@@ -185,6 +188,7 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
+  respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -488,6 +492,11 @@ export class Claim {
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
+    } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
+      const djDoc = this.defaultJudgmentDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return djDoc.value;
     }
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
@@ -837,6 +846,10 @@ export class Claim {
     return !!this.caseProgressionHearing?.hearingDocuments;
   }
 
+  hasDefaultJudgmentDocuments(): boolean {
+    return !!this.defaultJudgmentDocuments;
+  }
+
   get bundleStitchingDeadline(): string {
     return this.threeWeeksBeforeHearingDateString();
   }
@@ -1040,7 +1053,8 @@ export class Claim {
   }
 
   isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES ||
+    this.respondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
@@ -1073,6 +1087,11 @@ export class Claim {
     return [CaseState.CASE_PROGRESSION, CaseState.HEARING_READINESS,
       CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
       CaseState.All_FINAL_ORDERS_ISSUED].includes(this.ccdState);
+  }
+
+  isAnyPartyBilingual() : boolean {
+    return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
   }
 }
 

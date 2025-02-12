@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_HEARING_ARRANGEMENT_URL,
+  BACK_URL,
   GA_HEARING_CONTACT_DETAILS_URL,
-  GA_UNAVAILABLE_HEARING_DATES_URL,
+  GA_UNAVAILABILITY_CONFIRMATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -19,7 +19,7 @@ const viewPath = 'features/generalApplication/hearing-contact-details';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingContactDetails>, res: Response, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), index);
+  const backLinkUrl = BACK_URL;
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle });
 }
@@ -50,7 +50,7 @@ hearingContactDetailsController.post(GA_HEARING_CONTACT_DETAILS_URL, (async (req
       await renderView(claimId, claim, form, res, index);
     } else {
       await saveHearingContactDetails(redisKey, hearingContactDetails);
-      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), index));
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), index));
     }
   } catch (error) {
     next(error);
