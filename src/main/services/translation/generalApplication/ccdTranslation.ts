@@ -251,7 +251,7 @@ const toCCDSupportRequirements = (hearingSupport: HearingSupport): CcdSupportReq
 const toCCDStatementOfTruth = (statementOfTruth: StatementOfTruthForm): CcdGeneralApplicationStatementOfTruth => {
   return {
     name: statementOfTruth?.name,
-    role: (statementOfTruth as QualifiedStatementOfTruth)?.title
+    role: (statementOfTruth as QualifiedStatementOfTruth)?.title,
   };
 };
 
@@ -294,8 +294,8 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     generalAppRespondDocument: response.wantToUploadDocuments === YesNo.YES ? translateCUItoCCD(response.uploadEvidenceDocuments) : undefined,
     generalAppResponseStatementOfTruth: {
       name: response.statementOfTruth.name,
-      role: (response.statementOfTruth as QualifiedStatementOfTruth)?.title
-    }
+      role: (response.statementOfTruth as QualifiedStatementOfTruth)?.title,
+    },
   };
 };
 

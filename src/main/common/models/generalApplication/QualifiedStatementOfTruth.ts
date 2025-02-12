@@ -16,6 +16,6 @@ export class QualifiedStatementOfTruth {
   constructor(signed?: boolean, name?: string, title?: string) {
     this.signed = signed;
     this.name = name?.trim();
-    this.title = title?.trim()
+    this.title = title?.trim();
   }
 }

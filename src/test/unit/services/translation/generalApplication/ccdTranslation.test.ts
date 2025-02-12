@@ -306,7 +306,7 @@ describe('translate draft application to ccd', () => {
           month: 2,
           day: 28,
         },
-        statementOfTruth: {name: 'test', title: 'director'}
+        statementOfTruth: {name: 'test', title: 'director'},
       };
 
       expect(toCcdGeneralApplicationWithResponse(gaResponse)).toMatchObject({
@@ -316,7 +316,7 @@ describe('translate draft application to ccd', () => {
           paymentPlan: CcdGADebtorPaymentPlanGAspec.INSTALMENT,
           respondentDebtorOffer: undefined,
         } as CcdGARespondentDebtorOfferGAspec,
-        generalAppResponseStatementOfTruth: {name: 'test', role: 'director'}
+        generalAppResponseStatementOfTruth: {name: 'test', role: 'director'},
       });
     });
   });
