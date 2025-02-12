@@ -198,7 +198,15 @@
       "MINUTES_180": "3 hours",
       "MINUTES_240": "4 hours",
       "DAY_1": "1 day",
-      "DAY_2": "2 days"
+      "DAY_2": "2 days",
+      "DAY": "day",
+      "DAYS": "days",
+      "HOUR": "hour",
+      "HOURS": "hours",
+      "MINUTE": "minute",
+      "MINUTES": "minutes",
+      "AND": " and ",
+      "AND_VOWEL": " and "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps below.",

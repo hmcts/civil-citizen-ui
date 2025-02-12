@@ -33,7 +33,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @regression', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @nightly', async ({
   I,
   api,
 }) => {
@@ -82,7 +82,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @regression', async ({
   I,
   api,
 }) => {
@@ -245,6 +245,39 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request for more info @citiz
 
     if (isDashboardServiceEnabled) {
       const notification = orderMoreInformation();
+      await I.wait(10);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+  }
+});
+
+Scenario('LipvLip Applicant GA creation e2e tests - List for hearing @citizenUI - @api @ga @nightly', async ({
+  I,
+  api,
+}) => {
+  courtResponseType = 'listForHearing';
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+    console.log('Creating an Adjourn Hearing Order GA app as Claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+
+    console.log('Responding to the GA as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to change a hearing date', 'Miss Jane Doe v Sir John Doe');
+
+    console.log('Perform List for hearing as the Judge');
+    await api.makeOrderGA(gaID, courtResponseType);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMadeGA();
       await I.wait(10);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
