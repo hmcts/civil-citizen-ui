@@ -151,7 +151,7 @@
     "sonar-scanner": "^3.1.0",
     "style-loader": "^3.3.1",
     "supertest": "^6.3.1",
-    "supertest-session": "^4.1.0",
+    "supertest-session": "^5.0.0",
     "totp-generator": "^0.0.14",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.4.2",
