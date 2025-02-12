@@ -52,23 +52,50 @@
       form,
       labelHtml
     ) }}
-    {{ govukInput({
-      id: 'name',
-      name: 'name',
-      value: form.model.name,
-      label: {
-        text: t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NAME'),
-        classes: 'govuk-!-font-weight-bold'
-      },
-      errorMessage: {
-        text: t(form.errorFor('name'))
-      } if form.hasFieldError('name')
-    }) }}
+    {% if isBusiness %}
+      {{ govukInput({
+          classes: "govuk-!-width-one-half",
+          label: {
+            text: t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME')
+          },
+          value: form.model.name,
+          id: 'name',
+          name: 'name',
+          errorMessage: {
+            text:t(form.errorFor('name'))
+          } if form.errorFor('name')
+        }) }}
+      {{ govukInput({
+          classes: "govuk-!-width-one-half",
+          label: {
+            text: t('COMMON.JOB_TITLE')
+          },
+          value: form.model.title,
+          id: 'title',
+          name: 'title',
+          errorMessage: {
+            text:t(form.errorFor('title'))
+          } if form.errorFor('title')
+        }) }}
+    {% else %}
+      {{ govukInput({
+              id: 'name',
+              name: 'name',
+              value: form.model.name,
+              label: {
+                text: t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NAME'),
+                classes: 'govuk-!-font-weight-bold'
+              },
+              errorMessage: {
+                text: t(form.errorFor('name'))
+              } if form.hasFieldError('name')
+            }) }}
+    {% endif %}
     <div class="govuk-button-group">
       {{ govukButton({
         text: t('COMMON.BUTTONS.SUBMIT')
       }) }}
-      <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+      <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
     </div>
   </form>
 {% endblock %}

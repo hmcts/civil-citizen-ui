@@ -16,6 +16,7 @@ import { GaResponse } from 'common/models/generalApplication/response/gaResponse
 import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
@@ -24,10 +25,12 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL);
+  const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
   res.render(viewPath, {
     form,
     cancelUrl,
     backLinkUrl,
+    isBusiness,
     headerTitle: getTitle(gaResponse.generalApplicationType, lang),
     claimIdPrettified: caseNumberPrettify(claimId),
     claim,
@@ -52,13 +55,20 @@ gaCheckAnswersResponseController.get(
 
 gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
-    const form = new GenericForm(statementOfTruth);
-    await form.validate();
     const claimId = req.params.id;
     const appId = req.params.appId;
+    const claim = await getClaimById(claimId, req, true);
+    let statementOfTruth;
+    if ((claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness())) {
+      statementOfTruth = new QualifiedStatementOfTruth(req.body.signed, req.body.name, req.body.title);
+    } else {
+      statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
+    }
+    const form = new GenericForm(statementOfTruth);
+    await form.validate();
+
     if (form.hasErrors()) {
-      const claim = await getClaimById(claimId, req, true);
+
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       await renderView(claimId, claim, form, gaResponse, req, res);
     } else {

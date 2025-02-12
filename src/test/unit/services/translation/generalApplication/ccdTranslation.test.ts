@@ -44,6 +44,7 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {OrderJudge} from 'models/generalApplication/orderJudge';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 describe('translate draft application to ccd', () => {
   it('should translate Hearing Type Options', () => {
@@ -238,6 +239,7 @@ describe('translate draft application to ccd', () => {
         ]),
         new RespondentAgreement(YesNo.NO, 'reason for disagreement'),
       );
+      gaResponse.statementOfTruth = new QualifiedStatementOfTruth(true, 'test', 'director');
 
       //Then
       expect(toCcdGeneralApplicationWithResponse(gaResponse)).toStrictEqual({
@@ -288,6 +290,10 @@ describe('translate draft application to ccd', () => {
         generalAppRespondent1Representative: {
           hasAgreed: YesNoUpperCamelCase.NO,
         },
+        generalAppResponseStatementOfTruth: {
+          name: 'test',
+          role: 'director',
+        },
       } satisfies CCDRespondToApplication);
     });
 
@@ -300,6 +306,7 @@ describe('translate draft application to ccd', () => {
           month: 2,
           day: 28,
         },
+        statementOfTruth: {name: 'test', title: 'director'}
       };
 
       expect(toCcdGeneralApplicationWithResponse(gaResponse)).toMatchObject({
@@ -309,6 +316,7 @@ describe('translate draft application to ccd', () => {
           paymentPlan: CcdGADebtorPaymentPlanGAspec.INSTALMENT,
           respondentDebtorOffer: undefined,
         } as CcdGARespondentDebtorOfferGAspec,
+        generalAppResponseStatementOfTruth: {name: 'test', role: 'director'}
       });
     });
   });
