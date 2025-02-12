@@ -218,6 +218,7 @@ export interface CCDClaim extends ClaimUpdate {
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDurationInMinutesAHN?:string;
   hearingDuration?: HearingDuration;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];

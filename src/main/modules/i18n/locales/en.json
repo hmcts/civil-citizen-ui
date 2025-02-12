@@ -198,7 +198,15 @@
       "MINUTES_180": "3 hours",
       "MINUTES_240": "4 hours",
       "DAY_1": "1 day",
-      "DAY_2": "2 days"
+      "DAY_2": "2 days",
+      "DAY": "day",
+      "DAYS": "days",
+      "HOUR": "hour",
+      "HOURS": "hours",
+      "MINUTE": "minute",
+      "MINUTES": "minutes",
+      "AND": " and ",
+      "AND_VOWEL": " and "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps below.",
@@ -260,6 +268,11 @@
       "BY_SET_DATE": "By a set date",
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
+    },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Credit card",
+      "CHEQUE": "Cheque",
+      "BACS": "BACS"
     },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Every 2 Weeks Payments",
@@ -3983,7 +3996,8 @@
       "FIND_PIN": "You can find it on the email or letter we sent you.",
       "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
       "SECURITY_CODE": "Security code",
-      "TITLE": "Enter security code"
+      "TITLE": "Enter security code",
+      "CLAIM_ASSIGNED_TO_LR": "You cannot access this claim as it has been assigned to your legal representative."
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "You'll have to pay an extra fee if you want to change the details of the claim later.",
@@ -4074,7 +4088,7 @@
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Download form N244 (opens in new tab)",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to: contactocmc@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
       "IF_AGREED": "If agreed, extra time will start from {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "More than 28 days",
@@ -4678,7 +4692,9 @@
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
       "COURT_OFFICER_ORDER":"Court Officer Order",
       "JBA_DEFENDANT":"Judgment by admission defendant",
-      "JBA_CLAIMANT":"Judgment by admission claimant"
+      "JBA_CLAIMANT":"Judgment by admission claimant",
+      "DJ_DEFENDANT":"Default Judgment defendant",
+      "DJ_CLAIMANT":"Default Judgment claimant"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",

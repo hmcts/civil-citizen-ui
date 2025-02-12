@@ -237,7 +237,7 @@ class createGASteps {
 
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -352,7 +352,7 @@ class createGASteps {
     const applicationType = 'Change a hearing date';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -466,7 +466,7 @@ class createGASteps {
     const applicationType = 'More time to do what is required by a court order';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -581,7 +581,7 @@ class createGASteps {
     const applicationType = 'Relief from a penalty you\'ve been given by the court';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -698,7 +698,7 @@ class createGASteps {
     const applicationType = 'Make a change to your claim or defence that you\'ve submitted';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -814,7 +814,7 @@ class createGASteps {
     const applicationType = 'Court to make a summary judgment on a case';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -930,7 +930,7 @@ class createGASteps {
     const applicationType = 'Court to strike out all or part of the other parties\' case without a trial';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1046,7 +1046,7 @@ class createGASteps {
     const applicationType = 'Court to pause a claim';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1162,7 +1162,7 @@ class createGASteps {
     const applicationType = 'Court to impose a sanction on the other parties unless they do a specific action';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1366,7 +1366,7 @@ class createGASteps {
     const applicationType = 'Court to do something that\'s not on this list';
     let feeAmount;
 
-    switch(communicationType) {
+    switch (communicationType) {
       case 'consent':
         feeAmount = '119';
         break;
@@ -1476,6 +1476,165 @@ class createGASteps {
 
     return generalApplicationID;
   }
+
+  async additionalPayment(feeAmount) {
+    await applyHelpFeeSelectionPage.verifyPageContentForAdditionalFee();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    await govPay.addValidCardDetails(feeAmount);
+    govPay.confirmPayment();
+
+    await paymentConfirmationPage.verifyAdditionalPaymentPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
+  }
+  
+  async createMultipleApplications(caseRef, parties, communicationType = 'consent') {
+    
+    const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
+    const firstApplicationType = 'Change a hearing date';
+    const secondApplicationType = 'Court to strike out all or part of the other parties\' case without a trial';
+    const applicationType = 'Make an application';
+    let feeAmount;
+
+    switch(communicationType) {
+      case 'consent':
+        feeAmount = '119';
+        break;
+      case 'notice':
+        feeAmount = '303';
+        break;
+      case 'withoutnotice':
+        feeAmount = '119';
+        break;
+    }
+
+    // Primary application to Adjourn a hearing
+    await I.waitForContent('Contact the court to request a change to my case', 60);
+    await I.click('Contact the court to request a change to my case');
+    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Ask to change a hearing date');
+    await applicationTypePage.nextAction('Continue');
+
+    if (communicationType == 'consent') {
+      await agreementFromOtherPartyPage.verifyPageContent(firstApplicationType);
+      await agreementFromOtherPartyPage.nextAction('Yes');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+    } else {
+      await agreementFromOtherPartyPage.verifyPageContent(firstApplicationType);
+      await agreementFromOtherPartyPage.nextAction('No');
+      await agreementFromOtherPartyPage.nextAction('Continue');
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(firstApplicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(firstApplicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
+    }
+
+    await applicationCostsPage.verifyPageContent(firstApplicationType, feeAmount);
+    await applicationCostsPage.nextAction('Start now');
+
+    await claimApplicationCostPage.verifyPageContent(firstApplicationType);
+    await claimApplicationCostPage.selectAndVerifyYesOption();
+    await claimApplicationCostPage.nextAction('Continue');
+
+    await orderJudgePage.verifyPageContent(firstApplicationType);
+    await orderJudgePage.fillTextBox('Test order');
+    await orderJudgePage.nextAction('Continue');
+
+    await requestingReasonPage.verifyPageContent(firstApplicationType);
+    await requestingReasonPage.fillTextBox('Test order');
+    await requestingReasonPage.nextAction('Continue');
+
+    await addAnotherApplicationPage.verifyPageContent(firstApplicationType);
+    await addAnotherApplicationPage.nextAction('Yes');
+    await addAnotherApplicationPage.nextAction('Continue');
+
+    // Secondary application to Strike out
+    await I.amOnPage(`case/${caseRef}/general-application/application-type?linkFrom=addAnotherApp`);
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Other applications');
+    await applicationTypePage.nextAction('Ask the court to strike out all or part of the other parties\' case without a trial');
+    await applicationTypePage.nextAction('Continue');
+
+    await orderJudgePage.verifyPageContent(secondApplicationType);
+    await orderJudgePage.fillTextBox('Test order');
+    await orderJudgePage.nextAction('Continue');
+
+    await requestingReasonPage.verifyPageContent(secondApplicationType);
+    await requestingReasonPage.fillTextBox('Test order');
+    await requestingReasonPage.nextAction('Continue');
+
+    await addAnotherApplicationPage.verifyPageContent(secondApplicationType);
+    await addAnotherApplicationPage.nextAction('No');
+    await addAnotherApplicationPage.nextAction('Continue');
+
+    // Multiple application journey
+    await wantToUploadDocumentsPage.verifyPageContent(applicationType);
+    await wantToUploadDocumentsPage.nextAction('No');
+    await wantToUploadDocumentsPage.nextAction('Continue');
+
+    await hearingArrangementsGuidancePage.verifyPageContent(applicationType);
+    await hearingArrangementsGuidancePage.nextAction('Continue');
+
+    await hearingArrangementPage.verifyPageContent(applicationType);
+    await hearingArrangementPage.nextAction('In person at the court');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', config.gaCourtToBeSelected);
+    await hearingArrangementPage.nextAction('Continue');
+
+    await hearingContactDetailsPage.verifyPageContent(applicationType);
+    await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
+    await hearingContactDetailsPage.nextAction('Continue');
+
+    await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
+    unavailableDatesConfirmationPage.nextAction('Yes');
+    unavailableDatesConfirmationPage.nextAction('Continue');
+
+    await unavailableDatesPage.verifyPageContent(applicationType);
+    unavailableDatesPage.fillFields();
+    unavailableDatesPage.nextAction('Continue');
+
+    await hearingSupportPage.verifyPageContent(applicationType);
+    await hearingSupportPage.nextAction('Continue');
+
+    await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
+    await payingForApplicationPage.nextAction('Continue');
+
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType, firstApplicationType, secondApplicationType);
+    await checkAndSendPage.checkAndSign();
+    await checkAndSendPage.nextAction('Submit');
+
+    await submitGAConfirmationPage.verifyPageContent(feeAmount);
+    await submitGAConfirmationPage.nextAction('Pay application fee');
+
+    I.wait(2);
+
+    await applyHelpFeeSelectionPage.verifyPageContent();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
+    await govPay.addValidCardDetails(feeAmount);
+    govPay.confirmPayment();
+    
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
+
+    await paymentConfirmationPage.verifyPageContent();
+    await paymentConfirmationPage.nextAction('Close and return to dashboard');
+
+    I.wait(5);
+    await I.refreshPage();
+    await I.waitForClickable('View Applications', 5);
+    await I.click('.govuk-link >> text=View Applications');
+    await I.amOnPage(`/case/${caseRef}/general-application/summary`);
+    await I.see('Adjourn a hearing, Strike out');
+    await I.see('Awaiting Respondent Response');
+
+    return generalApplicationID;
+  }  
+    
 }
 
 module.exports = new createGASteps();

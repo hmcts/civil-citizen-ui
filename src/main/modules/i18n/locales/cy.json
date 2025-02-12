@@ -198,7 +198,15 @@
       "MINUTES_180": "3 awr",
       "MINUTES_240": "4 awr",
       "DAY_1": "1 diwrnod",
-      "DAY_2": "2 ddiwrnod"
+      "DAY_2": "2 ddiwrnod",
+      "DAY": "dydd",
+      "DAYS": "dyddiau",
+      "HOUR": "awr",
+      "HOURS": "oriau",
+      "MINUTE": "munud",
+      "MINUTES": "munudau",
+      "AND": " a ",
+      "AND_VOWEL": " ac "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
@@ -260,6 +268,11 @@
       "BY_SET_DATE": "Erbyn dyddiad penodol",
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
+    },
+    "TYPE_OF_PAYMENT": {
+      "CREDIT_CARD": "Cerdyn credyd",
+      "CHEQUE": "Siec",
+      "BACS": "BACS"
     },
     "PAYMENT_SCHEDULE": {
       "BI_WEEKLY": "Taliadau bob 2 wythnos",
@@ -580,7 +593,7 @@
       "COMBO_BOX" : {
         "TITLE": "A ddaethpwyd i gytundeb rhwng y partïon sy’n ymwneud â’r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
         "ITEM1": {
-          "TEXT": "Ie"
+          "TEXT": "Do"
         },
         "ITEM2": {
           "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
@@ -1918,7 +1931,7 @@
       "PARAGRAPH_2.2": "Er enghraifft, nid yw e-bost wedi’i argraffu yn ddogfen electronig.",
       "TITLE_3": "Rhagor o wybodaeth",
       "URL": {
-        "BEFORE": "Rhagor o wybodaeth ",
+        "BEFORE": "Rhagor o wybodaeth ar ",
         "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       },
@@ -3983,7 +3996,8 @@
       "FIND_PIN": "Gellir ei weld ar yr e-bost neu'r llythyr a anfonwyd gennym.",
       "FOR_A_NEW_SECURITY_CODE": "am god diogelwch newydd.",
       "SECURITY_CODE": "Cod diogelwch",
-      "TITLE": "Nodwch y cod diogelwch"
+      "TITLE": "Nodwch y cod diogelwch",
+      "CLAIM_ASSIGNED_TO_LR": "Ni allwch gael mynediad at yr hawliad hwn oherwydd mae wedi’i neilltuo i’ch cynrychiolydd cyfreithiol."
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
@@ -4074,7 +4088,7 @@
       "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys i ofyn am ragor o amser.",
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Dylech lawrlwytho ffurflen N244 (agor mewn tab newydd)",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contactocmc@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "Faint o amser ychwanegol yr ydych yn gwneud cais amdano?",
       "IF_AGREED": "Os bydd y cais yn cael ei ganiatáu, bydd yr amser ychwanegol yn dechrau o {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "Mwy na 28 diwrnod",
@@ -4678,7 +4692,9 @@
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
       "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
       "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
-      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd"
+      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd",
+      "DJ_DEFENDANT":"Dyfarniad trwy ddiffyg - diffynnydd",
+      "DJ_CLAIMANT":"Dyfarniad trwy ddiffyg - hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",

@@ -4,11 +4,11 @@ import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL, FIRST_
 import {GenericForm} from 'form/models/genericForm';
 import {PinType} from 'models/firstContact/pin';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import { AppRequest, AppSession } from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import { getFirstContactData, saveFirstContactData } from 'services/firstcontact/firstcontactService';
+import {getFirstContactData, saveFirstContactData} from 'services/firstcontact/firstcontactService';
 
 const CryptoJS = require('crypto-js');
 
@@ -17,10 +17,11 @@ const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: Response): void {
+function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: Response, isLRDefendant?: boolean): void {
   const form = Object.assign(pinForm);
   form.option = pinForm.model.pin;
   form.isPinEmpty = isPinEmpty;
+  form.isLRDefendant = isLRDefendant;
   res.render(pinViewPath, { form });
 }
 
@@ -45,10 +46,17 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
         res.redirect(redirectUrl);
       } else if (firstContact?.claimReference) {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, firstContact?.claimReference);
-        await saveDraftClaim(claim.id, claim, true);
-        const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
-        req.session = saveFirstContactData(req.session as AppSession, { claimId: claim.id, pin: ciphertext });
-        res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+        if (claim.isLRDefendant()) {
+          const pinForm = new GenericForm(new PinType());
+          await pinForm.validate();
+          pinForm.errors = undefined;
+          renderView(pinForm, false, res, true);
+        } else {
+          await saveDraftClaim(claim.id, claim, true);
+          const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+          req.session = saveFirstContactData(req.session as AppSession, {claimId: claim.id, pin: ciphertext});
+          res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+        }
       }
     }
   } catch (error) {
@@ -57,7 +65,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
       const pinForm = new GenericForm(new PinType(''));
       await pinForm.validate();
       renderView(pinForm, !!req.body.pin, res);
-    }else if(status.includes('401')){
+    } else if(status.includes('401')){
       return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
     }else{
       next(error);
