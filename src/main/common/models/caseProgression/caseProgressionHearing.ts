@@ -2,9 +2,6 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
-import {
-  HearingDurationFormatter,
-} from 'services/features/caseProgression/hearingDurationFormatter';
 import {DocumentType} from 'models/document/documentType';
 import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
@@ -41,19 +38,22 @@ export const getHearingDocumentsCaseDocumentIdByType = ((hearingDocuments: CaseP
 
 export class CaseProgressionHearing {
   hearingDocuments?: CaseProgressionHearingDocuments[];
+  hearingDocumentsWelsh?: CaseProgressionHearingDocuments[];
   hearingLocation?: HearingLocation;
   hearingDate?: Date;
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
   hearingFeeInformation?: HearingFeeInformation;
   hearingFeePaymentDetails: PaymentDetails;
+  hearingDurationInMinutesAHN: string;
   constructor(hearingDocuments?: CaseProgressionHearingDocuments[],
     hearingLocation?: HearingLocation,
     hearingDate?: Date,
     hearingTimeHourMinute?: string,
     hearingDuration?: HearingDuration,
     hearingFeeInformation?: HearingFeeInformation,
-    hearingFeePaymentDetails?: PaymentDetails) {
+    hearingFeePaymentDetails?: PaymentDetails,
+    hearingDurationInMinutesAHN?: string) {
     this.hearingDocuments = hearingDocuments;
     this.hearingLocation = hearingLocation;
     this.hearingDate = hearingDate;
@@ -61,6 +61,7 @@ export class CaseProgressionHearing {
     this.hearingDuration = hearingDuration;
     this.hearingFeeInformation = hearingFeeInformation;
     this.hearingFeePaymentDetails = hearingFeePaymentDetails;
+    this.hearingDurationInMinutesAHN = hearingDurationInMinutesAHN;
   }
 
   getHearingTimeHourMinuteFormatted(): string {
@@ -70,10 +71,6 @@ export class CaseProgressionHearing {
 
   getHearingDateFormatted(lang: string): string {
     return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang);
-  }
-
-  getHearingDurationFormatted(lng: string): string {
-    return HearingDurationFormatter.formatHearingDuration(this.hearingDuration, lng);
   }
 
   getDurationOfDaysForHearing(): number {

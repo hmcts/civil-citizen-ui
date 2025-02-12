@@ -1,6 +1,10 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import {GA_RESPONSE_CHECK_ANSWERS_URL, GA_RESPONSE_CONFIRMATION_URL, GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
+import {
+  BACK_URL,
+  GA_RESPONSE_CHECK_ANSWERS_URL,
+  GA_RESPONSE_CONFIRMATION_URL,
+} from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
 import { GenericForm } from 'common/form/models/genericForm';
@@ -24,8 +28,8 @@ const viewPath = 'features/generalApplication/response/check-answers';
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL);
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
     cancelUrl,

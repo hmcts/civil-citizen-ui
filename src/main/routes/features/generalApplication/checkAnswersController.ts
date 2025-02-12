@@ -3,8 +3,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   GA_CHECK_ANSWERS_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
-  GA_APPLY_HELP_WITH_FEE_REFERENCE,
-  PAYING_FOR_APPLICATION_URL, GA_APPLICATION_SUBMITTED_URL,
+  GA_APPLICATION_SUBMITTED_URL, BACK_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -15,13 +14,12 @@ import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummaryCardSections, getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {queryParamNumber} from 'common/utils/requestUtils';
 import {YesNo} from 'form/models/yesNo';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
@@ -31,26 +29,13 @@ const viewPath = 'features/generalApplication/check-answers';
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const claimIdPrettified = caseNumberPrettify(claimId);
-  const index  = queryParamNumber(req, 'index');
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypeCards = getSummaryCardSections(claimId, claim, lang);
   const summaryRows = getSummarySections(claimId, claim, lang);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
-  const backLinkUrl = claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber
-    ? constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE), index)
-    : constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL), index);
-  res.render(viewPath, {
-    form,
-    cancelUrl,
-    isBusiness,
-    backLinkUrl,
-    headerTitle,
-    claimIdPrettified,
-    claim,
-    applicationTypeCards,
-    summaryRows
-  });
+  const backLinkUrl = BACK_URL;
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows, isBusiness });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {

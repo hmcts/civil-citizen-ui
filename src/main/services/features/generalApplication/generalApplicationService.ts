@@ -14,11 +14,11 @@ import {
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {
-  CANCEL_URL,
+  CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
   GA_APPLICATION_SUMMARY_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
-  GA_VIEW_APPLICATION_URL,
+  GA_VIEW_APPLICATION_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL, INFORM_OTHER_PARTIES_URL, ORDER_JUDGE_URL,
 } from 'routes/urls';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {AppRequest} from 'common/models/AppRequest';
@@ -26,7 +26,11 @@ import {FormValidationError} from 'common/form/validationErrors/formValidationEr
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ValidationError} from 'class-validator';
 import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {
+  constructResponseUrlWithIdAndAppIdParams,
+  constructResponseUrlWithIdParams,
+  constructUrlWithIndex,
+} from 'common/utils/urlFormatter';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
@@ -64,6 +68,8 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {t} from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 import {exhaustiveMatchingGuard} from 'services/genericService';
+import {queryParamNumber} from 'common/utils/requestUtils';
+import {Request} from 'express';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -643,3 +649,35 @@ export const saveUnavailabilityDatesConfirmation = async (claimId: string, hasUn
   }
 };
 
+export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, claim: Claim): string => {
+  const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
+  const applicationIndex = queryParamNumber(req, 'index');
+  const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+  if (req.body.option === YesNo.YES || options.indexOf(applicationType) !== -1  || claim?.generalApplication?.agreementFromOtherParty === YesNo.YES) {
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL), applicationIndex);
+  } else {
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL), applicationIndex);
+  }
+};
+
+export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Claim): string => {
+  const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
+  const isAddAnotherApplicationNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
+  if (isAddAnotherApplicationNotAllowed) {
+    return constructResponseUrlWithIdParams(req.params.id, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
+  } else {
+    const applicationIndex = queryParamNumber(req, 'index') || 0;
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_ADD_ANOTHER_APPLICATION_URL), applicationIndex);
+  }
+};
+
+export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim: Claim): string => {
+  const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
+  const isOrderJudgeNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
+  if (isOrderJudgeNotAllowed) {
+    return getRequestingReasonNextUrl(req, claim);
+  } else {
+    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, ORDER_JUDGE_URL), index);
+  }
+};
