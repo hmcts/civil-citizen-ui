@@ -260,7 +260,6 @@ export const CP_EVIDENCE_UPLOAD_SUBMISSION_URL = `${BASE_CASE_PROGRESSION_URL}/d
 export const DEFENDANT_SUMMARY_TAB_URL = `${DASHBOARD_URL}/:id/defendant#:tab`;
 export const DEFENDANT_SIGN_SETTLEMENT_AGREEMENT = `${BASE_SETTLEMENT_AGREEMENT_URL}/sign-settlement-agreement`;
 export const DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION = `${BASE_SETTLEMENT_AGREEMENT_URL}/confirmation`;
-export const CP_UPLOAD_FILE = '/upload-file';
 export const CP_FINALISE_TRIAL_ARRANGEMENTS_URL = `${BASE_CASE_PROGRESSION_URL}/finalise-trial-arrangements`;
 export const IS_CASE_READY_URL = `${CP_FINALISE_TRIAL_ARRANGEMENTS_URL}/is-case-ready`;
 export const INFORM_OTHER_PARTIES_URL = `${BASE_GENERAL_APPLICATION_URL}/inform-other-parties`;
