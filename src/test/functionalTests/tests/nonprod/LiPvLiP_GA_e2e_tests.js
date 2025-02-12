@@ -6,7 +6,14 @@ const respondGASteps = require('../../citizenFeatures/GA/steps/respondGASteps');
 // eslint-disable-next-line no-unused-vars
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {orderMadeGA, payAdditionalApplicationFeeGA, applicationBeingProcessedGA, otherPartiesRequestedChange, writtenRepresentations } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {
+  orderMadeGA,
+  payAdditionalApplicationFeeGA,
+  applicationBeingProcessedGA,
+  otherPartiesRequestedChange,
+  orderMoreInformation,
+  writtenRepresentations
+} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
@@ -27,7 +34,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @regression', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @nightly', async ({
   I,
   api,
 }) => {
@@ -76,7 +83,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @regression', async ({
   I,
   api,
 }) => {
@@ -134,7 +141,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order @citizenUI - @api @ga @nightly', async ({
   I,
   api,
 }) => {
@@ -189,7 +196,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
       await I.click(notification.nextSteps);
     }
 
-    await I.amOnPage('/case/'+claimRef+'/general-application/'+gaID+'/pay-additional-fee');
+    await I.amOnPage('/case/' + claimRef + '/general-application/' + gaID + '/pay-additional-fee');
     // await I.click('Response from the court');
     // await I.click('Pay the additional fee');
     await I.click('Make the payment');
@@ -207,6 +214,72 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
 
     if (isDashboardServiceEnabled) {
       const notification = otherPartiesRequestedChange();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+  }
+});
+
+Scenario('LipvLip Applicant GA creation e2e tests - Request for more info @citizenUI - @api @ga @nightly', async ({
+  I,
+  api,
+}) => {
+  courtResponseType = 'requestMoreInformation';
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+    console.log('Creating an Adjourn Hearing Order GA app as Claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+
+    console.log('Responding to the GA as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to change a hearing date', 'Miss Jane Doe v Sir John Doe');
+
+    console.log('Request more information as the Judge');
+    await api.makeOrderGA(gaID, courtResponseType);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMoreInformation();
+      await I.wait(10);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+  }
+});
+
+Scenario('LipvLip Applicant GA creation e2e tests - List for hearing @citizenUI - @api @ga @nightly', async ({
+  I,
+  api,
+}) => {
+  courtResponseType = 'listForHearing';
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+    console.log('Creating an Adjourn Hearing Order GA app as Claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+
+    console.log('Responding to the GA as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to change a hearing date', 'Miss Jane Doe v Sir John Doe');
+
+    console.log('Perform List for hearing as the Judge');
+    await api.makeOrderGA(gaID, courtResponseType);
+
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+
+    if (isDashboardServiceEnabled) {
+      const notification = orderMadeGA();
+      await I.wait(10);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }

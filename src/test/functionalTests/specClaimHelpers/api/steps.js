@@ -102,6 +102,12 @@ module.exports = {
       case 'writtenRepresentations':
         payload = makeAnOrderGA.writtenRepresentations(document);
         break;
+      case 'requestMoreInformation':
+        payload = makeAnOrderGA.requestMoreInformation(document);
+        break;
+      case 'listForHearing':
+        payload = makeAnOrderGA.listForHearing(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
