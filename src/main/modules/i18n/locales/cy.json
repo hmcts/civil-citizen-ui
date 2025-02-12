@@ -3303,6 +3303,7 @@
         "APPLICATION_DRAFT_DOCUMENT": "Cais Drafft",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
+        "CONSENT_ORDER" : "Gorchymyn Cysdynio",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",

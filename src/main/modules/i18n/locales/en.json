@@ -3303,6 +3303,7 @@
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "GENERAL_ORDER" : "General Order",
+        "CONSENT_ORDER" : "Consent Order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",

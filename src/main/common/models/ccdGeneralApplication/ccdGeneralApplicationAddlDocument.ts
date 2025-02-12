@@ -25,6 +25,11 @@ export interface CcdGaDraftDocument {
   value: CcdDocumentValue,
 }
 
+export interface CcdConsentOrderDocument {
+  id: string,
+  value: CcdDocumentValue,
+}
+
 export interface CcdDocumentValue {
   createdBy: string,
   documentLink: CcdDocument,

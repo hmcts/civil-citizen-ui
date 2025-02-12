@@ -38,6 +38,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
     ...getJudgeDismiss(application, lang),
     ...getWrittenRepSequentialDocument(req, application, lang),
     ...getWrittenRepConcurrentDocument(req, application, lang),
+    ...getConsentOrderDocument(req, application, lang),
   ].filter(courtResponseSummary =>  courtResponseSummary && courtResponseSummary.rows.length > 0)
     .sort((summaryList1,summaryList2) => {
       return new Date(summaryList2?.responseDateTime).getTime() - new Date(summaryList1?.responseDateTime).getTime();
@@ -248,6 +249,25 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
         return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
+      });
+  }
+  return courtResponseSummaryList;
+};
+
+export const getConsentOrderDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
+  const consentOrderDocs = applicationResponse?.case_data?.consentOrderDocument;
+  let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+
+  if (consentOrderDocs) {
+    courtResponseSummaryList = consentOrderDocs
+      .filter(consentOrderDoc => {
+        return consentOrderDoc?.value?.documentType === DocumentType.CONSENT_ORDER;
+      })
+      .map(consentOrderDoc => {
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(consentOrderDoc.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.CONSENT_ORDER', {lng})}">${consentOrderDoc.value.documentLink.document_filename}</a>`;
+        const createdDatetime = consentOrderDoc.value.createdDatetime;
+        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.CONSENT_ORDER', {lng}) ,createdDatetime, lng);
+        return new CourtResponseSummaryList(rows, createdDatetime);
       });
   }
   return courtResponseSummaryList;
