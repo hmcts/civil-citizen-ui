@@ -138,7 +138,7 @@ export async function isCoSCEnabled(): Promise<boolean> {
 }
 
 export async function isJudgmentOnlineLive(): Promise<boolean> {
-  return await getFlagValue(IS_JUDGMENT_ONLINE_LIVE) as boolean;
+  return false;
 }
 
 export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
