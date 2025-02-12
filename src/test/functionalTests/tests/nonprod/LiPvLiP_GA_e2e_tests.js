@@ -12,7 +12,7 @@ const {
   applicationBeingProcessedGA,
   otherPartiesRequestedChange,
   orderMoreInformation,
-  writtenRepresentations
+  writtenRepresentations,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
