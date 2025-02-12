@@ -31,7 +31,7 @@ module.exports = {
     return {
       title: 'The claim is settled',
       content: ['The claimant has confirmed that this case was settled on 1 January 2020.',
-        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at ocmcnton@justice.gov.uk'],
+        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at contactocmc@justice.gov.uk'],
     };
   },
 
