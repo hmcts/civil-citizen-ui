@@ -74,7 +74,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
     //await I.amOnPage(`/case/${gaID}/general-application/summary`);
 
   }
-}).tag('@regression-cp');
+});
 
 Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @nightly', async ({
   I,
@@ -103,7 +103,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@regression-cp');
+});
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
   I,
@@ -132,7 +132,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@regression-cp');
+});
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
   I,
@@ -160,7 +160,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@regression-cp');
+});
 
 Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice @citizenUI - @api @ga @nightly', async ({
   I,
@@ -211,7 +211,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@regression-cp');
+});
 
 Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representations @citizenUI - @api @ga @nightly', async ({
   I,
@@ -258,4 +258,4 @@ Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representa
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@regression-cp');
+});
