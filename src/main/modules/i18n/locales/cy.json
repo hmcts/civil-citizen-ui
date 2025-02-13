@@ -5373,8 +5373,8 @@
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
       "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
       "QUALIFIED_SOT": {
-        "ERROR_FULL_NAME": "Name is required",
-        "ERROR_ROLE": "Role is required"
+        "ERROR_FULL_NAME": "Mae angen enw",
+        "ERROR_ROLE": "Mae angen rôl"
       },
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os ydych yn cytuno y dylai'r llys wneud y gorchymyn y gofynnwyd amdano gan y parti arall. Dewiswch opsiwn: Ydw neu Nac ydw",
