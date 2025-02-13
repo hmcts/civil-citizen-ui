@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_PHONE_NUMBER_URL, CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {
   civilClaimResponseMock,
@@ -109,8 +109,21 @@ describe('Completing Claim', () => {
       draftClaim.case_data.statementOfMeans = undefined;
       app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
       await request(app)
-        .post(CITIZEN_PHONE_NUMBER_URL)
+        .post(CLAIMANT_PHONE_NUMBER_URL)
         .send('telephoneNumber=')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.ENTER_TELEPHONE_NUMBER'));
+        });
+    });
+
+    it('should return error on input with space', async () => {
+      const draftClaim = cloneDeep(civilClaimResponseMock);
+      draftClaim.case_data.statementOfMeans = undefined;
+      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      await request(app)
+        .post(CLAIMANT_PHONE_NUMBER_URL)
+        .send({telephoneNumber: ' '})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.ENTER_TELEPHONE_NUMBER'));
