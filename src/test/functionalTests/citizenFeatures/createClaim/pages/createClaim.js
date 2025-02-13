@@ -559,7 +559,7 @@ class CreateClaim {
     return claimReference;
   }
 
-  async verifyAndInputPayYourClaimFee(claimAmount, claimFee) {
+  async verifyAndInputPayYourClaimFee(claimAmount, claimFee, interestAmount) {
     I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     I.see('Pay your claim fee', 'h1');
     I.see('Claim amount');
@@ -567,7 +567,7 @@ class CreateClaim {
     I.see('Claim fee');
     I.see(claimFee);
     I.see('Total claim amount');
-    I.see(claimAmount+claimFee);
+    I.see(claimAmount+claimFee+interestAmount);
     I.see('If you settle out of court we won\'t refund your claim fee.');
     await I.waitForText(`continue to payment(£${claimFee})`);
     await I.click('continue to payment');
