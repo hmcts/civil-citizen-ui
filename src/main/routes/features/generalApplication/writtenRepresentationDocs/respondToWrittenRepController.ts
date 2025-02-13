@@ -1,10 +1,10 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL,
   GA_PROVIDE_MORE_INFORMATION_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
-  GA_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {caseNumberPrettify, documentIdExtractor} from 'common/utils/stringUtils';
@@ -39,7 +39,7 @@ respondWrittenRepController.get(GA_PROVIDE_MORE_INFORMATION_URL, (async (req: Ap
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
+    const backLinkUrl = BACK_URL;
     const writtenRepText = gaResponse.writtenRepText;
     const wantToUploadAddlDocuments = gaResponse.wantToUploadAddlDocuments;
     const respondWrittenRep = new RespondAddInfo(wantToUploadAddlDocuments, writtenRepText);
