@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_HEARING_ARRANGEMENT_URL,
+  BACK_URL,
   GA_HEARING_CONTACT_DETAILS_URL,
   GA_UNAVAILABILITY_CONFIRMATION_URL,
 } from 'routes/urls';
@@ -19,7 +19,7 @@ const viewPath = 'features/generalApplication/hearing-contact-details';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingContactDetails>, res: Response, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), index);
+  const backLinkUrl = BACK_URL;
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle });
 }

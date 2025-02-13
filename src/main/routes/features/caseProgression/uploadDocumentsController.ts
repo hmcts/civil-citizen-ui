@@ -1,4 +1,4 @@
-import {NextFunction, Response, RequestHandler, Router} from 'express';
+import {NextFunction, Response, RequestHandler, Router, Request} from 'express';
 import {
   CP_CHECK_ANSWERS_URL,
   CP_EVIDENCE_UPLOAD_CANCEL,
@@ -19,14 +19,56 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 import {AppRequest} from 'common/models/AppRequest';
 import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
+const multer = require('multer');
+const fileSize = Infinity;
+
+const storage = multer.memoryStorage({
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: fileSize,
+  },
+});
+
+async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
+  const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
+  const target = `${category}[${index}][fileUpload]`;
+  const inputFile = (req.files as Express.Multer.File[]).filter(file =>
+    file.fieldname === target,
+  );
+  if (inputFile[0]){
+    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
+    form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
+    form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
+
+    form.validateSync();
+    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
+    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
+      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
+      && !form?.errorFor(`${errorFieldNamePrefix}`)) {
+
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+    }
+  }
+}
+
 async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   if(!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments)
@@ -44,6 +86,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
     const uploadDocumentsContents= getUploadDocumentsContents(claimId, claim);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL);
     res.render(uploadDocumentsViewPath, {
+      currentUrl,
       form,
       claim,
       claimId,
@@ -59,6 +102,9 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
   }
 }
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
@@ -70,13 +116,19 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) => {
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
   try {
     const claimId = req.params.id;
+    const action = req.body.action;
     const claim: Claim = await getClaimById(claimId, req, true);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
+
+    if (action?.includes('[uploadButton]')) {
+      await uploadSingleFile(req, action, form);
+      return await renderView(res, claim, claimId, form);
+    }
 
     form.validateSync();
     if (form.hasErrors()) {

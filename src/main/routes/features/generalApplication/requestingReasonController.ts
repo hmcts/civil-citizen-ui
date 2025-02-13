@@ -1,8 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
-  GA_ADD_ANOTHER_APPLICATION_URL,
+  BACK_URL,
   GA_REQUESTING_REASON_URL,
-  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -13,12 +12,11 @@ import {
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
+  getRequestingReasonNextUrl,
   saveRequestingReason,
 } from 'services/features/generalApplication/generalApplicationService';
 import { buildRequestingReasonPageContent } from 'services/features/generalApplication/requestingReasonPageBuilder';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
@@ -27,7 +25,7 @@ import {
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
 
-requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControllerGuard,  (async (req: AppRequest, res: Response, next: NextFunction) => {
+requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -39,7 +37,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
     const requestingReason = new RequestingReason(requestingReasonText);
     const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
+    const backLinkUrl = BACK_URL;
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
@@ -54,7 +52,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
   }
 }) as RequestHandler);
 
-requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonControllerGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -64,7 +62,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
     const applicationIndex = queryParamNumber(req, 'index') || 0;
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = getBackLinkUrl(claimId, applicationIndex);
+    const backLinkUrl = BACK_URL;
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     await form.validate();
@@ -78,16 +76,11 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
       });
     } else {
       await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) + `?index=${applicationIndex}`); //add index param
+      res.redirect(getRequestingReasonNextUrl(req, claim));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-
-function getBackLinkUrl(claimId: string, index: number) : string {
-  const indexParam = `?index=${index}`;
-  return constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL) + indexParam;
-}
 
 export default requestingReasonController;
