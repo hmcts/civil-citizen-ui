@@ -83,6 +83,8 @@ xui-webapp:
     devcpuLimits: 1
     devmemoryLimits: 2Gi
     environment:
+      FEATURE_ACCESS_MANAGEMENT_ENABLED: true
+      SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
       HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
       HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
@@ -93,6 +95,7 @@ xui-webapp:
       SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
       SERVICES_WA_WORKFLOW_API_URL: http://wa-workflow-api-${SERVICE_FQDN}
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
+      SERVICES_DOCUMENTS_API_V2: http://${SERVICE_NAME}-cdam
       JURISDICTIONS: CIVIL
       LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
@@ -112,14 +115,17 @@ ccd:
       enabled: false
     postgresql:
       enabled: false
-    ras:
-      enabled: false
     userProfileImporter:
       enabled: false
     userProfile:
       enabled: false
+    elastic:
+      enabled: true
+    ras:
+      enabled: true
 
   global:
+    ccdStitchUrl: http://${SERVICE_NAME}-emstitch
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
@@ -146,6 +152,22 @@ ccd:
       ingressIP: ${INGRESS_IP}
       keyVaults: []
 
+  am-role-assignment-service:
+    java:
+      releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
+      imagePullPolicy: Always
+      image: hmctspublic.azurecr.io/am/role-assignment-service:latest
+      ingressHost: am-role-assignment-${SERVICE_FQDN}
+      environment:
+        RELEASE_REVISION: "{{ .Release.Revision }}"
+        ROLE_ASSIGNMENT_DB_PASSWORD: ${POSTGRES_PASSWORD}
+        ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+      keyVaults:
+        am:
+          secrets:
+            - name: role-assignment-service-LD-SDK-KEY
+              alias: LD_SDK_KEY
+
   ccd-data-store-api:
     java:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
@@ -154,16 +176,17 @@ ccd:
       devmemoryRequests: 2048Mi
       devmemoryLimits: 4096Mi
       environment:
-        CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
+        CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
+        CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+        DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
         DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
         DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
         OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
         CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: civil_service,aac_manage_case_assignment,civil_general_applications
-        CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
@@ -179,6 +202,55 @@ ccd:
           key: PASSWORD
           disabled: true
 
+  elasticsearch:
+    nameOverride: ${SERVICE_NAME}-es
+    imageTag: "7.17.1"
+    initResources:
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "512Mi"
+  logstash:
+    image: hmctspublic.azurecr.io/ccd/logstash
+    imageTag: "latest"
+    extraEnvs:
+      - name: DATA_STORE_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DATA_STORE_USER
+        value: ${POSTGRES_USER}
+      - name: DATA_STORE_PASS
+        value: ${POSTGRES_PASSWORD}
+      - name: DB_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DB_USER
+        value: ${POSTGRES_USER}
+      - name: DB_PWD
+        value: ${POSTGRES_PASSWORD}
+      - name: ES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_DATA_NODES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1024Mi"
+      limits:
+        cpu: "2500m"
+        memory: "1024Mi"
+    configTpl:
+      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      db.user: ${POSTGRES_USER}
+      db.pwd: ${POSTGRES_PASSWORD}
+      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
+    livenessProbe:
+      initialDelaySeconds: 90
+
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
@@ -188,6 +260,7 @@ ccd:
       releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
         DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
         WELSH_TRANSLATION_ENABLED: false
