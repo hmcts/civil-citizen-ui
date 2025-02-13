@@ -551,4 +551,12 @@ module.exports = {
       nextSteps: 'providing more information',
     };
   },
+
+  nocForLip: (clientName) => {
+    return {
+      title: clientName + ' has assigned a legal representative to act on their behalf',
+      content: 'You will now need to liaise with their legal representation.',
+      nextSteps: 'View the defendant legal representative contact details',
+    };
+  },
 };
