@@ -21,7 +21,7 @@
     {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
     {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
-      <form method="post" novalidate>
+      <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
 
@@ -48,6 +48,7 @@
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        name: 'action',
                         type: 'button',
                         attributes: {
                           'id': 'add-another-disclosure-list'
