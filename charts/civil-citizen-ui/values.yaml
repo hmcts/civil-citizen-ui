@@ -31,6 +31,15 @@ civil-general-applications:
 postgresql:
   enabled: false
 
+ccd-case-document-am-api:
+  enabled: false
+
+em-ccdorc:
+  enabled: false
+
+em-stitching:
+  enabled: false
+
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
