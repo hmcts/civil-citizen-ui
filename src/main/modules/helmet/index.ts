@@ -9,7 +9,7 @@ const loginUrl: string = config.get('services.idam.authorizationURL');
 const govPayUrl: string = config.get('services.govPay.url');
 const ocmcBaseUrl: string = config.get('services.cmc.url');
 const dynatraceDomain = '*.dynatrace.com';
-const webChat = ['vcc-eu4.8x8.com', 'vcc-eu4-cf.8x8.com'];
+const webChat = ['https://vcc-eu4.8x8.com', 'https://vcc-eu4-cf.8x8.com'];
 
 const scriptSrcElem = [
   self,
@@ -29,6 +29,8 @@ const styleSrc = [
   'fonts.googleapis.com',
   googleAnalyticsDomain,
   '*.analytics.google.com',
+  ...webChat,
+  (_req: AppRequest, res: express.Response) => `'nonce-${res.locals.nonceWebChat}'`,
 ];
 
 const imgSrc = [
@@ -63,7 +65,7 @@ const connectSrc = [
   googleAnalyticsDomain,
   '*.analytics.google.com',
   dynatraceDomain,
-  'cloud8-cc-geo.8x8.com',
+  'https://cloud8-cc-geo.8x8.com',
 ];
 
 const manifestSrc = [
@@ -118,6 +120,7 @@ export class Helmet {
               "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
               (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
               (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
+              (_req: AppRequest, res: express.Response) => `'nonce-${res.locals.nonceWebChat}'`,
             ],
             scriptSrcElem: scriptSrcElem,
             styleSrc: styleSrc,
