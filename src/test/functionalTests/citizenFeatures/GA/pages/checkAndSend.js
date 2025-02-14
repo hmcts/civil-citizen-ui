@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const ContactUs = require('../../common/contactUs');
 const I = actor();
 
@@ -13,13 +14,17 @@ class CheckAndSend {
     I.click(nextAction);
   }
 
-  async verifyPageContent(caseNumber, parties, applicationType, communicationType) {
+  async verifyPageContent(caseNumber, parties, applicationType, communicationType, firstApplicationType = 'none', secondApplicationType = 'none') {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails(applicationType, caseNumber, parties);
-    this.applicationType(applicationType);
+    if (applicationType !== 'Make an application') {
+      this.applicationType(applicationType);
+    } else {
+      this.multipleApplicationType(firstApplicationType, secondApplicationType);
+    }
     if (applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment' && applicationType !== 'Court to make an order settling the claim by consent') {
-      this.additionalApplication();
+      this.additionalApplication(applicationType);
     }
     this.partiesAgreed(communicationType);
     if (communicationType !== 'consent' && applicationType !== 'Set aside (remove) a judgment' && applicationType !== 'Vary a judgment' && applicationType !== 'Court to make an order settling the claim by consent') {
@@ -60,10 +65,29 @@ class CheckAndSend {
     await I.see('Change', applicatonTypeSelector);
   }
 
-  async additionalApplication() {
+  async multipleApplicationType(firstApplicationType, secondApplicationType) {
+    const firstSummaryCardTitleSelector = '.govuk-summary-card:first-of-type .govuk-summary-card__title';
+    const secondSummaryCardTitleSelector = '.govuk-summary-card:nth-of-type(2) .govuk-summary-card__title';
+    const firstSummaryCardFirstRowSelector = '.govuk-summary-card:first-of-type .govuk-summary-list__row:first-of-type';
+    const SecondSummaryCardFirstRowSelector = '.govuk-summary-card:nth-of-type(2) .govuk-summary-list__row:first-of-type';
+    I.see('Application 1', firstSummaryCardTitleSelector);
+    I.see('Application type', firstSummaryCardFirstRowSelector);
+    I.see(firstApplicationType, firstSummaryCardFirstRowSelector);
+    await I.see('Change', firstSummaryCardFirstRowSelector);
+    I.see('Application 2', secondSummaryCardTitleSelector);
+    I.see('Application type', SecondSummaryCardFirstRowSelector);
+    I.see(secondApplicationType, SecondSummaryCardFirstRowSelector);
+    await I.see('Change', SecondSummaryCardFirstRowSelector);
+  }
+
+  async additionalApplication(applicationType) {
     const applicatonTypeSelector = '//div[@class=\'govuk-summary-list__row\'][contains(., \'Do you want to add another application?\')]';
     I.see('Do you want to add another application?', applicatonTypeSelector);
-    I.see('No', applicatonTypeSelector);
+    if (applicationType !== 'Make an application') {
+      I.see('No', applicatonTypeSelector);
+    } else {
+      I.see('Yes', applicatonTypeSelector);
+    }
     await I.see('Change', applicatonTypeSelector);
   }
 
