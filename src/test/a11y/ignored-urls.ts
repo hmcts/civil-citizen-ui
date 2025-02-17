@@ -84,5 +84,7 @@ export const IGNORED_URLS = [
   urls.TESTING_SUPPORT_URL,
   urls.DEFENDANT_SUMMARY_TAB_URL,
   urls.DEFENDANT_DOCUMENTS_URL,
+  // WCAG2AA.Principle1.Guideline1_1.1_1_1.H30.2 - WEBCHAT
+  urls.CONTACT_CNBC_URL,
 
 ];

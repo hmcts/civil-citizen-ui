@@ -40,9 +40,6 @@ function testAccessibility(url: string): void {
           url = url.replace(':cuiCaseId', cuiCaseProgressionCaseReference);
         }
         const pageUrl = envUrl + url;
-        if (pageUrl.includes('contact-cnbc') || pageUrl.includes('contact-mediation')) {
-          options.push('WCAG2AA.Principle1.Guideline1_1.1_1_1.H30.2')
-        }
         const messages = await pa11y(pageUrl, {
           ignore: options,
         });
