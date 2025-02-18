@@ -152,7 +152,7 @@
     "style-loader": "^3.3.1",
     "supertest": "^6.3.1",
     "supertest-session": "^4.1.0",
-    "totp-generator": "^0.0.14",
+    "totp-generator": "^1.0.0",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.4.2",
     "tslint": "^6.1.3",
