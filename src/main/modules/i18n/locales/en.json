@@ -3652,7 +3652,8 @@
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
       "SAME_RATE_INTEREST": "Same rate for the whole period",
-      "TITLE": "How do you want to claim interest?"
+      "TITLE": "How do you want to claim interest?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">You can only use this service if any claim for interest is made at the same rate and from the same date. To claim interest at different rates or for different periods of time, you should issue your claim on paper. More information on how to do this can be found at<br><a class=\"govuk-link\" href=\"https://www.gov.uk/make-court-claim-for-money/make-claim\" target=\"_blank\">https://www.gov.uk/make-court-claim-for-money/make-claim</a>.</p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
