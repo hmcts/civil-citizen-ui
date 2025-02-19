@@ -2,8 +2,11 @@ import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-va
 import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class ExpertDetails {
-  firstName?: string;
-  lastName?: string;
+  @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
+  firstName: string;
+
+  @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
+  lastName: string;
 
   @ValidateIf(o => o.emailAddress)
   @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
