@@ -110,7 +110,7 @@ export class Claim {
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
-  claimInterest?: YesNo;
+  _claimInterest?: YesNo;
   interest?: Interest;
   submittedDate?: Date;
   issueDate?: Date;
@@ -492,6 +492,11 @@ export class Claim {
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
+    } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
+      const djDoc = this.defaultJudgmentDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return djDoc.value;
     }
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
@@ -841,12 +846,24 @@ export class Claim {
     return !!this.caseProgressionHearing?.hearingDocuments;
   }
 
+  hasDefaultJudgmentDocuments(): boolean {
+    return !!this.defaultJudgmentDocuments;
+  }
+
   get bundleStitchingDeadline(): string {
     return this.threeWeeksBeforeHearingDateString();
   }
 
   get finalisingTrialArrangementsDeadline(): string {
     return this.threeWeeksBeforeHearingDateString();
+  }
+
+  get claimInterest(): YesNo {
+    return this._claimInterest;
+  }
+
+  set claimInterest(claimInterest: YesNo | YesNoUpperCamelCase) {
+    this._claimInterest = claimInterest ? claimInterest.toLowerCase() as YesNo : undefined;
   }
 
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
