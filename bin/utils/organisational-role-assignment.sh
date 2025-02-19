@@ -15,6 +15,7 @@ ROLE_CLASSIFICATION="${3:-PUBLIC}"
 ROLE_NAME="${4:-"tribunal-caseworker"}"
 ROLE_ATTRIBUTES="${5:-'{"jurisdiction":"CIVIL"}'}"
 ROLE_CATEGORY="${6:-"LEGAL_OPERATIONS"}"
+AUTHORISATIONS="${7:-'[]'}"
 
 BASEDIR=$(dirname "$0")
 
@@ -48,6 +49,7 @@ curl --silent --show-error -X POST "${ROLE_ASSIGNMENT_URL}/am/role-assignments" 
             "roleCategory": "'"${ROLE_CATEGORY}"'",
             "readOnly": false,
             "attributes": '${ROLE_ATTRIBUTES}'
+            "authorisations": '${AUTHORISATIONS}'
           }
         ]
       }'
