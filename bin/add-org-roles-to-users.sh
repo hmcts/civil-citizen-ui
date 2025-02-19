@@ -65,4 +65,6 @@ echo "Setting up Users with role assignments..."
 ./bin/utils/organisational-role-assignment.sh "DJ.Angel.Morgan@ejudiciary.net" "${JUDGE_PASSWORD}" "PUBLIC" "circuit-judge" '{"jurisdiction":"CIVIL","primaryLocation":"177463","workTypes":"hearing_work,decision_making_work,applications"}' "JUDICIAL"
 
 ./bin/utils/organisational-role-assignment.sh "ga_nbc_admin_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "national-business-centre" '{"jurisdiction":"CIVIL","primaryLocation":"420219"}' "ADMIN"
-./bin/utils/organisational-role-assignment.sh "ga_nbc_admin_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "nbc-team-leader" '{"jurisdiction":"CIVIL","primaryLocation":"420219"}' "ADMIN"
+
+./bin/utils/organisational-role-assignment.sh "nbc_admin_region2@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "national-business-centre" '{"jurisdiction":"CIVIL","primaryLocation":"420219"}' "ADMIN"
+./bin/utils/organisational-role-assignment.sh "nbc_admin_region2@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "nbc-team-leader" '{"jurisdiction":"CIVIL","primaryLocation":"420219"}' "ADMIN"
