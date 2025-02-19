@@ -48,7 +48,7 @@ curl --silent --show-error -X POST "${ROLE_ASSIGNMENT_URL}/am/role-assignments" 
             "grantType": "STANDARD",
             "roleCategory": "'"${ROLE_CATEGORY}"'",
             "readOnly": false,
-            "attributes": '${ROLE_ATTRIBUTES}'
+            "attributes": '${ROLE_ATTRIBUTES}',
             "authorisations": '"${AUTHORISATIONS}"'
           }
         ]
