@@ -551,7 +551,7 @@ class createGASteps {
     await payingForApplicationPage.verifyPageContent(applicationType, feeAmount);
     await payingForApplicationPage.nextAction('Continue');
 
-    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType, org);
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, applicationType, communicationType, 'none', 'none', org);
     org === 'company' ? await checkAndSendPage.checkAndSignForCompany() : await checkAndSendPage.checkAndSign();
     await checkAndSendPage.nextAction('Submit');
 
