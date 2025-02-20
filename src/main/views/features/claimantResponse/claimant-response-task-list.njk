@@ -33,9 +33,13 @@
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                      <a href={{task.url}}>{{ t(task.description) }}</a>
+                      {% if task.status === 'NOT_AVAILABLE_YET' %}
+                        <span aria-disabled="true">{{ t(task.description) }}</span>
+                      {% else %}
+                        <a href="{{ task.url }}">{{ t(task.description) }}</a>
+                      {% endif %}
                     </span>
-                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
+                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE" or task.status==="NOT_AVAILABLE_YET" }}">
                       {{ t('PAGES.TASK_LIST.' + task.status) }}
                     </strong>
                   </li>
