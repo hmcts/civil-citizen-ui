@@ -154,6 +154,10 @@ ccd:
 
   am-role-assignment-service:
     java:
+      devmemoryRequests: 2048Mi
+      devcpuRequests: 2000m
+      devmemoryLimits: 4096Mi
+      devcpuLimits: 4000m
       releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
       imagePullPolicy: Always
       image: hmctspublic.azurecr.io/am/role-assignment-service:latest
@@ -162,9 +166,20 @@ ccd:
         RELEASE_REVISION: "{{ .Release.Revision }}"
         ROLE_ASSIGNMENT_DB_PASSWORD: ${POSTGRES_PASSWORD}
         ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+        CCD_DATA_STORE_URL: http://${SERVICE_NAME}-ccd-data-store-api
+        ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer,sscs,fis_hmc_api,et_cos,civil_service,civil_general_applications
+        RUN_LD_ON_STARTUP: false
       keyVaults:
         am:
           secrets:
+            - name: am-role-assignment-service-s2s-secret
+              alias: AM_ROLE_ASSIGNMENT_SERVICE_SECRET
+            - name: app-insights-connection-string
+              alias: app-insights-connection-string
+            - name: role-assignment-service-IDAM-CLIENT-SECRET
+              alias: ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET
+            - name: role-assignment-service-IDAM-ADMIN-SECRET
+              alias: ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD
             - name: role-assignment-service-LD-SDK-KEY
               alias: LD_SDK_KEY
 
@@ -464,9 +479,10 @@ civil-service:
       STITCHING_API_ENABLED: false
       SERVICE_REQUEST_UPDATE: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update
       SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
-      CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui
+      CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+      ASSIGN_ROLES_ON_STARTUP: true
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
