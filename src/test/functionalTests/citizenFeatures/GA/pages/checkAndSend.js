@@ -210,6 +210,12 @@ class CheckAndSend {
     await I.click('#signed');
     await I.fillField('#name', 'tester name');
   }
+
+  async checkAndSignForCompany() {
+    await I.click('#signed');
+    await I.fillField('#name', 'tester name');
+    await I.fillField('#title', 'Director');
+  }
 }
 
 module.exports = CheckAndSend;
