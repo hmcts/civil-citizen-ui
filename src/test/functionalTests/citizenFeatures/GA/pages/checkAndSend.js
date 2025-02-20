@@ -14,7 +14,7 @@ class CheckAndSend {
     I.click(nextAction);
   }
 
-  async verifyPageContent(caseNumber, parties, applicationType, communicationType, firstApplicationType = 'none', secondApplicationType = 'none') {
+  async verifyPageContent(caseNumber, parties, applicationType, communicationType, firstApplicationType = 'none', secondApplicationType = 'none', org = '') {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails(applicationType, caseNumber, parties);
@@ -43,7 +43,7 @@ class CheckAndSend {
     this.emailAddress();
     this.unavailableDates();
     this.hearingSupport();
-    await this.verifyPageText();
+    org === 'company' ? await this.verifyPageTextForCompany() : await this.verifyPageText();
     contactUs.verifyContactUs();
   }
 
@@ -203,6 +203,16 @@ class CheckAndSend {
     I.see('I believe that the facts stated in this application are true.');
     I.see('I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.');
     I.see('Name');
+    await I.seeElement('//*[@id="name"]');
+  }
+
+  async verifyPageTextForCompany() {
+    I.see('Statement of truth', 'h2');
+    I.see('The information on this page forms your application.');
+    I.see('When you\'re satisfied that your answers are correct, you should tick the box below and write your name to "sign" this statement of truth.');
+    I.see('I believe that the facts stated in this application are true.');
+    I.see('I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.');
+    I.see('Full name');
     await I.seeElement('//*[@id="name"]');
   }
 
