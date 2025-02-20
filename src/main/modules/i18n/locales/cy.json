@@ -3437,7 +3437,8 @@
       "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
       "PAGE_TITLE": "Sut ydych chi am hawlio llog?",
       "SAME_RATE_INTEREST": "Yr un gyfradd ar gyfer y cyfnod cyfan",
-      "TITLE": "Sut ydych chi am hawlio llog?"
+      "TITLE": "Sut ydych chi am hawlio llog?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">Gallwch ond defnyddio’r gwasanaeth hwn os bydd unrhyw hawliad am log yn cael ei wneud ar yr un gyfradd ac o’r un dyddiad. I hawlio llog ar gyfraddau gwahanol neu ar gyfer cyfnodau o amser gwahanol, dylech gyflwyno’ch cais ar bapur. Gellir dod o hyd i fwy o wybodaeth am sut i wneud hyn yn<br><a class='govuk-link' href='https://www.gov.uk/make-court-claim-for-money/make-claim' target='_blank'>https://www.gov.uk/make-court-claim-for-money/make-claim</a></p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
