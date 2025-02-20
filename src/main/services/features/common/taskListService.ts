@@ -26,7 +26,7 @@ const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string, car
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
 
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId, lang);
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(caseData, currentClaimId, lang);
 
   filteredTaskGroups.push(taskListSubmitYourResponse);
   return filteredTaskGroups;

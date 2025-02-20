@@ -42,7 +42,7 @@ describe('Response Task List service', () => {
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang, true);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListResolvingTheClaim = buildResolvingTheClaimSection(caseData, mockClaimId, lang, true);
-      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
+      const taskListSubmitYourResponse = buildSubmitSection(caseData, mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListResolvingTheClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
@@ -55,7 +55,7 @@ describe('Response Task List service', () => {
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListResolvingTheClaim = buildResolvingTheClaimSection(caseData, mockClaimId, lang, false);
-      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
+      const taskListSubmitYourResponse = buildSubmitSection(caseData, mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListResolvingTheClaim, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
@@ -91,7 +91,7 @@ describe('Response Task List service', () => {
       //when
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
-      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
+      const taskListSubmitYourResponse = buildSubmitSection(caseData, mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
@@ -124,7 +124,7 @@ describe('Response Task List service', () => {
       //when
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
-      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
+      const taskListSubmitYourResponse = buildSubmitSection(caseData, mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
