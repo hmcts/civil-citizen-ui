@@ -15,6 +15,8 @@ import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
 import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
 
+const civilServiceUrl = config.get<string>('services.civilService.url');
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
@@ -42,6 +44,13 @@ describe('on GET', () => {
     next();
   });
   app.use(claimFeeBreakDownController);
+
+  beforeEach(() => {
+    nock(civilServiceUrl)
+      .post('/fees/claim/calculate-interest')
+      .reply(200, '100');
+  });
+
   it('should handle the get call of fee summary details', async () => {
     //given
     const claimId = '111111';
@@ -54,7 +63,9 @@ describe('on GET', () => {
       claimInterest: 'yes' ,
       claimFee: {
         calculatedAmountInPence: 10000,
-      }};
+      },
+      isInterestFromASpecificDate: () => false,
+    };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
     (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
