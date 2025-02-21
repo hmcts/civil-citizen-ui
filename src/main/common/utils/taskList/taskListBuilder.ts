@@ -26,6 +26,7 @@ import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid'
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
@@ -141,10 +142,18 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-const buildSubmitSection = (claimId: string, lang: string): TaskList => {
+const isRejectAllAndCounterClaim = (caseData: Claim): boolean => {
+  return caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.COUNTER_CLAIM;
+};
+
+const buildSubmitSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
 
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
+
+  if (isRejectAllAndCounterClaim(caseData)) {
+    checkAndSubmitYourResponseTask.status = TaskStatus.NOT_AVAILABLE_YET;
+  }
 
   tasks.push(checkAndSubmitYourResponseTask);
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: getLng(lang)}), tasks};
