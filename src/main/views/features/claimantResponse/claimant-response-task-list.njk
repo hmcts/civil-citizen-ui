@@ -33,12 +33,15 @@
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                      <a href="{{ task.url }}"
-                         aria-disabled="{{ 'true' if task.status === 'NOT_AVAILABLE_YET' }}"
-                         style="{{ 'color: grey; pointer-events: none; text-decoration: none;' if task.status === 'NOT_AVAILABLE_YET' }}"
-                         onclick="if (this.getAttribute('aria-disabled') === 'true') return false;">
-                        {{ t(task.description) }}
-                      </a>
+                      {% if task.status === 'NOT_AVAILABLE_YET' %}
+                        <span aria-disabled="true" style="color: grey; text-decoration: none;">
+                          {{ t(task.description) }}
+                        </span>
+                      {% else %}
+                        <a href="{{ task.url }}">
+                          {{ t(task.description) }}
+                        </a>
+                      {% endif %}
                     </span>
                     <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
                       {{ t('PAGES.TASK_LIST.' + task.status) }}
