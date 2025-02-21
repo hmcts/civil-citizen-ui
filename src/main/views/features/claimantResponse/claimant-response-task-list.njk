@@ -32,16 +32,10 @@
               <ol class="app-task-list app-task-list__items">
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
-                    {% if task.status === "NOT_AVAILABLE_YET" %}
-                      <span class="app-task-list__task-name">
-                        {{ t(task.description) }}
-                      </span>
-                    {% else %}
-                      <span class="app-task-list__task-name">
-                        <a href="{{ task.url }}">{{ t(task.description) }}</a>
-                      </span>
-                    {% endif %}
-                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status === "INCOMPLETE" }}">
+                    <span class="app-task-list__task-name">
+                      <a href={{task.url}}>{{ t(task.description) }}</a>
+                    </span>
+                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
                       {{ t('PAGES.TASK_LIST.' + task.status) }}
                     </strong>
                   </li>
