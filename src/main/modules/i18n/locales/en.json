@@ -4416,7 +4416,8 @@
       "IN_PROGRESS": "In progress",
       "READY_TO_VIEW": "Ready to view",
       "NOT_AVAILABLE_YET": "Not available yet",
-      "ACTION_NEEDED": "Action needed"
+      "ACTION_NEEDED": "Action needed",
+      "UNAVAILABLE": "Unavailable"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
