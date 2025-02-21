@@ -33,15 +33,18 @@
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                      {% if task.status === 'NOT_AVAILABLE_YET' %}
-                        <span aria-disabled="true" style="color: grey; text-decoration: none;">
-                          {{ t(task.description) }}
-                        </span>
-                      {% else %}
-                        <a href="{{ task.url }}">
-                          {{ t(task.description) }}
-                        </a>
-                      {% endif %}
+                      <a
+                        {% if task.status === 'NOT_AVAILABLE_YET' %}
+                          href="#"
+                          aria-disabled="true"
+                          style="color: grey; pointer-events: none; text-decoration: none;"
+                          tabindex="-1"
+                        {% else %}
+                          href="{{ task.url }}"
+                        {% endif %}
+                      >
+                        {{ t(task.description) }}
+                      </a>
                     </span>
                     <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
                       {{ t('PAGES.TASK_LIST.' + task.status) }}
