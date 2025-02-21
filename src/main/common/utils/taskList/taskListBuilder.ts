@@ -152,7 +152,7 @@ const buildSubmitSection = (caseData: Claim, claimId: string, lang: string): Tas
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
 
   if (isRejectAllAndCounterClaim(caseData)) {
-    checkAndSubmitYourResponseTask.status = TaskStatus.READY_TO_VIEW;
+    checkAndSubmitYourResponseTask.status = TaskStatus.NOT_AVAILABLE_YET;
   }
 
   tasks.push(checkAndSubmitYourResponseTask);
