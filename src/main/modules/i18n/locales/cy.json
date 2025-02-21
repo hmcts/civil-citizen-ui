@@ -4416,7 +4416,8 @@
       "IN_PROGRESS": "Yn mynd rhagddo",
       "READY_TO_VIEW": "Ready to view",
       "NOT_AVAILABLE_YET": "Ddim ar gael eto",
-      "ACTION_NEEDED": "Mae angen gweithredu"
+      "ACTION_NEEDED": "Mae angen gweithredu",
+      "UNAVAILABLE": "Unavailable"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
