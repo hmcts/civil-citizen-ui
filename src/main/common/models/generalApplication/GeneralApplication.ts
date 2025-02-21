@@ -15,6 +15,7 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import { UploadAdditionalDocument } from './UploadAdditionalDocument';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 export class GeneralApplication {
 
@@ -32,7 +33,7 @@ export class GeneralApplication {
   hearingContactDetails?: HearingContactDetails;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
-  statementOfTruth?: StatementOfTruthForm;
+  statementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   applicationFee?: ClaimFeeData;
   helpWithFees?: GaHelpWithFees;
   applicationFeePaymentDetails : PaymentInformation;
