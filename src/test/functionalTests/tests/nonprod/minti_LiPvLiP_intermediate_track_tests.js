@@ -15,7 +15,7 @@ Before(async () => {
 });
 
 // LiP Individual vs LiP Company
-Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
+Scenario('LiP vs LiP Intermediate claim @test', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, intTrackClaimType, carmEnabled, 'DefendantCompany');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
