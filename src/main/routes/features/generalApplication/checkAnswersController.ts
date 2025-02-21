@@ -21,6 +21,7 @@ import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {YesNo} from 'form/models/yesNo';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -32,9 +33,9 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const applicationTypeCards = getSummaryCardSections(claimId, claim, lang);
   const summaryRows = getSummarySections(claimId, claim, lang);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
-
+  const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
   const backLinkUrl = BACK_URL;
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows, isBusiness });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -54,9 +55,15 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
+    let statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth;
+    if ((claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness())) {
+      statementOfTruth = new QualifiedStatementOfTruth(req.body.signed, req.body.name, req.body.title);
+    } else {
+      statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
+
+    }
     const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
-    const form = new GenericForm(new StatementOfTruthForm(req.body.signed, req.body.name));
+    const form = new GenericForm(statementOfTruth);
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
