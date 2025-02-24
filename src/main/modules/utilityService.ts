@@ -6,6 +6,7 @@ import {Claim} from 'common/models/claim';
 import {Request} from 'express';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
+import {BusinessProcess} from 'models/businessProcess';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -29,6 +30,20 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
     }
   }
   return claim;
+};
+
+/**
+ * Gets the claims latest business process from civil service
+ * @param claimId, req
+ * @returns businessProcess
+ */
+export const getClaimBusinessProcess = async (claimId: string, req: Request): Promise<BusinessProcess> => {
+  const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+  if (claim) {
+    return Object.assign(new BusinessProcess(), claim.businessProcess);
+  } else {
+    throw new Error('Case not found...');
+  }
 };
 
 export const getRedisStoreForSession = () => {
