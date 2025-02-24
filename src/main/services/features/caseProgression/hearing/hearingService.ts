@@ -2,14 +2,13 @@ import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {
-  formatDocumentAlignedViewURL,
-  formatDocumentWithHintText,
-} from 'common/utils/formatDocumentURL';
+import {formatDocumentAlignedViewURL, formatDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {alignText} from 'form/models/alignText';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 
 export function getHearingContent(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent[] {
 
@@ -42,6 +41,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
 
   const hearingRows = [] as SummaryRow[];
   const hearingDocuments :CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocuments;
+  const hearingDocumentsWelsh: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocumentsWelsh;
 
   for(const hearingDocument of hearingDocuments){
 
@@ -54,6 +54,19 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
     }
   }
 
+  if(claim.caseProgressionHearing?.hearingDocumentsWelsh) {
+    for(const hearingDocumentWelsh of hearingDocumentsWelsh) {
+      if (checkWelshHearingNotice(claim)) {
+        if(hearingDocumentWelsh?.value) {
+          const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocumentWelsh.value?.documentName, claim.id, hearingDocumentWelsh.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
+          const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
+          hearingRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'}, value:{html: hearingDocumentLink},
+          });
+        }
+      }
+    }
+  }
+
   return {type:ClaimSummaryType.SUMMARY, data:{rows:hearingRows}};
 }
 function getButton(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent {
@@ -63,4 +76,25 @@ function getButton(claimId: string, claim: Claim, lang: string, redirectUrl:stri
     .build();
 
   return {contentSections: buttonSection, hasDivider: false};
+}
+
+export function checkWelshHearingNotice(claim: Claim): boolean {
+
+  const isWelshLanguage = (lang?: LanguageOptions): boolean => {
+    return lang === LanguageOptions.WELSH || lang === LanguageOptions.WELSH_AND_ENGLISH;
+  };
+
+  const docsLanguageClaimant = claim?.claimantResponse?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage;
+  const docsLanguageDefendant = claim?.directionQuestionnaire?.welshLanguageRequirements?.language?.documentsLanguage;
+  const isDocsLanguageWelsh = isWelshLanguage(docsLanguageClaimant);
+  const isDocsLanguageWelshDefendant = isWelshLanguage(docsLanguageDefendant);
+
+  const isClaimantWelshBilingual =
+    claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+
+  const isDefendantLipResponseBoth =
+    claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+
+  return ((claim.isClaimant() && (isClaimantWelshBilingual || isDocsLanguageWelsh)) ||
+    (claim.isDefendant() && (isDefendantLipResponseBoth || isDocsLanguageWelshDefendant)));
 }
