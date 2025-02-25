@@ -107,6 +107,7 @@ describe('on GET', () => {
         calculatedAmountInPence: 10000,
       },
       hasBusinessProcessFinished: () => false,
+      isInterestFromASpecificDate: () => false,
     };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
