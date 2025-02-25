@@ -146,10 +146,10 @@ const isRejectAllAndCounterClaim = (caseData: Claim): boolean => {
   return caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.COUNTER_CLAIM;
 };
 
-const buildSubmitSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
+const buildSubmitSection = (caseData: Claim, claimId: string, lang: string, isAvailable: boolean): TaskList => {
   const tasks: Task[] = [];
 
-  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang, isAvailable);
 
   if (isRejectAllAndCounterClaim(caseData)) {
     checkAndSubmitYourResponseTask.status = TaskStatus.NOT_AVAILABLE_YET;

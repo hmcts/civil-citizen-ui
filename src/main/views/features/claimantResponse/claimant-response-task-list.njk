@@ -23,7 +23,7 @@
           </p>
 
           {% for taskList in taskLists %}
-            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length==0}}">
+            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
               <h2 class="app-task-list__section">
                 <span class="app-task-list__section-number">
                   {{loop.index}} . </span>
@@ -32,20 +32,14 @@
               <ol class="app-task-list app-task-list__items">
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
-                    {% if task.status=="NOT_AVAILABLE_YET" %}
-                      <span class="app-task-list__task-name">
+                    <span class="app-task-list__task-name">
+                      {% if task.url %}
+                        <a href="{{ task.url }}">{{ t(task.description) }}</a>
+                      {% else %}
                         {{ t(task.description) }}
-                      </span>
-                      <!-- Debug: task.status is NOT_AVAILABLE_YET -->
-                      <div style="color: red; font-size: 0.8em;">
-                        DEBUG: task.status is "NOT_AVAILABLE_YET"
-                      </div>
-                    {% else %}
-                      <span class="app-task-list__task-name">
-                        <a href="{{task.url}}">{{ t(task.description) }}</a>
-                      </span>
-                    {% endif %}
-                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status=="INCOMPLETE"}}">
+                      {% endif %}
+                    </span>
+                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
                       {{ t('PAGES.TASK_LIST.' + task.status) }}
                     </strong>
                   </li>
