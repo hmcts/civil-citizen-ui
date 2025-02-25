@@ -1,5 +1,8 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block content %}
 
@@ -17,4 +20,20 @@
       rows: rows
     }) }}
   </div>
+
+  <form method="POST" action="/{{ claimId }}/view-queries/{{ query.parentQuery.id }}">
+    {{ csrfProtection(csrf) }}
+    {{ govukTextarea({
+      label: {
+        text: "Write your reply",
+        isPageHeading: false
+      },
+      id: "query-reply-input",
+      name: "query-reply-input"
+    }) }}
+
+    {{ govukButton({
+      text: "Submit"
+    }) }}
+  </form>
 {% endblock %}

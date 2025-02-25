@@ -4,7 +4,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ClaimUpdate} from 'models/events/eventDto';
-import {CaseMessage, CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
+import {CaseMessage, CaseQueries, FormDocument, QueryMessage} from 'models/queryManagement/caseQueries';
 import {Claim} from 'models/claim';
 import {v4 as uuidv4} from 'uuid';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
@@ -96,27 +96,7 @@ queryManagementController.get('/:claimId/view-queries', (async (req: AppRequest,
     queries = claim.qmRespondentCitizenQueries;
   }
 
-  const ogQueries: QueryThread[] = [];
-
-  for (const caseMessage of queries.caseMessages) {
-    if (!caseMessage.value.parentId) {
-      const entry: QueryThread = {
-        parentQuery: caseMessage.value,
-        responses: [],
-        hasBeenResponded: false,
-      };
-      ogQueries.push(entry);
-    }
-  }
-  for (const caseMessage of queries.caseMessages) {
-    if (caseMessage.value.parentId) {
-      ogQueries.find((item) => {
-        if (item.parentQuery.id === caseMessage.value.parentId) {
-          item.responses.push(caseMessage.value);
-        }
-      });
-    }
-  }
+  const ogQueries = buildQueryGroup(queries.caseMessages);
 
   ogQueries.forEach((entry: QueryThread) => {
     entry.hasBeenResponded = hasBeenRespondedTo(entry);
@@ -137,31 +117,56 @@ queryManagementController.get('/:claimId/view-queries/:queryId', (async (req: Ap
     queries = claim.qmRespondentCitizenQueries;
   }
 
-  const ogQueries: QueryThread[] = [];
-
-  for (const caseMessage of queries.caseMessages) {
-    if (!caseMessage.value.parentId) {
-      const entry: QueryThread = {
-        parentQuery: caseMessage.value,
-        responses: [],
-        hasBeenResponded: false,
-      };
-      ogQueries.push(entry);
-    }
-  }
-  for (const caseMessage of queries.caseMessages) {
-    if (caseMessage.value.parentId) {
-      ogQueries.find((item) => {
-        if (item.parentQuery.id === caseMessage.value.parentId) {
-          item.responses.push(caseMessage.value);
-        }
-      });
-    }
-  }
+  const ogQueries = buildQueryGroup(queries.caseMessages);
 
   const query = ogQueries.find((item) => item.parentQuery.id === queryId);
 
   res.render('features/queryManagement/viewQueryThread', {claimId, query});
+}));
+
+queryManagementController.post('/:claimId/view-queries/:queryId', (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = req.params.claimId;
+  const queryId = req.params.queryId;
+  const date = new Date();
+  const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+  let queryObj = {} as unknown as CaseQueries;
+
+  if (isClaimant(claim)) {
+    queryObj = claim.qmApplicantCitizenQueries;
+  } else {
+    queryObj = claim.qmRespondentCitizenQueries;
+  }
+
+  const ogQueries = buildQueryGroup(queryObj.caseMessages);
+
+  const currentThread = ogQueries.find((item) => item.parentQuery.id === queryId);
+
+  console.log(queryObj);
+  queryObj.caseMessages.push({
+    id: uuidv4(), value: {
+      id: uuidv4().toString(),
+      subject: currentThread.parentQuery.subject,
+      name: 'Bob',
+      body: req.body['query-reply-input'],
+      isHearingRelated: currentThread.parentQuery.isHearingRelated,
+      createdOn: date.toISOString(),
+      createdBy: uuidv4().toString(),
+      parentId: currentThread.parentQuery.id,
+    },
+  });
+
+  let data = {};
+  if (isClaimant(claim)) {
+    data = {'qmApplicantCitizenQueries': {...queryObj},
+    };
+  } else {
+    data = {'qmRespondentCitizenQueries': {...queryObj},
+    };
+  }
+
+  await civilServiceClient.submitQueryManagementRaiseQuery(claimId, data as ClaimUpdate, req);
+
+  res.redirect('/dashboard');
 }));
 
 const isClaimant = (claim: Claim): boolean => {
@@ -173,6 +178,32 @@ class QueryThread {
   responses: CaseMessage[];
   hasBeenResponded = false;
 }
+
+const buildQueryGroup = (messages: QueryMessage[]): QueryThread[] => {
+  const ogQueries: QueryThread[] = [];
+
+  for (const caseMessage of messages) {
+    if (!caseMessage.value.parentId) {
+      const entry: QueryThread = {
+        parentQuery: caseMessage.value,
+        responses: [],
+        hasBeenResponded: false,
+      };
+      ogQueries.push(entry);
+    }
+  }
+  for (const caseMessage of messages) {
+    if (caseMessage.value.parentId) {
+      ogQueries.find((item) => {
+        if (item.parentQuery.id === caseMessage.value.parentId) {
+          item.responses.push(caseMessage.value);
+        }
+      });
+    }
+  }
+
+  return ogQueries;
+};
 
 const hasBeenRespondedTo = (query: QueryThread) => {
   if (query.responses.length === 0) {
