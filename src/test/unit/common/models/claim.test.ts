@@ -2379,6 +2379,7 @@ describe('Documents', () => {
     });
   });
 });
+
 describe('isCcjComplete', () => {
   const claim = new Claim();
   it('should return no when ccj not completed and state is correct', () => {
@@ -2403,6 +2404,7 @@ describe('isCcjComplete', () => {
     expect(result).toBe(true);
   });
 });
+
 describe('isCcjCompleteForJo', () => {
   const claim = new Claim();
   claim.claimantResponse = new ClaimantResponse();

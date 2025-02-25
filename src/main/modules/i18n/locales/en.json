@@ -4453,7 +4453,8 @@
       "TITLE": "Pay your claim fee",
       "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
       "CONTINUE_TO_PAYMENT": "continue to payment",
-      "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry."
+      "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry.",
+      "CASE_PROCESSING_WARNING": "The case processing has not completed, please refresh this page in one minute. If the problem persists please contact the helpdesk 0300 123 7050."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
@@ -5373,6 +5374,10 @@
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
       "PAY_APPLICATION_FEE": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
+      "QUALIFIED_SOT": {
+        "ERROR_FULL_NAME": "Name is required",
+        "ERROR_ROLE": "Role is required"
+      },
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"

@@ -48,6 +48,7 @@ import {CcdGeneralApplicationCertOfSC} from 'models/ccdGeneralApplication/ccdGen
 import {Document} from 'models/document/document';
 import {CcdGeneralApplicationOrderJudge} from 'models/ccdGeneralApplication/ccdGeneralApplicationOrderJudge';
 import {CcdGeneralApplicationRequestingReason} from 'models/ccdGeneralApplication/ccdGeneralAppRequestingReason';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -250,6 +251,7 @@ const toCCDSupportRequirements = (hearingSupport: HearingSupport): CcdSupportReq
 const toCCDStatementOfTruth = (statementOfTruth: StatementOfTruthForm): CcdGeneralApplicationStatementOfTruth => {
   return {
     name: statementOfTruth?.name,
+    role: (statementOfTruth as QualifiedStatementOfTruth)?.title,
   };
 };
 
@@ -290,6 +292,10 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     generalAppRespondent1Representative: {hasAgreed: toCCDYesNo(response.respondentAgreement?.option)},
     generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement,
     generalAppRespondDocument: response.wantToUploadDocuments === YesNo.YES ? translateCUItoCCD(response.uploadEvidenceDocuments) : undefined,
+    generalAppResponseStatementOfTruth: {
+      name: response.statementOfTruth.name,
+      role: (response.statementOfTruth as QualifiedStatementOfTruth)?.title,
+    },
   };
 };
 

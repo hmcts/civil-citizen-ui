@@ -5,7 +5,7 @@ import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeB
 import {CLAIM_FEE_BREAKUP, CLAIM_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import nock from 'nock';
@@ -26,6 +26,7 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
+  getClaimBusinessProcess: jest.fn(),
 }));
 jest.mock('routes/guards/claimFeePaymentGuard', () => ({
   claimFeePaymentGuard: jest.fn((req, res, next) => {
@@ -64,11 +65,17 @@ describe('on GET', () => {
       claimFee: {
         calculatedAmountInPence: 10000,
       },
+      hasBusinessProcessFinished: () => false,
       isInterestFromASpecificDate: () => false,
     };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
     (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
+
+    const mockBusinessProcessData = {
+      hasBusinessProcessFinished: () => true,
+    };
+    (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
     //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
@@ -81,6 +88,47 @@ describe('on GET', () => {
           hasInterest: true,
           pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
           totalAmount: mockTotalAmount.toFixed(2),
+          hasBusinessProcessFinished: true,
+        });
+      });
+  });
+
+  it('should handle the get call of fee summary details when business process has not finished', async () => {
+    //given
+    const claimId = '111111';
+    const mockClaimData = {
+      totalClaimAmount: 1000,
+      interest: {
+        interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
+        totalInterest: { amount: 100 },
+      },
+      claimInterest: 'yes' ,
+      claimFee: {
+        calculatedAmountInPence: 10000,
+      },
+      hasBusinessProcessFinished: () => false,
+    };
+    const mockClaimFee = 100;
+    const mockTotalAmount = 1200;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
+
+    const mockBusinessProcessData = {
+      hasBusinessProcessFinished: () => false,
+    };
+    (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
+    //when-then
+    await request(app)
+      .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body).toEqual({
+          totalClaimAmount: mockClaimData.totalClaimAmount.toFixed(2),
+          interest: mockClaimData.interest.totalInterest.amount,
+          claimFee: mockClaimFee,
+          paymentSyncError: false,
+          hasInterest: true,
+          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
+          totalAmount: mockTotalAmount.toFixed(2),
+          hasBusinessProcessFinished: false,
         });
       });
   });
