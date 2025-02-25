@@ -11,11 +11,11 @@ import {t} from 'i18next';
  *
  */
 
-export const getCheckAndSubmitYourResponseTask = (claimId: string, lang: string, isAvailable: boolean): Task => {
+export const getCheckAndSubmitYourResponseTask = (claimId: string, lang: string): Task => {
   return {
     description: t('TASK_LIST.SUBMIT.CHECK_AND_SUBMIT', { lng: getLng(lang) }),
-    url: isAvailable ? constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL) : '',
-    status: isAvailable ? TaskStatus.INCOMPLETE : TaskStatus.NOT_AVAILABLE_YET,
+    url: constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL),
+    status: TaskStatus.INCOMPLETE,
     isCheckTask: true,
   };
 };
