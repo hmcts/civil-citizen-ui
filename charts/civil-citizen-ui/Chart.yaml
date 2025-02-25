@@ -10,7 +10,7 @@ maintainers:
 dependencies:
   - name: nodejs
     version: 3.2.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
   - name: civil-service
     version: 0.0.72
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
@@ -33,7 +33,7 @@ dependencies:
     condition: camunda-bpm.enabled
   - name: servicebus
     version: 1.1.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: servicebus.enabled
   - name: civil-general-applications
     version: 0.0.64
