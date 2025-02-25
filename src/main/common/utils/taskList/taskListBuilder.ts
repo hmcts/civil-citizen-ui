@@ -153,7 +153,7 @@ const buildSubmitSection = (caseData: Claim, claimId: string, lang: string): Tas
 
   if (isRejectAllAndCounterClaim(caseData)) {
     checkAndSubmitYourResponseTask.status = TaskStatus.NOT_AVAILABLE_YET;
-    delete checkAndSubmitYourResponseTask.url;
+    checkAndSubmitYourResponseTask.url = null;
   }
 
   tasks.push(checkAndSubmitYourResponseTask);
