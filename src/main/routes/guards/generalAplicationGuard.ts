@@ -14,7 +14,10 @@ export const isGAForLiPEnabled = async (
   //If the application was originally created in English and the respondent replied in Welsh,
   // a new application will not be generated; however, the existing application will still be accessible online.
   const allowAppAccess = claim.generalApplications?.length > 0 ;
-  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || allowAppAccess) {
+  const coscUrl: string[] = ['/cosc/', '/apply-help-fee-selection', '/payment-successful', '/payment-unsuccessful', '/upload-documents', '/summary']
+  if(isGAFlagEnable && coscUrl.some(url => req.url.includes(url)) || allowAppAccess) {
+    next();
+  } else if (isGAFlagEnable && !claim.isAnyPartyBilingual() || allowAppAccess) {
     next();
   } else {
     res.redirect(await getCancelUrl(req.params.id, claim));
