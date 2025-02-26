@@ -9,6 +9,7 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 // CUI GA respondent response
 export class GaResponse {
@@ -20,7 +21,7 @@ export class GaResponse {
   agreeToOrder?: YesNo;
   respondentAgreement?: RespondentAgreement;
   acceptDefendantOffer?: AcceptDefendantOffer;
-  statementOfTruth?: StatementOfTruthForm;
+  statementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceDocuments?: UploadGAFiles[];
   draftResponseCreatedAt?: Date;

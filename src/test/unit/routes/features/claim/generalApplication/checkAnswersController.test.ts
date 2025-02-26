@@ -24,6 +24,9 @@ import { getSummarySections } from 'services/features/generalApplication/checkAn
 import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
 import { submitApplication } from 'services/features/generalApplication/submitApplication';
 import { YesNo } from 'form/models/yesNo';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -90,6 +93,22 @@ describe('General Application - Check your answers', () => {
       await request(app)
         .post(GA_CHECK_ANSWERS_URL)
         .send({signed: 'yes', name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
+    it('should send the value and redirect with title if business', async () => {
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.type = PartyType.ORGANISATION;
+      claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockSubmitApplication.mockImplementation(() => mockClaim);
+      await request(app)
+        .post(GA_CHECK_ANSWERS_URL)
+        .send({signed: 'yes', name: 'Mr Applicant', title: 'director'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
