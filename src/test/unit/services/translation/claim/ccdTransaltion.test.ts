@@ -106,6 +106,7 @@ describe('translate draft claim to ccd version for interest calculation', () => 
     claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
     const reason = 'reason';
     claim.interest.totalInterest = new TotalInterest('200', reason);
+    claim.submittedDate = new Date('2025-01-01T15:00:00');
     //When
     const ccdClaim = translateDraftClaimToCCDInterest(claim);
     //Then
@@ -119,5 +120,6 @@ describe('translate draft claim to ccd version for interest calculation', () => 
     expect(ccdClaim.interestFromSpecificDate).toBe(undefined);
     expect(ccdClaim.interestFromSpecificDateDescription).toBe(undefined);
     expect(ccdClaim.interestClaimUntil).toBe(InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE);
+    expect(ccdClaim.submittedDate).toEqual(new Date('2025-01-01T15:00:00'));
   });
 });

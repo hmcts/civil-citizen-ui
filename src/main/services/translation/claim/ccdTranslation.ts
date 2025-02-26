@@ -85,5 +85,6 @@ export const translateDraftClaimToCCDInterest = (claim: Claim): CCDClaim => {
     interestFromSpecificDate: claim.isInterestFromASpecificDate() ? DateTime.fromJSDate(new Date(claim.interest?.interestStartDate?.date)).toFormat('yyyy-MM-dd') : undefined,
     interestFromSpecificDateDescription: claim.isInterestFromASpecificDate() ? claim.interest?.interestStartDate?.reason : undefined,
     interestClaimUntil: claim.interest?.interestEndDate,
+    submittedDate: claim.submittedDate,
   };
 };
