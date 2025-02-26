@@ -4452,7 +4452,8 @@
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
       "CONTINUE_TO_PAYMENT": "parhau i dalu",
-      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni.",
+      "CASE_PROCESSING_WARNING": "Nid yw’r prosesu achos wedi’i gwblhau, adnewyddwch y dudalen mewn un munud. Os bydd y broblem yn parhau, cysylltwch â’r ddesg gymorth ar 0300 123 7050."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
