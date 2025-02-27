@@ -56,7 +56,7 @@ export function getFullDefenceTask(claim: Claim, claimId: string, lang: string):
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (claim?.getIntentionToProceed()) {
+  if (claim?.getIntentionToProceed() === YesNo.YES) {
     decideWetherToProceed.status = TaskStatus.COMPLETE;
   }
   return decideWetherToProceed;
