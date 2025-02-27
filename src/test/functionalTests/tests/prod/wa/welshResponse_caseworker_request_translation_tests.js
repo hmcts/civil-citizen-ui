@@ -34,7 +34,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
-  await ResponseSteps.EnterPersonalDetails(claimRef, false);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');

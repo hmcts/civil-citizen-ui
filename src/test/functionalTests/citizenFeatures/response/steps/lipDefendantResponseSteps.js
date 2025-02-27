@@ -191,7 +191,7 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef, carmEnabled) {
+  async EnterPersonalDetails(claimRef) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
@@ -201,7 +201,7 @@ class ResponseSteps {
     } */
   }
 
-  async EnterCompDetails(carmEnabled) {
+  async EnterCompDetails() {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
     /* Not needed this anymore as CARM is live, all FTs should be on live cases

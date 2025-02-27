@@ -400,6 +400,7 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
+    console.log('carmEnabled flag .. ', carmEnabled);
     /* Not needed this anymore as CARM is live, all FTs should be on live cases
       if (!carmEnabled) {
       console.log('carm not enabled, updating submitted date to past for legacy cases');
@@ -453,6 +454,7 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
+    console.log('carmEnabled flag .. ', carmEnabled);
     /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
