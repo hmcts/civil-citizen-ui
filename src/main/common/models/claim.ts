@@ -1033,7 +1033,7 @@ export class Claim {
   }
 
   hasClaimantIntentToProceedResponse() {
-    return this?.getIntentionToProceed() === YesNo.YES;
+    return this.claimantResponse?.intentionToProceed?.option === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {
