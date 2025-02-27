@@ -11013,7 +11013,7 @@ __metadata:
   linkType: hard
 
 "pa11y@npm:^6.2.3":
-  version: 6.2.3
+  version: 8.0.0
   resolution: "pa11y@npm:6.2.3"
   dependencies:
     axe-core: ~4.2.1
