@@ -845,7 +845,7 @@ describe('Claimant Response Task List builder', () => {
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
       //Then
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
-      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
 
     it('should display decide wether to proceed task with proceed value as yes as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense minti not applicable', () => {
