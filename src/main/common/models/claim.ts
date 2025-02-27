@@ -1080,10 +1080,14 @@ export class Claim {
   }
 
   getIntentionToProceed(): string{
+    return this.claimantResponse?.intentionToProceed?.option;
+  }
+
+  getIntentionToProceedCcdTranslation(): string{
     if (this.isFullDefence() && this.hasPaidInFull()) {
       return this.hasClaimantNotSettled() ? YesNo.YES : YesNo.NO; //if is settled they won't to proceed with the claim
     }
-    return this.claimantResponse?.intentionToProceed?.option ?? YesNo.NO;
+    return this.claimantResponse?.intentionToProceed?.option;
   }
 
   isCaseProgressionCaseState(): boolean {
