@@ -1080,7 +1080,7 @@ export class Claim {
   }
 
   getIntentionToProceed(): string{
-    return this.claimantResponse?.intentionToProceed?.option
+    return this.claimantResponse?.intentionToProceed?.option;
   }
 
   getIntentionToProceedCcdTranslation(): string{
