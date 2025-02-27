@@ -451,7 +451,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
