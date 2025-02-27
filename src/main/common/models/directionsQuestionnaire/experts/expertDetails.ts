@@ -28,8 +28,8 @@ export class ExpertDetails {
     estimatedCost?: number;
 
   constructor(firstName?: string, lastName?: string, emailAddress?: string, phoneNumber?: number, whyNeedExpert?: string, fieldOfExpertise?: string, estimatedCost?: number) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = firstName?.trim();
+    this.lastName = lastName?.trim();
     this.emailAddress = emailAddress;
     this.phoneNumber = phoneNumber;
     this.whyNeedExpert = whyNeedExpert;
