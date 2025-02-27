@@ -195,17 +195,19 @@ class ResponseSteps {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
       await contactNumberDetailsPage.enterContactNumber(carmEnabled);
-    }
+    } */
   }
 
   async EnterCompDetails(carmEnabled) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
       await contactNumberDetailsPage.enterContactNumber(carmEnabled);
-    }
+    } */
   }
 
   async EnterPersonalDetailsError(claimRef) {

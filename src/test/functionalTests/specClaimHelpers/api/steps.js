@@ -400,13 +400,14 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
-    if (!carmEnabled) {
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
+      if (!carmEnabled) {
       console.log('carm not enabled, updating submitted date to past for legacy cases');
       await apiRequest.setupTokens(config.systemUpdate);
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to before carm date for legacy cases');
-    }
+    }*/
     return caseId;
   },
 
@@ -452,13 +453,14 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
       console.log('carm not enabled, updating submitted date to past for legacy cases');
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to before carm date for legacy cases');
-    }
+    }*/
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
       await apiRequest.setupTokens(config.systemUpdate);
