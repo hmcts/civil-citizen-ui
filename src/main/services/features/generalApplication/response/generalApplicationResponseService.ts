@@ -31,6 +31,7 @@ import {
 import { dateTimeFormat } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -126,7 +127,7 @@ export const saveResponseUnavailabilityDatesConfirmation = async (redisKey: stri
   }
 };
 
-export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.statementOfTruth = statementOfTruth;
