@@ -1081,7 +1081,7 @@ export class Claim {
 
   getIntentionToProceed(): string{
     if (this.isFullDefence() && this.hasPaidInFull()) {
-      return toCCDYesNo(this.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option);
+      return this.hasClaimantNotSettled() ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES;
     }
     return this.claimantResponse?.intentionToProceed?.option;
   }
