@@ -11,7 +11,7 @@ Feature('LR v Lip GA Creation Tests');
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    
+
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
@@ -21,7 +21,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LRvLip Defendant GA creation tests @citizenUI @nightly - @api @ga', async ({I}) => {
+Scenario('LRvLip Defendant GA creation tests @citizenUI @nightly - @api @gaLip', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
