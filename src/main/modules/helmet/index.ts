@@ -109,7 +109,7 @@ export class Helmet {
           directives: {
             connectSrc: connectSrc,
             mediaSrc: mediaSrc,
-            defaultSrc: ["'none'"],
+            defaultSrc: ["'none'", ...webChat],
             fontSrc: [self, 'data:', 'fonts.gstatic.com'],
             imgSrc: imgSrc,
             objectSrc: [self],
