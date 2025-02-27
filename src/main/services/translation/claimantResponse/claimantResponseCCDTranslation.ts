@@ -60,7 +60,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1PartAdmitIntentionToSettleClaimSpec: isClaimantWantToSettleTheClaim(claim),
     applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
     applicant1FullDefenceConfirmAmountPaidSpec: (claim.isFullDefence()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
-    applicant1ProceedWithClaim : toCCDYesNo(claim.getIntentionToProceed()),
+    applicant1ProceedWithClaim : toCCDYesNo(claim.getIntentionToProceedCcdTranslation()),
     applicant1SettleClaim : toCCDYesNo(claim.hasClaimantNotSettled() ? YesNo.NO : YesNo.YES), // if method is true, claimant has NOT settled
     applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount,
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
