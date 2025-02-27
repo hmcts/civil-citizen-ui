@@ -461,10 +461,10 @@ class createGASteps {
     return generalApplicationID;
   }
 
-  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice', org = '') {
+  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType, org) {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'More time to do what is required by a court order';
-    let feeAmount;
+    let feeAmount = '119';
 
     switch (communicationType) {
       case 'consent':
