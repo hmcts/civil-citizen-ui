@@ -451,7 +451,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -1033,7 +1033,7 @@ export class Claim {
   }
 
   hasClaimantIntentToProceedResponse() {
-    return this?.getIntentionToProceed() === YesNo.YES;
+    return this.claimantResponse?.intentionToProceed?.option === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {
@@ -1080,6 +1080,9 @@ export class Claim {
   }
 
   getIntentionToProceed(): string{
+    if (this.isFullDefence() && this.hasPaidInFull()) {
+      return this.hasClaimantNotSettled() ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO; //if is settled they won't to proceed with the claim
+    }
     return this.claimantResponse?.intentionToProceed?.option;
   }
 
