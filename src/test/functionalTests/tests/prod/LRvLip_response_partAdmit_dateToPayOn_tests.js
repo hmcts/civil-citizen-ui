@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit and Date to PayOn - Small Claims');
+Feature('Response with PartAdmit and Date to PayOn - Small Claims @testing');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -43,7 +43,11 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @night
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655

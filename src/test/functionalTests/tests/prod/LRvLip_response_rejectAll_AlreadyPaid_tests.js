@@ -43,6 +43,7 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.IN_MEDIATION);
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
 }).tag('@regression-cui-r1');
