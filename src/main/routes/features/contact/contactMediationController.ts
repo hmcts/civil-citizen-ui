@@ -4,7 +4,7 @@ import config from 'config';
 import {WebChat} from 'routes/features/contact/contactCNBCController';
 
 const contactMediationController = Router();
-const contactServiceViewPath = 'features/public/contact-service';
+const contactServiceViewPath = 'features/public/contact-mediation';
 
 contactMediationController.get(CONTACT_MEDIATION_URL, (req, res) => {
   const webChatMediation = config.get<WebChat>('webChat.mediation');
