@@ -37,7 +37,7 @@ const content = {
 
 class WelshLanguage {
 
-  async selectLanguageOption(carmEnabled = false) {
+  async selectLanguageOption(carmEnabled = true) {
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     if (carmEnabled) {

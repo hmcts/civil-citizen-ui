@@ -357,7 +357,7 @@ module.exports = {
     console.log('End of submitHwfEventForUser()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType, manualPIP = false) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = true, partyType, manualPIP = false) => {
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
@@ -412,7 +412,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual', language) => {
+  createLiPClaim: async (user, claimType, carmEnabled = true, partyType = 'Individual', language) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -485,7 +485,7 @@ module.exports = {
     return caseId;
   },
 
-  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = false) => {
+  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = true) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -606,7 +606,7 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '', eaCase = true) => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = true, expectedEndState, mintiTrack = '', eaCase = true) => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
@@ -690,7 +690,7 @@ module.exports = {
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user, carmEnabled = false, mediationReason) => {
+  mediationUnsuccessful: async (user, carmEnabled = true, mediationReason) => {
     console.log('This is inside mediationUnsuccessful : ' + caseId);
     eventName = 'MEDIATION_UNSUCCESSFUL';
 

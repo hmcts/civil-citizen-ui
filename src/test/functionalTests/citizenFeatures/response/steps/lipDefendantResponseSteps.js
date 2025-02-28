@@ -195,19 +195,13 @@ class ResponseSteps {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    /* Not needed this anymore as CARM is live, all FTs should be on live cases
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
-    } */
+    await contactNumberDetailsPage.enterContactNumber(true);
   }
 
   async EnterCompDetails() {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    /* Not needed this anymore as CARM is live, all FTs should be on live cases
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
-    } */
+    await contactNumberDetailsPage.enterContactNumber(true);
   }
 
   async EnterPersonalDetailsError(claimRef) {
@@ -569,7 +563,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -585,7 +579,7 @@ class ResponseSteps {
     await this.SelectLanguageOption(carmEnabled);
   }
 
-  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterClaimantExpertDetails();
@@ -752,7 +746,7 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(carmEnabled = false) {
+  async SelectLanguageOption(carmEnabled = true) {
     await welshLanguage.selectLanguageOption(carmEnabled);
   }
 
