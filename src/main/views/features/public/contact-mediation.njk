@@ -1,0 +1,62 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/external-link.njk" import externalLink %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h2>
+          {% if webChatEnabled %}
+            <div id="{{ webChatConfig.buttonContainerId }}"></div>
+          {% else %}
+            <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT_UNAVAILABLE')}}</p>
+          {% endif %}
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.TELEPHONE')}}</h2>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{t(telephone)}}</p>
+          <h2 class="govuk-heading-m govuk-!-margin-top-6">{{t('PAGES.CONTACT_WEBCHAT.OPENING_TIMES')}}</h2>
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.TELEPHONE')}}</h3>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.OPENING_HOURS')}}</p>
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h3>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.MEDIATION_OPENING_HOURS')}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{t('PAGES.CONTACT_WEBCHAT.CLOSED_HOURS')}}</p>
+          <p class="govuk-body">
+            {{ externalLink(t, 'PAGES.CONTACT_WEBCHAT.CALL_CHARGES', 'https://www.gov.uk/call-charges', false) }}
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+
+  {% if webChatEnabled %}
+    <script type="text/javascript" nonce="{{ nonceWebChat }}">
+      window.__8x8Chat = {
+        uuid: '{{ webChatConfig.uuid }}',
+        tenant: '{{ webChatConfig.tenant }}',
+        channel: '{{ webChatConfig.channel }}',
+        channelUuid: '{{ webChatConfig.channelUuid }}',
+        domain: "https://vcc-eu4.8x8.com",
+        path: "/.",
+        buttonContainerId: '{{ webChatConfig.buttonContainerId }}',
+        align: "right"
+      };
+      (function() {
+        var se = document.createElement("script");
+        se.type = "text/javascript";
+        se.async = true;
+        se.src = window.__8x8Chat.domain + window.__8x8Chat.path + "/CHAT/common/js/chat.js";
+        var os = document.getElementsByTagName("script")[0];
+        os.parentNode.insertBefore(se, os);
+      })();
+    </script>
+  {% endif %}
+{% endblock %}
