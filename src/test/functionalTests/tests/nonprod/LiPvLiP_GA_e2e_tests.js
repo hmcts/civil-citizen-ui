@@ -34,7 +34,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {
@@ -83,7 +83,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @ga @regression', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI - @api @gaLip @regression', async ({
   I,
   api,
 }) => {
@@ -112,7 +112,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {
@@ -141,7 +141,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {
@@ -169,7 +169,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order @citizenUI -
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {
@@ -220,7 +220,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Request for more info @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Request for more info @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {
@@ -253,7 +253,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request for more info @citiz
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - List for hearing @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - List for hearing @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {
@@ -286,7 +286,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - List for hearing @citizenUI 
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representations @citizenUI - @api @ga @nightly', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representations @citizenUI - @api @gaLip @nightly', async ({
   I,
   api,
 }) => {

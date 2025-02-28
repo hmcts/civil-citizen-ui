@@ -14,7 +14,7 @@ const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps')
 
 Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@nightly-regression-r2');
 
-Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
+Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf - GA (Ask for more time) @gaLip', async ({
   I,
   api,
 }) => {
@@ -49,7 +49,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
   console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
-  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person','','company');
   console.log('Creating GA app as defendant');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');

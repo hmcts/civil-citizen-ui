@@ -13,7 +13,7 @@ const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps')
 
 Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@regression-r2');
 
-Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
+Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time) @gaLip', async ({
   I,
   api,
 }) => {
