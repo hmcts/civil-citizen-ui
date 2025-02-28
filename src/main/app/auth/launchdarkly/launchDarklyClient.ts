@@ -1,7 +1,6 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
-import {DateTime} from "luxon";
 
 let ldClient: LDClient;
 let testData: TestData;
