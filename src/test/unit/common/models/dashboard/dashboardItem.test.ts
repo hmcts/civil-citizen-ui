@@ -276,14 +276,24 @@ describe('Dashboard Items', ()=> {
       expect(result).toBe(expectedTranslation);
     });
 
-    it('should return translated status for claim WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD', () => {
+    it('should return translated status for claim WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
-      dashboardClaim.status ='WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD';
+      dashboardClaim.status ='WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE';
       //When
       const status = dashboardClaim.getStatus('en');
       //Then
-      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD');
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE');
+    });
+
+    it('should return translated status for claim WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE');
     });
 
     it('should return translated status for claim SDO_ORDER_LEGAL_ADVISER_CREATED', () => {
