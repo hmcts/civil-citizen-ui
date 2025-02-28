@@ -176,8 +176,8 @@ class CreateClaimSteps {
     await I.click(paths.links.pay_claim_fee);
   }
 
-  async verifyAndPayClaimFee(claimAmount, claimFee) {
-    await createClaim.verifyAndInputPayYourClaimFee(claimAmount, claimFee);
+  async verifyAndPayClaimFee(claimAmount, claimFee, interestAmount = 0) {
+    await createClaim.verifyAndInputPayYourClaimFee(claimAmount, claimFee, interestAmount);
     await createClaim.verifyAndInputCardDetails();
     await createClaim.verifyConfirmYourPayment();
     await createClaim.verifyYourPaymentWasSuccessfull();

@@ -6,19 +6,18 @@ import {toCCDDJPaymentOption} from 'services/translation/claimantResponse/conver
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {toCCDDJPaymentFrequency} from 'services/translation/response/convertToCCDDJPaymentFrequency';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
-import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
-export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
-  const summaryDetails = getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en');
+export const translateClaimantResponseDJToCCD = async (claim: Claim): Promise<CCDClaim> => {
+  const summaryDetails = await getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en');
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
     //TO DO: Test the commented code creating the claim from CUI.
     //applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
-    totalInterest: calculateInterestToDate(claim) || 0,
+    totalInterest: Number(summaryDetails.interestToDate || 0),
     partialPayment: toCCDYesNo(claim.getHasDefendantPaid()),
     partialPaymentAmount: claim.hasDefendantPaid() ? convertToPence(claim.getDefendantPaidAmount()).toString() : undefined,
     paymentTypeSelection: toCCDDJPaymentOption( claim.getCCJPaymentOption()),

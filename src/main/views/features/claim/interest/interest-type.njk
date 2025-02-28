@@ -33,7 +33,10 @@
                   {
                     value: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
                     checked: true if form.model.interestType === InterestClaimOptionsType.BREAK_DOWN_INTEREST,
-                    text: t('PAGES.INTEREST_CLAIM_OPTIONS.BREAK_DOWN_INTEREST')
+                    text: t('PAGES.INTEREST_CLAIM_OPTIONS.BREAK_DOWN_INTEREST'),
+                    conditional: {
+                      html: t('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_SAME_DATE_INTEREST')
+                    }
                   }
                 ],
                 errorMessage: {
