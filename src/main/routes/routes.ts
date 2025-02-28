@@ -209,7 +209,6 @@ import documentsUploadedController from 'routes/features/caseProgression/documen
 import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
 import finaliseTrialArrangementsController
   from 'routes/features/caseProgression/trialArrangements/finaliseTrialArrangementsController';
-import uploadFileController from 'routes/features/caseProgression/uploadFileController';
 import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
 import claimTaskListController from './features/claim/claimTaskListController';
 import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
@@ -430,6 +429,7 @@ import submitCoScApplicationConfirmationController
   from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 import contactCNBCController from 'routes/features/contact/contactCNBCController';
 import contactMediationController from 'routes/features/contact/contactMediationController';
+import submitApplicationOfflineController from 'routes/features/generalApplication/submitApplicationOfflineController';
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
@@ -627,7 +627,6 @@ export default [
   documentsUploadedController,
   cancelYourUploadController,
   finaliseTrialArrangementsController,
-  uploadFileController,
   documentUploadCheckAnswerController,
   claimTaskListController,
   isCaseReadyController,
@@ -779,6 +778,7 @@ export default [
   submitCoScApplicationConfirmationController,
   contactCNBCController,
   contactMediationController,
+  submitApplicationOfflineController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
 ];

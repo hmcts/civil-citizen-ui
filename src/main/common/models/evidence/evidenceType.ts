@@ -45,6 +45,6 @@ export function convertToEvidenceTypeToTranslationKey(type: EvidenceType): strin
     case EvidenceType.STATEMENT_OF_ACCOUNT:
       return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_STATEMENT_OF_ACCOUNT';
     case EvidenceType.OTHER:
-      return 'PAGES.CHECK_YOUR_ANSWER.VIDENCE_OTHER';
+      return 'PAGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER';
   }
 }

@@ -73,26 +73,48 @@ const data = {
 
 };
 
-let caseId, eventName;
+let caseId, eventName, payload;
 let caseData = {};
 const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
-  makeOrderGA: async (gaCaseId, user = config.judgeUserWithRegionId2) => {
-    console.log('Creating an order without notice on ga of id: ' + gaCaseId);
+  makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
+    console.log('Make an Order of GA: ' + gaCaseId);
     eventName = 'MAKE_DECISION';
-
     const document = await uploadDocument();
-
-    const payload = makeAnOrderGA.makeAnOrderGA(document);
-
+    switch(courtResponseType){
+      case 'approveOrEdit':
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+      case 'dismissAnOrder':
+        payload = makeAnOrderGA.dismissAnOrderGA(document);
+        break;
+      case 'giveDirections':
+        payload = makeAnOrderGA.giveDirections(document);
+        break;
+      case 'freeFormOrder':
+        payload = makeAnOrderGA.freeFormOrder(document);
+        break;
+      case 'withoutNoticeToWith':
+        payload = makeAnOrderGA.withoutNoticeToWith(document);
+        break;
+      case 'writtenRepresentations':
+        payload = makeAnOrderGA.writtenRepresentations(document);
+        break;
+      case 'requestMoreInformation':
+        payload = makeAnOrderGA.requestMoreInformation(document);
+        break;
+      case 'listForHearing':
+        payload = makeAnOrderGA.listForHearing(document);
+        break;
+      default:
+        payload = makeAnOrderGA.makeAnOrderGA(document);
+        break;
+    }
     await apiRequest.setupTokens(user);
-
     caseData = payload['caseDataUpdate'];
-
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
-
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
 
@@ -440,7 +462,7 @@ module.exports = {
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
+      const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after minti date');
     }

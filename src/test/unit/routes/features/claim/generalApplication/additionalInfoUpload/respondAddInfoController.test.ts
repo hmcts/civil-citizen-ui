@@ -29,6 +29,11 @@ jest.mock('../../../../../../../main/services/features/generalApplication/genera
   getCancelUrl: jest.fn(),
   saveAdditionalText: jest.fn(),
 }));
+jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
+  isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - uploadDocumentsForRequestMoreInfoController', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

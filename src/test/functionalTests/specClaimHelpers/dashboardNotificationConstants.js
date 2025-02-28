@@ -31,7 +31,7 @@ module.exports = {
     return {
       title: 'The claim is settled',
       content: ['The claimant has confirmed that this case was settled on 1 January 2020.',
-        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at ocmcnton@justice.gov.uk'],
+        'If you do not agree that the case is settled, please outline your objections in writing within 19 days of the settlement date, to the Civil National Business Centre using the email address at contactocmc@justice.gov.uk'],
     };
   },
 
@@ -531,6 +531,33 @@ module.exports = {
       title: 'An order has been made',
       content: 'The judge has made an order related to the application.',
       nextSteps: 'View the order',
+    };
+  },
+
+  // The other parties have requested a change
+  otherPartiesRequestedChange: () => {
+    return {
+      title: 'The other parties have requested a change to the case',
+      content: 'Review their request and respond to it by 4pm on',
+      nextSteps: 'Review and respond to the request',
+    };
+  },
+
+  // Order for written representations
+  writtenRepresentations: () => {
+    return {
+      title: 'You need to provide written representation',
+      content: 'The court has requested that you must provide written representation. You must do this by 4pm on',
+      nextSteps: 'provide written representation',
+    };
+  },
+
+  // Request for more information
+  orderMoreInformation: () => {
+    return {
+      title: 'You must provide more information',
+      content: 'The court has responded to the application. You must upload a document providing more information to the court by 4pm on',
+      nextSteps: 'providing more information',
     };
   },
 };

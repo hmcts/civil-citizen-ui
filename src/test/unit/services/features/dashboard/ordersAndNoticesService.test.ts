@@ -476,6 +476,44 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for Default Judgment for defendant', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFAULT_JUDGMENT_DEFENDANT1);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DJ_DEFENDANT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for Default Judgment for claimant', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFAULT_JUDGMENT_CLAIMANT1);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DJ_CLAIMANT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for ccj admission', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
