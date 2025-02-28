@@ -11138,9 +11138,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pac-proxy-agent@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "pac-proxy-agent@npm:7.1.0"
+
+  version: 7.2.0
+  resolution: "pac-proxy-agent@npm:7.2.0"
   dependencies:
     "@tootallnate/quickjs-emscripten": ^0.23.0
     agent-base: ^7.1.2
@@ -11150,7 +11150,7 @@ __metadata:
     https-proxy-agent: ^7.0.6
     pac-resolver: ^7.0.1
     socks-proxy-agent: ^8.0.5
-  checksum: 0ed8ebca239b5c78f7c5039ec0e33aaf6ce8de2fb53d00996b5b7b362e655af9793721008ddf56c4b1d30fb5202b2cb5baee97e374ed1285c0cfb5be7c4574a5
+  checksum: 099c1bc8944da6a98e8b7de1fbf23e4014bc3063f66a7c29478bd852c1162e1d086a4f80f874f40961ebd5c516e736aed25852db97b79360cbdcc9db38086981
   languageName: node
   linkType: hard
 
