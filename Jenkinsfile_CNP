@@ -10,7 +10,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "DTSCCI-1238-add-case-note-event-make-available-in-all-state"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
