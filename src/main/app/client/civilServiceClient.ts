@@ -369,6 +369,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
 
+  async submitQueryManagementRaiseQuery(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.QUERY_MANAGEMENT_RAISE_QUERY, claimId, updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;

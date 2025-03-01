@@ -122,7 +122,8 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
+  return true;
+  //await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
 }
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
@@ -142,19 +143,21 @@ export async function isJudgmentOnlineLive(): Promise<boolean> {
 }
 
 export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
-  const { DateTime } = require('luxon');
-  const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
-  const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
-  return cuiR2Flag && dashboardEnabledForR2Cases;
+  // const { DateTime } = require('luxon');
+  // const systemTimeZone = DateTime.local().zoneName;
+  // const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  // const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
+  // const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  // return cuiR2Flag && dashboardEnabledForR2Cases;
+  return true;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
-  const { DateTime } = require('luxon');
-  const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  return await getFlagValue(CARM_ENABLED_FOR_CASE, epoch) as boolean;
+  // const { DateTime } = require('luxon');
+  // const systemTimeZone = DateTime.local().zoneName;
+  // const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  // return await getFlagValue(CARM_ENABLED_FOR_CASE, epoch) as boolean;
+  return true;
 }
 
 export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
