@@ -400,6 +400,7 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
+    console.log('carmEnabled value is .. ', carmEnabled);
     /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
