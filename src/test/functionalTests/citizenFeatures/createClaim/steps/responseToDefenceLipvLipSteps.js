@@ -59,6 +59,9 @@ class ResponseToDefenceLipVLipSteps {
     if (fastTrack == 'fast') {
       await this.verifyDQForFastTrack();
     } else {
+      I.click(paths.links.free_mediation);
+      await responseToDefence.verifyFreeMediation();
+      await responseToDefence.verifyChoseYesFreeMediation();
       await this.verifyDQForSmallClaims();
     }
     await this.verifyDashboardLoaded();
@@ -186,8 +189,7 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDashboardLoaded();
     I.click(paths.links.free_mediation);
     await responseToDefence.verifyFreeMediation();
-    await responseToDefence.verifyChoseNoFreeMediation();
-    await responseToDefence.verifyChoseNoFreeMediationReasons();
+    await responseToDefence.verifyChoseYesFreeMediation();
     await this.verifyDashboardLoaded();
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
@@ -357,6 +359,9 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.settle_the_claim_for);
     await responseToDefence.paymentNotInFullNoToSettle();
     await this.verifyDashboardLoaded();
+    I.click(paths.links.free_mediation);
+    await responseToDefence.verifyFreeMediation();
+    await responseToDefence.verifyChoseYesFreeMediation();
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);

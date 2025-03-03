@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit-AlreadyPaid - Small Claims @testing');
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
