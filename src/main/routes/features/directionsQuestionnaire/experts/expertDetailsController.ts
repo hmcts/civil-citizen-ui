@@ -33,6 +33,7 @@ expertDetailsController.post(DQ_EXPERT_DETAILS_URL, (async (req, res, next: Next
     const redisKey = generateRedisKey(<AppRequest>req);
     const expertDetailsList = getExpertDetailsForm(req.body.items);
     const form = new GenericForm(expertDetailsList);
+    await form.validate();
     form.validateSync();
 
     if (form.hasNestedErrors()) {
