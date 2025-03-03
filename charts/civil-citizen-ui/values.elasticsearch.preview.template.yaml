@@ -261,7 +261,6 @@ civil-service:
 camunda-bpm:
   enabled: true
   java:
-    image: hmctsprivatetemp.azurecr.io/camunda/bpm:latest
     disableKeyVaults: true
     devcpuRequests: 1000m
     devmemoryRequests: 2048Mi
