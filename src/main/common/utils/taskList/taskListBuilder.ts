@@ -43,6 +43,10 @@ const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang:
   return {title: t('TASK_LIST.PREPARE_YOUR_RESPONSE.TITLE', {lng: getLng(lang)}), tasks};
 };
 
+const isRejectAllAndCounterClaim = (caseData: Claim): boolean => {
+  return caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.COUNTER_CLAIM;
+};
+
 const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   const chooseAResponseTask = getChooseAResponseTask(caseData, claimId, lang);
@@ -54,6 +58,10 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId, lang);
   const tellUsHowMuchYouHavePaidTask = getTellUsHowMuchYouHavePaidTask(caseData, claimId, lang);
   const tellUsWhyDisagreeWithClaimTask = getTellUsWhyDisagreeWithClaimTask(caseData, claimId, lang);
+
+  if (isRejectAllAndCounterClaim(caseData)) {
+    chooseAResponseTask.status = TaskStatus.INCOMPLETE;
+  }
 
   tasks.push(chooseAResponseTask);
 
@@ -106,7 +114,6 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
         tasks.push(tellUsWhyDisagreeWithClaimTask);
       }
     }
-
   }
 
   return {title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
@@ -140,10 +147,6 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
     tasks.push(giveUsDetailsHearingTask);
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
-};
-
-const isRejectAllAndCounterClaim = (caseData: Claim): boolean => {
-  return caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.COUNTER_CLAIM;
 };
 
 const buildSubmitSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
