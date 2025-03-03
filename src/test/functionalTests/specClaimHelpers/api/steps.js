@@ -400,19 +400,14 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
+    if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
       console.log('carm not enabled, updating submitted date to past for legacy cases');
-      await apiRequest.setupTokens(config.systemUpdate);
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');
-    }
+      console.log('submitted date update to before carm date for legacy cases');
+    }*/
     return caseId;
   },
 
@@ -524,19 +519,15 @@ module.exports = {
     }
     await waitForFinishedBusinessProcess(caseId);
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
+    console.log('carmEnabled flag .. ', carmEnabled);
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
+    if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
       console.log('carm not enabled, updating submitted date to past for legacy cases');
-      await apiRequest.setupTokens(config.systemUpdate);
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');
-    }
+      console.log('submitted date update to before carm date for legacy cases');
+    }*/
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
