@@ -50,7 +50,7 @@ export const generateExpertAndWitnessList = (caseData: Claim, lang: string): Nam
     value: '',
     text: t('PAGES.SUPPORT_REQUIRED.CHOOSE_NAME', {lng: getLng(lang)}),
   }];
-  if (mySelf) {
+  if (mySelf && (mySelf.firstName || mySelf.lastName)) {
     const mySelfItem = [
       {
         value: mySelf.firstName + ' ' + mySelf.lastName,
