@@ -1071,6 +1071,10 @@ export class Claim {
     }
   }
 
+  isLipVsLrOneVOne() {
+    return this.applicant1Represented === YesNoUpperCamelCase.NO && this.isLRDefendant();
+  }
+
   getSuggestedPaymentIntentionOptionFromClaimant() : PaymentOptionType {
     return this.claimantResponse.suggestedPaymentIntention?.paymentOption;
   }
@@ -1091,7 +1095,7 @@ export class Claim {
 
   isAnyPartyBilingual() : boolean {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
-      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+      || (this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH' && !this.isLipVsLrOneVOne());
   }
 }
 
