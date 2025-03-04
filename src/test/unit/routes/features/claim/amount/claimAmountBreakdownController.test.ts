@@ -93,22 +93,5 @@ describe('claimAmountBreakdownController test', ()=>{
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
-    it('should redirect to not eligible page when total amount exceeds 25000', async () => {
-      const data = {
-        claimAmountRows: [
-          {
-            reason: 'no reason',
-            amount: '26000',
-          },
-        ],
-        totalAmount: '26000',
-      };
-      await request(app).post(CLAIM_AMOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-over-25000');
-        });
-    });
   });
 });

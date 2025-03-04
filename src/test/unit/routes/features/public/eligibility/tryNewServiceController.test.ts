@@ -44,26 +44,11 @@ describe('Try the new online service', () => {
       [MAKE_CLAIM],
     ])('should return known claim amount page when minti enabled', async (url) => {
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
       await request(app)
         .get(url)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL);
-        });
-    });
-
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
-    ])('should return total amount page when minti not enabled', async (url) => {
-      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(false);
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(ELIGIBILITY_CLAIM_VALUE_URL);
         });
     });
 

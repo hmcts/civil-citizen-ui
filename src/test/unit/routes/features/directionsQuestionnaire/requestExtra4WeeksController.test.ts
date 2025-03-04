@@ -87,7 +87,6 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
       const draftClaim = cloneDeep(civilClaimResponseMock);
       draftClaim.case_data.totalClaimAmount = 10000;
       app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
-      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
       isMintiEnabledForCase.mockResolvedValue(false);
 
       await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
