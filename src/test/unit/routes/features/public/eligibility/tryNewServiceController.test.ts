@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
   BASE_ELIGIBILITY_URL,
-  CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, ELIGIBILITY_CLAIM_VALUE_URL,
+  CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
   MAKE_CLAIM,
 } from 'routes/urls';

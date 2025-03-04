@@ -14,7 +14,6 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {cloneDeep} from 'lodash';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
