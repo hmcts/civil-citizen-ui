@@ -1,5 +1,5 @@
 import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
+import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class ExpertDetails {
   firstName?: string;
@@ -10,7 +10,7 @@ export class ExpertDetails {
     emailAddress?: string;
 
   @ValidateIf(o => o.phoneNumber)
-  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
+  @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     phoneNumber?: number;
 
   @IsNotEmpty({message: 'ERRORS.ENTER_WHY_NEED_EXPERT'})

@@ -17,20 +17,21 @@ Scenario('claimant accepts full admit and formalises with CCJ', async () => {
   }
 });
 
-Scenario('claimant accepts part admit and formalises with SSA', async () => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    const caseId = 1777777777777722;
-    ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId, 'bySetDate');
-    ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId, 'Yes');
-    ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
-    ClaimantResponseSteps.signSettlementAgreement(caseId, 'bySetDate');
-    ClaimantResponseSteps.verifyCheckYourAnswersForFullAdmitSettlementAgreement(caseId);
-    ClaimantResponseSteps.checkAndSubmit(caseId);
-    ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
-    ClaimantResponseSteps.fullAdmitClaimantSignsSettlementAgreementConfirmationExtra(caseId);
-    await ClaimantResponseSteps.resetWiremockScenario();
-  }
-});
+// TODO undo this once the stop from choosing settlement agreement is removed
+// Scenario('claimant accepts part admit and formalises with SSA', async () => {
+//   if (['preview', 'demo'].includes(config.runningEnv)) {
+//     const caseId = 1777777777777722;
+//     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId, 'bySetDate');
+//     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId, 'Yes');
+//     ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
+//     ClaimantResponseSteps.signSettlementAgreement(caseId, 'bySetDate');
+//     ClaimantResponseSteps.verifyCheckYourAnswersForFullAdmitSettlementAgreement(caseId);
+//     ClaimantResponseSteps.checkAndSubmit(caseId);
+//     ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
+//     ClaimantResponseSteps.fullAdmitClaimantSignsSettlementAgreementConfirmationExtra(caseId);
+//     await ClaimantResponseSteps.resetWiremockScenario();
+//   }
+// });
 
 Scenario('Defendant signs SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
