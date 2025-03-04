@@ -12,7 +12,8 @@ let claimRef, claimType, claimNumber;
 
 Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ');
 
-Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -30,7 +31,8 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmi
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
