@@ -17,20 +17,20 @@ Scenario('claimant accepts full admit and payment plan and formalises with CCJ',
   }
 });
 // TODO undo this once the stop from choosing settlement agreement is removed
-// Scenario('claimant accepts full admit and payment plan and formalises with SSA', async () => {
-//   if (['preview', 'demo'].includes(config.runningEnv)) {
-//     const caseId = 1777777777777732;
-//     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
-//     ClaimantResponseSteps.acceptOrRejectFullAdmitInstalmentsRepaymentPlan(caseId, 'Yes');
-//     ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
-//     ClaimantResponseSteps.signSettlementAgreement(caseId, 'installments');
-//     ClaimantResponseSteps.verifyCheckYourAnswersForFullAdmitSettlementAgreement(caseId, 'installments');
-//     ClaimantResponseSteps.checkAndSubmit(caseId);
-//     ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
-//     ClaimantResponseSteps.fullAdmitClaimantSignsSettlementAgreementConfirmationExtra(caseId);
-//     await ClaimantResponseSteps.resetWiremockScenario();
-//   }
-// });
+Scenario.skip('claimant accepts full admit and payment plan and formalises with SSA', async () => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    const caseId = 1777777777777732;
+    ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
+    ClaimantResponseSteps.acceptOrRejectFullAdmitInstalmentsRepaymentPlan(caseId, 'Yes');
+    ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
+    ClaimantResponseSteps.signSettlementAgreement(caseId, 'installments');
+    ClaimantResponseSteps.verifyCheckYourAnswersForFullAdmitSettlementAgreement(caseId, 'installments');
+    ClaimantResponseSteps.checkAndSubmit(caseId);
+    ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
+    ClaimantResponseSteps.fullAdmitClaimantSignsSettlementAgreementConfirmationExtra(caseId);
+    await ClaimantResponseSteps.resetWiremockScenario();
+  }
+});
 
 Scenario('Defendant signs SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

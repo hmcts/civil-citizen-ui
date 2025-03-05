@@ -18,7 +18,8 @@ let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, instalmentAmount 
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instalments - @api', async ({I, api}) => {
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by instalments - @api', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
