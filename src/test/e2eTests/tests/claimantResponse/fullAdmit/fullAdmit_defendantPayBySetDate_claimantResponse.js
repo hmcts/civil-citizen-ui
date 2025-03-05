@@ -17,7 +17,8 @@ Scenario('claimant accepts full admit and formalises with CCJ', async () => {
   }
 });
 
-Scenario('claimant accepts part admit and formalises with SSA', async () => {
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('claimant accepts part admit and formalises with SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777722;
     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId, 'bySetDate');
