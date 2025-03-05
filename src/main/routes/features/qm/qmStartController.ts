@@ -1,30 +1,30 @@
 import {Request, RequestHandler, Response, Router} from "express";
-import uploadDocumentsController from "routes/features/caseProgression/uploadDocumentsController";
-import {QM_BASE_START_PAGE} from "routes/urls";
-import {generateRedisKey} from "modules/draft-store/draftStoreService";
-import {AppRequest} from "models/AppRequest";
-import {getMediationCarm} from "services/features/response/mediation/mediationService";
-import {GenericForm} from "form/models/genericForm";
-import {GenericYesNo} from "form/models/genericYesNo";
-import {t} from "i18next";
-
+import {BACK_URL, CANCEL_URL, QM_BASE_START_PAGE} from 'routes/urls';
 
 const qmStartController = Router();
-const qmStartViewPath = 'features/qm/view-qm-start';
+const qmStartViewPath = 'features/qm/qm-questions-template.njk';
 
-const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request): void => {
-
-  res.render(qmStartViewPath, {form, pageTitle, pageText, pageHintText, variation, isCarm: true});
+const renderView = (res: Response, req: Request)=> {
+  const cancelUrl = CANCEL_URL
+    .replace(':id', 'claimId')
+    .replace(':propertyName', 'generalApplication');
+  const backLinkUrl = BACK_URL;
+  res.render(qmStartViewPath, {
+    cancelUrl,
+    backLinkUrl,
+    pageTitle: 'title',
+    title:'title',
+    caption: 'caption',
+  });
 };
 
-qmStartController.get(QM_BASE_START_PAGE, (req, resn ,next) => {
+qmStartController.get(QM_BASE_START_PAGE, (async (req, res ,next) => {
   try {
     //todo add redis key
-    //renderView(form, res, req);
+    renderView(res, req);
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-
 
 export default qmStartController;
