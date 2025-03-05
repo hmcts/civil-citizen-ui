@@ -15,9 +15,10 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025';
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant ');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant ')
+  .tag('@regression-cui-r2').tag('@nightly').tag('@api');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date - @api @nightly', async ({
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
   I,
   api,
 }) => {
@@ -54,4 +55,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-cui-r2');
+});
