@@ -15,14 +15,14 @@ import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/j
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
-export const buildPaymentDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
+export const buildPaymentDetailsSection = async (claim: Claim, claimId: string, lang: string): Promise<SummarySection> => {
   const lng = getLng(lang);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
   const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION_5.${paymentOption.toUpperCase()}` : '';
   const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang);
   const paymentDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_TITLE', {lng}),
     summaryRows: [

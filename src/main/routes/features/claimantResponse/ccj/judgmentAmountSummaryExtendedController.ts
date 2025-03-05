@@ -15,8 +15,8 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 const judgmentAmountSummaryExtendedController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 
-function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lang);
+async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang);
   const claimAmountAccepted: number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claimAmountAccepted,
@@ -40,7 +40,7 @@ judgmentAmountSummaryExtendedController.get(
         const claimFee = convertToPoundsFilter(
           claim.claimFee?.calculatedAmountInPence,
         );
-        renderView(req, res, claim, lang, claimFee);
+        await renderView(req, res, claim, lang, claimFee);
       } catch (error) {
         next(error);
       }

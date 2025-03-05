@@ -7,12 +7,20 @@ import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { Session } from 'express-session';
 import {t} from 'i18next';
+import nock from 'nock';
+import config from 'config';
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('First contact - claim summary controller', () => {
   beforeAll(() => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
   it('should render page successfully if cookie has correct values', async () => {
+    nock(civilServiceUrl)
+      .post('/fees/claim/calculate-interest')
+      .times(2)
+      .reply(200, '0');
     app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s=' } } as unknown as Session;
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
