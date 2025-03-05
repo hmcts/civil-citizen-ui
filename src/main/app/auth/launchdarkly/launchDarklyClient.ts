@@ -11,7 +11,6 @@ const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
 const CUI_RELEASE_TWO_ENABLED = 'cuiReleaseTwoEnabled';
 const GA_FOR_LIPS = 'GaForLips';
-const MINTI = 'minti';
 const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
@@ -31,7 +30,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(MINTI).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
@@ -129,10 +127,6 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
 
-export async function isMintiEnabled(): Promise<boolean> {
-  return await getFlagValue(MINTI) as boolean;
-}
-
 export async function isCoSCEnabled(): Promise<boolean> {
   return await getFlagValue(IS_COSC_ENABLED) as boolean;
 }
@@ -161,9 +155,8 @@ export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const mintiFlag = await getFlagValue(MINTI) as boolean;
   const mintiApplicable = await getFlagValue(MULTI_OR_INTERMEDIATE_TRACK, epoch) as boolean;
-  return mintiFlag && mintiApplicable;
+  return mintiApplicable;
 }
 
 export async function isCaseWorkerEventsEnabled(): Promise<boolean> {
