@@ -1,19 +1,23 @@
 import {IsDefined} from 'class-validator';
 
+export class Hint {
+  text: string;
+
+    constructor(text: string) {
+      this.text = text;
+    }
+}
 export class radioButtonItems{
-  show: boolean;
-  hint: string;
-  pageRedirect: string;
+  hint: Hint;
   value: string;
   text: string;
   checked: boolean;
 
-  constructor(value: string, text: string, pageRedirect: string, hint?: string, show= true) {
-    this.show = show;
-    this.hint = hint;
-    this.pageRedirect = pageRedirect;
+  constructor(value: string, text: string, hint?: string, checked= false) {
+    this.hint = hint ? new Hint(hint) : undefined;
     this.value = value;
     this.text = text;
+    this.checked = checked;
   }
 }
 export class WhatDoYouWantToDo {
