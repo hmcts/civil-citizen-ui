@@ -543,6 +543,15 @@ module.exports = {
     };
   },
 
+  // Order for written representations
+  writtenRepresentations: () => {
+    return {
+      title: 'You need to provide written representation',
+      content: 'The court has requested that you must provide written representation. You must do this by 4pm on',
+      nextSteps: 'provide written representation',
+    };
+  },
+
   // Request for more information
   orderMoreInformation: () => {
     return {
