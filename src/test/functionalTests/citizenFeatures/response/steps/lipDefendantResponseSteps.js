@@ -191,21 +191,17 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef, carmEnabled) {
+  async EnterPersonalDetails(claimRef) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
-    }
+    await contactNumberDetailsPage.enterContactNumber(true);
   }
 
-  async EnterCompDetails(carmEnabled) {
+  async EnterCompDetails() {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
-    }
+    await contactNumberDetailsPage.enterContactNumber(true);
   }
 
   async EnterPersonalDetailsError(claimRef) {
@@ -567,7 +563,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -583,7 +579,7 @@ class ResponseSteps {
     await this.SelectLanguageOption(carmEnabled);
   }
 
-  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterClaimantExpertDetails();
@@ -750,7 +746,7 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(carmEnabled = false) {
+  async SelectLanguageOption(carmEnabled = true) {
     await welshLanguage.selectLanguageOption(carmEnabled);
   }
 

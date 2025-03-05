@@ -32,7 +32,7 @@ module.exports = {
     };
   },
 
-  mediationUnSuccessfulPayload: (carmEnabled = false, mediationReason) => {
+  mediationUnSuccessfulPayload: (carmEnabled = true, mediationReason) => {
     return {
       event: 'MEDIATION_UNSUCCESSFUL',
       caseData: mediationUnsuccessfulPayload(carmEnabled, mediationReason),

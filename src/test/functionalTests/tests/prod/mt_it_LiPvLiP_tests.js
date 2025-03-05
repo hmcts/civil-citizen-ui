@@ -36,7 +36,7 @@ Scenario('MT Defendant responses', async ({api}) => {
     console.log('Security code', securityCode);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
-    await ResponseSteps.EnterPersonalDetails(claimRef, true);
+    await ResponseSteps.EnterPersonalDetails(claimRef);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
     await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
     await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
@@ -64,7 +64,7 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     console.log('Security code', securityCode);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
-    await ResponseSteps.EnterCompDetails(true);
+    await ResponseSteps.EnterCompDetails();
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
     await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
     await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
