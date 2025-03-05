@@ -896,7 +896,7 @@ describe('dashboardService', () => {
           , new DashboardTaskList('test', 'test', [])
           , new DashboardTaskList('Applications', 'Applications', []),
         ));
-    })
+    });
 
     it('Application section when GaFlag enabled and location whitelisted and the case is not assigned to defendant and applied noc', async () => {
       (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValueOnce(true);
@@ -935,7 +935,7 @@ describe('dashboardService', () => {
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       claim.defendantUserDetails = undefined;
       claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
       claim.caseManagementLocation = {
         region: '2',
         baseLocation: '0909089',
@@ -946,6 +946,6 @@ describe('dashboardService', () => {
       //Then
       expect(result).toBeDefined();
     });
-  })
+  });
 });
 
