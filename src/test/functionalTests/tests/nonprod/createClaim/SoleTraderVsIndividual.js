@@ -16,7 +16,7 @@ const {
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount = 1600,
   claimFee = 115;
 
-Feature('Create Lip v Lip claim - SoleTrader vs Individual @claimCreation').tag('@nightly-regression-r2');
+Feature('Create Lip v Lip claim - SoleTrader vs Individual - Feature 1').tag('@nightly-regression-r2').tag('@claimCreation');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
@@ -46,6 +46,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - 
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - SoleTrader vs Individual - Feature 2').tag('@nightly-regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with standard interest - no hwf', async ({
   I,
   api,
@@ -75,6 +76,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with standard 
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - SoleTrader vs Individual - Feature 3').tag('@nightly-regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable interest - no hwf', async ({
   I,
   api,
@@ -104,6 +106,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - SoleTrader vs Individual - Feature 3').tag('@nightly-regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;
   claimInterestFlag = true;

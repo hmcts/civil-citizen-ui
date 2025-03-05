@@ -12,7 +12,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@nightly-regression-r2');
+Feature('Create Lip v Lip claim - Org vs Sole trader -  Feature 1').tag('@nightly-regression-r2').tag(' @claimCreation');
 
 Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -57,6 +57,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
 });
 
+Feature('Create Lip v Lip claim - Org vs Sole trader -  Feature 2').tag('@nightly-regression-r2').tag(' @claimCreation');
 Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
   claimInterestFlag = true;
@@ -84,6 +85,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard intere
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - Org vs Sole trader -  Feature 3').tag('@nightly-regression-r2').tag(' @claimCreation');
 Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
   claimInterestFlag = true;
@@ -111,6 +113,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - Org vs Sole trader -  Feature 4').tag('@nightly-regression-r2').tag(' @claimCreation');
 Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;
   claimInterestFlag = true;

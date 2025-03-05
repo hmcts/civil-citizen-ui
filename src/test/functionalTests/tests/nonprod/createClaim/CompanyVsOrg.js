@@ -11,7 +11,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
   claimFee = 115, claimantPartyType = 'Company';
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@regression-r2');
+Feature('Create Lip v Lip claim - Company vs Org - Feature 1').tag('@regression-r2').tag('@claimCreation');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -56,6 +56,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - G
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name', 'withoutnotice', 'company');
 });
 
+Feature('Create Lip v Lip claim - Company vs Org - Feature 2').tag('@regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
   claimInterestFlag = true;
@@ -83,6 +84,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with standard interest -
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - Company vs Org - Feature 3').tag('@regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
   claimInterestFlag = true;
@@ -110,6 +112,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - Company vs Org - Feature 4').tag('@regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;
   claimInterestFlag = true;

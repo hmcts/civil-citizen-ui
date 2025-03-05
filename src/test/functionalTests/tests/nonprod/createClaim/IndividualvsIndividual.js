@@ -19,7 +19,7 @@ let caseData, legacyCaseReference, caseRef, claimNumber, claimInterestFlag, Stan
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Individual vs Individual @claimCreation').tag('@regression-r2');
+Feature('Create Lip v Lip claim - Individual vs Individual').tag('@regression-r2').tag('@claimCreation');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -62,6 +62,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
 });
 
+Feature('Create Lip v Lip claim - Individual vs Individual - Feature 2').tag('@regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf', async ({
   I,
   api,
@@ -90,6 +91,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - Individual vs Individual - Feature 3').tag('@regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf', async ({
   I,
   api,
@@ -119,6 +121,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   await api.waitForFinishedBusinessProcess();
 });
 
+Feature('Create Lip v Lip claim - Individual vs Individual - Feature 4').tag('@regression-r2').tag('@claimCreation');
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;
   claimInterestFlag = true;
