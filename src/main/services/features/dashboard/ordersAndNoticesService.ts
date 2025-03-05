@@ -112,9 +112,12 @@ const getGeneralApplicationOrders = (claim: Claim, claimId: string, lang: string
 };
 
 const getClaimantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: string) => {
-  const claimantDq = isBilingual(claim.claimantBilingualLanguagePreference) ?
+  const originalClaimantDq = (!isBilingual(claim.claimantBilingualLanguagePreference) || claim.isLRDefendant()) ?
+    claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT) : undefined;
+  let claimantDq = isBilingual(claim.claimantBilingualLanguagePreference) ?
     claim.getDocumentDetails(DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT) :
     claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+  claimantDq = claimantDq || originalClaimantDq;
   return claimantDq ? Array.of(
     setUpDocumentLinkObject(claimantDq.documentLink, claimantDq.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ')) : [];
 };
