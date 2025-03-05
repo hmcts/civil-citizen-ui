@@ -230,6 +230,7 @@ module.exports = {
       },
     };
   },
+    
   requestMoreInformation: (document) => {
     return {
       event: 'MAKE_DECISION',
@@ -266,6 +267,7 @@ module.exports = {
       },
     };
   },
+  
   listForHearing: (document) => {
     return {
       event: 'MAKE_DECISION',
@@ -324,6 +326,51 @@ module.exports = {
           orderCourtOwnInitiative: 'As this order was made on the court\'s own initiative, any party affected by the order may apply to set aside, vary, or stay the order. Any such application must be made by 4pm on',
           orderCourtOwnInitiativeDate: '2025-02-18',
         },
+      },
+    };
+  },
+  
+  writtenRepresentations: (document) => {
+    return {
+      event: 'MAKE_DECISION',
+      caseDataUpdate: {
+        judicialDecision: {
+          decision: 'MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS',
+        },
+        applicationIsCloaked: 'No',
+        directionInRelationToHearingText: 'Test order',
+        judgeRecitalText: 'The Judge considered the application of the claimant dated 10 February 2025',
+        judgeTitle: 'judgeb birmin',
+        judicialByCourtsInitiativeForWrittenRep: 'OPTION_1',
+        judicialConcurrentDateText: 'The claimant and defendant should upload any written submissions and evidence by 4pm on 24 February 2025',
+        judicialDecisionMakeAnOrderForWrittenRepresentations: {
+          makeAnOrderForWrittenRepresentations: 'CONCURRENT_REPRESENTATIONS',
+          sequentialApplicantMustRespondWithin: '2026-03-03',
+          writtenConcurrentRepresentationsBy: '2026-02-24',
+          writtenSequentailRepresentationsBy: '2026-02-24',
+        },
+        orderCourtOwnInitiativeForWrittenRep: {
+          orderCourtOwnInitiative: 'As this order was made on the court\'s own initiative, any party affected by the order may apply to set aside, vary, or stay the order. Any such application must be made by 4pm on',
+          orderCourtOwnInitiativeDate: '2026-02-17',
+        },
+        writtenRepConcurrentDocument: [
+          {
+            id: '8d043ac4-ca10-49c9-9c07-e1ed70273f8a',
+            value: {
+              createdBy: 'Civil',
+              createdDatetime: '2025-02-10T15:19:41.207231403',
+              documentLink: {
+                category_id: 'applications',
+                document_binary_url: document.document_binary_url,
+                document_filename: document.document_filename,
+                document_url: document.document_url,
+              },
+              documentName: 'Order_Written_Representation_Concurrent_for_application_2025-02-10 15:19:41.pdf',
+              documentSize: 58957,
+              documentType: 'WRITTEN_REPRESENTATION_CONCURRENT',
+            },
+          },
+        ],
       },
     };
   },

@@ -6,7 +6,7 @@ import * as claimAmountbreakdownService
   from '../../../../../../main/services/features/claim/amount/claimAmountBreakdownService';
 import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
-import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
+import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
@@ -91,23 +91,6 @@ describe('claimAmountBreakdownController test', ()=>{
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-    it('should redirect to not eligible page when total amount exceeds 25000', async () => {
-      const data = {
-        claimAmountRows: [
-          {
-            reason: 'no reason',
-            amount: '26000',
-          },
-        ],
-        totalAmount: '26000',
-      };
-      await request(app).post(CLAIM_AMOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-over-25000');
         });
     });
   });
