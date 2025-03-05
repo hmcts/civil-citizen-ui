@@ -1,5 +1,26 @@
 {% extends "./default-template.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 {% block qmContent %}
+
+{{ govukRadios({
+  idPrefix: "option",
+  name: "option",
+  items: [
+    {
+      value: InterestClaimOptionsType.SAME_RATE_INTEREST,
+      checked: true if form.model.interestType === InterestClaimOptionsType.SAME_RATE_INTEREST,
+      text: t('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_INTEREST')
+    },
+    {
+      value: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
+      checked: true if form.model.interestType === InterestClaimOptionsType.BREAK_DOWN_INTEREST,
+      text: t('PAGES.INTEREST_CLAIM_OPTIONS.BREAK_DOWN_INTEREST')
+    }
+  ],
+  errorMessage: {
+    text: t(form.errorFor('option'))
+  } if form.hasErrors()
+}) }}
 
 {% endblock %}
