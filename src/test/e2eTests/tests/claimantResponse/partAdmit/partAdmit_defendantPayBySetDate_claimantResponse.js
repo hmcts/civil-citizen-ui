@@ -31,19 +31,19 @@ Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects c
 });
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-// Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects claimant accepts part admit and payment plan and formalises with SSA', async () => {
-//   if (['preview', 'demo'].includes(config.runningEnv)) {
-//     const caseId = 1777777777777763;
-//     ClaimantResponseSteps.viewDefendantResponse(caseId, true);
-//     ClaimantResponseSteps.acceptOrRejectPartAdmitPayImmediately(caseId, 'Yes');
-//     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId, 'Yes');
-//     ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
-//     ClaimantResponseSteps.signSettlementAgreement(caseId);
-//     ClaimantResponseSteps.checkAndSubmit(caseId);
-//     ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
-//     await ClaimantResponseSteps.resetWiremockScenario();
-//   }
-// });
+Scenario.skip('Response with PartAdmit-Defendant pay by set date - Claimant rejects claimant accepts part admit and payment plan and formalises with SSA', async () => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    const caseId = 1777777777777763;
+    ClaimantResponseSteps.viewDefendantResponse(caseId, true);
+    ClaimantResponseSteps.acceptOrRejectPartAdmitPayImmediately(caseId, 'Yes');
+    ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId, 'Yes');
+    ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
+    ClaimantResponseSteps.signSettlementAgreement(caseId);
+    ClaimantResponseSteps.checkAndSubmit(caseId);
+    ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
+    await ClaimantResponseSteps.resetWiremockScenario();
+  }
+});
 
 Scenario('Response with PartAdmit-Defendant pay by set date - Defendant signs SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
