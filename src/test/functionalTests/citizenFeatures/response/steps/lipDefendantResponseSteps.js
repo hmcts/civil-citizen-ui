@@ -615,7 +615,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
@@ -643,7 +643,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterClaimantDQForIntTrack(claimRef, isIndividual = true) {
@@ -671,7 +671,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterDQForFastTrack(claimRef, isIndividual = true){
@@ -691,7 +691,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async SelectHearingRequirements(claimRef) {
@@ -746,8 +746,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption() {
-    await welshLanguage.selectLanguageOption();
+  async SelectLanguageOption(smallClaims = true) {
+    await welshLanguage.selectLanguageOption(smallClaims);
   }
 
   async SelectOptionForTriedToSettle(claimRef){
