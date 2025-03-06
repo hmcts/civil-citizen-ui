@@ -536,6 +536,55 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
+    "QM": {
+      "WHAT_DO_YOU_WANT_TODO_TITLE": "What do you want to do?",
+      "OPTIONS": {
+        "CHANGE_CASE": {
+          "TEXT": "Ask the court to change something on your case (make an application)",
+          "HINT": "You may have to pay a fee"
+        },
+        "GET_UPDATE": {
+          "TEXT": "Get an update from the court"
+        },
+        "SEND_UPDATE": {
+          "TEXT": "Send an update to the court",
+          "HINT": "Such as telling the court your claim has ended or changing the details of your claim"
+        },
+        "SEND_DOCUMENTS": {
+          "TEXT": "Send documents"
+        },
+        "SOLVE_PROBLEM": {
+          "TEXT": "Solve a problem I am having using the Money claims system",
+          "HINT": "Money claims is the system to make and manage your online claim"
+        },
+        "MANAGE_HEARING": {
+          "TEXT": "Manage your hearing"
+        },
+        "GET_SUPPORT": {
+          "TEXT": "Get support as the correspondence I received is unclear"
+        },
+        "FOLLOW_UP": {
+          "TEXT": "Follow up on an existing message"
+        },
+        "SOMETHING_ELSE": {
+          "TEXT": "Something else"
+        }
+      },
+      "CAPTIONS": {
+        "CHANGE_CASE": "CAPTION CHANGE_CASE",
+        "GET_UPDATE": "CAPTION GET_UPDATE",
+        "SEND_UPDATE": "CAPTION SEND_UPDATE",
+        "SEND_DOCUMENTS": "CAPTION SEND_DOCUMENTS",
+        "SOLVE_PROBLEM": "CAPTION SOLVE_PROBLEM",
+        "MANAGE_HEARING": "CAPTION MANAGE_HEARING",
+        "GET_SUPPORT": "CAPTION GET_SUPPORT",
+        "FOLLOW_UP": "CAPTION FOLLOW_UP",
+        "SOMETHING_ELSE": "CAPTION SOMETHING_ELSE"
+      },
+      "LEVEL_0": {
+        "CAPTION": "Contact or apply to the court"
+      }
+    },
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "A yw’r Gyfundrefn Costau Adferadwy a Bennwyd  yn berthnasol i’r hawliad hwn?",
       "TITLE": "Costau Adferadwy a Bennwyd",
@@ -4878,6 +4927,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
