@@ -17,7 +17,8 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual @nightly @carm');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual')
+  .tag('@carm').tag('@nightly');
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

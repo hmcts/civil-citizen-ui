@@ -9,7 +9,7 @@ const { addTrialArrangements, uploadHearingDocuments } = require('../../specClai
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track');
+Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track').tag('@regression-cp');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -44,5 +44,5 @@ Scenario('Fast Track LiPvLiP case is struck out due to hearing fee not being pai
     taskListItem = uploadHearingDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   }
-}).tag('@regression-cp');
+});
 

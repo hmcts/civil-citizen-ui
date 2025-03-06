@@ -16,7 +16,7 @@ const claimAmount = '£1,500';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Small Claims');
+Feature('Case progression journey - Verify Bundle - Small Claims').tag('@nightly-regression-cp');;
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
@@ -62,4 +62,4 @@ Scenario('Case progression journey - Small Claims - Verify Bundles tab', async (
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@nightly-regression-cp');
+});

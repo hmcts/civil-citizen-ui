@@ -16,7 +16,7 @@ const claimAmount = '£15,000.00';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Fast Track');
+Feature('Case progression journey - Verify Bundle - Fast Track').tag('@nightly-regression-cp');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
@@ -63,4 +63,4 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@nightly-regression-cp');
+});

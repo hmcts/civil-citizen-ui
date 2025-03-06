@@ -30,7 +30,7 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   console.log('Security code', securityCode);
 });
 
-Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async () => {
+Scenario('Welsh Response with PartAdmit - SetDate', async () => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
@@ -49,7 +49,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async 
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   sharedData.language = 'en';
-});
+}).tag('@citizenUI').tag('@partAdmit');
 
 /*
 Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {

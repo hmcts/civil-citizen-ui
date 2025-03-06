@@ -15,7 +15,7 @@ const claimAmount = '£15,000';
 const feeAmount = '545';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track').tag('@nightly-regression-cp');
 
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
@@ -61,7 +61,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
   }
-}).tag('@nightly-regression-cp');
+});
 
 Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -78,4 +78,4 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
-}).tag('@nightly-regression-cp');
+});

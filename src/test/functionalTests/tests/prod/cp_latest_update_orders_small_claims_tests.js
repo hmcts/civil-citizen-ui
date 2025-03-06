@@ -11,7 +11,7 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@skip-regression-cp');;
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -42,4 +42,4 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
   } else {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@skip-regression-cp');
+});
