@@ -19,6 +19,10 @@ const qmStartViewPath = 'features/qm/qm-questions-template.njk';
 
 const QUERY_MANAGEMENT_PROPERTY_NAME = 'whatDoYouWantToDo';
 
+const getRedirectPath = (option: WhatToDoTypeOption) => {
+  return redirectionMap[option] || QM_WHAT_DO_YOU_WANT_TO_DO_URL;
+};
+
 const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.CHANGE_CASE]: APPLICATION_TYPE_URL,
   [WhatToDoTypeOption.GET_SUPPORT]: QM_CREATE_QUERY_URL,
@@ -68,10 +72,6 @@ qmStartController.get(QM_START_URL, (async (req, res , next) => {
     next(error);
   }
 }) as RequestHandler);
-
-const getRedirectPath = (option: WhatToDoTypeOption) => {
-  return redirectionMap[option] || QM_WHAT_DO_YOU_WANT_TO_DO_URL;
-};
 
 qmStartController.post(QM_START_URL, (async (req, res , next) => {
   try {

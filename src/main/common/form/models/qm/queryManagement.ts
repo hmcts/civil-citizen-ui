@@ -7,6 +7,7 @@ export class Hint {
     this.text = text;
   }
 }
+
 export class radioButtonItems{
   hint: Hint;
   value: string;
@@ -20,6 +21,7 @@ export class radioButtonItems{
     this.checked = checked;
   }
 }
+
 export class WhatDoYouWantToDo {
 
   @IsDefined({ message: 'ERRORS.QUERY_MANAGEMENT_YOU_MUST_SELECT' })
