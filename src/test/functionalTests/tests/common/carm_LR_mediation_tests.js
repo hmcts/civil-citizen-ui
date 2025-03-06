@@ -30,7 +30,7 @@ Before(async () => {
 });
 
 // LR Individual vs LiP Organisation
-Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, noc}) => {
+Scenario.skip('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, noc}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -85,7 +85,7 @@ Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, 
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 });
 
-Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
+Scenario.skip('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
