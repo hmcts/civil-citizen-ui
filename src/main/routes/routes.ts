@@ -433,7 +433,7 @@ import submitApplicationOfflineController from 'routes/features/generalApplicati
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
-import qmStartController from "routes/features/qm/qmStartController";
+import qmStartController from 'routes/features/qm/qmStartController';
 
 export default [
   homeController,
