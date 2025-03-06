@@ -10,7 +10,7 @@ const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem, notification;
 
 Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims')
-  .tag('@nightly-regression-cp');;
+  .tag('@nightly-regression-cp');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
