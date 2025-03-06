@@ -31,6 +31,7 @@ const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
 };
 
 const getItems = (option: string, lang: string) => {
+
   const pageInfo = 'PAGES.QM.OPTIONS';
   return [
     new radioButtonItems(WhatToDoTypeOption.CHANGE_CASE, t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.TEXT`, {lang} ),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.CHANGE_CASE),
@@ -64,8 +65,9 @@ qmWhatToDoController.get(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next)
     const redisKey = generateRedisKey(<AppRequest>req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
+    const claimId = req.params.id;
     const queryManagement = await getQueryManagement(redisKey, req);
-    const option = queryManagement.whatDoYouWantToDo?.option;
+    const option = queryManagement.qualifyingQuestion.option;
     const form = new GenericForm(new WhatDoYouWantToDo(option, getItems(option, lang)));
     renderView(claimId, form, res);
   } catch (error) {
