@@ -11,7 +11,7 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Fast Track').tag('@skip-regression-cp');;
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Fast Track').tag('@skip-regression-cp');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -42,5 +42,5 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
   } else {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-})
+});
 

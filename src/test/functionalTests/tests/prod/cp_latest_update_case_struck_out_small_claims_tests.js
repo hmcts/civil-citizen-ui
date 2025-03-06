@@ -10,7 +10,7 @@ const { uploadHearingDocuments } = require('../../specClaimHelpers/dashboardTask
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Case Struck Out journey - Small Claims').tag('@nightly-regression-cp');;
+Feature('Case progression - Case Struck Out journey - Small Claims').tag('@nightly-regression-cp');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
