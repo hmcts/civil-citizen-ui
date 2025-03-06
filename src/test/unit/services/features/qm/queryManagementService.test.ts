@@ -5,7 +5,6 @@ import express from 'express';
 import * as utilityService from 'modules/utilityService';
 import {Claim} from 'models/claim';
 
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
 
