@@ -20,8 +20,8 @@ export class OtherWitnessItems {
     details?: string;
 
   constructor(witnessParams?: OtherWitnessItems) {
-    this.firstName = witnessParams.firstName;
-    this.lastName = witnessParams.lastName;
+    this.firstName = witnessParams?.firstName?.trim();
+    this.lastName = witnessParams?.lastName?.trim();
     this.email = witnessParams.email;
     this.telephone = witnessParams.telephone;
     this.details = witnessParams.details;
