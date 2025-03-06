@@ -563,7 +563,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = true) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -576,10 +576,10 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption(carmEnabled);
+    await this.SelectLanguageOption();
   }
 
-  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = true) {
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterClaimantExpertDetails();
@@ -592,7 +592,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption(carmEnabled);
+    await this.SelectLanguageOption();
   }
   async EnterDQForMultiTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
@@ -746,8 +746,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(carmEnabled = true) {
-    await welshLanguage.selectLanguageOption(carmEnabled);
+  async SelectLanguageOption() {
+    await welshLanguage.selectLanguageOption();
   }
 
   async SelectOptionForTriedToSettle(claimRef){
