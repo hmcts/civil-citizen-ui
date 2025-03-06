@@ -9,7 +9,8 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem, notification;
 
-Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims');
+Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims')
+  .tag('@nightly-regression-cp');;
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -47,5 +48,5 @@ Scenario('Case progression journey - Small Claims - Claimant and Defendant verif
     await I.click(claimNumber);
     await I.dontSee(notification.title);
   }
-}).tag('@nightly-regression-cp');
+});
 
