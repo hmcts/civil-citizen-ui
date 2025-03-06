@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 const partyType = 'LiPvLiP';
 let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims');
+Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims').tag('@nightly-regression-cp');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -50,5 +50,5 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
-}).tag('@nightly-regression-cp');
+});
 

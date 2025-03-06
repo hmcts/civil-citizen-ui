@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
 let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Upload Evidence - Small Claims');
+Feature('Case progression journey - Upload Evidence - Small Claims').tag('@nightly-regression-cp');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -49,4 +49,4 @@ Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upl
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
-}).tag('@nightly-regression-cp');
+});

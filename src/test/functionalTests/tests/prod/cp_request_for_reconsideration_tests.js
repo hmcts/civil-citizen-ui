@@ -15,7 +15,7 @@ const claimType = 'SmallClaimsThousand';
 const claimAmount = '£1,000';
 let caseData, claimNumber, claimRef, taskListItem, notification, deadline, todayDate, formattedCaseId;
 
-Feature('Case progression - Request for reconsideration');
+Feature('Case progression - Request for reconsideration').tag('@earlyAdopters-nightly-regression-cp');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -49,7 +49,7 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
   }
-}).tag('@earlyAdopters-nightly-regression-cp');
+});
 
 Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -72,4 +72,4 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
-}).tag('@earlyAdopters-nightly-regression-cp');
+});

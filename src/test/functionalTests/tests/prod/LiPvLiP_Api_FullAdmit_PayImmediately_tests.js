@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmount = 1500, claimFee = 80, deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
-Feature('Create Lip v Lip claim -  Full Admit and pay Immediately');
+Feature('Create Lip v Lip claim -  Full Admit and pay Immediately').tag('@regression-cui-r2');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately - @api', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -38,4 +38,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     await I.click(notification.nextSteps);
   }
   await I.click('Sign out');
-}).tag('@regression-cui-r2');
+});
