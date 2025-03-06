@@ -1,12 +1,11 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
   BASE_ELIGIBILITY_URL,
-  ELIGIBILITY_CLAIM_VALUE_URL,
   MAKE_CLAIM,
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
 } from 'routes/urls';
-import {isCUIReleaseTwoEnabled, isMintiEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {AppRequest} from 'common/models/AppRequest';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
@@ -19,7 +18,6 @@ const pageTitle= 'PAGES.TRY_NEW_SERVICE.PAGE_TITLE';
 tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: AppRequest, res: Response) => {
   const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-  const mintiEnabled = await isMintiEnabled();
   const userId = req.session?.user?.id;
   if (!isCUIR2Enabled) {
     const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -29,11 +27,7 @@ tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: App
   if(req.cookies['eligibilityCompleted'] && userId) {
     return res.redirect(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
   }
-  if (mintiEnabled) {
-    res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL, pageContent: pageContent(lng), pageTitle});
-  } else {
-    res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_CLAIM_VALUE_URL, pageContent: pageContent(lng), pageTitle});
-  }
+  res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL, pageContent: pageContent(lng), pageTitle});
 }) as RequestHandler);
 
 const pageContent = (lng: string) => {

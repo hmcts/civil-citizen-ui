@@ -90,6 +90,8 @@ describe('Expert Report Details Controller', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.ENTER_FIRST_NAME'));
+          expect(res.text).toContain(t('ERRORS.ENTER_LAST_NAME'));
           expect(res.text).toContain(t('ERRORS.ENTER_VALID_EMAIL'));
           expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
           expect(res.text).toContain(t('ERRORS.ENTER_WHY_NEED_EXPERT'));
