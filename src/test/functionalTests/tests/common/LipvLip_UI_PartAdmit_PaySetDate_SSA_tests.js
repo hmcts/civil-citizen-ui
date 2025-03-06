@@ -62,7 +62,8 @@ Scenario('Defendant responds with part admit', async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 }).retry(1);
 
-Scenario('Claimant responds as Accepted Repayment Plan By Claimant', async ({api}) => {
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('Claimant responds as Accepted Repayment Plan By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
