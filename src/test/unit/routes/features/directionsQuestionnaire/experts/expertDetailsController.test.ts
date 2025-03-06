@@ -63,7 +63,7 @@ describe('Expert Report Details Controller', () => {
             firstName: 'Joe',
             lastName: 'Doe',
             emailAddress: 'test@test.com',
-            phoneNumber: '600000000',
+            phoneNumber: '07800000000',
             whyNeedExpert: 'Test',
             fieldOfExpertise: 'Test',
             estimatedCost: 100,
@@ -72,6 +72,30 @@ describe('Expert Report Details Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
+        });
+    });
+
+    it('should return errors when mandatory fields/phone number email is not right', async () => {
+      await request(app).post(DQ_EXPERT_DETAILS_URL)
+        .send({
+          items: [{
+            firstName: '',
+            lastName: '',
+            emailAddress: 'test',
+            phoneNumber: '920',
+            whyNeedExpert: '',
+            fieldOfExpertise: '',
+            estimatedCost: 100,
+          }],
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.ENTER_FIRST_NAME'));
+          expect(res.text).toContain(t('ERRORS.ENTER_LAST_NAME'));
+          expect(res.text).toContain(t('ERRORS.ENTER_VALID_EMAIL'));
+          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
+          expect(res.text).toContain(t('ERRORS.ENTER_WHY_NEED_EXPERT'));
+          expect(res.text).toContain(t('ERRORS.ENTER_EXPERT_FIELD'));
         });
     });
 
