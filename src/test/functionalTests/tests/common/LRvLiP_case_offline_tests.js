@@ -8,7 +8,7 @@ const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/das
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('LR v Lip - Case Offline Tests');
+Feature('LR v Lip - Case Offline Tests - Feature 1').tag('@regression');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -27,7 +27,19 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-}).tag('@regression');
+});
+
+Feature('LR v Lip - Case Offline Tests - Feature 2').tag('@regression');
+
+Before(async ({api}) => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.waitForFinishedBusinessProcess();
+  notification = caseOffline();
+});
 
 Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -39,4 +51,4 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@regression');
+});

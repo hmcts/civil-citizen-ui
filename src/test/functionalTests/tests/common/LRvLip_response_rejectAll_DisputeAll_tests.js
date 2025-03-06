@@ -13,7 +13,8 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll');
+Feature('Response with RejectAll and DisputeAll')
+  .tag('@regression-cui-r1').tag('@citizenUI').tag('@rejectAll').tag('');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -53,5 +54,4 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citiz
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-
-}).tag('@regression-cui-r1');
+});

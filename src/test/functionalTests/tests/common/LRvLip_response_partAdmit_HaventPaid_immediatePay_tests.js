@@ -14,7 +14,8 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims');
+Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims')
+  .tag('@regression-cui-r1').tag('@citizenUI').tag('@partAdmit').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -30,7 +31,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
+Scenario('Response with PartAdmit-havent paid and Immediate payment', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -49,4 +50,4 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   await api.mediationSuccessful(config.caseWorker);
-}).tag('@regression-cui-r1');
+});

@@ -8,7 +8,7 @@ const {caseOffline, caseOfflineAfterSDO} = require('../../specClaimHelpers/dashb
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('Lip v Lip - Case Offline Tests');
+Feature('Lip v Lip - Case Offline Tests - Feature 1').tag('@regression');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -31,7 +31,20 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-}).tag('@regression');
+});
+
+Feature('Lip v Lip - Case Offline Tests - Feature 2').tag('@regression');
+
+Before(async ({api}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.waitForFinishedBusinessProcess();
+  notification = caseOffline();
+});
 
 Scenario('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -42,7 +55,20 @@ Scenario('Case is offline after solicitor performs notice of change on behalf of
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     // await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
-}).tag('@regression');
+});
+
+Feature('Lip v Lip - Case Offline Tests - Feature 3').tag('@regression');
+
+Before(async ({api}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.waitForFinishedBusinessProcess();
+  notification = caseOffline();
+});
 
 Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -56,4 +82,4 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@regression');
+});
