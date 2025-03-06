@@ -4864,9 +4864,13 @@
       "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
       "TELEPHONE": "Telephone",
       "OPENING_TIMES": "Opening Times",
-      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "TELEPHONE_OPENING_HOURS": "Monday to Friday, 9am to 5pm",
       "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CNBC_TELEPHONE": "Civil National Business Centre 0300 123 1056",
+      "TRAFFIC_ENFORCEMENT_CENTRE_TELEPHONE": "Traffic Enforcement Centre 0300 123 1059",
+      "CNBC_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 4pm",
+      "MEDIATION_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 5pm"
     }
   },
   "FOOTER":{
