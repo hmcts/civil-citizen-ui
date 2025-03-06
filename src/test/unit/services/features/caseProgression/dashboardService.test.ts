@@ -30,7 +30,7 @@ import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForLipsEnabledAndLocationWhiteListed, isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {GA_SUBMIT_OFFLINE} from 'routes/urls';
@@ -556,6 +556,60 @@ describe('dashboardService', () => {
         //Then
         expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
         expect(result.url).toContain(GA_SUBMIT_OFFLINE);
+      });
+
+      describe('Query management enabled get court contact link', () => {
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+
+        it('should return updated text with QM enabled', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
+          claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
+          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        });
+
+        it('should not return updated text if QM is disabled', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+          claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        });
+
+        it('should not return updated text if QM is enabled but state is dismissed', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+          claim.ccdState = CaseState.CASE_DISMISSED;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        });
+
+        it('should not return updated text if QM is enabled but state is offline', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+
+          claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        });
       });
 
     });
