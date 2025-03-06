@@ -175,8 +175,8 @@ withPipeline(type, product, component) {
         reportName           : 'Preview Accessibility results'
       ])
     }
-    */
   }
+  */
 
   before('smoketest:aat') {
     sh """
