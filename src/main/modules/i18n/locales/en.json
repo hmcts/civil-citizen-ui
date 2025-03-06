@@ -4928,6 +4928,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",

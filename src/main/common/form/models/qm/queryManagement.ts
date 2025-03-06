@@ -3,9 +3,9 @@ import {IsDefined} from 'class-validator';
 export class Hint {
   text: string;
 
-    constructor(text: string) {
-      this.text = text;
-    }
+  constructor(text: string) {
+    this.text = text;
+  }
 }
 export class radioButtonItems{
   hint: Hint;
@@ -22,7 +22,7 @@ export class radioButtonItems{
 }
 export class WhatDoYouWantToDo {
 
-  @IsDefined({ message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
+  @IsDefined({ message: 'ERRORS.QUERY_MANAGEMENT_YOU_MUST_SELECT' })
     option?: WhatToDoTypeOption;
   items: radioButtonItems[] ;
 
