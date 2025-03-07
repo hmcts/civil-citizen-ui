@@ -24,7 +24,7 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-cui-r2');
+}).tag('@regression-parallel-2-cui-r2');
 
 Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -38,4 +38,4 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Se
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-cui-r2');
+}).tag('@regression-parallel-2-cui-r2');

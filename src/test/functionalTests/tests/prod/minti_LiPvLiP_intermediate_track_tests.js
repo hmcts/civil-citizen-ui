@@ -5,7 +5,7 @@ const intTrackClaimType = 'Intermediate';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Intermediate @regression-parallel @minti');
+Feature('LiP - Minti Intermediate @regression-parallel-2 @minti');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

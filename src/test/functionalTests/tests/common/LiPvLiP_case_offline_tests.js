@@ -31,7 +31,7 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-}).tag('@regression-parallel');
+}).tag('@regression-parallel-1');
 
 Scenario('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -42,7 +42,7 @@ Scenario('Case is offline after solicitor performs notice of change on behalf of
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     // await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
-}).tag('@regression-parallel');
+}).tag('@regression-parallel-1');
 
 Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -56,4 +56,4 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@regression-parallel');
+}).tag('@regression-parallel-1');
