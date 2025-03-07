@@ -21,7 +21,7 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import { displayToEnumKey } from 'services/translation/convertToCUI/cuiTranslation';
 import { YesNoUpperCamelCase } from 'form/models/yesNo';
 import {
-  isApplicationVisibleToRespondentForClaimant
+  isApplicationVisibleToRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const applicationSummaryController = Router();

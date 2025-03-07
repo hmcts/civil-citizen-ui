@@ -703,7 +703,7 @@ describe('General Application Response service', () => {
       } as ApplicationResponse;
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
-    
+
     test('should return false when application is cloaked and state is APPLICATION_ADD_PAYMENT', () => {
       const application = {
         ...baseApplication,
@@ -729,7 +729,7 @@ describe('General Application Response service', () => {
       } as ApplicationResponse;
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
-    //
+
     test('should return false when none of the conditions are met', () => {
       const application = {
         ...baseApplication,
@@ -752,4 +752,4 @@ describe('General Application Response service', () => {
     });
 
   });
-})
+});
