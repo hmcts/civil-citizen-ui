@@ -614,6 +614,22 @@ describe('dashboardService', () => {
 
     });
     describe('Hide/Show Application Section', () => {
+      let dashboard: Dashboard;
+      let dashboardExpected: Dashboard;
+
+      beforeEach(() => {
+        jest.resetAllMocks();
+        dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+
+        dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+      })
 
       //Given
       const mockGet = jest.fn().mockResolvedValue({
@@ -630,16 +646,6 @@ describe('dashboardService', () => {
             'test'),
         ),
       });
-      const dashboard = new Dashboard(
-        Array.of(new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('Applications', 'Applications', []),
-        ));
-
-      const dashboardExpected = new Dashboard(
-        Array.of(new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('test', 'test', []),
-        ));
 
       it('Application section when GaFlag enabled and location not whitelisted and the case is not assigned to defendant', async () => {
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
@@ -745,12 +751,6 @@ describe('dashboardService', () => {
       });
 
       it('Application section when GaFlag enabled and the case is assigned to defendant', async () => {
-
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
@@ -780,12 +780,7 @@ describe('dashboardService', () => {
 
       it('Application section when GaFlag enabled and ea not whitelisted and the case is assigned to defendant', async () => {
 
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
-        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValueOnce(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
