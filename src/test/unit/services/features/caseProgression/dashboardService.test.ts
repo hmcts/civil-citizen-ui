@@ -629,7 +629,7 @@ describe('dashboardService', () => {
           Array.of(new DashboardTaskList('test', 'test', [])
             , new DashboardTaskList('test', 'test', []),
           ));
-      })
+      });
 
       //Given
       const mockGet = jest.fn().mockResolvedValue({
