@@ -84,7 +84,7 @@ module.exports = {
               region: null,
               baseLocation: null,
             },
-          }
+          },
         },
         HearingSupport: {
           applicant1DQHearingSupport: {
