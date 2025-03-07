@@ -70,7 +70,7 @@ const data = {
   CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER: (user, userId, totalClaimAmount) => createLipClaimDefendantSoleTrader(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY: (user, userId, totalClaimAmount) => createLipClaimSoleTraderVCompany(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
-
+  DEFENDANT_RESPONSE: (response, camundaEvent) => require('../fixtures/events/defendantLRResponse').respondToClaim(response, camundaEvent),
 };
 
 let caseId, eventName, payload;
@@ -600,6 +600,30 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(expectedState);
     console.log('End of viewAndRespondToDefence()');
+  },
+
+  defendantLRResponse: async (user, response = 'FULL_DEFENCE', camundaEvent) => {
+    await apiRequest.setupTokens(user);
+
+    eventName = 'DEFENDANT_RESPONSE_SPEC';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let defendantResponseData = data.DEFENDANT_RESPONSE(response, camundaEvent);
+
+    caseData = returnedCaseData;
+
+    for (let pageId of Object.keys(defendantResponseData.userInput)) {
+      await assertValidDataSpec(defendantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent('AWAITING_APPLICANT_INTENTION');
+
+    await waitForFinishedBusinessProcess(caseId);
+
+    deleteCaseFields('respondent1Copy');
+
+    console.log('End of defendantResponse()');
   },
 
   claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '', eaCase = true) => {

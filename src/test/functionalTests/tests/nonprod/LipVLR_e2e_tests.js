@@ -10,7 +10,7 @@ const {
   nocForLip,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
-let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled;
+let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent;
 
 Feature('Lip v LR e2e Tests');
 
@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citizenUI - @api @noc @raja', async ({
+Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citizenUI - @api @noc', async ({
   I,
   api,
 }) => {
@@ -61,5 +61,8 @@ Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citi
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
+
+    camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
+    await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent);
   }
 });
