@@ -580,15 +580,49 @@
           },
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": {
             "TEXT": "Understand what will happen if the claim is not paid after a judgment"
+          },
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": {
+            "TEXT": "Update the court about a paid or partially paid judgment or claim"
+          },
+          "SETTLE_CLAIM": {
+            "TEXT": "Settle a claim"
+          },
+          "AMEND_CLAIM_DETAILS": {
+            "TEXT": "Amend the claim details",
+            "HINT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_DETAILS_EXAMPLE": {
+            "TEXT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_ENDED": {
+            "TEXT": "Tell the court my claim has ended"
+          },
+          "SOMETHING_ELSE": {
+            "TEXT": "Something else"
+          },
+          "ENFORCEMENT_REQUESTS": {
+            "TEXT": "Enforcement requests"
+          },
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+            "TEXT": "Claim documents and evidence"
+          },
+          "SUBMIT_RESPONSE_CLAIM": {
+            "TEXT": "Submit a response to a claim"
+          },
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": {
+            "TEXT": "See the claim on my account"
+          },
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": {
+            "TEXT": "View documents on my account"
           }
         }
       },
       "CAPTIONS": {
         "CHANGE_CASE": "CAPTION CHANGE_CASE",
         "GET_UPDATE": "Get an update on my case",
-        "SEND_UPDATE": "CAPTION SEND_UPDATE",
-        "SEND_DOCUMENTS": "CAPTION SEND_DOCUMENTS",
-        "SOLVE_PROBLEM": "CAPTION SOLVE_PROBLEM",
+        "SEND_UPDATE": "Send an update on my case",
+        "SEND_DOCUMENTS": "Send documents",
+        "SOLVE_PROBLEM": "Solve a problem I am having using the Money claims system",
         "MANAGE_HEARING": "CAPTION MANAGE_HEARING",
         "GET_SUPPORT": "CAPTION GET_SUPPORT",
         "FOLLOW_UP": "CAPTION FOLLOW_UP",
@@ -4945,6 +4979,8 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send before you can continue.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what you are trying to do before you can continue.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",

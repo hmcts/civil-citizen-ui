@@ -4,7 +4,6 @@ import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {
   CANCEL_URL,
-  QM_WHAT_DO_YOU_WANT_TO_DO_URL
 } from 'routes/urls';
 
 export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
@@ -31,10 +30,13 @@ export const getCancelUrl = (claimId: string) => {
 };
 
 export const getCaption = (option: WhatToDoTypeOption) => {
-  return captionMap[option] || QM_WHAT_DO_YOU_WANT_TO_DO_URL;
+  return captionMap[option];
 };
 
 const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.GET_UPDATE]: 'PAGES.QM.CAPTIONS.GET_UPDATE',
+  [WhatToDoTypeOption.SEND_UPDATE]: 'PAGES.QM.CAPTIONS.GET_UPDATE',
+  [WhatToDoTypeOption.SEND_DOCUMENTS]: 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS',
+  [WhatToDoTypeOption.SOLVE_PROBLEM]: 'PAGES.QM.CAPTIONS.SOLVE_PROBLEM',
 
 };
