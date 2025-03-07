@@ -1,4 +1,5 @@
 const {element} = require('../../api/dataHelper');
+const config = require('../../../../config');
 
 module.exports = {
   rejectAllDisputeAllButClaimantWantsToProceed_Carm: () => {
@@ -65,9 +66,25 @@ module.exports = {
         },
         ApplicantCourtLocationLRspec: {
           applicant1DQRequestedCourt: {
-            responseCourtLocations: [],
-            reasonForHearingAtSpecificCourt: 'Reasons',
-          },
+            responseCourtLocations: {
+              value: {
+                code: '18ff11c1-223d-4b73-b8a3-929b63b84e73',
+                label: config.claimantLRSelectedCourt,
+              },
+              list_items: [
+                {
+                  code: '18ff11c1-223d-4b73-b8a3-929b63b84e73',
+                  label: config.claimantLRSelectedCourt,
+                },
+              ],
+            },
+            reasonForHearingAtSpecificCourt: 'reasons',
+            responseCourtCode: null,
+            caseLocation: {
+              region: null,
+              baseLocation: null,
+            },
+          }
         },
         HearingSupport: {
           applicant1DQHearingSupport: {
