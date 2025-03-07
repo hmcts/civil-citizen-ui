@@ -24,7 +24,7 @@ import {
   isCUIReleaseTwoEnabled,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled
+  isQueryManagementEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';

@@ -563,7 +563,7 @@ describe('claimant Dashboard Controller', () => {
           expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE'));
         });
       });
-    })
+    });
   });
 
 });
