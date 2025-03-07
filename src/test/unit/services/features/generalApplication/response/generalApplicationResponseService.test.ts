@@ -685,6 +685,13 @@ describe('General Application Response service', () => {
       } as ApplicationResponse;
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
+    it('should return true when application is not cloaked and state is not APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        case_data: {applicationIsCloaked: YesNoUpperCamelCase.NO},
+        state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
 
     it('should return true when application is uncloaked once and state is not APPLICATION_ADD_PAYMENT', () => {
       const application = {
