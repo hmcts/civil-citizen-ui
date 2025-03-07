@@ -686,6 +686,16 @@ describe('General Application Response service', () => {
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
+    test('should return true when parentClaimantIsApplicant is undefined and isWithNotice is YES', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.YES},
+        },
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+    });
+
     it('should return true when application is not cloaked and state is not APPLICATION_ADD_PAYMENT', () => {
       const application = {
         case_data: {applicationIsCloaked: YesNoUpperCamelCase.NO},
