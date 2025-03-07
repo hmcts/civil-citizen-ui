@@ -747,6 +747,16 @@ describe('General Application Response service', () => {
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
+    it('should return false when requestMoreInfoOption is SEND_APP_TO_OTHER_PARTY but status is not SUCCESS', () => {
+      const application = {
+        case_data: {
+          judicialDecisionRequestMoreInfo: {requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY},
+          generalAppPBADetails: {additionalPaymentDetails: {status: 'FAILED'}},
+        }
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+    });
+
     test('should return false when none of the conditions are met', () => {
       const application = {
         ...baseApplication,
