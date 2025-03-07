@@ -570,9 +570,22 @@
           "TEXT": "Something else"
         }
       },
+      "QUALIFY": {
+        "OPTIONS": {
+          "GENERAL_UPDATE": {
+            "TEXT": "Get a general update on what is happening with the case"
+          },
+          "CLAIM_NOT_PAID": {
+            "TEXT": "Understand what will happen if the claim is not paid"
+          },
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": {
+            "TEXT": "Understand what will happen if the claim is not paid after a judgment"
+          }
+        }
+      },
       "CAPTIONS": {
         "CHANGE_CASE": "CAPTION CHANGE_CASE",
-        "GET_UPDATE": "CAPTION GET_UPDATE",
+        "GET_UPDATE": "Get an update on my case",
         "SEND_UPDATE": "CAPTION SEND_UPDATE",
         "SEND_DOCUMENTS": "CAPTION SEND_DOCUMENTS",
         "SOLVE_PROBLEM": "CAPTION SOLVE_PROBLEM",

@@ -73,18 +73,16 @@ export enum WhatToDoTypeOption {
 }
 
 export enum QualifyingQuestionTypeOption {
-  CHANGE_CASE = 'CHANGE_CASE',
-  GET_UPDATE = 'GET_UPDATE',
-  SEND_UPDATE = 'SEND_UPDATE',
-  SEND_DOCUMENTS = 'SEND_DOCUMENTS',
-  SOLVE_PROBLEM = 'SOLVE_PROBLEM',
-  MANAGE_HEARING = 'MANAGE_HEARING',
-  GET_SUPPORT = 'GET_SUPPORT',
-  FOLLOW_UP = 'FOLLOW_UP',
-  SOMETHING_ELSE = 'SOMETHING_ELSE',
+  GENERAL_UPDATE  = 'GENERAL_UPDATE',
+  CLAIM_NOT_PAID  = 'CLAIM_NOT_PAID',
+  CLAIM_NOT_PAID_AFTER_JUDGMENT  = 'CLAIM_NOT_PAID_AFTER_JUDGMENT',
+  PaidOrPartiallyPaidJudgment
+SettleClaim
+AmendClaimDetails
+
 }
 
 export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
-  qualifyingQuestion : WhatDoYouWantToDo;
+  qualifyingQuestion : QualifyingQuestion;
 }
