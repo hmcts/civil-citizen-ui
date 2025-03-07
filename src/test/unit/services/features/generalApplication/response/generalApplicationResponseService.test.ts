@@ -686,6 +686,15 @@ describe('General Application Response service', () => {
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
+    it('should return true when application is uncloaked once and state is not APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {applicationIsUncloakedOnce: YesNoUpperCamelCase.YES},
+        state: ApplicationState.AWAITING_RESPONDENT_RESPONSE
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
     test('should return true when parentClaimantIsApplicant is YES', () => {
       const application = {
         ...baseApplication,
