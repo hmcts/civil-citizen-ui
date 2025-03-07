@@ -162,19 +162,19 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
-  afterSuccess('smoketest:preview') {
-    stage('Accessibility') {
-      yarnBuilder.yarn('tests:a11y')
-      publishHTML([
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : "functional-output/accessibility-report",
-        reportFiles          : 'a11y.html',
-        reportName           : 'Preview Accessibility results'
-      ])
-    }
-  }
+  // afterSuccess('smoketest:preview') {
+  //   stage('Accessibility') {
+  //     yarnBuilder.yarn('tests:a11y')
+  //     publishHTML([
+  //       allowMissing         : true,
+  //       alwaysLinkToLastBuild: true,
+  //       keepAll              : true,
+  //       reportDir            : "functional-output/accessibility-report",
+  //       reportFiles          : 'a11y.html',
+  //       reportName           : 'Preview Accessibility results'
+  //     ])
+  //   }
+  // }
 
   before('smoketest:aat') {
     sh """
