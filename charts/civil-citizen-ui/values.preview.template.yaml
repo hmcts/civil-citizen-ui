@@ -31,7 +31,6 @@ nodejs:
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
     CIVIL_GENERAL_APPLICATIONS_URL: http://${SERVICE_NAME}-general-applications
-    DUMMY_PROPERTY: true
 
 aac-manage-case-assignment:
   enabled: true
@@ -382,7 +381,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6214'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
