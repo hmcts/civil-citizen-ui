@@ -153,7 +153,7 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
 };
 
 export const isApplicationVisibleToRespondentForClaimant = (application: ApplicationResponse): boolean => {
-  const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
+  const parentClaimantIsApplicant = application.case_data.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
     || (parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
