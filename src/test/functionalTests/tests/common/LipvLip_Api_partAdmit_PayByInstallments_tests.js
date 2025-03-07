@@ -39,99 +39,14 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
     const notification = goToHearingClaimant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag("@regression-parallel-1-cui-r2");
 
-Scenario(
-  "Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api",
-  async ({ api }) => {
-    await createAccount(
-      config.claimantCitizenUser.email,
-      config.claimantCitizenUser.password
-    );
-    await createAccount(
-      config.defendantCitizenUser.email,
-      config.defendantCitizenUser.password
-    );
-    claimType = "FastTrack";
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    await api.performCitizenResponse(
-      config.defendantCitizenUser,
-      claimRef,
-      claimType,
-      config.defenceType
-        .partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual
-    );
-    await api.waitForFinishedBusinessProcess();
-    //Claimant response below here
-    await LoginSteps.EnterCitizenCredentials(
-      config.claimantCitizenUser.email,
-      config.claimantCitizenUser.password
-    );
-    await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(
-      claimRef,
-      "1236",
-      "fast"
-    );
-    await api.waitForFinishedBusinessProcess();
-  }).tag('@regression-parallel-1-cui-r2');
-
-Scenario(
-  "Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept @citizenUI @partAdmit @nightly - @api",
-  async ({ I, api }) => {
-    await createAccount(
-      config.claimantCitizenUser.email,
-      config.claimantCitizenUser.password
-    );
-    await createAccount(
-      config.defendantCitizenUser.email,
-      config.defendantCitizenUser.password
-    );
-    claimType = "SmallClaims";
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    console.log("isDashboardServiceEnabled..", isDashboardServiceEnabled);
-    await api.performCitizenResponse(
-      config.defendantCitizenUser,
-      claimRef,
-      claimType,
-      config.defenceType
-        .partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual
-    );
-    await api.waitForFinishedBusinessProcess();
-    //Claimant response below here
-    await LoginSteps.EnterCitizenCredentials(
-      config.claimantCitizenUser.email,
-      config.claimantCitizenUser.password
-    );
-    await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(
-      claimRef,
-      "1345",
-      claimNumber
-    );
-    await api.waitForFinishedBusinessProcess();
-
-    //Once the defect CIV-15577 is fixed, uncomment the below code.
-    // if (isDashboardServiceEnabled) {
-    //   const notification = claimantRejectPlanJudgeNewPlan();
-    //   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    // }
-
-    if (isDashboardServiceEnabled) {
-      await I.click("Sign out");
-      await LoginSteps.EnterCitizenCredentials(
-        config.defendantCitizenUser.email,
-        config.defendantCitizenUser.password
-      );
-      const notification = judgmentRequestedClaimantDisagrees();
-      await verifyNotificationTitleAndContent(
-        claimNumber,
-        notification.title,
-        notification.content
-      );
-    }
-  }).tag('@regression-parallel-cui-r2');
+  if (isDashboardServiceEnabled) {
+    await I.click('Sign out');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    const notification = goToHearingPartAdmitDefendant(1345);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  }
+}).tag('@regression-parallel-1-cui-r2');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
