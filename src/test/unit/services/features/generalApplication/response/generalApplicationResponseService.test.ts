@@ -690,7 +690,7 @@ describe('General Application Response service', () => {
       const application = {
         ...baseApplication,
         case_data: {applicationIsUncloakedOnce: YesNoUpperCamelCase.YES},
-        state: ApplicationState.AWAITING_RESPONDENT_RESPONSE
+        state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
       } as ApplicationResponse;
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
     });
