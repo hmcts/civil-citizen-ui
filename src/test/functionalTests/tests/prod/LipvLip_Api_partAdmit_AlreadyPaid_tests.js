@@ -13,7 +13,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track');
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track - Feature 1');
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim @citizenUI @partAdmit @nightly - @api', async ({
   I,
@@ -46,6 +46,8 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
   }
 });
 
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track - Feature 2');
+
 Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -59,6 +61,8 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression-cui-r2');
+
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track - Feature 3');
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

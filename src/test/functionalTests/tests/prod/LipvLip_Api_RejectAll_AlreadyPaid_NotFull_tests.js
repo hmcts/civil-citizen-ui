@@ -9,7 +9,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track');
+Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track - Feature 1');
 
 Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -25,6 +25,8 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression-cui-r2');
+
+Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track - Feature 2');
 
 Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

@@ -14,17 +14,12 @@ let claimRef, caseData, claimNumber, securityCode, paidDate;
 const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
-Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey @nightly @minti');
-
-Before(async () => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  }
-});
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey - Feature 1 @nightly @minti');
 
 Scenario('MT Defendant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
     console.log('LIP vs LIP MT claim has been created Successfully    <===>  ', claimRef);
     await api.setCaseId(claimRef);
@@ -51,8 +46,12 @@ Scenario('MT Defendant responses', async ({api}) => {
   }
 }).tag('@regression-minti').tag('@nightly');
 
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey - Feature 2 @nightly @minti');
+
 Scenario('IT Defendant and Claimant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
     await api.setCaseId(claimRef);

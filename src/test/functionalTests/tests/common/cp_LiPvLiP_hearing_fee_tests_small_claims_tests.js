@@ -64,6 +64,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
 });
 
 Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims - Feature 2').tag('@regression-cp');
+
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
   hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);

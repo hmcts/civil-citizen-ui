@@ -22,15 +22,12 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-Feature('LR - CARM - Mediation Journey @nightly @carm @regression @nightly');
-
-Before(async () => {
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-});
+Feature('LR vs LiP Unsuccessful Mediation - LIP not contactable @nightly @carm @regression @nightly');
 
 // LR Individual vs LiP Organisation
-Scenario.skip('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, noc}) => {
+Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, noc}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -85,7 +82,11 @@ Scenario.skip('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 });
 
-Scenario.skip('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
+Feature('LR vs LiP Unsuccessful Mediation - LR not contactable @nightly @carm @regression @nightly');
+
+Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);

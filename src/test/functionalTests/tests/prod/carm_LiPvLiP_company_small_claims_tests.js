@@ -22,12 +22,10 @@ const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth
 Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company')
   .tag('@carm').tag('@regression-carm').tag('@nightly');
 
-Before(async () => {
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-});
 
 Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
