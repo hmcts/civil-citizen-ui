@@ -75,4 +75,4 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
     const notification = judgmentRequestedCourtAgrees();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression-parallel-cui-r2');

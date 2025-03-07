@@ -37,11 +37,11 @@ Scenario('Create Claim', async ({api}) => {
     console.log('The value of the Claim Number :' + claimNumber);
     console.log('The value of the Security Code :' + securityCode);
   }
-}).retry(1).tag('@regression-cui-r2').tag('@crossbrowser');
+}).retry(1).tag('@regression-series-cui-r2').tag('@crossbrowser');
 
 Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);
-}).tag('@regression-cui-r2');
+}).tag('@regression-series-cui-r2');
 
 Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -59,10 +59,10 @@ Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Sign out');
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1).tag('@regression-series-cui-r2');
 
 Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1).tag('@regression-series-cui-r2');

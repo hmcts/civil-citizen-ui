@@ -105,4 +105,4 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
     const notification = defendantRejectsSettlementClaimant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression-parallel-cui-r2');

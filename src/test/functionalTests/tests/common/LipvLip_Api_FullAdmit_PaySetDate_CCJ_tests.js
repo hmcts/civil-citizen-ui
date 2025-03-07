@@ -54,4 +54,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression-parallel-cui-r2');

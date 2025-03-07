@@ -46,4 +46,4 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-}).tag('@regression-cui-r1');
+}).tag('@regression-parallel-cui-r1');

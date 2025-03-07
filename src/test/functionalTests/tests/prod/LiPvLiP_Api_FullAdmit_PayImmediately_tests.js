@@ -38,4 +38,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     await I.click(notification.nextSteps);
   }
   await I.click('Sign out');
-}).tag('@regression-cui-r2');
+}).tag('@regression-parallel-cui-r2');

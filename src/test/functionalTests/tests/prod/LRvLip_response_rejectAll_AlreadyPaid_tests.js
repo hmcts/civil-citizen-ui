@@ -45,4 +45,4 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.JUDICIAL_REFERRAL);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
-}).tag('@regression-cui-r1');
+}).tag('@regression-parallel-cui-r1');

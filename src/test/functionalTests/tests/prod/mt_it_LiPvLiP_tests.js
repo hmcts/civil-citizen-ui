@@ -49,7 +49,7 @@ Scenario('MT Defendant responses', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-minti').tag('@nightly');
+}).tag('@regression-parallel-minti').tag('@nightly');
 
 Scenario('IT Defendant and Claimant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -87,4 +87,4 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.EnterClaimantDQForIntTrack(claimRef, false);
     await ClaimantResponseSteps.submitYourResponse();
   }
-}).tag('@regression-minti').tag('@nightly');
+}).tag('@regression-parallel-minti').tag('@nightly');
