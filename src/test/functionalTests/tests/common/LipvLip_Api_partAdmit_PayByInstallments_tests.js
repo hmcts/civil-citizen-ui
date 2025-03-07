@@ -14,7 +14,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track @api @citizenUI @partAdmit @nightly')
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track @api @citizenUI @partAdmit @nightly');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,

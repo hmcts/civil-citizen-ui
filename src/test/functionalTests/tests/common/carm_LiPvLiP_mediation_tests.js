@@ -24,7 +24,6 @@ let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal
 
 Feature('LiP vs LiP Unsuccessful Mediation with Upload Documents @nightly @carm @regression @nightly');
 
-
 // LiP Individual vs LiP Company
 Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
