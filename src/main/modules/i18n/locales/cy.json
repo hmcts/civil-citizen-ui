@@ -198,7 +198,15 @@
       "MINUTES_180": "3 awr",
       "MINUTES_240": "4 awr",
       "DAY_1": "1 diwrnod",
-      "DAY_2": "2 ddiwrnod"
+      "DAY_2": "2 ddiwrnod",
+      "DAY": "dydd",
+      "DAYS": "dyddiau",
+      "HOUR": "awr",
+      "HOURS": "oriau",
+      "MINUTE": "munud",
+      "MINUTES": "munudau",
+      "AND": " a ",
+      "AND_VOWEL": " ac "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
@@ -585,7 +593,7 @@
       "COMBO_BOX" : {
         "TITLE": "A ddaethpwyd i gytundeb rhwng y partïon sy’n ymwneud â’r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
         "ITEM1": {
-          "TEXT": "Ie"
+          "TEXT": "Do"
         },
         "ITEM2": {
           "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
@@ -1923,7 +1931,7 @@
       "PARAGRAPH_2.2": "Er enghraifft, nid yw e-bost wedi’i argraffu yn ddogfen electronig.",
       "TITLE_3": "Rhagor o wybodaeth",
       "URL": {
-        "BEFORE": "Rhagor o wybodaeth ",
+        "BEFORE": "Rhagor o wybodaeth ar ",
         "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       },
@@ -2537,8 +2545,8 @@
       "COST_OPTIONAL": "Amcangyfrif o’r gost (dewisol)",
       "EMAIL_ADDRESS_OPTIONAL": "Cyfeiriad e-bost (dewisol)",
       "FIELD_OF_EXPERTISE": "Maes arbenigedd",
-      "FIRST_NAME_OPTIONAL": "Enw cyntaf (dewisol)",
-      "LAST_NAME_OPTIONAL": "Enw olaf (dewisol)",
+      "FIRST_NAME": "Enw cyntaf (Nodwch ‘I’w gadarnhau’ os nad yw enw’r arbenigwr yn hysbys hyd yma)",
+      "LAST_NAME": "Enw olaf (Nodwch ‘I’w gadarnhau’ os nad yw enw’r arbenigwr yn hysbys hyd yma)",
       "PAGE_TITLE": "Nodwch fanylion yr arbenigwr",
       "PHONE_OPTIONAL": "Rhif ffôn (dewisol)",
       "REMOVE_EXPERT": "Dileu arbenigwr",
@@ -2717,12 +2725,12 @@
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydy’",
         "RESPOND_TO": {
-          "SET_ASIDE_JUDGEMENT": "Ymateb i gais i rhoi dyfarniad o’r naill du (ei ddileu)",
+          "SET_ASIDE_JUDGEMENT": "Ymateb i gais i roi dyfarniad o’r naill du (ei ddileu)",
           "AMEND_A_STMT_OF_CASE": "Ymateb i gais i gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
           "ADJOURN_HEARING": "Ymateb i gais i newid dyddiad gwrandawiad",
           "CONFIRM_CCJ_DEBT_PAID": "Ymateb i gais i cadarnhewch eich bod wedi talu dyled dyfarniad",
           "UNLESS_ORDER": "Ymateb i gais i’r llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
-          "EXTEND_TIME": "Ymateb i gais i mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
+          "EXTEND_TIME": "Ymateb i gais am fwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
           "OTHER": "Ymateb i gais i’r llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
           "STAY_THE_CLAIM": "Ymateb i gais i’r llys i atal hawliad",
           "VARY_ORDER": "Ymateb i gais i ailystyried gorchymyn",
@@ -4080,7 +4088,7 @@
       "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys i ofyn am ragor o amser.",
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Dylech lawrlwytho ffurflen N244 (agor mewn tab newydd)",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contactocmc@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "Faint o amser ychwanegol yr ydych yn gwneud cais amdano?",
       "IF_AGREED": "Os bydd y cais yn cael ei ganiatáu, bydd yr amser ychwanegol yn dechrau o {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "Mwy na 28 diwrnod",
@@ -4444,7 +4452,8 @@
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
       "CONTINUE_TO_PAYMENT": "parhau i dalu",
-      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni.",
+      "CASE_PROCESSING_WARNING": "Nid yw’r prosesu achos wedi’i gwblhau, adnewyddwch y dudalen mewn un munud. Os bydd y broblem yn parhau, cysylltwch â’r ddesg gymorth ar 0300 123 7050."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
@@ -4684,7 +4693,9 @@
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
       "COURT_OFFICER_ORDER":"Gorchymyn Swyddog Llys",
       "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
-      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd"
+      "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd",
+      "DJ_DEFENDANT":"Dyfarniad trwy ddiffyg - diffynnydd",
+      "DJ_CLAIMANT":"Dyfarniad trwy ddiffyg - hawlydd"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
@@ -4851,9 +4862,13 @@
       "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
       "TELEPHONE": "Telephone",
       "OPENING_TIMES": "Opening Times",
-      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "TELEPHONE_OPENING_HOURS": "Monday to Friday, 9am to 5pm",
       "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CNBC_TELEPHONE": "Civil National Business Centre 0300 123 1056",
+      "TRAFFIC_ENFORCEMENT_CENTRE_TELEPHONE": "Traffic Enforcement Centre 0300 123 1059",
+      "CNBC_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 4pm",
+      "MEDIATION_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 5pm"
     }
   },
   "FOOTER": {
@@ -5362,6 +5377,10 @@
       "MISSING_SIGN_LANGUAGE": "Mae arnoch angen dweud wrthym pa fath o iaith arwyddion rydych angen dehonglydd ar ei chyfer.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
       "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "QUALIFIED_SOT": {
+        "ERROR_FULL_NAME": "Mae angen enw",
+        "ERROR_ROLE": "Mae angen rôl"
+      },
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os ydych yn cytuno y dylai'r llys wneud y gorchymyn y gofynnwyd amdano gan y parti arall. Dewiswch opsiwn: Ydw neu Nac ydw",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "Mae arnoch angen esbonio pam rydych yn anghytuno â'r cais"

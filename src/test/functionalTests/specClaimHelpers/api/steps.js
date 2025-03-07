@@ -117,6 +117,18 @@ module.exports = {
       case "freeFormOrder":
         payload = makeAnOrderGA.freeFormOrder(document);
         break;
+      case 'withoutNoticeToWith':
+        payload = makeAnOrderGA.withoutNoticeToWith(document);
+        break;
+      case 'writtenRepresentations':
+        payload = makeAnOrderGA.writtenRepresentations(document);
+        break;
+      case 'requestMoreInformation':
+        payload = makeAnOrderGA.requestMoreInformation(document);
+        break;
+      case 'listForHearing':
+        payload = makeAnOrderGA.listForHearing(document);
+        break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
         break;
