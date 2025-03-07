@@ -8,7 +8,7 @@ const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/das
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('LR v Lip - Case Offline Tests - Feature 1').tag('@regression');
+Feature('LR v Lip - Case Offline Tests - Feature 1').tag('@regression-1');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -29,7 +29,7 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
   }
 });
 
-Feature('LR v Lip - Case Offline Tests - Feature 2').tag('@regression');
+Feature('LR v Lip - Case Offline Tests - Feature 2').tag('@regression-1');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

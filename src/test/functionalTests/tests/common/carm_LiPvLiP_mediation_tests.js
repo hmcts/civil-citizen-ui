@@ -22,7 +22,7 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-Feature('LiP vs LiP Unsuccessful Mediation with Upload Documents @nightly @carm @regression @nightly');
+Feature('LiP vs LiP Unsuccessful Mediation with Upload Documents @nightly @carm @regression-1 @nightly');
 
 // LiP Individual vs LiP Company
 Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}) => {
@@ -85,7 +85,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 });
 
-Feature('LiP vs LiP Unsuccessful Mediation with other options @nightly @carm @regression @nightly');
+Feature('LiP vs LiP Unsuccessful Mediation with other options @nightly @carm @regression-1 @nightly');
 
 Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -124,7 +124,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) =
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 });
 
-Feature('LiP vs LiP Successful Mediation @nightly @carm @regression @nightly');
+Feature('LiP vs LiP Successful Mediation @nightly @carm @regression-1 @nightly');
 
 // LiP Individual vs LiP Sole Trader
 Scenario('LiP vs LiP Successful Mediation', async ({api}) => {

@@ -43,5 +43,5 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @nightl
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayByInstallment, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-}).tag('@regression-cui-r1');
+}).tag('@regression-2-cui-r1');
 

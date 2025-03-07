@@ -60,7 +60,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+}).tag('@regression-2-cui-r2');
 
 Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track - Feature 3');
 
@@ -76,4 +76,4 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+}).tag('@regression-2-cui-r2');

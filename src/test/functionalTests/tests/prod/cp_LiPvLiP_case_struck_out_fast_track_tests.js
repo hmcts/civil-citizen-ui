@@ -9,7 +9,7 @@ const { addTrialArrangements, uploadHearingDocuments } = require('../../specClai
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track').tag('@regression-cp');
+Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track').tag('@regression-2-cp');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

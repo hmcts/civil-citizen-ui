@@ -85,7 +85,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
 });
 
 Feature('Lip v Lip GA e2e Tests - Feature 2')
-  .tag('@citizenUI').tag('@api').tag('@ga').tag('@nightly').tag('@regression');
+  .tag('@citizenUI').tag('@api').tag('@ga').tag('@nightly').tag('@regression-1');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

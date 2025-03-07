@@ -15,7 +15,7 @@ let claimNumber;
 let securityCode;
 
 Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims')
-  .tag('@regression-cui-r1').tag('@citizenUI').tag('@partAdmit').tag('@nightly');
+  .tag('@regression-1-cui-r1').tag('@citizenUI').tag('@partAdmit').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

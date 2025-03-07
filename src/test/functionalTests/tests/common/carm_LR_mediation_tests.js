@@ -22,7 +22,7 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-Feature('LR vs LiP Unsuccessful Mediation - LIP not contactable @nightly @carm @regression @nightly');
+Feature('LR vs LiP Unsuccessful Mediation - LIP not contactable @nightly @carm @regression-1 @nightly');
 
 // LR Individual vs LiP Organisation
 Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, noc}) => {
@@ -82,7 +82,7 @@ Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, 
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 });
 
-Feature('LR vs LiP Unsuccessful Mediation - LR not contactable @nightly @carm @regression @nightly');
+Feature('LR vs LiP Unsuccessful Mediation - LR not contactable @nightly @carm @regression-1 @nightly');
 
 Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

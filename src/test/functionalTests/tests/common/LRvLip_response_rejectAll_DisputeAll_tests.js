@@ -14,7 +14,7 @@ let claimNumber;
 let securityCode;
 
 Feature('Response with RejectAll and DisputeAll')
-  .tag('@regression-cui-r1').tag('@citizenUI').tag('@rejectAll').tag('');
+  .tag('@regression-1-cui-r1').tag('@citizenUI').tag('@rejectAll').tag('');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

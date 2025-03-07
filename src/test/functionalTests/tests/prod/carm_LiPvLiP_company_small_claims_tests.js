@@ -20,7 +20,7 @@ const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
 Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company')
-  .tag('@carm').tag('@regression-carm').tag('@nightly');
+  .tag('@carm').tag('@regression-2-carm').tag('@nightly');
 
 Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

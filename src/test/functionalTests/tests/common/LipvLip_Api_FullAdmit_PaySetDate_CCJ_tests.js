@@ -16,7 +16,7 @@ const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025';
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant ')
-  .tag('@regression-cui-r2').tag('@nightly').tag('@api');
+  .tag('@regression-1-cui-r2').tag('@nightly').tag('@api');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
   I,

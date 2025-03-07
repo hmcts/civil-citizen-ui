@@ -44,7 +44,7 @@ Scenario('MT Defendant responses', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-minti').tag('@nightly');
+}).tag('@regression-2-minti').tag('@nightly');
 
 Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey - Feature 2 @nightly @minti');
 
@@ -86,4 +86,4 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.EnterClaimantDQForIntTrack(claimRef, false);
     await ClaimantResponseSteps.submitYourResponse();
   }
-}).tag('@regression-minti').tag('@nightly');
+}).tag('@regression-2-minti').tag('@nightly');

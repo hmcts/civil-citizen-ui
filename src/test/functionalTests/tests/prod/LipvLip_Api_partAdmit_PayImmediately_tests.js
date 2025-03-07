@@ -20,7 +20,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims @citizenUI @partAd
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+}).tag('@regression-2-cui-r2');
 
 Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

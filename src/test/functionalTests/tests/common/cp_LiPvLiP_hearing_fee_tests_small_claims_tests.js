@@ -15,7 +15,7 @@ const claimAmount = '£1,500';
 const feeAmount = '123';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims - Feature 1').tag('@regression-cp');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims - Feature 1').tag('@regression-1-cp');
 
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
@@ -63,7 +63,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   }
 });
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims - Feature 2').tag('@regression-cp');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims - Feature 2').tag('@regression-1-cp');
 
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
