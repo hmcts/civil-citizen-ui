@@ -752,7 +752,7 @@ describe('General Application Response service', () => {
         case_data: {
           judicialDecisionRequestMoreInfo: {requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY},
           generalAppPBADetails: {additionalPaymentDetails: {status: 'FAILED'}},
-        }
+        },
       } as ApplicationResponse;
       expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
     });
