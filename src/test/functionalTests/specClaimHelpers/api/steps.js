@@ -462,14 +462,14 @@ module.exports = {
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to before carm date for legacy cases');
-    }*/
+    }
     if (claimType === 'Intermediate' || claimType === 'Multi') {
       console.log('updating submitted date for minti case');
       await apiRequest.setupTokens(config.systemUpdate);
       const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after minti date');
-    }
+    }*/
 
     await apiRequest.setupTokens(user);
     let newPayload = {

@@ -37,7 +37,10 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
