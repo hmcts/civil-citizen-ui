@@ -409,4 +409,5 @@ export const QM_START_URL = `${QM_BASE}/start`;
 export const QM_WHAT_DO_YOU_WANT_TO_DO_URL = `${QM_BASE}/what-you-want-to-do/:qmType`;
 export const QM_CREATE_QUERY_URL = `${QM_BASE}/create_query/:qmType`;
 export const QM_FOLLOW_UP_URL = `${QM_BASE}/follow-up`;
-export const QM_INFORMATION_URL = `${QM_BASE}/follow-up/:qmType`;
+export const QM_INFORMATION_URL = `${QM_BASE}/information/:qmType/:qmQualifyOption`;
+export const QM_VIEW_QUERY_URL = `${QM_BASE}/view-query`;

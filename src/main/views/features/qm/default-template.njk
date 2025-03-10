@@ -18,9 +18,11 @@
 
     {% block qmContent %} {% endblock %}
 
-    <div class="govuk-button-group">
-      {{ addButton(t, 'CONTINUE', cancelUrl) }}
-    </div>
+    {% block qmButton %}
+      <div class="govuk-button-group">
+        {{ addButton(t, 'CONTINUE', cancelUrl) }}
+      </div>
+    {% endblock %}
   </form>
 {% endblock %}
 
