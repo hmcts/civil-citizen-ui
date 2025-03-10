@@ -22,7 +22,13 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: '../functionalTests/tests/**/*.js',
+  tests: process.env.ENVIRONMENT == 'aat' ?
+  [ '../functionalTests/tests/prod/**/*.js',
+    '../functionalTests/tests/common/**/*.js',
+    '../e2eTests/tests/**/*.js'] :
+  [ '../functionalTests/tests/nonprod/**/*.js',
+    '../functionalTests/tests/common/**/*.js',
+'../e2eTests/tests/**/*.js'],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
