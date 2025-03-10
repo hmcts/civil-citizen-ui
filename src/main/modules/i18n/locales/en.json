@@ -614,6 +614,16 @@
           },
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": {
             "TEXT": "View documents on my account"
+          },
+          "CHANGE_THE_HEARING_DATE": {
+            "TEXT": "Change the hearing date"
+          },
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
+            "TEXT": "Change something about the hearing",
+            "HINT": "For example hearing location or how you attend the hearing"
+          },
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
+            "TEXT": "Ask for help and support during my hearing"
           }
         }
       },
@@ -623,7 +633,7 @@
         "SEND_UPDATE": "Send an update on my case",
         "SEND_DOCUMENTS": "Send documents",
         "SOLVE_PROBLEM": "Solve a problem I am having using the Money claims system",
-        "MANAGE_HEARING": "CAPTION MANAGE_HEARING",
+        "MANAGE_HEARING": "Manage your hearing",
         "GET_SUPPORT": "CAPTION GET_SUPPORT",
         "FOLLOW_UP": "CAPTION FOLLOW_UP",
         "SOMETHING_ELSE": "CAPTION SOMETHING_ELSE"

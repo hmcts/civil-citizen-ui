@@ -1,8 +1,6 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL,
-  BACK_URL,
-  QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL,
+  BACK_URL, QM_INFORMATION_URL,
   QM_WHAT_DO_YOU_WANT_TO_DO_URL,
 } from 'routes/urls';
 
@@ -11,14 +9,14 @@ import {
   QualifyingQuestion,
   QualifyingQuestionTypeOption,
   radioButtonItems,
-  WhatToDoTypeOption
+  WhatToDoTypeOption,
 } from 'form/models/qm/queryManagement';
 import { t } from 'i18next';
 import {
   getCancelUrl,
   getCaption,
   getQueryManagement,
-  saveQueryManagement
+  saveQueryManagement,
 } from 'services/features/qm/queryManagementService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
@@ -29,15 +27,8 @@ const qmStartViewPath = 'features/qm/qm-questions-template.njk';
 
 const QUERY_MANAGEMENT_PROPERTY_NAME = 'qualifyingQuestion';
 
-const getRedirectPath = (option: WhatToDoTypeOption) => {
-  return redirectionMap[option] || QM_WHAT_DO_YOU_WANT_TO_DO_URL;
-};
-
-const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
-  [WhatToDoTypeOption.CHANGE_CASE]: APPLICATION_TYPE_URL,
-  [WhatToDoTypeOption.GET_SUPPORT]: QM_CREATE_QUERY_URL,
-  [WhatToDoTypeOption.FOLLOW_UP]: QM_FOLLOW_UP_URL,
-  [WhatToDoTypeOption.SOMETHING_ELSE]: QM_CREATE_QUERY_URL,
+const getRedirectPath = (qmType: WhatToDoTypeOption, option: QualifyingQuestionTypeOption) => {
+  return QM_INFORMATION_URL.replace(':qmType', qmType).replace(':qmQualifyOption', option);
 };
 
 const getValidationMessage = (option: WhatToDoTypeOption) => {
@@ -66,7 +57,7 @@ const getItems = (option: string, qmType:WhatToDoTypeOption, lang: string) => {
         new radioButtonItems(QualifyingQuestionTypeOption.SETTLE_CLAIM, t(`${pageInfo}.${QualifyingQuestionTypeOption.SETTLE_CLAIM}.TEXT`, {lang}), null, option === QualifyingQuestionTypeOption.SETTLE_CLAIM),
         new radioButtonItems(QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS, t(`${pageInfo}.${QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS}.TEXT`, {lang}),  t(`${pageInfo}.${QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS}.HINT`, {lang}), option === QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS),
         new radioButtonItems(QualifyingQuestionTypeOption.CLAIM_ENDED, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_ENDED}.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.CLAIM_ENDED),
-        new radioButtonItems(QualifyingQuestionTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${QualifyingQuestionTypeOption.SOMETHING_ELSE}.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.SOMETHING_ELSE),
+        new radioButtonItems(QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE),
       ];
 
     }
@@ -81,7 +72,7 @@ const getItems = (option: string, qmType:WhatToDoTypeOption, lang: string) => {
         new radioButtonItems(QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM, t(`${pageInfo}.${QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM),
         new radioButtonItems(QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT, t(`${pageInfo}.${QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT),
         new radioButtonItems(QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT, t(`${pageInfo}.${QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT),
-        new radioButtonItems(QualifyingQuestionTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${QualifyingQuestionTypeOption.SOMETHING_ELSE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SOMETHING_ELSE),
+        new radioButtonItems(QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE),
       ];
     }
     case WhatToDoTypeOption.MANAGE_HEARING:{
@@ -89,7 +80,7 @@ const getItems = (option: string, qmType:WhatToDoTypeOption, lang: string) => {
         new radioButtonItems(QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE),
         new radioButtonItems(QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING),
         new radioButtonItems(QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING),
-        new radioButtonItems(QualifyingQuestionTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${QualifyingQuestionTypeOption.SOMETHING_ELSE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SOMETHING_ELSE),
+        new radioButtonItems(QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE),
       ];
     }
   }
@@ -129,7 +120,7 @@ qmWhatToDoController.post(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const qmType = req.params.qmType as WhatToDoTypeOption;;
+    const qmType = req.params.qmType as WhatToDoTypeOption;
     const redisKey = generateRedisKey(<AppRequest>req);
     const option = req.body.option;
     const form = new GenericForm(new QualifyingQuestion(option, getItems(option, qmType, lang), getValidationMessage(qmType)));
@@ -138,8 +129,8 @@ qmWhatToDoController.post(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next
       return renderView(claimId,qmType, form, res);
     }
     await saveQueryManagement(redisKey, form.model, QUERY_MANAGEMENT_PROPERTY_NAME, req);
-    const redirectPath = getRedirectPath(option);
-    res.redirect(constructResponseUrlWithIdParams(claimId, redirectPath.replace(':qmType', option)));
+    const redirectPath = getRedirectPath(qmType, option);
+    res.redirect(constructResponseUrlWithIdParams(claimId, redirectPath));
   } catch (error) {
     next(error);
   }
