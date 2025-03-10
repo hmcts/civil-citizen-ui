@@ -11,7 +11,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
   claimFee = 115, claimantPartyType = 'Company';
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ')
+Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -54,7 +54,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - G
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name', 'withoutnotice', 'company');
-}).tag('@regression-parallel-1-r2');;
+}).tag('@regression-parallel-1-r2');
 
 Scenario('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
@@ -81,7 +81,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with standard interest -
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-1-r2');;
+}).tag('@regression-parallel-1-r2');
 
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
@@ -108,7 +108,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-1-r2');;
+}).tag('@regression-parallel-1-r2');
 
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;
@@ -130,4 +130,4 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
     const notification = hwfSubmission();
     await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
   }
-}).tag('@regression-parallel-1-r2');;
+}).tag('@regression-parallel-1-r2');
