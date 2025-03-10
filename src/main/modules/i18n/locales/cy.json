@@ -570,6 +570,84 @@
           "TEXT": "Something else"
         }
       },
+      "QUALIFY": {
+        "TITLES": {
+          "FOLLOW_UP": "Follow up on an existing message",
+          "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
+          "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
+          "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
+          "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
+          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
+          "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
+          "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
+          "ENFORCEMENT_REQUESTS": "ENFORCEMENT_REQUESTS_TITLE",
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": "CLAIM_DOCUMENTS_AND_EVIDENCE_TITLE",
+          "SUBMIT_RESPONSE_CLAIM": "SUBMIT_RESPONSE_CLAIM_TITLE",
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "SEE_THE_CLAIM_ON_MY_ACCOUNT_TITLE",
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "VIEW_DOCUMENTS_ON_MY_ACCOUNT_TITLE",
+          "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "CHANGE_SOMETHING_ABOUT_THE_HEARING_TITLE",
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING_TITLE"
+        },
+        "OPTIONS": {
+          "GENERAL_UPDATE": {
+            "TEXT": "Get a general update on what is happening with the case"
+          },
+          "CLAIM_NOT_PAID": {
+            "TEXT": "Understand what will happen if the claim is not paid"
+          },
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": {
+            "TEXT": "Understand what will happen if the claim is not paid after a judgment"
+          },
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": {
+            "TEXT": "Update the court about a paid or partially paid judgment or claim"
+          },
+          "SETTLE_CLAIM": {
+            "TEXT": "Settle a claim"
+          },
+          "AMEND_CLAIM_DETAILS": {
+            "TEXT": "Amend the claim details",
+            "HINT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_DETAILS_EXAMPLE": {
+            "TEXT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_ENDED": {
+            "TEXT": "Tell the court my claim has ended"
+          },
+          "SOMETHING_ELSE": {
+            "TEXT": "Something else"
+          },
+          "ENFORCEMENT_REQUESTS": {
+            "TEXT": "Enforcement requests"
+          },
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+            "TEXT": "Claim documents and evidence"
+          },
+          "SUBMIT_RESPONSE_CLAIM": {
+            "TEXT": "Submit a response to a claim"
+          },
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": {
+            "TEXT": "See the claim on my account"
+          },
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": {
+            "TEXT": "View documents on my account"
+          },
+          "CHANGE_THE_HEARING_DATE": {
+            "TEXT": "Change the hearing date"
+          },
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
+            "TEXT": "Change something about the hearing",
+            "HINT": "For example hearing location or how you attend the hearing"
+          },
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
+            "TEXT": "Ask for help and support during my hearing"
+          }
+        }
+      },
       "CAPTIONS": {
         "CHANGE_CASE": "CAPTION CHANGE_CASE",
         "GET_UPDATE": "CAPTION GET_UPDATE",
@@ -583,6 +661,18 @@
       },
       "LEVEL_0": {
         "CAPTION": "Contact or apply to the court"
+      },
+      "QUALIFY_SECTIONS": {
+        "FOLLOW_UP": {
+          "PARAGRAPH_1": "Your messages are listed on your dashboard.",
+          "LINK": {
+            "TEXT": "Applications and messages to the court",
+            "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
+            "TEXT_AFTER": " section."
+          },
+          "PARAGRAPH_2": "You can reply to any message from the court, your reply must be related to the subject of your original message.",
+          "PARAGRAPH_3": "Do not send a follow up message if it has been less than 10 days since you sent your last message to the court as this could slow down the response from the court."
+        }
       }
     },
     "SUBJECT_TO_FRC": {

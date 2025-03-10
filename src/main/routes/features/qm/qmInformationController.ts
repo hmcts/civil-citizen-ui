@@ -20,16 +20,16 @@ let showAnythingElseSection = false;
 
 const getContent = (claimId: string, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string): ClaimSummarySection[] => {
 
-  //const pageInfo = 'PAGES.QM.QUALIFY.OPTIONS';
+  const qualifySectionInfo = 'PAGES.QM.QUALIFY_SECTIONS';
   const pageSection = new PageSectionBuilder();
   if (isFollowUpScreen) {
     showAnythingElseSection = false;
     const linkHref =  QM_VIEW_QUERY_URL.replace(':id', claimId);
     pageSection
-      .addParagraph('Your messages are listed on your dashboard.')
-      .addLink('Applications and messages to the court', linkHref, 'You can follow up on a message by selecting the one you want to view from the ', 'section.')
-      .addParagraph('You can reply to any message from the court, your reply must be related to the subject of your original message.')
-      .addParagraph('Do not send a follow up message if it has been less than 10 days since you sent your last message to the court as this could slow down the response from the court.');
+      .addParagraph(`${qualifySectionInfo}.FOLLOW_UP.PARAGRAPH_1`)
+      .addLink(`${qualifySectionInfo}.FOLLOW_UP.LINK.TEXT`, linkHref, `${qualifySectionInfo}.FOLLOW_UP.LINK.TEXT_BEFORE`, `${qualifySectionInfo}.FOLLOW_UP.LINK.TEXT_AFTER`)
+      .addParagraph(`${qualifySectionInfo}.FOLLOW_UP.PARAGRAPH_2`)
+      .addParagraph(`${qualifySectionInfo}.FOLLOW_UP.PARAGRAPH_3`);
   } else {
     switch (qualifyQuestionType) {
       case QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE:{
@@ -45,14 +45,15 @@ const getContent = (claimId: string, isFollowUpScreen: boolean, qualifyQuestionT
 
 export const getTitle = (isFollowUpScreen:boolean, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption) => {
   if (isFollowUpScreen) {
-    return 'follow title';
+    return 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP';
   } else {
     return titleMap[qualifyingQuestionTypeOption];
   }
 };
 
 const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
-  [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE]: 'PAGES.QM.CAPTIONS.GET_UPDATE',
+  [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_THE_HEARING_DATE',
+  //TODO add other qualifying question types
 };
 const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
