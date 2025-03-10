@@ -60,7 +60,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
-}).tag('@regression-parallel-1-r2');
+}).tag('@regression-parallel-2-r2');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf', async ({
   I,
@@ -88,7 +88,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-1-r2');
+}).tag('@regression-parallel-2-r2');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf', async ({
   I,
@@ -117,7 +117,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   await api.waitForFinishedBusinessProcess();
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-1-r2');
+}).tag('@regression-parallel-2-r2');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;
@@ -157,4 +157,4 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     const notification = await waitForDefendantToRespond();
     await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
   }
-}).tag('@regression-parallel-1-r2');
+}).tag('@regression-parallel-2-r2');

@@ -44,4 +44,4 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name', 'withoutnotice', 'company');
-}).tag('@regression-parallel-1-r2');
+}).tag('@regression-parallel-2-r2');

@@ -80,4 +80,4 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
-}).tag('@regression-parallel-2-cp');
+}).tag('@regression-parallel-1-cp');
