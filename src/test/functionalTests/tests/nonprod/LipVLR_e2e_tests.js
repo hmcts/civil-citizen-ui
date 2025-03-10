@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citizenUI - @api @noc', async ({
+Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citizenUI - @api @noc @regression', async ({
   I,
   api,
 }) => {
