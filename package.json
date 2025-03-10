@@ -24,7 +24,7 @@
     "test:cui-r1": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 9 --grep @regression-cui-r1 --reporter mocha-multi --verbose",
     "test:ocmc": "MOCHAWESOME_REPORTFILENAME=ocmc yarn test:functional:codeceptjs run-workers --suites 9 --grep @ocmc --reporter mocha-multi --verbose",
     "test:cui-cp": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 9 --grep @regression-cp --reporter mocha-multi --verbose",
-    "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 4 --grep @regression --config src/test/functionalTests/codecept.conf.js --reporter mocha-multi --verbose",
+    "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 8 --grep @regression --config src/test/functionalTests/codecept.conf.js --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers --suites 2 --grep @regression-carm --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:fullfunctional": "yarn playwright install && MOCHAWESOME_REPORTFILENAME=functionalTests codeceptjs run-workers --suites 2 --grep @nightly --config src/test/functionalTests/codecept.conf.js --reporter mocha-multi --verbose",
