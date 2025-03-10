@@ -132,7 +132,7 @@ civil-service:
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
       CUI_URL_RESPOND_TO_CLAIM: https://civil-citizen-ui-staging.aat.platform.hmcts.net/first-contact/start
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
-      COURT_LOCATION_WA_DMN_ENABLED: false
+      COURT_LOCATION_WA_DMN_ENABLED: true
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
