@@ -7,7 +7,7 @@ const judgeDefaultPassword = process.env.JUDGE_PASSWORD || "Hmcts1234";
 // const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testUrl =
   process.env.TEST_URL ||
-  "https://civil-citizen-ui-pr-5711.preview.platform.hmcts.net";
+  "https://civil-citizen-ui-pr-5737.preview.platform.hmcts.net";
 // const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.aat.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS
   ? process.env.TEST_HEADLESS === "true"
@@ -40,13 +40,13 @@ module.exports = {
 
     manageCase:
       process.env.URL ||
-      "https://xui-civil-citizen-ui-pr-5711.preview.platform.hmcts.net",
+      "https://xui-civil-citizen-ui-pr-5737.preview.platform.hmcts.net",
     authProviderApi:
       process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL ||
       "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal",
     ccdDataStore:
       process.env.CCD_DATA_STORE_URL ||
-      "https://ccd-data-store-api-civil-citizen-ui-pr-5711.preview.platform.hmcts.net",
+      "https://ccd-data-store-api-civil-citizen-ui-pr-5737.preview.platform.hmcts.net",
     dmStore:
       process.env.DM_STORE_URL ||
       "http://dm-store-aat.service.core-compute-aat.internal",
@@ -54,13 +54,13 @@ module.exports = {
     idamWeb: "https://idam-web-public.aat.platform.hmcts.net",
     civilService:
       process.env.CIVIL_SERVICE_URL ||
-      "https://civil-citizen-ui-pr-5711-civil-service.preview.platform.hmcts.net",
+      "https://civil-citizen-ui-pr-5737-civil-service.preview.platform.hmcts.net",
     generalApplication:
       process.env.CIVIL_GENERAL_APPLICATIONS_URL ||
-      "https://civil-citizen-ui-pr-5711-general-applications.preview.platform.hmcts.net",
+      "https://civil-citizen-ui-pr-5737-general-applications.preview.platform.hmcts.net",
     caseAssignmentService:
       process.env.ROLE_ASSIGNMENT_URL ||
-      "https://manage-case-assignment-civil-citizen-ui-pr-5711.preview.platform.hmcts.net",
+      "https://manage-case-assignment-civil-citizen-ui-pr-5737.preview.platform.hmcts.net",
 
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
