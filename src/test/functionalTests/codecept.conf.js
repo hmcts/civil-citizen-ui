@@ -49,7 +49,6 @@ exports.config = {
       waitForNavigation: 'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
-
     },
     BrowserHelpers: {
       require: './helpers/browser_helper.js',
