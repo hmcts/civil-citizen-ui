@@ -5,7 +5,7 @@ const multiTrackClaimType = 'Multi';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Multi track @regression-parallel-2 @minti');
+Feature('LiP - Minti Multi track @minti');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -29,4 +29,4 @@ Scenario('LiP vs LiP Multi claim', async ({api}) => {
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, multiTrackClaimType, config.defenceType.rejectAllMultiTrackMinti, 'DefendantCompany');
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'AWAITING_APPLICANT_INTENTION', multiTrackClaimType);
   }
-});
+}).tag('@regression-parallel-2');

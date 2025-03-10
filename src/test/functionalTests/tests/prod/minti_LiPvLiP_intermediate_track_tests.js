@@ -5,7 +5,7 @@ const intTrackClaimType = 'Intermediate';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Intermediate @regression-parallel-2 @minti');
+Feature('LiP - Minti Intermediate @minti');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -29,4 +29,4 @@ Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllIntermediateTrackMinti, 'DefendantCompany');
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'AWAITING_APPLICANT_INTENTION', intTrackClaimType);
   }
-});
+}).tag('@regression-parallel-2');

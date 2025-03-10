@@ -9,7 +9,7 @@ let caseRef, selectedHWF;
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Company claim - Individual vs Company @claimCreationc').tag('@regression-parallel-1-r2');
+Feature('Create Lip v Company claim - Individual vs Company @claimCreationc');
 
 Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({
   api,
@@ -44,4 +44,4 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name', 'withoutnotice', 'company');
-});
+}).tag('@regression-parallel-1-r2');
