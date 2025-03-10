@@ -39,30 +39,30 @@ Scenario('Create Claim', async ({api}) => {
   }
 }).retry(1).tag('@regression-cui-r2').tag('@crossbrowser');
 
-// Scenario('Assign case to defendant', async ({api}) => {
-//   await api.assignToLipDefendant(claimRef);
-// }).tag('@regression-cui-r2');
+Scenario('Assign case to defendant', async ({api}) => {
+  await api.assignToLipDefendant(claimRef);
+}).tag('@regression-cui-r2');
 
-// Scenario('Defendant responds with Rejected All', async ({I, api}) => {
-//   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-//   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-//   await ResponseSteps.RespondToClaim(claimRef);
-//   await ResponseSteps.EnterPersonalDetails(claimRef);
-//   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-//   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
-//   await ResponseSteps.SelectOptionInRejectAllClaim('disputeAll');
-//   await ResponseSteps.EnterWhyYouDisagree(claimRef);
-//   await ResponseSteps.AddYourTimeLineEvents();
-//   await ResponseSteps.EnterYourEvidenceDetails();
-//   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-//   await ResponseSteps.EnterDQForSmallClaims(claimRef);
-//   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-//   await I.click('Sign out');
-//   await api.waitForFinishedBusinessProcess();
-// }).retry(1).tag('@regression-cui-r2');
+Scenario('Defendant responds with Rejected All', async ({I, api}) => {
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
+  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
+  await ResponseSteps.SelectOptionInRejectAllClaim('disputeAll');
+  await ResponseSteps.EnterWhyYouDisagree(claimRef);
+  await ResponseSteps.AddYourTimeLineEvents();
+  await ResponseSteps.EnterYourEvidenceDetails();
+  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
+  await I.click('Sign out');
+  await api.waitForFinishedBusinessProcess();
+}).retry(1).tag('@regression-cui-r2');
 
-// Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
-//   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-//   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
-//   await api.waitForFinishedBusinessProcess();
-// }).retry(1).tag('@regression-cui-r2');
+Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
+  await api.waitForFinishedBusinessProcess();
+}).retry(1).tag('@regression-cui-r2');
