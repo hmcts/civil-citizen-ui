@@ -1,7 +1,7 @@
 const {listElement, element} = require('../../api/dataHelper');
 const config = require('../../../../config.js');
 module.exports = {
-  respondToClaim: (response = 'FULL_DEFENCE', camundaEvent) => {
+  respondToClaim: (response, camundaEvent) => {
     const responseData = {
       userInput: {
         ResponseConfirmNameAddress: {

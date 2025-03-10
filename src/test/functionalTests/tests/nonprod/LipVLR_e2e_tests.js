@@ -10,7 +10,7 @@ const {
   nocForLip,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
-let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent;
+let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent, expectedState;
 
 Feature('Lip v LR e2e Tests');
 
@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citizenUI - @api @noc @regression', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI - @api @noc @regression', async ({
   I,
   api,
 }) => {
@@ -63,6 +63,32 @@ Scenario('LipVLR - NoC when DefendantLip is in Awaiting Defendant Response @citi
     }
 
     camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
-    await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent);
+    expectedState = 'AWAITING_APPLICANT_INTENTION';
+    await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent, expectedState);
+  }
+});
+
+Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI - @api @noc @regression', async ({
+  I,
+  api,
+}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
+    await api.checkUserCaseAccess(config.defendantCitizenUser, false);
+    await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
+
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(legacyCaseReference);
+
+    if (isDashboardServiceEnabled) {
+      const notification = nocForLip(defendantName);
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+
+    camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
+    expectedState = 'PROCEEDS_IN_HERITAGE_SYSTEM';
+    await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_ADMISSION', camundaEvent, expectedState);
   }
 });

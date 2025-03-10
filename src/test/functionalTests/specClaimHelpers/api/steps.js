@@ -602,7 +602,7 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  defendantLRResponse: async (user, response = 'FULL_DEFENCE', camundaEvent) => {
+  defendantLRResponse: async (user, response, camundaEvent, expectedState) => {
     await apiRequest.setupTokens(user);
 
     eventName = 'DEFENDANT_RESPONSE_SPEC';
@@ -620,6 +620,11 @@ module.exports = {
     await assertSubmittedSpecEvent('AWAITING_APPLICANT_INTENTION');
 
     await waitForFinishedBusinessProcess(caseId);
+
+    if (expectedState) {
+      const responseData = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(responseData.state, expectedState);
+    }
 
     deleteCaseFields('respondent1Copy');
 
