@@ -68,5 +68,5 @@ Scenario('Fast Track Response with RejectAll and DisputeAll - both parties uploa
     await I.click(claimNumber);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
   }
-}).tag('@regression-parallel-cp');
+}).tag('@regression-parallel-2-cp');
 

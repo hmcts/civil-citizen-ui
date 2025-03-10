@@ -46,7 +46,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
     const notification = goToHearingPartAdmitDefendant(1345);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-parallel-1-cui-r2');
+}).tag('@regression-parallel-2-cui-r2');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
