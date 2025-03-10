@@ -54,4 +54,4 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citiz
   await api.mediationUnsuccessful(config.caseWorker);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
 
-}).tag('@regression-parallel-1-cui-r1');
+}).tag('@regression-parallel-cui-r1');

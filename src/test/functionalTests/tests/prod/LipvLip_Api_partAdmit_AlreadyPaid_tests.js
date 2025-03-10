@@ -58,7 +58,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-2-cui-r2');
+}).tag('@regression-parallel-cui-r2');
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -72,4 +72,4 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-parallel-2-cui-r2');
+}).tag('@regression-parallel-cui-r2');

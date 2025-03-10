@@ -86,7 +86,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@regression-parallel-1');
+}).tag('@regression-parallel');
 
 Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
@@ -121,7 +121,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) =
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@regression-parallel-1');
+}).tag('@regression-parallel');
 
 // LiP Individual vs LiP Sole Trader
 Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
@@ -158,4 +158,4 @@ Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-}).tag('@regression-parallel-1');
+}).tag('@regression-parallel');

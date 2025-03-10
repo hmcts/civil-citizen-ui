@@ -49,4 +49,4 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   await api.mediationSuccessful(config.caseWorker);
-}).tag('@regression-parallel-2-cui-r1');
+}).tag('@regression-parallel-cui-r1');

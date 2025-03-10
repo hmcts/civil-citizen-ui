@@ -29,4 +29,4 @@ Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllIntermediateTrackMinti, 'DefendantCompany');
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'AWAITING_APPLICANT_INTENTION', intTrackClaimType);
   }
-}).tag('@regression-parallel-2');
+}).tag('@regression-parallel');

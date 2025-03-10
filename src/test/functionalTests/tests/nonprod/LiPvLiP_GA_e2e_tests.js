@@ -110,7 +110,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@regression-parallel-1');
+}).tag('@regression-parallel');
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing @citizenUI - @api @ga @nightly', async ({
   I,

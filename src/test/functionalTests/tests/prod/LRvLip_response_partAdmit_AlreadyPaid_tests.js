@@ -47,4 +47,4 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', a
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.JUDICIAL_REFERRAL);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-}).tag('@regression-parallel-2-cui-r1');
+}).tag('@regression-parallel-cui-r1');

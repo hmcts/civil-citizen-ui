@@ -83,7 +83,7 @@ Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, 
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@regression-parallel-2');
+}).tag('@regression-parallel');
 
 Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
@@ -129,4 +129,4 @@ Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, n
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@regression-parallel-2');
+}).tag('@regression-parallel');

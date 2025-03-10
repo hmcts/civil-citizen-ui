@@ -50,4 +50,4 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @night
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-}).tag('@regression-parallel-2-cui-r1');
+}).tag('@regression-parallel-cui-r1');

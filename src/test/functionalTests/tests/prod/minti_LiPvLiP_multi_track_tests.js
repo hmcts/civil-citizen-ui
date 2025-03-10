@@ -29,4 +29,4 @@ Scenario('LiP vs LiP Multi claim', async ({api}) => {
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, multiTrackClaimType, config.defenceType.rejectAllMultiTrackMinti, 'DefendantCompany');
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'AWAITING_APPLICANT_INTENTION', multiTrackClaimType);
   }
-}).tag('@regression-parallel-2');
+}).tag('@regression-parallel');
