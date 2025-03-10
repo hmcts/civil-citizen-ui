@@ -155,6 +155,13 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    env.SHOW_BROWSER_WINDOW = "false"
+    script {
+      int numCPUs = sh(script: "nproc", returnStdout: true).trim().toInteger()
+      int maxWorkers = (numCPUs / 2) > 6 ? 6 : (numCPUs / 2)
+      env.WORKERS = "${maxWorkers}"  // Set environment variable dynamically
+    }
+    echo "Using ${env.WORKERS} workers for functional tests"
   }
 
   afterAlways('functionalTest:preview') {
