@@ -4,6 +4,7 @@ const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/st
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
   defendantResponseFullAdmitPayBySetDateDefendant,
@@ -21,6 +22,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   I,
   api,
 }) => {
+  await testTimeHelper.addTestStartTime('Create LipvLip claim and defendant response as FullAdmit pay by set date');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -54,4 +56,5 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
+  await testTimeHelper.addTestEndTime('Create LipvLip claim and defendant response as FullAdmit pay by set date')
 }).tag('@regression-cui-r2');

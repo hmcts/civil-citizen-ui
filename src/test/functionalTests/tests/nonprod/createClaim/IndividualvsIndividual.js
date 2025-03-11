@@ -1,6 +1,6 @@
 const steps = require('../../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../../../config');
-
+const testTimeHelper = require('../../../helpers/test_time_helper');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
@@ -25,6 +25,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   I,
   api,
 }) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)');
   selectedHWF = false;
   claimInterestFlag = false;
   StandardInterest = false;
@@ -60,12 +61,14 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
+  await testTimeHelper.addTestEndTime('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)');
 });
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf', async ({
   I,
   api,
 }) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf');
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = true;
@@ -88,12 +91,14 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
+  await testTimeHelper.addTestEndTime('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf');
 });
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf', async ({
   I,
   api,
 }) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf');
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = false;
@@ -117,9 +122,11 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   await api.waitForFinishedBusinessProcess();
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
+  await testTimeHelper.addTestEndTime('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf');
 });
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({api}) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf');
   selectedHWF = true;
   claimInterestFlag = true;
   StandardInterest = false;
@@ -157,4 +164,5 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     const notification = await waitForDefendantToRespond();
     await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
   }
+  await testTimeHelper.addTestEndTime('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf');
 });
