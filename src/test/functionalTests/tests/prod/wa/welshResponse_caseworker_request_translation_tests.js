@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@regression-cui-r1');
+Feature('Welsh Response with PartAdmit - Small Claims').tag('@regression-cui-r1');
 
 Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

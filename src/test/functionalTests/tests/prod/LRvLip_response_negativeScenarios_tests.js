@@ -64,7 +64,7 @@ Scenario('Testing error messages @nightly', async () => {
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
   await ResponseSteps.EnterHowMuchYouHavePaidError(claimRef, 500, partAdmit);
-});
+})
 
 Scenario('Personal detail error screen @nightly', async () => {
   await ResponseSteps.RespondToClaim(claimRef);

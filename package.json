@@ -35,6 +35,7 @@
     "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
     "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
     "test:api": "MOCHAWESOME_REPORTFILENAME=api npx codeceptjs -c 'e2e/codecept.conf.js' run --grep @test --reporter mocha-multi --verbose",
+    "test:test": "MOCHAWESOME_REPORTFILENAME=kiyron yarn test:functional:codeceptjs run-workers --suites 2 --grep @kiyron --reporter mocha-multi --verbose",
     "cichecks": "yarn && yarn build && yarn lint && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "wiremock:start": "wiremock --root-dir ./wiremock --port 1111",
