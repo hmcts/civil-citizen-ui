@@ -41,6 +41,7 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {formatAmountTwoDecimalPlaces} from 'services/translation/claim/moneyConversation';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -164,7 +165,7 @@ function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
 
 function toCUIApplicant1RepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan  {
   return {
-    paymentAmount : ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec,
+    paymentAmount : formatAmountTwoDecimalPlaces(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec),
     repaymentFrequency : toCUIRepaymentPlanFrequency(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
     firstRepaymentDate : new Date(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
   };
