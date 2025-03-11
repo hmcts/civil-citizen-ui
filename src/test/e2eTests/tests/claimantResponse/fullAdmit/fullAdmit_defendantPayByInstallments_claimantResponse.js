@@ -16,8 +16,8 @@ Scenario('claimant accepts full admit and payment plan and formalises with CCJ',
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });
-
-Scenario('claimant accepts full admit and payment plan and formalises with SSA', async () => {
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('claimant accepts full admit and payment plan and formalises with SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777732;
     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);

@@ -2155,7 +2155,8 @@
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Cadarnhau trefniadau’r treial.",
         "PAY_HEARING_FEE": "Talu ffi’r gwrandawiad.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Treial neu Wrandawiad wedi’i drefnu ar gyfer yr achos hwn.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Mae eich dogfennau'n cael eu prosesu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "HEARING_FEE_UNPAID": "Mae’r hawliad hwn wedi cael ei ddileu.",
         "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
@@ -2205,7 +2206,8 @@
         "TRIAL_ARRANGEMENTS_REQUIRED": "Cadarnhau trefniadau eich treial.",
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Cadarnhau trefniadau’r treial.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Treial neu Wrandawiad wedi’i drefnu ar gyfer yr achos hwn.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Mae eich dogfennau'n cael eu prosesu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -2545,8 +2547,8 @@
       "COST_OPTIONAL": "Amcangyfrif o’r gost (dewisol)",
       "EMAIL_ADDRESS_OPTIONAL": "Cyfeiriad e-bost (dewisol)",
       "FIELD_OF_EXPERTISE": "Maes arbenigedd",
-      "FIRST_NAME_OPTIONAL": "Enw cyntaf (dewisol)",
-      "LAST_NAME_OPTIONAL": "Enw olaf (dewisol)",
+      "FIRST_NAME": "Enw cyntaf (Nodwch ‘I’w gadarnhau’ os nad yw enw’r arbenigwr yn hysbys hyd yma)",
+      "LAST_NAME": "Enw olaf (Nodwch ‘I’w gadarnhau’ os nad yw enw’r arbenigwr yn hysbys hyd yma)",
       "PAGE_TITLE": "Nodwch fanylion yr arbenigwr",
       "PHONE_OPTIONAL": "Rhif ffôn (dewisol)",
       "REMOVE_EXPERT": "Dileu arbenigwr",
@@ -2725,12 +2727,12 @@
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "Os nad ydych wedi cael gwybod am y cais hwn gan y partïon eraill, dewiswch ‘Nac ydy’",
         "RESPOND_TO": {
-          "SET_ASIDE_JUDGEMENT": "Ymateb i gais i rhoi dyfarniad o’r naill du (ei ddileu)",
+          "SET_ASIDE_JUDGEMENT": "Ymateb i gais i roi dyfarniad o’r naill du (ei ddileu)",
           "AMEND_A_STMT_OF_CASE": "Ymateb i gais i gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
           "ADJOURN_HEARING": "Ymateb i gais i newid dyddiad gwrandawiad",
           "CONFIRM_CCJ_DEBT_PAID": "Ymateb i gais i cadarnhewch eich bod wedi talu dyled dyfarniad",
           "UNLESS_ORDER": "Ymateb i gais i’r llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
-          "EXTEND_TIME": "Ymateb i gais i mwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
+          "EXTEND_TIME": "Ymateb i gais am fwy o amser i wneud yr hyn sy’n ofynnol dan orchymyn llys",
           "OTHER": "Ymateb i gais i’r llys i wneud rhywbeth nad yw wedi’i nodi ar y rhestr hon",
           "STAY_THE_CLAIM": "Ymateb i gais i’r llys i atal hawliad",
           "VARY_ORDER": "Ymateb i gais i ailystyried gorchymyn",
@@ -4452,7 +4454,8 @@
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
       "CONTINUE_TO_PAYMENT": "parhau i dalu",
-      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni.",
+      "CASE_PROCESSING_WARNING": "Nid yw’r prosesu achos wedi’i gwblhau, adnewyddwch y dudalen mewn un munud. Os bydd y broblem yn parhau, cysylltwch â’r ddesg gymorth ar 0300 123 7050."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
@@ -4861,9 +4864,13 @@
       "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
       "TELEPHONE": "Telephone",
       "OPENING_TIMES": "Opening Times",
-      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "TELEPHONE_OPENING_HOURS": "Monday to Friday, 9am to 5pm",
       "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CNBC_TELEPHONE": "Civil National Business Centre 0300 123 1056",
+      "TRAFFIC_ENFORCEMENT_CENTRE_TELEPHONE": "Traffic Enforcement Centre 0300 123 1059",
+      "CNBC_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 4pm",
+      "MEDIATION_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 5pm"
     }
   },
   "FOOTER": {
@@ -5372,6 +5379,10 @@
       "MISSING_SIGN_LANGUAGE": "Mae arnoch angen dweud wrthym pa fath o iaith arwyddion rydych angen dehonglydd ar ei chyfer.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
       "PAY_APPLICATION_FEE": "Mae arnoch angen dweud wrthym os ydych eisiau gwneud cais am help i dalu ffioedd. Dewiswch opsiwn: Ydw neu Nac ydw",
+      "QUALIFIED_SOT": {
+        "ERROR_FULL_NAME": "Mae angen enw",
+        "ERROR_ROLE": "Mae angen rôl"
+      },
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os ydych yn cytuno y dylai'r llys wneud y gorchymyn y gofynnwyd amdano gan y parti arall. Dewiswch opsiwn: Ydw neu Nac ydw",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "Mae arnoch angen esbonio pam rydych yn anghytuno â'r cais"
