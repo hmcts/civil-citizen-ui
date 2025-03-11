@@ -1,0 +1,7 @@
+[31m[1mInternal Error[22m[39m: civil-citizen-ui@workspace:.: This package doesn't seem to be present in your lockfile; run "yarn install" to update the lockfile
+    at kk.resolve (/Users/abusalam/.yarn/releases/yarn-4.6.0.cjs:205:8435)
+    at Pg.resolve (/Users/abusalam/.yarn/releases/yarn-4.6.0.cjs:141:1488)
+    at /Users/abusalam/.yarn/releases/yarn-4.6.0.cjs:210:7257
+    at zm (/Users/abusalam/.yarn/releases/yarn-4.6.0.cjs:140:53873)
+    at Z (/Users/abusalam/.yarn/releases/yarn-4.6.0.cjs:210:7237)
+    at /Users/abusalam/.yarn/releases/yarn-4.6.0.cjs:210:7868
