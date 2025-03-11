@@ -20,6 +20,9 @@ import { Claim } from 'models/claim';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { displayToEnumKey } from 'services/translation/convertToCUI/cuiTranslation';
 import { YesNoUpperCamelCase } from 'form/models/yesNo';
+import {
+  isApplicationVisibleToRespondentForClaimant,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -36,9 +39,9 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     const claim = await getClaimById(claimId, req, true);
     const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req) || [];
-
+    const visibleApplications = applications.filter(isApplicationVisibleToRespondentForClaimant);
     const applicationsRows: ApplicationSummary[] = [];
-    for (const application of applications) {
+    for (const application of visibleApplications) {
       const index = applications.indexOf(application);
       const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES;
       const status = getApplicationStatus(isApplicant, application.state);
