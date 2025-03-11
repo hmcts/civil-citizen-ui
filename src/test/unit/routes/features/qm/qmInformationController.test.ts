@@ -34,26 +34,27 @@ describe('Query management Information controller', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-});
 
-describe('on GET', () => {
-  it('should return follow up page ', async () => {
-    await request(app)
-      .get(FOLLOW_UP_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Follow up on an existing message');
-      });
-  });
+  describe('on GET', () => {
+    it('should return follow up page ', async () => {
+      await request(app)
+        .get(FOLLOW_UP_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Follow up on an existing message');
+        });
+    });
 
-  it('should return information page ', async () => {
-    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.MANAGE_HEARING');
-    await request(app)
-      .get(getControllerUrl(WhatToDoTypeOption.MANAGE_HEARING, QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE))
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Manage your hearing');
-      });
+    it('should return information page ', async () => {
+      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.MANAGE_HEARING');
+      await request(app)
+        .get(getControllerUrl(WhatToDoTypeOption.MANAGE_HEARING, QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Manage your hearing');
+        });
+    });
+
   });
 
 });
