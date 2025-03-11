@@ -14,7 +14,6 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {cloneDeep} from 'lodash';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -87,7 +86,6 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
       const draftClaim = cloneDeep(civilClaimResponseMock);
       draftClaim.case_data.totalClaimAmount = 10000;
       app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
-      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
       isMintiEnabledForCase.mockResolvedValue(false);
 
       await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
