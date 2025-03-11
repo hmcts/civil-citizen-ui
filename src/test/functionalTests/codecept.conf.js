@@ -2,15 +2,15 @@
 const testConfig = require('../config.js');
 const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
-const {mkDirTestTimeDir, deleteTestTimesFile} = require('./helpers/test_time_helper.js');
+const {mkDirTestTimeDir, deleteTestTimesFolder, appendTestTimesToReport} = require('./helpers/test_time_helper.js');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 let startTime;
 exports.config = {
   bootstrapAll: async () => {
-    await deleteTestTimesFile();
-    // await mkDirTestTimeDir()
+    deleteTestTimesFolder();
+    mkDirTestTimeDir();
     startTime = new Date();
     console.log(`Starting the tests at ${startTime}`);
   },
@@ -19,6 +19,7 @@ exports.config = {
     const executionTime = (endTime - startTime) / 1000; // in seconds
     console.log(`Finished the tests at ${endTime}`);
     console.log(`Total execution time: ${executionTime} seconds`);
+    appendTestTimesToReport();
   },
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
