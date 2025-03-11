@@ -1,5 +1,6 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
+  deleteQueryManagement,
   getCancelUrl,
   getCaption,
   getQueryManagement,
@@ -46,6 +47,22 @@ describe('save queryManagement data', () => {
     await saveQueryManagement('1', new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE), 'whatDoYouWantToDo', req);
     //then
     expect(spySave).toBeCalledWith('1',claimExpected);
+
+  });
+
+  it('should remove data successfully when query management exists', async () => {
+    //Given
+    const claimExpected = new Claim();
+    claimExpected.queryManagement = new QueryManagement();
+    claimExpected.queryManagement.whatDoYouWantToDo = new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE);
+    const spyDelete = jest.spyOn(draftStoreService, 'deleteFieldDraftClaimFromStore');
+    mockGetClaimById.mockImplementation(async () => {
+      return claimExpected;
+    });
+    //when
+    await deleteQueryManagement('1', req);
+    //then
+    expect(spyDelete).toBeCalledTimes(1);
 
   });
 });

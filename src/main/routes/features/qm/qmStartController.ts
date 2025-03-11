@@ -9,7 +9,12 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {radioButtonItems, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 import { t } from 'i18next';
-import {getCancelUrl, getQueryManagement, saveQueryManagement} from 'services/features/qm/queryManagementService';
+import {
+  deleteQueryManagement,
+  getCancelUrl,
+  getQueryManagement,
+  saveQueryManagement,
+} from 'services/features/qm/queryManagementService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -59,11 +64,15 @@ const renderView = (claimId: string, form: GenericForm<WhatDoYouWantToDo>, res: 
   });
 };
 
-qmStartController.get(QM_START_URL, (async (req, res , next) => {
+qmStartController.get(QM_START_URL, (async (req:AppRequest, res , next) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
+    const linkFrom = req.query.linkFrom;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
+    if (linkFrom === 'start') {
+      await deleteQueryManagement(redisKey, req);
+    }
     const queryManagement = await getQueryManagement(redisKey, req);
     const option = queryManagement.whatDoYouWantToDo?.option;
     const form = new GenericForm(new WhatDoYouWantToDo(option, getItems(option, lang)));

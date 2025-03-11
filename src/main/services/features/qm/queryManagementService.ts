@@ -1,4 +1,4 @@
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {deleteFieldDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
@@ -21,6 +21,11 @@ export const getQueryManagement = async (claimId: string, req: Request): Promise
     return new QueryManagement();
   }
   return claim.queryManagement;
+};
+
+export const deleteQueryManagement = async (claimId: string, req: Request): Promise<void> => {
+  const claim = await getClaimById(claimId, req,true);
+  await deleteFieldDraftClaimFromStore(claimId, claim, 'queryManagement');
 };
 
 export const getCancelUrl = (claimId: string) => {

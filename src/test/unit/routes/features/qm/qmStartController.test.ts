@@ -45,6 +45,14 @@ describe('Query management start Controller', () => {
         });
     });
 
+    it('should return query management start page and remove the old QM information', async () => {
+      await request(app)
+        .get(`${CONTROLLER_URL}?linkFrom=start`)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
     it('should return http 500 when has error', async () => {
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
