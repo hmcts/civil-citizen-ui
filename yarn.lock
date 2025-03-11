@@ -3941,6 +3941,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"allure-js-commons@npm:2.4.0":
+  version: 2.4.0
+  resolution: "allure-js-commons@npm:2.4.0"
+  dependencies:
+    properties: ^1.2.1
+    uuid: ^8.3.0
+  checksum: 7c1f957ff1f01ade50001d740fe70d4df379a687fb81ef6642a64ca7f75ca06dd3695beb3e2b9e2b3f1293798141aae2c7ba8497c1623505c8869e1432f05c0a
+  languageName: node
+  linkType: hard
+
+"allure-playwright@npm:2.4.0":
+  version: 2.4.0
+  resolution: "allure-playwright@npm:2.4.0"
+  dependencies:
+    allure-js-commons: 2.4.0
+  checksum: e7587ccf24b036bafc9154eafa596daeed87add1eaf3a2d3d97f86e66aa75183753f8a23e0535cec732c37a3cf00549ba3900a0fec57be98e58afcf2b5560fac
+  languageName: node
+  linkType: hard
+
 "ansi-colors@npm:4.1.1":
   version: 4.1.1
   resolution: "ansi-colors@npm:4.1.1"
@@ -5004,6 +5023,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/eslint-plugin-tslint": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
+    allure-playwright: 2.4.0
     applicationinsights: ^2.9.5
     axios: ^1.7.4
     babel-loader: ^9.1.0
@@ -5061,6 +5081,8 @@ __metadata:
     nunjucks: ^3.2.4
     otplib: ^12.0.1
     pa11y: ^8.0.0
+    playwright: ^1.41.1
+    playwright-core: ^1.47.2
     reflect-metadata: ^0.1.13
     require-directory: ^2.1.1
     sass: ^1.57.1
@@ -11392,6 +11414,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.51.0, playwright-core@npm:^1.47.2":
+  version: 1.51.0
+  resolution: "playwright-core@npm:1.51.0"
+  bin:
+    playwright-core: cli.js
+  checksum: e14798a7323539e1d6f076a6aa0492ea7c5fa89f4db85a53b27001b0f84bde2a5f8b14e25e05c5396594c89173a48398728522932bb7bd2006dd4bb48c8b0979
+  languageName: node
+  linkType: hard
+
 "playwright@npm:1.41.2":
   version: 1.41.2
   resolution: "playwright@npm:1.41.2"
@@ -11404,6 +11435,21 @@ __metadata:
   bin:
     playwright: cli.js
   checksum: acf166003ec42cd795f5fca096c5135880d78e84ec2d0a1911b2cab984cf75dc06e50d3aa24b56cbcbc5369ca8c61831e76c5f8674531a272fbd0f6e624fa387
+  languageName: node
+  linkType: hard
+
+"playwright@npm:^1.41.1":
+  version: 1.51.0
+  resolution: "playwright@npm:1.51.0"
+  dependencies:
+    fsevents: 2.3.2
+    playwright-core: 1.51.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 02ec1077e2997872415fd40c9a5df6fd796d9cc15dade24bff9a88a16a451217744d850bdfc09efd4812d05c2fc856f92bfe106aae036fe21defa62c6d5b8ea5
   languageName: node
   linkType: hard
 
@@ -11651,6 +11697,13 @@ __metadata:
   version: 2.0.1
   resolution: "propagate@npm:2.0.1"
   checksum: c4febaee2be0979e82fb6b3727878fd122a98d64a7fa3c9d09b0576751b88514a9e9275b1b92e76b364d488f508e223bd7e1dcdc616be4cdda876072fbc2a96c
+  languageName: node
+  linkType: hard
+
+"properties@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "properties@npm:1.2.1"
+  checksum: f385f8b96910c10d761bb6358b6c4b33aff09427a0504f01463ac6c8410dc3f2a7a9d85e96dd1c1a3e88b228b0ad9d0c23a397d55c52b087b3da7bed691799a6
   languageName: node
   linkType: hard
 
