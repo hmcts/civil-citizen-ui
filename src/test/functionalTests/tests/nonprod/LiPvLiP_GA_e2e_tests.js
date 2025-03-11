@@ -3,6 +3,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 const respondGASteps = require('../../citizenFeatures/GA/steps/respondGASteps');
+const testTimeHelper = require('../../helpers/test_time_helper');
 // eslint-disable-next-line no-unused-vars
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
@@ -19,7 +20,26 @@ let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
 Feature('Lip v Lip GA e2e Tests ');
 
-Before(async ({api}) => {
+// Before(async ({api}) => {
+//   if (['preview', 'demo'].includes(config.runningEnv)) {
+//     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+//     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+
+//     claimType = 'FastTrack';
+//     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+//     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+//     claimNumber = await caseData.legacyCaseReference;
+
+//     await api.assignToLipDefendant(claimRef);
+//     await api.waitForFinishedBusinessProcess();
+//   }
+// });
+
+Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @nightly', async ({
+  I,
+  api,
+}) => {
+  courtResponseType = 'approveOrEdit';
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -31,15 +51,6 @@ Before(async ({api}) => {
 
     await api.assignToLipDefendant(claimRef);
     await api.waitForFinishedBusinessProcess();
-  }
-});
-
-Scenario('LipvLip Applicant GA creation e2e tests - Make an Order @citizenUI - @api @ga @nightly', async ({
-  I,
-  api,
-}) => {
-  courtResponseType = 'approveOrEdit';
-  if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
     console.log('Creating more time to do order GA app as claimant');
@@ -89,6 +100,17 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
 }) => {
   courtResponseType = 'dismissAnOrder';
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await testTimeHelper.addTestStartTime('LipvLip Applicant GA creation e2e tests - Dismiss an Order');
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+
+    claimType = 'FastTrack';
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = await caseData.legacyCaseReference;
+
+    await api.assignToLipDefendant(claimRef);
+    await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
     console.log('Creating an Adjourn Hearing Order GA app as claimant');
@@ -109,6 +131,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
+    await testTimeHelper.addTestEndTime('LipvLip Applicant GA creation e2e tests - Dismiss an Order');
   }
 });
 

@@ -1,13 +1,10 @@
-const config = require("../../../config");
-const LoginSteps = require("../../commonFeatures/home/steps/login");
-const { createAccount } = require("../../specClaimHelpers/api/idamHelper");
-const ResponseToDefenceLipVsLipSteps = require("../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps");
-const {
-  isDashboardServiceToggleEnabled,
-} = require("../../specClaimHelpers/api/testingSupport");
-const {
-  verifyNotificationTitleAndContent,
-} = require("../../specClaimHelpers/e2e/dashboardHelper");
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
+const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const {
   goToHearingClaimant,
   goToHearingPartAdmitDefendant,
@@ -22,43 +19,25 @@ Feature(
   "Response with PartAdmit-PayByInstallments - Small Claims & Fast Track "
 ).tag("@nightly");
 
-Scenario(
-  "Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api",
-  async ({ I, api }) => {
-    await createAccount(
-      config.claimantCitizenUser.email,
-      config.claimantCitizenUser.password
-    );
-    await createAccount(
-      config.defendantCitizenUser.email,
-      config.defendantCitizenUser.password
-    );
-    claimType = "SmallClaims";
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    console.log("claimRef " + claimRef);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    console.log("isDashboardServiceEnabled..", isDashboardServiceEnabled);
-    await api.performCitizenResponse(
-      config.defendantCitizenUser,
-      claimRef,
-      claimType,
-      config.defenceType
-        .partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual
-    );
-    await api.waitForFinishedBusinessProcess();
-    //Claimant response below here
-    await LoginSteps.EnterCitizenCredentials(
-      config.claimantCitizenUser.email,
-      config.claimantCitizenUser.password
-    );
-    await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(
-      claimRef,
-      "1345",
-      "small"
-    );
-    await api.waitForFinishedBusinessProcess();
+Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({
+  I,
+  api,
+}) => {
+  await testTimeHelper.addTestStartTime('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject');
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimType = 'SmallClaims';
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
+  await api.waitForFinishedBusinessProcess();
+  //Claimant response below here
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', 'small');
+  await api.waitForFinishedBusinessProcess();
 
     if (isDashboardServiceEnabled) {
       const notification = goToHearingClaimant();
@@ -106,8 +85,8 @@ Scenario(
       "fast"
     );
     await api.waitForFinishedBusinessProcess();
-  }
-);
+  await testTimeHelper.addTestEndTime('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject');
+}).tag('@regression-cui-r2');
 
 Scenario(
   "Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept @citizenUI @partAdmit @nightly - @api",

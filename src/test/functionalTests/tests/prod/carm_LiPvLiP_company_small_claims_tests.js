@@ -8,6 +8,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid, mediationUnsuccessfulClaimant1NonAttendance} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {viewMediationDocuments, uploadMediationDocuments} = require('../../specClaimHelpers/dashboardTasklistConstants');
+const testTimeHelper = require('../../helpers/test_time_helper');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';
@@ -21,12 +22,15 @@ const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth
 
 Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company @carm');
 
-Before(async () => {
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-});
+// Before(async () => {
+//   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+// });
 
 Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
+  await testTimeHelper.addTestStartTime('LiP Defendant Response with Reject all claim');
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -62,9 +66,11 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   await ResponseSteps.fillStatementOfTruthAndSubmit();
   await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
   await api.waitForFinishedBusinessProcess();
+  await testTimeHelper.addTestEndTime('LiP Defendant Response with Reject all claim');
 }).tag('@regression-carm').tag('@nightly');
 
 Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
+  await testTimeHelper.addTestStartTime('LiP Claimant Response with Reject all claim');
   paidDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(paymentDate);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid(500, paidDate));
@@ -83,16 +89,19 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   await ResponseSteps.clickSaveButton();
   await ClaimantResponseSteps.verifyEditedEmailDetails();
   await api.waitForFinishedBusinessProcess();
-
+  await testTimeHelper.addTestEndTime('LiP Claimant Response with Reject all claim');
 }).tag('@regression-carm').tag('@nightly');
 
 Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
+  await testTimeHelper.addTestStartTime('Caseworker perform mediation unsuccessful');
   // Take Mediation Unsuccessful
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
   await api.waitForFinishedBusinessProcess();
+  await testTimeHelper.addTestEndTime('Caseworker perform mediation unsuccessful');
 }).tag('@regression-carm').tag('@nightly');
 
 Scenario('LiP claimant uploads mediation documents', async ({api}) => {
+  await testTimeHelper.addTestStartTime('LiP claimant uploads mediation documents');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const notification = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
@@ -126,9 +135,11 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
   taskListItem = uploadMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
   await ClaimantResponseSteps.ViewMediationDocs();
+  await testTimeHelper.addTestEndTime('LiP claimant uploads mediation documents');
 }).tag('@regression-carm').tag('@nightly');
 
 Scenario('LiP defendant uploads mediation documents', async ({api}) => {
+  await testTimeHelper.addTestStartTime('LiP defendant uploads mediation documents');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const notification = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
@@ -156,4 +167,5 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   taskListItem = uploadMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
+  await testTimeHelper.addTestEndTime('LiP defendant uploads mediation documents');
 }).tag('@regression-carm').tag('@nightly');

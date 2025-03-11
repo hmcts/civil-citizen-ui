@@ -1,6 +1,6 @@
 const steps = require('../../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../../../config');
-
+const testTimeHelper = require('../../../helpers/test_time_helper');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
@@ -17,6 +17,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - G
   I,
   api,
 }) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)');
   selectedHWF = false;
   claimInterestFlag = false;
   StandardInterest = false;
@@ -54,9 +55,11 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - G
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v Defendant Org name', 'withoutnotice', 'company');
+  await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)');
 });
 
 Scenario('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf', async ({I, api}) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf');
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = true;
@@ -81,9 +84,11 @@ Scenario('Create Claim -  Company vs Org - Fast track - with standard interest -
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
+  await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf');
 });
 
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf', async ({I, api}) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf');
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = false;
@@ -108,9 +113,11 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
+  await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf');
 });
 
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - with hwf', async ({api}) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Company vs Org - Fast track - with variable interest - with hwf');
   selectedHWF = true;
   claimInterestFlag = true;
   StandardInterest = false;
@@ -130,4 +137,5 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
     const notification = hwfSubmission();
     await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
   }
+  await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - with variable interest - with hwf');
 });

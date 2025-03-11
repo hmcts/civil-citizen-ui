@@ -1,6 +1,6 @@
 const steps = require('../../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../../../config');
-
+const testTimeHelper = require('../../../helpers/test_time_helper');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
@@ -15,6 +15,7 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   api,
   I,
 }) => {
+  await testTimeHelper.addTestStartTime('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)');
   selectedHWF = false;
   const defaultClaimFee = 455;
   const defaultClaimAmount = 9000;
@@ -44,4 +45,5 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name', 'withoutnotice', 'company');
+  await testTimeHelper.addTestEndTime('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)');
 });
