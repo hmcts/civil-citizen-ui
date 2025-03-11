@@ -6,7 +6,6 @@ const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/te
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
   mediationCARMClaimantDefendant,
-  goToHearingPartAdmitDefendant,
   judgmentRequestedClaimantDisagrees,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
