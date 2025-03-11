@@ -464,7 +464,7 @@ civil-service:
       SPRING_CLOUD_BOOTSTRAP_ENABLED: true
       RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      LAUNCH_DARKLY_ENV: aat
+      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       CMC_DB_HOST: "{{ .Values.postgresql.releaseNameOverride}}"
@@ -483,7 +483,7 @@ civil-service:
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       ASSIGN_ROLES_ON_STARTUP: true
-      COURT_LOCATION_WA_DMN_ENABLED: false
+      COURT_LOCATION_WA_DMN_ENABLED: true
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
