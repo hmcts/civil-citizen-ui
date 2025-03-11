@@ -24,7 +24,7 @@ function getRedirections(qmType: WhatToDoTypeOption, qmQualifyOption: Qualifying
   return QM_INFORMATION_URL.replace(':qmType', qmType).replace(':qmQualifyOption', qmQualifyOption);
 }
 
-describe('Query management start Controller', () => {
+describe('Query management what do do controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = getQueryManagement as jest.Mock;
