@@ -31,7 +31,7 @@ Feature('LiP - CARM - Mediation Journey @nightly @carm @regression @nightly');
 // });
 
 // LiP Individual vs LiP Company
-Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}) => {
+Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents @kiyron', async ({api}) => {
   await testTimeHelper.addTestStartTime('LiP vs LiP Unsuccessful Mediation with Upload Documents');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -93,7 +93,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
   await testTimeHelper.addTestEndTime('LiP vs LiP Unsuccessful Mediation with Upload Documents');
 });
 
-Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) => {
+Scenario('LiP vs LiP Unsuccessful Mediation with other options @kiyron', async ({api}) => {
   await testTimeHelper.addTestStartTime('LiP vs LiP Unsuccessful Mediation with other options');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
