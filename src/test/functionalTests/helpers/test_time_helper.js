@@ -1,4 +1,4 @@
-const testTimeReportFilePath = 'test-results/test-times-report.json';
+const testTimeReportFilePath = 'test-results/functional/test-times-report.json';
 const fs = require('fs/promises');
 const fsSync = require('fs');
 const path = require('path');
