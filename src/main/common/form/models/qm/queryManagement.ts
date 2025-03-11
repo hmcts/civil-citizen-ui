@@ -1,6 +1,6 @@
 import {IsDefined} from 'class-validator';
-import {ValidationArgs} from "form/models/genericForm";
-import {GenericYesNoCarmEmailConfirmation} from "form/models/genericYesNoCarmEmailConfirmation";
+import {ValidationArgs} from 'form/models/genericForm';
+import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
 
 export class Hint {
   text: string;

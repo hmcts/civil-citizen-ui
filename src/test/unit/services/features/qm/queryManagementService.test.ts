@@ -3,7 +3,7 @@ import {
   getCancelUrl,
   getCaption,
   getQueryManagement,
-  saveQueryManagement
+  saveQueryManagement,
 } from 'services/features/qm/queryManagementService';
 import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 import express from 'express';
@@ -134,7 +134,6 @@ describe('get Caption', () => {
     expect(result).toEqual('PAGES.QM.CAPTIONS.MANAGE_HEARING');
 
   });
-
 
 });
 
