@@ -13,7 +13,7 @@ let claimNumber;
 Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track');
 
 Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @rejectAll @nightly - @api', async ({api}) => {
-  await testTimesHelper.addTestStartTime('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds')
+  await testTimesHelper.addTestStartTime('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -26,7 +26,7 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-  await testTimesHelper.addTestEndTime('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds')
+  await testTimesHelper.addTestEndTime('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds');
 }).tag('@regression-cui-r2');
 
 Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {

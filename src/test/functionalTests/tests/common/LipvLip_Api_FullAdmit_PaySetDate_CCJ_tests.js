@@ -56,5 +56,5 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-  await testTimeHelper.addTestEndTime('Create LipvLip claim and defendant response as FullAdmit pay by set date')
+  await testTimeHelper.addTestEndTime('Create LipvLip claim and defendant response as FullAdmit pay by set date');
 }).tag('@regression-cui-r2');

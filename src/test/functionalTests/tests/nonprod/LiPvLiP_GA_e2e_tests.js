@@ -100,7 +100,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
 }) => {
   courtResponseType = 'dismissAnOrder';
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    await testTimeHelper.addTestStartTime('LipvLip Applicant GA creation e2e tests - Dismiss an Order')
+    await testTimeHelper.addTestStartTime('LipvLip Applicant GA creation e2e tests - Dismiss an Order');
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
@@ -131,7 +131,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI 
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
-    await testTimeHelper.addTestEndTime('LipvLip Applicant GA creation e2e tests - Dismiss an Order')
+    await testTimeHelper.addTestEndTime('LipvLip Applicant GA creation e2e tests - Dismiss an Order');
   }
 });
 

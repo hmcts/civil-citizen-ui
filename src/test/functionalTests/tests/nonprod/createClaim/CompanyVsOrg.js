@@ -84,7 +84,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with standard interest -
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
-  await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf')
+  await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - with standard interest - no hwf');
 });
 
 Scenario('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf', async ({I, api}) => {

@@ -1,35 +1,35 @@
 const testTimeReportFilePath = 'test-results/test-times-report.json';
-const fs = require('fs/promises')
-const fsSync = require('fs')
+const fs = require('fs/promises');
+const fsSync = require('fs');
 const path = require('path');
 
 const getTime = () => {
- const now = new Date();
- const hours = now.getHours() < 10 ? `0${now.getHours()}` : now.getHours()
- const minutes = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()
- return `${hours}:${minutes}`;
-}
+  const now = new Date();
+  const hours = now.getHours() < 10 ? `0${now.getHours()}` : now.getHours();
+  const minutes = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes();
+  return `${hours}:${minutes}`;
+};
 
 module.exports = {
   addTestStartTime: async (testName) => {
     let data;
     try {
-      data = JSON.parse(await fs.readFile(testTimeReportFilePath))
+      data = JSON.parse(await fs.readFile(testTimeReportFilePath));
     } catch(e) {
       data = {};
     }
-    data[testName] = {...data[testName], startTime: getTime()}
+    data[testName] = {...data[testName], startTime: getTime()};
     await fs.writeFile(testTimeReportFilePath, JSON.stringify(data, null, 2));
   },
 
   addTestEndTime: async (testName) => {
     let data;
     try {
-      data = JSON.parse(await fs.readFile(testTimeReportFilePath))
+      data = JSON.parse(await fs.readFile(testTimeReportFilePath));
     } catch(e) {
       data = {};
     }
-    data[testName] = {...data[testName], endTime: getTime()}
+    data[testName] = {...data[testName], endTime: getTime()};
     await fs.writeFile(testTimeReportFilePath, JSON.stringify(data, null, 2));
   },
 
@@ -42,9 +42,9 @@ module.exports = {
 
   deleteTestTimesFile: async () => {
     try {
-      await fs.unlink(testTimeReportFilePath)
+      await fs.unlink(testTimeReportFilePath);
     } catch(error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-}
+  },
+};
