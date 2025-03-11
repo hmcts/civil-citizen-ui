@@ -43,7 +43,7 @@ const withMessage = (buildErrorFn: (messageName: string) => string) => {
 };
 
 const generateErrorMessage = (messageName: string): string => {
-  return messageName ? messageName : 'ERRORS.VALID_YES_NO_OPTION_GALLAI_NA_ALLAI';
+  return messageName;
 };
 
 export class QualifyingQuestion {

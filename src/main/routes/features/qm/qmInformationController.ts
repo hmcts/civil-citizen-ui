@@ -73,16 +73,12 @@ const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDo
 };
 
 qmInformationController.get([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req, res , next) => {
-  try {
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
-    const qmType = req.params.qmType as WhatToDoTypeOption;
-    const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;
-    const isFollowUpScreen = req.path === QM_FOLLOW_UP_URL.replace(':id', claimId);
-    renderView(claimId,isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
-  } catch (error) {
-    next(error);
-  }
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const claimId = req.params.id;
+  const qmType = req.params.qmType as WhatToDoTypeOption;
+  const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;
+  const isFollowUpScreen = req.path === QM_FOLLOW_UP_URL.replace(':id', claimId);
+  renderView(claimId,isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
 }) as RequestHandler);
 
 export default qmInformationController;
