@@ -1,5 +1,10 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getCancelUrl, getQueryManagement, saveQueryManagement} from 'services/features/qm/queryManagementService';
+import {
+  getCancelUrl,
+  getCaption,
+  getQueryManagement,
+  saveQueryManagement
+} from 'services/features/qm/queryManagementService';
 import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 import express from 'express';
 import * as utilityService from 'modules/utilityService';
@@ -86,6 +91,50 @@ describe('get CancelUrl', () => {
     expect(result).toEqual('/case/1/queryManagement/cancel');
 
   });
+
+});
+
+describe('get Caption', () => {
+  it('get caption GET_UPDATE', async () => {
+    //when
+    const result = getCaption(WhatToDoTypeOption.GET_UPDATE);
+    //then
+    expect(result).toEqual('PAGES.QM.CAPTIONS.GET_UPDATE');
+
+  });
+
+  it('get caption SEND_UPDATE', async () => {
+    //when
+    const result = getCaption(WhatToDoTypeOption.SEND_UPDATE);
+    //then
+    expect(result).toEqual('PAGES.QM.CAPTIONS.SEND_UPDATE');
+
+  });
+
+  it('get caption SEND_DOCUMENTS', async () => {
+    //when
+    const result = getCaption(WhatToDoTypeOption.SEND_DOCUMENTS);
+    //then
+    expect(result).toEqual('PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
+
+  });
+
+  it('get caption SOLVE_PROBLEM', async () => {
+    //when
+    const result = getCaption(WhatToDoTypeOption.SOLVE_PROBLEM);
+    //then
+    expect(result).toEqual('PAGES.QM.CAPTIONS.SOLVE_PROBLEM');
+
+  });
+
+  it('get caption MANAGE_HEARING', async () => {
+    //when
+    const result = getCaption(WhatToDoTypeOption.MANAGE_HEARING);
+    //then
+    expect(result).toEqual('PAGES.QM.CAPTIONS.MANAGE_HEARING');
+
+  });
+
 
 });
 
