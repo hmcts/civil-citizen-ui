@@ -114,6 +114,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
   claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
   claim.joIsLiveJudgmentExists = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
+  claim.joJudgementByAdmissionIssueDate = ccdClaim.joJudgementByAdmissionIssueDate;
   return claim;
 };
 

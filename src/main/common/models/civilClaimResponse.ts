@@ -320,6 +320,7 @@ export interface CCDClaim extends ClaimUpdate {
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   repaymentSummaryObject?:string;
+  joJudgementByAdmissionIssueDate?: Date;
 }
 
 export interface ClaimFeeData {
