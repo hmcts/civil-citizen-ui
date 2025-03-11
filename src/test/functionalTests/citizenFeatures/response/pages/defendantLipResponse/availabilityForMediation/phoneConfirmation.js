@@ -14,6 +14,7 @@ const fields = {
 class PhoneConfirmation {
 
   async enterPhoneDetails() {
+    await I.forceClick(fields.availabilityForMediationLink);
     I.waitForContent('Can the mediator use ', config.WaitForText);
     I.click('Save and continue');
     I.see('Choose option: Yes or No');

@@ -61,7 +61,6 @@ class ResponseToDefenceLipVLipSteps {
       await this.verifyDQForFastTrack();
     } else {
       await mediationSteps.EnterTelephoneMediationDetails();
-      await mediationSteps.ConfirmContactPerson();
       await mediationSteps.ConfirmPhoneDetails();
       await mediationSteps.ConfirmEmailDetails();
       await mediationSteps.EnterUnavailableDates();
@@ -465,7 +464,7 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyAreYourExpertsVulnerable();
     await responseToDefence.verifyDoYouOrExpertsNeedToAttendHearing();
     await responseToDefence.verifyHearingAtSpecificCourt();
-    await responseToDefence.verifyWelshLanguage();
+    await responseToDefence.verifyWelshLanguageForFT();
   }
 
 }
