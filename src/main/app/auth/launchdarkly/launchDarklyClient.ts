@@ -101,10 +101,7 @@ export async function getEaFlagValueForGaLips(
 }
 
 export async function isGaForLipsEnabledAndLocationWhiteListed(location: string): Promise<boolean> {
-
-  const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
-  const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
-  return gaLipsFlag && eaFlagForGaLips;
+    return true;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
@@ -124,7 +121,7 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
 }
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
-  return await getFlagValue(GA_FOR_LIPS) as boolean;
+  return true;
 }
 
 export async function isCoSCEnabled(): Promise<boolean> {
