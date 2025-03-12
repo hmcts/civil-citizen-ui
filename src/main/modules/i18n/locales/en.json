@@ -537,6 +537,12 @@
   },
   "PAGES": {
     "QM": {
+      "COMMON": {
+        "ANYTHING_ELSE": "Anything else",
+        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "WE_TRY_TO_ANSWER": "We try to answer queries within 10 days, but it could take longer.",
+        "SEND_A_MESSAGE": "Send a message"
+      },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "What do you want to do?",
       "OPTIONS": {
         "CHANGE_CASE": {
