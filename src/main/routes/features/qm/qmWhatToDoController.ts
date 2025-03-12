@@ -8,7 +8,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   QualifyingQuestion,
   QualifyingQuestionTypeOption,
-  radioButtonItems,
+  RadioButtonItems,
   WhatToDoTypeOption,
 } from 'form/models/qm/queryManagement';
 import { t } from 'i18next';
@@ -46,41 +46,41 @@ const getItems = (option: string, qmType:WhatToDoTypeOption, lang: string) => {
   switch (qmType) {
     case WhatToDoTypeOption.GET_UPDATE:{
       return [
-        new radioButtonItems(QualifyingQuestionTypeOption.GENERAL_UPDATE, t(`${pageInfo}.${QualifyingQuestionTypeOption.GENERAL_UPDATE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.GENERAL_UPDATE),
-        new radioButtonItems(QualifyingQuestionTypeOption.CLAIM_NOT_PAID, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_NOT_PAID}.TEXT`, {lang}), null, option === QualifyingQuestionTypeOption.CLAIM_NOT_PAID),
-        new radioButtonItems(QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT}.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT),
+        new RadioButtonItems(QualifyingQuestionTypeOption.GENERAL_UPDATE, t(`${pageInfo}.${QualifyingQuestionTypeOption.GENERAL_UPDATE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.GENERAL_UPDATE),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CLAIM_NOT_PAID, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_NOT_PAID}.TEXT`, {lang}), null, option === QualifyingQuestionTypeOption.CLAIM_NOT_PAID),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT}.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT),
       ];
     }
     case WhatToDoTypeOption.SEND_UPDATE:{
       return [
-        new radioButtonItems(QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT, t(`${pageInfo}.${QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT),
-        new radioButtonItems(QualifyingQuestionTypeOption.SETTLE_CLAIM, t(`${pageInfo}.${QualifyingQuestionTypeOption.SETTLE_CLAIM}.TEXT`, {lang}), null, option === QualifyingQuestionTypeOption.SETTLE_CLAIM),
-        new radioButtonItems(QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS, t(`${pageInfo}.${QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS}.TEXT`, {lang}),  t(`${pageInfo}.${QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS}.HINT`, {lang}), option === QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS),
-        new radioButtonItems(QualifyingQuestionTypeOption.CLAIM_ENDED, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_ENDED}.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.CLAIM_ENDED),
-        new radioButtonItems(QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE),
+        new RadioButtonItems(QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT, t(`${pageInfo}.${QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT),
+        new RadioButtonItems(QualifyingQuestionTypeOption.SETTLE_CLAIM, t(`${pageInfo}.${QualifyingQuestionTypeOption.SETTLE_CLAIM}.TEXT`, {lang}), null, option === QualifyingQuestionTypeOption.SETTLE_CLAIM),
+        new RadioButtonItems(QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS, t(`${pageInfo}.${QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS}.TEXT`, {lang}),  t(`${pageInfo}.${QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS}.HINT`, {lang}), option === QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CLAIM_ENDED, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_ENDED}.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.CLAIM_ENDED),
+        new RadioButtonItems(QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang}),  null, option === QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE),
       ];
 
     }
     case WhatToDoTypeOption.SEND_DOCUMENTS:{
       return [
-        new radioButtonItems(QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, t(`${pageInfo}.${QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS),
-        new radioButtonItems(QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE),
+        new RadioButtonItems(QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, t(`${pageInfo}.${QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, t(`${pageInfo}.${QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE),
       ];
     }
     case WhatToDoTypeOption.SOLVE_PROBLEM:{
       return [
-        new radioButtonItems(QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM, t(`${pageInfo}.${QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM),
-        new radioButtonItems(QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT, t(`${pageInfo}.${QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT),
-        new radioButtonItems(QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT, t(`${pageInfo}.${QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT),
-        new radioButtonItems(QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE),
+        new RadioButtonItems(QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM, t(`${pageInfo}.${QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM),
+        new RadioButtonItems(QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT, t(`${pageInfo}.${QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT),
+        new RadioButtonItems(QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT, t(`${pageInfo}.${QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT),
+        new RadioButtonItems(QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE),
       ];
     }
     case WhatToDoTypeOption.MANAGE_HEARING:{
       return [
-        new radioButtonItems(QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE),
-        new radioButtonItems(QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING),
-        new radioButtonItems(QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING),
-        new radioButtonItems(QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING),
+        new RadioButtonItems(QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING}.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING),
+        new RadioButtonItems(QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lang} ),  null, option === QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE),
       ];
     }
   }

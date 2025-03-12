@@ -3,10 +3,11 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  CANCEL_URL,
   QM_FOLLOW_UP_URL,
   QM_INFORMATION_URL,
 } from 'routes/urls';
-import {getCaption} from 'services/features/qm/queryManagementService';
+import {getCancelUrl, getCaption} from 'services/features/qm/queryManagementService';
 import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -20,6 +21,7 @@ function getControllerUrl(qmType: WhatToDoTypeOption, qmQualifyOption: Qualifyin
 }
 
 const mockGetCaption = getCaption as jest.Mock;
+const mockGetCancelUrl = getCancelUrl as jest.Mock;
 
 describe('Query management Information controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -52,6 +54,19 @@ describe('Query management Information controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Manage your hearing');
+        });
+    });
+
+  });
+  describe('on POST', () => {
+    it('should return follow up page ', async () => {
+      mockGetCancelUrl.mockImplementation(() => CANCEL_URL);
+
+      await request(app)
+        .post(FOLLOW_UP_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual('/case/:id/:propertyName/cancel');
         });
     });
 

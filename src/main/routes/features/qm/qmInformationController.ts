@@ -57,7 +57,6 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
 };
 const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
-  const cancelUrl = getCancelUrl(claimId);
   const caption = getCaption(qmType);
   const title = getTitle(isFollowUpScreen, qualifyingQuestionTypeOption);
   const contents = getContent(claimId, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
@@ -67,7 +66,6 @@ const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDo
     title: title,
     caption,
     contents,
-    cancelUrl,
     showAnythingElseSection,
   });
 };
@@ -79,6 +77,11 @@ qmInformationController.get([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req,
   const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;
   const isFollowUpScreen = req.path === QM_FOLLOW_UP_URL.replace(':id', claimId);
   renderView(claimId,isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
+}) as RequestHandler);
+
+qmInformationController.post([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req, res , next) => {
+  const claimId = req.params.id;
+  res.redirect(getCancelUrl(claimId));
 }) as RequestHandler);
 
 export default qmInformationController;

@@ -10,10 +10,11 @@ export class Hint {
   }
 }
 
-export class radioButtonItems{
+export class RadioButtonItems {
   hint: Hint;
   value: string;
   text: string;
+
   checked: boolean;
 
   constructor(value: string, text: string, hint?: string, checked= false) {
@@ -28,9 +29,9 @@ export class WhatDoYouWantToDo {
 
   @IsDefined({ message: 'ERRORS.QUERY_MANAGEMENT_YOU_MUST_SELECT' })
     option?: WhatToDoTypeOption;
-  items: radioButtonItems[] ;
+  items: RadioButtonItems[] ;
 
-  constructor(option: WhatToDoTypeOption, radioButtonItems?: radioButtonItems[] ) {
+  constructor(option: WhatToDoTypeOption, radioButtonItems?: RadioButtonItems[] ) {
     this.option = option;
     this.items = radioButtonItems;
   }
@@ -50,10 +51,10 @@ export class QualifyingQuestion {
 
   @IsDefined({message: withMessage(generateErrorMessage)})
     option?: QualifyingQuestionTypeOption;
-  items: radioButtonItems[] ;
+  items: RadioButtonItems[] ;
   messageName?: string;
 
-  constructor(option: QualifyingQuestionTypeOption, radioButtonItems?: radioButtonItems[], messageName?: string ) {
+  constructor(option: QualifyingQuestionTypeOption, radioButtonItems?: RadioButtonItems[], messageName?: string ) {
     this.option = option;
     this.items = radioButtonItems;
     this.messageName = messageName;

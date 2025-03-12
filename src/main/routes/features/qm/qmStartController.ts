@@ -7,7 +7,7 @@ import {
 } from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
-import {radioButtonItems, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {RadioButtonItems, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 import { t } from 'i18next';
 import {
   deleteQueryManagement,
@@ -38,15 +38,15 @@ const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
 const getItems = (option: string, lang: string) => {
   const pageInfo = 'PAGES.QM.OPTIONS';
   return [
-    new radioButtonItems(WhatToDoTypeOption.CHANGE_CASE, t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.TEXT`, {lang} ),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.CHANGE_CASE),
-    new radioButtonItems(WhatToDoTypeOption.GET_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.GET_UPDATE}.TEXT`, {lang}), null, option === WhatToDoTypeOption.GET_UPDATE),
-    new radioButtonItems(WhatToDoTypeOption.SEND_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.TEXT`, {lang}),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.SEND_UPDATE),
-    new radioButtonItems(WhatToDoTypeOption.SEND_DOCUMENTS, t(`${pageInfo}.${WhatToDoTypeOption.SEND_DOCUMENTS}.TEXT`, {lang}), null,  option === WhatToDoTypeOption.SEND_DOCUMENTS),
-    new radioButtonItems(WhatToDoTypeOption.SOLVE_PROBLEM, t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.TEXT`, {lang}),  t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.HINT`, {lang}), option === WhatToDoTypeOption.SOLVE_PROBLEM),
-    new radioButtonItems(WhatToDoTypeOption.MANAGE_HEARING, t(`${pageInfo}.${WhatToDoTypeOption.MANAGE_HEARING}.TEXT`, {lang}), null, option === WhatToDoTypeOption.MANAGE_HEARING),
-    new radioButtonItems(WhatToDoTypeOption.GET_SUPPORT, t(`${pageInfo}.${WhatToDoTypeOption.GET_SUPPORT}.TEXT`, {lang}), null, option === WhatToDoTypeOption.GET_SUPPORT),
-    new radioButtonItems(WhatToDoTypeOption.FOLLOW_UP, t(`${pageInfo}.${WhatToDoTypeOption.FOLLOW_UP}.TEXT`, {lang}), null, option === WhatToDoTypeOption.FOLLOW_UP),
-    new radioButtonItems(WhatToDoTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${WhatToDoTypeOption.SOMETHING_ELSE}.TEXT`, {lang}), null, option === WhatToDoTypeOption.SOMETHING_ELSE),
+    new RadioButtonItems(WhatToDoTypeOption.CHANGE_CASE, t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.TEXT`, {lang} ),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.CHANGE_CASE),
+    new RadioButtonItems(WhatToDoTypeOption.GET_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.GET_UPDATE}.TEXT`, {lang}), null, option === WhatToDoTypeOption.GET_UPDATE),
+    new RadioButtonItems(WhatToDoTypeOption.SEND_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.TEXT`, {lang}),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.SEND_UPDATE),
+    new RadioButtonItems(WhatToDoTypeOption.SEND_DOCUMENTS, t(`${pageInfo}.${WhatToDoTypeOption.SEND_DOCUMENTS}.TEXT`, {lang}), null,  option === WhatToDoTypeOption.SEND_DOCUMENTS),
+    new RadioButtonItems(WhatToDoTypeOption.SOLVE_PROBLEM, t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.TEXT`, {lang}),  t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.HINT`, {lang}), option === WhatToDoTypeOption.SOLVE_PROBLEM),
+    new RadioButtonItems(WhatToDoTypeOption.MANAGE_HEARING, t(`${pageInfo}.${WhatToDoTypeOption.MANAGE_HEARING}.TEXT`, {lang}), null, option === WhatToDoTypeOption.MANAGE_HEARING),
+    new RadioButtonItems(WhatToDoTypeOption.GET_SUPPORT, t(`${pageInfo}.${WhatToDoTypeOption.GET_SUPPORT}.TEXT`, {lang}), null, option === WhatToDoTypeOption.GET_SUPPORT),
+    new RadioButtonItems(WhatToDoTypeOption.FOLLOW_UP, t(`${pageInfo}.${WhatToDoTypeOption.FOLLOW_UP}.TEXT`, {lang}), null, option === WhatToDoTypeOption.FOLLOW_UP),
+    new RadioButtonItems(WhatToDoTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${WhatToDoTypeOption.SOMETHING_ELSE}.TEXT`, {lang}), null, option === WhatToDoTypeOption.SOMETHING_ELSE),
   ];
 };
 
