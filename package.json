@@ -117,7 +117,7 @@
     "@babel/core": "^7.26.0",
     "@babel/eslint-parser": "^7.26.5",
     "@babel/preset-env": "^7.26.0",
-    "@playwright/test": "^1.41.2",
+    "@playwright/test": "^1.47.1",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^29.4.0",
     "@types/supertest": "^2.0.12",
