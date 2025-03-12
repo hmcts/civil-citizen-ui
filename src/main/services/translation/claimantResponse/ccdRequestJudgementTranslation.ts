@@ -20,7 +20,7 @@ import {toCCDDJPaymentOption} from './convertToCCDDJPaymentOption';
 export interface ClaimantResponsePaymentPlanDetails {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
-  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
+  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: string;
   applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
 }
@@ -51,7 +51,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
       paymentPlanDetails = {
         applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentIntention.paymentOption),
         applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(paymentIntention.repaymentPlan?.repaymentFrequency),
-        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: formatAmountTwoDecimalPlaces(paymentIntention.repaymentPlan?.paymentAmount),
+        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: formatAmountTwoDecimalPlaces(+paymentIntention.repaymentPlan?.paymentAmount),
         applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(paymentIntention.repaymentPlan?.firstRepaymentDate),
         applicant1RequestedPaymentDateForDefendantSpec: {
           paymentSetDate: convertDateToStringFormat(paymentIntention.paymentDate),

@@ -106,7 +106,7 @@ describe('Review Defendant\'s Response Controller', () => {
     const firstRepaymentDate = new Date(Date.now());
     firstRepaymentDate.setDate(firstRepaymentDate.getDate() + 1);
     claim.partialAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 10,
+      paymentAmount: '10',
       repaymentFrequency: TransactionSchedule.WEEK,
       firstRepaymentDate: firstRepaymentDate,
     };

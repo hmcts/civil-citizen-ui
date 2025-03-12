@@ -257,7 +257,7 @@ describe('Translate claimant response to ccd version', () => {
     claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
-      paymentAmount: 100,
+      paymentAmount: '100',
       repaymentFrequency: 'MONTH',
       firstRepaymentDate: new Date(Date.now()),
     };
@@ -276,7 +276,7 @@ describe('Translate claimant response to ccd version', () => {
     //Given
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
-      paymentAmount: 200,
+      paymentAmount: '200',
       repaymentFrequency: 'WEEK',
       firstRepaymentDate: new Date(Date.now()),
     };
@@ -295,7 +295,7 @@ describe('Translate claimant response to ccd version', () => {
     //Given
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
-      paymentAmount: 200,
+      paymentAmount: '200',
       repaymentFrequency: 'TWO_WEEKS',
       firstRepaymentDate: new Date(Date.now()),
     };

@@ -75,7 +75,7 @@ describe('Get Court Decision test', ()=> {
     claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.claimantResponse = new ClaimantResponse();
     const repaymentPlan = {
-      paymentAmount: 100,
+      paymentAmount: '100',
       repaymentFrequency: 'ONCE_ONE_WEEK',
       firstRepaymentDate: new Date(),
     };
@@ -113,7 +113,7 @@ describe('Get Court Decision test', ()=> {
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.suggestedPaymentIntention = {paymentOption: PaymentOptionType.IMMEDIATELY} ;
     const immediatePaymentDeadLine  = new Date();
-    
+
     jest
       .spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline')
       .mockReturnValue(
@@ -130,7 +130,7 @@ describe('Get Court Decision test', ()=> {
     //Then
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL);
   });
-  
+
   it('Get redirection URL when Defendant is Org or Company', async () => {
     //given
     claim.respondent1 = {

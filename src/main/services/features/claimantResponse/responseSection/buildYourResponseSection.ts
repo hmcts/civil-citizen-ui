@@ -76,7 +76,7 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
     changeLabel(lng)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng}),
-    '£' + getEmptyStringIfUndefinedForNumber(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.paymentAmount),
+    '£' + getEmptyStringIfUndefinedForNumber(+claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.paymentAmount),
     partAdmitAcceptedHref,
     changeLabel(lng)));
   summaryRows.push(summaryRow(

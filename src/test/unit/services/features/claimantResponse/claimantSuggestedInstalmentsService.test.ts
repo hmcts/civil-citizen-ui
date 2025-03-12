@@ -10,7 +10,7 @@ import { ValidationError } from 'class-validator';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
-const PAYMENT_AMOUNT = 100;
+const PAYMENT_AMOUNT = '100';
 const REPAYMENT_FREQUENCY = 'WEEK';
 const YEAR = '2024';
 const MONTH = '02';

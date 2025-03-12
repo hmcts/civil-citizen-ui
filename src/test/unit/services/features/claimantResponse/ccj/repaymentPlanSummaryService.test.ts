@@ -10,7 +10,7 @@ describe('Get getRepaymentPlan ', () => {
 
   it('getRepaymentPlan.', () => {
     claim.partialAdmission.paymentIntention.repaymentPlan = {} as RepaymentPlan;
-    claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 50;
+    claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = '50';
     //When
     const result = getRepaymentPlan(claim, 'en');
 
@@ -21,7 +21,7 @@ describe('Get getRepaymentPlan ', () => {
     claim.fullAdmission.paymentIntention.repaymentPlan = {} as RepaymentPlan;
     claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.fullAdmission.paymentIntention.paymentDate = new Date('2024-06-21T14:15:19');
-    claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount = 50;
+    claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount = '50';
     //When
     const result = getRepaymentInfo(claim, 'en');
 

@@ -101,7 +101,7 @@ describe('Your response Section', () => {
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
-      paymentAmount: 1,
+      paymentAmount: '1',
       repaymentFrequency: '',
       firstRepaymentDate: new Date(),
     };
@@ -117,7 +117,7 @@ describe('Your response Section', () => {
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = { paymentAmount: 100, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() };
+    claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = { paymentAmount: '100', repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() };
     //When
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then

@@ -24,7 +24,7 @@ export interface CCDClaimantRepaymentPlan {
 export const toCCDClaimantRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDClaimantRepaymentPlan => {
   if (repaymentPlan) {
     return {
-      paymentAmount: convertToPence(repaymentPlan?.paymentAmount),
+      paymentAmount: convertToPence(+repaymentPlan?.paymentAmount),
       repaymentFrequency: toCCDRepaymentPlanFrequency(repaymentPlan?.repaymentFrequency),
       firstRepaymentDate: DateTime.fromJSDate(new Date((repaymentPlan?.firstRepaymentDate))).toFormat('yyyy-MM-dd'),
     };

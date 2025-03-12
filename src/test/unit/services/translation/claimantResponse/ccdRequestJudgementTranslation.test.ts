@@ -98,7 +98,7 @@ describe('Translate claimant ccj request to ccd', () => {
     claim.claimantResponse.suggestedPaymentIntention.paymentOption =
       PaymentOptionType.INSTALMENTS;
     claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
-      paymentAmount: 50,
+      paymentAmount: '50',
       repaymentFrequency: 'MONTH',
       firstRepaymentDate: paymentDate,
     };

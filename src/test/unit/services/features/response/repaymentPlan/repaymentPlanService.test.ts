@@ -19,7 +19,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
-const PAYMENT_AMOUNT = 100;
+const PAYMENT_AMOUNT = '100';
 const PART_ADMIT_AMOUNT = 77;
 const REPAYMENT_FREQUENCY = 'WEEK';
 const YEAR = '2023';
@@ -170,7 +170,7 @@ describe('Repayment Plan Service', () => {
       //When
       await saveRepaymentPlanData('123', new RepaymentPlanForm(
         TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
+        +PAYMENT_AMOUNT,
         REPAYMENT_FREQUENCY,
         YEAR,
         MONTH,
@@ -192,7 +192,7 @@ describe('Repayment Plan Service', () => {
       //When
       await saveRepaymentPlanData('123', new RepaymentPlanForm(
         TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
+        +PAYMENT_AMOUNT,
         REPAYMENT_FREQUENCY,
         YEAR,
         MONTH,
@@ -210,7 +210,7 @@ describe('Repayment Plan Service', () => {
       //Then
       await expect(saveRepaymentPlanData('123', new RepaymentPlanForm(
         TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
+        +PAYMENT_AMOUNT,
         REPAYMENT_FREQUENCY,
         YEAR,
         MONTH,
@@ -226,7 +226,7 @@ describe('Repayment Plan Service', () => {
       //Then
       await expect(saveRepaymentPlanData('123', new RepaymentPlanForm(
         TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
+        +PAYMENT_AMOUNT,
         REPAYMENT_FREQUENCY,
         YEAR,
         MONTH,

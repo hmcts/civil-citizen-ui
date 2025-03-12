@@ -98,7 +98,7 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
   claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
   claim.fullAdmission = new FullAdmission();
   const repaymentPlan = {
-    paymentAmount: 100,
+    paymentAmount: '100',
     repaymentFrequency: 'MONTH',
     firstRepaymentDate: new Date(Date.now()),
   };
@@ -197,7 +197,7 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
   claim.fullAdmission.paymentIntention = new PaymentIntention();
   claim.fullAdmission.paymentIntention.paymentOption = paymentOption;
   claim.fullAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 33,
+    paymentAmount: '33',
     repaymentFrequency: TransactionSchedule.WEEK,
     firstRepaymentDate: new Date('2022-06-25'),
   };
@@ -1217,7 +1217,7 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
   }
   claim.fullAdmission.paymentIntention.paymentOption = paymentOption;
   claim.fullAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 33,
+    paymentAmount: '33',
     repaymentFrequency: TransactionSchedule.WEEK,
     firstRepaymentDate: new Date(getDate()),
   };
@@ -1233,7 +1233,7 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
   claim.partialAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 33,
+    paymentAmount: '33',
     repaymentFrequency: TransactionSchedule.WEEK,
     firstRepaymentDate: new Date(getDate()),
   };

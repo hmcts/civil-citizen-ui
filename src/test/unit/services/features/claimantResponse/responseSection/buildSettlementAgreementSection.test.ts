@@ -89,7 +89,7 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.claimantResponse.suggestedPaymentIntention={
         paymentOption:PaymentOptionType.INSTALMENTS,
         repaymentPlan:{
-          paymentAmount:10,
+          paymentAmount:'10',
         },
       };
       const expectedPaymentDate = formatDateToFullDate(new Date());

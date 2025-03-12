@@ -165,7 +165,7 @@ function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
 
 function toCUIApplicant1RepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan  {
   return {
-    paymentAmount : formatAmountTwoDecimalPlaces(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec),
+    paymentAmount : formatAmountTwoDecimalPlaces(+ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec),
     repaymentFrequency : toCUIRepaymentPlanFrequency(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
     firstRepaymentDate : new Date(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
   };

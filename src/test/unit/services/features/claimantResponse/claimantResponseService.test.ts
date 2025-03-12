@@ -452,7 +452,7 @@ describe('Claimant Response Service', () => {
         claim.claimantResponse = new ClaimantResponse();
         claim.claimantResponse.suggestedPaymentIntention = {
           paymentOption: PaymentOptionType.INSTALMENTS,
-          repaymentPlan: { paymentAmount: 100},
+          repaymentPlan: { paymentAmount: '100'},
         };
         return claim;
       });
@@ -1597,7 +1597,7 @@ describe('Summary section', () => {
       claim.partialAdmission.howMuchDoYouOwe.amount = 200;
       claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
       claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -1612,7 +1612,7 @@ describe('Summary section', () => {
 
     it('should call all construct sections when transaction schedule is set to TWO_WEEKS', () => {
       claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.TWO_WEEKS,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -1625,7 +1625,7 @@ describe('Summary section', () => {
 
     it('should call all construct sections when transaction schedule is set to MONTH', () => {
       claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.MONTH,
         firstRepaymentDate: new Date(Date.now()),
       };

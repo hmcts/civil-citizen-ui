@@ -61,7 +61,7 @@ describe('Respond To Settlement Agreement', () => {
     mockClaim.partialAdmission.paymentIntention = new PaymentIntention();
     mockClaim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     mockClaim.partialAdmission.paymentIntention.repaymentPlan = {} as RepaymentPlan;
-    mockClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 50;
+    mockClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = '50';
     mockClaim.partialAdmission.paymentIntention.repaymentPlan.repaymentFrequency = TransactionSchedule.WEEK;
     mockClaim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate = date;
     return mockClaim;
@@ -148,7 +148,7 @@ describe('Respond To Settlement Agreement', () => {
         'paymentOption': PaymentOptionType.INSTALMENTS,
         'paymentDate': new Date(Date.now()),
         'repaymentPlan': {
-          'paymentAmount': 1000,
+          'paymentAmount': '1000',
           'firstRepaymentDate': new Date('2024-11-01'),
           'repaymentFrequency': 'MONTH',
         },

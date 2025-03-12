@@ -399,7 +399,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
   it('should translate claimant suggestedPaymentIntention repaymentplan to CUI model for having value', () => {
     //Given
     const input: CCDClaim = {
-      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 1000,
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: '1000',
       applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: '2024-06-01',
       applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
     };

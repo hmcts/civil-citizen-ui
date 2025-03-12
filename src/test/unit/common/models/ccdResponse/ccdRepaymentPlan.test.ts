@@ -42,7 +42,7 @@ describe('translate repayment plan to ccd', ()=> {
     const ccdRepaymentPlan = toCCDRepaymentPlan(repaymentPlan);
     //Then
     expect(ccdRepaymentPlan.firstRepaymentDate).toBe(repaymentPlan.firstRepaymentDate);
-    expect(ccdRepaymentPlan.paymentAmount).toBe(repaymentPlan.paymentAmount*100);
+    expect(ccdRepaymentPlan.paymentAmount).toBe(+repaymentPlan.paymentAmount*100);
   });
   it('should translate undefined when input is undefined', ()=>{
     //When
@@ -65,7 +65,7 @@ describe('translate repayment plan to ccd', ()=> {
 
 const getRepaymentPlan = (frequency: string) : RepaymentPlan => {
   return {
-    paymentAmount: 100,
+    paymentAmount: '100',
     firstRepaymentDate: new Date(),
     repaymentFrequency: frequency,
   };

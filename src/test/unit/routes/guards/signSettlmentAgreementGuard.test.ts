@@ -49,7 +49,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
       claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -73,7 +73,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.fullAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -114,7 +114,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
       claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -139,7 +139,7 @@ describe('Response - SignSettlmentAgreementGuard', () => {
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
       claim.fullAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };

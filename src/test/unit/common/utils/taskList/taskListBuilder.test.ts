@@ -96,12 +96,11 @@ describe('Task List Builder', () => {
         claim.fullAdmission = new FullAdmission();
         claim.fullAdmission.paymentIntention = new PaymentIntention();
         claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-        const repaymentPlan = {
-          paymentAmount: 100,
+        claim.fullAdmission.paymentIntention.repaymentPlan = {
+          paymentAmount: '100',
           repaymentFrequency: 'MONTH',
           firstRepaymentDate: new Date(Date.now()),
         };
-        claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks.length).toBe(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);

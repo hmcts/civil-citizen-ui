@@ -69,7 +69,7 @@ export function toCUIPaymentOption(paymentOption: CCDPaymentOption): PaymentOpti
 
 export function toCUIRepaymentPlan(respondentRepaymentPlan: CCDRepaymentPlan): RepaymentPlan {
   return {
-    paymentAmount: convertToPound(respondentRepaymentPlan?.paymentAmount),
+    paymentAmount: String(convertToPound(+respondentRepaymentPlan?.paymentAmount)),
     firstRepaymentDate: respondentRepaymentPlan?.firstRepaymentDate,
     repaymentFrequency: toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency),
   } as RepaymentPlan;

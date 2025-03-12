@@ -71,7 +71,7 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
   claim.fullAdmission.paymentIntention.paymentOption = paymentOptionType;
   claim.fullAdmission.paymentIntention.paymentDate = new Date(Date.now());
   claim.fullAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 100,
+    paymentAmount: '100',
     repaymentFrequency: 'Monthly',
     firstRepaymentDate: new Date(Date.now()),
   };
@@ -81,7 +81,7 @@ const getClaim = (partyType: PartyType, responseType: ResponseType, paymentOptio
   claim.partialAdmission.paymentIntention.paymentOption = paymentOptionType;
   claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
   claim.partialAdmission.paymentIntention.repaymentPlan = {
-    paymentAmount: 100,
+    paymentAmount: '100',
     repaymentFrequency: 'Monthly',
     firstRepaymentDate: new Date(Date.now()),
   };
