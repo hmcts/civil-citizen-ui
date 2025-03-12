@@ -2617,7 +2617,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.47.1":
+"@playwright/test@npm:^1.41.2":
   version: 1.51.0
   resolution: "@playwright/test@npm:1.51.0"
   dependencies:
@@ -4980,7 +4980,7 @@ __metadata:
     "@hmcts/nodejs-logging": ^4.0.4
     "@hmcts/properties-volume": ^0.0.14
     "@ministryofjustice/frontend": ^1.6.3
-    "@playwright/test": ^1.47.1
+    "@playwright/test": ^1.41.2
     "@types/config": ^3.3.0
     "@types/cookie-parser": ^1.4.3
     "@types/cookie-session": ^2.0.44
