@@ -4,6 +4,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const {
   goToHearingClaimant,
   goToHearingPartAdmitDefendant,
@@ -20,6 +21,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
   I,
   api,
 }) => {
+  await testTimeHelper.addTestStartTime('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -46,6 +48,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
     const notification = goToHearingPartAdmitDefendant(1345);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
+  await testTimeHelper.addTestEndTime('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject');
 }).tag('@regression-cui-r2');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({api}) => {

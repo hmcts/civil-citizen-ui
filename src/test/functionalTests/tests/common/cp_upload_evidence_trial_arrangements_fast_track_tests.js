@@ -4,6 +4,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
 const StringUtilsComponent = require('../../citizenFeatures/caseProgression/util/StringUtilsComponent');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {orderMade, uploadDocuments, otherSideTrialArrangements, confirmTrialArrangements} = require('../../specClaimHelpers/dashboardNotificationConstants');
@@ -16,7 +17,26 @@ let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId
 
 Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track ');
 
-Before(async ({api}) => {
+// Before(async ({api}) => {
+//   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
+//   trialArrangementsDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fourWeeksFromToday);
+//   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+//   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+//   claimNumber = await caseData.legacyCaseReference;
+//   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+//   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
+//   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
+//   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+//   await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
+//   await api.triggerTrialArrangementsNotifications(config.applicantSolicitorUser, claimRef);
+//   await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
+//   await api.waitForFinishedBusinessProcess();
+//   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+// });
+
+Scenario('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I, api}) => {
+  await testTimeHelper.addTestStartTime('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements');
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const fourWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(4);
   trialArrangementsDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fourWeeksFromToday);
@@ -32,9 +52,6 @@ Before(async ({api}) => {
   await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
   await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-});
-
-Scenario('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
   if (isDashboardServiceEnabled) {
     // claimant checks notifications for orders, upload docs and other party trial arrangements completed
@@ -68,5 +85,6 @@ Scenario('Fast Track Response with RejectAll and DisputeAll - both parties uploa
     await I.click(claimNumber);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
   }
+  await testTimeHelper.addTestEndTime('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements');
 }).tag('@regression-cp');
 

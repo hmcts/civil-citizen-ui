@@ -1,5 +1,6 @@
 const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {
   mediationUnsuccessfulClaimant1NonAttendance,
@@ -24,13 +25,16 @@ let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal
 
 Feature('LR - CARM - Mediation Journey @nightly @carm @regression @nightly');
 
-Before(async () => {
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-});
+// Before(async () => {
+//   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+//   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+// });
 
 // LR Individual vs LiP Organisation
 Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, noc}) => {
+  await testTimeHelper.addTestStartTime('LR vs LiP Unsuccessful Mediation - LIP not contactable');
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -83,9 +87,13 @@ Scenario('LR vs LiP Unsuccessful Mediation - LIP not contactable', async ({api, 
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
+  await testTimeHelper.addTestEndTime('LR vs LiP Unsuccessful Mediation - LIP not contactable');
 });
 
 Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, noc}) => {
+  await testTimeHelper.addTestStartTime('LR vs LiP Unsuccessful Mediation - LR not contactable');
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'IndividualVOrganisation');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -129,4 +137,5 @@ Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, n
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
+  await testTimeHelper.addTestEndTime('LR vs LiP Unsuccessful Mediation - LR not contactable');
 });

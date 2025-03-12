@@ -4,6 +4,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const HearingFeeSteps = require('../../citizenFeatures/caseProgression/steps/hearingFeeSteps');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const StringUtilsComponent = require('../../citizenFeatures/caseProgression/util/StringUtilsComponent');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../specClaimHelpers/e2e/dashboardHelper');
@@ -17,7 +18,25 @@ let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromTo
 
 Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims');
 
-Before(async ({api}) => {
+// Before(async ({api}) => {
+//   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
+//   hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
+//   hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
+//   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+//   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+//   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+//   claimNumber = await caseData.legacyCaseReference;
+//   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+//   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+//   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
+//   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
+//   await api.waitForFinishedBusinessProcess();
+//   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+// });
+
+Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
+  await testTimeHelper.addTestStartTime('Apply for Help with Fees Journey - Small Claims');
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
   hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
   hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
@@ -32,9 +51,6 @@ Before(async ({api}) => {
   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
   await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-});
-
-Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = hearingScheduled(hearingDate);
@@ -61,9 +77,25 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
   }
+  await testTimeHelper.addTestEndTime('Apply for Help with Fees Journey - Small Claims');
 }).tag('@regression-cp');
 
 Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
+  await testTimeHelper.addTestStartTime('Pay the Hearing Fee Journey - Small Claims');
+  fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
+  hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
+  hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
+  await api.waitForFinishedBusinessProcess();
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
@@ -80,4 +112,5 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
+  await testTimeHelper.addTestEndTime('Pay the Hearing Fee Journey - Small Claims');
 }).tag('@regression-cp');
