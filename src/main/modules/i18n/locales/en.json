@@ -583,7 +583,7 @@
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
-          "ENFORCEMENT_REQUESTS": "ENFORCEMENT_REQUESTS_TITLE",
+          "ENFORCEMENT_REQUESTS": "Send enforcement requests",
           "CLAIM_DOCUMENTS_AND_EVIDENCE": "CLAIM_DOCUMENTS_AND_EVIDENCE_TITLE",
           "SUBMIT_RESPONSE_CLAIM": "SUBMIT_RESPONSE_CLAIM_TITLE",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "SEE_THE_CLAIM_ON_MY_ACCOUNT_TITLE",
@@ -672,6 +672,32 @@
           },
           "PARAGRAPH_2": "You can reply to any message from the court, your reply must be related to the subject of your original message.",
           "PARAGRAPH_3": "Do not send a follow up message if it has been less than 10 days since you sent your last message to the court as this could slow down the response from the court."
+        },
+        "ENFORCEMENT_REQUESTS": {
+          "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
+          "LINK_1": {
+            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new window)",
+            "TEXT_BEFORE": "There is guidance on "
+          },
+          "PARAGRAPH_2": "There are various options for you to enforce a judgment, you will have to fill in forms and submit them to the court.",
+          "PARAGRAPH_3": "The options for enforcing a judgment are&#58;",
+          "LINK_2": {
+            "TEXT": "warrant of control"
+          },
+          "LINK_3": {
+            "TEXT": "attachment of earnings order"
+          },
+          "LINK_4": {
+            "TEXT": "third-party debt order"
+          },
+          "LINK_5": {
+            "TEXT": "charging order"
+          },
+          "LINK_6": {
+            "TEXT": "check the civil fees list",
+            "TEXT_BEFORE": "Each option has its own fee, ",
+            "TEXT_AFTER": "to find the costs for the option you select. "
+          }
         }
       }
     },

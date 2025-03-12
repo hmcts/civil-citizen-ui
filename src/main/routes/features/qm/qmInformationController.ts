@@ -1,6 +1,6 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
-  BACK_URL, QM_FOLLOW_UP_URL, QM_INFORMATION_URL, QM_VIEW_QUERY_URL,
+  BACK_URL, QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL, QM_INFORMATION_URL, QM_VIEW_QUERY_URL,
 } from 'routes/urls';
 
 import {
@@ -13,6 +13,14 @@ import {
 } from 'services/features/qm/queryManagementService';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
+import {
+  attachmentOfEarningsOrderUrl, chargingOrderUrl, checkCivilFeesListUrl,
+  thirdPartyDebtOrderUrl,
+  warrantOfControlUrl,
+  whatToDoUrl,
+} from 'common/utils/externalURLs';
+import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
+import { t } from 'i18next';
 
 const qmInformationController = Router();
 const qmStartViewPath = 'features/qm/qm-information-template.njk';
@@ -32,7 +40,23 @@ const getContent = (claimId: string, isFollowUpScreen: boolean, qualifyQuestionT
       .addParagraph(`${qualifySectionInfo}.FOLLOW_UP.PARAGRAPH_3`);
   } else {
     switch (qualifyQuestionType) {
-      case QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE:{
+      case QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS:{
+        showAnythingElseSection = true;
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.PARAGRAPH_1`)
+          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_1.TEXT`, whatToDoUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_1.TEXT_BEFORE`, null, null, true)
+          .addParagraph(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.PARAGRAPH_2`)
+          .addParagraph(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.PARAGRAPH_3`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+              <li><a href="${warrantOfControlUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_2.TEXT`, {lng: lang})}</a></li>
+              <li><a href="${attachmentOfEarningsOrderUrl}" lass="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_3.TEXT`, {lng: lang})}</a></li>
+              <li><a href="${thirdPartyDebtOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_4.TEXT`, {lng: lang})}</a></li>
+              <li><a href="${chargingOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT`, {lng: lang})}</a></li>
+            </ul>`)
+          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT_BEFORE`, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT_AFTER`, null, true);
+        break;
+      }
+      case QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE:{
         //TODO add page section content
         showAnythingElseSection = true;
         break;
@@ -48,13 +72,14 @@ export const getTitle = (qualifyingQuestionTypeOption: QualifyingQuestionTypeOpt
 };
 
 const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
-  [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_THE_HEARING_DATE',
+  [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS]: 'PAGES.QM.QUALIFY.TITLES.ENFORCEMENT_REQUESTS',
   //TODO add other qualifying question types
 };
 const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
   const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
+  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL.replace(':qmType', qmType));
   const contents = getContent(claimId, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {
     backLinkUrl,
@@ -63,6 +88,7 @@ const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDo
     caption,
     contents,
     showAnythingElseSection,
+    createQueryUrl,
   });
 };
 

@@ -12,12 +12,14 @@
 {% endfor %}
 
 {% if showAnythingElseSection %}
+
   {{ divider() }}
-  <h2 class="govuk-heading-m">{{ t('anything else') }}</h2>
-  <p class="govuk-body">{{ t('anything else description') }}</p>
-  <p className="govuk-body">{{ t('anything else description') }}</p>
-
-
+  <div class="govuk-form-group">
+    <h2 class="govuk-heading-m">{{ t('Anything else') }}</h2>
+    <p class="govuk-body">{{ t('If you still need help with your claim, you can send a message to the court.') }}</p>
+    <p class="govuk-body">{{ t('We try to answer queries within 10 days, but it could take longer.') }}</p>
+    <a href={{createQueryUrl}} class="govuk-link">Send a message</a>
+  </div>
 {% endif %}
 
 
