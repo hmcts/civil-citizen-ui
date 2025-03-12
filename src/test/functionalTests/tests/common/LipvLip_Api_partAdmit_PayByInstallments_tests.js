@@ -50,12 +50,14 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
       const notification = goToHearingPartAdmitDefendant(1345);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
+    await testTimeHelper.addTestEndTime('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject');
   }
 ).tag("@regression-cui-r2");
 
 Scenario(
   "Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api",
   async ({ api }) => {
+    await testTimeHelper.addTestStartTime('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject');
     await createAccount(
       config.claimantCitizenUser.email,
       config.claimantCitizenUser.password
@@ -85,7 +87,7 @@ Scenario(
       "fast"
     );
     await api.waitForFinishedBusinessProcess();
-  await testTimeHelper.addTestEndTime('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject');
+  await testTimeHelper.addTestEndTime('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject');
 }).tag('@regression-cui-r2');
 
 Scenario(
