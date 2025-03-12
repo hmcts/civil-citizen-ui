@@ -162,7 +162,7 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
-  /*
+
   afterSuccess('smoketest:preview') {
     stage('Accessibility') {
       yarnBuilder.yarn('tests:a11y')
@@ -175,7 +175,7 @@ withPipeline(type, product, component) {
         reportName           : 'Preview Accessibility results'
       ])
     }
-    */
+
   }
 
   before('smoketest:aat') {
@@ -194,7 +194,7 @@ withPipeline(type, product, component) {
   afterSuccess('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
 
-    /*
+
     stage('Accessibility') {
       yarnBuilder.yarn('tests:a11y')
       publishHTML([
@@ -205,7 +205,7 @@ withPipeline(type, product, component) {
             reportFiles          : 'a11y.html',
             reportName           : 'AAT Accessibility results'
       ])
-    }*/
+    }
   }
 
   afterAlways('smoketest:aat') {
