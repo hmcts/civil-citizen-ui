@@ -103,7 +103,7 @@ export async function getEaFlagValueForGaLips(
 }
 
 export async function isGaForLipsEnabledAndLocationWhiteListed(location: string): Promise<boolean> {
-    return true;
+  return true;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
