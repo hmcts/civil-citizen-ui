@@ -22,8 +22,8 @@ Feature('Lip v Lip - Case Offline Tests');
 //   notification = caseOffline();
 // });
 
-Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
-  await testTimeHelper.addTestStartTime('Case is offline after caseworker performs Case proceeds in caseman event');
+Scenario('Lip v Lip Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
+  await testTimeHelper.addTestStartTime('Lip v Lip Case is offline after caseworker performs Case proceeds in caseman event');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -42,11 +42,11 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-  await testTimeHelper.addTestEndTime('Case is offline after caseworker performs Case proceeds in caseman event');
+  await testTimeHelper.addTestEndTime('Lip v Lip Case is offline after caseworker performs Case proceeds in caseman event');
 }).tag('@regression');
 
-Scenario('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc, api}) => {
-  await testTimeHelper.addTestStartTime('Case is offline after solicitor performs notice of change on behalf of defendant');
+Scenario('Lip v Lip Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc, api}) => {
+  await testTimeHelper.addTestStartTime('Lip v Lip Case is offline after solicitor performs notice of change on behalf of defendant');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -63,11 +63,11 @@ Scenario('Case is offline after solicitor performs notice of change on behalf of
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     // await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
-  await testTimeHelper.addTestEndTime('Case is offline after solicitor performs notice of change on behalf of defendant');
+  await testTimeHelper.addTestEndTime('Lip v Lip Case is offline after solicitor performs notice of change on behalf of defendant');
 }).tag('@regression');
 
-Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
-  await testTimeHelper.addTestStartTime('Case is taken offline after SDO for non early adopters');
+Scenario('Lip v Lip Case is taken offline after SDO for non early adopters', async ({api}) => {
+  await testTimeHelper.addTestStartTime('Lip v Lip Case is taken offline after SDO for non early adopters');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -87,5 +87,5 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-  await testTimeHelper.addTestEndTime('Case is taken offline after SDO for non early adopters');
+  await testTimeHelper.addTestEndTime('Lip v Lip Case is taken offline after SDO for non early adopters');
 }).tag('@regression');
