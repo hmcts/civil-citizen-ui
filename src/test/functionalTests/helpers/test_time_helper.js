@@ -1,7 +1,7 @@
 const testTimeReportFolderPath = 'test-results/functional/test-times/';
 const testTimeReportFilePath = 'test-results/functional/test-times-report.json';
 const fs = require('fs/promises');
-const fsSync = require('fs')
+const fsSync = require('fs');
 const path = require('path');
 
 const getTime = () => {
@@ -13,11 +13,11 @@ const getTime = () => {
 
 const hyphenate = (filePath) => {
   return filePath.replace(/\s+/g, '-');
-}
+};
 
 module.exports = {
   addTestStartTime: async (testName) => {
-    const filePath = `${testTimeReportFolderPath}${hyphenate(testName)}.json`
+    const filePath = `${testTimeReportFolderPath}${hyphenate(testName)}.json`;
     let data = {};
     try {
       data = JSON.parse(await fs.readFile(filePath));
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   addTestEndTime: async (testName) => {
-    const filePath = `${testTimeReportFolderPath}${hyphenate(testName)}.json`
+    const filePath = `${testTimeReportFolderPath}${hyphenate(testName)}.json`;
     let data;
     try {
       data = JSON.parse(await fs.readFile(filePath));
@@ -40,7 +40,7 @@ module.exports = {
     await fs.writeFile(filePath, JSON.stringify(data, null, 2));
   },
 
- mkDirTestTimeDir: async () => {
+  mkDirTestTimeDir: async () => {
     try {
       await fs.access(testTimeReportFolderPath);
     } catch (e) {
@@ -50,8 +50,8 @@ module.exports = {
 
   deleteTestTimes: () => {
     try {
-       fsSync.rmSync(testTimeReportFolderPath, { recursive: true, force: true });
-       fsSync.unlinkSync(testTimeReportFilePath);
+      fsSync.rmSync(testTimeReportFolderPath, { recursive: true, force: true });
+      fsSync.unlinkSync(testTimeReportFilePath);
     } catch(error) {
       console.log(error);
     }
@@ -79,5 +79,5 @@ module.exports = {
     } catch (error) {
       console.error('Error processing files:', error);
     }
-  }
+  },
 };
