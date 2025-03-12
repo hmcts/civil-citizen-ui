@@ -3,6 +3,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
@@ -15,7 +16,22 @@ let securityCode;
 
 Feature('Response with RejectAll and DisputeAll');
 
-Before(async ({api}) => {
+// Before(async ({api}) => {
+//   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+//   console.log('claimRef has been created Successfully    <===>  ', claimRef);
+//   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+//   claimNumber = await caseData.legacyCaseReference;
+//   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+//   console.log('claim number', claimNumber);
+//   console.log('Security code', securityCode);
+//   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+//   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+// });
+
+Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citizenUI @rejectAll @nightly', async ({api, I}) => {
+  await testTimeHelper.addTestStartTime('Response with RejectAll and DisputeAll - GA (Ask for more time)');
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
@@ -27,9 +43,6 @@ Before(async ({api}) => {
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-});
-
-Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citizenUI @rejectAll @nightly', async ({api, I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
@@ -53,5 +66,5 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citiz
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
-
+  await testTimeHelper.addTestEndTime('Response with RejectAll and DisputeAll - GA (Ask for more time)');
 }).tag('@regression-cui-r1');

@@ -3,6 +3,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const testTimeHelper = require('../../helpers/test_time_helper');
 const partAdmit = 'partial-admission';
 const immediatePayment = 'immediate';
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -16,7 +17,22 @@ let securityCode;
 
 Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims');
 
-Before(async ({api}) => {
+// Before(async ({api}) => {
+//   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+//   console.log('claimRef has been created Successfully    <===>  ', claimRef);
+//   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+//   claimNumber = await caseData.legacyCaseReference;
+//   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
+//   console.log('claim number', claimNumber);
+//   console.log('Security code', securityCode);
+//   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+//   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+//   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+// });
+
+Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
+  await testTimeHelper.addTestStartTime('Response with PartAdmit-havent paid and Immediate payment');
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
@@ -28,9 +44,6 @@ Before(async ({api}) => {
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-});
-
-Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -49,4 +62,5 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   await api.mediationSuccessful(config.caseWorker);
+  await testTimeHelper.addTestEndTime('Response with PartAdmit-havent paid and Immediate payment');
 }).tag('@regression-cui-r1');
