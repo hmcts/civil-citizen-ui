@@ -23,7 +23,7 @@ import {ClaimantOrDefendant} from 'models/partyType';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CaseState} from 'common/form/models/claimDetails';
 import {applicationNoticeUrl} from 'common/utils/externalURLs';
@@ -872,4 +872,80 @@ describe('dashboardService', () => {
       expect(notificationsList.items[2].id).toEqual('2');
     });
   });
+
+  describe('defendant NOC', () => {
+    const mockGet = jest.fn().mockResolvedValue({
+      data: Array.of(
+        new CivilServiceDashboardTask(
+          'test',
+          'test',
+          'test',
+          'test',
+          'test',
+          DashboardTaskStatus.COMPLETE,
+          'test',
+          'test',
+          'test'),
+      ),
+    });
+    let dashboard: Dashboard;
+    beforeEach(() => {
+      jest.clearAllMocks();
+      dashboard = new Dashboard(
+        Array.of(new DashboardTaskList('test', 'test', [])
+          , new DashboardTaskList('test', 'test', [])
+          , new DashboardTaskList('Applications', 'Applications', []),
+        ));
+    });
+
+    it('Application section when GaFlag enabled and location whitelisted and the case is not assigned to defendant and applied noc', async () => {
+      (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValueOnce(true);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+      const claim = new Claim();
+      claim.id = '1234567891';
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.totalClaimAmount = 900;
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.respondentSolicitorDetails = {};
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      //When
+      const claimantDashboard = await getDashboardForm(
+        ClaimantOrDefendant.CLAIMANT
+        , claim
+        , '1234567890'
+        , appReq
+        , false
+        , true);
+
+      //Then
+      expect(claimantDashboard).toBeDefined();
+    });
+    it('getContactCourtLink when Gaflag is enable and Lr Defendant', async () => {
+      (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toBeDefined();
+    });
+  });
 });
+
