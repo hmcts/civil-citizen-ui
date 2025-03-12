@@ -10,7 +10,7 @@ let startTime;
 exports.config = {
   bootstrapAll: async () => {
     deleteTestTimes();
-    mkDirTestTimeDir();
+    await mkDirTestTimeDir();
     startTime = new Date();
     console.log(`Starting the tests at ${startTime}`);
   },
