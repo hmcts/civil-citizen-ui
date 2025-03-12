@@ -62,7 +62,7 @@ describe('Accessibility', async () => {
   for (let url of urlsList) {
     it('Test of '+url,async () => {
       app.get(url, (req: any, res: any) => {
-        url = url.replace(':id', '1645882162449409').replace(':appId', '1720536653906339');
+        url = url.replace(':id', '1645882162449409').replace(':appId', '1720536653906339').replace(':qmType', 'GET_UPDATE');
         const filePath = translateUrlToFilePath(url);
         const fileContent = fs.readFileSync(filePath,  'utf8');
         res.send(fileContent);
