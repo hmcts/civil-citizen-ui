@@ -66,7 +66,7 @@ const renderView = (claimId: string, form: GenericForm<WhatDoYouWantToDo>, res: 
 
 qmStartController.get(QM_START_URL, (async (req:AppRequest, res , next) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKey(req);
     const linkFrom = req.query.linkFrom;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;

@@ -43,12 +43,8 @@ const getContent = (claimId: string, isFollowUpScreen: boolean, qualifyQuestionT
     .build();
 };
 
-export const getTitle = (isFollowUpScreen:boolean, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption) => {
-  if (isFollowUpScreen) {
-    return 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP';
-  } else {
-    return titleMap[qualifyingQuestionTypeOption];
-  }
+export const getTitle = (qualifyingQuestionTypeOption: QualifyingQuestionTypeOption) => {
+  return titleMap[qualifyingQuestionTypeOption];
 };
 
 const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
@@ -58,7 +54,7 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
 const renderView = (claimId: string, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
-  const title = getTitle(isFollowUpScreen, qualifyingQuestionTypeOption);
+  const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
   const contents = getContent(claimId, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {
     backLinkUrl,
