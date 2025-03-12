@@ -22,7 +22,7 @@ Feature('LR v Lip - Case Offline Tests');
 // });
 
 Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
-  await testTimeHelper.addTestStartTime('Case is offline after caseworker performs Case proceeds in caseman event');
+  await testTimeHelper.addTestStartTime('LR v Lip Case is offline after caseworker performs Case proceeds in caseman event');
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -36,11 +36,11 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-  await testTimeHelper.addTestEndTime('Case is offline after caseworker performs Case proceeds in caseman event');
+  await testTimeHelper.addTestEndTime('LR v Lip Case is offline after caseworker performs Case proceeds in caseman event');
 }).tag('@regression');
 
 Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
-  await testTimeHelper.addTestStartTime('Case is taken offline after SDO for non early adopters');
+  await testTimeHelper.addTestStartTime('LR v Lip Case is taken offline after SDO for non early adopters');
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -57,5 +57,5 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-  await testTimeHelper.addTestEndTime('Case is taken offline after SDO for non early adopters');
+  await testTimeHelper.addTestEndTime('LR v Lip Case is taken offline after SDO for non early adopters');
 }).tag('@regression');
