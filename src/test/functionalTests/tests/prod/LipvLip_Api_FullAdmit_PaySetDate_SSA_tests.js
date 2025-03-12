@@ -23,7 +23,8 @@ let claimNumber;
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant ');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant - @api', async ({
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant - @api', async ({
   I,
   api,
 }) => {
@@ -58,7 +59,8 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   }
 }).tag('@nightly');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({
+// TODO undo this once the stop from choosing settlement agreement is removed
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({
   I,
   api,
 }) => {

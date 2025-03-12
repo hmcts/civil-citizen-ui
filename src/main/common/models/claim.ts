@@ -1083,13 +1083,6 @@ export class Claim {
     return this.claimantResponse?.intentionToProceed?.option;
   }
 
-  getIntentionToProceedCcdTranslation(): string{
-    if (this.isFullDefence() && this.hasPaidInFull()) {
-      return this.hasClaimantNotSettled() ? YesNo.YES : YesNo.NO; //if is settled they won't to proceed with the claim
-    }
-    return this.claimantResponse?.intentionToProceed?.option;
-  }
-
   isCaseProgressionCaseState(): boolean {
     return [CaseState.CASE_PROGRESSION, CaseState.HEARING_READINESS,
       CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
