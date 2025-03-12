@@ -6,7 +6,7 @@ import {
   buildRespondentApplicationSummaryRow,
   getRespondToApplicationCaption,
   hideGAAppAsRespondentForClaimant,
-  isApplicationVisibleToRespondent,
+  isApplicationVisibleToRespondent, isApplicationVisibleToRespondentForClaimant,
   saveRespondentAgreeToOrder,
   saveRespondentHearingArrangement,
   saveRespondentHearingContactDetails,
@@ -668,5 +668,125 @@ describe('General Application Response service', () => {
           applicationUrl: '/case/12345/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
+  });
+  describe('isApplicationVisibleToRespondentForClaimant', () => {
+    const baseApplication = {
+      case_data: {},
+      state: '',
+    };
+
+    test('should return true when parentClaimantIsApplicant is NO and isWithNotice is YES', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+          generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.YES},
+        },
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
+    test('should return true when parentClaimantIsApplicant is undefined and isWithNotice is YES', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.YES},
+        },
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+    });
+
+    it('should return true when application is not cloaked and state is not APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        case_data: {applicationIsCloaked: YesNoUpperCamelCase.NO},
+        state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
+    it('should return true when application is uncloaked once and state is not APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {applicationIsUncloakedOnce: YesNoUpperCamelCase.YES},
+        state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
+    test('should return true when parentClaimantIsApplicant is YES', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {parentClaimantIsApplicant: YesNoUpperCamelCase.YES},
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
+    test('should return true when respondent has agreed', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.YES},
+        },
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
+    test('should return false when application is cloaked and state is APPLICATION_ADD_PAYMENT', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          applicationIsCloaked: YesNoUpperCamelCase.YES,
+        },
+        state: ApplicationState.APPLICATION_ADD_PAYMENT,
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+    });
+
+    test('should return true when judicial decision requests sending app to other party and payment is SUCCESS', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          judicialDecisionRequestMoreInfo: {
+            requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY,
+          },
+          generalAppPBADetails: {
+            additionalPaymentDetails: {status: 'SUCCESS'},
+          },
+        },
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+    });
+
+    it('should return false when requestMoreInfoOption is SEND_APP_TO_OTHER_PARTY but status is not SUCCESS', () => {
+      const application = {
+        case_data: {
+          judicialDecisionRequestMoreInfo: {requestMoreInfoOption: JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY},
+          generalAppPBADetails: {additionalPaymentDetails: {status: 'FAILED'}},
+        },
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+    });
+
+    test('should return false when none of the conditions are met', () => {
+      const application = {
+        ...baseApplication,
+        case_data: {
+          parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+          generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.NO},
+          generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.NO},
+          applicationIsCloaked: YesNoUpperCamelCase.YES,
+          applicationIsUncloakedOnce: YesNoUpperCamelCase.NO,
+          judicialDecisionRequestMoreInfo: {
+            requestMoreInfoOption: 'OTHER_OPTION',
+          },
+          generalAppPBADetails: {
+            additionalPaymentDetails: {status: 'FAILED'},
+          },
+        } as unknown,
+        state: ApplicationState.APPLICATION_ADD_PAYMENT,
+      } as ApplicationResponse;
+      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+    });
+
   });
 });
