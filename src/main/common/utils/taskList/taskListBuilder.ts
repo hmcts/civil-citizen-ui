@@ -26,6 +26,7 @@ import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid'
 import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
 import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
 import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string, carmApplicable = false): TaskList => {
   const tasks: Task[] = [];
@@ -42,6 +43,10 @@ const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang:
   return {title: t('TASK_LIST.PREPARE_YOUR_RESPONSE.TITLE', {lng: getLng(lang)}), tasks};
 };
 
+const isRejectAllAndCounterClaim = (caseData: Claim): boolean => {
+  return caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.COUNTER_CLAIM;
+};
+
 const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   const chooseAResponseTask = getChooseAResponseTask(caseData, claimId, lang);
@@ -53,6 +58,10 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId, lang);
   const tellUsHowMuchYouHavePaidTask = getTellUsHowMuchYouHavePaidTask(caseData, claimId, lang);
   const tellUsWhyDisagreeWithClaimTask = getTellUsWhyDisagreeWithClaimTask(caseData, claimId, lang);
+
+  if (isRejectAllAndCounterClaim(caseData)) {
+    chooseAResponseTask.status = TaskStatus.INCOMPLETE;
+  }
 
   tasks.push(chooseAResponseTask);
 
@@ -105,7 +114,6 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
         tasks.push(tellUsWhyDisagreeWithClaimTask);
       }
     }
-
   }
 
   return {title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
@@ -141,10 +149,14 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-const buildSubmitSection = (claimId: string, lang: string): TaskList => {
+const buildSubmitSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
 
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
+
+  if (isRejectAllAndCounterClaim(caseData)) {
+    delete checkAndSubmitYourResponseTask.url;
+  }
 
   tasks.push(checkAndSubmitYourResponseTask);
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: getLng(lang)}), tasks};
