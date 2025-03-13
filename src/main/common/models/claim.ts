@@ -189,6 +189,7 @@ export class Claim {
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
   joJudgementByAdmissionIssueDate?: Date;
+  joDJCreatedDate?: Date;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access

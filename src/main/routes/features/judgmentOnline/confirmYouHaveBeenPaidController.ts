@@ -73,7 +73,8 @@ confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (re
     const claim = await getClaimById(claimId, req);
     const isClaimant = claim.isClaimant();
     const {year, month, day, confirmed} = req.body;
-    const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed, claim.joJudgementByAdmissionIssueDate));
+    const joIssuedDate = claim.joJudgementByAdmissionIssueDate != null ? claim.joJudgementByAdmissionIssueDate : claim.joDJCreatedDate;
+    const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed, joIssuedDate));
     await form.validate();
     await deleteDraftClaimFromStore(claimId);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
