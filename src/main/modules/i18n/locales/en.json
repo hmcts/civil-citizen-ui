@@ -1712,7 +1712,6 @@
         "TITLE": "How much do you want to continue claiming?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
         "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
