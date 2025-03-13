@@ -29,6 +29,7 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const linkFrom = req.query.linkFrom;
+    const isAskMoreTime:boolean = req.query.isAskMoreTime === 'true';
     const applicationIndex = queryParamNumber(req, 'index');
 
     if (linkFrom === LinKFromValues.start) {
@@ -52,6 +53,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
       isOtherSelected: applicationType.isOtherSelected(),
       showCCJ: showCCJ,
       isQMEnabled,
+      isAskMoreTime,
     });
   } catch (error) {
     next(error);

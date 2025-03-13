@@ -590,7 +590,7 @@
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
           "ENFORCEMENT_REQUESTS": "Send enforcement requests",
-          "CLAIM_DOCUMENTS_AND_EVIDENCE": "CLAIM_DOCUMENTS_AND_EVIDENCE_TITLE",
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
           "SUBMIT_RESPONSE_CLAIM": "SUBMIT_RESPONSE_CLAIM_TITLE",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "SEE_THE_CLAIM_ON_MY_ACCOUNT_TITLE",
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "VIEW_DOCUMENTS_ON_MY_ACCOUNT_TITLE",
@@ -703,6 +703,22 @@
             "TEXT": "check the civil fees list",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
+          }
+        },
+        "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+          "SUBTITLE_1": "You cannot upload claim evidence yet",
+          "PARAGRAPH_1": "Your case is not at the correct stage for you to upload claim documents and evidence.",
+          "PARAGRAPH_2": "You will be able to send claim evidence once the judge has issued a directions order. The directions order will have instructions on how to send the evidence as well as any deadlines for sending evidence.",
+          "CP_STATE": {
+            "LINK_1": {
+              "TEXT": "upload evidence and documents to the file",
+              "TEXT_BEFORE": "To upload evidence to your case, select "
+            },
+            "PARAGRAPH_1": "When you are saving the files, make sure the file names make it clear what the file is, for example: ‘yourname-evidencetype.doc’. For documents related to experts, witnesses, witness statements, the file name will be created by the system.",
+            "LINK_2": {
+              "TEXT": "ask for more time to do what is required by a court order",
+              "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
+            }
           }
         }
       }
