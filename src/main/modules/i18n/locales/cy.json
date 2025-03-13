@@ -537,6 +537,12 @@
   },
   "PAGES": {
     "QM": {
+      "COMMON": {
+        "ANYTHING_ELSE": "Anything else",
+        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "WE_TRY_TO_ANSWER": "We try to answer queries within 10 days, but it could take longer.",
+        "SEND_A_MESSAGE": "Send a message"
+      },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "What do you want to do?",
       "OPTIONS": {
         "CHANGE_CASE": {
@@ -583,8 +589,8 @@
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
-          "ENFORCEMENT_REQUESTS": "ENFORCEMENT_REQUESTS_TITLE",
-          "CLAIM_DOCUMENTS_AND_EVIDENCE": "CLAIM_DOCUMENTS_AND_EVIDENCE_TITLE",
+          "ENFORCEMENT_REQUESTS": "Send enforcement requests",
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
           "SUBMIT_RESPONSE_CLAIM": "SUBMIT_RESPONSE_CLAIM_TITLE",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "SEE_THE_CLAIM_ON_MY_ACCOUNT_TITLE",
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "VIEW_DOCUMENTS_ON_MY_ACCOUNT_TITLE",
@@ -672,6 +678,48 @@
           },
           "PARAGRAPH_2": "You can reply to any message from the court, your reply must be related to the subject of your original message.",
           "PARAGRAPH_3": "Do not send a follow up message if it has been less than 10 days since you sent your last message to the court as this could slow down the response from the court."
+        },
+        "ENFORCEMENT_REQUESTS": {
+          "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
+          "LINK_1": {
+            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new window)",
+            "TEXT_BEFORE": "There is guidance on "
+          },
+          "PARAGRAPH_2": "There are various options for you to enforce a judgment, you will have to fill in forms and submit them to the court.",
+          "PARAGRAPH_3": "The options for enforcing a judgment are&#58;",
+          "LINK_2": {
+            "TEXT": "warrant of control"
+          },
+          "LINK_3": {
+            "TEXT": "attachment of earnings order"
+          },
+          "LINK_4": {
+            "TEXT": "third-party debt order"
+          },
+          "LINK_5": {
+            "TEXT": "charging order"
+          },
+          "LINK_6": {
+            "TEXT": "check the civil fees list",
+            "TEXT_BEFORE": "Each option has its own fee, ",
+            "TEXT_AFTER": "to find the costs for the option you select. "
+          }
+        },
+        "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+          "SUBTITLE_1": "You cannot upload claim evidence yet",
+          "PARAGRAPH_1": "Your case is not at the correct stage for you to upload claim documents and evidence.",
+          "PARAGRAPH_2": "You will be able to send claim evidence once the judge has issued a directions order. The directions order will have instructions on how to send the evidence as well as any deadlines for sending evidence.",
+          "CP_STATE": {
+            "LINK_1": {
+              "TEXT": "upload evidence and documents to the file",
+              "TEXT_BEFORE": "To upload evidence to your case, select "
+            },
+            "PARAGRAPH_1": "When you are saving the files, make sure the file names make it clear what the file is, for example: ‘yourname-evidencetype.doc’. For documents related to experts, witnesses, witness statements, the file name will be created by the system.",
+            "LINK_2": {
+              "TEXT": "ask for more time to do what is required by a court order",
+              "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
+            }
+          }
         }
       }
     },
