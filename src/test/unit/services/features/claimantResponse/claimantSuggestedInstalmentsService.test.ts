@@ -76,7 +76,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       const form = await getClaimantSuggestedInstalmentsPlan(claimId);
       //Then
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
-      expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
+      expect(form.paymentAmount).toBe(+PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
       expect(form.firstRepaymentDate.toDateString()).toBe('Wed Feb 14 2024');
     });
@@ -133,7 +133,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
-      expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
+      expect(form.paymentAmount).toBe(+PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
       expect(form.firstRepaymentDate.toDateString()).toBe('Wed Feb 14 2024');
     });

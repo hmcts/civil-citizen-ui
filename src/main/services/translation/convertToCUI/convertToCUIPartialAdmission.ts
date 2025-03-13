@@ -68,8 +68,9 @@ export function toCUIPaymentOption(paymentOption: CCDPaymentOption): PaymentOpti
 }
 
 export function toCUIRepaymentPlan(respondentRepaymentPlan: CCDRepaymentPlan): RepaymentPlan {
+  const paymentAmountInPounds = convertToPound(respondentRepaymentPlan?.paymentAmount);
   return {
-    paymentAmount: String(convertToPound(+respondentRepaymentPlan?.paymentAmount)),
+    paymentAmount: paymentAmountInPounds? String(paymentAmountInPounds) : undefined,
     firstRepaymentDate: respondentRepaymentPlan?.firstRepaymentDate,
     repaymentFrequency: toCUIRepaymentPlanFrequency(respondentRepaymentPlan?.repaymentFrequency),
   } as RepaymentPlan;

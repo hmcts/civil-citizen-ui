@@ -125,7 +125,7 @@ describe('Translate claimant ccj request to ccd', () => {
         CCDClaimantPaymentOption.REPAYMENT_PLAN,
       applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec:
         'ONCE_ONE_MONTH',
-      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 50,
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: '50.00',
       applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec:
         convertDateToStringFormat(paymentDate),
       applicant1RequestedPaymentDateForDefendantSpec: {},
@@ -210,7 +210,7 @@ describe('Translate claimant default ccj request to ccd', () => {
       applicant1RepaymentOptionForDefendantSpec:
       CCDClaimantPaymentOption.REPAYMENT_PLAN,
       applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: 'ONCE_ONE_WEEK',
-      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 50,
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: '50.00',
       applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(new Date(2024, 0, 1)),
       applicant1RequestedPaymentDateForDefendantSpec: { paymentSetDate: undefined},
       'partialPayment': 'No',

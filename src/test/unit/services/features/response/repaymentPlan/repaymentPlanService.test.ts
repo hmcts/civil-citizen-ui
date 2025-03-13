@@ -100,7 +100,7 @@ describe('Repayment Plan Service', () => {
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
-      expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
+      expect(form.paymentAmount).toBe(+PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
       expect(form.firstRepaymentDate).toStrictEqual(FIRST_PAYMENT_DATE);
     });
@@ -128,7 +128,7 @@ describe('Repayment Plan Service', () => {
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
-      expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
+      expect(form.paymentAmount).toBe(+PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
       expect(form.firstRepaymentDate).toStrictEqual(FIRST_PAYMENT_DATE);
     });
