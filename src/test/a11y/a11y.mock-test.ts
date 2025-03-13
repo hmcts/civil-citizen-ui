@@ -5,7 +5,7 @@ import {fail} from 'assert';
 import supertest from 'supertest';
 import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
 
-const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
+const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.CHUNKS), parseInt(process.env.CHUNKS_INDEX));
 const pa11y = require('pa11y');
 import {retry} from '../functionalTests/specClaimHelpers/api/retryHelper.js';
 
@@ -77,3 +77,18 @@ describe('Accessibility', async () => {
   }
   server.close();
 });
+
+function getChunkAtIndex(array: string[], numChunks: number, index: number) {
+  if (!Array.isArray(array) || numChunks <= 0 || index < 0 || index >= numChunks) {
+      throw new Error("Invalid input: Provide a valid array, a positive number of chunks, and a valid index.");
+  }
+
+  const chunkSize = Math.floor(array.length / numChunks);
+  const remainder = array.length % numChunks; 
+
+  const start = index * chunkSize + Math.min(index, remainder);
+
+  const end = start + chunkSize + (index < remainder ? 1 : 0);
+
+  return array.slice(start, end);
+}
