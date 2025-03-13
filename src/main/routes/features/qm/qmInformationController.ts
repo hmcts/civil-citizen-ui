@@ -22,9 +22,9 @@ import {
 } from 'common/utils/externalURLs';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
-import {Claim} from "models/claim";
-import {getClaimById} from "modules/utilityService";
-import {LinKFromValues} from "models/generalApplication/applicationType";
+import {Claim} from 'models/claim';
+import {getClaimById} from 'modules/utilityService';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const qmInformationController = Router();
 const qmStartViewPath = 'features/qm/qm-information-template.njk';

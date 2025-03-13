@@ -9,9 +9,9 @@ import {
 } from 'routes/urls';
 import {getCancelUrl, getCaption} from 'services/features/qm/queryManagementService';
 import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
-import {Claim} from "models/claim";
-import {CaseState} from "form/models/claimDetails";
-import * as utilityService from "modules/utilityService";
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
+import * as utilityService from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/qm/queryManagementService');
@@ -65,20 +65,18 @@ describe('Query management Information controller', () => {
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
     ])('should return SEND_DOCUMENTS information for %s', async (questionType, isCaseProgression, expectedText) => {
       mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
+
       const claim = new Claim();
       if (isCaseProgression) {
         claim.ccdState = CaseState.CASE_PROGRESSION;
       }
       mockGetClaimById.mockImplementation(() => claim);
+
       await request(app)
         .get(getControllerUrl(WhatToDoTypeOption.SEND_DOCUMENTS, questionType))
         .expect((res) => {
           expect(res.status).toBe(200);
-          if (questionType === QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS) {
-            expect(res.text).toContain(expectedText);
-          } else {
-            expect(res.text).toContain(expectedText);
-          }
+          expect(res.text).toContain(expectedText);
           expect(res.text).toContain('Anything else');
         });
     });
