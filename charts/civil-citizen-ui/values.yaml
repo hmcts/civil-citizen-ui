@@ -73,6 +73,7 @@ nodejs:
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
+    CIVIL_GENERAL_APPLICATIONS_URL: http://civil-general-applications-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     IDAM_CLIENT_ID: civil_citizen_ui
     IDAM_END_SESSION_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/endSession
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/dashboard
@@ -97,7 +98,6 @@ nodejs:
     APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
     LAUNCH_DARKLY_ENV: '{{ .Values.global.environment }}'
     DYNATRACE_TAG: https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/59eec5518455ca7b_complete.js
-    CIVIL_GENERAL_APPLICATIONS_URL: http://civil-general-applications-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
   autoscaling:
     enabled: true
