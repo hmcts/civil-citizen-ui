@@ -15,6 +15,10 @@ export const convertToPound = (amount: number): number => {
   return amount ? amount/100 : undefined;
 };
 
+export const formatAmountTwoDecimalPlaces = (amount: number): string => {
+  return amount ? Number(new Intl.NumberFormat('en-UK', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false }).format(amount)).toFixed(2) : undefined;
+};
+
 export const convertToPoundInStringFormat = (amount: number): string => {
   return amount ? (amount/100).toString() : undefined;
 };
