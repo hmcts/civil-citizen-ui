@@ -71,6 +71,17 @@ describe('General Application - Application type', () => {
         });
     });
 
+    it('should delete GA when url contains start and isAskMoreTime', async () => {
+      const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
+      (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+      await request(app)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAskMoreTime=true`)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(spyDelete).toBeCalled();
+        });
+    });
+
     it('should select application type if using back link', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();

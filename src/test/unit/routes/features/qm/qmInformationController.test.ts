@@ -9,9 +9,15 @@ import {
 } from 'routes/urls';
 import {getCancelUrl, getCaption} from 'services/features/qm/queryManagementService';
 import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {Claim} from "models/claim";
+import {CaseState} from "form/models/claimDetails";
+import * as utilityService from "modules/utilityService";
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/qm/queryManagementService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+
+jest.mock('modules/utilityService');
 
 const CONTROLLER_URL = QM_INFORMATION_URL;
 const FOLLOW_UP_URL = QM_FOLLOW_UP_URL;
@@ -22,6 +28,7 @@ function getControllerUrl(qmType: WhatToDoTypeOption, qmQualifyOption: Qualifyin
 
 const mockGetCaption = getCaption as jest.Mock;
 const mockGetCancelUrl = getCancelUrl as jest.Mock;
+const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
 describe('Query management Information controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -38,6 +45,11 @@ describe('Query management Information controller', () => {
   });
 
   describe('on GET', () => {
+
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+
     it('should return follow up page ', async () => {
       await request(app)
         .get(FOLLOW_UP_URL)
@@ -47,17 +59,31 @@ describe('Query management Information controller', () => {
         });
     });
 
-    it('should return information page ', async () => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.MANAGE_HEARING');
+    it.each([
+      [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
+      [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
+      [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
+    ])('should return SEND_DOCUMENTS information for %s', async (questionType, isCaseProgression, expectedText) => {
+      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
+      const claim = new Claim();
+      if (isCaseProgression) {
+        claim.ccdState = CaseState.CASE_PROGRESSION;
+      }
+      mockGetClaimById.mockImplementation(() => claim);
       await request(app)
-        .get(getControllerUrl(WhatToDoTypeOption.MANAGE_HEARING, QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE))
+        .get(getControllerUrl(WhatToDoTypeOption.SEND_DOCUMENTS, questionType))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Manage your hearing');
+          if (questionType === QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS) {
+            expect(res.text).toContain(expectedText);
+          } else {
+            expect(res.text).toContain(expectedText);
+          }
+          expect(res.text).toContain('Anything else');
         });
     });
-
   });
+
   describe('on POST', () => {
     it('should return follow up page ', async () => {
       mockGetCancelUrl.mockImplementation(() => CANCEL_URL);
