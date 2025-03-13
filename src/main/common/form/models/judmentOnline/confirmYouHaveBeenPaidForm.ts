@@ -7,7 +7,7 @@ export class DateYouHaveBeenPaidForm {
 
   @ValidateIf(o => (o.day <32 && o.month<13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(DateNotBeforeReferenceDate, ['judgmentByAdmissionIssueDate'], { message: 'ERRORS.VALID_PAID_IN_FULL_DATE' })
+  @Validate(DateNotBeforeReferenceDate, ['joIssuedDate'], { message: 'ERRORS.VALID_PAID_IN_FULL_DATE' })
     date?: Date;
 
   @Min(1872,{message:'ERRORS.VALID_YEAR'})
@@ -25,16 +25,16 @@ export class DateYouHaveBeenPaidForm {
   @IsNotEmpty({message: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.CHECK_ERROR_MESSAGE'})
     confirmed?: boolean;
 
-  judgmentByAdmissionIssueDate: Date;
+  joIssuedDate: Date;
 
-  constructor(year?: string, month?: string, day?: string, confirmed?: boolean, judgmentByAdmissionIssueDate?: Date) {
+  constructor(year?: string, month?: string, day?: string, confirmed?: boolean, joIssuedDate?: Date) {
     if (day !== undefined && month !== undefined && year != undefined) {
       this.day = Number(day);
       this.month = Number(month);
       this.year = Number(year);
       this.date = DateConverter.convertToDate(year, month, day);
       this.confirmed = confirmed;
-      this.judgmentByAdmissionIssueDate = judgmentByAdmissionIssueDate;
+      this.joIssuedDate = joIssuedDate;
     }
   }
 }
