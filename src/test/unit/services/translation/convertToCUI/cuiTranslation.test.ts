@@ -408,7 +408,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     const repaymentPlan = {
-      paymentAmount : 1000,
+      paymentAmount : '1000.00',
       repaymentFrequency : 'MONTH',
       firstRepaymentDate : new Date('2024-06-01'),
     };
