@@ -107,7 +107,8 @@
       "START_NOW": "Dechrau nawr",
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Uwchlwytho dogfennau ychwanegol",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd",
+      "CLOSE_AND_RETURN_TO_DETAILS": "Cau a dychwelyd i fanylion yr achos"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -540,7 +541,7 @@
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
         "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
-        "WE_TRY_TO_ANSWER": "We try to answer queries within 10 days, but it could take longer.",
+        "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
         "SEND_A_MESSAGE": "Send a message"
       },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "What do you want to do?",
