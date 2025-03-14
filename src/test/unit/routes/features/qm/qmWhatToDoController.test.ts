@@ -48,54 +48,21 @@ describe('Query management what do do controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return what to do page GET_UPDATE', async () => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
+
+    it.each([
+      [WhatToDoTypeOption.GET_UPDATE, 'Get an update on my case', 'What do you want to do?'],
+      [WhatToDoTypeOption.SEND_UPDATE, 'Send an update on my case', 'What do you want to do?'],
+      [WhatToDoTypeOption.SEND_DOCUMENTS, 'Send documents', 'What documents do you want to send?'],
+      [WhatToDoTypeOption.SOLVE_PROBLEM, 'Solve a problem I am having using the Money claims system', 'What are you trying to do?'],
+      [WhatToDoTypeOption.MANAGE_HEARING, 'Manage your hearing', 'What do you need to do?'],
+    ])('should open what to do page %s with caption %s and title %s', async (qmType, caption, title) => {
+      mockGetCaption.mockImplementation(() => `PAGES.QM.CAPTIONS.${qmType}`);
       await request(app)
-        .get(getUrlByQmType(WhatToDoTypeOption.GET_UPDATE))
+        .get(getUrlByQmType(qmType))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Get an update on my case');
-        });
-    });
-
-    it('should return what to do page SEND_UPDATE', async () => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_UPDATE');
-      await request(app)
-        .get(getUrlByQmType(WhatToDoTypeOption.SEND_UPDATE))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Send an update on my case');
-        });
-    });
-
-    it('should return what to do page SEND_DOCUMENTS', async () => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
-      await request(app)
-        .get(getUrlByQmType(WhatToDoTypeOption.SEND_DOCUMENTS))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Send documents');
-
-        });
-    });
-
-    it('should return what to do page SOLVE_PROBLEM', async () => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SOLVE_PROBLEM');
-      await request(app)
-        .get(getUrlByQmType(WhatToDoTypeOption.SOLVE_PROBLEM))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Solve a problem I am having using the Money claims system');
-        });
-    });
-
-    it('should return what to do page MANAGE_HEARING', async () => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.MANAGE_HEARING');
-      await request(app)
-        .get(getUrlByQmType(WhatToDoTypeOption.MANAGE_HEARING))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Manage your hearing');
+          expect(res.text).toContain(caption);
+          expect(res.text).toContain(title);
         });
     });
 
@@ -115,11 +82,11 @@ describe('Query management what do do controller', () => {
   describe('on POST', () => {
     describe('Validation Tests', () => {
       it.each([
-        [WhatToDoTypeOption.GET_UPDATE, TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT],
-        [WhatToDoTypeOption.SEND_UPDATE, TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT],
-        [WhatToDoTypeOption.SEND_DOCUMENTS, 'You must select which documents you want to send before you can continue.'],
-        [WhatToDoTypeOption.SOLVE_PROBLEM, 'You must select what you are trying to do before you can continue.'],
-        [WhatToDoTypeOption.MANAGE_HEARING, TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT],
+        [WhatToDoTypeOption.GET_UPDATE, 'You must select what update you want to give the court.'],
+        [WhatToDoTypeOption.SEND_UPDATE, 'You must select what update you want to give the court.'],
+        [WhatToDoTypeOption.SEND_DOCUMENTS, 'You must select which documents you want to send.'],
+        [WhatToDoTypeOption.SOLVE_PROBLEM, 'You must select what problem you are having with the Money claims system.'],
+        [WhatToDoTypeOption.MANAGE_HEARING, 'You must select how you want to manage your hearing.'],
       ])(
         'should validate the page %s',
         async (qmType, expectedMessage) => {

@@ -545,8 +545,8 @@
         "SEND_A_MESSAGE": "Send a message"
       },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "Beth ydych chi eisiau ei wneud?",
-      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "Pa ddogfennau ydych chi am eu hanfon?",
-      "WHAT_ARE_TRYING_TODO_TITLE": "Beth ydych chi'n ceisio ei wneud?",
+      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "What documents do you want to send?",
+      "WHAT_ARE_TRYING_TODO_TITLE": "What are you trying to do?",
       "WHAT_DO_YOU_NEED_TODO_TITLE": "What do you need to do?",
       "OPTIONS": {
         "CHANGE_CASE": {
@@ -5076,8 +5076,10 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "YMae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych chi am eu hanfon cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae'n rhaid i chi ddewis beth rydych chi'n ceisio ei wneud cyn y gallwch chi barhau.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",
+    "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "You must select how you want to manage your hearing.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
