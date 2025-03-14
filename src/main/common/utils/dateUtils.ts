@@ -155,13 +155,6 @@ export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM
   return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }
 
-export const  isAfter4PM = (startDate: Date) => {
-  if (startDate) {
-    return new Date(startDate).getHours() > 15;
-  }
-  return false;
-};
-
 export const roundOffTwoDecimals = (amount: number) => {
   return Math.round((amount + Number.EPSILON) * 100) / 100;
 };
