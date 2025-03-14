@@ -23,9 +23,10 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForLipsEnabledAndLocationWhiteListed, isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {updateQueryManagementDashboardItems} from 'services/features/qm/queryManagementService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,6 +35,8 @@ const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'M
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+  const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.issueDate);
+
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     dashboard.items.forEach((taskList) => {
@@ -54,7 +57,11 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       || claim.defendantUserDetails === undefined
       || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
       || (claim.isAnyPartyBilingual() && claim.generalApplications.length === 0)) {
-      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      if (!queryManagementFlagEnabled){
+        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      } else {
+        updateQueryManagementDashboardItems(dashboard, GA_DASHBOARD_EXCLUSIONS[0], claim);
+      }
     }
 
     return dashboard;
