@@ -545,6 +545,9 @@
         "SEND_A_MESSAGE": "Send a message"
       },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "Beth ydych chi eisiau ei wneud?",
+      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "Pa ddogfennau ydych chi am eu hanfon?",
+      "WHAT_ARE_TRYING_TODO_TITLE": "Beth ydych chi'n ceisio ei wneud?",
+      "WHAT_DO_YOU_NEED_TODO_TITLE": "What do you need to do?",
       "OPTIONS": {
         "CHANGE_CASE": {
           "TEXT": "Gofyn i’r llys newid rhywbeth ar eich achos (gwneud cais)",
@@ -579,7 +582,7 @@
       },
       "QUALIFY": {
         "TITLES": {
-          "FOLLOW_UP": "Follow up on an existing message",
+          "FOLLOW_UP": "Mynd ar drywydd neges sy'n bodoli eisoes",
           "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
           "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
@@ -629,29 +632,29 @@
             "TEXT": "Rhywbeth arall"
           },
           "ENFORCEMENT_REQUESTS": {
-            "TEXT": "Enforcement requests"
+            "TEXT": "Ceisiadau gorfodi"
           },
           "CLAIM_DOCUMENTS_AND_EVIDENCE": {
-            "TEXT": "Claim documents and evidence"
+            "TEXT": "Dogfennau a thystiolaeth am yr hawliad"
           },
           "SUBMIT_RESPONSE_CLAIM": {
-            "TEXT": "Submit a response to a claim"
+            "TEXT": "Cyflwyno ymateb i hawliad"
           },
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": {
-            "TEXT": "See the claim on my account"
+            "TEXT": "Gweld yr hawliad ar fy nghyfrif"
           },
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": {
-            "TEXT": "View documents on my account"
+            "TEXT": "Gweld dogfennau ar fy nghyfrif"
           },
           "CHANGE_THE_HEARING_DATE": {
-            "TEXT": "Change the hearing date"
+            "TEXT": "Newid dyddiad y gwrandawiad"
           },
           "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
-            "TEXT": "Change something about the hearing",
-            "HINT": "For example hearing location or how you attend the hearing"
+            "TEXT": "Newid rhywbeth am y gwrandawiad",
+            "HINT": "Er enghraifft, lleoliad gwrandawiad neu sut rydych chi'n mynychu'r gwrandawiad"
           },
           "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
-            "TEXT": "Ask for help and support during my hearing"
+            "TEXT": "Gofyn am help a chefnogaeth yn ystod fy ngwrandawiad"
           }
         }
       },
@@ -660,8 +663,8 @@
         "GET_UPDATE": "Cael yr wybodaeth ddiweddaraf am fy achos",
         "SEND_UPDATE": "Anfonwch ddiweddariad am fy achos",
         "SEND_DOCUMENTS": "Anfon dogfennau",
-        "SOLVE_PROBLEM": "CAPTION SOLVE_PROBLEM",
-        "MANAGE_HEARING": "CAPTION MANAGE_HEARING",
+        "SOLVE_PROBLEM": "Datrys problem rwy’n ei chael gan ddefnyddio’r system hawliadau am arian",
+        "MANAGE_HEARING": "Rheoli eich gwrandawiad",
         "GET_SUPPORT": "CAPTION GET_SUPPORT",
         "FOLLOW_UP": "CAPTION FOLLOW_UP",
         "SOMETHING_ELSE": "CAPTION SOMETHING_ELSE"
@@ -671,14 +674,14 @@
       },
       "QUALIFY_SECTIONS": {
         "FOLLOW_UP": {
-          "PARAGRAPH_1": "Your messages are listed on your dashboard.",
+          "PARAGRAPH_1": "Mae eich negeseuon wedi’u rhestru ar eich dangosfwrdd.",
           "LINK": {
-            "TEXT": "Applications and messages to the court",
+            "TEXT": "Gallwch fynd ar drywydd neges drwy ddewis yr un yr ydych am ei weld o’r adran",
             "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
-            "TEXT_AFTER": " section."
+            "TEXT_AFTER": ""
           },
-          "PARAGRAPH_2": "You can reply to any message from the court, your reply must be related to the subject of your original message.",
-          "PARAGRAPH_3": "Do not send a follow up message if it has been less than 10 days since you sent your last message to the court as this could slow down the response from the court."
+          "PARAGRAPH_2": "Gallwch ymateb i unrhyw neges gan y llys, rhaid i'ch ateb fod yn gysylltiedig â phwnc eich neges wreiddiol.",
+          "PARAGRAPH_3": "Peidiwch ag anfon neges ddilynol os yw wedi bod yn llai na 10 diwrnod ers i chi anfon eich neges olaf i’r llys gan y gallai hyn arafu’r ymateb gan y llys."
         },
         "ENFORCEMENT_REQUESTS": {
           "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
@@ -5073,8 +5076,8 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "YMae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send before you can continue.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what you are trying to do before you can continue.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych chi am eu hanfon cyn y gallwch chi barhau.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae'n rhaid i chi ddewis beth rydych chi'n ceisio ei wneud cyn y gallwch chi barhau.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
