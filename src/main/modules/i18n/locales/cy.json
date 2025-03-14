@@ -2155,7 +2155,8 @@
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Cadarnhau trefniadau’r treial.",
         "PAY_HEARING_FEE": "Talu ffi’r gwrandawiad.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Treial neu Wrandawiad wedi’i drefnu ar gyfer yr achos hwn.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Mae eich dogfennau'n cael eu prosesu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "HEARING_FEE_UNPAID": "Mae’r hawliad hwn wedi cael ei ddileu.",
         "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
@@ -2205,7 +2206,8 @@
         "TRIAL_ARRANGEMENTS_REQUIRED": "Cadarnhau trefniadau eich treial.",
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Cadarnhau trefniadau’r treial.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Treial neu Wrandawiad wedi’i drefnu ar gyfer yr achos hwn.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Mae eich dogfennau'n cael eu prosesu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -5399,7 +5401,8 @@
         "ERROR_INPUT": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb."
       }
     },
-    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
+    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol.",
+    "VALID_PAID_IN_FULL_DATE": "Rhaid i’r dyddiad ar gyfer talu yn llawn fod ar neu ar ôl dyddiad y dyfarniad"
   },
   "BANNERS" : {
     "CUI_CP" : {
