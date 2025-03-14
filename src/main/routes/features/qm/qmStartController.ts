@@ -35,18 +35,18 @@ const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.SOMETHING_ELSE]: QM_CREATE_QUERY_URL,
 };
 
-const getItems = (option: string, lang: string) => {
+const getItems = (option: string, lng: string) => {
   const pageInfo = 'PAGES.QM.OPTIONS';
   return [
-    new RadioButtonItems(WhatToDoTypeOption.CHANGE_CASE, t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.TEXT`, {lang} ),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.CHANGE_CASE),
-    new RadioButtonItems(WhatToDoTypeOption.GET_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.GET_UPDATE}.TEXT`, {lang}), null, option === WhatToDoTypeOption.GET_UPDATE),
-    new RadioButtonItems(WhatToDoTypeOption.SEND_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.TEXT`, {lang}),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lang}), option === WhatToDoTypeOption.SEND_UPDATE),
-    new RadioButtonItems(WhatToDoTypeOption.SEND_DOCUMENTS, t(`${pageInfo}.${WhatToDoTypeOption.SEND_DOCUMENTS}.TEXT`, {lang}), null,  option === WhatToDoTypeOption.SEND_DOCUMENTS),
-    new RadioButtonItems(WhatToDoTypeOption.SOLVE_PROBLEM, t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.TEXT`, {lang}),  t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.HINT`, {lang}), option === WhatToDoTypeOption.SOLVE_PROBLEM),
-    new RadioButtonItems(WhatToDoTypeOption.MANAGE_HEARING, t(`${pageInfo}.${WhatToDoTypeOption.MANAGE_HEARING}.TEXT`, {lang}), null, option === WhatToDoTypeOption.MANAGE_HEARING),
-    new RadioButtonItems(WhatToDoTypeOption.GET_SUPPORT, t(`${pageInfo}.${WhatToDoTypeOption.GET_SUPPORT}.TEXT`, {lang}), null, option === WhatToDoTypeOption.GET_SUPPORT),
-    new RadioButtonItems(WhatToDoTypeOption.FOLLOW_UP, t(`${pageInfo}.${WhatToDoTypeOption.FOLLOW_UP}.TEXT`, {lang}), null, option === WhatToDoTypeOption.FOLLOW_UP),
-    new RadioButtonItems(WhatToDoTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${WhatToDoTypeOption.SOMETHING_ELSE}.TEXT`, {lang}), null, option === WhatToDoTypeOption.SOMETHING_ELSE),
+    new RadioButtonItems(WhatToDoTypeOption.CHANGE_CASE, t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.TEXT`, {lng} ),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lng}), option === WhatToDoTypeOption.CHANGE_CASE),
+    new RadioButtonItems(WhatToDoTypeOption.GET_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.GET_UPDATE}.TEXT`, {lng}), null, option === WhatToDoTypeOption.GET_UPDATE),
+    new RadioButtonItems(WhatToDoTypeOption.SEND_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.TEXT`, {lng}),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lng}), option === WhatToDoTypeOption.SEND_UPDATE),
+    new RadioButtonItems(WhatToDoTypeOption.SEND_DOCUMENTS, t(`${pageInfo}.${WhatToDoTypeOption.SEND_DOCUMENTS}.TEXT`, {lng}), null,  option === WhatToDoTypeOption.SEND_DOCUMENTS),
+    new RadioButtonItems(WhatToDoTypeOption.SOLVE_PROBLEM, t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.TEXT`, {lng}),  t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.HINT`, {lng}), option === WhatToDoTypeOption.SOLVE_PROBLEM),
+    new RadioButtonItems(WhatToDoTypeOption.MANAGE_HEARING, t(`${pageInfo}.${WhatToDoTypeOption.MANAGE_HEARING}.TEXT`, {lng}), null, option === WhatToDoTypeOption.MANAGE_HEARING),
+    new RadioButtonItems(WhatToDoTypeOption.GET_SUPPORT, t(`${pageInfo}.${WhatToDoTypeOption.GET_SUPPORT}.TEXT`, {lng}), null, option === WhatToDoTypeOption.GET_SUPPORT),
+    new RadioButtonItems(WhatToDoTypeOption.FOLLOW_UP, t(`${pageInfo}.${WhatToDoTypeOption.FOLLOW_UP}.TEXT`, {lng}), null, option === WhatToDoTypeOption.FOLLOW_UP),
+    new RadioButtonItems(WhatToDoTypeOption.SOMETHING_ELSE, t(`${pageInfo}.${WhatToDoTypeOption.SOMETHING_ELSE}.TEXT`, {lng}), null, option === WhatToDoTypeOption.SOMETHING_ELSE),
   ];
 };
 
