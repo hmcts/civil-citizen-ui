@@ -13,14 +13,17 @@ const fields = {
 
 class PhoneConfirmation {
 
-  async enterPhoneDetails() {
+  async goToPhoneDetailsScreen() {
     await I.forceClick(fields.availabilityForMediationLink);
+  }
+
+  async enterPhoneDetails() {
     I.waitForContent('Can the mediator use ', config.WaitForText);
     I.click('Save and continue');
     I.see('Choose option: Yes or No');
     I.click(fields.yesButton);
     contactUs.verifyContactUs();
-    I.click('Save and continue');
+    await I.click('Save and continue');
   }
 
   async enterAltPhoneDetails() {

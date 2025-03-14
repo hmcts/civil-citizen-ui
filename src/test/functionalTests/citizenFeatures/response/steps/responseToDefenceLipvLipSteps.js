@@ -61,6 +61,7 @@ class ResponseToDefenceLipVLipSteps {
       await this.verifyDQForFastTrack();
     } else {
       await mediationSteps.EnterTelephoneMediationDetails();
+      await mediationSteps.goToPhoneDetailsScreen();
       await mediationSteps.ConfirmPhoneDetails();
       await mediationSteps.ConfirmEmailDetails();
       await mediationSteps.EnterUnavailableDates();

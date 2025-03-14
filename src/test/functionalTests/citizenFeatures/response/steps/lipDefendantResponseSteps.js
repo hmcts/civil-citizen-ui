@@ -191,17 +191,21 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef) {
+  async EnterPersonalDetails(claimRef, addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(true);
+    if (addPhoneNum) {
+      await contactNumberDetailsPage.enterContactNumber(true);
+    }
   }
 
-  async EnterCompDetails() {
+  async EnterCompDetails(addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    await contactNumberDetailsPage.enterContactNumber(true);
+    if (addPhoneNum) {
+      await contactNumberDetailsPage.enterContactNumber(true);
+    }
   }
 
   async EnterPersonalDetailsError(claimRef) {
@@ -529,6 +533,10 @@ class ResponseSteps {
 
   async ConfirmEmailDetails() {
     await emailConfirmation.confirmEmail();
+  }
+
+  async goToPhoneDetailsScreen() {
+    await phoneConfirmation.goToPhoneDetailsScreen();
   }
 
   async ConfirmPhoneDetails() {
