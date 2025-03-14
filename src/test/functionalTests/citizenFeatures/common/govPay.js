@@ -3,6 +3,7 @@ const I = actor();
 class GovPay {
 
   async addValidCardDetails(feeAmount) {
+    I.waitForText('We’ll send your payment confirmation here',60);
     I.waitForContent(feeAmount, 60);
     I.fillField('//*[@id="card-no"]', '4444333322221111');
     I.fillField('//*[@id="expiry-month"]', '12');
