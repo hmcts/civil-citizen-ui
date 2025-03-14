@@ -82,11 +82,11 @@ describe('Query management what do do controller', () => {
   describe('on POST', () => {
     describe('Validation Tests', () => {
       it.each([
-        [WhatToDoTypeOption.GET_UPDATE, TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT],
-        [WhatToDoTypeOption.SEND_UPDATE, TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT],
-        [WhatToDoTypeOption.SEND_DOCUMENTS, 'You must select which documents you want to send before you can continue.'],
-        [WhatToDoTypeOption.SOLVE_PROBLEM, 'You must select what you are trying to do before you can continue.'],
-        [WhatToDoTypeOption.MANAGE_HEARING, TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT],
+        [WhatToDoTypeOption.GET_UPDATE, 'You must select what update you want to give the court.'],
+        [WhatToDoTypeOption.SEND_UPDATE, 'You must select what update you want to give the court.'],
+        [WhatToDoTypeOption.SEND_DOCUMENTS, 'You must select which documents you want to send.'],
+        [WhatToDoTypeOption.SOLVE_PROBLEM, 'You must select what problem you are having with the Money claims system.'],
+        [WhatToDoTypeOption.MANAGE_HEARING, 'You must select how you want to manage your hearing.'],
       ])(
         'should validate the page %s',
         async (qmType, expectedMessage) => {

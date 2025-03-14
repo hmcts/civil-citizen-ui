@@ -36,8 +36,11 @@ const getValidationMessage = (option: WhatToDoTypeOption) => {
 };
 
 const validationMap: Partial<Record<WhatToDoTypeOption, string>> = {
+  [WhatToDoTypeOption.GET_UPDATE]: 'ERRORS.QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT',
+  [WhatToDoTypeOption.SEND_UPDATE]: 'ERRORS.QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT',
   [WhatToDoTypeOption.SEND_DOCUMENTS]: 'ERRORS.QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS',
   [WhatToDoTypeOption.SOLVE_PROBLEM]: 'ERRORS.QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM',
+  [WhatToDoTypeOption.MANAGE_HEARING]: 'ERRORS.QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING',
 };
 
 const getItems = (option: string, qmType:WhatToDoTypeOption, lang: string) => {

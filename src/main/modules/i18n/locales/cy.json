@@ -5076,8 +5076,10 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send before you can continue.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what you are trying to do before you can continue.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",
+    "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "You must select how you want to manage your hearing.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
