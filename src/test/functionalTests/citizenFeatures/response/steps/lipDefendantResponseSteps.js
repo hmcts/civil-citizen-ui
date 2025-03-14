@@ -191,20 +191,20 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef, carmEnabled) {
+  async EnterPersonalDetails(claimRef, addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (addPhoneNum) {
+      await contactNumberDetailsPage.enterContactNumber(true);
     }
   }
 
-  async EnterCompDetails(carmEnabled) {
+  async EnterCompDetails(addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (addPhoneNum) {
+      await contactNumberDetailsPage.enterContactNumber(true);
     }
   }
 
@@ -535,6 +535,10 @@ class ResponseSteps {
     await emailConfirmation.confirmEmail();
   }
 
+  async goToPhoneDetailsScreen() {
+    await phoneConfirmation.goToPhoneDetailsScreen();
+  }
+
   async ConfirmPhoneDetails() {
     await phoneConfirmation.enterPhoneDetails();
   }
@@ -567,7 +571,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -580,10 +584,10 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption(carmEnabled);
+    await this.SelectLanguageOption();
   }
 
-  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterClaimantExpertDetails();
@@ -596,7 +600,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption(carmEnabled);
+    await this.SelectLanguageOption();
   }
   async EnterDQForMultiTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
@@ -619,7 +623,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
@@ -647,7 +651,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterClaimantDQForIntTrack(claimRef, isIndividual = true) {
@@ -675,7 +679,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterDQForFastTrack(claimRef, isIndividual = true){
@@ -695,7 +699,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async SelectHearingRequirements(claimRef) {
@@ -750,8 +754,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(carmEnabled = false) {
-    await welshLanguage.selectLanguageOption(carmEnabled);
+  async SelectLanguageOption(smallClaims = true) {
+    await welshLanguage.selectLanguageOption(smallClaims);
   }
 
   async SelectOptionForTriedToSettle(claimRef){
