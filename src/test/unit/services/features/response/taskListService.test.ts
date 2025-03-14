@@ -236,7 +236,7 @@ describe('Response Task List service', () => {
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention .paymentOption = PaymentOptionType.INSTALMENTS;
       caseData.fullAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 5,
+        paymentAmount: '5',
         repaymentFrequency: 'monthly',
       };
 

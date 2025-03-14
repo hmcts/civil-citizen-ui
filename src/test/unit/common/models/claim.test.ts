@@ -2022,14 +2022,14 @@ describe('Documents', () => {
       //Given
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
-          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
+          repaymentPlan: {paymentAmount: '50', repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
       };
     });
     it('should return true with fullAdmission by installment', () => {
       //Given
       claim.fullAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
-          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.MONTH, firstRepaymentDate: new Date(Date.now())}},
+          repaymentPlan: {paymentAmount: '50', repaymentFrequency: TransactionSchedule.MONTH, firstRepaymentDate: new Date(Date.now())}},
       };
       //When
       const result = claim.hasDefendantCompletedPaymentIntention();

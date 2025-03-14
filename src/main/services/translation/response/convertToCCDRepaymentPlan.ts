@@ -23,7 +23,7 @@ export const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlan
 export const toCCDRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDRepaymentPlan => {
   if (repaymentPlan) {
     return {
-      paymentAmount: convertToPence(repaymentPlan?.paymentAmount),
+      paymentAmount: convertToPence(+repaymentPlan?.paymentAmount),
       repaymentFrequency: toCCDRepaymentPlanFrequency(repaymentPlan?.repaymentFrequency),
       firstRepaymentDate: repaymentPlan?.firstRepaymentDate,
     };

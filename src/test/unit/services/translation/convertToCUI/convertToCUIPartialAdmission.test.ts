@@ -217,7 +217,7 @@ describe('translate partial admission to cui model', () => {
       // Then
       expect(cuiPaymentIntention.paymentOption).toBe(PaymentOptionType.INSTALMENTS);
       expect(cuiPaymentIntention.paymentDate).toBeUndefined();
-      expect(cuiPaymentIntention.repaymentPlan.paymentAmount).toBe(55);
+      expect(cuiPaymentIntention.repaymentPlan.paymentAmount).toBe('55');
       expect(cuiPaymentIntention.repaymentPlan.firstRepaymentDate.toDateString()).toBe('Fri Mar 25 2022');
       expect(cuiPaymentIntention.repaymentPlan.repaymentFrequency).toBe('MONTH');
     });
@@ -275,7 +275,7 @@ describe('translate partial admission to cui model', () => {
       // When
       const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan);
       // Then
-      expect(cuiRepaymentPlan.paymentAmount).toBe(55);
+      expect(cuiRepaymentPlan.paymentAmount).toBe('55');
       expect(cuiRepaymentPlan.firstRepaymentDate).toBeUndefined();
       expect(cuiRepaymentPlan.repaymentFrequency).toBeUndefined();
     });
@@ -309,7 +309,7 @@ describe('translate partial admission to cui model', () => {
       // When
       const cuiRepaymentPlan = toCUIRepaymentPlan(ccdRepaymentPlan);
       // Then
-      expect(cuiRepaymentPlan.paymentAmount).toBe(55);
+      expect(cuiRepaymentPlan.paymentAmount).toBe('55');
       expect(cuiRepaymentPlan.firstRepaymentDate.toDateString()).toBe('Fri Mar 25 2022');
       expect(cuiRepaymentPlan.repaymentFrequency).toBe('MONTH');
     });

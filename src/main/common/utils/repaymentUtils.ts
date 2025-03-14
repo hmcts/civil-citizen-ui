@@ -56,13 +56,13 @@ export const getAmount = (claim: Claim): number => claim.partialAdmission?.howMu
 
 export const getPaymentAmount = (claim: Claim): number => {
   if (claim.isFullAdmission()) {
-    return claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
+    return +claim.fullAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
   }
-  return claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
+  return +claim.partialAdmission?.paymentIntention?.repaymentPlan?.paymentAmount;
 };
 
 export const getPaymentAmountClaimantPlan = (claim: Claim): number => {
-  return claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount;
+  return +claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount;
 };
 
 export const getPaymentDate = (claim: Claim): Date => {

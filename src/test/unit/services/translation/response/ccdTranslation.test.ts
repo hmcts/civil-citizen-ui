@@ -80,7 +80,7 @@ describe('translate response to ccd version', () => {
     //Given
     const claim = createFullAdmitClaim();
     claim.fullAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 100,
+      paymentAmount: '100',
       firstRepaymentDate: new Date(),
       repaymentFrequency: 'MONTH',
     };
@@ -90,14 +90,14 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
     expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount*100);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(+claim.fullAdmission.paymentIntention.repaymentPlan.paymentAmount*100);
   });
 
   it('should translate repayment plan for part admission to ccd', () => {
     //Given
     const claim = createPartAdmitClaim();
     claim.partialAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 100,
+      paymentAmount: '100',
       firstRepaymentDate: new Date(),
       repaymentFrequency: 'MONTH',
     };
@@ -107,7 +107,7 @@ describe('translate response to ccd version', () => {
     expect(ccdResponse.respondent1RepaymentPlan).not.toBeUndefined();
     expect(ccdResponse.respondent1RepaymentPlan?.repaymentFrequency).toBe(CCDRepaymentPlanFrequency.ONCE_ONE_MONTH);
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.firstRepaymentDate);
-    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount*100);
+    expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(+claim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount*100);
   });
 
   it('should translate response type to CCD', () => {

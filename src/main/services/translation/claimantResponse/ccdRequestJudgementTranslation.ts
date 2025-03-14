@@ -12,7 +12,7 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
-import {convertToPence} from '../claim/moneyConversation';
+import {convertToPence, formatAmountTwoDecimalPlaces} from '../claim/moneyConversation';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {toCCDDJPaymentFrequency} from '../response/convertToCCDDJPaymentFrequency';
 import {toCCDDJPaymentOption} from './convertToCCDDJPaymentOption';
@@ -20,7 +20,7 @@ import {toCCDDJPaymentOption} from './convertToCCDDJPaymentOption';
 export interface ClaimantResponsePaymentPlanDetails {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
-  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
+  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: string;
   applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
 }
@@ -51,7 +51,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
       paymentPlanDetails = {
         applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentIntention.paymentOption),
         applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(paymentIntention.repaymentPlan?.repaymentFrequency),
-        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: paymentIntention.repaymentPlan?.paymentAmount,
+        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: formatAmountTwoDecimalPlaces(+paymentIntention.repaymentPlan?.paymentAmount),
         applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(paymentIntention.repaymentPlan?.firstRepaymentDate),
         applicant1RequestedPaymentDateForDefendantSpec: {
           paymentSetDate: convertDateToStringFormat(paymentIntention.paymentDate),
@@ -90,7 +90,7 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
     totalClaimAmount: claim.totalClaimAmount,
     applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentOption),
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claimantResponse.ccjRequest?.repaymentPlanInstalments?.paymentFrequency),
-    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount,
+    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: formatAmountTwoDecimalPlaces(claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(claimantResponse.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date),
     applicant1RequestedPaymentDateForDefendantSpec: {
       paymentSetDate: convertDateToStringFormat(claimantResponse.ccjRequest?.defendantPaymentDate?.date),

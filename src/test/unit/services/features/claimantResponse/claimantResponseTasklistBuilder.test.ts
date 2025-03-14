@@ -655,7 +655,7 @@ describe('Claimant Response Task List builder', () => {
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
-          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
+          repaymentPlan: {paymentAmount: '50', repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
@@ -713,7 +713,7 @@ describe('Claimant Response Task List builder', () => {
       };
       claim.partialAdmission = {
         paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS,
-          repaymentPlan: {paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
+          repaymentPlan: {paymentAmount: '50', repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date(Date.now())}},
       };
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);

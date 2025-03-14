@@ -9,7 +9,7 @@ const logger = Logger.getLogger('selfEmployedAsService');
 const getForm = (totalClaimAmount: number, repaymentPlan: RepaymentPlan, firstRepaymentDate: Date) => {
   return new RepaymentPlanForm(
     totalClaimAmount,
-    repaymentPlan.paymentAmount,
+    +repaymentPlan.paymentAmount,
     repaymentPlan.repaymentFrequency,
     firstRepaymentDate.getFullYear().toString(),
     (firstRepaymentDate.getMonth() + 1).toString(),
@@ -44,7 +44,7 @@ const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm, i
   try {
     const claim = await getClaim(claimId, isPartialAdmission);
     const repaymentPlan: RepaymentPlan = {
-      paymentAmount: form.paymentAmount,
+      paymentAmount: String(form.paymentAmount),
       firstRepaymentDate: form.firstRepaymentDate,
       repaymentFrequency: form.repaymentFrequency,
     };
@@ -64,7 +64,7 @@ const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm, i
 const getClaim = async (claimId: string, isPartialAdmission?: boolean): Promise<Claim> => {
   const claim = await getCaseDataFromStore(claimId);
   const repaymentPlan: RepaymentPlan = {
-    paymentAmount: 0,
+    paymentAmount: '0',
     repaymentFrequency: '',
     firstRepaymentDate: null,
   };

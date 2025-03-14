@@ -15,7 +15,7 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
     const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     return claimantSuggestedInstalments ? new RepaymentPlanForm(
       claimAmountAccepted,
-      claimantSuggestedInstalments.paymentAmount,
+      +claimantSuggestedInstalments.paymentAmount,
       claimantSuggestedInstalments.repaymentFrequency,
       firstRepaymentDate.getFullYear().toString(),
       (firstRepaymentDate.getMonth() + 1).toString(),

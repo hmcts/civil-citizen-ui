@@ -34,7 +34,7 @@ describe("Defendant's response summary service", () => {
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     claim.fullAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 100,
+      paymentAmount: '100',
       repaymentFrequency: 'MONTH',
       firstRepaymentDate: new Date(Date.now()),
     };
@@ -78,7 +78,7 @@ describe("Defendant's response summary service", () => {
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.fullAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 100,
+      paymentAmount: '100',
       repaymentFrequency: 'MONTH',
       firstRepaymentDate: new Date(Date.now()),
     };

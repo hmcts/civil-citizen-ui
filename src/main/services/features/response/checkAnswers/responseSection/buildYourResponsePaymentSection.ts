@@ -71,14 +71,14 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
       responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, {lng: getLng(lang)}), paymentOptionHref, changeLabel(lang)));
       break;
     case PaymentOptionType.BY_SET_DATE:
-      responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, {lng: getLng(lang)}) + ': ' + formatDateToFullDate(paymentDate, getLng(lang)), paymentOptionHref, changeLabel(lang)), 
+      responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, {lng: getLng(lang)}) + ': ' + formatDateToFullDate(paymentDate, getLng(lang)), paymentOptionHref, changeLabel(lang)),
         claim.isBusiness() ? null : buildExplanationRow(claim, claimId, lang),
       ]);
       break;
     case PaymentOptionType.INSTALMENTS: {
       responseSection.summaryList.rows.push(...[
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, {lng: getLng(lang)}), paymentOptionHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `${currencyFormatWithNoTrailingZeros(repaymentPlan?.paymentAmount)}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `${currencyFormatWithNoTrailingZeros(+repaymentPlan?.paymentAmount)}`, repaymentPlanHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_FREQUENCY.${repaymentPlan?.repaymentFrequency}`, {lng: getLng(lang)}), repaymentPlanHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(repaymentPlan?.firstRepaymentDate, getLng(lang)), repaymentPlanHref, changeLabel(lang)),
         claim.isBusiness() ? null : buildExplanationRow(claim, claimId, lang),

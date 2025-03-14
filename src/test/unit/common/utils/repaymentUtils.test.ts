@@ -32,7 +32,7 @@ jest.mock('i18next', () => ({
 }));
 
 const getClaimForFA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
-  const amount = paymentAmount ? paymentAmount : 50;
+  const amount = paymentAmount ? String(paymentAmount) : '50';
   const claim = new Claim();
   const respondent1 = new Party();
   respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -50,7 +50,7 @@ const getClaimForFA = (repaymentFrequency: TransactionSchedule, paymentAmount?: 
 };
 
 const getClaimForPA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
-  const amount = paymentAmount ? paymentAmount : 50;
+  const amount = paymentAmount ? String(paymentAmount) : '50';
   const claim = new Claim();
   claim.totalClaimAmount = 1000;
   claim.respondent1 = new Party();
@@ -125,7 +125,7 @@ describe('repaymentUtils', () => {
       claim.partialAdmission.howMuchDoYouOwe.amount = 200;
       claim.partialAdmission.howMuchDoYouOwe.totalAmount = 1000;
       claim.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -169,7 +169,7 @@ describe('repaymentUtils', () => {
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 50,
+        paymentAmount: '50',
         repaymentFrequency: TransactionSchedule.WEEK,
         firstRepaymentDate: new Date(Date.now()),
       };
@@ -420,7 +420,7 @@ describe('repaymentUtils', () => {
       claim.claimantResponse.suggestedPaymentIntention={
         paymentOption:PaymentOptionType.INSTALMENTS,
         repaymentPlan:{
-          paymentAmount:10,
+          paymentAmount:'10',
           repaymentFrequency:TransactionSchedule.WEEK,
           firstRepaymentDate:new Date(),
         },

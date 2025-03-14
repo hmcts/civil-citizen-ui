@@ -198,7 +198,7 @@ describe('Task List Helpers', () => {
       caseData.partialAdmission.paymentIntention = new PaymentIntention();
       caseData.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
       caseData.partialAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 800,
+        paymentAmount: '800',
       };
       expect(isRepaymentPlanMissing(caseData)).toEqual(false);
     });
@@ -208,7 +208,7 @@ describe('Task List Helpers', () => {
       caseData.fullAdmission = new FullAdmission();
       caseData.fullAdmission.paymentIntention = new PaymentIntention();
       caseData.fullAdmission.paymentIntention.repaymentPlan = {
-        paymentAmount: 800,
+        paymentAmount: '800',
       };
       expect(isFullAdmissionRepaymentPlanMissing(caseData)).toEqual(false);
     });

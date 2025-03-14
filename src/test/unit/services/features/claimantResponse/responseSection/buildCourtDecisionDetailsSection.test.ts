@@ -221,7 +221,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.claimantResponse.suggestedPaymentIntention.paymentOption =
         PaymentOptionType.INSTALMENTS;
       claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
-        paymentAmount: 100,
+        paymentAmount: '100',
         firstRepaymentDate: new Date(),
         repaymentFrequency: 'monthly',
       };

@@ -1,5 +1,5 @@
 export interface RepaymentPlan {
-  paymentAmount?: number;
+  paymentAmount?: string;
   repaymentFrequency?: string;
   firstRepaymentDate?: Date;
 }
