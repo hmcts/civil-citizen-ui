@@ -754,7 +754,7 @@ describe('Check Answers service', () => {
 
     });
 
-    it('should show the check your answers for pay by set date for part admit', () => {
+    it('should show the check your answers for pay by set date for part admit', async () => {
       claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.BY_SET_DATE,
@@ -765,7 +765,7 @@ describe('Check Answers service', () => {
       claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[4].summaryList.rows.length).toEqual(2);
       expect(result.sections[4].summaryList.rows[0]).toEqual({
@@ -785,12 +785,12 @@ describe('Check Answers service', () => {
       });
     });
 
-    it('should show the check your answers for pay by set date for full admit', () => {
+    it('should show the check your answers for pay by set date for full admit', async () => {
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.BY_SET_DATE, paymentDate: new Date()}};
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[4].summaryList.rows.length).toEqual(2);
       expect(result.sections[4].summaryList.rows[0]).toEqual({
@@ -810,7 +810,7 @@ describe('Check Answers service', () => {
       });
     });
 
-    it('should show the check your answers for pay by installments for part admit', () => {
+    it('should show the check your answers for pay by installments for part admit', async () => {
       claim.partialAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.INSTALMENTS,
@@ -819,7 +819,7 @@ describe('Check Answers service', () => {
       };
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);      const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[4].summaryList.rows.length).toEqual(2);
       expect(result.sections[4].summaryList.rows[0]).toEqual({
@@ -839,13 +839,13 @@ describe('Check Answers service', () => {
       });
     });
 
-    it('should show the check your answers for pay by set date for full admit', () => {
+    it('should show the check your answers for pay by set date for full admit', async () => {
       claim.fullAdmission = {paymentIntention: {paymentOption: PaymentOptionType.INSTALMENTS, paymentDate: new Date()}};
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[4].summaryList.rows.length).toEqual(2);
       expect(result.sections[4].summaryList.rows[0]).toEqual({
@@ -875,15 +875,15 @@ describe('Check Answers service', () => {
       claim.partialAdmission = {paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY}};
     });
 
-    it('should check answers for part admit pay immediately for yes option', () => {
+    it('should check answers for part admit pay immediately for yes option', async () => {
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(8).toEqual(result.sections.length);
     });
 
-    it('should check answers for part admit pay immediately for no option', () => {
+    it('should check answers for part admit pay immediately for no option', async () => {
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(8).toEqual(result.sections.length);
     });
   });
@@ -897,17 +897,17 @@ describe('Check Answers service', () => {
       claim.totalClaimAmount = 1500;
     });
 
-    it('should check answers for full defence intention to proceed', () => {
+    it('should check answers for full defence intention to proceed', async () => {
       const expectedResult = generateExpectedResultForFullDefenceIntentionToProceedAccept();
       claim.claimantResponse.intentionToProceed = {option: YesNo.YES};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
 
-    it('should check answers for full defence reject intention to proceed', () => {
+    it('should check answers for full defence reject intention to proceed', async () => {
       const expectedResult = generateExpectedResultForFullDefenceIntentionToProceedReject();
       claim.claimantResponse.intentionToProceed = {option: YesNo.NO};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
   });
@@ -922,17 +922,17 @@ describe('Check Answers service', () => {
       claim.totalClaimAmount = 1500;
     });
 
-    it('should check answers for part admit and paid accept', () => {
+    it('should check answers for part admit and paid accept', async () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaidAccept();
       claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
 
-    it('should check answers for part admit and paid reject', () => {
+    it('should check answers for part admit and paid reject', async () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaidReject();
       claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.NO};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
   });
@@ -947,17 +947,17 @@ describe('Check Answers service', () => {
       claim.totalClaimAmount = 1500;
     });
 
-    it('should check answers for part admit and payment accept', () => {
+    it('should check answers for part admit and payment accept', async () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaymentAccept();
       claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
     });
 
-    it('should check answers for part admit and payment reject', () => {
+    it('should check answers for part admit and payment reject', async () => {
       const expectedResult = generateExpectedResultForPartAdmitAndPaymentReject();
       claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.NO};
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
       expect(expectedResult).toEqual(result);
       expect(8).toEqual(result.sections.length);
 

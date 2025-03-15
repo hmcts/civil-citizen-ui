@@ -18,12 +18,16 @@ jest.spyOn(draftStoreService,'saveDraftClaim');
 
 describe('Judgment Amount Summary Extended', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
+  const civilServiceUrl = config.get<string>('services.civilService.url');
   const idamUrl: string = config.get('idamUrl');
 
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock(civilServiceUrl)
+      .post('/fees/claim/calculate-interest')
+      .reply(200, '0.15');
   });
 
   describe('on GET', () => {

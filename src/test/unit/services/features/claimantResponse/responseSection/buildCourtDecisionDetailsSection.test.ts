@@ -16,7 +16,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.claimantResponse = new ClaimantResponse();
     });
 
-    it('should show the check your answers for pay by set date for part admit', () => {
+    it('should show the check your answers for pay by set date for part admit', async () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = {
@@ -28,7 +28,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.claimantResponse.courtDecision =
         RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[7].summaryList.rows.length).toEqual(3);
       expect(result.sections[7].summaryList.rows[0]).toEqual({
@@ -57,7 +57,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       });
     });
 
-    it('should show the check your answers for pay by set date for full admit', () => {
+    it('should show the check your answers for pay by set date for full admit', async () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = {
@@ -70,7 +70,7 @@ describe('Check Answers Page :Court Decision Section', () => {
         RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[7].summaryList.rows.length).toEqual(3);
       expect(result.sections[7].summaryList.rows[0]).toEqual({
@@ -99,7 +99,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       });
     });
 
-    it('should show the check your answers for pay by set date for court decision favours claimant', () => {
+    it('should show the check your answers for pay by set date for court decision favours claimant', async () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.claimantResponse.courtDecision =
@@ -110,7 +110,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
 
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[7].summaryList.rows.length).toEqual(3);
       expect(result.sections[7].summaryList.rows[0]).toEqual({
@@ -131,7 +131,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       });
     });
 
-    it('should show the check your answers for pay by installments for part admit', () => {
+    it('should show the check your answers for pay by installments for part admit', async () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = {
@@ -143,7 +143,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       claim.claimantResponse.courtDecision =
         RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[7].summaryList.rows.length).toEqual(3);
       expect(result.sections[7].summaryList.rows[0]).toEqual({
@@ -172,7 +172,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       });
     });
 
-    it('should show the check your answers for pay by installments for full admit', () => {
+    it('should show the check your answers for pay by installments for full admit', async () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = {
@@ -185,7 +185,7 @@ describe('Check Answers Page :Court Decision Section', () => {
         RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT;
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[7].summaryList.rows.length).toEqual(3);
       expect(result.sections[7].summaryList.rows[0]).toEqual({
@@ -214,7 +214,7 @@ describe('Check Answers Page :Court Decision Section', () => {
       });
     });
 
-    it('should show the check your answers for pay by installments for court decision favours claimant', () => {
+    it('should show the check your answers for pay by installments for court decision favours claimant', async () => {
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
@@ -229,7 +229,7 @@ describe('Check Answers Page :Court Decision Section', () => {
         RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       const expectedPaymentDate = formatDateToFullDate(new Date());
-      const result = getSummarySections('12345', claim, 'en');
+      const result = await getSummarySections('12345', claim, 'en');
 
       expect(result.sections[7].summaryList.rows.length).toEqual(3);
       expect(result.sections[7].summaryList.rows[0]).toEqual({
