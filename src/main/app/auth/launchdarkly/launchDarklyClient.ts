@@ -1,7 +1,6 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
-import {DateTime} from "luxon";
 
 let ldClient: LDClient;
 let testData: TestData;
@@ -104,10 +103,10 @@ export async function getEaFlagValueForGaLips(
 }
 
 export async function isGaForLipsEnabledAndLocationWhiteListed(location: string): Promise<boolean> {
-
-  const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
-  const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
-  return gaLipsFlag && eaFlagForGaLips;
+  return true;
+  // const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
+  // const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
+  // return gaLipsFlag && eaFlagForGaLips;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
