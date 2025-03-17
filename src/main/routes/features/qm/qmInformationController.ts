@@ -15,7 +15,7 @@ import {
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  attachmentOfEarningsOrderUrl, chargingOrderUrl, checkCivilFeesListUrl,
+  attachmentOfEarningsOrderUrl, chargingOrderUrl, checkCivilFeesListUrl, findCourtTribunalUrl,
   thirdPartyDebtOrderUrl,
   warrantOfControlUrl,
   whatToDoUrl,
@@ -75,7 +75,15 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         }
         break;
       }
-
+      case QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
+          .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`)
+          .addLink(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,QM_CREATE_QUERY_URL), `${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_1.TEXT_AFTER`)
+          .addLink(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_2.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_2.TEXT_BEFORE`, null, null, true);
+        break;
+      }
     }
   }
   return pageSection
@@ -89,6 +97,8 @@ export const getTitle = (qualifyingQuestionTypeOption: QualifyingQuestionTypeOpt
 const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS]: 'PAGES.QM.QUALIFY.TITLES.ENFORCEMENT_REQUESTS',
   [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_DOCUMENTS_AND_EVIDENCE',
+  [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SUBMIT_RESPONSE_CLAIM',
+
 };
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;

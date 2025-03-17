@@ -594,7 +594,7 @@
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
           "ENFORCEMENT_REQUESTS": "Send enforcement requests",
           "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
-          "SUBMIT_RESPONSE_CLAIM": "SUBMIT_RESPONSE_CLAIM_TITLE",
+          "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "SEE_THE_CLAIM_ON_MY_ACCOUNT_TITLE",
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "VIEW_DOCUMENTS_ON_MY_ACCOUNT_TITLE",
           "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
@@ -672,6 +672,19 @@
         "CAPTION": "Contact or apply to the court"
       },
       "QUALIFY_SECTIONS": {
+        "SUBMIT_RESPONSE_CLAIM" : {
+          "SUBTITLE_1": "Get support to respond",
+          "PARAGRAPH_1": "If you cannot submit a response using the Money claims system you should contact the court for help.",
+          "LINK_1": {
+            "TEXT": "send a message to the court",
+            "TEXT_BEFORE": "If the issue is not urgent, you can ",
+            "TEXT_AFTER": ". We try to answer messages within 10 days, but it could take longer."
+          },
+          "LINK_2": {
+            "TEXT": "contact details for the court (opens in a new window)",
+            "TEXT_BEFORE": "If the issue is urgent, you should call the court handling your case. Find the "
+          }
+        },
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {
