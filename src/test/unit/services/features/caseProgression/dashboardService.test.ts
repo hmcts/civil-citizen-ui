@@ -378,7 +378,7 @@ describe('dashboardService', () => {
 
           const claim = new Claim();
 
-          await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq)
+          await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq);
 
           expect(queryManagementSpy).not.toBeCalled();
         });

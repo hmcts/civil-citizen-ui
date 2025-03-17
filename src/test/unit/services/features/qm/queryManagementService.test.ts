@@ -1,9 +1,9 @@
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {Claim} from "models/claim";
-import {updateQueryManagementDashboardItems} from "services/features/qm/queryManagementService";
-import {CaseRole} from "form/models/caseRoles";
+import {Claim} from 'models/claim';
+import {updateQueryManagementDashboardItems} from 'services/features/qm/queryManagementService';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
