@@ -40,7 +40,7 @@ const getItems = (option: string, lng: string) => {
   return [
     new RadioButtonItems(WhatToDoTypeOption.CHANGE_CASE, t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.TEXT`, {lng} ),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lng}), option === WhatToDoTypeOption.CHANGE_CASE),
     new RadioButtonItems(WhatToDoTypeOption.GET_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.GET_UPDATE}.TEXT`, {lng}), null, option === WhatToDoTypeOption.GET_UPDATE),
-    new RadioButtonItems(WhatToDoTypeOption.SEND_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.TEXT`, {lng}),  t(`${pageInfo}.${WhatToDoTypeOption.CHANGE_CASE}.HINT`, {lng}), option === WhatToDoTypeOption.SEND_UPDATE),
+    new RadioButtonItems(WhatToDoTypeOption.SEND_UPDATE, t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.TEXT`, {lng}),  t(`${pageInfo}.${WhatToDoTypeOption.SEND_UPDATE}.HINT`, {lng}), option === WhatToDoTypeOption.SEND_UPDATE),
     new RadioButtonItems(WhatToDoTypeOption.SEND_DOCUMENTS, t(`${pageInfo}.${WhatToDoTypeOption.SEND_DOCUMENTS}.TEXT`, {lng}), null,  option === WhatToDoTypeOption.SEND_DOCUMENTS),
     new RadioButtonItems(WhatToDoTypeOption.SOLVE_PROBLEM, t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.TEXT`, {lng}),  t(`${pageInfo}.${WhatToDoTypeOption.SOLVE_PROBLEM}.HINT`, {lng}), option === WhatToDoTypeOption.SOLVE_PROBLEM),
     new RadioButtonItems(WhatToDoTypeOption.MANAGE_HEARING, t(`${pageInfo}.${WhatToDoTypeOption.MANAGE_HEARING}.TEXT`, {lng}), null, option === WhatToDoTypeOption.MANAGE_HEARING),

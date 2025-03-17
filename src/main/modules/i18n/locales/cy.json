@@ -545,8 +545,8 @@
         "SEND_A_MESSAGE": "Send a message"
       },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "Beth ydych chi eisiau ei wneud?",
-      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "What documents do you want to send?",
-      "WHAT_ARE_TRYING_TODO_TITLE": "What are you trying to do?",
+      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "Pa ddogfennau ydych chi am eu hanfon?",
+      "WHAT_ARE_TRYING_TODO_TITLE": "Beth ydych chi'n ceisio ei wneud?",
       "WHAT_DO_YOU_NEED_TODO_TITLE": "What do you need to do?",
       "OPTIONS": {
         "CHANGE_CASE": {
@@ -676,8 +676,8 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Mae eich negeseuon wedi’u rhestru ar eich dangosfwrdd.",
           "LINK": {
-            "TEXT": "Gallwch fynd ar drywydd neges drwy ddewis yr un yr ydych am ei weld o’r adran",
-            "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
+            "TEXT": "Ceisiadau a negeseuon i'r llys.",
+            "TEXT_BEFORE": "Gallwch fynd ar drywydd neges drwy ddewis yr un yr ydych am ei weld o’r adran ",
             "TEXT_AFTER": ""
           },
           "PARAGRAPH_2": "Gallwch ymateb i unrhyw neges gan y llys, rhaid i'ch ateb fod yn gysylltiedig â phwnc eich neges wreiddiol.",
@@ -5075,7 +5075,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT": "YMae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",

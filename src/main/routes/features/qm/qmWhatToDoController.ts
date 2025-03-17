@@ -81,7 +81,7 @@ const getItems = (option: string, qmType: WhatToDoTypeOption, lng: string) => {
     case WhatToDoTypeOption.MANAGE_HEARING:{
       return [
         new RadioButtonItems(QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE}.TEXT`, {lng} ),  null, option === QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE),
-        new RadioButtonItems(QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING}.TEXT`, {lng} ),  null, option === QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING),
+        new RadioButtonItems(QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING}.TEXT`, {lng} ),  t(`${pageInfo}.${QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING}.HINT`, {lng} ), option === QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING),
         new RadioButtonItems(QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, t(`${pageInfo}.${QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING}.TEXT`, {lng} ),  null, option === QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING),
         new RadioButtonItems(QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE, t(`${pageInfo}.SOMETHING_ELSE.TEXT`, {lng} ),  null, option === QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE),
       ];
