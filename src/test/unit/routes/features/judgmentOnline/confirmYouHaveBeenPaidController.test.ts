@@ -87,22 +87,26 @@ describe('Confirm you have been paid', () => {
 
     it('should redirect to the Confirm you have been paid Confirmation page', async () => {
     //Given
+      const today = new Date();
+      const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
+      const day = 28;
+      const year = today.getFullYear()-1;
+      claim.case_data.joJudgementByAdmissionIssueDate = `${year}-${month}-${day}`;
+
       const CivilServiceClientServiceMock = jest
         .spyOn(CivilServiceClient.prototype, 'submitJudgmentPaidInFull')
         .mockReturnValue(
           new Promise((resolve) => resolve(claim),
           ),
         );
-      const today = new Date();
       nock(civilServiceUrl)
         .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
         .reply(200, claimId);
 
       //When
-      const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
       await testSession
         .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:28, month:month, year: today.getFullYear()-1, confirmed:true })
+        .send({ day:day, month:month, year: year, confirmed:true})
       //Then
         .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
           expect(res.status).toBe(302);
@@ -128,7 +132,7 @@ describe('Confirm you have been paid', () => {
         });
     });
 
-    it('should show error if date is in the future', async () => {
+    it('should show error if date is before the judgment by admission date', async () => {
     //Given
       const today = new Date();
       nock(civilServiceUrl)
@@ -136,15 +140,18 @@ describe('Confirm you have been paid', () => {
         .reply(200, claimId);
 
       const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
+      const day = 28;
+      const year = today.getFullYear()-1;
+      const joIssueDate =   `${year}-${month}-${day}`;
 
       //When
       await testSession
         .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:28, month:month, year: today.getFullYear()+1, confirmed:true })
+        .send({ day:20, month:month, year: year, confirmed:true, joIssueDate})
       //Then
         .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ERRORS_CORRECT_DATE_NOT_IN_FUTURE);
+          expect(res.text).toContain(TestMessages.VALID_PAID_IN_FULL_DATE);
         });
     });
 
