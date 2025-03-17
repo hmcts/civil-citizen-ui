@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "SNI-5921-stop-creating-task-on-upload-doc-order-event"
+def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
@@ -111,6 +111,7 @@ withPipeline(type, product, component) {
 
   onPR {
     env.ENVIRONMENT = "preview"
+    env.A11Y_CHUNKS=4
     env.NODE_OPTIONS= "--max-old-space-size=8192"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     loadVaultSecrets(secrets)
@@ -164,15 +165,20 @@ withPipeline(type, product, component) {
 
   afterSuccess('smoketest:preview') {
     stage('Accessibility') {
-      yarnBuilder.yarn('tests:a11y')
-      publishHTML([
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : "functional-output/accessibility-report",
-        reportFiles          : 'a11y.html',
-        reportName           : 'Preview Accessibility results'
-      ])
+      try {
+        yarnBuilder.yarn('tests:a11y:parallel')
+      } catch (Exception error) {
+        for (int index = 0; index < A11Y_CHUNKZ.toInteger(); index++) {
+          publishHTML([
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: "functional-output/accessibility-report",
+            reportFiles: "a11y-${index + 1}.html",
+            reportName: "Preview Accessibility results (${index + 1})"
+          ])
+        }
+      }
     }
   }
 
@@ -187,22 +193,6 @@ withPipeline(type, product, component) {
       ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
     """
     setUrls("aat");
-  }
-
-  afterSuccess('smoketest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/smokeTest/**/*'
-
-    stage('Accessibility') {
-      yarnBuilder.yarn('tests:a11y')
-      publishHTML([
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "functional-output/accessibility-report",
-            reportFiles          : 'a11y.html',
-            reportName           : 'AAT Accessibility results'
-      ])
-    }
   }
 
   afterAlways('smoketest:aat') {
