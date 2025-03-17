@@ -54,7 +54,7 @@ describe('Query management what do do controller', () => {
       [WhatToDoTypeOption.SEND_UPDATE, 'Send an update on my case', 'What do you want to do?'],
       [WhatToDoTypeOption.SEND_DOCUMENTS, 'Send documents', 'What documents do you want to send?'],
       [WhatToDoTypeOption.SOLVE_PROBLEM, 'Solve a problem I am having using the Money claims system', 'What are you trying to do?'],
-      [WhatToDoTypeOption.MANAGE_HEARING, 'Manage your hearing', 'What do you need to do?'],
+      [WhatToDoTypeOption.MANAGE_HEARING, 'Manage your hearing', 'What do you want to do?'],
     ])('should open what to do page %s with caption %s and title %s', async (qmType, caption, title) => {
       mockGetCaption.mockImplementation(() => `PAGES.QM.CAPTIONS.${qmType}`);
       await request(app)
