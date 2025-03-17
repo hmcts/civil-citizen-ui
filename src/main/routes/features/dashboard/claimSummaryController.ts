@@ -88,7 +88,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           helpSupportTitle,
           helpSupportLinks,
           lang,
-          isQMFlagEnabled
+          isQMFlagEnabled,
         },
       );
     } else {
