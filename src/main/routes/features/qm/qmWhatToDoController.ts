@@ -96,8 +96,6 @@ export const getTitle = (option: WhatToDoTypeOption) => {
 const titleMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.SEND_DOCUMENTS]: 'PAGES.QM.WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE',
   [WhatToDoTypeOption.SOLVE_PROBLEM]: 'PAGES.QM.WHAT_ARE_TRYING_TODO_TITLE',
-  [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.WHAT_DO_YOU_NEED_TODO_TITLE',
-
 };
 
 const renderView = (claimId: string,qmType: WhatToDoTypeOption, form: GenericForm<QualifyingQuestion>, res: Response)=> {

@@ -75,6 +75,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         }
         break;
       }
+
     }
   }
   return pageSection
