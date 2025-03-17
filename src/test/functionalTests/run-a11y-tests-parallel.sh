@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 if [[ -z "$CHUNKS" || ! "$CHUNKS" =~ ^[0-9]+$ || "$CHUNKS" -le 0 ]]; then
   echo "Error: CHUNKS must be a positive integer."
   exit 1

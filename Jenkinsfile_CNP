@@ -168,7 +168,7 @@ withPipeline(type, product, component) {
       try {
         yarnBuilder.yarn('tests:a11y:parallel')
       } catch (Exception error) {
-        for (int index = 0; index < A11Y_CHUNKZ.toInteger(); index++) {
+        for (int index = 0; index < A11Y_CHUNKS.toInteger(); index++) {
           publishHTML([
             allowMissing: true,
             alwaysLinkToLastBuild: true,
@@ -178,6 +178,7 @@ withPipeline(type, product, component) {
             reportName: "Preview Accessibility results (${index + 1})"
           ])
         }
+        throw error;
       }
     }
   }
