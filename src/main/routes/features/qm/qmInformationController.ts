@@ -30,6 +30,13 @@ const qmInformationController = Router();
 const qmStartViewPath = 'features/qm/qm-information-template.njk';
 let showAnythingElseSection = false;
 
+const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
+  const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
+  pageSection
+    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
+    .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
+};
+
 const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string): ClaimSummarySection[] => {
 
   const qualifySectionInfo = 'PAGES.QM.QUALIFY_SECTIONS';
@@ -79,9 +86,24 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         showAnythingElseSection = true;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
-          .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`)
-          .addLink(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,QM_CREATE_QUERY_URL), `${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_1.TEXT_AFTER`)
-          .addLink(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_2.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.LINK_2.TEXT_BEFORE`, null, null, true);
+          .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`);
+        getCommonInformationSolveProblems(pageSection, claimId);
+        break;
+      }
+      case QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.SUBTITLE_1`)
+          .addParagraph(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.PARAGRAPH_1`);
+        getCommonInformationSolveProblems(pageSection, claimId);
+        break;
+      }
+      case QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.SUBTITLE_1`)
+          .addParagraph(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.PARAGRAPH_1`);
+        getCommonInformationSolveProblems(pageSection, claimId);
         break;
       }
     }
@@ -98,6 +120,8 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS]: 'PAGES.QM.QUALIFY.TITLES.ENFORCEMENT_REQUESTS',
   [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_DOCUMENTS_AND_EVIDENCE',
   [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SUBMIT_RESPONSE_CLAIM',
+  [QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.SEE_THE_CLAIM_ON_MY_ACCOUNT',
+  [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.VIEW_DOCUMENTS_ON_MY_ACCOUNT',
 
 };
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {

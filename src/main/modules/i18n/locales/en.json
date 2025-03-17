@@ -595,8 +595,8 @@
           "ENFORCEMENT_REQUESTS": "Send enforcement requests",
           "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
           "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
-          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "SEE_THE_CLAIM_ON_MY_ACCOUNT_TITLE",
-          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "VIEW_DOCUMENTS_ON_MY_ACCOUNT_TITLE",
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "See the claim on my account",
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
           "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
           "CHANGE_SOMETHING_ABOUT_THE_HEARING": "CHANGE_SOMETHING_ABOUT_THE_HEARING_TITLE",
           "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING_TITLE"
@@ -672,9 +672,7 @@
         "CAPTION": "Contact or apply to the court"
       },
       "QUALIFY_SECTIONS": {
-        "SUBMIT_RESPONSE_CLAIM" : {
-          "SUBTITLE_1": "Get support to respond",
-          "PARAGRAPH_1": "If you cannot submit a response using the Money claims system you should contact the court for help.",
+        "COMMON_SOLVE_PROBLEMS": {
           "LINK_1": {
             "TEXT": "send a message to the court",
             "TEXT_BEFORE": "If the issue is not urgent, you can ",
@@ -684,6 +682,18 @@
             "TEXT": "contact details for the court (opens in a new window)",
             "TEXT_BEFORE": "If the issue is urgent, you should call the court handling your case. Find the "
           }
+        },
+        "SUBMIT_RESPONSE_CLAIM" : {
+          "SUBTITLE_1": "Get support to respond",
+          "PARAGRAPH_1": "If you cannot submit a response using the Money claims system you should contact the court for help."
+        },
+        "SEE_THE_CLAIM_ON_MY_ACCOUNT" : {
+          "SUBTITLE_1": "Get support to see the claim on your account",
+          "PARAGRAPH_1": "If the claim has been issued and you cannot see it on the Money claims system, you should contact the court for help."
+        },
+        "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
+          "SUBTITLE_1": "Get support to view the documents on your account",
+          "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
         },
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
