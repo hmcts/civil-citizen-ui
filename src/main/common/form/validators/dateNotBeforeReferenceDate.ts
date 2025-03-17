@@ -12,7 +12,11 @@ export class DateNotBeforeReferenceDate implements ValidatorConstraintInterface 
     const referenceDate = (validationArguments.object as any)[property];
     const daysBetweenTwoDates = getNumberOfDaysBetweenTwoDays(inputDate, referenceDate);
 
-    return !(inputDate !== null && daysBetweenTwoDates >= 0);
+    if (property == 'joIssuedDate') {
+      return !(inputDate !== null && daysBetweenTwoDates > 0);
+    } else {
+      return !(inputDate !== null && daysBetweenTwoDates >= 0);
+    }
   }
 
   defaultMessage() {
