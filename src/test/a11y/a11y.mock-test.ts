@@ -5,7 +5,7 @@ import {fail} from 'assert';
 import supertest from 'supertest';
 import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
 
-const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.A11Y_CHUNKS), parseInt(process.env.A11Y_CHUNKS_INDEX));
+const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.A11Y_CHUNKS ?? '1'), parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0'));
 const pa11y = require('pa11y');
 import {retry} from '../functionalTests/specClaimHelpers/api/retryHelper.js';
 
@@ -17,7 +17,7 @@ console.log(networkInterfaces);
 
 // Create a Pa11y test server with Node.js and Express
 const express = require('express');
-const port = 3000 + process.env.A11Y_CHUNKS_INDEX;
+const port = 3000 + parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0');
 const app = express();
 
 class PallyIssue {
@@ -80,6 +80,9 @@ describe('Accessibility', async () => {
 });
 
 function getChunkAtIndex(array: string[], numChunks: number, index: number) {
+  console.log('numChunks ' + numChunks);
+  console.log('index ' + index);
+
   if (!Array.isArray(array) || numChunks <= 0 || index < 0 || index >= numChunks) {
     throw new Error('Invalid input: Provide a valid array, a positive number of chunks, and a valid index.');
   }
