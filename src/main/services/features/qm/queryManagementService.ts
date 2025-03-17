@@ -5,10 +5,10 @@ import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {Claim} from 'models/claim';
 
 export const updateQueryManagementDashboardItems = (dashboard: Dashboard, gaExclusion: DashboardTaskList, claim: Claim) => {
-  dashboard.items.find(item => {
+  dashboard.items.forEach(item => {
     if (item.categoryEn === gaExclusion.categoryEn) {
       updateDashboardTaskHeader(item, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.APPLICATION_HEADING');
-      item.tasks.find(taskItem => {
+      item.tasks.forEach(taskItem => {
         if (taskItem.taskNameEn.includes('Contact the court to request a change to my case')) {
           updateDashboardTaskItem(taskItem, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.APPLICATIONS_TASK');
         } else {
