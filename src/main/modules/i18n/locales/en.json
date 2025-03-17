@@ -2155,7 +2155,8 @@
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Trial arrangements confirmed.",
         "PAY_HEARING_FEE": "Pay the hearing fee.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Your documents are being processed.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
         "CASE_DISMISSED": "The case has been closed.",
@@ -2205,7 +2206,8 @@
         "TRIAL_ARRANGEMENTS_REQUIRED": "Confirm your trial arrangements.",
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Trial arrangements confirmed.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Your documents are being processed.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -5399,7 +5401,8 @@
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
     },
-    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made.",
+    "VALID_PAID_IN_FULL_DATE": "Paid in full date must be on or after the date of the judgment"
   },
   "BANNERS" : {
     "CUI_CP" : {
