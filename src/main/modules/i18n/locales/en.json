@@ -582,8 +582,8 @@
       "QUALIFY": {
         "TITLES": {
           "FOLLOW_UP": "Follow up on an existing message",
-          "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
-          "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
+          "GENERAL_UPDATE": "Get a general update on what is happening with the case",
+          "CLAIM_NOT_PAID": "Understand what happens if the claim is not paid",
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
           "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
@@ -694,6 +694,28 @@
         "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
           "SUBTITLE_1": "Get support to view the documents on your account",
           "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
+        },
+        "GENERAL_UPDATE" : {
+          "PARAGRAPH_1": "We cannot give updates on emails, forms or applications you have already sent to us.",
+          "PARAGRAPH_2": "You will be sent a response or details of any next steps you need to take once the court work is complete.",
+          "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
+        },
+        "CLAIM_NOT_PAID" : {
+          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
+          "PARAGRAPH_2": "The defendant can decide to&#58",
+          "LI_1": "pay the full amount",
+          "LI_2": "offer to pay a different amount (if they think they owe less)",
+          "LI_3": "defend the claim (if they do not think they owe any money)",
+          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where they defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
+          "LINK_1": {
+            "TEXT": "request a county court judgment (CCJ)",
+            "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
+          },
+          "LINK_2": {
+            "TEXT": "what happens when a CCJ is issued against you (opens in a new window)",
+            "TEXT_BEFORE": "Find out more about "
+          }
         },
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",

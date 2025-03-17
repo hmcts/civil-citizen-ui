@@ -15,7 +15,7 @@ import {
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  attachmentOfEarningsOrderUrl, chargingOrderUrl, checkCivilFeesListUrl, findCourtTribunalUrl,
+  attachmentOfEarningsOrderUrl, chargingOrderUrl, checkCivilFeesListUrl, countyCourtJudgmentsUri, findCourtTribunalUrl,
   thirdPartyDebtOrderUrl,
   warrantOfControlUrl,
   whatToDoUrl,
@@ -106,6 +106,38 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
       }
+      case QualifyingQuestionTypeOption.GENERAL_UPDATE:{
+        showAnythingElseSection = true;
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_2`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`);
+        break;
+      }
+      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID:{
+        showAnythingElseSection = true;
+/*        if (claim.isClaimant() &&
+            !claim.isDeadlineExtended() &&
+            claim.isDeadLinePassed() &&
+            claim.isDefendantNotResponded()) {*/
+        if (true) {
+          pageSection
+            .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
+            .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
+            .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_1`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_2`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_3`, {lng: lang})}</li>
+            </ul>`)
+            .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
+            .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`)
+              //TODO add DJ link
+            .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.', )
+            .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
+
+        }
+        break;
+      }
     }
   }
   return pageSection
@@ -122,6 +154,8 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SUBMIT_RESPONSE_CLAIM',
   [QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.SEE_THE_CLAIM_ON_MY_ACCOUNT',
   [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.VIEW_DOCUMENTS_ON_MY_ACCOUNT',
+  [QualifyingQuestionTypeOption.GENERAL_UPDATE]: 'PAGES.QM.QUALIFY.TITLES.GENERAL_UPDATE',
+  [QualifyingQuestionTypeOption.CLAIM_NOT_PAID]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_NOT_PAID',
 
 };
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {

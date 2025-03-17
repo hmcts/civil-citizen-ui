@@ -582,7 +582,7 @@
       "QUALIFY": {
         "TITLES": {
           "FOLLOW_UP": "Mynd ar drywydd neges sy'n bodoli eisoes",
-          "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
+          "GENERAL_UPDATE": "Get a general update on what is happening with the case",
           "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
