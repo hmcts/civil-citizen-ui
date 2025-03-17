@@ -5406,7 +5406,8 @@
         "ERROR_INPUT": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb."
       }
     },
-    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
+    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol.",
+    "VALID_PAID_IN_FULL_DATE": "Rhaid i’r dyddiad ar gyfer talu yn llawn fod ar neu ar ôl dyddiad y dyfarniad"
   },
   "BANNERS" : {
     "CUI_CP" : {
