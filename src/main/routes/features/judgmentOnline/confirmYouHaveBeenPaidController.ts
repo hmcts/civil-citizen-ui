@@ -69,12 +69,13 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
 
 confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const {year, month, day, confirmed} = req.body;
-    const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed));
-    await form.validate();
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     const isClaimant = claim.isClaimant();
+    const {year, month, day, confirmed} = req.body;
+    const joIssuedDate = claim.joJudgementByAdmissionIssueDate != null ? claim.joJudgementByAdmissionIssueDate : claim.joDJCreatedDate;
+    const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed, joIssuedDate));
+    await form.validate();
     await deleteDraftClaimFromStore(claimId);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
