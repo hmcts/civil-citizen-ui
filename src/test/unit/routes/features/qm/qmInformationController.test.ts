@@ -82,6 +82,28 @@ describe('Query management Information controller', () => {
     });
   });
 
+  it.each([
+    [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM, 'Submit a response to a claim', 'Get support to respond'],
+    [QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT, 'See the claim on my account', 'Get support to see the claim on your account'],
+    [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT, 'See the documents on my account', 'Get support to view the documents on your account'],
+  ])('should return SOLVE_PROBLEM information for %s', async (questionType, title:string, subtitle: string ) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
+
+    const claim = new Claim();
+    mockGetClaimById.mockImplementation(() => claim);
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.SOLVE_PROBLEM, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain(subtitle);
+        expect(res.text).toContain('If the issue is not urgent');
+        expect(res.text).toContain('If the issue is urgent');
+        expect(res.text).toContain('Anything else');
+      });
+  });
+
   describe('on POST', () => {
     it('should return follow up page ', async () => {
       mockGetCancelUrl.mockImplementation(() => CANCEL_URL);
