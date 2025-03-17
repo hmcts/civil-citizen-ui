@@ -81,7 +81,7 @@ describe('Accessibility', async () => {
 
 function getChunkAtIndex(array: string[], numChunks: number, index: number) {
   if (!Array.isArray(array) || numChunks <= 0 || index < 0 || index >= numChunks) {
-      throw new Error("Invalid input: Provide a valid array, a positive number of chunks, and a valid index.");
+    throw new Error('Invalid input: Provide a valid array, a positive number of chunks, and a valid index.');
   }
 
   const chunkSize = Math.floor(array.length / numChunks);
