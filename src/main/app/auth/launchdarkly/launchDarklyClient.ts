@@ -103,10 +103,9 @@ export async function getEaFlagValueForGaLips(
 }
 
 export async function isGaForLipsEnabledAndLocationWhiteListed(location: string): Promise<boolean> {
-  return true;
-  // const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
-  // const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
-  // return gaLipsFlag && eaFlagForGaLips;
+  const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
+  const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
+  return gaLipsFlag && eaFlagForGaLips;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
