@@ -166,7 +166,6 @@ withPipeline(type, product, component) {
   afterSuccess('smoketest:preview') {
     stage('Accessibility') {
       try {
-        sh """ chmod +x src/test/functionalTests/run-a11y-tests-parallel.sh """
         yarnBuilder.yarn('tests:a11y:parallel')
       } catch (Exception error) {
         for (int index = 0; index < A11Y_CHUNKS.toInteger(); index++) {
