@@ -57,11 +57,9 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       || claim.defendantUserDetails === undefined
       || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
       || (claim.isAnyPartyBilingual() && claim.generalApplications.length === 0)) {
-      if (!queryManagementFlagEnabled){
-        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-      } else {
-        updateQueryManagementDashboardItems(dashboard, GA_DASHBOARD_EXCLUSIONS[0], claim);
-      }
+      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    } else if (queryManagementFlagEnabled) {
+      updateQueryManagementDashboardItems(dashboard, GA_DASHBOARD_EXCLUSIONS[0], claim);
     }
 
     return dashboard;
