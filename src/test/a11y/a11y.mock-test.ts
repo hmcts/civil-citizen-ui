@@ -5,7 +5,7 @@ import {fail} from 'assert';
 import supertest from 'supertest';
 import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
 
-const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.CHUNKS), parseInt(process.env.CHUNKS_INDEX));
+const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.A11Y_CHUNKS), parseInt(process.env.A11Y_CHUNKS_INDEX));
 const pa11y = require('pa11y');
 import {retry} from '../functionalTests/specClaimHelpers/api/retryHelper.js';
 
@@ -17,7 +17,7 @@ console.log(networkInterfaces);
 
 // Create a Pa11y test server with Node.js and Express
 const express = require('express');
-const port = 3000;
+const port = 3000 + process.env.A11Y_CHUNKS_INDEX;
 const app = express();
 
 class PallyIssue {
@@ -48,6 +48,7 @@ describe('Accessibility', async () => {
   const options = {
     hideElements: '#logo, .logo, .copyright, link[rel=mask-icon]',
     standard:'WCAG2AA',
+    reportName: '',
     includeWarnings: true,
     log: {
       debug: console.log,
