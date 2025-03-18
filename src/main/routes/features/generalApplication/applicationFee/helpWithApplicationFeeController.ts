@@ -3,6 +3,7 @@ import {
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION, GA_VIEW_APPLICATION_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION_COSC, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION_COSC,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -53,32 +54,34 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     });
 }
 
-helpWithApplicationFeeController.get([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION], (async (req: AppRequest, res: Response, next: NextFunction) => {
-  try {
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
-    await renderView(res, req, null, claimId, lng);
-  }catch (error) {
-    next(error);
-  }
-}) as RequestHandler);
-
-helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  try {
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE'));
-    await form.validate();
-    if (form.hasErrors()) {
-      await renderView(res, req, form, claimId, lng);
-    } else {
-      const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
-      //fixing CIV-15658
-      res.cookie('lang', lng, { httpOnly: true, secure: true });
-      res.redirect(redirectUrl);
+helpWithApplicationFeeController.get([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION,
+  GA_APPLY_HELP_WITH_FEE_SELECTION_COSC, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION_COSC], (async (req: AppRequest, res: Response, next: NextFunction) => {
+    try {
+      const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+      const claimId = req.params.id;
+      await renderView(res, req, null, claimId, lng);
+    }catch (error) {
+      next(error);
     }
-  }catch (error) {
-    next(error);
-  }
-}) as RequestHandler);
+  }) as RequestHandler);
+
+helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION,
+  GA_APPLY_HELP_WITH_FEE_SELECTION_COSC, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION_COSC], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+    try {
+      const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+      const claimId = req.params.id;
+      const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE'));
+      await form.validate();
+      if (form.hasErrors()) {
+        await renderView(res, req, form, claimId, lng);
+      } else {
+        const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
+        //fixing CIV-15658
+        res.cookie('lang', lng, { httpOnly: true, secure: true });
+        res.redirect(redirectUrl);
+      }
+    }catch (error) {
+      next(error);
+    }
+  }) as RequestHandler);
 export default helpWithApplicationFeeController;

@@ -3,7 +3,7 @@ import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPa
 import {
   COSC_FINAL_PAYMENT_DATE_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
-  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
+  BACK_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -23,7 +23,7 @@ defendantPaymentDateController
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
         const cancelUrl = await getCancelUrl(req.params.id, null);
-        const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
+        const backLinkUrl = BACK_URL;
         const certificateOfSatisfactionOrCancellation: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCancellation(req);
         const defendantFinalPaymentDate = certificateOfSatisfactionOrCancellation? certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate : new DefendantFinalPaymentDate();
         res.render( paymentDateViewPath, { cancelUrl, backLinkUrl,
@@ -36,7 +36,7 @@ defendantPaymentDateController
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
       const cancelUrl = await getCancelUrl(req.params.id, null);
-      const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
+      const backLinkUrl = BACK_URL;//constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<DefendantFinalPaymentDate> = new GenericForm<DefendantFinalPaymentDate>(defendantPaymentDate);
 

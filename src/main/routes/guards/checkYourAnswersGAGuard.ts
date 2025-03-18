@@ -11,11 +11,11 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-
+    const gaCoscUrl = '/cosc/';
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     const hasRequiredFields = isGARequiredFieldsPresent(claim);
     //If mainCase has bilingual party submission is not allowed.
-    if (claim.isAnyPartyBilingual()) return res.redirect(await getCancelUrl(claimId, null));
+    if (claim.isAnyPartyBilingual() && !req.url.includes(gaCoscUrl)) return res.redirect(await getCancelUrl(claimId, null));
 
     if (!applicationTypes.length) return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`));
 
