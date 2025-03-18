@@ -584,7 +584,7 @@
           "FOLLOW_UP": "Follow up on an existing message",
           "GENERAL_UPDATE": "Get a general update on what is happening with the case",
           "CLAIM_NOT_PAID": "Understand what happens if the claim is not paid",
-          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "Understand what happens if the judgment is not paid",
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
           "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
           "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
@@ -717,6 +717,23 @@
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
+        },
+        "CLAIM_NOT_PAID_AFTER_JUDGMENT" : {
+          "PARAGRAPH_1": "If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.",
+          "PARAGRAPH_2": "The claimant can instruct the court to undertake different enforcement processes. This is called 'enforcing the judgment'. The claimant can ask the court to issue&#58",
+          "LI_1": "a warrant of control - for goods owned by the defendant",
+          "LI_2": "an attachment of earnings order - for a portion of the defendant’s earnings",
+          "LI_3": "a third-party debt order - for the defendant’s savings",
+          "LI_4": "a charging order - for the defendant’s assets",
+          "LINK_1": {
+            "TEXT": "what to do if a defendant does not pay money after a judgment (opens in a new window)",
+            "TEXT_BEFORE": "Find more detail about "
+          },
+          "SUBTITLE_1": "Fees",
+          "LINK_2": {
+            "TEXT": "about civil court fees (opens in a new window)",
+            "TEXT_BEFORE": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select. Find out "
+          }
         },
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
