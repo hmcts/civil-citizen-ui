@@ -716,6 +716,7 @@ class CreateClaim {
     await I.fillField(paths.fields.OrgpartyName, 'Defendant Org name');
     await I.fillField(paths.fields.OrgContactPerson, 'Defendant contact name');
     await this.selectAddress(false);
+    I.waitForText('This must be their personal email address', 60);
     I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
     I.fillField(paths.fields.telephone_number, '07800000000');
