@@ -1,7 +1,13 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
-  BACK_URL, QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL, QM_INFORMATION_URL, QM_VIEW_QUERY_URL, UPLOAD_YOUR_DOCUMENTS_URL,
+  BACK_URL,
+  CCJ_REPAYMENT_PLAN_CLAIMANT_URL,
+  QM_CREATE_QUERY_URL,
+  QM_FOLLOW_UP_URL,
+  QM_INFORMATION_URL,
+  QM_VIEW_QUERY_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 
 import {
@@ -116,26 +122,38 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID:{
         showAnythingElseSection = true;
-/*        if (claim.isClaimant() &&
+        const isCCJLinkEnabled = false;
+        /*        if (claim.isClaimant() &&
             !claim.isDeadlineExtended() &&
             claim.isDeadLinePassed() &&
             claim.isDefendantNotResponded()) {*/
-        if (true) {
-          pageSection
-            .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
-            .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
-            .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_1`, {lng: lang})}</li>
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_2`, {lng: lang})}</li>
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_3`, {lng: lang})}</li>
             </ul>`)
-            .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
-            .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`)
-              //TODO add DJ link
-            .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.', )
-            .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
+          .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
+        if (isCCJLinkEnabled) {
 
+          //TODO add DJ link
+          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,CCJ_REPAYMENT_PLAN_CLAIMANT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.' );
+
+        } else {
+          pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED`);
         }
+        pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
+        break;
+      }
+      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT:{
+        showAnythingElseSection = true;
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_2`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`);
         break;
       }
     }
