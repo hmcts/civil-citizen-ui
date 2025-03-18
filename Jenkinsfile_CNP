@@ -133,19 +133,19 @@ withPipeline(type, product, component) {
   
 
   before('smoketest:preview') {
-    setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
-    sh "eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})"
-    yarnBuilder.yarn("""
-      concurrently
-        './bin/add-roles.sh'
-        './bin/pull-latest-camunda-files.sh ${camundaBranch}'
-        './bin/pull-latest-dmn-files.sh ${dmnBranch}'
-        './bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}'
-        './bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}'
-        './bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}'
-        './bin/add-org-roles-to-users.sh'
-    """)
-  }
+  setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
+  sh """
+    eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID}) &
+    ./bin/add-roles.sh &
+    ./bin/pull-latest-camunda-files.sh ${camundaBranch} &
+    ./bin/pull-latest-dmn-files.sh ${dmnBranch} &
+    ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch} &
+    ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch} &
+    ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch} &
+    ./bin/add-org-roles-to-users.sh &
+    wait
+  """
+}
 
 
   afterAlways('smoketest:preview') {
