@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -ex
 
 if [[ -z "$A11Y_CHUNKS" || ! "$A11Y_CHUNKS" =~ ^[0-9]+$ || "$A11Y_CHUNKS" -le 0 ]]; then
