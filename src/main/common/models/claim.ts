@@ -188,6 +188,8 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
+  joJudgementByAdmissionIssueDate?: Date;
+  joDJCreatedDate?: Date;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
@@ -451,7 +453,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -1033,7 +1035,7 @@ export class Claim {
   }
 
   hasClaimantIntentToProceedResponse() {
-    return this?.getIntentionToProceed() === YesNo.YES;
+    return this.claimantResponse?.intentionToProceed?.option === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {

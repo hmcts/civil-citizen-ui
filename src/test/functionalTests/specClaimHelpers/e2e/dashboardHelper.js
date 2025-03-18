@@ -24,7 +24,7 @@ module.exports = {
         console.log('content to be verified ..', content[i]);
       }
     } else {
-      await I.see(content);
+      await I.waitForText(content);
       console.log('content to be verified ..', content);
     }
   },
