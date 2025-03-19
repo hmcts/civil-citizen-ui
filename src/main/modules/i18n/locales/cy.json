@@ -701,7 +701,7 @@
           "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
+          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended.",
           "PARAGRAPH_2": "The defendant can decide to&#58",
           "LI_1": "pay the full amount",
           "LI_2": "offer to pay a different amount (if they think they owe less)",
