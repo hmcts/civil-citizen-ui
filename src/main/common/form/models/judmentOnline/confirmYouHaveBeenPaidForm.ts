@@ -2,12 +2,14 @@ import {IsDate, IsNotEmpty, Max, Min, Validate, ValidateIf} from 'class-validato
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
 import {DateNotBeforeReferenceDate} from 'form/validators/dateNotBeforeReferenceDate';
+import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
 
 export class DateYouHaveBeenPaidForm {
 
   @ValidateIf(o => (o.day <32 && o.month<13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(DateNotBeforeReferenceDate, ['joIssuedDate'], { message: 'ERRORS.VALID_PAID_IN_FULL_DATE' })
+  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
     date?: Date;
 
   @Min(1872,{message:'ERRORS.VALID_YEAR'})
