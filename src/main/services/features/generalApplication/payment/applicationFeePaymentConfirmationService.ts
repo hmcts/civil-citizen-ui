@@ -4,7 +4,7 @@ import {
   GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAYMENT_SUCCESSFUL_COSC_URL,
   GA_PAYMENT_SUCCESSFUL_URL,
   GA_PAYMENT_UNSUCCESSFUL_URL,
-  GA_PAYMENT_UNSUCCESSFUL_COSC_URL, GA_APPLY_HELP_WITH_FEE_SELECTION_COSC,
+  GA_PAYMENT_UNSUCCESSFUL_COSC_URL,
 } from 'routes/urls';
 import {getGaFeePaymentStatus} from '../applicationFee/generalApplicationFeePaymentService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
@@ -28,13 +28,15 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const isCoscGa =  displayToEnumKey(applicationResponse.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID';
+
+    const paymentCancelledUrl = isAdditionalFee
+      ? `${GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL}?lang=${lang}`
+      : `${GA_APPLY_HELP_WITH_FEE_SELECTION}?lang=${lang}`;
+
     if(isCoscGa) {
       if(paymentStatus.status === success) {
         return `${GA_PAYMENT_SUCCESSFUL_COSC_URL}?lang=${lang}`;
       }
-      const paymentCancelledUrl = isAdditionalFee
-        ? `${GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL}?lang=${lang}`
-        : `${GA_APPLY_HELP_WITH_FEE_SELECTION_COSC}?lang=${lang}`;
       return paymentStatus.errorDescription !== paymentCancelledByUser ?
         `${GA_PAYMENT_UNSUCCESSFUL_COSC_URL}?lang=${lang}` : paymentCancelledUrl;
     }
@@ -42,9 +44,6 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     if(paymentStatus.status === success) {
       return `${GA_PAYMENT_SUCCESSFUL_URL}?lang=${lang}`;
     }
-    const paymentCancelledUrl = isAdditionalFee
-      ? `${GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL}?lang=${lang}`
-      : `${GA_APPLY_HELP_WITH_FEE_SELECTION}?lang=${lang}`;
     return paymentStatus.errorDescription !== paymentCancelledByUser ?
       `${GA_PAYMENT_UNSUCCESSFUL_URL}?lang=${lang}` : paymentCancelledUrl;
   }

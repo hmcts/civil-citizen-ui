@@ -405,6 +405,4 @@ export const CONTACT_MEDIATION_URL = '/contact-mediation';
 export const GA_UNAVAILABILITY_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/unavailability-confirmation`;
 export const GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/unavailability-confirmation`;
 export const GA_PAYMENT_SUCCESSFUL_COSC_URL = `${BASE_COSC_URL}/:appId/payment-successful`;
-export const GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION_COSC = `${BASE_COSC_URL}/apply-help-fee-selection`;
-export const GA_APPLY_HELP_WITH_FEE_SELECTION_COSC = `${BASE_COSC_URL}/:appId/apply-help-fee-selection`;
 export const GA_PAYMENT_UNSUCCESSFUL_COSC_URL = `${BASE_COSC_URL}/:appId/payment-unsuccessful`;
