@@ -12,6 +12,7 @@ import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/qm/q
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import * as utilityService from 'modules/utilityService';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/qm/queryManagementService');
@@ -100,6 +101,41 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain(subtitle);
         expect(res.text).toContain('If the issue is not urgent');
         expect(res.text).toContain('If the issue is urgent');
+        expect(res.text).toContain('Anything else');
+      });
+  });
+
+  it.each([
+    [QualifyingQuestionTypeOption.GENERAL_UPDATE, false, 'Get a general update on what is happening with the case', 'We cannot give updates on emails, forms or applications you have already sent to us.'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, true, 'Understand what happens if the claim is not paid', '<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/ccj/paid-amount>request a county court judgment (CCJ)</a>'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, false, 'Understand what happens if the claim is not paid', '<p class="govuk-body ">If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ).</p>'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, false, 'Understand what happens if the judgment is not paid', 'If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.'],
+  ])('should return GET_UPDATE information for %s with isCcjLinkEnabled %s', async (questionType, isCcjLinkEnabled, title:string, textLink: string ) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
+
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+    mockGetClaimById.mockImplementation(() => {
+      if (isCcjLinkEnabled) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate()-1);
+
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.respondent1ResponseDeadline = yesterday;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      }
+
+      return claim;
+    });
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain(textLink);
+        expect(res.text).toContain('Get an update on my case');
         expect(res.text).toContain('Anything else');
       });
   });
