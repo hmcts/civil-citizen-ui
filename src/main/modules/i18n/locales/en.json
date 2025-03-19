@@ -382,7 +382,8 @@
     "APPLICATION_DOCUMENTS": {
       "APPLICANT": "Applicant ",
       "RESPONDENT": "Respondent "
-    }
+    },
+    "WHAT_HAPPENS_NEXT" : "What happens next"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
@@ -538,6 +539,13 @@
   },
   "PAGES": {
     "QM": {
+      "CONFIRMATION_PAGE": {
+        "TITLE" : "Message sent",
+        "CONFIRMATION_TEXT": "Your message has been sent to the court",
+        "CONFIRMATION_TEXT_1": "Our team will read your message and respond within 10 days.",
+        "CONFIRMATION_TEXT_2": "You will be notified when the court responds to your message and you will be able to view it from your dashboard.",
+        "GO_TO_DASHBOARD": "Go to your dashboard"
+      },
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
         "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
