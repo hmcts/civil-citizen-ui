@@ -184,7 +184,6 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.CLAIM_NOT_PAID]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_NOT_PAID',
   [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_NOT_PAID_AFTER_JUDGMENT',
 
-
 };
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
