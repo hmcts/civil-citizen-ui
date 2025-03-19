@@ -135,7 +135,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_3`, {lng: lang})}</li>
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_4`, {lng: lang})}</li>
             </ul>`)
-          .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT_BEFORE`, '.', '', true)
+          .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT_BEFORE`, '.', '', true);
         break;
     }
   }
@@ -155,7 +155,7 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.VIEW_DOCUMENTS_ON_MY_ACCOUNT',
   [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_THE_HEARING_DATE',
   [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_SOMETHING_ABOUT_THE_HEARING',
-  [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING]: 'PAGES.QM.QUALIFY.TITLES.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING'
+  [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING]: 'PAGES.QM.QUALIFY.TITLES.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING',
 };
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
