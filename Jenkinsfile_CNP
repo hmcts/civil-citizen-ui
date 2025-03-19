@@ -139,7 +139,6 @@ withPipeline(type, product, component) {
       ./bin/add-roles.sh
      """
   sh """
-      ./bin/add-roles.sh &
       ./bin/pull-latest-camunda-files.sh ${camundaBranch} &
       ./bin/pull-latest-dmn-files.sh ${dmnBranch} &
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch} &
