@@ -16,7 +16,7 @@ export const isGAForLiPEnabled = async (
   // a new application will not be generated; however, the existing application will still be accessible online.
   const allowAppAccess = claim.generalApplications?.length > 0 ;
   //Allow to create cosc application in both languages
-  const gaCoscUrls: string[] = ['/cosc/', '/view-application', '/summary'];
+  const gaCoscUrls: string[] = ['/cosc/', '/apply-help', '/view-application', '/summary'];
   if(isGAFlagEnable && isCertOfScEnabled && gaCoscUrls.some(url => req.originalUrl.includes(url)) || allowAppAccess) {
     next();
   } else  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || allowAppAccess) {

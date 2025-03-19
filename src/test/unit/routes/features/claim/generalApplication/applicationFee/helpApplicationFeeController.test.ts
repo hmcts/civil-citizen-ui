@@ -2,11 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {
-  GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_APPLY_HELP_WITH_FEE_SELECTION_COSC,
-  GA_APPLY_HELP_WITH_FEES,
-} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -132,20 +128,6 @@ describe('General Application - Do you want to apply for help with fees Page', (
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
-
-    it('cosc - should return Do you want to apply for help with fees page', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      mockGetCaseDataFromStore.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
-      await request(app)
-        .get(GA_APPLY_HELP_WITH_FEE_SELECTION_COSC)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
-        });
-    });
   });
 
   describe('on POST', () => {
@@ -209,18 +191,6 @@ describe('General Application - Do you want to apply for help with fees Page', (
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-
-    it('cosc - should send the value and redirect', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGetRedirectUrl.mockImplementation(() => 'redirecturl');
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      await request(app)
-        .post(GA_APPLY_HELP_WITH_FEE_SELECTION_COSC)
-        .send({option: new GenericYesNo(YesNo.YES)})
-        .expect((res) => {
-          expect(res.status).toBe(302);
         });
     });
   });

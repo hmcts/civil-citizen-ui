@@ -5,7 +5,7 @@ import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
-  GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEE_SELECTION_COSC, GA_PAYMENT_SUCCESSFUL_COSC_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAYMENT_SUCCESSFUL_COSC_URL,
   GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_COSC_URL,
   GA_PAYMENT_UNSUCCESSFUL_URL,
 } from 'routes/urls';
@@ -193,29 +193,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
       TestMessages.SOMETHING_WENT_WRONG,
     );
   });
-  it('should return to help with fees page when payment is canceled by user for COSC application', async () => {
-    const mockclaimFeePaymentInfo = {
-      status: 'Failed',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-      externalReference: 'lbh2ogknloh9p3b4lchngdfg63',
-      paymentReference: 'RC-1701-0909-0602-0418',
-      errorDescription: 'Payment was cancelled by the user',
-    };
-    const mockClaimFeePaymentRedirectInfo = {
-      status: 'initiated',
-      paymentReference:'RC-1701-0909-0602-0418',
-      nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-    };
-    applicationResponse.case_data.applicationTypes = 'Confirm you\'ve paid a judgment debt';
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-    //when
-    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
-
-    //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_WITH_FEE_SELECTION_COSC+lang);
-  });
   it('should return to payment successful screen if payment is successful for COSC application.', async () => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
@@ -264,5 +241,4 @@ describe('Application Fee PaymentConfirmation Service', () => {
     //Then
     expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_UNSUCCESSFUL_COSC_URL+lang);
   });
-
 });
