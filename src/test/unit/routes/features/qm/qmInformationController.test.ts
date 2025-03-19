@@ -63,6 +63,9 @@ describe('Query management Information controller', () => {
       [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
+      [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, false, 'You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.'],
+      [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, false, 'You can apply to change the details of the hearing, such as:'],
+      [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, false, 'You can ask for help and support during your hearing.'],
     ])('should return SEND_DOCUMENTS information for %s', async (questionType, isCaseProgression, expectedText) => {
       mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
 
