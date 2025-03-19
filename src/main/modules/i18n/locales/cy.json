@@ -5403,6 +5403,7 @@
       }
     },
     "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol.",
+    "VALID_PAID_IN_FULL_DATE": "Rhaid i’r dyddiad ar gyfer talu yn llawn fod ar neu ar ôl dyddiad y dyfarniad",
     "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "Nid yw’r nodwedd hon ar gael ar hyn o bryd, gweler y canllawiau isod"
   },
   "BANNERS" : {

@@ -5403,6 +5403,7 @@
       }
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made.",
+    "VALID_PAID_IN_FULL_DATE": "Paid in full date must be on or after the date of the judgment",
     "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "This feature is currently not available, please see guidance below"
   },
   "BANNERS" : {
