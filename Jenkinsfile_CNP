@@ -142,6 +142,9 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch} &
       ./bin/pull-latest-dmn-files.sh ${dmnBranch} &
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch} &
+      wait
+     """
+  sh """
       ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch} &
       ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch} &
       ./bin/add-org-roles-to-users.sh &
