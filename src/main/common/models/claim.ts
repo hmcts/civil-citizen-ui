@@ -86,6 +86,7 @@ import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
+import {QueryManagement} from 'form/models/qm/queryManagement';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -192,6 +193,7 @@ export class Claim {
   joDJCreatedDate?: Date;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
+  queryManagement?: QueryManagement;
   // Index signature to allow dynamic property access
   [key: string]: any;
 
