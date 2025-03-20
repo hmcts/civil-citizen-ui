@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled, isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
@@ -26,6 +26,7 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
     next();
   }),
 }));
+const isQueryManagementEnabledMock = isQueryManagementEnabled as jest.Mock;
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -36,9 +37,20 @@ describe('General Application - Application type', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+    isQueryManagementEnabledMock.mockImplementation(() => false) ;
   });
 
   describe('on GET', () => {
+    it('should QM caption', async () => {
+      (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+      isQueryManagementEnabledMock.mockImplementation(() => true) ;
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Ask the court to change something on your case (make an application)');
+        });
+    });
     it('should return page', async () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
@@ -53,6 +65,17 @@ describe('General Application - Application type', () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(spyDelete).toBeCalled();
+        });
+    });
+
+    it('should delete GA when url contains start and isAskMoreTime', async () => {
+      const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
+      (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+      await request(app)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAskMoreTime=true`)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(spyDelete).toBeCalled();
