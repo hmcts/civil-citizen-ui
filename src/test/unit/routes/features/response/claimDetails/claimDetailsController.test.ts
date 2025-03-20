@@ -142,7 +142,7 @@ describe('Claim details page', () => {
       nock(civilServiceUrl)
         .post('/fees/claim/interest')
         .times(3)
-        .reply(200, 0.15);
+        .reply(200, '0');
       isReleaseTwo.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
