@@ -74,8 +74,8 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   }
 };
 
-export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: string, claimFee: number): SummarySection => {
-  const judgmentSummaryDetails = getJudgmentAmountSummary(claim, claimFee, lng);
+export const buildJudgmentRequestSection = async (claim: Claim, claimId: string, lng: string, claimFee: number): Promise<SummarySection> => {
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lng);
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
 

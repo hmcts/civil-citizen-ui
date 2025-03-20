@@ -14,23 +14,23 @@ describe('dashboardInterpolationService', () => {
   const textToReplaceUrl = '{VIEW_CLAIM_URL}';
   const textToReplaceRedirect = '{VIEW_ORDERS_AND_NOTICES_REDIRECT}';
 
-  it('should replace placeholders with values when found', () => {
+  it('should replace placeholders with values when found', async () => {
 
     const claim: Claim = new Claim();
     const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
     const textExpectedDynamic = 'You have 28 days left.';
 
-    const textReplacedUrl = replaceDashboardPlaceholders(textToReplaceUrl, claim, '123');
+    const textReplacedUrl = await replaceDashboardPlaceholders(textToReplaceUrl, claim, '123');
     const textExpectedUrl = '/case/123/response/claim-details';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
     expect(textReplacedUrl).toEqual(textExpectedUrl);
   });
 
-  it('should replace placeholders with redirect when notificationId is present', () => {
+  it('should replace placeholders with redirect when notificationId is present', async () => {
 
     const claim: Claim = new Claim();
     claim.id = '123';
@@ -38,32 +38,32 @@ describe('dashboardInterpolationService', () => {
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
     const dashboardNotification = new DashboardNotification('456', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123',dashboardNotification);
+    const textReplacedRedirect = await replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123',dashboardNotification);
     const textExpectedRedirect = '/notification/456/redirect/VIEW_ORDERS_AND_NOTICES/123';
 
     expect(textReplacedRedirect).toEqual(textExpectedRedirect);
   });
 
-  it('should replace dynamic text with nothing when claim is empty', () => {
+  it('should replace dynamic text with nothing when claim is empty', async () => {
     const claim: Claim = new Claim();
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
     const textExpectedDynamic = 'You have  days left.';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace dynamic text with nothing when claim is undefined', () => {
+  it('should replace dynamic text with nothing when claim is undefined', async () => {
     const claim: Claim = new Claim();
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
     const textExpectedDynamic = 'You have  days left.';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
 
   });
 
-  it('should replace placeholders with redirect url for claimant dq', () => {
+  it('should replace placeholders with redirect url for claimant dq', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
@@ -82,13 +82,13 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace placeholders with redirect url for claimant judgment by admission ', () => {
+  it('should replace placeholders with redirect url for claimant judgment by admission ', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
@@ -107,13 +107,13 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_JUDGMENT_BY_ADMISSION_CLAIMANT}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace placeholders with redirect url for defendant judgment by admission ', () => {
+  it('should replace placeholders with redirect url for defendant judgment by admission ', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
@@ -132,13 +132,13 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_JUDGMENT_BY_ADMISSION_DEFENDANT}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace placeholders with redirect url for mediation document', () => {
+  it('should replace placeholders with redirect url for mediation document', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.mediationAgreement = <MediationAgreement>{
@@ -152,24 +152,24 @@ describe('dashboardInterpolationService', () => {
     };
     const textToReplaceUrl = '{MEDIATION_SUCCESSFUL_URL}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace placeholders with redirect url for claimant response', () => {
+  it('should replace placeholders with redirect url for claimant response', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     const textToReplaceUrl = '{CLAIMANT_RESPONSE_TASK_LIST}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/claimant-response/task-list';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace placeholders with redirect url for settlement agreement', () => {
+  it('should replace placeholders with redirect url for settlement agreement', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
@@ -188,13 +188,13 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_SETTLEMENT_AGREEMENT}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-  it('should replace placeholders with document size for claimant dq', () => {
+  it('should replace placeholders with document size for claimant dq', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
@@ -213,48 +213,48 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const sizeExpected = '64 KB';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should not replace placeholders with document size when no claimant dq', () => {
+  it('should not replace placeholders with document size when no claimant dq', async () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const sizeExpected = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should replace placeholders for apply help with fees', () => {
+  it('should replace placeholders for apply help with fees', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/case-progression/apply-help-with-fees/start';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should replace placeholders for pay hearing fee', () => {
+  it('should replace placeholders for pay hearing fee', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{PAY_HEARING_FEE_URL_REDIRECT}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/notification/1234/redirect/PAY_HEARING_FEE_URL/123';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should replace placeholders for order made', () => {
+  it('should replace placeholders for order made', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.orderDocumentId = 'http://dm-store:8080/documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801/binary';
@@ -263,19 +263,19 @@ describe('dashboardInterpolationService', () => {
     params.set('orderDocument', undefined);
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-orders-and-notices';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should replace placeholders for view the evidence upload documents', () => {
+  it('should replace placeholders for view the evidence upload documents', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/evidence-upload-documents';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
@@ -311,19 +311,19 @@ describe('dashboardInterpolationService', () => {
     });
   });
 
-  it('should replace placeholders for upload mediation document', () => {
+  it('should replace placeholders for upload mediation document', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{VIEW_MEDIATION_DOCUMENTS}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const textExpected = '/case/123/mediation/view-mediation-documents';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
 
-  it('should replace placeholders for request for reconsideration claimant', () => {
+  it('should replace placeholders for request for reconsideration claimant', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.caseProgression = new CaseProgression();
@@ -333,13 +333,13 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should replace placeholders for request for reconsideration defendant', () => {
+  it('should replace placeholders for request for reconsideration defendant', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.caseProgression = new CaseProgression();
@@ -349,13 +349,13 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
-  it('should replace placeholders for notice of discontinuance defendant', () => {
+  it('should replace placeholders for notice of discontinuance defendant', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = setUpCaseDocument('document.pdf', DocumentType.NOTICE_OF_DISCONTINUANCE);
@@ -364,7 +364,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);

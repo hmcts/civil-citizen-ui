@@ -2,7 +2,6 @@ import {
   getInterestDetails,
   getInterestDateOrIssueDate,
   getInterestRate,
-  calculateInterest,
   getInterestStartDate,
   calculateInterestToDate,
 } from 'common/utils/interestUtils';
@@ -10,21 +9,25 @@ import { Claim } from 'models/claim';
 import { deepCopy } from '../../../utils/deepCopy';
 import { mockClaim as mockResponse } from '../../../utils/mockClaim';
 import { YesNo } from 'form/models/yesNo';
-import {InterestClaimFromType, InterestEndDateType, SameRateInterestType} from 'form/models/claimDetails';
+import {InterestClaimFromType, SameRateInterestType} from 'form/models/claimDetails';
 import { InterestClaimOptionsType } from 'form/models/claim/interest/interestClaimOptionsType';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
+import nock from 'nock';
+import config from 'config';
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('Interest Utils', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockResponse));
 
-  it('getInterestDetails should return undefined when interest is not requested', () => {
+  it('getInterestDetails should return undefined when interest is not requested', async () => {
     //Given
     claim.claimInterest = YesNo.NO;
 
     //When
-    const result = getInterestDetails(claim);
+    const result = await getInterestDetails(claim);
     //Then
     expect(result).toBeUndefined();
   });
@@ -64,20 +67,6 @@ describe('Interest Utils', () => {
     expect(result).toEqual(DIFFERENT_INTEREST_RATE);
   });
 
-  it('calculateInterest should return correct interest', () => {
-    //Given
-    const amount = 9000;
-    const interest = 8;
-    const startDate = new Date(2024, 0, 1, 10,0,0);
-    const endDate = new Date(2024, 8,24,10,0,0);
-
-    //When
-    const result = calculateInterest(amount, interest, startDate, endDate);
-
-    //Then
-    expect(result).toEqual(525.99);
-  });
-
   it('getInterestStartDate should return new Date if InterestClaimFromType is FROM_CLAIM_SUBMIT_DATE', () => {
     //Given
     const claim = new Claim();
@@ -105,8 +94,12 @@ describe('Interest Utils', () => {
     expect(result).toEqual(new Date('2022-10-20'));
   });
 
-  it('calculateInterestToDate should return correct interest to date when BREAK_DOWN_INTEREST selected', () => {
+  it('calculateInterestToDate should return correct interest to date', async () => {
     //Given
+    nock(civilServiceUrl)
+      .post('/fees/claim/calculate-interest')
+      .reply(200, '200');
+
     const claim = new Claim();
     claim.totalClaimAmount = 6000;
     claim.interest = new Interest();
@@ -117,110 +110,10 @@ describe('Interest Utils', () => {
     claim.interest.totalInterest = new TotalInterest('200', 'test');
 
     //When
-    const result = calculateInterestToDate(claim);
+    const result = await calculateInterestToDate(claim);
 
     //Then
+    expect(result).toBeTruthy();
     expect(result).toEqual(200);
-  });
-
-  it('calculateInterestToDate from claim submit date', () => {
-    //Given
-    const claim = new Claim();
-    claim.totalClaimAmount = 1000;
-    claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 3, 17, 45,0);
-    claim.interest.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
-
-    claim.interest.sameRateInterestSelection = {
-      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-    };
-    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-
-    //When
-    const result = calculateInterestToDate(claim);
-
-    //Then
-    expect(result).toBeTruthy();
-  });
-
-  it('calculateInterestToDate from specific date till claim submit date', () => {
-    //Given
-    const claim = new Claim();
-    claim.totalClaimAmount = 1000;
-    claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 10, 3, 17, 45,0);
-    claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
-
-    const startDate = new Date(2024, 10, 1);
-    claim.interest.interestStartDate = new InterestStartDate(
-      startDate.getDate().toString(),
-      (startDate.getMonth() + 1).toString(),
-      startDate.getFullYear().toString(),
-      'my reason');
-    claim.interest.sameRateInterestSelection = {
-      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-    };
-    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-    claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
-
-    //When
-    const result = calculateInterestToDate(claim);
-
-    //Then
-    expect(result).toEqual(0.88);
-  });
-
-  it('calculateInterestToDate from specific date till claim submit date when claim submitted after 4pm', () => {
-    //Given
-    const claim = new Claim();
-    claim.totalClaimAmount = 6000;
-    claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 3, 16, 45,0);
-    claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
-
-    const startDate = new Date(2024, 8, 30);
-    claim.interest.interestStartDate = new InterestStartDate(
-      startDate.getDate().toString(),
-      (startDate.getMonth() + 1).toString(),
-      startDate.getFullYear().toString(),
-      'my reason');
-    claim.interest.sameRateInterestSelection = {
-      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-    };
-    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-    claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
-
-    //When
-    const result = calculateInterestToDate(claim);
-
-    //Then
-    expect(result).toEqual(6.6);
-  });
-
-  it('calculateInterestToDate should return correct interest to date when SAME_RATE_INTEREST selected till Judgment Date', () => {
-    //Given
-    const claim = new Claim();
-    claim.totalClaimAmount = 6000;
-    claim.interest = new Interest();
-    claim.submittedDate = new Date(2024, 9, 2 ,10,0,0);
-    claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
-
-    const startDate = new Date(2024, 8, 30, 10,0,0);
-    claim.interest.interestStartDate = new InterestStartDate(
-      startDate.getDate().toString(),
-      (startDate.getMonth() + 1).toString(),
-      startDate.getFullYear().toString(),
-      'my reason');
-    claim.interest.sameRateInterestSelection = {
-      sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
-    };
-    claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
-    claim.interest.interestEndDate = InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
-
-    //When
-    const result = calculateInterestToDate(claim);
-
-    //Then
-    expect(result).toBeTruthy();
   });
 });
