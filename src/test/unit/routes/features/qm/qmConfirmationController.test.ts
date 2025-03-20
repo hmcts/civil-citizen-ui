@@ -28,7 +28,7 @@ describe('Query management Confirmation Controller', () => {
           expect(res.text).toContain('Message sent');
           expect(res.text).toContain('Your message has been sent to the court');
           expect(res.text).toContain('What happens next');
-          expect(res.text).toContain('Our team will read your message and respond within 10 days.');
+          expect(res.text).toContain('Our team will read your message and try to respond within 10 working days.');
           expect(res.text).toContain('You will be notified when the court responds to your message and you will be able to view it from your dashboard.');
           expect(res.text).toContain('Go to your dashboard');
         });
