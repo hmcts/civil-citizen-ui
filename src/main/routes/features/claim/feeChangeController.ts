@@ -18,10 +18,7 @@ feeChangeController.get(CLAIM_FEE_CHANGE_URL, (async (req: AppRequest, res: Resp
   try {
     const user: UserDetails = req.session.user;
     const claim = await getClaimById(req.params.id, req, true);
-    let interestToDate = 0;
-    if (claim.hasInterest()) {
-      interestToDate = await calculateInterestToDate(claim);
-    }
+    const interestToDate = await calculateInterestToDate(claim);
     const newClaimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
     const claimFee =  convertToPoundsFilter(newClaimFeeData.calculatedAmountInPence);
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
