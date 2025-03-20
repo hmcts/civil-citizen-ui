@@ -12,6 +12,8 @@ import {
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
+const civilServiceUrl = config.get<string>('services.civilService.url');
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/common/utils/dateUtils');
@@ -24,6 +26,9 @@ describe('Judgment Amount Summary', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock(civilServiceUrl)
+      .post('/fees/claim/interest')
+      .reply(200, '0');
   });
 
   describe('on GET', () => {
