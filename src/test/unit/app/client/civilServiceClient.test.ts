@@ -594,6 +594,25 @@ describe('Civil Service Client', () => {
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
+
+    it('should submit submitInitiateGeneralApplicationForCOSCEvent successfully', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const claim = await civilServiceClient.submitInitiateGeneralApplicationEventForCosc('123', ccdGApp,appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
+        .replace(':submitterId', '1')
+        .replace(':caseId', '123'));
+      expect(claim.issueDate).toEqual(date);
+      expect(claim.respondent1ResponseDeadline).toEqual(date);
+    });
+
     it('should throw error when there is an error with api', async () => {
       //Given
       const date = new Date();

@@ -31,6 +31,7 @@ import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
+import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -51,7 +52,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     let applicationFeeOptionUrl : string = null;
-
+    const isGACosc = displayToEnumKey(applicationResponse.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID';
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
 
     const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
@@ -65,8 +66,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     }
     const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
-    const caseProgressionCaseState = claim.isCaseProgressionCaseState();
-    const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
+    const caseProgressionCaseState =  isGACosc ? null : claim.isCaseProgressionCaseState();
+    const uploadDocsTrialUrl = isGACosc ? null : constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
     await deleteDraftClaimFromStore(claimId);
 
     res.render(viewPath, {
