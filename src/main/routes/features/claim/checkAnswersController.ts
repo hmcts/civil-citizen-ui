@@ -94,10 +94,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
     }
     if (!claim?.claimFee?.calculatedAmountInPence) {
-      let interestToDate = 0;
-      if (claim.hasInterest()) {
-        interestToDate = await calculateInterestToDate(claim);
-      }
+      const interestToDate = await calculateInterestToDate(claim);
       const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
       await saveClaimFee(userId, claimFeeData);
     }
