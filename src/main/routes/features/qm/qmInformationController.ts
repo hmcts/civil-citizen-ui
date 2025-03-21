@@ -107,6 +107,38 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
       }
+      case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
+          .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`);
+        break;
+      }
+      case QualifyingQuestionTypeOption.SETTLE_CLAIM:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
+
+
+        //if (claim.isClaimSettled()){
+        if (false){
+          pageSection
+            .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, 'tell us ', `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
+        } else {
+          pageSection
+            .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_UPDATE_WITHOUT_LINK`);
+        }
+        pageSection
+          .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_AFTER`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_1`, {lng: lang})}</li>
+                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_2`, {lng: lang})}</li>
+                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_3`, {lng: lang})}</li>
+              </ul>`)
+          .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_2`)
+          .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_1`);
+        break;
+      }
     }
   }
   return pageSection
@@ -123,13 +155,14 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SUBMIT_RESPONSE_CLAIM',
   [QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.SEE_THE_CLAIM_ON_MY_ACCOUNT',
   [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.VIEW_DOCUMENTS_ON_MY_ACCOUNT',
-
+  [QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT]: 'PAGES.QM.QUALIFY.TITLES.PAID_OR_PARTIALLY_PAID_JUDGMENT',
+  [QualifyingQuestionTypeOption.SETTLE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SETTLE_CLAIM',
 };
 
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
-  const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
+  const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption, claim);
   const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL.replace(':qmType', qmType));
 
   const contents = getContent(claimId,claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
