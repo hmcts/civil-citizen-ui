@@ -74,6 +74,8 @@ export const IGNORED_URLS = [
   urls.GA_CHECK_YOUR_ANSWERS_COSC_URL,  //TODO: remove this once finished the page
   urls.GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   urls.GA_COSC_CONFIRM_URL,
+  urls.GA_PAYMENT_SUCCESSFUL_COSC_URL,
+  urls.GA_PAYMENT_UNSUCCESSFUL_COSC_URL,
 
   urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
 

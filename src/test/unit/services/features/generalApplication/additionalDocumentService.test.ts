@@ -44,6 +44,9 @@ jest.mock('../../../../../main/services/features/caseProgression/TypeOfDocumentS
     mapToSingleFile: jest.fn(),
   },
 }));
+jest.mock('../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
+  isConfirmYouPaidCCJAppType: jest.fn(),
+}));
 
 describe('Additional Documents Service', () => {
   let claim: Claim;

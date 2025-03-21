@@ -38,7 +38,7 @@ export const submitCoScApplication = async (req: AppRequest): Promise<Claim> => 
     const informOtherParties = new InformOtherParties('No', 'DummyVal');
     claim.generalApplication.informOtherParties = informOtherParties;
     const ccdApplication = translateCoScApplicationToCCD(claim.generalApplication);
-    return await civilServiceClient.submitInitiateGeneralApplicationEvent(claimId, ccdApplication, req);
+    return await civilServiceClient.submitInitiateGeneralApplicationEventForCosc(claimId, ccdApplication, req);
   } catch (err) {
     logger.error(err);
     throw err;

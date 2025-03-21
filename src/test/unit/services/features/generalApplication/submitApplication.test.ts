@@ -70,7 +70,7 @@ describe('Submit CoSc general application to ccd', () => {
       .spyOn(ccdTranslationService, 'translateCoScApplicationToCCD');
 
     const CivilServiceClientServiceMock = jest
-      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEventForCosc')
       .mockReturnValue(
         new Promise((resolve) => resolve(claim),
         ),

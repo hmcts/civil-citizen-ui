@@ -35,8 +35,9 @@ const upload = multer({
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL), index);
   const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
+  const currentPage = isConfirmPaidCCJAppType ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
+  const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, currentPage), index);
   const backLinkUrl = BACK_URL;
   const headerTitle = isConfirmPaidCCJAppType ? 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT' : getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, {

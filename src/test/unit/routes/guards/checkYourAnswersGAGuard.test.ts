@@ -22,6 +22,7 @@ import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ClaimFeeData} from 'models/civilClaimResponse';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
 
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/oidc');
@@ -321,5 +322,26 @@ describe('Check your Answers GA Guard', () => {
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
 
   });
-
+  it('should not call cancelUrl if any party is Bilingual and user tries to submit an cosc application', async () => {
+    //Given
+    const MOCK_REQUEST_COSC = { url: '/cosc/', params: { id: '123' } } as unknown as Request;
+    const claim = new Claim();
+    claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH };
+    claim.generalApplications = [
+      {
+        'id': 'test',
+        'value': {
+          'caseLink': {
+            'CaseReference': '6789',
+          },
+          'generalAppSubmittedDateGAspec': new Date('2025-03-18T14:39:28.483971'),
+        },
+      },
+    ];
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST_COSC, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
+  });
 });

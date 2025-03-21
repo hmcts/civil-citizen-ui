@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
+import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_COSC_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
 import { Claim } from 'common/models/claim';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
@@ -124,6 +124,22 @@ describe('Claim fee payment confirmation', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should return resolving successful payment page for COSC application', async () => {
+      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
+      mockDataFromStore.mockResolvedValueOnce(claim);
+      await request(app)
+        .get(GA_PAYMENT_SUCCESSFUL_COSC_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Application fee');
+          expect(res.text).toContain('REF-123-123');
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2'));
         });
     });
   });
