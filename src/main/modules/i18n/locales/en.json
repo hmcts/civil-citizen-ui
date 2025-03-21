@@ -586,8 +586,8 @@
           "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
-          "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
-          "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
+          "SETTLE_CLAIM": "Settle a claim",
+          "AMEND_CLAIM_DETAILS": "Amend the claim details",
           "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
@@ -719,6 +719,33 @@
             }
           }
         },
+        "AMEND_CLAIM_DETAILS" : {
+          "TEXT_1": "If you want to change the details of your claim, including:",
+          "LI_1": "the reasons for the claim",
+          "LI_2": "the claim amount",
+          "LI_3": "tthe person you are claiming against",
+          "LINK_1": {
+            "TEXT": "making an application",
+            "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
+            "TEXT_AFTER": " , you will have to pay a fee."
+          },
+          "LINK_2": {
+            "TEXT": "Check the fees list (opens in a new window)",
+            "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
+            "TEXT_AFTER": " to make sure you pay the correct fee."
+          },
+          "SUBTITLE_1": "If the defendant’s address is wrong",
+          "LINK_3": {
+            "TEXT": "contactocmc@justice.gov.uk",
+            "TEXT_BEFORE": "You can send an amended claim form, with the correct address written in red ink. Email the amended form to "
+          },
+          "SUBTITLE_2": "To update your contact details",
+          "LINK_4": {
+            "TEXT": "send a message to the court",
+            "TEXT_BEFORE": "To update your contact details, "
+          }
+        },
+
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {

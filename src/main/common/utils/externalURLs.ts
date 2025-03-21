@@ -38,3 +38,4 @@ export const attachmentOfEarningsOrderUrl= 'https://www.gov.uk/government/public
 export const thirdPartyDebtOrderUrl= 'https://www.gov.uk/government/publications/third-party-debt-orders-and-charging-orders-ex325';
 export const chargingOrderUrl= 'https://www.gov.uk/government/publications/third-party-debt-orders-and-charging-orders-ex325';
 export const checkCivilFeesListUrl= 'https://www.gov.uk/government/publications/fees-in-the-civil-and-family-courts-main-fees-ex50';
+export const checkCivilFeesListFullListUrl= 'https://www.gov.uk/government/publications/fees-in-the-civil-and-family-courts-full-list-ex50a';

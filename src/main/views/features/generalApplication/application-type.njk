@@ -18,7 +18,7 @@
       {
         value: ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
         html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM') + '</strong>',
-        checked: form.model.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
+        checked: form.model.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE or isAmendClaim,
         hint: {
           text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM_DESCRIPTION')
         }
