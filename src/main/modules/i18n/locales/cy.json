@@ -588,7 +588,7 @@
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
           "SETTLE_CLAIM": "Settle a claim",
           "AMEND_CLAIM_DETAILS": "Amend the claim details",
-          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "CLAIM_ENDED": "Tell the court my claim has ended",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",

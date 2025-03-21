@@ -588,7 +588,7 @@
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
           "SETTLE_CLAIM": "Settle a claim",
           "AMEND_CLAIM_DETAILS": "Amend the claim details",
-          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "CLAIM_ENDED": "Tell the court my claim has ended",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
@@ -745,7 +745,19 @@
             "TEXT_BEFORE": "To update your contact details, "
           }
         },
-
+        "CLAIM_ENDED" : {
+          "LINK_1": {
+            "TEXT": "notice of discontinuance (opens in a new window)",
+            "TEXT_BEFORE": "To tell the court your claim has ended, you need to fill in and send a form called a ",
+            "TEXT_AFTER": " to the court and the other parties in the case."
+          },
+          "TEXT_1": "You cannot upload a notice of discontinuance to the Money claims system.",
+          "LINK_2": {
+            "TEXT": "contact the court (opens in a new window)",
+            "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
+            "TEXT_AFTER": " handling your case."
+          }
+        },
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {
