@@ -9,7 +9,7 @@ class ChooseHowToProceedValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'ERRORS.THERE_IS_A_PROBLEM';
+    return 'ERRORS.FEATURE_UNAVAILABLE_GUIDANCE_BELOW';
   }
 }
 
