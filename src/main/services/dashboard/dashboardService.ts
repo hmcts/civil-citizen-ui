@@ -158,6 +158,7 @@ export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFl
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+        removeTargetBlank: true,
       };
     } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {
