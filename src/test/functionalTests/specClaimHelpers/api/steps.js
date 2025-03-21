@@ -491,7 +491,7 @@ module.exports = {
       console.log('Creating LRvLR FastTrack claim...');
       createClaimSpecData = data.CREATE_SPEC_CLAIM_FASTTRACKLRvLR(multipartyScenario);
     } else {
-      console.log('Creating LRvLR small claims...');
+      console.log('Creating LRvLR small claims....');
       createClaimSpecData = data.CREATE_SPEC_CLAIMLRvLR(multipartyScenario);
     }
 
