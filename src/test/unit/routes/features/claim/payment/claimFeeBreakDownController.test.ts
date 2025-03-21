@@ -70,6 +70,7 @@ describe('on GET', () => {
       },
       isInterestFromASpecificDate: () => false,
       hasBusinessProcessFinished: () => false,
+      hasInterest:() => true,
     };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
@@ -111,6 +112,7 @@ describe('on GET', () => {
       },
       hasBusinessProcessFinished: () => false,
       isInterestFromASpecificDate: () => false,
+      hasInterest:() => true,
     };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
@@ -118,6 +120,7 @@ describe('on GET', () => {
 
     const mockBusinessProcessData = {
       hasBusinessProcessFinished: () => false,
+      isInterestFromASpecificDate: () => false,
     };
     (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
     //when-then
