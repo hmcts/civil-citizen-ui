@@ -3,7 +3,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {BASE_ELIGIBILITY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');

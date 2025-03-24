@@ -9,7 +9,6 @@ const CUI_CASE_PROGRESSION = 'cui-case-progression';
 const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
-const CUI_RELEASE_TWO_ENABLED = 'cuiReleaseTwoEnabled';
 const GA_FOR_LIPS = 'GaForLips';
 const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';

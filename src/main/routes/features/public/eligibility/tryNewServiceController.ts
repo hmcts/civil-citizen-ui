@@ -5,7 +5,6 @@ import {
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
 } from 'routes/urls';
-import config from 'config';
 import {AppRequest} from 'common/models/AppRequest';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';

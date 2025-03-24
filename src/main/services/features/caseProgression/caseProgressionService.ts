@@ -23,7 +23,7 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,} from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');

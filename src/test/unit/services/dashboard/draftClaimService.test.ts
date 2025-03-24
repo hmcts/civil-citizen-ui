@@ -1,4 +1,3 @@
-import * as DraftSoreClient from 'client/legacyDraftStoreClient';
 import * as RedisDraftStoreClient  from 'modules/draft-store/draftStoreService';
 import {getDraftClaimData} from 'services/dashboard/draftClaimService';
 import config from 'config';
@@ -20,8 +19,6 @@ describe ('cui draft claim service', () => {
     expect(redisDraftClaimStore).toHaveBeenCalled();
   });
     it('should return eligibility page', async () => {
-    //Given
-    isReleaseTwo.mockResolvedValue(true);
     //When
     const draftClaimData = await getDraftClaimData('userToken', 'userId');
     //Then

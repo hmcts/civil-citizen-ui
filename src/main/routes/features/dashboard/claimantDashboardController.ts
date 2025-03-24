@@ -3,7 +3,6 @@ import {
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
 } from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,

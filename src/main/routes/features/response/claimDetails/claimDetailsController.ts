@@ -1,6 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  CASE_DOCUMENT_DOWNLOAD_URL,
   CASE_DOCUMENT_VIEW_URL,
   CASE_TIMELINE_DOCUMENTS_URL,
   CLAIM_DETAILS_URL,
@@ -23,7 +22,6 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 
 const claimDetailsController = Router();
-const claimDetailsViewPathOld = 'features/response/claimDetails/claim-details';
 const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-new';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

@@ -1,6 +1,5 @@
 import config from 'config';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
-import {getOcmcDraftClaims} from 'client/legacyDraftStoreClient';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');

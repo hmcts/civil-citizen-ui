@@ -7,7 +7,6 @@ import {
   MAKE_CLAIM,
 } from 'routes/urls';
 import {t} from 'i18next';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 describe('Try the new online service', () => {
   app.request.cookies = {eligibilityCompleted: false};

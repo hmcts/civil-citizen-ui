@@ -18,7 +18,7 @@ async function renderView(res: Response, form: GenericForm<AdditionalTime>, clai
     additionalTimeOptions: AdditionalTimeOptions,
     form,
     responseDate: claim.formattedResponseDeadline(language),
-    claimantName: claim.getClaimantFullName(),,
+    claimantName: claim.getClaimantFullName(),
   });
 }
 
