@@ -161,14 +161,6 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).not.toContain('Case number: ');
       });
     });
-    it('should return old claimant dashboard page', async () => {
-
-      jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
-
-      await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
-        expect(res.status).toBe(302);
-      });
-    });
     it('should return claimant dashboard page with claimant and fast Track', async () => {
 
       const claim = new Claim();

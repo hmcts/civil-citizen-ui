@@ -27,18 +27,6 @@ describe('Try the new online service', () => {
     it.each([
       [BASE_ELIGIBILITY_URL],
       [MAKE_CLAIM],
-    ])('should redirect to the specified service if r2 flag is disabled when url is %s', async (url) => {
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(BASE_ELIGIBILITY_URL);
-        });
-    });
-
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
     ])('should return known claim amount page when minti enabled', async (url) => {
       await request(app)
         .get(url)

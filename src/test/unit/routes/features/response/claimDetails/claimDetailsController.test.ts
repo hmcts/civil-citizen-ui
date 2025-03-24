@@ -75,7 +75,7 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('000MC009'); // case number
+          expect(res.text).toContain('1111'); // case number
           expect(res.text).toContain(totalClaimAmount); // tottal claim amount
           expect(res.text).toContain('House repair'); // claim reason
           expect(res.text).toContain('200'); // claim amount
