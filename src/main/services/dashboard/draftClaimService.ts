@@ -19,6 +19,6 @@ export const getDraftClaimData = async (userToken: string, userId:string):Promis
 };
 
 const getDraftClaim = async (userToken: string, userId: string): Promise<DashboardClaimantItem> => {
-    const claim = await getCaseDataFromStore(userId, true);
-    return toDraftClaimDashboardItem(claim);
+  const claim = await getCaseDataFromStore(userId, true);
+  return toDraftClaimDashboardItem(claim);
 };

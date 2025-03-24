@@ -23,7 +23,7 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,} from 'routes/urls';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -283,7 +283,7 @@ const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
 
 export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim) => {
   if (claim.isClaimant()) {
-      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+    return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };

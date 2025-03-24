@@ -24,7 +24,7 @@ async function renderView(res: Response, claim: Claim, claimantDetailsUrl: strin
     solicitorName: getSolicitorName(claim),
     otherPartyName,
     otherParty,
-    party
+    party,
   });
 }
 

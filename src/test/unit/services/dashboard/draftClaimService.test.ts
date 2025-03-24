@@ -18,7 +18,7 @@ describe ('cui draft claim service', () => {
     //Then
     expect(redisDraftClaimStore).toHaveBeenCalled();
   });
-    it('should return eligibility page', async () => {
+  it('should return eligibility page', async () => {
     //When
     const draftClaimData = await getDraftClaimData('userToken', 'userId');
     //Then
