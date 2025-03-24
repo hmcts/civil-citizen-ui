@@ -42,6 +42,9 @@ describe('Total amount', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
         .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
+        .mockResolvedValueOnce(Promise.resolve(0.02) as any);
       (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
       const res = await request(app)
         .get(CLAIM_TOTAL_URL.replace(':id', '5129'));
