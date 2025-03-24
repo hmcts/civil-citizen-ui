@@ -128,7 +128,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         showAnythingElseSection = true;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
-        if (claim.isClaimSettled() && !claim.isClaimSettled()){
+        if (claim.isClaimant() && !claim.isClaimSettled()){
           pageSection
             .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
         } else {
