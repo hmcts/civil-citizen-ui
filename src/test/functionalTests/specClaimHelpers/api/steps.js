@@ -70,7 +70,7 @@ const data = {
   CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER: (user, userId, totalClaimAmount) => createLipClaimDefendantSoleTrader(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY: (user, userId, totalClaimAmount) => createLipClaimSoleTraderVCompany(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
-
+  DEFENDANT_RESPONSE: (response, camundaEvent) => require('../fixtures/events/defendantLRResponse').respondToClaim(response, camundaEvent),
 };
 
 let caseId, eventName, payload;
@@ -98,6 +98,15 @@ module.exports = {
         break;
       case 'withoutNoticeToWith':
         payload = makeAnOrderGA.withoutNoticeToWith(document);
+        break;
+      case 'writtenRepresentations':
+        payload = makeAnOrderGA.writtenRepresentations(document);
+        break;
+      case 'requestMoreInformation':
+        payload = makeAnOrderGA.requestMoreInformation(document);
+        break;
+      case 'listForHearing':
+        payload = makeAnOrderGA.listForHearing(document);
         break;
       default:
         payload = makeAnOrderGA.makeAnOrderGA(document);
@@ -591,6 +600,35 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(expectedState);
     console.log('End of viewAndRespondToDefence()');
+  },
+
+  defendantLRResponse: async (user, response, camundaEvent, expectedState) => {
+    await apiRequest.setupTokens(user);
+
+    eventName = 'DEFENDANT_RESPONSE_SPEC';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let defendantResponseData = data.DEFENDANT_RESPONSE(response, camundaEvent);
+
+    caseData = returnedCaseData;
+
+    for (let pageId of Object.keys(defendantResponseData.userInput)) {
+      await assertValidDataSpec(defendantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent('AWAITING_APPLICANT_INTENTION');
+
+    await waitForFinishedBusinessProcess(caseId);
+
+    if (expectedState) {
+      const responseData = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(responseData.state, expectedState);
+    }
+
+    deleteCaseFields('respondent1Copy');
+
+    console.log('End of defendantResponse()');
   },
 
   claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '', eaCase = true) => {

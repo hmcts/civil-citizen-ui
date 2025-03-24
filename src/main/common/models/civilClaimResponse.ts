@@ -214,9 +214,11 @@ export interface CCDClaim extends ClaimUpdate {
   detailsOfWhyDoesYouDisputeTheClaim?: string;
   respondToAdmittedClaimOwingAmount?: string;
   hearingDocuments?: CaseProgressionHearingDocuments[];
+  hearingDocumentsWelsh?: CaseProgressionHearingDocuments[];
   hearingDate?: Date;
   hearingLocation?: HearingLocation;
   hearingTimeHourMinute?: string;
+  hearingDurationInMinutesAHN?:string;
   hearingDuration?: HearingDuration;
   respondToAdmittedClaimOwingAmountPounds?: string;
   documentDisclosureList?: UploadEvidenceElementCCD[];
@@ -318,6 +320,8 @@ export interface CCDClaim extends ClaimUpdate {
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   repaymentSummaryObject?:string;
+  joJudgementByAdmissionIssueDate?: Date;
+  joDJCreatedDate?: Date;
 }
 
 export interface ClaimFeeData {

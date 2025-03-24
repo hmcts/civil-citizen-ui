@@ -198,7 +198,15 @@
       "MINUTES_180": "3 hours",
       "MINUTES_240": "4 hours",
       "DAY_1": "1 day",
-      "DAY_2": "2 days"
+      "DAY_2": "2 days",
+      "DAY": "day",
+      "DAYS": "days",
+      "HOUR": "hour",
+      "HOURS": "hours",
+      "MINUTE": "minute",
+      "MINUTES": "minutes",
+      "AND": " and ",
+      "AND_VOWEL": " and "
     },
     "HELP_CALCULATING_INTEREST": {
       "CALCULATE_THIS": "To calculate this, use the steps below.",
@@ -2147,7 +2155,8 @@
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Trial arrangements confirmed.",
         "PAY_HEARING_FEE": "Pay the hearing fee.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Your documents are being processed.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
         "CASE_DISMISSED": "The case has been closed.",
@@ -2197,7 +2206,8 @@
         "TRIAL_ARRANGEMENTS_REQUIRED": "Confirm your trial arrangements.",
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Trial arrangements confirmed.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Your documents are being processed.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -2537,8 +2547,8 @@
       "COST_OPTIONAL": "Estimated cost (optional)",
       "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
       "FIELD_OF_EXPERTISE": "Field of expertise",
-      "FIRST_NAME_OPTIONAL": "First name (optional)",
-      "LAST_NAME_OPTIONAL": "Last name (optional)",
+      "FIRST_NAME": "First name (Insert TBC, if expert name not known yet)",
+      "LAST_NAME": "Last name (Insert TBC, if expert name not known yet)",
       "PAGE_TITLE": "Enter the expert’s details",
       "PHONE_OPTIONAL": "Phone number (optional)",
       "REMOVE_EXPERT": "Remove expert",
@@ -4080,7 +4090,7 @@
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Download form N244 (opens in new tab)",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to: contactocmc@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
       "IF_AGREED": "If agreed, extra time will start from {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "More than 28 days",
@@ -4444,7 +4454,8 @@
       "TITLE": "Pay your claim fee",
       "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
       "CONTINUE_TO_PAYMENT": "continue to payment",
-      "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry."
+      "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry.",
+      "CASE_PROCESSING_WARNING": "The case processing has not completed, please refresh this page in one minute. If the problem persists please contact the helpdesk 0300 123 7050."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
@@ -4684,7 +4695,9 @@
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
       "COURT_OFFICER_ORDER":"Court Officer Order",
       "JBA_DEFENDANT":"Judgment by admission defendant",
-      "JBA_CLAIMANT":"Judgment by admission claimant"
+      "JBA_CLAIMANT":"Judgment by admission claimant",
+      "DJ_DEFENDANT":"Default Judgment defendant",
+      "DJ_CLAIMANT":"Default Judgment claimant"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
@@ -4851,9 +4864,13 @@
       "WEBCHAT_UNAVAILABLE": "Web chat unavailable",
       "TELEPHONE": "Telephone",
       "OPENING_TIMES": "Opening Times",
-      "OPENING_HOURS": "Monday to Friday, 9am to 5pm",
+      "TELEPHONE_OPENING_HOURS": "Monday to Friday, 9am to 5pm",
       "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)"
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CNBC_TELEPHONE": "Civil National Business Centre 0300 123 1056",
+      "TRAFFIC_ENFORCEMENT_CENTRE_TELEPHONE": "Traffic Enforcement Centre 0300 123 1059",
+      "CNBC_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 4pm",
+      "MEDIATION_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 5pm"
     }
   },
   "FOOTER":{
@@ -5362,6 +5379,10 @@
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
       "PAY_APPLICATION_FEE": "You need to tell us if you want to apply for help with fees. Choose option Yes or No",
+      "QUALIFIED_SOT": {
+        "ERROR_FULL_NAME": "Name is required",
+        "ERROR_ROLE": "Role is required"
+      },
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
@@ -5380,7 +5401,8 @@
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
     },
-    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made.",
+    "VALID_PAID_IN_FULL_DATE": "Paid in full date must be on or after the date of the judgment"
   },
   "BANNERS" : {
     "CUI_CP" : {

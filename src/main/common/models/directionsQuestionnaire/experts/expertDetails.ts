@@ -1,16 +1,19 @@
 import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
-import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
+import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class ExpertDetails {
-  firstName?: string;
-  lastName?: string;
+  @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
+    firstName: string;
+
+  @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
+    lastName: string;
 
   @ValidateIf(o => o.emailAddress)
   @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     emailAddress?: string;
 
   @ValidateIf(o => o.phoneNumber)
-  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
+  @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     phoneNumber?: number;
 
   @IsNotEmpty({message: 'ERRORS.ENTER_WHY_NEED_EXPERT'})
@@ -25,8 +28,8 @@ export class ExpertDetails {
     estimatedCost?: number;
 
   constructor(firstName?: string, lastName?: string, emailAddress?: string, phoneNumber?: number, whyNeedExpert?: string, fieldOfExpertise?: string, estimatedCost?: number) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = firstName?.trim();
+    this.lastName = lastName?.trim();
     this.emailAddress = emailAddress;
     this.phoneNumber = phoneNumber;
     this.whyNeedExpert = whyNeedExpert;

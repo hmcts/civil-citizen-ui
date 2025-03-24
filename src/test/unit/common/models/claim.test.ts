@@ -1000,6 +1000,15 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[3].value);
     });
+
+    it('should return document details for Default judgment ', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetails(DocumentType.DEFAULT_JUDGMENT_DEFENDANT1);
+      //Then
+      expect(result).toBe(mockClaim.defaultJudgmentDocuments[0].value);
+    });
   });
 
   describe('getDocumentDetailsList', () => {
@@ -2370,6 +2379,7 @@ describe('Documents', () => {
     });
   });
 });
+
 describe('isCcjComplete', () => {
   const claim = new Claim();
   it('should return no when ccj not completed and state is correct', () => {
@@ -2394,6 +2404,7 @@ describe('isCcjComplete', () => {
     expect(result).toBe(true);
   });
 });
+
 describe('isCcjCompleteForJo', () => {
   const claim = new Claim();
   claim.claimantResponse = new ClaimantResponse();

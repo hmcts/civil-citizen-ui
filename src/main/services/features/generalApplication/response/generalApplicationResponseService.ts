@@ -31,6 +31,7 @@ import {
 import { dateTimeFormat } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -126,7 +127,7 @@ export const saveResponseUnavailabilityDatesConfirmation = async (redisKey: stri
   }
 };
 
-export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.statementOfTruth = statementOfTruth;
@@ -148,6 +149,21 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
       && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
     || (application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
       && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS')
+  );
+};
+
+export const isApplicationVisibleToRespondentForClaimant = (application: ApplicationResponse): boolean => {
+  const parentClaimantIsApplicant = application.case_data.parentClaimantIsApplicant;
+  const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
+  return ((parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
+    || ((application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO
+        || application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES)
+      && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
+    || (application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
+      && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS')
+    || (displayToEnumKey(application.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID')
   );
 };
 

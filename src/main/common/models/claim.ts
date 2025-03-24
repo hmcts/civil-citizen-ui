@@ -188,6 +188,8 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
+  joJudgementByAdmissionIssueDate?: Date;
+  joDJCreatedDate?: Date;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   // Index signature to allow dynamic property access
@@ -451,7 +453,7 @@ export class Claim {
   }
 
   hasPaidInFull(): boolean {
-    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.totalClaimAmount;
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount === this.totalClaimAmount;
   }
 
   getRejectAllOfClaimPaidLessPaymentDate(): Date {
@@ -492,6 +494,11 @@ export class Claim {
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
+    } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
+      const djDoc = this.defaultJudgmentDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return djDoc.value;
     }
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
@@ -841,6 +848,10 @@ export class Claim {
     return !!this.caseProgressionHearing?.hearingDocuments;
   }
 
+  hasDefaultJudgmentDocuments(): boolean {
+    return !!this.defaultJudgmentDocuments;
+  }
+
   get bundleStitchingDeadline(): string {
     return this.threeWeeksBeforeHearingDateString();
   }
@@ -1024,7 +1035,7 @@ export class Claim {
   }
 
   hasClaimantIntentToProceedResponse() {
-    return this?.getIntentionToProceed() === YesNo.YES;
+    return this.claimantResponse?.intentionToProceed?.option === YesNo.YES;
   }
 
   hasClaimantRejectIntentToProceedResponse() {
