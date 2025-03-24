@@ -1,8 +1,5 @@
-import config from 'config';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-
-const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 export interface DraftClaimData {
    claimCreationUrl: string;

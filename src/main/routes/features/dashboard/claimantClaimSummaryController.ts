@@ -1,5 +1,4 @@
 import {NextFunction, RequestHandler, Router, Response} from 'express';
-import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {DASHBOARD_CLAIMANT_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
