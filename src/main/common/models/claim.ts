@@ -111,7 +111,7 @@ export class Claim {
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
-  _claimInterest?: YesNo;
+  #claimInterest?: YesNo;
   interest?: Interest;
   submittedDate?: Date;
   issueDate?: Date;
@@ -863,11 +863,11 @@ export class Claim {
   }
 
   get claimInterest(): YesNo {
-    return this._claimInterest;
+    return this.#claimInterest;
   }
 
   set claimInterest(claimInterest: YesNo | YesNoUpperCamelCase) {
-    this._claimInterest = claimInterest ? claimInterest.toLowerCase() as YesNo : undefined;
+    this.#claimInterest = claimInterest ? claimInterest.toLowerCase() as YesNo : undefined;
   }
 
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {
