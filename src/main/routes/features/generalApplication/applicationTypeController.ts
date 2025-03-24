@@ -45,7 +45,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
     const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
-    const isQMEnabled = await isQueryManagementEnabled(claim.submittedDate);
+    const isQMEnabled = await isQueryManagementEnabled(claim.issueDate);
     res.render(viewPath, {
       form,
       cancelUrl,
