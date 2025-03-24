@@ -404,3 +404,5 @@ export const CONTACT_CNBC_URL = '/contact-cnbc';
 export const CONTACT_MEDIATION_URL = '/contact-mediation';
 export const GA_UNAVAILABILITY_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/unavailability-confirmation`;
 export const GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/unavailability-confirmation`;
+
+export const QUERY_MANAGEMENT_CREATE_QUERY = '/create-query';

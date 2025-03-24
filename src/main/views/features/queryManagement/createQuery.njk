@@ -1,0 +1,123 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "../../macro/button.njk" import addButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageHeaders.pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  {% if form != null and form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+  {% endif %}
+
+  {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
+  <div class="govuk-grid-row">
+    <form class="govuk-grid-column-two-thirds" method="post" action="{{ currentUrl }}&_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+      {{ csrfProtection(csrf) }}
+      {{ govukInput({
+        id: 'query-subject-field',
+        name: 'query-subject-field',
+        label: {
+          text: 'Message subject'
+        },
+        hint: {
+          text: 'The subject should be a summary of your message'
+        },
+        errorMessage: {
+          text: form.errorFor('messageSubject')
+        } if form.errorFor('messageSubject')
+      }) }}
+
+      {{ govukTextarea({
+        id: 'query-message-field',
+        name: 'query-message-field',
+        label: {
+          text: 'Message details'
+        },
+        hint: {
+          text: 'Include as many details as possible so case workers can respond to your message'
+        },
+        errorMessage: {
+          text: form.errorFor('messageDetails')
+        } if form.errorFor('messageDetails')
+      }) }}
+
+      {{ govukRadios({
+        classes: 'govuk-radios--inline',
+        id: 'is-query-hearing-related',
+        name: 'is-query-hearing-related',
+        fieldset: {
+          legend: {
+            text: 'Is your message about a hearing?'
+          }
+        },
+        items: [{
+          value: 'yes',
+          text: 'Yes'
+        },{
+          value: 'no',
+          text: 'No'
+        }],
+        errorMessage: {
+          text: form.errorFor('isHearingRelated')
+        } if form.errorFor('isHearingRelated')
+      }) }}
+
+      <div class="govuk-inset-text">
+        {{ govukFileUpload({
+          id: 'query-file-upload',
+          name: 'query-file-upload',
+          label: {
+            text: 'Upload documents (optional)',
+            classes: 'govuk-heading-s govuk-!-font-weight-bold'
+          },
+          hint: {
+            html: "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>We accept documents sized 100MB or smaller, in these formats: pdf, doc, docx, jpg, jpeg, xlsx, png.</span>"
+          }
+        }) }}
+
+        {{ govukButton({
+          id: 'uploadFileButton',
+          name: 'action',
+          value: 'uploadButton',
+          text: t('COMMON.UPLOAD_FILE'),
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
+
+      {% if formattedSummary.summaryList.rows.length > 0 %}
+        <h2 class="govuk-heading-m">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILES') }}</h2>
+        <div class="govuk-section-break--s govuk-section-break--visible"></div>
+        {% for row in formattedSummary.summaryList.rows %}
+          <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+              <div class="govuk-summary-list__row ">
+                <dt class="govuk-summary-list__key">
+                  <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-weight-bold"> {{ row.key.text }}</p>
+                </dt>
+                <dd class="govuk-summary-list__actions">
+                  <a class="govuk-link" href="{{ row.actions.items[0].href }}">
+                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}<span class="govuk-visually-hidden">
+                                    {{ row.key.text }}</span>
+                  </a>
+                </dd>
+              </div>
+          </dl>
+        {% endfor %}
+          </br>
+      {% endif %}
+
+
+      {{ addButton(t, 'CONTINUE', '/') }}
+    </form>
+  </div>
+
+{% endblock %}

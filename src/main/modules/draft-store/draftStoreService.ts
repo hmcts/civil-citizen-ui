@@ -9,6 +9,8 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
+import {plainToInstance} from 'class-transformer';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -122,3 +124,26 @@ export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {
     throw error;
   }
 };
+
+export function generateRedisKeyForFile(req:AppRequest): string {
+  return generateRedisKey(req) + '_query-management-files';
+}
+
+export async function saveFilesToRedis(redisKey: string, files: FileUpload[]) {
+  const draftStoreClient = app.locals.draftStoreClient;
+  draftStoreClient.set(redisKey, JSON.stringify(files));
+}
+
+export async function getQueryFilesFromRedis(redisKey: string): Promise<FileUpload[]> {
+  const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
+  if (dataFromRedis === null) {
+    return [];
+  }
+  const parsed = JSON.parse(dataFromRedis);
+  const returnedFiles = plainToInstance(FileUpload, parsed);
+  return returnedFiles as unknown as FileUpload[];
+}
+
+export async function deleteFilesFromRedis(redisKey: string) {
+  await app.locals.draftStoreClient.del(redisKey);
+}
