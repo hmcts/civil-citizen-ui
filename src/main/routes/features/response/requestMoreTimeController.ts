@@ -8,20 +8,17 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 const requestMoreTimeController = Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
 const responseDeadlineService = new ResponseDeadlineService();
 
 async function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string): Promise<void> {
-  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,
     form,
     responseDate: claim.formattedResponseDeadline(language),
-    claimantName: claim.getClaimantFullName(),
-    isReleaseTwoEnabled,
+    claimantName: claim.getClaimantFullName(),,
   });
 }
 

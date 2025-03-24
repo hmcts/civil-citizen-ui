@@ -29,7 +29,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(CUI_CASE_PROGRESSION).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
@@ -121,10 +120,6 @@ export async function isPcqShutterOn(): Promise<boolean> {
   return await getFlagValue(SHUTTER_PCQ) as boolean;
 }
 
-export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
-}
-
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
@@ -141,9 +136,8 @@ export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
   const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
-  return cuiR2Flag && dashboardEnabledForR2Cases;
+  return dashboardEnabledForR2Cases;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {

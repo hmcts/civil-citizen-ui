@@ -5,7 +5,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getAddress, getSolicitorName} from 'services/features/response/contactThem/contactThemService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
-import { isCUIReleaseTwoEnabled } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const citizenContactThemViewPath = 'features/dashboard/contact-them';
 const contactThemController = Router();
@@ -17,9 +16,6 @@ async function renderView(res: Response, claim: Claim, claimantDetailsUrl: strin
   const otherParty = claim?.isClaimant() ? t('PAGES.CONTACT_THEM.DEFENDANT', { lng }) : t('PAGES.CONTACT_THEM.CLAIMANT', { lng });
 
   const address = getAddress(party);
-
-  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  const showInR1 = !isReleaseTwoEnabled;
   res.render(citizenContactThemViewPath, {
     claim,
     claimantDetailsUrl,
@@ -28,8 +24,7 @@ async function renderView(res: Response, claim: Claim, claimantDetailsUrl: strin
     solicitorName: getSolicitorName(claim),
     otherPartyName,
     otherParty,
-    party,
-    showInR1,
+    party
   });
 }
 

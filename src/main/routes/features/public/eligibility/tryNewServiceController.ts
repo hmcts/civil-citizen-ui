@@ -5,7 +5,6 @@ import {
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
 } from 'routes/urls';
-import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {AppRequest} from 'common/models/AppRequest';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
@@ -16,14 +15,8 @@ const tryNewServiceController = Router();
 const pageTitle= 'PAGES.TRY_NEW_SERVICE.PAGE_TITLE';
 
 tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: AppRequest, res: Response) => {
-  const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   const userId = req.session?.user?.id;
-  if (!isCUIR2Enabled) {
-    const ocmcBaseUrl = config.get<string>('services.cmc.url');
-    return res.redirect(`${ocmcBaseUrl}${BASE_ELIGIBILITY_URL}`);
-  }
-
   if(req.cookies['eligibilityCompleted'] && userId) {
     return res.redirect(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
   }

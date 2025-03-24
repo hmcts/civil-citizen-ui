@@ -57,7 +57,6 @@ import {ValidationError} from 'class-validator';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {AcceptDefendantOffer} from 'common/models/generalApplication/response/acceptDefendantOffer';
-import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
 import {
   triggerNotifyHwfEvent,
@@ -352,8 +351,6 @@ describe('General Application service', () => {
   describe('Get cancel button url', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
-      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(true);
-
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
 
@@ -367,8 +364,6 @@ describe('General Application service', () => {
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
-      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
-
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
 
@@ -382,8 +377,6 @@ describe('General Application service', () => {
 
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
-      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
-
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
 

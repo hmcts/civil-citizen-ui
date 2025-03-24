@@ -8,7 +8,6 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -41,10 +40,6 @@ describe('Response - New response deadline', () => {
     nock('http://localhost:4000')
       .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
       .reply(200, new Date(2022, 9, 31));
-  });
-
-  beforeEach(() => {
-    (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
   });
 
   describe('on GET', () => {

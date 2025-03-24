@@ -19,7 +19,7 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isCaseProgressionV1Enable, isCUIReleaseTwoEnabled, isCarmEnabledForCase, isGaForLipsEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCaseProgressionV1Enable, isCarmEnabledForCase, isGaForLipsEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
@@ -42,68 +42,62 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const claimId =  req.params.id;
     let claimIdPrettified;
     let claimAmountFormatted;
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled){
-      const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-      let claim: Claim;
-      let caseRole: ClaimantOrDefendant;
-      let dashboardId;
-      const userId = (<AppRequest>req)?.session?.user?.id.toString();
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    let claim: Claim;
+    let caseRole: ClaimantOrDefendant;
+    let dashboardId;
+    const userId = (<AppRequest>req)?.session?.user?.id.toString();
 
-      if(claimId === 'draft') {
-        caseRole = ClaimantOrDefendant.CLAIMANT;
-        claim = await getClaimById(userId, req, true);
-        dashboardId = userId;
-      } else {
-        claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
-        caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-        dashboardId = claimId;
-        claimIdPrettified = caseNumberPrettify(claimId);
-        claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
-        if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
-          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
-        } else if(claim?.respondentSolicitorDetails) {
-          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
-        }
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
-      }
-      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
-      const caseProgressionEnabled = await isCaseProgressionV1Enable();
-      const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
-      claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
-      const isGAFlagEnable = await isGaForLipsEnabled();
-      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-        = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
-      const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
-      hearing.forEach((task) => {
-        if (task.taskNameEn.search(HearingUploadDocuments)>0){
-          req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
-          req.session.dashboard.taskIdHearingUploadDocuments = task.id;
-        }
-      });
-
-      res.render(claimantDashboardViewPath, {
-        claim: claim,
-        claimId,
-        claimIdPrettified,
-        claimAmountFormatted,
-        dashboardTaskList: dashboard,
-        dashboardNotifications,
-        iWantToTitle,
-        iWantToLinks,
-        helpSupportTitle,
-        helpSupportLinks,
-        lang: lng,
-        pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
-      });
-
+    if(claimId === 'draft') {
+      caseRole = ClaimantOrDefendant.CLAIMANT;
+      claim = await getClaimById(userId, req, true);
+      dashboardId = userId;
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL));
+      claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+      caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
+      dashboardId = claimId;
+      claimIdPrettified = caseNumberPrettify(claimId);
+      claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
+      if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+      } else if(claim?.respondentSolicitorDetails) {
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
+      }
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
     }
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+    const caseProgressionEnabled = await isCaseProgressionV1Enable();
+    const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
+    const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
+    claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
+    const isGAFlagEnable = await isGaForLipsEnabled();
+    const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+    const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
+      = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
+    const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
+    hearing.forEach((task) => {
+      if (task.taskNameEn.search(HearingUploadDocuments)>0){
+        req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+        req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+      }
+    });
+
+    res.render(claimantDashboardViewPath, {
+      claim: claim,
+      claimId,
+      claimIdPrettified,
+      claimAmountFormatted,
+      dashboardTaskList: dashboard,
+      dashboardNotifications,
+      iWantToTitle,
+      iWantToLinks,
+      helpSupportTitle,
+      helpSupportLinks,
+      lang: lng,
+      pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
+    });
   } catch (error) {
     next(error);
   }

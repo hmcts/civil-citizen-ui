@@ -10,11 +10,7 @@
 {% endblock %}
 
 {% set NEW_RESPONSE_DEADLINE_CONTENT %}
-    {% if isReleaseTwoEnabled %}
-        {{   t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT_R2') }}
-    {% else %}
-        {{  t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT', {claimantName : claimantName}) }}
-    {% endif %}
+  {{   t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT_R2') }}
 {% endset %}
 
 {% block content %}

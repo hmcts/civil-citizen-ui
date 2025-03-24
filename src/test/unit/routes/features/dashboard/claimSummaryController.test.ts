@@ -39,7 +39,6 @@ const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
-const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
 const mockExpectedDashboardInfo=
@@ -422,7 +421,6 @@ describe('Claim Summary Controller Defendant', () => {
           ...claim.case_data,
         },
       };
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
@@ -451,7 +449,6 @@ describe('Claim Summary Controller Defendant', () => {
           ...claim.case_data,
         },
       };
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
@@ -546,7 +543,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
@@ -579,7 +575,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
