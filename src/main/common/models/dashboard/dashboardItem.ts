@@ -53,7 +53,7 @@ export abstract class DashboardItem {
 export class DashboardClaimantItem extends DashboardItem {
   constructor() {
     super();
-    this.url = '/dashboard/:claimId/claimant';
+    this.url = '/dashboard/:claimId/claimantNewDesign';
 
   }
 
@@ -288,7 +288,6 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
     draftClaim.claimantName = claim.getClaimantFullName();
     draftClaim.defendantName = claim.getDefendantFullName();
     draftClaim.url = DASHBOARD_CLAIMANT_URL.replace(':id', 'draft');
-
     return draftClaim;
   } else {
     return undefined;
