@@ -2,9 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 
 import {
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
-  GA_COSC_CONFIRM_URL,
-  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
-  GA_UPLOAD_DOCUMENTS_COSC_URL,
+  GA_COSC_CONFIRM_URL,BACK_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -18,7 +16,6 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitCoScApplication} from 'services/features/generalApplication/submitApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 
 const coscCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -30,10 +27,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const summaryRows = getCoScSummarySections(claimId, claim, lang);
   const headerTitle = 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT';
 
-  const backLinkUrl =
-    claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence?.debtPaymentOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT
-      ? constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL)
-      : constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_COSC_URL);
+  const backLinkUrl = BACK_URL;
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
 }
 
