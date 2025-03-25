@@ -9,7 +9,8 @@ import {
   getCancelUrl,
   getCaption,
   getQueryManagement,
-  saveQueryManagement,} from 'services/features/qm/queryManagementService';
+  saveQueryManagement,
+} from 'services/features/qm/queryManagementService';
 import {CaseRole} from 'form/models/caseRoles';
 import * as utilityService from 'modules/utilityService';
 import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
