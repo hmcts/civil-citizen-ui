@@ -18,16 +18,16 @@ import {buildMediationSection} from 'services/features/response/checkAnswers/res
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, mintiApplicable: boolean, claimFee?: number): SummarySections => {
+const buildSummarySections = async (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, mintiApplicable: boolean, claimFee?: number): Promise<SummarySections> => {
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
       : null;
   };
-  const getJudgmentRequestSection = () => {
+  const getJudgmentRequestSection = async () => {
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     return claimantResponse.isCCJRequested
-      ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
+      ? await buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
   const getHowYouWishToProceed = () => {
@@ -63,7 +63,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
       getYourResponseSection(),
       getHowYouWishToProceed(),
       getMediationSection(),
-      getJudgmentRequestSection(),
+      await getJudgmentRequestSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
       getFreeTelephoneMediationSection(),
       getHearingRequirementsSection(),
@@ -72,10 +72,10 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false, mintiApplicable = false): SummarySections => {
+export const getSummarySections = async (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false, mintiApplicable = false): Promise<SummarySections> => {
   const lng = getLng(lang);
   claim.claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-  return buildSummarySections(claim, claimId, lng, carmApplicable, mintiApplicable, claimFee);
+  return await buildSummarySections(claim, claimId, lng, carmApplicable, mintiApplicable, claimFee);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
