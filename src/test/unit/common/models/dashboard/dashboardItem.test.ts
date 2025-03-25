@@ -23,26 +23,15 @@ jest.mock('i18next', () => ({
 
 describe('Dashboard Items', ()=> {
   describe('Dashboard claimant item', ()=>{
-    const ocmcClaimantClaim = new DashboardClaimantItem();
-    ocmcClaimantClaim.claimId = '1';
-    ocmcClaimantClaim.ocmc = true;
-
     const ccdClaimantClaim = new DashboardClaimantItem();
     ccdClaimantClaim.claimId = '1';
     ccdClaimantClaim.ocmc = false;
-
-    it('should return correct url for ocmc claim', ()=> {
-      //When
-      const href = ocmcClaimantClaim.getHref();
-      //Then
-      expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/claimant');
-    });
 
     it('should return correct url for ccd claims', ()=> {
       //When
       const href = ccdClaimantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimant');
+      expect(href).toEqual( '/dashboard/1/claimantNewDesign');
     });
 
     it('should translate claim to dashboard item when claim is not empty', () => {
@@ -139,26 +128,15 @@ describe('Dashboard Items', ()=> {
   });
 
   describe('Dashboard claimant item', ()=>{
-    const ocmcDefendantClaim = new DashboardClaimantItem();
-    ocmcDefendantClaim.claimId = '1';
-    ocmcDefendantClaim.ocmc = true;
-
     const ccdDefendantClaim = new DashboardClaimantItem();
     ccdDefendantClaim.claimId = '1';
     ccdDefendantClaim.ocmc = false;
-
-    it('should return correct url for ocmc claim', ()=> {
-      //When
-      const href = ocmcDefendantClaim.getHref();
-      //Then
-      expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/claimant');
-    });
 
     it('should return correct url for ccd claims', ()=> {
       //When
       const href = ccdDefendantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimant');
+      expect(href).toEqual( '/dashboard/1/claimantNewDesign');
     });
 
     it('should return translated status for claim', () => {
