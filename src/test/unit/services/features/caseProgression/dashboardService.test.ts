@@ -43,6 +43,11 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const appReq = <AppRequest>req;
 appReq.params = {id: '123'};
 
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
