@@ -24,7 +24,7 @@ describe('Full Defence - Your Response', () => {
         option: YesNo.YES,
       };
       //When
-      const summarySections = getSummarySections(constVal.CLAIM_ID, claim);
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim);
       //Then
       expect(summarySections.sections[0].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE');
       expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM');
@@ -47,7 +47,7 @@ describe('Part Admission - Your Response', () => {
         option: YesNo.YES,
       };
       //When
-      const summarySections = getSummarySections(constVal.CLAIM_ID, claim);
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim);
       //Then
       expect(summarySections.sections[0].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE');
       expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION');
@@ -66,7 +66,7 @@ describe('Part Admission - Your Response', () => {
         option: YesNo.NO,
       };
       //When
-      const summarySections = getSummarySections(constVal.CLAIM_ID, claim);
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim);
       //Then
       expect(summarySections.sections[0].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE');
       expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION');

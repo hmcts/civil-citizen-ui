@@ -57,9 +57,9 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 
-export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): string => {
+export const replaceDashboardPlaceholders = async (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<string> => {
 
-  const valuesMap = setDashboardValues(claim, claimId, notification, lng, appId);
+  const valuesMap = await setDashboardValues(claim, claimId, notification, lng, appId);
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
@@ -67,7 +67,7 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
   return textToReplace;
 };
 
-const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Map<string, string> => {
+const setDashboardValues = async (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<Map<string, string>> => {
 
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
@@ -113,7 +113,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{civilMoneyClaimsTelephoneWelshSpeaker}', civilMoneyClaimsTelephoneWelshSpeaker);
   valuesMap.set('{cmcCourtEmailId}', cmcCourtEmailId);
   valuesMap.set('{cmcCourtAddress}', getSendFinancialDetailsAddress(getLng(lng)));
-  valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
+  valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', (await getTotalAmountWithInterestAndFees(claim)).toString());
   valuesMap.set('{TELL_US_IT_IS_SETTLED}', DATE_PAID_URL.replace(':id', claimId));
   valuesMap.set('{DOWNLOAD_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT)));
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);

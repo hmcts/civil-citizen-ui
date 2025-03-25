@@ -93,7 +93,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = false;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`);
@@ -101,7 +101,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = false;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.PARAGRAPH_1`);
@@ -109,7 +109,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = false;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.PARAGRAPH_1`);
