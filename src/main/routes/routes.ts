@@ -432,6 +432,9 @@ import submitApplicationOfflineController from 'routes/features/generalApplicati
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
+import qmStartController from 'routes/features/qm/qmStartController';
+import qmWhatToDoController from 'routes/features/qm/qmWhatToDoController';
+import qmInformationController from 'routes/features/qm/qmInformationController';
 
 export default [
   homeController,
@@ -779,4 +782,7 @@ export default [
   submitApplicationOfflineController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
+  qmStartController,
+  qmWhatToDoController,
+  qmInformationController,
 ];

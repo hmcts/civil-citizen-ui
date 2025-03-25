@@ -65,11 +65,15 @@ describe('Claim details page', () => {
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .times(3)
+        .reply(200, '0');
       const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+      const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
       await request(app)
         .get('/case/1111/response/claim-details')
@@ -87,6 +91,10 @@ describe('Claim details page', () => {
         });
     });
     it('should retrieve claim from redis when claim exists in redis', async () => {
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .times(2)
+        .reply(200, '0');
       const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
@@ -105,6 +113,10 @@ describe('Claim details page', () => {
         });
     });
     it('should display Download and view their Timeline', async () => {
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .times(2)
+        .reply(200, '0');
       const claim = Object.assign(new Claim(), civilClaimResponsePDFTimeline.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
@@ -136,8 +148,12 @@ describe('Claim details page', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
         .reply(200, [CaseRole.CLAIMANT]);
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .times(3)
+        .reply(200, '0');
       app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+      const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
 
       await request(app)
