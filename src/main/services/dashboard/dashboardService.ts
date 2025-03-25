@@ -39,14 +39,14 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
-    dashboard.items.forEach((taskList) => {
-      taskList.tasks.forEach((task) => {
-        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
-        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
-        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
-        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
-      });
-    });
+    for (const item of dashboard.items) {
+      for (const task of item.tasks) {
+        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
+        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
+        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
+        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+      }
+    }
     //exclude Carm sections
     if (!isCarmApplicable){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
@@ -92,30 +92,30 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   }
   const applicantNotifications = genAppsByRole.get(ApplicantOrRespondent.APPLICANT).length > 0
     ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.APPLICANT), ApplicantOrRespondent.APPLICANT, req)
-    : null;
+    : new Map<string, DashboardNotificationList>();
   const respondentNotifications = genAppsByRole.get(ApplicantOrRespondent.RESPONDENT).length > 0
     ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.RESPONDENT), ApplicantOrRespondent.RESPONDENT, req)
-    : null;
+    : new Map<string, DashboardNotificationList>();
 
   if (dashboardNotifications) {
-    dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
-    });
-    applicantNotifications?.forEach((value, gaRef, map) => {
-      value.items.forEach((notification) => {
-        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
-      });
+    for (const notification of dashboardNotifications.items) {
+      notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
+      notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
+    }
+    for (const [gaRef, value] of applicantNotifications) {
+      for (const notification of value.items) {
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+      }
       dashboardNotifications.items.push(...(value?.items ?? []));
-    });
-    respondentNotifications?.forEach((value, gaRef, map) => {
-      value.items.forEach((notification) => {
-        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
-      });
+    }
+    for (const [gaRef, value] of respondentNotifications) {
+      for (const notification of value.items) {
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+      }
       dashboardNotifications.items.push(...(value?.items ?? []));
-    });
+    }
     sortDashboardNotifications(dashboardNotifications, mainClaimNotificationIds);
     return dashboardNotifications;
   } else {
