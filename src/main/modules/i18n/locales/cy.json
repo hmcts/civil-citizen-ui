@@ -107,7 +107,8 @@
       "START_NOW": "Dechrau nawr",
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Uwchlwytho dogfennau ychwanegol",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd",
+      "CLOSE_AND_RETURN_TO_DETAILS": "Cau a dychwelyd i fanylion yr achos"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -536,6 +537,218 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
+    "QM": {
+      "COMMON": {
+        "ANYTHING_ELSE": "Anything else",
+        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
+        "SEND_A_MESSAGE": "Send a message"
+      },
+      "WHAT_DO_YOU_WANT_TODO_TITLE": "Beth ydych chi eisiau ei wneud?",
+      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "Pa ddogfennau ydych chi am eu hanfon?",
+      "WHAT_ARE_TRYING_TODO_TITLE": "Beth ydych chi'n ceisio ei wneud?",
+      "OPTIONS": {
+        "CHANGE_CASE": {
+          "TEXT": "Gofyn i’r llys newid rhywbeth ar eich achos (gwneud cais)",
+          "HINT": "Efallai y bydd yn rhaid i chi dalu ffi"
+        },
+        "GET_UPDATE": {
+          "TEXT": "Cael diweddariad gan y llys"
+        },
+        "SEND_UPDATE": {
+          "TEXT": "Anfon diweddariad i’r llys",
+          "HINT": "Er enghraifft, dweud wrth y llys bod eich hawliad wedi dod i ben neu newid manylion eich hawliad"
+        },
+        "SEND_DOCUMENTS": {
+          "TEXT": "Anfon dogfennau"
+        },
+        "SOLVE_PROBLEM": {
+          "TEXT": "Datrys problem rwy’n ei chael gan ddefnyddio’r system hawliadau am arian",
+          "HINT": "Hawliadau am arian yw'r system i wneud a rheoli eich hawliad ar-lein"
+        },
+        "MANAGE_HEARING": {
+          "TEXT": "Rheoli eich gwrandawiad"
+        },
+        "GET_SUPPORT": {
+          "TEXT": "Cael cymorth gan fod yr ohebiaeth a dderbyniais yn aneglur"
+        },
+        "FOLLOW_UP": {
+          "TEXT": "Mynd ar drywydd neges sy'n bodoli eisoes"
+        },
+        "SOMETHING_ELSE": {
+          "TEXT": "Rhywbeth arall"
+        }
+      },
+      "QUALIFY": {
+        "TITLES": {
+          "FOLLOW_UP": "Mynd ar drywydd neges sy'n bodoli eisoes",
+          "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
+          "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
+          "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
+          "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
+          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
+          "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
+          "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
+          "ENFORCEMENT_REQUESTS": "Send enforcement requests",
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
+          "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "See the claim on my account",
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
+          "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "CHANGE_SOMETHING_ABOUT_THE_HEARING_TITLE",
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING_TITLE"
+        },
+        "OPTIONS": {
+          "GENERAL_UPDATE": {
+            "TEXT": "Cael diweddariad cyffredinol ar yr hyn sy’n digwydd gyda’r achos"
+          },
+          "CLAIM_NOT_PAID": {
+            "TEXT": "Deall beth fydd yn digwydd os na thelir yr hawliad"
+          },
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": {
+            "TEXT": "Deall beth fydd yn digwydd os na thelir yr hawliad ar ôl cael dyfarniad"
+          },
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": {
+            "TEXT": "Diweddaru’r llys am ddyfarniad neu hawliad sydd wedi’u talu’n rhannol neu’n gyfangwbl"
+          },
+          "SETTLE_CLAIM": {
+            "TEXT": "Setlo hawliad"
+          },
+          "AMEND_CLAIM_DETAILS": {
+            "TEXT": "Diwygio manylion yr hawliad",
+            "HINT": "Megis y rhesymau dros yr hawliad, swm yr hawliad, neu pwy rydych yn hawlio yn ei erbyn"
+          },
+          "CLAIM_DETAILS_EXAMPLE": {
+            "TEXT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_ENDED": {
+            "TEXT": "Dweud wrth y llys bod fy hawliad wedi dod i ben"
+          },
+          "SOMETHING_ELSE": {
+            "TEXT": "Rhywbeth arall"
+          },
+          "ENFORCEMENT_REQUESTS": {
+            "TEXT": "Ceisiadau gorfodi"
+          },
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+            "TEXT": "Dogfennau a thystiolaeth am yr hawliad"
+          },
+          "SUBMIT_RESPONSE_CLAIM": {
+            "TEXT": "Cyflwyno ymateb i hawliad"
+          },
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": {
+            "TEXT": "Gweld yr hawliad ar fy nghyfrif"
+          },
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": {
+            "TEXT": "Gweld dogfennau ar fy nghyfrif"
+          },
+          "CHANGE_THE_HEARING_DATE": {
+            "TEXT": "Newid dyddiad y gwrandawiad"
+          },
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
+            "TEXT": "Newid rhywbeth am y gwrandawiad",
+            "HINT": "Er enghraifft, lleoliad gwrandawiad neu sut rydych chi'n mynychu'r gwrandawiad"
+          },
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
+            "TEXT": "Gofyn am help a chefnogaeth yn ystod fy ngwrandawiad"
+          }
+        }
+      },
+      "CAPTIONS": {
+        "CHANGE_CASE": "CAPTION CHANGE_CASE",
+        "GET_UPDATE": "Cael yr wybodaeth ddiweddaraf am fy achos",
+        "SEND_UPDATE": "Anfonwch ddiweddariad am fy achos",
+        "SEND_DOCUMENTS": "Anfon dogfennau",
+        "SOLVE_PROBLEM": "Datrys problem rwy’n ei chael gan ddefnyddio’r system hawliadau am arian",
+        "MANAGE_HEARING": "Rheoli eich gwrandawiad",
+        "GET_SUPPORT": "CAPTION GET_SUPPORT",
+        "FOLLOW_UP": "CAPTION FOLLOW_UP",
+        "SOMETHING_ELSE": "CAPTION SOMETHING_ELSE"
+      },
+      "LEVEL_0": {
+        "CAPTION": "Cysylltu â’r llys neu wneud cais i’r llys"
+      },
+      "QUALIFY_SECTIONS": {
+        "COMMON_SOLVE_PROBLEMS": {
+          "LINK_1": {
+            "TEXT": "send a message to the court",
+            "TEXT_BEFORE": "If the issue is not urgent, you can ",
+            "TEXT_AFTER": ". We try to answer messages within 10 days, but it could take longer."
+          },
+          "LINK_2": {
+            "TEXT": "contact details for the court (opens in a new window)",
+            "TEXT_BEFORE": "If the issue is urgent, you should call the court handling your case. Find the "
+          }
+        },
+        "SUBMIT_RESPONSE_CLAIM" : {
+          "SUBTITLE_1": "Get support to respond",
+          "PARAGRAPH_1": "If you cannot submit a response using the Money claims system you should contact the court for help."
+        },
+        "SEE_THE_CLAIM_ON_MY_ACCOUNT" : {
+          "SUBTITLE_1": "Get support to see the claim on your account",
+          "PARAGRAPH_1": "If the claim has been issued and you cannot see it on the Money claims system, you should contact the court for help."
+        },
+        "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
+          "SUBTITLE_1": "Get support to view the documents on your account",
+          "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
+        },
+        "FOLLOW_UP": {
+          "PARAGRAPH_1": "Mae eich negeseuon wedi’u rhestru ar eich dangosfwrdd.",
+          "LINK": {
+            "TEXT": "Ceisiadau a negeseuon i'r llys.",
+            "TEXT_BEFORE": "Gallwch fynd ar drywydd neges drwy ddewis yr un yr ydych am ei weld o’r adran ",
+            "TEXT_AFTER": ""
+          },
+          "PARAGRAPH_2": "Gallwch ymateb i unrhyw neges gan y llys, rhaid i'ch ateb fod yn gysylltiedig â phwnc eich neges wreiddiol.",
+          "PARAGRAPH_3": "Peidiwch ag anfon neges ddilynol os yw wedi bod yn llai na 10 diwrnod ers i chi anfon eich neges olaf i’r llys gan y gallai hyn arafu’r ymateb gan y llys."
+        },
+        "ENFORCEMENT_REQUESTS": {
+          "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
+          "LINK_1": {
+            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new window)",
+            "TEXT_BEFORE": "There is guidance on "
+          },
+          "PARAGRAPH_2": "There are various options for you to enforce a judgment, you will have to fill in forms and submit them to the court.",
+          "PARAGRAPH_3": "The options for enforcing a judgment are&#58;",
+          "LINK_2": {
+            "TEXT": "warrant of control"
+          },
+          "LINK_3": {
+            "TEXT": "attachment of earnings order"
+          },
+          "LINK_4": {
+            "TEXT": "third-party debt order"
+          },
+          "LINK_5": {
+            "TEXT": "charging order"
+          },
+          "LINK_6": {
+            "TEXT": "check the civil fees list",
+            "TEXT_BEFORE": "Each option has its own fee, ",
+            "TEXT_AFTER": "to find the costs for the option you select. "
+          }
+        },
+        "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+          "SUBTITLE_1": "You cannot upload claim evidence yet",
+          "PARAGRAPH_1": "Your case is not at the correct stage for you to upload claim documents and evidence.",
+          "PARAGRAPH_2": "You will be able to send claim evidence once the judge has issued a directions order. The directions order will have instructions on how to send the evidence as well as any deadlines for sending evidence.",
+          "CP_STATE": {
+            "LINK_1": {
+              "TEXT": "upload evidence and documents to the file",
+              "TEXT_BEFORE": "To upload evidence to your case, select "
+            },
+            "PARAGRAPH_1": "When you are saving the files, make sure the file names make it clear what the file is, for example: ‘yourname-evidencetype.doc’. For documents related to experts, witnesses, witness statements, the file name will be created by the system.",
+            "LINK_2": {
+              "TEXT": "ask for more time to do what is required by a court order",
+              "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
+            }
+          }
+        }
+      }
+    },
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "A yw’r Gyfundrefn Costau Adferadwy a Bennwyd  yn berthnasol i’r hawliad hwn?",
       "TITLE": "Costau Adferadwy a Bennwyd",
@@ -1499,7 +1712,6 @@
         "TITLE": "Faint ydych chi am barhau i hawlio?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "PAGE_TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad",
@@ -1525,7 +1737,7 @@
         "DATE_INTEREST": "Dyddiad dechrau codi llog",
         "FROM_A_SPECIFIC_DATE": "Dyddiad penodol",
         "FROM_CLAIM_SUBMIT_DATE": "Y dyddiad y byddwch yn cyflwyno'r hawliad",
-        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "Yna bydd y llog yn cael ei gyfrifo hyd at yr adeg bydd yr hawliad yn cael ei setlo neu pan fydd dyfarniad wedi’i wneud.",
         "HINT_EXAMPLE_DATE": "Er enghraifft, dyddiad pan oedd yr anfoneb yn hwyr neu y dywedoch wrth rywun fod arno arian ichi.",
         "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
         "REASON": "Esboniwch pam rydych chi’n hawlio am y dyddiad hwn?",
@@ -2155,7 +2367,8 @@
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Cadarnhau trefniadau’r treial.",
         "PAY_HEARING_FEE": "Talu ffi’r gwrandawiad.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Treial neu Wrandawiad wedi’i drefnu ar gyfer yr achos hwn.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Mae eich dogfennau'n cael eu prosesu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "HEARING_FEE_UNPAID": "Mae’r hawliad hwn wedi cael ei ddileu.",
         "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
@@ -2205,7 +2418,8 @@
         "TRIAL_ARRANGEMENTS_REQUIRED": "Cadarnhau trefniadau eich treial.",
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Cadarnhau trefniadau’r treial.",
         "TRIAL_OR_HEARING_SCHEDULED": "Mae Treial neu Wrandawiad wedi’i drefnu ar gyfer yr achos hwn.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "Mae'r dogfennau'n cael eu cyfieithu.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Mae eich dogfennau'n cael eu prosesu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -3437,7 +3651,8 @@
       "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
       "PAGE_TITLE": "Sut ydych chi am hawlio llog?",
       "SAME_RATE_INTEREST": "Yr un gyfradd ar gyfer y cyfnod cyfan",
-      "TITLE": "Sut ydych chi am hawlio llog?"
+      "TITLE": "Sut ydych chi am hawlio llog?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">Gallwch ond defnyddio’r gwasanaeth hwn os bydd unrhyw hawliad am log yn cael ei wneud ar yr un gyfradd ac o’r un dyddiad. I hawlio llog ar gyfraddau gwahanol neu ar gyfer cyfnodau o amser gwahanol, dylech gyflwyno’ch cais ar bapur. Gellir dod o hyd i fwy o wybodaeth am sut i wneud hyn yn<br><a class='govuk-link' href='https://www.gov.uk/make-court-claim-for-money/make-claim' target='_blank'>https://www.gov.uk/make-court-claim-for-money/make-claim</a></p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
@@ -4882,6 +5097,11 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",
+    "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "You must select how you want to manage your hearing.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
@@ -5399,7 +5619,8 @@
         "ERROR_INPUT": "Mae angen i chi naill ai nodi’r wybodaeth y gofynnwyd amdani yn y blwch neu ddewis Ydw i uwchlwytho dogfennau i gefnogi’ch ymateb."
       }
     },
-    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol."
+    "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol.",
+    "VALID_PAID_IN_FULL_DATE": "Rhaid i’r dyddiad ar gyfer talu yn llawn fod ar neu ar ôl dyddiad y dyfarniad"
   },
   "BANNERS" : {
     "CUI_CP" : {
