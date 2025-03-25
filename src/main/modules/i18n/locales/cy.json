@@ -1775,7 +1775,6 @@
         "TITLE": "Faint ydych chi am barhau i hawlio?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "PAGE_TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad",
@@ -1801,7 +1800,7 @@
         "DATE_INTEREST": "Dyddiad dechrau codi llog",
         "FROM_A_SPECIFIC_DATE": "Dyddiad penodol",
         "FROM_CLAIM_SUBMIT_DATE": "Y dyddiad y byddwch yn cyflwyno'r hawliad",
-        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "Yna bydd y llog yn cael ei gyfrifo hyd at yr adeg bydd yr hawliad yn cael ei setlo neu pan fydd dyfarniad wedi’i wneud.",
         "HINT_EXAMPLE_DATE": "Er enghraifft, dyddiad pan oedd yr anfoneb yn hwyr neu y dywedoch wrth rywun fod arno arian ichi.",
         "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
         "REASON": "Esboniwch pam rydych chi’n hawlio am y dyddiad hwn?",
@@ -3715,7 +3714,8 @@
       "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
       "PAGE_TITLE": "Sut ydych chi am hawlio llog?",
       "SAME_RATE_INTEREST": "Yr un gyfradd ar gyfer y cyfnod cyfan",
-      "TITLE": "Sut ydych chi am hawlio llog?"
+      "TITLE": "Sut ydych chi am hawlio llog?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">Gallwch ond defnyddio’r gwasanaeth hwn os bydd unrhyw hawliad am log yn cael ei wneud ar yr un gyfradd ac o’r un dyddiad. I hawlio llog ar gyfraddau gwahanol neu ar gyfer cyfnodau o amser gwahanol, dylech gyflwyno’ch cais ar bapur. Gellir dod o hyd i fwy o wybodaeth am sut i wneud hyn yn<br><a class='govuk-link' href='https://www.gov.uk/make-court-claim-for-money/make-claim' target='_blank'>https://www.gov.uk/make-court-claim-for-money/make-claim</a></p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
