@@ -1,6 +1,10 @@
-{% macro externalLink(t, text, href, newWindow, translated, newWindowHidden) %}
+{% macro externalLink(t, text, href, newWindow, translated, newWindowHidden, removeTargetBlank) %}
   {% if href %}
-  <a class="govuk-link" href={{ href }} target="_blank" rel="noreferrer noopener">
+    {% if removeTargetBlank %}
+      <a class="govuk-link" href={{ href }} rel="noreferrer noopener">
+    {% else %}
+        <a class="govuk-link" href={{ href }} target="_blank" rel="noreferrer noopener">
+    {% endif %}
     {% if translated %}
       {{ text }}
     {% else %}
