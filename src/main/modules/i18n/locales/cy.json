@@ -1712,7 +1712,6 @@
         "TITLE": "Faint ydych chi am barhau i hawlio?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "PAGE_TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "TITLE": "Pryd ydych chi am roi'r gorau i hawlio llog?",
         "UNTIL_CLAIM_SUBMIT_DATE": "Pan fyddwch yn cyflwyno'r hawliad",
@@ -1738,7 +1737,7 @@
         "DATE_INTEREST": "Dyddiad dechrau codi llog",
         "FROM_A_SPECIFIC_DATE": "Dyddiad penodol",
         "FROM_CLAIM_SUBMIT_DATE": "Y dyddiad y byddwch yn cyflwyno'r hawliad",
-        "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "Yna bydd y llog yn cael ei gyfrifo hyd at yr adeg bydd yr hawliad yn cael ei setlo neu pan fydd dyfarniad wedi’i wneud.",
         "HINT_EXAMPLE_DATE": "Er enghraifft, dyddiad pan oedd yr anfoneb yn hwyr neu y dywedoch wrth rywun fod arno arian ichi.",
         "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
         "REASON": "Esboniwch pam rydych chi’n hawlio am y dyddiad hwn?",
@@ -1869,6 +1868,7 @@
     },
     "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
       "PAGE_TITLE": "Dewiswch sut i ffurfioli'r ad-dalu",
+      "WARNING_TEXT": "Am gyfnod, ni fydd y cytundeb setlo ar gael. Gall y ddau barti dal gael cytundeb wedi’i lofnodi y gellir ei anfon i’r llys yn <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. Bydd y llys hefyd yn derbyn cadarnhad gan yr hawlydd bod y partïon wedi dod i gytundeb. Bydd unrhyw gytundeb a gadarnheir gyda’r llys yn gohirio’r hawliad, a gall yr hawlydd wneud cais am Ddyfarniad trwy ddefnyddio’r ffurflen <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount' target='_blank'>N225: Ask for judgment on a claim for a specified amount of money - GOV.UK</a> os yw’r diffynnydd wedi cyfaddef yn llawn, neu <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225a-notice-of-part-admission-specified-amount' target='_blank'>Notice of part admission (Specified amount): Form N225A - GOV.UK</a> am addefiad rhannol, os bydd y cytundeb yn torri i lawr, dylid anfon y ffurflen i <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. Os, ar ôl 6 mis o’r dyddiad y gwnaethpwyd y cytundeb, nid yw’r hawlydd wedi gwneud cais am Ddyfarniad, yna bydd angen gwneud cais i godi’r gohiriad, trwy ddefnyddio’r ffurflen <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice' target='_blank'>Make an application to a court (application notice): Form N244 - GOV.UK</a>, y dylid ei hanfon i <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>",
       "REQUEST_A_CCJ": {
         "DESCRIPTION": "Gallwch ofyn i'r llys wneud gorchymyn ffurfiol yn rhwymo'r diffynnydd i'r cynllun ad-dalu. Mae hyn yn ychwanegu enw'r diffynnydd at gofrestr CCJ, a allai ei gwneud hi'n anoddach iddynt fenthyg arian i'ch ad-dalu.",
         "LABEL": "Gofyn am CCJ"
@@ -3652,7 +3652,8 @@
       "BREAK_DOWN_INTEREST": "Dadansoddiad o’r llog am gyfnodau amser neu eitemau gwahanol",
       "PAGE_TITLE": "Sut ydych chi am hawlio llog?",
       "SAME_RATE_INTEREST": "Yr un gyfradd ar gyfer y cyfnod cyfan",
-      "TITLE": "Sut ydych chi am hawlio llog?"
+      "TITLE": "Sut ydych chi am hawlio llog?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">Gallwch ond defnyddio’r gwasanaeth hwn os bydd unrhyw hawliad am log yn cael ei wneud ar yr un gyfradd ac o’r un dyddiad. I hawlio llog ar gyfraddau gwahanol neu ar gyfer cyfnodau o amser gwahanol, dylech gyflwyno’ch cais ar bapur. Gellir dod o hyd i fwy o wybodaeth am sut i wneud hyn yn<br><a class='govuk-link' href='https://www.gov.uk/make-court-claim-for-money/make-claim' target='_blank'>https://www.gov.uk/make-court-claim-for-money/make-claim</a></p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "Rydych angen cwblhau pob adran cyn i chi gyflwyno eich ymateb"
@@ -5620,7 +5621,8 @@
       }
     },
     "VALID_FINAL_DATE": "Nodwch ddyddiad pan wnaed y taliad terfynol.",
-    "VALID_PAID_IN_FULL_DATE": "Rhaid i’r dyddiad ar gyfer talu yn llawn fod ar neu ar ôl dyddiad y dyfarniad"
+    "VALID_PAID_IN_FULL_DATE": "Rhaid i’r dyddiad ar gyfer talu yn llawn fod ar neu ar ôl dyddiad y dyfarniad",
+    "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "Nid yw’r nodwedd hon ar gael ar hyn o bryd, gweler y canllawiau isod"
   },
   "BANNERS" : {
     "CUI_CP" : {
