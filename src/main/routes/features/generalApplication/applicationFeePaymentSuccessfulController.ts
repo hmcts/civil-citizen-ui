@@ -1,5 +1,5 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
+import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_COSC_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
 import { AppRequest } from 'models/AppRequest';
 import { getGaPaymentSuccessfulBodyContent, getGaPaymentSuccessfulButtonContent, getGaPaymentSuccessfulPanelContent } from 'services/features/generalApplication/applicationFeePaymentConfirmationContent';
 import {
@@ -32,7 +32,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
     });
 }
 
-applicationFeePaymentSuccessfulController.get([GA_PAYMENT_SUCCESSFUL_URL, GA_APPLICATION_SUBMITTED_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
+applicationFeePaymentSuccessfulController.get([GA_PAYMENT_SUCCESSFUL_URL, GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_COSC_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const applicationId = req.params.appId;
