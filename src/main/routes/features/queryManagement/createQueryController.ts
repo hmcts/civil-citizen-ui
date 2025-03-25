@@ -13,7 +13,7 @@ import {
   removeSelectedDocument,
   uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
-import {deleteFilesFromRedis, generateRedisKeyForFile} from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForFile} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {queryParamNumber} from 'common/utils/requestUtils';
@@ -32,6 +32,7 @@ async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId:
   const cancelUrl = CANCEL_URL;
   const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
   const backLinkUrl = BACK_URL;
+
   res.render(viewPath, {
     form,
     formattedSummary,
@@ -52,25 +53,25 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req);
   const index  = queryParamNumber(req, 'index');
-  const createQuery = new CreateQuery();
+  const createQuery = new CreateQuery(req.body['query-subject-field'], req.body['query-message-field'], req.body['is-query-hearing-related'], req.body['query-file-upload']);
   const redisKey = await generateRedisKeyForFile(req);
-  let form = new GenericForm(createQuery);
+  const form = new GenericForm(createQuery);
   const formattedSummary = summarySection(
     {
       title: '',
       summaryRows: [],
     });
-  if (req?.session?.fileUpload) {
-    const parsedData = JSON.parse(req?.session?.fileUpload);
-    form = new GenericForm(createQuery, parsedData);
-    req.session.fileUpload = undefined;
-  }
   if (req.query?.id) {
     const index = req.query.id;
     await removeSelectedDocument(redisKey, Number(index)-1);
   }
+  if (req?.session?.fileUpload) {
+    const parsedData = JSON.parse(req?.session?.fileUpload);
+    form.model.messageDetails = parsedData['query-message-field'];
+    form.model.messageSubject = parsedData['query-subject-field'];
+    form.model.isHearingRelated = parsedData['is-query-hearing-related'];
+  }
   await getSummaryList(formattedSummary, redisKey, claimId);
-  await deleteFilesFromRedis(redisKey);
   await renderView(form, claim, claimId, res, formattedSummary, req, index);
 }));
 
@@ -79,7 +80,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
   const claim = await getClaimById(claimId, req);
   const index = queryParamNumber(req, 'index');
   const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
-  const createQuery = new CreateQuery();
+  const createQuery = new CreateQuery(req.body['query-subject-field'], req.body['query-message-field'], req.body['is-query-hearing-related'], req.body['query-file-upload']);
   const form = new GenericForm(createQuery);
 
   const formattedSummary = summarySection(
@@ -90,7 +91,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
 
   if (req.body.action === 'uploadButton') {
     await uploadSelectedFile(req, formattedSummary, claimId);
-    req.session.fileUpload = JSON.stringify(form);
+    req.session.fileUpload = JSON.stringify(req.body);
     return res.redirect(`${currentUrl}`);
   }
 
@@ -98,6 +99,8 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
   if (form.hasErrors()) {
     return await renderView(form, claim, claimId, res, formattedSummary, req, index);
   } else {
+    req.session.fileUpload = undefined;
+    //TODO: update to the CYA page in ticket CIV 16722
     res.redirect('/');
   }
 }));
