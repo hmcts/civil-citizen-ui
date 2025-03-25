@@ -30,6 +30,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
   try {
     const linkFrom = req.query.linkFrom;
     const isAskMoreTime:boolean = req.query.isAskMoreTime === 'true';
+    const isAmendClaim:boolean = req.query.isAmendClaim === 'true';
     const applicationIndex = queryParamNumber(req, 'index');
 
     if (linkFrom === LinKFromValues.start) {
@@ -50,10 +51,11 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
       form,
       cancelUrl,
       backLinkUrl,
-      isOtherSelected: applicationType.isOtherSelected(),
+      isOtherSelected: applicationType.isOtherSelected() || isAmendClaim,
       showCCJ: showCCJ,
       isQMEnabled,
       isAskMoreTime,
+      isAmendClaim,
     });
   } catch (error) {
     next(error);

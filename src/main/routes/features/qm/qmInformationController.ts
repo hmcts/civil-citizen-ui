@@ -1,7 +1,13 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
-  BACK_URL, QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL, QM_INFORMATION_URL, QM_VIEW_QUERY_URL, UPLOAD_YOUR_DOCUMENTS_URL,
+  BACK_URL,
+  DATE_PAID_URL,
+  QM_CREATE_QUERY_URL,
+  QM_FOLLOW_UP_URL,
+  QM_INFORMATION_URL,
+  QM_VIEW_QUERY_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 
 import {
@@ -15,7 +21,11 @@ import {
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
-  attachmentOfEarningsOrderUrl, chargingOrderUrl, checkCivilFeesListUrl, findCourtTribunalUrl,
+  attachmentOfEarningsOrderUrl,
+  chargingOrderUrl,
+  checkCivilFeesListFullListUrl,
+  checkCivilFeesListUrl, discontinueClaimUrl,
+  findCourtTribunalUrl,
   thirdPartyDebtOrderUrl,
   warrantOfControlUrl,
   whatToDoUrl,
@@ -107,6 +117,61 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
       }
+      case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
+          .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`);
+        break;
+      }
+      case QualifyingQuestionTypeOption.SETTLE_CLAIM:{
+        showAnythingElseSection = true;
+        pageSection
+          .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
+        if (claim.isClaimant() && !claim.isClaimSettled()){
+          pageSection
+            .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
+        } else {
+          pageSection
+            .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_UPDATE_WITHOUT_LINK`);
+        }
+        pageSection
+          .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_AFTER`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_1`, {lng: lang})}</li>
+                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_2`, {lng: lang})}</li>
+                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_3`, {lng: lang})}</li>
+              </ul>`)
+          .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_2`)
+          .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_1`);
+        break;
+      }
+      case QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS:{
+        showAnythingElseSection = true;
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.TEXT_1`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+                <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_1`, {lng: lang})}</li>
+                <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_2`, {lng: lang})}</li>
+                <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_3`, {lng: lang})}</li>
+              </ul>`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAmendClaim=true`), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT`, checkCivilFeesListFullListUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_AFTER`, null, true)
+          .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, '.')
+          .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_2`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.');
+        break;
+      }
+      case QualifyingQuestionTypeOption.CLAIM_ENDED:{
+        showAnythingElseSection = true;
+        pageSection
+          .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT`, discontinueClaimUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_AFTER`, null, true)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_ENDED.TEXT_1`)
+          .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_AFTER`, null, true);
+        break;
+      }
+
     }
   }
   return pageSection
@@ -123,7 +188,10 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SUBMIT_RESPONSE_CLAIM',
   [QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.SEE_THE_CLAIM_ON_MY_ACCOUNT',
   [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.VIEW_DOCUMENTS_ON_MY_ACCOUNT',
-
+  [QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT]: 'PAGES.QM.QUALIFY.TITLES.PAID_OR_PARTIALLY_PAID_JUDGMENT',
+  [QualifyingQuestionTypeOption.SETTLE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SETTLE_CLAIM',
+  [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS]: 'PAGES.QM.QUALIFY.TITLES.AMEND_CLAIM_DETAILS',
+  [QualifyingQuestionTypeOption.CLAIM_ENDED]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_ENDED',
 };
 
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {

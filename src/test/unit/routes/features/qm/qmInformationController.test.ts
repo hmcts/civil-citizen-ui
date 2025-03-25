@@ -12,6 +12,7 @@ import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/qm/q
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import * as utilityService from 'modules/utilityService';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/qm/queryManagementService');
@@ -101,6 +102,41 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain('If the issue is not urgent');
         expect(res.text).toContain('If the issue is urgent');
         expect(res.text).not.toContain('Anything else');
+      });
+  });
+
+  it.each([
+    [QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT, null, 'Update the court about a partially paid judgment or claim', 'If part of the judgment or claim amount has been paid'],
+    [QualifyingQuestionTypeOption.SETTLE_CLAIM, false, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
+    [QualifyingQuestionTypeOption.SETTLE_CLAIM, true, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
+    [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS, null, 'Amend the claim details', 'If you want to change the details of your claim, including:'],
+    [QualifyingQuestionTypeOption.CLAIM_ENDED, null, 'Tell the court my claim has ended', 'To tell the court your claim has ended, you need to fill in and send a form called a'],
+  ])('should return SEND_UPDATE information for %s and isClaimant %s', async (questionType, isClaimant: boolean, title:string, subtitle: string ) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_UPDATE');
+    const isSettleClaimAndIsClaimant = QualifyingQuestionTypeOption.SETTLE_CLAIM && isClaimant;
+    const claim = new Claim();
+    mockGetClaimById.mockImplementation(() => {
+      if (isSettleClaimAndIsClaimant) {
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.ccdState = CaseState.CASE_PROGRESSION;
+      }
+      return claim;
+    });
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.SOLVE_PROBLEM, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain(subtitle);
+        expect(res.text).toContain('Send an update on my case');
+        if (isSettleClaimAndIsClaimant){
+          expect(res.text).toContain('<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/paid-in-full/date-paid>tell us you’ve settled the claim</a>');
+
+        } else if (questionType === QualifyingQuestionTypeOption.SETTLE_CLAIM) {
+          expect(res.text).toContain('Update the claim in the online service by selecting tell us you’ve settled the claim.');
+        }
+        expect(res.text).toContain('Anything else');
       });
   });
 
