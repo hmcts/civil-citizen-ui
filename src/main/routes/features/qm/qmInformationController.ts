@@ -27,6 +27,7 @@ import {getClaimById} from 'modules/utilityService';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const qmInformationController = Router();
+
 const qmStartViewPath = 'features/qm/qm-information-template.njk';
 let showAnythingElseSection = false;
 
@@ -83,7 +84,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = false;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`);
@@ -91,7 +92,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = false;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.PARAGRAPH_1`);
@@ -99,7 +100,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = false;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.PARAGRAPH_1`);
@@ -157,6 +158,7 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_SOMETHING_ABOUT_THE_HEARING',
   [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING]: 'PAGES.QM.QUALIFY.TITLES.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING',
 };
+
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);

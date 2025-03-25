@@ -103,7 +103,7 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain(subtitle);
         expect(res.text).toContain('If the issue is not urgent');
         expect(res.text).toContain('If the issue is urgent');
-        expect(res.text).toContain('Anything else');
+        expect(res.text).not.toContain('Anything else');
       });
   });
 
