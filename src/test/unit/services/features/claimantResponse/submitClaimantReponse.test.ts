@@ -77,7 +77,6 @@ describe('Submit claimant response to ccd', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
     claim.respondent1 = new Party();
 
-
     it('should submit claimant response with ccj data successfully when there are no errors', async () => {
       //Given
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
