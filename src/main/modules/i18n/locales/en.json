@@ -1793,7 +1793,6 @@
         "TITLE": "How much do you want to continue claiming?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
         "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
@@ -1819,7 +1818,7 @@
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "The interest will then be calculated up until the claim is settled or a Judgment has been made.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
         "REASON": "Explain why you're claiming for this date?",
@@ -3733,7 +3732,8 @@
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
       "SAME_RATE_INTEREST": "Same rate for the whole period",
-      "TITLE": "How do you want to claim interest?"
+      "TITLE": "How do you want to claim interest?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">You can only use this service if any claim for interest is made at the same rate and from the same date. To claim interest at different rates or for different periods of time, you should issue your claim on paper. More information on how to do this can be found at<br><a class=\"govuk-link\" href=\"https://www.gov.uk/make-court-claim-for-money/make-claim\" target=\"_blank\">https://www.gov.uk/make-court-claim-for-money/make-claim</a>.</p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"

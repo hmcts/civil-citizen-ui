@@ -65,31 +65,31 @@ describe('Check Answers service', () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = {option: 'yes'};
     });
 
-    it('should check answers for defendant paid some of the money', () => {
+    it('should check answers for defendant paid some of the money', async () => {
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 100, 500);
-      const result = getSummarySections('12345', claim, 'en', 70);
+      const result = await getSummarySections('12345', claim, 'en', 70);
       expect(result.sections).toHaveLength(8);
     });
 
-    it('should contain mediation section when carm applicable', () => {
+    it('should contain mediation section when carm applicable', async () => {
       const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO);
-      const result = getSummarySections('12345', claim, 'en', 70, true);
+      const result = await getSummarySections('12345', claim, 'en', 70, true);
       const mediationSectionExpected = buildMediationSection(claim, '12345', 'en', true);
       expect(result.sections).toHaveLength(8);
       expect(result.sections[2]).toStrictEqual(mediationSectionExpected);
     });
 
-    it('should check answers for defendant didn`t paid any amount', () => {
+    it('should check answers for defendant didn`t paid any amount', async () => {
       const expectedResult = generateExpectedResultForDefendantPaidNone();
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
-      const result = getSummarySections('12345', claim, 'en', 70);
+      const result = await getSummarySections('12345', claim, 'en', 70);
       expect(expectedResult.sections).toHaveLength(result.sections.length);
     });
-    it('should check answers be empty if non of the tasks completed', () => {
+    it('should check answers be empty if non of the tasks completed', async () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = undefined;
       claim.claimantResponse.chooseHowToProceed = undefined;
       claim.claimantResponse.ccjRequest = undefined;
-      const result = getSummarySections('12345', claim, 'en', 70);
+      const result = await getSummarySections('12345', claim, 'en', 70);
       expect(result.sections).toHaveLength(8);
     });
   });
