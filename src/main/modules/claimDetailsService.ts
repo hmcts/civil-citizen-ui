@@ -3,10 +3,10 @@ import {convertToPoundsFilter} from '../common/utils/currencyFormat';
 import {ResponseType} from '../common/form/models/responseType';
 import { calculateInterestToDate } from 'common/utils/interestUtils';
 
-export const getTotalAmountWithInterestAndFees = (claim: Claim) => {
+export const getTotalAmountWithInterestAndFees = async (claim: Claim) => {
   let interestToDate = 0;
   if (claim.hasInterest()) {
-    interestToDate = calculateInterestToDate(claim);
+    interestToDate = await calculateInterestToDate(claim);
   }
   return (claim.totalClaimAmount || 0) + interestToDate + (convertToPoundsFilter(claim?.claimFee?.calculatedAmountInPence) || 0);
 };
