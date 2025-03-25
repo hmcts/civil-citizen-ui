@@ -433,6 +433,9 @@ import submitApplicationOfflineController from 'routes/features/generalApplicati
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
+import qmStartController from 'routes/features/queryManagement/qmStartController';
+import qmWhatToDoController from 'routes/features/queryManagement/qmWhatToDoController';
+import qmInformationController from 'routes/features/queryManagement/qmInformationController';
 import createQueryController from 'routes/features/queryManagement/createQueryController';
 
 export default [
@@ -782,5 +785,8 @@ export default [
   submitApplicationOfflineController,
   gaUnavailabilityDatesConfirmationController,
   gaUnavailabilityDatesResponseConfirmationController,
+  qmStartController,
+  qmWhatToDoController,
+  qmInformationController,
   createQueryController,
 ];

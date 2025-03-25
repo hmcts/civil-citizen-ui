@@ -13,9 +13,11 @@ import {
   removeSelectedDocument,
   uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
-import {generateRedisKeyForFile} from 'modules/draft-store/draftStoreService';
-// import {queryParamNumber} from 'common/utils/requestUtils';
-// import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {deleteFilesFromRedis, generateRedisKeyForFile} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {queryParamNumber} from 'common/utils/requestUtils';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
@@ -26,9 +28,9 @@ const upload = multer({
   },
 });
 
-async function renderView(form: GenericForm<CreateQuery>, claim: string, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest): Promise<void> {
+async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index: number): Promise<void> {
   const cancelUrl = CANCEL_URL;
-  const currentUrl = QUERY_MANAGEMENT_CREATE_QUERY + '?index=0';
+  const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
@@ -41,14 +43,15 @@ async function renderView(form: GenericForm<CreateQuery>, claim: string, claimId
 }
 
 const pageHeaders = {
-  heading: 'Enter message details',
-  caption: 'Send a message',
-  pageTitle: 'Enter message details',
+  heading: 'PAGES.QM.HEADINGS.HEADING',
+  caption: 'PAGES.QM.HEADINGS.CAPTION',
+  pageTitle: 'PAGES.QM.HEADINGS.PAGE_TITLE',
 };
 
 createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = 'req.params.id;';
-  const claim = 'await getClaimById(claimId, req);';
+  const claimId = req.params.id;
+  const claim = await getClaimById(claimId, req);
+  const index  = queryParamNumber(req, 'index');
   const createQuery = new CreateQuery();
   const redisKey = await generateRedisKeyForFile(req);
   let form = new GenericForm(createQuery);
@@ -67,16 +70,17 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
     await removeSelectedDocument(redisKey, Number(index)-1);
   }
   await getSummaryList(formattedSummary, redisKey, claimId);
-  //delete from redis here also after saving the formatted summary to form
-  await renderView(form, claim, claimId, res, formattedSummary, req);
+  await deleteFilesFromRedis(redisKey);
+  await renderView(form, claim, claimId, res, formattedSummary, req, index);
 }));
 
 createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-file-upload'),(async (req:AppRequest, res: Response, next: NextFunction) => {
-  const claimId = 'req.params.id;';
-  const claim = 'await getClaimById(claimId, req);';
-  // const index = queryParamNumber(req, 'index');
-  // const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
-  const currentUrl = QUERY_MANAGEMENT_CREATE_QUERY + '?index=0';
+  const claimId = req.params.id;
+  const claim = await getClaimById(claimId, req);
+  const index = queryParamNumber(req, 'index');
+  const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
+  const createQuery = new CreateQuery();
+  const form = new GenericForm(createQuery);
 
   const formattedSummary = summarySection(
     {
@@ -86,13 +90,13 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
 
   if (req.body.action === 'uploadButton') {
     await uploadSelectedFile(req, formattedSummary, claimId);
+    req.session.fileUpload = JSON.stringify(form);
     return res.redirect(`${currentUrl}`);
   }
-  const createQuery = new CreateQuery();
-  const form = new GenericForm(createQuery);
+
   form.validateSync();
   if (form.hasErrors()) {
-    return await renderView(form, claim, claimId, res, formattedSummary, req);
+    return await renderView(form, claim, claimId, res, formattedSummary, req, index);
   } else {
     res.redirect('/');
   }

@@ -404,5 +404,11 @@ export const CONTACT_CNBC_URL = '/contact-cnbc';
 export const CONTACT_MEDIATION_URL = '/contact-mediation';
 export const GA_UNAVAILABILITY_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/unavailability-confirmation`;
 export const GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/unavailability-confirmation`;
+export const QM_BASE = `${BASE_CASE_URL}/qm`;
+export const QM_START_URL = `${QM_BASE}/start`;
+export const QM_WHAT_DO_YOU_WANT_TO_DO_URL = `${QM_BASE}/what-you-want-to-do/:qmType`;
+export const QM_FOLLOW_UP_URL = `${QM_BASE}/follow-up`;
+export const QM_INFORMATION_URL = `${QM_BASE}/information/:qmType/:qmQualifyOption`;
+export const QM_VIEW_QUERY_URL = `${QM_BASE}/view-query`;
 
-export const QUERY_MANAGEMENT_CREATE_QUERY = '/create-query';
+export const QUERY_MANAGEMENT_CREATE_QUERY = `${QM_BASE}/create-query`;

@@ -2,13 +2,13 @@ import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 export class CreateQuery {
-  @IsNotEmpty({message: 'Enter message subject'})
+  @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
   messageSubject: string;
 
-  @IsNotEmpty({message: 'Enter message details'})
+  @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_DETAILS'})
   messageDetails: string;
 
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
+  @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})
   isHearingRelated: string;
 
   @ValidateNested()
