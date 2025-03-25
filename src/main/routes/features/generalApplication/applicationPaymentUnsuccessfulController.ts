@@ -1,5 +1,5 @@
 import {NextFunction, Response, Router} from 'express';
-import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, GA_PAYMENT_UNSUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_COSC_URL} from 'routes/urls';
 import {
   getApplicationFromGAService,
   getCancelUrl,
@@ -11,7 +11,7 @@ import {AppRequest} from 'models/AppRequest';
 const applicationPaymentUnsuccessfulViewPath = 'features/generalApplication/application-payment-unsuccessful';
 const applicationPaymentUnsuccessfulController: Router = Router();
 
-applicationPaymentUnsuccessfulController.get(GA_PAYMENT_UNSUCCESSFUL_URL, (req: AppRequest, res: Response, next: NextFunction) => {
+applicationPaymentUnsuccessfulController.get([GA_PAYMENT_UNSUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_COSC_URL], (req: AppRequest, res: Response, next: NextFunction) => {
   (async () => {
     try {
       const claimId = req.params.id;
