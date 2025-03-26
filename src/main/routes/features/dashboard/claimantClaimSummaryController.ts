@@ -6,8 +6,8 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const claimantClaimSummaryController = Router();
 
 claimantClaimSummaryController.get(OLD_DASHBOARD_CLAIMANT_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
-   const claimId = req.params.id;
-   res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
+  const claimId = req.params.id;
+  res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
 })as RequestHandler);
 
 export default claimantClaimSummaryController;
