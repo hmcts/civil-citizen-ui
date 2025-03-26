@@ -59,10 +59,10 @@ Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Sign out');
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1);
 
 Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1);

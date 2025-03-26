@@ -679,9 +679,7 @@ class ResponseToDefence {
 
   async verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation() {
     I.waitForContent('Do you agree the defendant has paid',60);
-    I.see('Free telephone mediation');
-    I.see('Will you try free mediation?');
-    I.see('Contact number');
+    I.see('Availability for mediation');
     I.see('Hearing requirements');
     I.see('Have you already got a report written by an expert?');
     I.see('Welsh language');
@@ -1108,7 +1106,6 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     I.see('Email');
     I.see('Telephone');
   }
@@ -1138,8 +1135,8 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('You agreed to try free mediation.');
-    I.see('Your mediation appointment will be arranged within 28 days.');
+    I.see('A mediation appointment will now be arranged by the Small Claims Mediation Service.');
+    I.see('within the next 28 days.');
     I.see('Email');
     I.see('Telephone');
   }

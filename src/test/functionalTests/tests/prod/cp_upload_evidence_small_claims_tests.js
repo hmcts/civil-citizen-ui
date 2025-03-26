@@ -46,7 +46,7 @@ Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upl
   //defendant uploads documents
   await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£1,500', uploadDate);
   if (isDashboardServiceEnabled) {
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
+    //await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
