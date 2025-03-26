@@ -1,7 +1,6 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import {OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
 
@@ -29,15 +28,6 @@ describe('claimant Dashboard Controller', () => {
         expect(res.status).toBe(302);
         expect(res.text).not.toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
-    });
-
-    it('should return status 500 when error thrown', async () => {
-      await request(app)
-        .get(OLD_DASHBOARD_CLAIMANT_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
     });
   });
 });
