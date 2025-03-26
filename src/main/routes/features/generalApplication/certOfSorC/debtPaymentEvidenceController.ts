@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  COSC_FINAL_PAYMENT_DATE_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  BACK_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL,
 } from 'routes/urls';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
@@ -18,8 +18,7 @@ const debtPaymentEvidenceController = Router();
 const debtPaymentEvidenceViewPath = 'features/generalApplication/certOfSorC/debt-payment-evidence';
 
 function renderView(form: GenericForm<DebtPaymentEvidence>, res: Response, claimId: string, cancelUrl: string) {
-
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL);
+  const backLinkUrl = BACK_URL;
   res.render(debtPaymentEvidenceViewPath,
     {
       form,
