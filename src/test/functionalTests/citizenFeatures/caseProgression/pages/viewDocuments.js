@@ -13,7 +13,7 @@ class ViewDocuments {
     I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, dateUploaded, claimType, partyType) {
+  verifyPageContent(caseNumber, claimAmount, dateUploaded, claimType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();

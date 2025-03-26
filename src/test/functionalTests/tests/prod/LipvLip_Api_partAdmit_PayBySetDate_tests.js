@@ -3,8 +3,8 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
-const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
+//const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
+//const {judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -71,9 +71,9 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
 
   if (isDashboardServiceEnabled) {
     await I.click('Sign out');
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const notification = judgmentRequestedCourtAgrees();
     //Update notification based on jo release
+    //await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    //const notification = judgmentRequestedCourtAgrees();
     //await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 }).tag('@regression-cui-r2');
