@@ -8,7 +8,7 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let claimRef;
 
-Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@fullAdmit');
+Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@full-admit');
 
 Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

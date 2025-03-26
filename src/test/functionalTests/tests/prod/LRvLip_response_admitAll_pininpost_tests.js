@@ -15,7 +15,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with AdmitAll').tag('@citizenUI @fullAdmit');;
+Feature('Response with AdmitAll').tag('@citizenUI @full-admit');;
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

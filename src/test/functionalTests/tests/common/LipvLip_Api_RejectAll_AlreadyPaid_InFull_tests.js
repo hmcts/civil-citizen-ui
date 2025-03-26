@@ -9,7 +9,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track').tag('@citizenUI @rejectAll');
+Feature('Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track').tag('@citizenUI @reject-all');
 
 Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant settle', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

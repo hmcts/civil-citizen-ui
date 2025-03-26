@@ -13,7 +13,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@citizenUI @partAdmit @nightly @api');
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@citizenUI @part-admit @nightly @api');
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim', async ({
   I,
