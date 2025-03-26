@@ -62,7 +62,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
   }
-}).tag('@regression-cp');
+});
 
 Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -81,4 +81,4 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
-}).tag('@regression-cp');
+});
