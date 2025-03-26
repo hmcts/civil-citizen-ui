@@ -21,10 +21,10 @@ let claimRef;
 let caseData;
 let claimNumber;
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant ');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant ').tag('@fullAdmit');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant - @api', async ({
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant', async ({
   I,
   api,
 }) => {
@@ -57,10 +57,10 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
     const notification = defendantAcceptsSettlementClaimant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@nightly');
+}).tag('@nightly @api');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant', async ({
   I,
   api,
 }) => {
@@ -105,4 +105,4 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
     const notification = defendantRejectsSettlementClaimant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression-cui-r2 @api');

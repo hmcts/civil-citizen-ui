@@ -16,7 +16,7 @@ const claimAmount = '£1,500';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Small Claims');
+Feature('Case progression journey - Verify Bundle - Small Claims').tag('@case-progression');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {

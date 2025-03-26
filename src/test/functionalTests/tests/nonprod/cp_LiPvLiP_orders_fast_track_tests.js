@@ -9,7 +9,7 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem, notification;
 
-Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Fast Track ');
+Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Fast Track').tag('@case-progression');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -47,5 +47,5 @@ Scenario('Case progression journey - Fast Track - Claimant and Defendant verify 
     await I.click(claimNumber);
     await I.dontSee(notification.title);
   }
-}).tag('@minti-regression-cp');
+}).tag('@regression-minti-cp');
 

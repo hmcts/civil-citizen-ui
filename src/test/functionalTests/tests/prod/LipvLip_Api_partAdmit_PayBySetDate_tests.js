@@ -10,10 +10,10 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, claimNumber;
 
-Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ');
+Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ').tag('@partAdmit @nightly @api');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario.skip('Response with PartAdmit-PayBySetDate Small claims @citizenUI', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -32,7 +32,7 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Small claims @citizenUI @par
 });
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track @citizenUI', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
@@ -49,7 +49,7 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partA
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ @citizenUI @partAdmit @nightly - @api', async ({
+Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ @citizenUI', async ({
   I,
   api,
 }) => {

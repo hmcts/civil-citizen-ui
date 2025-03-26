@@ -9,7 +9,7 @@ const rejectAll = 'rejectAll';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant');
+Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant').tag('@rejectAll');
 
 Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
