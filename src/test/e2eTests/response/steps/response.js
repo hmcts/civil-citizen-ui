@@ -380,7 +380,7 @@ class Response {
     I.seeInCurrentUrl('/directions-questionnaire/welsh-language');
     seeInTitle('Welsh language');
     I.see('Welsh language', 'h1.govuk-heading-l');
-    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.', 'p.govuk-body');
+    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.', 'p.govuk-body');
 
     I.see('What languages will you, your experts and your witnesses speak at the hearing?', 'p.govuk-body');
     I.checkOption(`#${speakLanguage.ENGLISH}`);
