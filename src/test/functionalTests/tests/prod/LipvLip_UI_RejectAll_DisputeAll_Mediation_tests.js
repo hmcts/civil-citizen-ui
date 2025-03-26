@@ -9,7 +9,7 @@ const rejectAll = 'rejectAll';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant').tag('@nightly');
+Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant');
 
 Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
@@ -59,10 +59,10 @@ Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Sign out');
   await api.waitForFinishedBusinessProcess();
-}).retry(1);
+}).retry(1).tag('@regression-cui-r2');
 
 Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).retry(1);
+}).retry(1).tag('@regression-cui-r2');
