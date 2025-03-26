@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const ContactUs = require('../../../../common/contactUs');
+const sharedData = require('../../../../../sharedData');
 
 const contactUs = new ContactUs();
 
@@ -9,6 +10,33 @@ const fields = {
   yesButton: 'input[value="yes"]',
   noButton: 'input[value="no"]',
   availabilityForMediationLink: 'a[href*="phone-confirmation"]',
+};
+
+const content = {
+  phoneMustBeUKNum: {
+    en: 'Phone number must be a UK number',
+    cy: 'Rhaid i’r rhif ffôn fod yn rhif yn y DU',
+  },
+  canMediatorUse: {
+    en: 'Can the mediator use',
+    cy: 'A all y cyfryngwr ddefnyddio',
+  },
+  saveAndCotinue: {
+    en: 'Save and continue',
+    cy: 'Cadw a Pharhau',
+  },
+  choseYesNo: {
+    en: 'Choose option: Yes or No',
+    cy: 'Dewiswch opsiwn: Oes neu Nac oes',
+  },
+  enterAltNum: {
+    en: 'Please provide an alternative number',
+    cy: 'Nodwch rif ffôn arall',
+  },
+  enterPhoneNum: {
+    en: 'Please enter a phone number',
+    cy: 'Nodwch rif ffôn',
+  },
 };
 
 class PhoneConfirmation {
@@ -27,22 +55,23 @@ class PhoneConfirmation {
   }
 
   async enterAltPhoneDetails() {
+    const { language } = sharedData;
     I.forceClick(fields.availabilityForMediationLink);
-    await I.waitForContent('Can the mediator use ', config.WaitForText);
-    await I.click('Save and continue');
-    await I.see('Choose option: Yes or No');
+    await I.waitForContent(content.canMediatorUse[language], config.WaitForText);
+    await I.click(content.saveAndCotinue[language]);
+    await I.see(content.choseYesNo[language]);
     await I.click(fields.noButton);
     contactUs.verifyContactUs();
-    await I.click('Save and continue');
-    await I.see('Please provide an alternative number');
-    await I.click('Save and continue');
-    await I.see('Please enter a phone number');
+    await I.click(content.saveAndCotinue[language]);
+    await I.see(content.enterAltNum[language]);
+    await I.click(content.saveAndCotinue[language]);
+    await I.see(content.enterPhoneNum[language]);
     I.fillField(fields.altPhoneTextField, 'test@gmail.com');
-    await I.click('Save and continue');
-    await I.see('Phone number must be a UK number');
+    await I.click(content.saveAndCotinue[language]);
+    await I.see(content.phoneMustBeUKNum[language]);
     I.fillField(fields.altPhoneTextField, '07446778100');
     contactUs.verifyContactUs();
-    await I.click('Save and continue');
+    await I.click(content.saveAndCotinue[language]);
   }
 }
 
