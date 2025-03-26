@@ -53,7 +53,7 @@ export abstract class DashboardItem {
 export class DashboardClaimantItem extends DashboardItem {
   constructor() {
     super();
-    this.url = '/dashboard/:claimId/claimantNewDesign';
+    this.url = '/dashboard/:claimId/claimant';
 
   }
 
