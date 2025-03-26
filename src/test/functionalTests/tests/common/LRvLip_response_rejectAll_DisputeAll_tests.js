@@ -30,10 +30,12 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citizenUI @rejectAll @nightly', async ({api, I}) => {
-  console.log('Creating GA app as defendant');
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    console.log('Creating GA app as defendant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
+  }
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
