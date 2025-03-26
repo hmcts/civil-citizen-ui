@@ -1,6 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
 import {OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
 
