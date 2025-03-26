@@ -163,6 +163,7 @@ export const isApplicationVisibleToRespondentForClaimant = (application: Applica
       && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
     || (application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
       && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS')
+    || (displayToEnumKey(application.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID')
   );
 };
 
