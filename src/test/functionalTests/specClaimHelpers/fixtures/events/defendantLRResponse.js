@@ -243,8 +243,12 @@ module.exports = {
           ...responseData.midEventData,
           RespondentResponseTypeSpec: {
             multiPartyResponseTypeFlags: 'COUNTER_ADMIT_OR_ADMIT_PART',
+            specAoSApplicantCorrespondenceAddressRequired: 'Yes',
+            specAoSRespondentCorrespondenceAddressRequired: 'Yes',
             specFullDefenceOrPartAdmission: 'No',
             specDefenceFullAdmittedRequired: 'No',
+            specApplicantCorrespondenceAddressRequired: 'No',
+            specRespondent1Represented: 'Yes',
             respondentClaimResponseTypeForSpecGeneric: 'COUNTER_CLAIM',
           },
 
