@@ -766,6 +766,14 @@
         "IS_HEARING": "Is your message about a hearing?",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>We accept documents sized 100MB or smaller, in these formats: pdf, doc, docx, jpg, jpeg, xlsx, png.</span>"
+      },
+      "SEND_MESSAGE_CYA": {
+        "ENTER_MESSAGE": "Enter message details",
+        "MESSAGE_SUBJECT": "Message subject",
+        "MESSAGE_DETAILS": "Message details",
+        "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
+        "UPLOAD_DOCUMENTS": "Upload documents (optional)",
+        "SEND_MESSAGE": "Send message"
       }
     },
     "SUBJECT_TO_FRC": {
