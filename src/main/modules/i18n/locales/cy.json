@@ -1226,7 +1226,6 @@
     },
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Cytuno ar fwy o amser i ymateb",
-      "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
       "SUB_TITLE_R2": "Nodwch y dyddiad ymateb yr ydych wedi cytuno arno gyda’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
@@ -4001,7 +4000,6 @@
       "WILL_YOU_CHANGE_YOUR_DECISION": "Ydych chi’n fodlon newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
     },
     "NEW_RESPONSE_DEADLINE": {
-      "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
       "CONTENT_R2": "Byddwn yn anfon y dyddiad ymateb newydd atoch chi a’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
       "TITLE": "4pm ar {{ responseDeadline }}"
@@ -4311,7 +4309,6 @@
       "NO_AGREEMENT": "Nid oes rhaid iddynt gytuno i gais am ragor o amser.",
       "PAGE_TITLE": "Gofyn am fwy o amser",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
-      "SELECT_SAVE_AND_CONTACT": "Dewiswch ‘Cadw a pharhau’ a chysylltu â chynrychiolydd cyfreithiol {{ claimantName }} i ofyn am hyn.",
       "SELECT_SAVE_AND_CONTACT_R2": "Dewiswch ‘Cadw a pharhau’ a chysylltu â’r parti arall neu eu cynrychiolydd cyfreithiol i wneud cais ar gyfer hyn.",
       "SELECT_SAVE_AND_CONTINUE": " a dewis ‘Cadw a pharhau’.",
       "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
@@ -4334,14 +4331,12 @@
       "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
       "FORM": "Ffurflen N244 (yn agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
-      "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
       "OPTION_AGREED_R2": "Rwyf eisoes wedi cytuno ar ragor o amser gyda’r parti arall neu eu cynrychiolydd cyfreithiol",
       "OPTION_NO": "Na, nid wyf eisiau gwneud cais am ragor o amser i ymateb",
       "OPTION_REFUSED": "Mae fy nghais am ragor o amser wedi’i wrthod",
       "OPTION_YES": "Ydw, rwyf eisiau gwneud cais am ragor o amser i ymateb",
       "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
-      "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho",
       "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
@@ -4748,8 +4743,6 @@
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
       "HOW_MUCH_EXTRA": "Faint o amser ychwanegol y gallwch wneud cais amdano?",
       "PAGE_TITLE": "Gwneud cais am ragor o amser",
-      "REQUEST_EXTENSION_DEFAULT": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i gynrychiolydd cyfreithiol y parti arall.",
-      "REQUEST_EXTENSION_MORE": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
       "REQUEST_EXTENSION_DEFAULT_R2": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "REQUEST_EXTENSION_MORE_R2": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan y parti arall neud eu cynrychiolydd cyfreithiol, bydd angen i chi wneud cais i’r llys.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "Os ydych yn credu na fyddwch yn gallu ymateb i hawliad cyn y terfyn amser hwn, gallwch wneud cais am ragor o amser."

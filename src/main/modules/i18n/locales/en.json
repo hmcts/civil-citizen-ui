@@ -1226,7 +1226,6 @@
     },
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Agree more time to respond",
-      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
       "SUB_TITLE_R2": "Enter the respond date you have agreed with the other party or their legal representative",
       "TITLE": "You have already agreed to more time to respond"
     },
@@ -4001,7 +4000,6 @@
       "WILL_YOU_CHANGE_YOUR_DECISION": "Will you change your decision and try free mediation?"
     },
     "NEW_RESPONSE_DEADLINE": {
-      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "CONTENT_R2": "We’ll email the new response date to you and the other party or their legal representative.",
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4pm on {{ responseDeadline }}"
@@ -4311,7 +4309,6 @@
       "NO_AGREEMENT": "They do not have to agree to a request for more time.",
       "PAGE_TITLE": "Request more time",
       "POST": "Or, you can post the completed form to:",
-      "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
       "SELECT_SAVE_AND_CONTACT_R2": "Select 'Save and continue' and contact the other party or their legal representative to request this.",
       "SELECT_SAVE_AND_CONTINUE": " and select 'Save and continue'.",
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
@@ -4334,14 +4331,12 @@
       "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
-      "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
       "OPTION_AGREED_R2": "I have already agreed more time with the other party or their legal representative",
       "OPTION_NO": "No, I do not want to request more time",
       "OPTION_REFUSED": "My request for more time has been refused",
       "OPTION_YES": "Yes, I want to request more time",
       "PAGE_TITLE": "Response deadline",
       "POST": "Or, you can post the completed form to:",
-      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
       "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
@@ -4748,8 +4743,6 @@
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
       "HOW_MUCH_EXTRA": "How much extra time can you request?",
       "PAGE_TITLE": "Requesting extra time",
-      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
-      "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
       "REQUEST_EXTENSION_DEFAULT_R2": "If you want to request an extension of up to 28 days, you'll need to ask the other party or their legal representative directly.",
       "REQUEST_EXTENSION_MORE_R2": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party or their legal representative, you'll need to apply to the court.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."

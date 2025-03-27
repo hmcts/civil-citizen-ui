@@ -1,7 +1,7 @@
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
-BASE_ELIGIBILITY_URL,
+  BASE_ELIGIBILITY_URL,
 } from 'routes/urls';
 
 export interface DraftClaimData {
