@@ -1,14 +1,8 @@
-import {
-  deleteFieldDraftClaimFromStore,
-  generateRedisKeyForFile, getQueryFilesFromRedis,
-  saveDraftClaim, saveFilesToRedis,
-} from 'modules/draft-store/draftStoreService';
+import {deleteFieldDraftClaimFromStore, saveDraftClaim,} from 'modules/draft-store/draftStoreService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
-import {
-  CANCEL_URL, QUERY_MANAGEMENT_CREATE_QUERY,
-} from 'routes/urls';
+import {CANCEL_URL, QUERY_MANAGEMENT_CREATE_QUERY,} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
@@ -24,6 +18,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Claim} from 'models/claim';
 import {t} from 'i18next';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -110,19 +105,21 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
 };
 
-export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string): Promise<GenericForm<FileUpload>> => {
+export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string, queryModel: CreateQuery): Promise<GenericForm<FileUpload>> => {
   try {
     const fileForm = new FileUpload();
-    const redisKey = generateRedisKeyForFile(req);
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    fileForm.mimetype = fileUpload ? fileUpload.mimetype : '';
-    fileForm.size = fileUpload ? fileUpload.size : NaN;
     const form = new GenericForm(fileForm);
+    if (!fileUpload) {
+      return addMissingFileError(form);
+    }
+    fileForm.mimetype = fileUpload.mimetype;
+    fileForm.size = fileUpload.size;
     form.validateSync();
     if (!form.hasErrors()) {
       const savedFile = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-      await saveDocumentToUploaded(redisKey, savedFile);
-      await getSummaryList(summarySection, redisKey, claimId);
+      saveDocumentToUploaded(req, savedFile, queryModel);
+      getSummaryList(summarySection, req, claimId);
     }
     return form;
   } catch (err) {
@@ -131,19 +128,20 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
   }
 };
 
-const saveDocumentToUploaded = async (redisKey: string, file: CaseDocument): Promise<void> => {
+const saveDocumentToUploaded = (req: AppRequest, file: CaseDocument, queryModel: CreateQuery): void => {
   try {
-    const existingFiles = await getQueryFilesFromRedis(redisKey);
+    const existingFiles = getUploadedFiles(req);
     existingFiles.push(file);
-    await saveFilesToRedis(redisKey, existingFiles);
+    queryModel.caseDocuments = existingFiles;
+    updateQuery(queryModel, req);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string): Promise<void> => {
-  const uploadedFiles = await getQueryFilesFromRedis(redisKey);
+export const getSummaryList = (formattedSummary: SummarySection, req: AppRequest, claimId: string): void => {
+  const uploadedFiles = getUploadedFiles(req);
   let index = 0;
   uploadedFiles.forEach((file: CaseDocument) => {
     index++;
@@ -151,14 +149,42 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   });
 };
 
-export const removeSelectedDocument = async (redisKey: string, index: number): Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, index: number, queryModel: CreateQuery): Promise<void> => {
   try {
-    const files = await getQueryFilesFromRedis(redisKey);
+    const files = getUploadedFiles(req);
     files.splice(index, 1);
-    await saveFilesToRedis(redisKey, files);
+    queryModel.caseDocuments = files;
+    updateQuery(queryModel, req);
   } catch (error) {
     logger.error(error);
     throw error;
   }
+};
+
+const getUploadedFiles = (req: AppRequest): CaseDocument[] => {
+  const dataString = req.session.fileUpload;
+  if (!dataString) {
+    return [];
+  }
+  const parsed = JSON.parse(dataString) as unknown as CreateQuery;
+  return parsed.caseDocuments;
+};
+
+const updateQuery = (updatedModel: CreateQuery, req: AppRequest) => {
+  req.session.fileUpload = JSON.stringify(updatedModel);
+};
+
+const addMissingFileError = (form: GenericForm<FileUpload>): GenericForm<FileUpload> => {
+  form.errors = [{
+    target: {
+      fileUpload: '',
+    },
+    value: '',
+    property: 'fileUpload',
+    constraints: {
+      isNotEmpty: 'ERRORS.QUERY_MANAGEMENT.MISSING_FILE',
+    },
+  }];
+  return form;
 };
 

@@ -5645,7 +5645,8 @@
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Enter message subject",
       "MESSAGE_DETAILS": "Enter message details",
-      "HEARING_RELATED": "Select yes if your message is about a hearing"
+      "HEARING_RELATED": "Select yes if your message is about a hearing",
+      "MISSING_FILE": "You need to choose a file before clicking 'Upload file'"
     }
   },
   "BANNERS" : {

@@ -1,5 +1,6 @@
 import {IsDefined, IsNotEmpty, ValidateNested} from 'class-validator';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class CreateQuery {
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
@@ -14,11 +15,14 @@ export class CreateQuery {
   @ValidateNested()
     fileUpload: FileUpload;
 
-  constructor(messageSubject?: string, messageDetails?: string, isHearingRelated?: string, fileUpload?: FileUpload) {
+  caseDocuments: CaseDocument[];
+
+  constructor(messageSubject?: string, messageDetails?: string, isHearingRelated?: string, fileUpload?: FileUpload, caseDocuments?: CaseDocument[]) {
     this.messageSubject = messageSubject;
     this.messageDetails = messageDetails;
     this.isHearingRelated = isHearingRelated;
     this.fileUpload = fileUpload;
+    this.caseDocuments = caseDocuments;
   }
 
 }

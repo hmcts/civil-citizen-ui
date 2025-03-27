@@ -1,22 +1,16 @@
 import {
   createDraftClaimInStoreWithExpiryTime,
-  deleteDraftClaimFromStore,
-  deleteFieldDraftClaimFromStore,
-  deleteFilesFromRedis,
+  deleteDraftClaimFromStore, deleteFieldDraftClaimFromStore,
   findClaimIdsbyUserId,
   generateRedisKey,
-  generateRedisKeyForFile,
   getCaseDataFromStore,
   getDraftClaimFromStore,
-  getQueryFilesFromRedis,
   saveDraftClaim,
-  saveFilesToRedis,
 } from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
-import {CaseDocument} from 'models/document/caseDocument';
 
 const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
@@ -231,53 +225,5 @@ describe('Draft store service to save and retrieve claim', () => {
       await expect(findClaimIdsbyUserId(userId)).rejects.toThrow(mockError);
       expect(loggerSpy).toHaveBeenCalledWith('Failed to find claim IDs by userId', mockError);
     });
-  });
-});
-describe('Draft store service to manage query management', () => {
-  const fileList: CaseDocument = <CaseDocument>{  createdBy: 'test',
-    documentLink: {document_url: '', document_binary_url:'', document_filename:''},
-    documentName: 'name',
-    documentType: null,
-    documentSize: 12345,
-    createdDatetime: new Date()};
-
-  it('should generate query management redis key', async () => {
-    const appReq = <AppRequest>req;
-    appReq.params = {id: '12345'};
-    const result = generateRedisKeyForFile(<AppRequest>req);
-    expect(result).toBe('123451_query-management-files');
-  });
-
-  it('should call set on draft store to save files', async () => {
-    app.locals.draftStoreClient = createMockDraftStore([]);
-    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
-    await saveFilesToRedis('key', [fileList]);
-    expect(spySet).toBeCalled();
-  });
-
-  it('should return list of files', async () => {
-    const draftStoreWithData = createMockDraftStore([fileList]);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
-    spyGet.mockResolvedValue(JSON.stringify([fileList]));
-    const result = await getQueryFilesFromRedis('key');
-    expect(result.length).toEqual(1);
-  });
-
-  it('should return empty array if no files are saved', async () => {
-    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
-    spyGet.mockResolvedValue(null);
-    const result = await getQueryFilesFromRedis('key');
-    expect(result.length).toEqual(0);
-  });
-
-  it('should delete files from redis', async () => {
-    const draftStoreWithData = createMockDraftStore([fileList]);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spyDel = jest.spyOn(app.locals.draftStoreClient, 'del');
-
-    await deleteFilesFromRedis('key');
-
-    expect(spyDel).toBeCalled();
   });
 });

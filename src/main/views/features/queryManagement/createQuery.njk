@@ -86,7 +86,10 @@
           },
           hint: {
             html: t('PAGES.QM.QUERY_FORM.DOCUMENTS_HINT')
-          }
+          },
+          errorMessage: {
+            text: t(form.errorFor('fileUpload'))
+          } if form.errorFor('fileUpload')
         }) }}
 
         {{ govukButton({

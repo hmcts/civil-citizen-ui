@@ -20,6 +20,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {CaseRole} from 'form/models/caseRoles';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -248,10 +249,7 @@ describe('get Caption', () => {
 
 describe('Uploading files', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
-  const mockKey = 'testKey';
-  const appRequest: AppRequest = {
-    params: { id: '1', appId: '89' },
-  } as unknown as AppRequest;
+  let appRequest: AppRequest;
 
   const returnedFile:CaseDocument = <CaseDocument>{  createdBy: 'test',
     documentLink: {document_url: '', document_binary_url:'', document_filename:''},
@@ -259,7 +257,6 @@ describe('Uploading files', () => {
     documentType: null,
     documentSize: 12345,
     createdDatetime: new Date()};
-  const draftStoreGetFilesMock = jest.spyOn(draftStoreService, 'getQueryFilesFromRedis');
 
   beforeAll(() => {
     nock(civilServiceUrl).post('/case/document/generateAnyDoc').reply(200, returnedFile);
@@ -273,12 +270,14 @@ describe('Uploading files', () => {
       size: 123,
       buffer: Buffer.from('test'),
     };
-    jest.spyOn(draftStoreService, 'generateRedisKeyForFile').mockReturnValue(mockKey);
-    draftStoreGetFilesMock.mockResolvedValue([]);
     jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
+    appRequest = {
+      params: { id: '1', appId: '89' },
+      session: {fileUpload: ''},
+    } as unknown as AppRequest;
   });
 
-  it('should return the form with updated summary rows and call save doc to redis', async () => {
+  it('should return the form with updated summary rows and save query to session', async () => {
     const formattedSummary = summarySection(
       {
         title: '',
@@ -290,10 +289,10 @@ describe('Uploading files', () => {
       documentType: null,
       documentSize: 12345,
       createdDatetime: returnedFile.createdDatetime.toISOString()} as unknown as CaseDocument;
-    const saveSpy = jest.spyOn(draftStoreService, 'saveFilesToRedis');
-    const result = await uploadSelectedFile(appRequest, formattedSummary, '123');
+    const result = await uploadSelectedFile(appRequest, formattedSummary, '123', new CreateQuery());
+    const savedList = JSON.parse(appRequest.session.fileUpload) as unknown as CreateQuery;
 
-    expect(saveSpy).toBeCalledWith(mockKey, [expected]);
+    expect(savedList.caseDocuments).toStrictEqual([expected]);
     expect(result.hasErrors()).toBeFalsy();
     expect(formattedSummary.summaryList.rows.length).toBe(1);
   });
@@ -313,20 +312,21 @@ describe('Uploading files', () => {
     };
     jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(wrongMimeTypeFile);
 
-    const saveSpy = jest.spyOn(draftStoreService, 'saveFilesToRedis');
-    const result = await uploadSelectedFile(appRequest, formattedSummary, '123');
+    const result = await uploadSelectedFile(appRequest, formattedSummary, '123', new CreateQuery());
 
-    expect(saveSpy).not.toBeCalled();
+    expect(appRequest.session.fileUpload).toBe('');
     expect(result.hasErrors()).toBeTruthy();
   });
 
   it('should remove selected file and save the new list to redis', async () => {
-    draftStoreGetFilesMock.mockResolvedValue([returnedFile]);
-    const saveSpy = jest.spyOn(draftStoreService, 'saveFilesToRedis');
+    const populatedQuery = new CreateQuery();
+    populatedQuery.caseDocuments = [returnedFile];
+    appRequest.session.fileUpload = JSON.stringify(populatedQuery);
 
-    await removeSelectedDocument(mockKey, 0);
+    removeSelectedDocument(appRequest, 0, populatedQuery);
+    const savedList = JSON.parse(appRequest.session.fileUpload) as unknown as CreateQuery;
 
-    expect(saveSpy).toBeCalledWith(mockKey, []);
+    expect(savedList.caseDocuments.length).toBe(0);
   });
 });
 

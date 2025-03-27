@@ -13,9 +13,6 @@ import {
   removeSelectedDocument,
   uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
-import {generateRedisKeyForFile} from 'modules/draft-store/draftStoreService';
-import {getClaimById} from 'modules/utilityService';
-import {Claim} from 'models/claim';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 
@@ -28,7 +25,7 @@ const upload = multer({
   },
 });
 
-async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index: number): Promise<void> {
+async function renderView(form: GenericForm<CreateQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index: number): Promise<void> {
   const cancelUrl = CANCEL_URL;
   const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
   const backLinkUrl = BACK_URL;
@@ -51,31 +48,28 @@ const pageHeaders = {
 
 createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.id;
-  const claim = await getClaimById(claimId, req);
   const index  = queryParamNumber(req, 'index');
   let createQuery = new CreateQuery();
-  const redisKey = await generateRedisKeyForFile(req);
   const formattedSummary = summarySection(
     {
       title: '',
       summaryRows: [],
     });
-  if (req.query?.id) {
-    const index = req.query.id;
-    await removeSelectedDocument(redisKey, Number(index)-1);
-  }
   if (req?.session?.fileUpload) {
     const parsedData = JSON.parse(req?.session?.fileUpload);
     createQuery = parsedData as unknown as CreateQuery;
   }
+  if (req.query?.id) {
+    const index = req.query.id;
+    await removeSelectedDocument(req, Number(index)-1, createQuery);
+  }
   const form = new GenericForm(createQuery);
-  await getSummaryList(formattedSummary, redisKey, claimId);
-  await renderView(form, claim, claimId, res, formattedSummary, req, index);
+  getSummaryList(formattedSummary, req, claimId);
+  await renderView(form, claimId, res, formattedSummary, req, index);
 }));
 
 createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-file-upload'),(async (req:AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.id;
-  const claim = await getClaimById(claimId, req);
   const index = queryParamNumber(req, 'index');
   const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), index);
   const createQuery = new CreateQuery(req.body['query-subject-field'], req.body['query-message-field'], req.body['is-query-hearing-related'], req.body['query-file-upload']);
@@ -88,18 +82,17 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
     });
 
   if (req.body.action === 'uploadButton') {
-    const fileForm = await uploadSelectedFile(req, formattedSummary, claimId);
-    req.session.fileUpload = JSON.stringify(createQuery);
+    const fileForm = await uploadSelectedFile(req, formattedSummary, claimId, createQuery);
     if (fileForm.hasErrors()) {
       const errorForm = new GenericForm(createQuery, fileForm.errors);
-      return await renderView(errorForm, claim, claimId, res, formattedSummary, req, index);
+      return await renderView(errorForm, claimId, res, formattedSummary, req, index);
     }
     return res.redirect(`${currentUrl}`);
   }
 
   form.validateSync();
   if (form.hasErrors()) {
-    return await renderView(form, claim, claimId, res, formattedSummary, req, index);
+    return await renderView(form, claimId, res, formattedSummary, req, index);
   } else {
     req.session.fileUpload = undefined;
     //TODO: update to the CYA page in ticket CIV 16722
