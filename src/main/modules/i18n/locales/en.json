@@ -107,7 +107,8 @@
       "START_NOW": "Start now",
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard",
+      "CLOSE_AND_RETURN_TO_DETAILS": "Close and return to case details"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee",
@@ -381,6 +382,11 @@
     "APPLICATION_DOCUMENTS": {
       "APPLICANT": "Applicant ",
       "RESPONDENT": "Respondent "
+    },
+    "QUERY_MANAGEMENT_DASHBOARD": {
+      "APPLICATION_HEADING": "Applications and messages to the court",
+      "APPLICATIONS_TASK": "View all applications to the court",
+      "VIEW_MESSAGES_TASK": "View your messages to the court"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -536,6 +542,218 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
+    "QM": {
+      "COMMON": {
+        "ANYTHING_ELSE": "Anything else",
+        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
+        "SEND_A_MESSAGE": "Send a message"
+      },
+      "WHAT_DO_YOU_WANT_TODO_TITLE": "What do you want to do?",
+      "WHAT_DOCUMENT_DO_YOU_WANT_TO_SEND_TITLE": "What documents do you want to send?",
+      "WHAT_ARE_TRYING_TODO_TITLE": "What are you trying to do?",
+      "OPTIONS": {
+        "CHANGE_CASE": {
+          "TEXT": "Ask the court to change something on your case (make an application)",
+          "HINT": "You may have to pay a fee"
+        },
+        "GET_UPDATE": {
+          "TEXT": "Get an update from the court"
+        },
+        "SEND_UPDATE": {
+          "TEXT": "Send an update to the court",
+          "HINT": "Such as telling the court your claim has ended or changing the details of your claim"
+        },
+        "SEND_DOCUMENTS": {
+          "TEXT": "Send documents"
+        },
+        "SOLVE_PROBLEM": {
+          "TEXT": "Solve a problem I am having using the Money claims system",
+          "HINT": "Money claims is the system to make and manage your online claim"
+        },
+        "MANAGE_HEARING": {
+          "TEXT": "Manage your hearing"
+        },
+        "GET_SUPPORT": {
+          "TEXT": "Get support as the correspondence I received is unclear"
+        },
+        "FOLLOW_UP": {
+          "TEXT": "Follow up on an existing message"
+        },
+        "SOMETHING_ELSE": {
+          "TEXT": "Something else"
+        }
+      },
+      "QUALIFY": {
+        "TITLES": {
+          "FOLLOW_UP": "Follow up on an existing message",
+          "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
+          "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
+          "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
+          "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
+          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
+          "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
+          "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
+          "ENFORCEMENT_REQUESTS": "Send enforcement requests",
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
+          "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "See the claim on my account",
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
+          "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "CHANGE_SOMETHING_ABOUT_THE_HEARING_TITLE",
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING_TITLE"
+        },
+        "OPTIONS": {
+          "GENERAL_UPDATE": {
+            "TEXT": "Get a general update on what is happening with the case"
+          },
+          "CLAIM_NOT_PAID": {
+            "TEXT": "Understand what will happen if the claim is not paid"
+          },
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": {
+            "TEXT": "Understand what will happen if the claim is not paid after a judgment"
+          },
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": {
+            "TEXT": "Update the court about a paid or partially paid judgment or claim"
+          },
+          "SETTLE_CLAIM": {
+            "TEXT": "Settle a claim"
+          },
+          "AMEND_CLAIM_DETAILS": {
+            "TEXT": "Amend the claim details",
+            "HINT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_DETAILS_EXAMPLE": {
+            "TEXT": "Such as the reasons for the claim, the claim amount, or who you are claiming against"
+          },
+          "CLAIM_ENDED": {
+            "TEXT": "Tell the court my claim has ended"
+          },
+          "SOMETHING_ELSE": {
+            "TEXT": "Something else"
+          },
+          "ENFORCEMENT_REQUESTS": {
+            "TEXT": "Enforcement requests"
+          },
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+            "TEXT": "Claim documents and evidence"
+          },
+          "SUBMIT_RESPONSE_CLAIM": {
+            "TEXT": "Submit a response to a claim"
+          },
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": {
+            "TEXT": "See the claim on my account"
+          },
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": {
+            "TEXT": "View documents on my account"
+          },
+          "CHANGE_THE_HEARING_DATE": {
+            "TEXT": "Change the hearing date"
+          },
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
+            "TEXT": "Change something about the hearing",
+            "HINT": "For example hearing location or how you attend the hearing"
+          },
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
+            "TEXT": "Ask for help and support during my hearing"
+          }
+        }
+      },
+      "CAPTIONS": {
+        "CHANGE_CASE": "CAPTION CHANGE_CASE",
+        "GET_UPDATE": "Get an update on my case",
+        "SEND_UPDATE": "Send an update on my case",
+        "SEND_DOCUMENTS": "Send documents",
+        "SOLVE_PROBLEM": "Solve a problem I am having using the Money claims system",
+        "MANAGE_HEARING": "Manage your hearing",
+        "GET_SUPPORT": "CAPTION GET_SUPPORT",
+        "FOLLOW_UP": "CAPTION FOLLOW_UP",
+        "SOMETHING_ELSE": "CAPTION SOMETHING_ELSE"
+      },
+      "LEVEL_0": {
+        "CAPTION": "Contact or apply to the court"
+      },
+      "QUALIFY_SECTIONS": {
+        "COMMON_SOLVE_PROBLEMS": {
+          "LINK_1": {
+            "TEXT": "send a message to the court",
+            "TEXT_BEFORE": "If the issue is not urgent, you can ",
+            "TEXT_AFTER": ". We try to answer messages within 10 days, but it could take longer."
+          },
+          "LINK_2": {
+            "TEXT": "contact details for the court (opens in a new window)",
+            "TEXT_BEFORE": "If the issue is urgent, you should call the court handling your case. Find the "
+          }
+        },
+        "SUBMIT_RESPONSE_CLAIM" : {
+          "SUBTITLE_1": "Get support to respond",
+          "PARAGRAPH_1": "If you cannot submit a response using the Money claims system you should contact the court for help."
+        },
+        "SEE_THE_CLAIM_ON_MY_ACCOUNT" : {
+          "SUBTITLE_1": "Get support to see the claim on your account",
+          "PARAGRAPH_1": "If the claim has been issued and you cannot see it on the Money claims system, you should contact the court for help."
+        },
+        "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
+          "SUBTITLE_1": "Get support to view the documents on your account",
+          "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
+        },
+        "FOLLOW_UP": {
+          "PARAGRAPH_1": "Your messages are listed on your dashboard.",
+          "LINK": {
+            "TEXT": "Applications and messages to the court",
+            "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
+            "TEXT_AFTER": " section."
+          },
+          "PARAGRAPH_2": "You can reply to any message from the court, your reply must be related to the subject of your original message.",
+          "PARAGRAPH_3": "Do not send a follow up message if it has been less than 10 days since you sent your last message to the court as this could slow down the response from the court."
+        },
+        "ENFORCEMENT_REQUESTS": {
+          "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
+          "LINK_1": {
+            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new window)",
+            "TEXT_BEFORE": "There is guidance on "
+          },
+          "PARAGRAPH_2": "There are various options for you to enforce a judgment, you will have to fill in forms and submit them to the court.",
+          "PARAGRAPH_3": "The options for enforcing a judgment are&#58;",
+          "LINK_2": {
+            "TEXT": "warrant of control (opens in a new window)"
+          },
+          "LINK_3": {
+            "TEXT": "attachment of earnings order (opens in a new window)"
+          },
+          "LINK_4": {
+            "TEXT": "third-party debt order (opens in a new window)"
+          },
+          "LINK_5": {
+            "TEXT": "charging order (opens in a new window)"
+          },
+          "LINK_6": {
+            "TEXT": "check the civil fees list (opens in a new window)",
+            "TEXT_BEFORE": "Each option has its own fee, ",
+            "TEXT_AFTER": "to find the costs for the option you select. "
+          }
+        },
+        "CLAIM_DOCUMENTS_AND_EVIDENCE": {
+          "SUBTITLE_1": "You cannot upload claim evidence yet",
+          "PARAGRAPH_1": "Your case is not at the correct stage for you to upload claim documents and evidence.",
+          "PARAGRAPH_2": "You will be able to send claim evidence once the judge has issued a directions order. The directions order will have instructions on how to send the evidence as well as any deadlines for sending evidence.",
+          "CP_STATE": {
+            "LINK_1": {
+              "TEXT": "upload evidence and documents to the file",
+              "TEXT_BEFORE": "To upload evidence to your case, select "
+            },
+            "PARAGRAPH_1": "When you are saving the files, make sure the file names make it clear what the file is, for example: ‘yourname-evidencetype.doc’. For documents related to experts, witnesses, witness statements, the file name will be created by the system.",
+            "LINK_2": {
+              "TEXT": "ask for more time to do what is required by a court order",
+              "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
+            }
+          }
+        }
+      }
+    },
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?",
       "TITLE": "Fixed Recoverable Costs Regime",
@@ -1499,7 +1717,6 @@
         "TITLE": "How much do you want to continue claiming?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
         "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
@@ -1525,7 +1742,7 @@
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "The interest will then be calculated up until the claim is settled or a Judgment has been made.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
         "REASON": "Explain why you're claiming for this date?",
@@ -1656,6 +1873,7 @@
     },
     "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
       "PAGE_TITLE": "Choose how to formalise repayment",
+      "WARNING_TEXT": "For a period, the settlement agreement will not be available. Both parties can still have a signed agreement which can be sent to the court at <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. The court will also accept the claimant’s confirmation that an agreement has been reached. Any agreement confirmed with the court will stay the claim with the claimant able to apply for Judgment by using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount' target='_blank'>N225: Ask for judgment on a claim for a specified amount of money - GOV.UK</a> if the defendant fully admitted or <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225a-notice-of-part-admission-specified-amount' target='_blank'>Notice of part admission (Specified amount): Form N225A - GOV.UK</a> for part admission, if the agreement breaks down and the form should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. If after 6 months from the agreement the claimant has not requested a Judgment, if an agreement has broken down, then an application will need to be made to lift the stay, using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice' target='_blank'>Make an application to a court (application notice): Form N244 - GOV.UK</a>, which should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>",
       "REQUEST_A_CCJ": {
         "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
         "LABEL": "Request a CCJ"
@@ -2155,7 +2373,8 @@
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Trial arrangements confirmed.",
         "PAY_HEARING_FEE": "Pay the hearing fee.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Your documents are being processed.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
         "CASE_DISMISSED": "The case has been closed.",
@@ -2205,7 +2424,8 @@
         "TRIAL_ARRANGEMENTS_REQUIRED": "Confirm your trial arrangements.",
         "TRIAL_ARRANGEMENTS_SUBMITTED": "Trial arrangements confirmed.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE": "The documents are being translated.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE": "Your documents are being processed.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -3437,7 +3657,8 @@
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
       "SAME_RATE_INTEREST": "Same rate for the whole period",
-      "TITLE": "How do you want to claim interest?"
+      "TITLE": "How do you want to claim interest?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">You can only use this service if any claim for interest is made at the same rate and from the same date. To claim interest at different rates or for different periods of time, you should issue your claim on paper. More information on how to do this can be found at<br><a class=\"govuk-link\" href=\"https://www.gov.uk/make-court-claim-for-money/make-claim\" target=\"_blank\">https://www.gov.uk/make-court-claim-for-money/make-claim</a>.</p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -4882,6 +5103,11 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",
+    "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "You must select how you want to manage your hearing.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
@@ -5399,7 +5625,9 @@
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
     },
-    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made.",
+    "VALID_PAID_IN_FULL_DATE": "Paid in full date must be on or after the date of the judgment",
+    "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "This feature is currently not available, please see guidance below"
   },
   "BANNERS" : {
     "CUI_CP" : {

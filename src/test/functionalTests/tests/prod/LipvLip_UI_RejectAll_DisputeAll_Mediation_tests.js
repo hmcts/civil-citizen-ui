@@ -3,7 +3,7 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
@@ -59,10 +59,10 @@ Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Sign out');
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1);
 
 Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).retry(1).tag('@regression-cui-r2');
+}).retry(1);
