@@ -4,7 +4,11 @@ import {AppRequest} from 'models/AppRequest';
 import { CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase, isGaForLipsEnabled,
+  isCaseProgressionV1Enable,
+  isDashboardEnabledForCase,
+  isCarmEnabledForCase,
+  isGaForLipsEnabled,
+  isQueryManagementEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -49,7 +53,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
     const isGAFlagEnable = await isGaForLipsEnabled();
-
+    const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
     if (isDashboardEnabled) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
@@ -57,7 +61,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable, isQMFlagEnabled);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
 
@@ -100,11 +104,11 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean, isQMFlagEnable = false) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks : iWantToLinks[] = [];
 
-  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng, isQMFlagEnable));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   if(viewAllApplicationLink) {

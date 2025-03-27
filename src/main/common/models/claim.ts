@@ -939,6 +939,10 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
+  isCaseDiscontinued() {
+    return this.ccdState === CaseState.CASE_DISCONTINUED ;
+  }
+
   isDefendantAgreedForMediation() {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
