@@ -217,6 +217,24 @@
         },
         "bodyFileName": "document.json"
       }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/claim/calculate-interest",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": 0.1
+      }
     }
   ]
 }
