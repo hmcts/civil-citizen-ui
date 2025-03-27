@@ -27,7 +27,7 @@ const content = {
   },
   choseYesNo: {
     en: 'Choose option: Yes or No',
-    cy: 'Dewiswch opsiwn: Oes neu Nac oes',
+    cy: 'Dewiswch opsiwn: Gallai neu Na allai',
   },
   enterAltNum: {
     en: 'Please provide an alternative number',
@@ -61,7 +61,7 @@ class PhoneConfirmation {
     await I.click(content.saveAndCotinue[language]);
     await I.see(content.choseYesNo[language]);
     await I.click(fields.noButton);
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs(language);
     await I.click(content.saveAndCotinue[language]);
     await I.see(content.enterAltNum[language]);
     await I.click(content.saveAndCotinue[language]);
@@ -70,7 +70,7 @@ class PhoneConfirmation {
     await I.click(content.saveAndCotinue[language]);
     await I.see(content.phoneMustBeUKNum[language]);
     I.fillField(fields.altPhoneTextField, '07446778100');
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs(language);
     await I.click(content.saveAndCotinue[language]);
   }
 }

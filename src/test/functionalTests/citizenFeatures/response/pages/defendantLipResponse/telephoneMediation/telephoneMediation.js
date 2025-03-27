@@ -13,7 +13,7 @@ const content = {
   },
   whatHappens: {
     en: 'What happens at mediation?',
-    cy: 'Beth fydd yn digwydd nesaf',
+    cy: 'Beth fydd yn digwydd mewn',
   },
   whatHappensIf: {
     en: 'What happens if you do not attend your mediation appointment?',

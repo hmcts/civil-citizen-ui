@@ -8,7 +8,7 @@ const content = {
   },
   openingHours: {
     en: 'Monday to Friday, 8.30am to 5pm.',
-    cy: 'Dydd Llun i ddydd Gwener, 8.30am i 5pm.',
+    cy: 'Dydd Llun i ddydd',
   },
   email: {
     en: 'Email',
@@ -16,8 +16,12 @@ const content = {
   },
   telephone: {
     en: 'Telephone',
-    cy: 'Ffôn',
+    cy: 'ffôn',
   },
+  linkToCharges: {
+    en : 'Find out about call charges (opens in a new window)',
+    cy: 'Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)'
+  }
 };
 
 class ContactUs {
@@ -30,7 +34,7 @@ class ContactUs {
       I.see(content.telephone[language], 'h3');
       I.see('0300 123 7050');
       I.see(content.openingHours[language]);
-      await I.seeElement('[href=\'https://www.gov.uk/call-charges\']');
+      await I.seeElement(`//a[.=\'${content.linkToCharges[language]}\']`);
       verified = true;
     }
   }

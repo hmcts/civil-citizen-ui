@@ -3,6 +3,10 @@ const cButtons = {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau',
   },
+  saveAndContinueCARM: {
+    en: 'Save and continue',
+    cy: 'Arbed a pharhau',
+  },
   continue: {
     en: 'Continue',
     cy: 'Parhau',
