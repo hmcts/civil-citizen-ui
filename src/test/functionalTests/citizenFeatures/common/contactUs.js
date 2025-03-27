@@ -20,8 +20,8 @@ const content = {
   },
   linkToCharges: {
     en : 'Find out about call charges (opens in a new window)',
-    cy: 'Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)'
-  }
+    cy: 'Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)',
+  },
 };
 
 class ContactUs {
@@ -34,7 +34,7 @@ class ContactUs {
       I.see(content.telephone[language], 'h3');
       I.see('0300 123 7050');
       I.see(content.openingHours[language]);
-      await I.seeElement(`//a[.=\'${content.linkToCharges[language]}\']`);
+      await I.seeElement(`//a[.='${content.linkToCharges[language]}']`);
       verified = true;
     }
   }
