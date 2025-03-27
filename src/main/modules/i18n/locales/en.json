@@ -605,9 +605,9 @@
           "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "See the claim on my account",
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
-          "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
-          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "CHANGE_SOMETHING_ABOUT_THE_HEARING_TITLE",
-          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING_TITLE"
+          "CHANGE_THE_HEARING_DATE": "Change the hearing date",
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Change something about the hearing",
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing"
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
@@ -793,6 +793,47 @@
               "TEXT": "ask for more time to do what is required by a court order",
               "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
             }
+          }
+        },
+        "CHANGE_THE_HEARING_DATE": {
+          "LINK_1": {
+            "TEXT": "apply to adjourn the hearing",
+            "TEXT_BEFORE": "To ask to change the hearing date (known as an adjournment) you will need to"
+          },
+          "PARAGRAPH_1": "You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.",
+          "PARAGRAPH_2": "You should give the court dates when you would be able to attend a hearing. The other parties will also need to agree to the change.",
+          "PARAGRAPH_3": "You may need to attend a hearing to discuss your application to change the date.",
+          "LINK_2": {
+            "TEXT": "Check the fees guidance (opens in a new window)",
+            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee",
+            "TEXT_AFTER": "to make sure you pay the correct fee."
+          },
+          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees."
+        },
+        "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
+          "PARAGRAPH_1": "You can apply to change the details of the hearing, such as:",
+          "LIST_1": "the location",
+          "LIST_2": "the hearing type - in person or video hearing",
+          "LINK_1": {
+            "TEXT": "apply to the court",
+            "TEXT_BEFORE": "You have to",
+            "TEXT_AFTER": "to ask for the court to consider changing the hearing details."
+          },
+          "LINK_2": {
+            "TEXT": "fees in civil cases (opens in a new window)",
+            "TEXT_BEFORE": "Find out more about"
+          },
+          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application."
+        },
+        "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
+          "PARAGRAPH_1": "You can ask for help and support during your hearing.",
+          "LIST_1": "ramps or accessible toilets",
+          "LIST_2": "a hearing loop",
+          "LIST_3": "forms in large print",
+          "LIST_4": "guidance in audio or easy read formats",
+          "LINK_1": {
+            "TEXT": "Find the contact details for the court (opens in a new window)",
+            "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court where the hearing is being held."
           }
         }
       }
