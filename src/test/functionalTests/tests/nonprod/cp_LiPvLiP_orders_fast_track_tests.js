@@ -47,5 +47,5 @@ Scenario('Case progression journey - Fast Track - Claimant and Defendant verify 
     await I.click(claimNumber);
     await I.dontSee(notification.title);
   }
-}).tag('@regression-minti-cp');
+}).tag('@minti @regression-minti-cp');
 
