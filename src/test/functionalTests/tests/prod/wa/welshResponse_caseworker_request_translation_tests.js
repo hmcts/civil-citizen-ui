@@ -30,7 +30,7 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   console.log('Security code', securityCode);
 });
 
-Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @part-admit', async () => {
+Scenario('Welsh Response with PartAdmit - SetDate @citizenUI', async () => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
