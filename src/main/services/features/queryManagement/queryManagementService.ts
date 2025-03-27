@@ -19,11 +19,56 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseDocument} from 'models/document/caseDocument';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {Claim} from 'models/claim';
+import {t} from 'i18next';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+
+export const updateQueryManagementDashboardItems = (dashboard: Dashboard, gaExclusion: DashboardTaskList, claim: Claim) => {
+  dashboard.items.forEach(item => {
+    if (item.categoryEn === gaExclusion.categoryEn) {
+      updateDashboardTaskHeader(item, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.APPLICATION_HEADING');
+      item.tasks.forEach(taskItem => {
+        if (taskItem.taskNameEn.includes('Contact the court to request a change to my case')) {
+          updateDashboardTaskItem(taskItem, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.APPLICATIONS_TASK');
+        } else {
+          updateDashboardTaskItem(taskItem, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.VIEW_MESSAGES_TASK');
+          determineTaskStatus(taskItem, claim);
+        }
+      });
+    }
+  });
+};
+
+const updateDashboardTaskHeader = (header: DashboardTaskList, updatedValueLocation: string) => {
+  header.categoryEn = t(updatedValueLocation, {lng: 'en'});
+  header.categoryCy = t(updatedValueLocation, {lng: 'cy'});
+};
+
+const updateDashboardTaskItem = (item: DashboardTask, updatedValueLocation: string) => {
+  item.taskNameEn = t(updatedValueLocation, {lng: 'en'});
+  item.taskNameCy = t(updatedValueLocation, {lng: 'cy'});
+};
+
+const determineTaskStatus = (taskItem: DashboardTask, claim: Claim) => {
+  if (claim.isClaimant()) {
+    if (!claim.qmApplicantLipQueries) {
+      taskItem.statusEn = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'en'});
+      taskItem.statusCy = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'cy'});
+    }
+  } else {
+    if (!claim.qmDefendantLipQueries) {
+      taskItem.statusEn = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'en'});
+      taskItem.statusCy = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'cy'});
+    }
+  }
+};
 
 export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
   const claim = await getClaimById(claimId, req,true);
@@ -84,7 +129,7 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     logger.error(err);
     throw err;
   }
-}
+};
 
 const saveDocumentToUploaded = async (redisKey: string, file: CaseDocument): Promise<void> => {
   try {

@@ -3,16 +3,16 @@ import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 
 export class CreateQuery {
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
-  messageSubject: string;
+    messageSubject: string;
 
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_DETAILS'})
-  messageDetails: string;
+    messageDetails: string;
 
   @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})
-  isHearingRelated: string;
+    isHearingRelated: string;
 
   @ValidateNested()
-  fileUpload: FileUpload;
+    fileUpload: FileUpload;
 
   constructor(messageSubject?: string, messageDetails?: string, isHearingRelated?: string, fileUpload?: FileUpload) {
     this.messageSubject = messageSubject;

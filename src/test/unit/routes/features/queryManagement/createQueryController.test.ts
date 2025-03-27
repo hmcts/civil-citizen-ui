@@ -25,7 +25,7 @@ describe('create query conroller', () => {
   describe('GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();
-    })
+    });
     it('should render query page', async () => {
       await request(app)
         .get(QUERY_MANAGEMENT_CREATE_QUERY)
