@@ -87,7 +87,7 @@ import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import {CaseQueries} from "models/queryManagement/caseQueries";
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -112,7 +112,7 @@ export class Claim {
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
-  claimInterest?: YesNo;
+  _claimInterest?: YesNo;
   interest?: Interest;
   submittedDate?: Date;
   issueDate?: Date;
@@ -198,8 +198,8 @@ export class Claim {
   // Index signature to allow dynamic property access
   [key: string]: any;
   //Query management
-  qmApplicantCitizenQueries?: CaseQueries;
-  qmRespondentCitizenQueries?: CaseQueries;
+  qmApplicantLipQueries?: CaseQueries;
+  qmDefendantLipQueries?: CaseQueries;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -864,6 +864,14 @@ export class Claim {
 
   get finalisingTrialArrangementsDeadline(): string {
     return this.threeWeeksBeforeHearingDateString();
+  }
+
+  get claimInterest(): YesNo {
+    return this._claimInterest;
+  }
+
+  set claimInterest(claimInterest: YesNo | YesNoUpperCamelCase) {
+    this._claimInterest = claimInterest ? claimInterest.toLowerCase() as YesNo : undefined;
   }
 
   isBetweenSixAndThreeWeeksBeforeHearingDate(): boolean {

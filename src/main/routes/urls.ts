@@ -404,6 +404,9 @@ export const CONTACT_CNBC_URL = '/contact-cnbc';
 export const CONTACT_MEDIATION_URL = '/contact-mediation';
 export const GA_UNAVAILABILITY_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/unavailability-confirmation`;
 export const GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/unavailability-confirmation`;
+export const GA_PAYMENT_SUCCESSFUL_COSC_URL = `${BASE_COSC_URL}/:appId/payment-successful`;
+export const GA_PAYMENT_UNSUCCESSFUL_COSC_URL = `${BASE_COSC_URL}/:appId/payment-unsuccessful`;
+
 export const QM_BASE = `${BASE_CASE_URL}/qm`;
 export const QM_START_URL = `${QM_BASE}/start`;
 export const QM_WHAT_DO_YOU_WANT_TO_DO_URL = `${QM_BASE}/what-you-want-to-do/:qmType`;

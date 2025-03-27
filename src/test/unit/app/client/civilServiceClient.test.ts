@@ -594,6 +594,25 @@ describe('Civil Service Client', () => {
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
+
+    it('should submit submitInitiateGeneralApplicationForCOSCEvent successfully', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const claim = await civilServiceClient.submitInitiateGeneralApplicationEventForCosc('123', ccdGApp,appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
+        .replace(':submitterId', '1')
+        .replace(':caseId', '123'));
+      expect(claim.issueDate).toEqual(date);
+      expect(claim.respondent1ResponseDeadline).toEqual(date);
+    });
+
     it('should throw error when there is an error with api', async () => {
       //Given
       const date = new Date();
@@ -842,6 +861,30 @@ describe('Civil Service Client', () => {
 
       //Then
       expect(claim).toEqual(new Claim());
+    });
+  });
+  describe('calculateClaimInterest', () => {
+    it('should get calculate claim interest', async () => {
+      //Given
+      const mockData = 0.02;
+      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //When
+      const interest = await civilServiceClient.calculateClaimInterest({});
+      //Then
+      expect(interest).toEqual(mockData);
+    });
+
+    it('should throw error on calculate claim interest', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({ post: mockGet } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.calculateClaimInterest({})).rejects.toThrow('error');
     });
   });
 

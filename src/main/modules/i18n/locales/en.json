@@ -382,6 +382,11 @@
     "APPLICATION_DOCUMENTS": {
       "APPLICANT": "Applicant ",
       "RESPONDENT": "Respondent "
+    },
+    "QUERY_MANAGEMENT_DASHBOARD": {
+      "APPLICATION_HEADING": "Applications and messages to the court",
+      "APPLICATIONS_TASK": "View all applications to the court",
+      "VIEW_MESSAGES_TASK": "View your messages to the court"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -1726,7 +1731,6 @@
         "TITLE": "How much do you want to continue claiming?"
       },
       "INTEREST_END_DATE": {
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
         "PAGE_TITLE": "When do you want to stop claiming interest?",
         "TITLE": "When do you want to stop claiming interest?",
         "UNTIL_CLAIM_SUBMIT_DATE": "When you submit the claim",
@@ -1752,7 +1756,7 @@
         "DATE_INTEREST": "Date interest applied from",
         "FROM_A_SPECIFIC_DATE": "A particular date",
         "FROM_CLAIM_SUBMIT_DATE": "The date you submit the claim",
-        "HINT_AFTER_4PM": "If you submit after 4pm it will be the next working day.",
+        "HINT_FROM_CLAIM_SUBMIT_DATE": "The interest will then be calculated up until the claim is settled or a Judgment has been made.",
         "HINT_EXAMPLE_DATE": "For example the date an invoice was overdue or that you told someone they owed you the money.",
         "PAGE_TITLE": "When are you claiming interest from?",
         "REASON": "Explain why you're claiming for this date?",
@@ -1883,6 +1887,7 @@
     },
     "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
       "PAGE_TITLE": "Choose how to formalise repayment",
+      "WARNING_TEXT": "For a period, the settlement agreement will not be available. Both parties can still have a signed agreement which can be sent to the court at <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. The court will also accept the claimant’s confirmation that an agreement has been reached. Any agreement confirmed with the court will stay the claim with the claimant able to apply for Judgment by using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount' target='_blank'>N225: Ask for judgment on a claim for a specified amount of money - GOV.UK</a> if the defendant fully admitted or <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225a-notice-of-part-admission-specified-amount' target='_blank'>Notice of part admission (Specified amount): Form N225A - GOV.UK</a> for part admission, if the agreement breaks down and the form should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. If after 6 months from the agreement the claimant has not requested a Judgment, if an agreement has broken down, then an application will need to be made to lift the stay, using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice' target='_blank'>Make an application to a court (application notice): Form N244 - GOV.UK</a>, which should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>",
       "REQUEST_A_CCJ": {
         "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
         "LABEL": "Request a CCJ"
@@ -3666,7 +3671,8 @@
       "BREAK_DOWN_INTEREST": "Break down interest for different time periods or items",
       "PAGE_TITLE": "How do you want to claim interest?",
       "SAME_RATE_INTEREST": "Same rate for the whole period",
-      "TITLE": "How do you want to claim interest?"
+      "TITLE": "How do you want to claim interest?",
+      "SAME_RATE_SAME_DATE_INTEREST": "<p class=\"govuk-body\">You can only use this service if any claim for interest is made at the same rate and from the same date. To claim interest at different rates or for different periods of time, you should issue your claim on paper. More information on how to do this can be found at<br><a class=\"govuk-link\" href=\"https://www.gov.uk/make-court-claim-for-money/make-claim\" target=\"_blank\">https://www.gov.uk/make-court-claim-for-money/make-claim</a>.</p>"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -5635,6 +5641,7 @@
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made.",
     "VALID_PAID_IN_FULL_DATE": "Paid in full date must be on or after the date of the judgment",
+    "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "This feature is currently not available, please see guidance below",
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Enter message subject",
       "MESSAGE_DETAILS": "Enter message details",

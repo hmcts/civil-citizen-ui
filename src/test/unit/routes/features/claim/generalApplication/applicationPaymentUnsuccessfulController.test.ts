@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
+import {GA_PAYMENT_UNSUCCESSFUL_COSC_URL, GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
 import {Claim} from 'common/models/claim';
 import {isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
@@ -53,6 +53,18 @@ describe('Claim fee unsuccessful payment confirmation', () => {
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.CONTACT_YOUR_BANK'));
         });
 
+    });
+    it('cosc - should return unsuccessful payment page', async () => {
+      claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+      mockDataFromStore.mockResolvedValueOnce(claim);
+      await request(app)
+        .get(GA_PAYMENT_UNSUCCESSFUL_COSC_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unsuccessful payment');
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.YOUR_PAYMENT_HAS_FAILED'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.CONTACT_YOUR_BANK'));
+        });
     });
   });
 });

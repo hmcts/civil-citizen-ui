@@ -97,6 +97,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = false;
+  const interestAmount = 10;
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -115,7 +116,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     await steps.clickPayClaimFee();
   }
   await api.waitForFinishedBusinessProcess();
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee);
+  await steps.verifyAndPayClaimFee(claimAmount, claimFee, interestAmount);
   await api.waitForFinishedBusinessProcess();
 });
 
