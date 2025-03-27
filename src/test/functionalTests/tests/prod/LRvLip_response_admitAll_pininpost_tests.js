@@ -8,7 +8,7 @@ const admitAll = 'full-admission';
 const immediatePayment = 'immediate';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-const carmEnabled = false;
+const carmEnabled = true;
 const manualPIP = true;
 let claimRef;
 let caseData;

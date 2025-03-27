@@ -1,19 +1,19 @@
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
-const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
+//const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
+//const {judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, claimNumber;
 
-Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ').tag('@part-admit @nightly @api');
+Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Response with PartAdmit-PayBySetDate Small claims @citizenUI', async ({api}) => {
+Scenario.skip('Response with PartAdmit-PayBySetDate Small claims', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -32,7 +32,7 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Small claims @citizenUI', as
 });
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track @citizenUI', async ({api}) => {
+Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
@@ -49,7 +49,7 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track @citizenUI', asyn
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ @citizenUI', async ({
+Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ', async ({
   I,
   api,
 }) => {
@@ -71,8 +71,9 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
 
   if (isDashboardServiceEnabled) {
     await I.click('Sign out');
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const notification = judgmentRequestedCourtAgrees();
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    //Update notification based on jo release
+    //await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    //const notification = judgmentRequestedCourtAgrees();
+    //await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 }).tag('@regression-cui-r2');

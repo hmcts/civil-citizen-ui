@@ -43,7 +43,11 @@ Scenario('Response with PartAdmit and Repayment plan', async () => {
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, repaymentPlan);
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 }).tag('@regression-cui-r1');
