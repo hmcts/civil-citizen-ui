@@ -21,6 +21,11 @@ import {Dashboard} from 'models/dashboard/dashboard';
 import {CaseRole} from 'form/models/caseRoles';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 
+jest.mock('../../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
 
