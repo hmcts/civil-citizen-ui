@@ -36,10 +36,11 @@ export abstract class DashboardItem {
   admittedAmount?: number;
   ocmc?: boolean;
   draft?: boolean;
-  url: string;
+  ocmcClaimantDashboardUrl?: string;
   defaultJudgementIssuedDate?: string;
+  newClaimantDashboardUrl?: string;
   getHref() {
-    return this.ocmc ? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url.replace(':claimId', this.claimId);
+    return this.ocmc ? `${ocmcBaseUrl}${this.ocmcClaimantDashboardUrl.replace(':claimId', this.claimId)}` : this.newClaimantDashboardUrl.replace(':claimId', this.claimId);
   }
 
   getStatus(lang: string ): string {
@@ -53,8 +54,8 @@ export abstract class DashboardItem {
 export class DashboardClaimantItem extends DashboardItem {
   constructor() {
     super();
-    this.url = '/dashboard/:claimId/claimant';
-
+    this.ocmcClaimantDashboardUrl = '/dashboard/:claimId/claimant';
+    this.newClaimantDashboardUrl = '/dashboard/:claimId/claimantNewDesign';
   }
 
   getDashboardStatus(lang: string ): DashboardStatus {
