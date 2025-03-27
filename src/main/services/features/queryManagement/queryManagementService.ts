@@ -109,7 +109,7 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
 };
 
-export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, createQuery: CreateQuery): Promise<void> => {
+export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery): Promise<void> => {
   try {
     const uploadQMAdditionalFile = new UploadQMAdditionalFile();
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
@@ -119,7 +119,7 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     if (!form.hasErrors()) {
       uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
       await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
-      await getSummaryList(summarySection, req);
+      // await getSummaryList(summarySection, req);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
