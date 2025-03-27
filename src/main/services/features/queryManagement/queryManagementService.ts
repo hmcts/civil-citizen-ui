@@ -16,9 +16,15 @@ import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/Typ
 import {GenericForm} from 'form/models/genericForm';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseDocument} from 'models/document/caseDocument';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+
 export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
   const claim = await getClaimById(claimId, req,true);
   if (!claim.queryManagement) {
@@ -59,26 +65,28 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
 };
 
-export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string): Promise<void> => {
+export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string): Promise<GenericForm<FileUpload>> => {
   try {
     const fileForm = new FileUpload();
     const redisKey = generateRedisKeyForFile(req);
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    fileForm.mimetype = fileUpload.mimetype;
-    fileForm.size = fileUpload.size;
+    fileForm.mimetype = fileUpload ? fileUpload.mimetype : '';
+    fileForm.size = fileUpload ? fileUpload.size : NaN;
     const form = new GenericForm(fileForm);
     form.validateSync();
     if (!form.hasErrors()) {
-      await saveDocumentToUploaded(redisKey, fileUpload);
+      const savedFile = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
+      await saveDocumentToUploaded(redisKey, savedFile);
       await getSummaryList(summarySection, redisKey, claimId);
     }
+    return form;
   } catch (err) {
     logger.error(err);
     throw err;
   }
 }
 
-const saveDocumentToUploaded = async (redisKey: string, file: FileUpload): Promise<void> => {
+const saveDocumentToUploaded = async (redisKey: string, file: CaseDocument): Promise<void> => {
   try {
     const existingFiles = await getQueryFilesFromRedis(redisKey);
     existingFiles.push(file);
@@ -92,9 +100,9 @@ const saveDocumentToUploaded = async (redisKey: string, file: FileUpload): Promi
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string): Promise<void> => {
   const uploadedFiles = await getQueryFilesFromRedis(redisKey);
   let index = 0;
-  uploadedFiles.forEach((file: FileUpload) => {
+  uploadedFiles.forEach((file: CaseDocument) => {
     index++;
-    formattedSummary.summaryList.rows.push(summaryRow(file.originalname, '', constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY+'?id='+index), 'Remove document'));
+    formattedSummary.summaryList.rows.push(summaryRow(file.documentName, '', constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY+'?id='+index), 'Remove document'));
   });
 };
 

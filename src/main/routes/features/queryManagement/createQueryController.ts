@@ -53,9 +53,8 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req);
   const index  = queryParamNumber(req, 'index');
-  const createQuery = new CreateQuery(req.body['query-subject-field'], req.body['query-message-field'], req.body['is-query-hearing-related'], req.body['query-file-upload']);
+  let createQuery = new CreateQuery();
   const redisKey = await generateRedisKeyForFile(req);
-  const form = new GenericForm(createQuery);
   const formattedSummary = summarySection(
     {
       title: '',
@@ -67,10 +66,9 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
   }
   if (req?.session?.fileUpload) {
     const parsedData = JSON.parse(req?.session?.fileUpload);
-    form.model.messageDetails = parsedData['query-message-field'];
-    form.model.messageSubject = parsedData['query-subject-field'];
-    form.model.isHearingRelated = parsedData['is-query-hearing-related'];
+    createQuery = parsedData as unknown as CreateQuery;
   }
+  const form = new GenericForm(createQuery);
   await getSummaryList(formattedSummary, redisKey, claimId);
   await renderView(form, claim, claimId, res, formattedSummary, req, index);
 }));
@@ -90,8 +88,12 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
     });
 
   if (req.body.action === 'uploadButton') {
-    await uploadSelectedFile(req, formattedSummary, claimId);
-    req.session.fileUpload = JSON.stringify(req.body);
+    const fileForm = await uploadSelectedFile(req, formattedSummary, claimId);
+    req.session.fileUpload = JSON.stringify(createQuery);
+    if (fileForm.hasErrors()) {
+      const errorForm = new GenericForm(createQuery, fileForm.errors);
+      return await renderView(errorForm, claim, claimId, res, formattedSummary, req, index);
+    }
     return res.redirect(`${currentUrl}`);
   }
 

@@ -3,13 +3,19 @@ import {
   deleteQueryManagement,
   getCancelUrl,
   getCaption,
-  getQueryManagement,
-  saveQueryManagement,
+  getQueryManagement, removeSelectedDocument,
+  saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import express from 'express';
 import * as utilityService from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {summarySection} from 'models/summaryList/summarySections';
+import {AppRequest} from 'models/AppRequest';
+import {CaseDocument} from 'models/document/caseDocument';
+import config from 'config';
+import nock from 'nock';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
@@ -151,6 +157,89 @@ describe('get Caption', () => {
     expect(result).toEqual('PAGES.QM.CAPTIONS.MANAGE_HEARING');
 
   });
+});
 
+describe('Uploading files', () => {
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+  const mockKey = 'testKey';
+  const appRequest: AppRequest = {
+    params: { id: '1', appId: '89' },
+  } as unknown as AppRequest;
+
+  const returnedFile:CaseDocument = <CaseDocument>{  createdBy: 'test',
+    documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+    documentName: 'name',
+    documentType: null,
+    documentSize: 12345,
+    createdDatetime: new Date()};
+  const draftStoreGetFilesMock = jest.spyOn(draftStoreService, 'getQueryFilesFromRedis');
+
+  beforeAll(() => {
+    nock(civilServiceUrl).post('/case/document/generateAnyDoc').reply(200, returnedFile);
+  })
+  beforeEach(() => {
+    jest.resetAllMocks();
+    const fileToUpload = {
+      fieldname: 'test',
+      originalname: 'test',
+      mimetype: 'text/plain',
+      size: 123,
+      buffer: Buffer.from('test'),
+    }
+    jest.spyOn(draftStoreService, 'generateRedisKeyForFile').mockReturnValue(mockKey);
+    draftStoreGetFilesMock.mockResolvedValue([]);
+    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
+  });
+
+  it('should return the form with updated summary rows and call save doc to redis', async () => {
+    const formattedSummary = summarySection(
+      {
+        title: '',
+        summaryRows: [],
+      });
+    const expected :CaseDocument = {  createdBy: 'test',
+      documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+      documentName: 'name',
+      documentType: null,
+      documentSize: 12345,
+      createdDatetime: returnedFile.createdDatetime.toISOString()} as unknown as CaseDocument;
+    const saveSpy = jest.spyOn(draftStoreService, 'saveFilesToRedis');
+    const result = await uploadSelectedFile(appRequest, formattedSummary, '123');
+
+    expect(saveSpy).toBeCalledWith(mockKey, [expected]);
+    expect(result.hasErrors()).toBeFalsy();
+    expect(formattedSummary.summaryList.rows.length).toBe(1);
+  });
+
+  it('should return the form and not save doc if file has errors', async () => {
+    const formattedSummary = summarySection(
+      {
+        title: '',
+        summaryRows: [],
+      });
+    const wrongMimeTypeFile = {
+      fieldname: 'test',
+      originalname: 'test',
+      mimetype: 'test',
+      size: 123,
+      buffer: Buffer.from('test'),
+    }
+    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(wrongMimeTypeFile);
+
+    const saveSpy = jest.spyOn(draftStoreService, 'saveFilesToRedis');
+    const result = await uploadSelectedFile(appRequest, formattedSummary, '123');
+
+    expect(saveSpy).not.toBeCalled();
+    expect(result.hasErrors()).toBeTruthy();
+  });
+
+  it('should remove selected file and save the new list to redis', async () => {
+    draftStoreGetFilesMock.mockResolvedValue([returnedFile]);
+    const saveSpy = jest.spyOn(draftStoreService, 'saveFilesToRedis');
+
+    await removeSelectedDocument(mockKey, 0);
+
+    expect(saveSpy).toBeCalledWith(mockKey, []);
+  });
 });
 
