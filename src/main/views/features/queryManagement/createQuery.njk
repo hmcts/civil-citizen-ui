@@ -21,11 +21,11 @@
 
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
   <div class="govuk-grid-row">
-    <form class="govuk-grid-column-two-thirds" method="post" action="{{ currentUrl }}&_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+    <form class="govuk-grid-column-two-thirds" method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
       {{ csrfProtection(csrf) }}
       {{ govukInput({
-        id: 'query-subject-field',
-        name: 'query-subject-field',
+        id: 'messageSubject',
+        name: 'messageSubject',
         value: form.model.messageSubject,
         label: {
           text: t('PAGES.QM.QUERY_FORM.SUBJECT_TITLE')
@@ -39,8 +39,8 @@
       }) }}
 
       {{ govukCharacterCount({
-        id: 'query-message-field',
-        name: 'query-message-field',
+        id: 'messageDetails',
+        name: 'messageDetails',
         value: form.model.messageDetails,
         maxlength: 200,
         label: {
@@ -53,29 +53,28 @@
           text: t(form.errorFor('messageDetails'))
         } if form.errorFor('messageDetails')
       }) }}
-
-      {{ govukRadios({
-        classes: 'govuk-radios--inline',
-        id: 'is-query-hearing-related',
-        name: 'is-query-hearing-related',
-        value: form.model.isHearingRelated,
-        fieldset: {
-          legend: {
-            text: t('PAGES.QM.QUERY_FORM.IS_HEARING')
-          }
-        },
-        items: [{
-          value: 'yes',
-          text: t('COMMON.YES')
-        },{
-          value: 'no',
-          text: t('COMMON.NO')
-        }],
-        errorMessage: {
-          text: t(form.errorFor('isHearingRelated'))
-        } if form.errorFor('isHearingRelated')
-      }) }}
-
+        {{ govukRadios({
+              classes: 'govuk-radios--inline',
+              id: 'isHearingRelated',
+              name: 'isHearingRelated',
+              fieldset: {
+                legend: {
+                  text: t('PAGES.QM.QUERY_FORM.IS_HEARING')
+                }
+              },
+              items: [{
+                value: 'yes',
+                checked: true if form.model.isHearingRelated=="yes" else false,
+                text: t('COMMON.YES')
+              },{
+                value: 'no',
+                checked: true if form.model.isHearingRelated=="no" else false,
+                text: t('COMMON.NO')
+              }],
+              errorMessage: {
+                text: t(form.errorFor('isHearingRelated'))
+              } if form.errorFor('isHearingRelated')
+            }) }}
       <div class="govuk-inset-text">
         {{ govukFileUpload({
           id: 'query-file-upload',
@@ -90,7 +89,7 @@
         }) }}
 
         {{ govukButton({
-          id: 'uploadFileButton',
+          id: 'fileUpload',
           name: 'action',
           value: 'uploadButton',
           text: t('COMMON.UPLOAD_FILE'),
