@@ -17,7 +17,7 @@ const {
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
-Feature('Lip v Lip GA e2e Tests').tag('@citizenUI @nightly @api @ga');;
+Feature('Lip v Lip GA e2e Tests').tag('@citizenUI @nightly @api @ga');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
