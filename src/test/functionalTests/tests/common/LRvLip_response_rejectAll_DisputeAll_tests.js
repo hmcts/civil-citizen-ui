@@ -30,10 +30,12 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citizenUI @rejectAll @nightly', async ({api, I}) => {
-  console.log('Creating GA app as defendant');
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    console.log('Creating GA app as defendant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
+  }
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -42,7 +44,11 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citiz
   await ResponseSteps.EnterWhyYouDisagree(claimRef);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
