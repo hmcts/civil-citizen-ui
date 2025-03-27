@@ -152,9 +152,14 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 }
 
 export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
-  if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-    && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
-    if (claim.isAnyPartyBilingual()) {
+  if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+    && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)) {
+    if (await isQueryManagementEnabled(claim.issueDate) && (!claim.hasClaimTakenOffline() || !claim.hasClaimBeenDismissed())) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
+      };
+    }
+    else if (claim.isAnyPartyBilingual()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: GA_SUBMIT_OFFLINE,
