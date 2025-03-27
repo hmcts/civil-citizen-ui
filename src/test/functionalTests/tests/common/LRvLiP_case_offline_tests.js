@@ -33,7 +33,8 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = caseOfflineAfterSDO();
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM', false);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM', false);
+    await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.claimantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
