@@ -38,7 +38,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   console.log('Security code', securityCode);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterCompDetails(carmEnabled);
+  await ResponseSteps.EnterCompDetails(false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');

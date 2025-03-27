@@ -382,6 +382,11 @@
     "APPLICATION_DOCUMENTS": {
       "APPLICANT": "Ceisydd ",
       "RESPONDENT": "Atebydd "
+    },
+    "QUERY_MANAGEMENT_DASHBOARD": {
+      "APPLICATION_HEADING": "Ceisiadau a negeseuon i’r llys",
+      "APPLICATIONS_TASK": "Gweld pob cais i’r llys",
+      "VIEW_MESSAGES_TASK": "Gweld eich negeseuon i'r llys"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
