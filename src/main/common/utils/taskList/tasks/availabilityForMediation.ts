@@ -10,8 +10,25 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
 const hasAvailabilityMediationFinished = (caseData: Claim, claimantResponse: boolean): boolean => {
+  //fields check
   if (claimantResponse) {
+    const mediationCarm = caseData.claimantResponse?.mediationCarm;
+    if (
+      (mediationCarm?.isMediationPhoneCorrect?.option.toUpperCase() === 'NO' && !mediationCarm?.alternativeMediationTelephone) ||
+          (mediationCarm?.isMediationEmailCorrect?.option.toUpperCase() === 'NO' && !mediationCarm?.alternativeMediationEmail) ||
+          (mediationCarm?.hasUnavailabilityNextThreeMonths?.option.toUpperCase() === 'YES' && !mediationCarm?.unavailableDatesForMediation)
+    ) {
+      delete mediationCarm.hasAvailabilityMediationFinished;
+    }
     return caseData.claimantResponse?.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.claimantResponse.mediationCarm.hasAvailabilityMediationFinished;
+  }
+  const mediationCarm = caseData.mediationCarm;
+  if (
+    (mediationCarm?.isMediationPhoneCorrect?.option.toUpperCase() === 'NO' && !mediationCarm?.alternativeMediationTelephone) ||
+      (mediationCarm?.isMediationEmailCorrect?.option.toUpperCase() === 'NO' && !mediationCarm?.alternativeMediationEmail) ||
+      (mediationCarm?.hasUnavailabilityNextThreeMonths?.option.toUpperCase() === 'YES' && !mediationCarm?.unavailableDatesForMediation)
+  ) {
+    delete mediationCarm.hasAvailabilityMediationFinished;
   }
   return caseData.mediationCarm?.hasAvailabilityMediationFinished === undefined ? false : caseData.mediationCarm.hasAvailabilityMediationFinished;
 };
