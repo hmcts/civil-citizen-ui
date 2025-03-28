@@ -248,7 +248,6 @@ describe('get Caption', () => {
 });
 
 describe('Uploading files', () => {
-  // const civilServiceUrl = config.get<string>('services.civilService.url');
   const mockKey = 'testKey';
   const appRequest: AppRequest = {
     params: { id: '1', appId: '89' },

@@ -121,25 +121,5 @@ describe('create query conroller', () => {
           expect(res.status).toBe(302);
         });
     });
-
-    // it('should render page with file upload error', async () => {
-    //   const error = [{
-    //     target: {
-    //       fileUpload: '',
-    //     },
-    //     value: '',
-    //     property: '',
-    //     constraints: {
-    //       isNotEmpty: 'ERRORS.VALID_MIME_TYPE_FILE',
-    //     },
-    //   }];
-    //   qmServiceMock.mockResolvedValue(new GenericForm(new FileUpload(), error));
-    //   await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send({action: 'uploadButton'})
-    //     .expect(res => {
-    //       expect(res.status).toBe(200);
-    //       expect(res.text).toContain('There was a problem');
-    //       expect(res.text).toContain('Document must be Word');
-    //     });
-    // });
   });
 });
