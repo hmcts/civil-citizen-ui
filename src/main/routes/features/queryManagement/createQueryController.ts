@@ -1,6 +1,6 @@
 import {NextFunction, Response, Router} from 'express';
 import {
-  BACK_URL, CANCEL_URL, QM_CYA,
+  BACK_URL, QM_CYA,
   QUERY_MANAGEMENT_CREATE_QUERY,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -9,6 +9,7 @@ import {summarySection, SummarySection} from 'models/summaryList/summarySections
 import {CreateQuery} from 'models/queryManagement/createQuery';
 import multer from 'multer';
 import {
+  getCancelUrl,
   getSummaryList,
   removeSelectedDocument, saveQueryManagement,
   uploadSelectedFile,
@@ -27,7 +28,7 @@ const upload = multer({
 });
 
 async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
-  const cancelUrl = CANCEL_URL;
+  const cancelUrl = getCancelUrl(req.params.id);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {

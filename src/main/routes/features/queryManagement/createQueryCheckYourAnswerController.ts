@@ -21,9 +21,8 @@ createQueryCheckYourAnswerController.get(QM_CYA, (async (req: AppRequest, res: R
   try {
     const claim = await getClaimById(req.params.id, req, true);
     const backLinkUrl = BACK_URL;
-    const headerTitle = 'send a message';
     const cancelUrl = getCancelUrl(req.params.id);
-    res.render(viewPath, {headerTitle, summaryRows: getSummarySections(req.params.id, claim), backLinkUrl, cancelUrl});
+    res.render(viewPath, {summaryRows: getSummarySections(req.params.id, claim), backLinkUrl, cancelUrl});
   } catch (error) {
     next(error);
   }

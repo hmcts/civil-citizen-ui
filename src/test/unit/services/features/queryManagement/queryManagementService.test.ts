@@ -304,7 +304,7 @@ describe('Uploading files', () => {
     const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
     await uploadSelectedFile(appRequest, createQuery);
-    expect(saveSpy).not.toBeCalled();
+    expect(saveSpy).toBeCalled();
     expect(appRequest.session.fileUpload).toBeDefined();
   });
 

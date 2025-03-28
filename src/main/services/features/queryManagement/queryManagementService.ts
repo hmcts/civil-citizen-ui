@@ -118,12 +118,11 @@ export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQue
     form.validateSync();
     if (!form.hasErrors()) {
       uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-      await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
-      // await getSummaryList(summarySection, req);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
     }
+    await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
   } catch (err) {
     logger.error(err);
     throw err;
@@ -132,7 +131,9 @@ export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQue
 
 const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery): Promise<void> => {
   try {
-    createQuery.uploadedFiles.push(file);
+    if (file.caseDocument) {
+      createQuery.uploadedFiles.push(file);
+    }
     await saveQueryManagement(req.params.id, createQuery, 'createQuery', req);
   } catch (error) {
     logger.error(error);
