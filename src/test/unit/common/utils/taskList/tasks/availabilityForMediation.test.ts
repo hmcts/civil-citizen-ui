@@ -7,7 +7,7 @@ import {MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, MEDIATION_PHONE_CONFIRMATION_
 import {Party} from 'models/party';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {GenericYesNo} from "form/models/genericYesNo";
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
