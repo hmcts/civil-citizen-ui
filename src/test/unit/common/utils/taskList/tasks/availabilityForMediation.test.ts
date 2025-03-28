@@ -7,6 +7,7 @@ import {MEDIATION_CONTACT_PERSON_CONFIRMATION_URL, MEDIATION_PHONE_CONFIRMATION_
 import {Party} from 'models/party';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {GenericYesNo} from "form/models/genericYesNo";
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -76,12 +77,34 @@ describe('Availability for mediation', () => {
       expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
     });
 
-    /*    it('should return incomplete when is undefined', () => {
+    it('should return incomplete when is isMediationPhoneCorrect is NO and alternativePhone is undefined', () => {
+      claim.mediationCarm = new MediationCarm();
+      claim.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('no');
       const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, false);
-      expect(availabilityForMediationTask.url).toEqual(resultComplete.url);
-      expect(availabilityForMediationTask.description).toEqual(resultComplete.description);
+      expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
+      expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
       expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
-    });*/
+    });
+
+    it('should return incomplete when is isMediationEmailCorrect is NO and alternativeEmail is undefined', () => {
+      claim.mediationCarm = new MediationCarm();
+      claim.mediationCarm.isMediationEmailCorrect = new GenericYesNo('no');
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, false);
+      expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
+      expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+      expect(claim.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
+    });
+
+    it('should return incomplete when is hasUnavailabilityNextThreeMonths is YES and unavailableDatesForMediation is undefined', () => {
+      claim.mediationCarm = new MediationCarm();
+      claim.mediationCarm.hasUnavailabilityNextThreeMonths = new GenericYesNo('yes');
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, false);
+      expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
+      expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+      expect(claim.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
+    });
 
     it('should return complete when claimant is company', () => {
       claim.applicant1.type = PartyType.COMPANY;
@@ -127,11 +150,38 @@ describe('Availability for mediation', () => {
       expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
     });
 
-    /*    it('should return incomplete when is undefined', () => {
-      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, true);
-      expect(availabilityForMediationTask.url).toEqual(resultComplete.url);
-      expect(availabilityForMediationTask.description).toEqual(resultComplete.description);
+    it('should return incomplete when is isMediationPhoneCorrect is NO and alternativePhone is undefined', () => {
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('no');
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, false);
+      expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
+      expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
       expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
-    });*/
+      expect(claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
+    });
+
+    it('should return incomplete when is isMediationEmailCorrect is NO and alternativeEmail is undefined', () => {
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.isMediationEmailCorrect = new GenericYesNo('no');
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, false);
+      expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
+      expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+      expect(claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
+    });
+
+    it('should return incomplete when is hasUnavailabilityNextThreeMonths is YES and unavailableDatesForMediation is undefined', () => {
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.mediationCarm = new MediationCarm();
+      claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths = new GenericYesNo('yes');
+      const availabilityForMediationTask = getAvailabilityForMediationTask(claim, claimId, lang, false);
+      expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
+      expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
+      expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
+      expect(claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
+    });
+
   });
 });
