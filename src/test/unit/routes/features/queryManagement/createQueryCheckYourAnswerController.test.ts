@@ -1,16 +1,16 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {QM_CYA} from 'routes/urls';
+import { app } from '../../../../../main/app';
+import { QM_CYA } from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
 import * as utilityService from 'modules/utilityService';
-import {Claim} from 'models/claim';
-import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import {CreateQuery} from 'models/queryManagement/createQuery';
+import { Claim } from 'models/claim';
+import { QueryManagement } from 'form/models/queryManagement/queryManagement';
+import { CreateQuery } from 'models/queryManagement/createQuery';
 import * as createCheckYourAnswerService from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
 import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {CaseRole} from 'form/models/caseRoles';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { CaseRole } from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -26,7 +26,7 @@ describe('create query check your answer controller', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
     beforeEach(() => {
       jest.resetAllMocks();
     });
@@ -36,9 +36,9 @@ describe('create query check your answer controller', () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
         return claim;
-      })
+      });
       await request(app)
         .get(QM_CYA)
         .expect((res) => {
@@ -54,22 +54,24 @@ describe('create query check your answer controller', () => {
     });
 
     it('should catch the error for civil service call failure', async () => {
-      mockGetClaimById.mockRejectedValueOnce('civil service call fail')
+      mockGetClaimById.mockRejectedValueOnce('civil service call fail');
       await request(app)
         .get(QM_CYA)
         .expect((res) => {
           expect(res.status).toBe(500);
         });
     });
-  })
+  });
 
   describe('POST', () => {
     let retrieveClaimDetails: unknown;
     let saveQueryManagement: unknown;
+
     beforeEach(() => {
       retrieveClaimDetails = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(new Claim());
       saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
-    })
+    });
+
     it('should submit the query for the claimant', async () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
@@ -77,8 +79,8 @@ describe('create query check your answer controller', () => {
         claim.queryManagement = new QueryManagement();
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
         return claim;
-      })
-      const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined)
+      });
+      const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined);
 
       await request(app)
         .post(QM_CYA)
@@ -97,8 +99,8 @@ describe('create query check your answer controller', () => {
         claim.queryManagement = new QueryManagement();
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
         return claim;
-      })
-      const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined)
+      });
+      const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined);
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
@@ -116,7 +118,7 @@ describe('create query check your answer controller', () => {
         claim.queryManagement = new QueryManagement();
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
         return claim;
-      })
+      });
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
       jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockRejectedValueOnce(new Error('Error'));
       await request(app)

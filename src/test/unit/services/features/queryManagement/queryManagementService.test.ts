@@ -6,19 +6,19 @@ import {
   getQueryManagement, removeSelectedDocument,
   saveQueryManagement, updateQueryManagementDashboardItems, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
-import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
+import { QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption } from 'form/models/queryManagement/queryManagement';
 import express from 'express';
 import * as utilityService from 'modules/utilityService';
-import {Claim} from 'models/claim';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {Dashboard} from 'models/dashboard/dashboard';
-import {CaseRole} from 'form/models/caseRoles';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {AppRequest} from 'models/AppRequest';
-import {CaseDocument} from 'models/document/caseDocument';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
+import { Claim } from 'models/claim';
+import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
+import { Dashboard } from 'models/dashboard/dashboard';
+import { CaseRole } from 'form/models/caseRoles';
+import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
+import { AppRequest } from 'models/AppRequest';
+import { CaseDocument } from 'models/document/caseDocument';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import { CreateQuery, UploadQMAdditionalFile } from 'models/queryManagement/createQuery';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -71,7 +71,7 @@ const mockExpectedDashboardInfo =
       'hintTextCy': 'hint_text_cy2',
     }] as DashboardTask[],
   }] as DashboardTaskList[];
-const req = {params: {id: '123'}} as unknown as express.Request;
+const req = { params: { id: '123' } } as unknown as express.Request;
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
 describe('dashboard items update', () => {
@@ -255,11 +255,11 @@ describe('Uploading files', () => {
 
   const returnedFile: CaseDocument = {
     createdBy: 'test',
-    documentLink: {"document_binary_url": "", "document_filename": "", "document_url": ""},
+    documentLink: { 'document_binary_url': '', 'document_filename': '', 'document_url': '' },
     documentName: 'name',
     documentType: null,
     documentSize: 12345,
-    createdDatetime: '2025-03-27T17:02:09.858Z' as unknown as Date
+    createdDatetime: '2025-03-27T17:02:09.858Z' as unknown as Date,
   };
   const draftStoreGetFilesMock = jest.spyOn(draftStoreService, 'getQueryFilesFromRedis');
   beforeEach(() => {
@@ -292,10 +292,10 @@ describe('Uploading files', () => {
   it('should return the form and not save doc if file has errors', async () => {
     const createQuery = new CreateQuery();
     const appRequest: AppRequest = {
-      params: {id: '1', appId: '89'},
+      params: { id: '1', appId: '89' },
       session: {
-        fileUpload: undefined
-      }
+        fileUpload: undefined,
+      },
     } as unknown as AppRequest;
     jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(undefined);
     mockGetClaimById.mockImplementation(async () => {
@@ -313,44 +313,44 @@ describe('Uploading files', () => {
     claim.queryManagement = new QueryManagement();
     claim.queryManagement.createQuery = new CreateQuery();
     claim.queryManagement.createQuery.uploadedFiles = [{
-      "caseDocument": {
-        "createdBy": "test",
-        "createdDatetime": "2025-03-27T17:02:09.858Z",
-        "documentLink": {
-          "document_binary_url": "",
-          "document_filename": "",
-          "document_url": ""
+      'caseDocument': {
+        'createdBy': 'test',
+        'createdDatetime': '2025-03-27T17:02:09.858Z',
+        'documentLink': {
+          'document_binary_url': '',
+          'document_filename': '',
+          'document_url': ''
         },
-        "documentName": "name",
-        "documentSize": 12345,
-        "documentType": null
+        'documentName': 'name',
+        'documentSize': 12345,
+        'documentType': null,
       },
-      "fileUpload": {
-        "buffer": {
-          "data": [
+      'fileUpload': {
+        'buffer': {
+          'data': [
             116,
             101,
             115,
-            116
+            116,
           ],
-          "type": "Buffer"
+          'type': 'Buffer',
         },
-        "fieldname": "test",
-        "mimetype": "text/plain",
-        "originalname": "test",
-        "size": 123
+        'fieldname': 'test',
+        'mimetype': 'text/plain',
+        'originalname': 'test',
+        'size': 123,
       }
-    } as unknown as UploadQMAdditionalFile]
+    } as unknown as UploadQMAdditionalFile];
     mockGetClaimById.mockImplementation(async () => {
       return claim;
     });
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('1234')
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('1234');
     const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
     const appRequest: AppRequest = {
-      params: {id: '1234', appId: '896'},
+      params: { id: '1234', appId: '896' },
       session: {
-        fileUpload: undefined
-      }
+        fileUpload: undefined,
+      },
     } as unknown as AppRequest;
     await removeSelectedDocument(appRequest, 0);
     expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);

@@ -98,5 +98,5 @@ export enum QualifyingQuestionTypeOption {
 export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
   qualifyingQuestion : QualifyingQuestion;
-  createQuery: CreateQuery
+  createQuery: CreateQuery;
 }

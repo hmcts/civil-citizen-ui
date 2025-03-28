@@ -33,5 +33,3 @@ export interface ClaimUpdate {
   qmApplicantCitizenQueries?: CaseQueries;
   qmRespondentCitizenQueries?: CaseQueries;
 }
-
-
