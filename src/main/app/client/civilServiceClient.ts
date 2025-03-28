@@ -403,6 +403,10 @@ export class CivilServiceClient {
     }
   }
 
+  async submitQueryManagementRaiseQuery(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.QUERY_MANAGEMENT_RAISE_QUERY, claimId, updatedClaim, req);
+  }
+
   async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {
     const config = this.getConfig(req);
     try {

@@ -10,20 +10,20 @@ import {
   QualifyingQuestionTypeOption,
   RadioButtonItems,
   WhatToDoTypeOption,
-} from 'form/models/qm/queryManagement';
+} from 'form/models/queryManagement/queryManagement';
 import { t } from 'i18next';
 import {
   getCancelUrl,
   getCaption,
   getQueryManagement,
   saveQueryManagement,
-} from 'services/features/qm/queryManagementService';
+} from 'services/features/queryManagement/queryManagementService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const qmWhatToDoController = Router();
-const qmStartViewPath = 'features/qm/qm-questions-template.njk';
+const qmStartViewPath = 'features/queryManagement/qm-questions-template.njk';
 
 const QUERY_MANAGEMENT_PROPERTY_NAME = 'qualifyingQuestion';
 
