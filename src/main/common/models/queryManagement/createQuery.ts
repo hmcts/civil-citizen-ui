@@ -4,13 +4,13 @@ import {CaseDocument} from 'models/document/caseDocument';
 
 export class CreateQuery {
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
-  messageSubject: string;
+    messageSubject: string;
 
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_DETAILS'})
-  messageDetails: string;
+    messageDetails: string;
 
   @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})
-  isHearingRelated: string;
+    isHearingRelated: string;
 
   uploadedFiles: UploadQMAdditionalFile[];
 
@@ -27,7 +27,7 @@ export class UploadQMAdditionalFile {
   @ValidateNested()
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '')
   @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE_V2'})
-  fileUpload: FileUpload;
+    fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
   constructor(fileUpload?: FileUpload, caseDocument?: CaseDocument) {
