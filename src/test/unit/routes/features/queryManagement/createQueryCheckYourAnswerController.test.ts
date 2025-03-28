@@ -27,10 +27,12 @@ describe('create query check your answer controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
   });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('GET', () => {
     it('should render query page', async () => {
       mockGetClaimById.mockImplementation(async () => {
