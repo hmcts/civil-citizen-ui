@@ -1,8 +1,8 @@
-import {deleteFieldDraftClaimFromStore, saveDraftClaim,} from 'modules/draft-store/draftStoreService';
+import {deleteFieldDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
-import {CANCEL_URL, QUERY_MANAGEMENT_CREATE_QUERY,} from 'routes/urls';
+import {CANCEL_URL, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
