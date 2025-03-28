@@ -95,7 +95,7 @@ describe('Availability for mediation', () => {
       expect(availabilityForMediationTask.url).toEqual(resultCompleteCompanyNo.url);
       expect(availabilityForMediationTask.description).toEqual(resultCompleteCompanyNo.description);
       expect(availabilityForMediationTask.status).toEqual(TaskStatus.COMPLETE);
-      expect(claim.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
+      expect(claim.mediationCarm.hasAvailabilityMediationFinished).toBeTruthy();
     });
 
     it('should return incomplete when is isMediationEmailCorrect is NO and alternativeEmail is undefined', () => {
