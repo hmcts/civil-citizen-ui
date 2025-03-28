@@ -15,7 +15,7 @@ else
 
   for ft_group in "${ft_groups_array[@]}"; do
       if [ -n "$regex_pattern" ]; then
-          regex_pattern+=" | "
+          regex_pattern+="|"
       fi
       regex_pattern+="((?=.*@regression)(?=.*@$ft_group))"
   done
