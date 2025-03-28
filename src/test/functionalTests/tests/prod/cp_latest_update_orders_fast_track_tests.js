@@ -11,7 +11,7 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Fast Track ');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Fast Track').tag('@case-progression');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.

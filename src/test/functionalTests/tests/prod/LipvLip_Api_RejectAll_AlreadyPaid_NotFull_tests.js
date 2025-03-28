@@ -9,9 +9,9 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track');
+Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track').tag('@citizenUI @reject-all @nightly @api');
 
-Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -26,7 +26,7 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression-cui-r2');
 
-Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';

@@ -12,7 +12,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit - FastTrack');
+Feature('Response with PartAdmit - FastTrack').tag('@citizenUI @part-admit @nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -28,7 +28,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async () => {
+Scenario('Response with PartAdmit-AlreadyPaid', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetails();
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);

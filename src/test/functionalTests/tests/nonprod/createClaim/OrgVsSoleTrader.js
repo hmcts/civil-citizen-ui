@@ -12,7 +12,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@nightly-regression-r2');
+Feature('Create Lip v Lip claim - Org vs Sole trader').tag('@create-claim @nightly-regression-r2');
 
 Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,

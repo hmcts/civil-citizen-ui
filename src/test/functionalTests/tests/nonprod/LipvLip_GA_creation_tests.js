@@ -5,7 +5,7 @@ const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Lip v Lip GA Creation Tests');
+Feature('Lip v Lip GA Creation Tests').tag('@citizenUI @nightly @api @ga');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -22,7 +22,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga', async ({I}) => {
+Scenario('LipvLip Applicant GA creation tests', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
@@ -54,7 +54,7 @@ Scenario('LipvLip Applicant GA creation tests @citizenUI @nightly - @api @ga', a
   }
 });
 
-Scenario('LipvLip Defendant GA creation tests @citizenUI @nightly - @api @ga', async ({I}) => {
+Scenario('LipvLip Defendant GA creation tests', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 

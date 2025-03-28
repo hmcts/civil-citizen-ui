@@ -42,7 +42,7 @@ Scenario('Case is offline after solicitor performs notice of change on behalf of
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     // await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
-}).tag('@regression');
+}).tag('@noc @regression');
 
 Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -57,4 +57,4 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@regression');
+}).tag('@case-progression @regression');
