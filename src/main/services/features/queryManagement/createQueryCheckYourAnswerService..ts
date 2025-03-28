@@ -130,7 +130,7 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
 };
 
 const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string) => {
-  let docLinks = ``;
+  let docLinks = '';
   uploadedFiles.forEach(doc => {
     const docUrl = `${CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
       documentIdExtractor(doc.caseDocument.documentLink.document_binary_url))}`;

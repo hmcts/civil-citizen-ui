@@ -11,7 +11,6 @@ import {
   getSummarySections,
 } from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
 
-
 const viewPath = 'features/queryManagement/createQueryCheckYourAnswer.njk';
 const createQueryCheckYourAnswerController = Router();
 
