@@ -116,7 +116,7 @@ describe('save queryManagement data', () => {
     claimExpected.queryManagement = new QueryManagement();
     claimExpected.queryManagement.whatDoYouWantToDo = new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE);
     const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123')
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
     mockGetClaimById.mockImplementation(async () => {
       return new Claim();
     });
@@ -133,7 +133,7 @@ describe('save queryManagement data', () => {
     claimExpected.queryManagement = new QueryManagement();
     claimExpected.queryManagement.whatDoYouWantToDo = new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE);
     const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('1234')
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('1234');
     mockGetClaimById.mockImplementation(async () => {
       return claimExpected;
     });
@@ -280,7 +280,7 @@ describe('Uploading files', () => {
   it('should return the form with updated summary rows and call save doc to redis', async () => {
     const createQuery = new CreateQuery();
     const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123')
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
 
     mockGetClaimById.mockImplementation(async () => {
       return new Claim();
@@ -302,7 +302,7 @@ describe('Uploading files', () => {
       return new Claim();
     });
     const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123')
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
     await uploadSelectedFile(appRequest, createQuery);
     expect(saveSpy).not.toBeCalled();
     expect(appRequest.session.fileUpload).toBeDefined();
@@ -319,7 +319,7 @@ describe('Uploading files', () => {
         'documentLink': {
           'document_binary_url': '',
           'document_filename': '',
-          'document_url': ''
+          'document_url': '',
         },
         'documentName': 'name',
         'documentSize': 12345,
@@ -339,7 +339,7 @@ describe('Uploading files', () => {
         'mimetype': 'text/plain',
         'originalname': 'test',
         'size': 123,
-      }
+      },
     } as unknown as UploadQMAdditionalFile];
     mockGetClaimById.mockImplementation(async () => {
       return claim;

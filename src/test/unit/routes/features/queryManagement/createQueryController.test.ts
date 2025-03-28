@@ -32,8 +32,8 @@ describe('create query conroller', () => {
     });
     it('should render query page', async () => {
       mockGetClaimById.mockImplementation(async () => {
-        return new Claim()
-      })
+        return new Claim();
+      });
       await request(app)
         .get(QUERY_MANAGEMENT_CREATE_QUERY)
         .expect((res) => {
@@ -51,8 +51,8 @@ describe('create query conroller', () => {
 
     it('should call through to removeSelectedDocument when the query param is passed', async () => {
       mockGetClaimById.mockImplementation(async () => {
-        return new Claim()
-      })
+        return new Claim();
+      });
       const removeDocSpy = jest.spyOn(QueryManagementService, 'removeSelectedDocument');
       await request(app)
         .get(QUERY_MANAGEMENT_CREATE_QUERY + '?id=1')
@@ -68,8 +68,8 @@ describe('create query conroller', () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
         claim.queryManagement.createQuery = preFilledData as CreateQuery;
-        return claim
-      })
+        return claim;
+      });
 
       await request(app)
         .get(QUERY_MANAGEMENT_CREATE_QUERY + '?id=1')
@@ -91,7 +91,7 @@ describe('create query conroller', () => {
     it('should redirect on successful form', async () => {
       mockGetClaimById.mockImplementation(async () => {
         return new Claim();
-      })
+      });
       const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
       const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes'};
       const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send(data);
@@ -102,7 +102,7 @@ describe('create query conroller', () => {
     it('should render the page with errors for the missing fields', async () => {
       mockGetClaimById.mockImplementation(async () => {
         return new Claim();
-      })
+      });
       const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send({});
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
@@ -114,7 +114,7 @@ describe('create query conroller', () => {
     it('should trigger redirect on successful file upload', async () => {
       mockGetClaimById.mockImplementation(async () => {
         return new Claim();
-      })
+      });
       jest.spyOn(QueryManagementService, 'uploadSelectedFile');
       await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send({action: 'uploadButton'})
         .expect(res => {

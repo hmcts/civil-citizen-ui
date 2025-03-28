@@ -30,7 +30,7 @@ const getMessageSubject = (subject: string, claimId: string, lng: string) => {
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_SUBJECT', {lng}),
     subject,
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
-    t('COMMON.BUTTONS.CHANGE', {lng}))]
+    t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
 const getMessageDescription = (messageDetails: string, claimId: string, lng: string) => {
@@ -38,7 +38,7 @@ const getMessageDescription = (messageDetails: string, claimId: string, lng: str
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
     messageDetails,
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
-    t('COMMON.BUTTONS.CHANGE', {lng}))]
+    t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
 const getMessageAboutHearing = (aboutHearing: string, claimId: string, lng: string) => {
@@ -65,8 +65,8 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
     qmApplicantCitizenQueries = {
       'partyName': claim.getClaimantFullName(),
       'roleOnCase': claim.caseRole,
-      'caseMessages': []
-    }
+      'caseMessages': [],
+    };
   } else {
     qmApplicantCitizenQueries = updatedClaim.qmApplicantCitizenQueries;
   }
@@ -79,8 +79,8 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
       createdOn: date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    }
-  })
+    },
+  });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmApplicantCitizenQueries}, req).catch(error => {
     throw error;
   });
@@ -95,9 +95,9 @@ const getDocAttachments = (uploadedFiles: UploadQMAdditionalFile[]): FormDocumen
     value: {
       document_url: file.caseDocument.documentLink.document_url,
       document_filename: file.caseDocument.documentLink.document_filename,
-      document_binary_url: file.caseDocument.documentLink.document_binary_url
-    }
-  }))
+      document_binary_url: file.caseDocument.documentLink.document_binary_url,
+    },
+  }));
 };
 
 export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest) => {
@@ -108,8 +108,8 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
     qmRespondentCitizenQueries = {
       'partyName': claim.getDefendantFullName(),
       'roleOnCase': claim.caseRole,
-      'caseMessages': []
-    }
+      'caseMessages': [],
+    };
   } else {
     qmRespondentCitizenQueries = updatedClaim.qmRespondentCitizenQueries;
   }
@@ -122,19 +122,19 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
       'createdOn': date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-    }
-  })
+    },
+  });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmRespondentCitizenQueries}, req).catch(error => {
     throw error;
   });
 };
 
 const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string) => {
-  let docLinks = ``
+  let docLinks = ``;
   uploadedFiles.forEach(doc => {
     const docUrl = `${CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
-      documentIdExtractor(doc.caseDocument.documentLink.document_binary_url))}`
-    docLinks = docLinks + `<a class='govuk-link' href='${docUrl}'   rel='noopener noreferrer' target='_blank'>${doc.caseDocument.documentName}</a><br>`
+      documentIdExtractor(doc.caseDocument.documentLink.document_binary_url))}`;
+    docLinks = docLinks + `<a class='govuk-link' href='${docUrl}'   rel='noopener noreferrer' target='_blank'>${doc.caseDocument.documentName}</a><br>`;
   });
   return docLinks;
 };

@@ -113,7 +113,7 @@ export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQue
   try {
     const uploadQMAdditionalFile = new UploadQMAdditionalFile();
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    uploadQMAdditionalFile.fileUpload = fileUpload
+    uploadQMAdditionalFile.fileUpload = fileUpload;
     const form = new GenericForm(uploadQMAdditionalFile);
     form.validateSync();
     if (!form.hasErrors()) {

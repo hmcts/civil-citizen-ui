@@ -75,7 +75,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
-  const existingQuery = claim.queryManagement?.createQuery
+  const existingQuery = claim.queryManagement?.createQuery;
   const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated']);
   if (existingQuery) {
     createQuery.uploadedFiles = existingQuery.uploadedFiles;
@@ -98,7 +98,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
     await getSummaryList(formattedSummary, req);
     return await renderView(form, claim, claimId, res, formattedSummary, req);
   } else {
-    await saveQueryManagement(claimId, createQuery, 'createQuery', req)
+    await saveQueryManagement(claimId, createQuery, 'createQuery', req);
     res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
   }
 }));

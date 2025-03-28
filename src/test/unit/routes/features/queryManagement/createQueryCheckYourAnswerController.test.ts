@@ -77,7 +77,7 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.CLAIMANT;
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
         return claim;
       });
       const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined);
@@ -97,7 +97,7 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.DEFENDANT;
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
         return claim;
       });
       const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined);
@@ -116,7 +116,7 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.DEFENDANT;
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes')
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
         return claim;
       });
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
@@ -127,5 +127,5 @@ describe('create query check your answer controller', () => {
           expect(res.status).toBe(500);
         });
     });
-  })
-})
+  });
+});

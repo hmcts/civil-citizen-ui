@@ -1,6 +1,6 @@
 import {
   createApplicantCitizenQuery, createRespondentCitizenQuery,
-  getSummarySections
+  getSummarySections,
 } from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
@@ -21,13 +21,13 @@ describe('Check Answers response service', () => {
       claim.queryManagement.createQuery.uploadedFiles = [{
         caseDocument: {
           documentName: 'abc',
-          documentLink: {document_binary_url: 'http://dm-store:8080/documents/bf4a2ac9-a036-4d7d-b999-dcccc4d92197/binary'} as Document
-        }
+          documentLink: {document_binary_url: 'http://dm-store:8080/documents/bf4a2ac9-a036-4d7d-b999-dcccc4d92197/binary'} as Document,
+        },
       } as UploadQMAdditionalFile];
       const summaryRows = getSummarySections('123455', claim);
       expect(summaryRows.length).toBe(4);
-    })
-  })
+    });
+  });
 
   describe('createApplicantCitizenQuery', () => {
     it('should submit the create query for claimant', async () => {
@@ -40,7 +40,7 @@ describe('Check Answers response service', () => {
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createApplicantCitizenQuery(claim, updated, req);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
-    })
+    });
 
     it('should append the data to Existing Details', async () => {
       const submitQueryManagementRaiseQuery = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery').mockResolvedValueOnce(undefined);
@@ -58,16 +58,16 @@ describe('Check Answers response service', () => {
             createdOn: new Date().toISOString(),
             'attachments': [],
             'isHearingRelated': YesNoUpperCamelCase.YES,
-          }
-        }]
-      }
+          },
+        }],
+      };
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes');
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createApplicantCitizenQuery(claim, updated, req);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
-    })
-  })
+    });
+  });
 
   describe('createRespondentCitizenQuery', () => {
     it('should submit the create query for defendant', async () => {
@@ -87,14 +87,14 @@ describe('Check Answers response service', () => {
             createdOn: new Date().toISOString(),
             'attachments': [],
             'isHearingRelated': YesNoUpperCamelCase.YES,
-          }
-        }]
-      }
+          },
+        }],
+      };
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes');
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createRespondentCitizenQuery(claim, updated, req);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
-    })
-  })
-})
+    });
+  });
+});
