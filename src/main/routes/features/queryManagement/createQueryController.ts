@@ -57,7 +57,7 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
       summaryRows: [],
     });
 
-  if (req?.session?.fileUpload) {
+  if (req.session?.fileUpload) {
     const parsedData = JSON.parse(req?.session?.fileUpload);
     form = new GenericForm(createQuery, parsedData);
     req.session.fileUpload = undefined;
@@ -89,7 +89,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
     });
 
   if (req.body.action === 'uploadButton') {
-    await uploadSelectedFile(req, formattedSummary, createQuery);
+    await uploadSelectedFile(req, createQuery);
     return res.redirect(`${currentUrl}`);
   }
 

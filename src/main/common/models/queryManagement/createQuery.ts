@@ -30,8 +30,9 @@ export class UploadQMAdditionalFile {
   fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
-  constructor(fileUpload?: FileUpload) {
+  constructor(fileUpload?: FileUpload, caseDocument?: CaseDocument) {
     this.fileUpload = fileUpload;
+    this.caseDocument = caseDocument;
   }
 
 }
