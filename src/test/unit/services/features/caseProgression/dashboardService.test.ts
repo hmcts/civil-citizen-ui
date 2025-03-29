@@ -35,7 +35,7 @@ import {
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {GA_SUBMIT_OFFLINE} from 'routes/urls';
-import * as UpdateQueryManagementDashboard from 'services/features/qm/queryManagementService';
+import * as UpdateQueryManagementDashboard from 'services/features/queryManagement/queryManagementService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');

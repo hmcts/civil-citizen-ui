@@ -1,17 +1,22 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
-  BACK_URL, QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL, QM_INFORMATION_URL, QM_VIEW_QUERY_URL, UPLOAD_YOUR_DOCUMENTS_URL,
+  BACK_URL,
+  QM_FOLLOW_UP_URL,
+  QM_INFORMATION_URL,
+  QM_VIEW_QUERY_URL,
+  QUERY_MANAGEMENT_CREATE_QUERY,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 
 import {
   QualifyingQuestionTypeOption,
   WhatToDoTypeOption,
-} from 'form/models/qm/queryManagement';
+} from 'form/models/queryManagement/queryManagement';
 import {
   getCancelUrl,
   getCaption,
-} from 'services/features/qm/queryManagementService';
+} from 'services/features/queryManagement/queryManagementService';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
@@ -28,13 +33,13 @@ import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const qmInformationController = Router();
 
-const qmStartViewPath = 'features/qm/qm-information-template.njk';
+const qmStartViewPath = 'features/queryManagement/qm-information-template.njk';
 let showAnythingElseSection = false;
 
 const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
   const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
   pageSection
-    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
+    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
@@ -130,7 +135,7 @@ const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qm
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
   const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
-  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL.replace(':qmType', qmType));
+  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
 
   const contents = getContent(claimId,claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {

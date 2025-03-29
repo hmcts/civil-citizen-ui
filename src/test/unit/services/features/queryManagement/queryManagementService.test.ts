@@ -1,20 +1,26 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {Dashboard} from 'models/dashboard/dashboard';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {Claim} from 'models/claim';
 import {
-  updateQueryManagementDashboardItems,
   deleteQueryManagement,
   getCancelUrl,
   getCaption,
-  getQueryManagement,
-  saveQueryManagement,
-} from 'services/features/qm/queryManagementService';
-import {CaseRole} from 'form/models/caseRoles';
-import * as utilityService from 'modules/utilityService';
-import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+  getQueryManagement, removeSelectedDocument,
+  saveQueryManagement, updateQueryManagementDashboardItems, uploadSelectedFile,
+} from 'services/features/queryManagement/queryManagementService';
+import {QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import express from 'express';
+import * as utilityService from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {summarySection} from 'models/summaryList/summarySections';
+import {AppRequest} from 'models/AppRequest';
+import {CaseDocument} from 'models/document/caseDocument';
+import config from 'config';
+import nock from 'nock';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {CaseRole} from 'form/models/caseRoles';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -105,7 +111,6 @@ describe('dashboard items update', () => {
     expect(dashboard.items[1].tasks[1].statusEn).toEqual('PAGES.TASK_LIST.NOT_AVAILABLE_YET');
   });
 });
-
 describe('save queryManagement data', () => {
   it('should save data successfully when query management not exists', async () => {
     //Given
@@ -186,6 +191,7 @@ describe('get queryManagement', () => {
     expect(result).toEqual(claimExpected.queryManagement);
 
   });
+
 });
 
 describe('get CancelUrl', () => {
@@ -196,6 +202,7 @@ describe('get CancelUrl', () => {
     expect(result).toEqual('/case/1/queryManagement/cancel');
 
   });
+
 });
 
 describe('get Caption', () => {
@@ -204,6 +211,7 @@ describe('get Caption', () => {
     const result = getCaption(WhatToDoTypeOption.GET_UPDATE);
     //then
     expect(result).toEqual('PAGES.QM.CAPTIONS.GET_UPDATE');
+
   });
 
   it('get caption SEND_UPDATE', async () => {
@@ -211,6 +219,7 @@ describe('get Caption', () => {
     const result = getCaption(WhatToDoTypeOption.SEND_UPDATE);
     //then
     expect(result).toEqual('PAGES.QM.CAPTIONS.SEND_UPDATE');
+
   });
 
   it('get caption SEND_DOCUMENTS', async () => {
@@ -218,6 +227,7 @@ describe('get Caption', () => {
     const result = getCaption(WhatToDoTypeOption.SEND_DOCUMENTS);
     //then
     expect(result).toEqual('PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
+
   });
 
   it('get caption SOLVE_PROBLEM', async () => {
@@ -225,6 +235,7 @@ describe('get Caption', () => {
     const result = getCaption(WhatToDoTypeOption.SOLVE_PROBLEM);
     //then
     expect(result).toEqual('PAGES.QM.CAPTIONS.SOLVE_PROBLEM');
+
   });
 
   it('get caption MANAGE_HEARING', async () => {
@@ -232,5 +243,90 @@ describe('get Caption', () => {
     const result = getCaption(WhatToDoTypeOption.MANAGE_HEARING);
     //then
     expect(result).toEqual('PAGES.QM.CAPTIONS.MANAGE_HEARING');
+
   });
 });
+
+describe('Uploading files', () => {
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+  let appRequest: AppRequest;
+
+  const returnedFile:CaseDocument = <CaseDocument>{  createdBy: 'test',
+    documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+    documentName: 'name',
+    documentType: null,
+    documentSize: 12345,
+    createdDatetime: new Date()};
+
+  beforeAll(() => {
+    nock(civilServiceUrl).post('/case/document/generateAnyDoc').reply(200, returnedFile);
+  });
+  beforeEach(() => {
+    jest.resetAllMocks();
+    const fileToUpload = {
+      fieldname: 'test',
+      originalname: 'test',
+      mimetype: 'text/plain',
+      size: 123,
+      buffer: Buffer.from('test'),
+    };
+    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
+    appRequest = {
+      params: { id: '1', appId: '89' },
+      session: {fileUpload: ''},
+    } as unknown as AppRequest;
+  });
+
+  it('should return the form with updated summary rows and save query to session', async () => {
+    const formattedSummary = summarySection(
+      {
+        title: '',
+        summaryRows: [],
+      });
+    const expected :CaseDocument = {  createdBy: 'test',
+      documentLink: {document_url: '', document_binary_url:'', document_filename:''},
+      documentName: 'name',
+      documentType: null,
+      documentSize: 12345,
+      createdDatetime: returnedFile.createdDatetime.toISOString()} as unknown as CaseDocument;
+    const result = await uploadSelectedFile(appRequest, formattedSummary, '123', new CreateQuery());
+    const savedList = JSON.parse(appRequest.session.fileUpload) as unknown as CreateQuery;
+
+    expect(savedList.caseDocuments).toStrictEqual([expected]);
+    expect(result.hasErrors()).toBeFalsy();
+    expect(formattedSummary.summaryList.rows.length).toBe(1);
+  });
+
+  it('should return the form and not save doc if file has errors', async () => {
+    const formattedSummary = summarySection(
+      {
+        title: '',
+        summaryRows: [],
+      });
+    const wrongMimeTypeFile = {
+      fieldname: 'test',
+      originalname: 'test',
+      mimetype: 'test',
+      size: 123,
+      buffer: Buffer.from('test'),
+    };
+    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(wrongMimeTypeFile);
+
+    const result = await uploadSelectedFile(appRequest, formattedSummary, '123', new CreateQuery());
+
+    expect(appRequest.session.fileUpload).toBe('');
+    expect(result.hasErrors()).toBeTruthy();
+  });
+
+  it('should remove selected file and save the new list to redis', async () => {
+    const populatedQuery = new CreateQuery();
+    populatedQuery.caseDocuments = [returnedFile];
+    appRequest.session.fileUpload = JSON.stringify(populatedQuery);
+
+    removeSelectedDocument(appRequest, 0, populatedQuery);
+    const savedList = JSON.parse(appRequest.session.fileUpload) as unknown as CreateQuery;
+
+    expect(savedList.caseDocuments.length).toBe(0);
+  });
+});
+

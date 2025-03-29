@@ -26,7 +26,7 @@ import {
   isGaForLipsEnabledAndLocationWhiteListed, isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
-import {updateQueryManagementDashboardItems} from 'services/features/qm/queryManagementService';
+import {updateQueryManagementDashboardItems} from 'services/features/queryManagement/queryManagementService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

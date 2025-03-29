@@ -8,15 +8,11 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {getCaption, getQueryManagement, saveQueryManagement} from 'services/features/qm/queryManagementService';
-import {QualifyingQuestionTypeOption, QueryManagement, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {getCaption, getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {QualifyingQuestionTypeOption, QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/services/features/qm/queryManagementService');
+jest.mock('services/features/queryManagement/queryManagementService');
 
 const CONTROLLER_URL = QM_WHAT_DO_YOU_WANT_TO_DO_URL;
 
