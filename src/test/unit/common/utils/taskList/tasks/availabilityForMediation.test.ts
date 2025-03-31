@@ -87,7 +87,7 @@ describe('Availability for mediation', () => {
       expect(availabilityForMediationTask.status).toEqual(TaskStatus.INCOMPLETE);
     });
 
-    it('should return incomplete when is isMediationPhoneCorrect is YES', () => {
+    it('should return complete when is isMediationPhoneCorrect is YES', () => {
       claim.mediationCarm = new MediationCarm();
       claim.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('YES');
       claim.mediationCarm.hasAvailabilityMediationFinished = true;
@@ -109,7 +109,7 @@ describe('Availability for mediation', () => {
       expect(claim.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
     });
 
-    it('should return incomplete when is isMediationEmailCorrect is YES', () => {
+    it('should return complete when is isMediationEmailCorrect is YES', () => {
       claim.mediationCarm = new MediationCarm();
       claim.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('yes');
       claim.mediationCarm.isMediationEmailCorrect = new GenericYesNo('yes');
@@ -133,7 +133,7 @@ describe('Availability for mediation', () => {
       expect(claim.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
     });
 
-    it('should return incomplete when is hasUnavailabilityNextThreeMonths is NO', () => {
+    it('should return complete when is hasUnavailabilityNextThreeMonths is NO', () => {
       claim.mediationCarm = new MediationCarm();
       claim.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('yes');
       claim.mediationCarm.isMediationEmailCorrect = new GenericYesNo('yes');
@@ -201,7 +201,7 @@ describe('Availability for mediation', () => {
       expect(claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
     });
 
-    it('should return incomplete when is isMediationPhoneCorrect is YES', () => {
+    it('should return complete when is isMediationPhoneCorrect is YES', () => {
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.mediationCarm = new MediationCarm();
       claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('yes');
@@ -225,7 +225,7 @@ describe('Availability for mediation', () => {
       expect(claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
     });
 
-    it('should return incomplete when is isMediationEmailCorrect is YES', () => {
+    it('should return complete when is isMediationEmailCorrect is YES', () => {
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.mediationCarm = new MediationCarm();
       claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('yes');
@@ -251,7 +251,7 @@ describe('Availability for mediation', () => {
       expect(claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished).toBeFalsy();
     });
 
-    it('should return incomplete when is hasUnavailabilityNextThreeMonths is NO', () => {
+    it('should return complete when is hasUnavailabilityNextThreeMonths is NO', () => {
       claim.claimantResponse = new ClaimantResponse();
       claim.claimantResponse.mediationCarm = new MediationCarm();
       claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = new GenericYesNo('yes');
