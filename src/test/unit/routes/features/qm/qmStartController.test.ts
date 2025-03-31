@@ -12,6 +12,10 @@ import {Claim} from 'models/claim';
 import {getQueryManagement, saveQueryManagement} from 'services/features/qm/queryManagementService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
 
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/qm/queryManagementService');
 
