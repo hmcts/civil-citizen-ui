@@ -103,7 +103,7 @@ const getDocAttachments = (uploadedFiles: UploadQMAdditionalFile[]): FormDocumen
 export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest) => {
   let qmRespondentCitizenQueries: CaseQueries;
   const date = new Date();
-  if (!updatedClaim.qmApplicantCitizenQueries) {
+  if (!updatedClaim.qmRespondentCitizenQueries) {
 
     qmRespondentCitizenQueries = {
       'partyName': claim.getDefendantFullName(),
