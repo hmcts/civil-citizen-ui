@@ -590,10 +590,10 @@
           "GENERAL_UPDATE": "Get a general update on what is happening with the case",
           "CLAIM_NOT_PAID": "Understand what happens if the claim is not paid",
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": "Understand what happens if the judgment is not paid",
-          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
-          "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
-          "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
-          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
+          "SETTLE_CLAIM": "Settle a claim",
+          "AMEND_CLAIM_DETAILS": "Amend the claim details",
+          "CLAIM_ENDED": "Tell the court my claim has ended",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
@@ -738,6 +738,69 @@
           "LINK_2": {
             "TEXT": "about civil court fees (opens in a new window)",
             "TEXT_BEFORE": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select. Find out "
+          }
+        },
+        "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
+          "SUBTITLE_1": "If part of the judgment or claim amount has been paid",
+          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court."
+        },
+        "SETTLE_CLAIM" : {
+          "SUBTITLE_1": "If the claim is paid or you agree the balance is settled",
+          "TEXT_UPDATE_WITHOUT_LINK": "Update the claim in the online service by selecting tell us you’ve settled the claim.",
+          "LINK_2": {
+            "TEXT": "contactocmc@justice.gov.uk",
+            "TEXT_BEFORE": "You can also email ",
+            "TEXT_AFTER": " to say the claim is settled. You should include:"
+          },
+          "LI_1": "your name",
+          "LI_2": "the claim number",
+          "LI_3": "the date the final payment cleared in your account",
+          "SUBTITLE_2": "Claims settled through a small claims mediator",
+          "TEXT_1": "If a mediator settled your claim, the mediator will update your case record for you.",
+          "NOT_SETTLED": {
+            "LINK_1": {
+              "TEXT": "tell us you’ve settled the claim",
+              "TEXT_BEFORE": "Update the claim in the online service by selecting"
+            }
+          }
+        },
+        "AMEND_CLAIM_DETAILS" : {
+          "TEXT_1": "If you want to change the details of your claim, including:",
+          "LI_1": "the reasons for the claim",
+          "LI_2": "the claim amount",
+          "LI_3": "the person you are claiming against",
+          "LINK_1": {
+            "TEXT": "making an application",
+            "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
+            "TEXT_AFTER": " , you will have to pay a fee."
+          },
+          "LINK_2": {
+            "TEXT": "Check the fees list (opens in a new window)",
+            "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
+            "TEXT_AFTER": " to make sure you pay the correct fee."
+          },
+          "SUBTITLE_1": "If the defendant’s address is wrong",
+          "LINK_3": {
+            "TEXT": "contactocmc@justice.gov.uk",
+            "TEXT_BEFORE": "You can send an amended claim form, with the correct address written in red ink. Email the amended form to "
+          },
+          "SUBTITLE_2": "To update your contact details",
+          "LINK_4": {
+            "TEXT": "send a message to the court",
+            "TEXT_BEFORE": "To update your contact details, "
+          }
+        },
+        "CLAIM_ENDED" : {
+          "LINK_1": {
+            "TEXT": "notice of discontinuance (opens in a new window)",
+            "TEXT_BEFORE": "To tell the court your claim has ended, you need to fill in and send a form called a ",
+            "TEXT_AFTER": " to the court and the other parties in the case."
+          },
+          "TEXT_1": "You cannot upload a notice of discontinuance to the Money claims system.",
+          "LINK_2": {
+            "TEXT": "contact the court (opens in a new window)",
+            "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
+            "TEXT_AFTER": " handling your case."
           }
         },
         "FOLLOW_UP": {
