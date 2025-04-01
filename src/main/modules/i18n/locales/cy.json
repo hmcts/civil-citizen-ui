@@ -387,7 +387,8 @@
       "APPLICATION_HEADING": "Ceisiadau a negeseuon i’r llys",
       "APPLICATIONS_TASK": "Gweld pob cais i’r llys",
       "VIEW_MESSAGES_TASK": "Gweld eich negeseuon i'r llys"
-    }
+    },
+    "WHAT_HAPPENS_NEXT" : "What happens next"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
@@ -543,6 +544,13 @@
   },
   "PAGES": {
     "QM": {
+      "CONFIRMATION_PAGE": {
+        "TITLE" : "Message sent",
+        "CONFIRMATION_TEXT": "Your message has been sent to the court",
+        "CONFIRMATION_TEXT_1": "Our team will read your message and try to respond within 10 working days.",
+        "CONFIRMATION_TEXT_2": "You will be notified when the court responds to your message and you will be able to view it from your dashboard.",
+        "GO_TO_DASHBOARD": "Go to your dashboard"
+      },
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
         "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
@@ -587,13 +595,13 @@
       "QUALIFY": {
         "TITLES": {
           "FOLLOW_UP": "Mynd ar drywydd neges sy'n bodoli eisoes",
-          "GENERAL_UPDATE": "GENERAL_UPDATE_TITLE",
-          "CLAIM_NOT_PAID": "CLAIM_NOT_PAID_TITLE",
-          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "CLAIM_NOT_PAID_AFTER_JUDGMENT_TITLE",
-          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "PAID_OR_PARTIALLY_PAID_JUDGMENT_TITLE",
-          "SETTLE_CLAIM": "SETTLE_CLAIM_TITLE",
-          "AMEND_CLAIM_DETAILS": "AMEND_CLAIM_DETAILS_TITLE",
-          "CLAIM_ENDED": "CLAIM_ENDED_TITLE",
+          "GENERAL_UPDATE": "Get a general update on what is happening with the case",
+          "CLAIM_NOT_PAID": "Understand what happens if the claim is not paid",
+          "CLAIM_NOT_PAID_AFTER_JUDGMENT": "Understand what happens if the judgment is not paid",
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
+          "SETTLE_CLAIM": "Settle a claim",
+          "AMEND_CLAIM_DETAILS": "Amend the claim details",
+          "CLAIM_ENDED": "Tell the court my claim has ended",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
@@ -602,9 +610,9 @@
           "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "See the claim on my account",
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
-          "CHANGE_THE_HEARING_DATE": "CHANGE_THE_HEARING_DATE_TITLE",
-          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "CHANGE_SOMETHING_ABOUT_THE_HEARING_TITLE",
-          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING_TITLE"
+          "CHANGE_THE_HEARING_DATE": "Change the hearing date",
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Change something about the hearing",
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing"
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
@@ -700,6 +708,109 @@
           "SUBTITLE_1": "Get support to view the documents on your account",
           "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
         },
+        "GENERAL_UPDATE" : {
+          "PARAGRAPH_1": "We cannot give updates on emails, forms or applications you have already sent to us.",
+          "PARAGRAPH_2": "You will be sent a response or details of any next steps you need to take once the court work is complete.",
+          "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
+        },
+        "CLAIM_NOT_PAID" : {
+          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended.",
+          "PARAGRAPH_2": "The defendant can decide to&#58",
+          "LI_1": "pay the full amount",
+          "LI_2": "offer to pay a different amount (if they think they owe less)",
+          "LI_3": "defend the claim (if they do not think they owe any money)",
+          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where they defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
+          "LINK_1": {
+            "TEXT": "request a county court judgment (CCJ)",
+            "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
+          },
+          "LINK_2": {
+            "TEXT": "what happens when a CCJ is issued against you (opens in a new window)",
+            "TEXT_BEFORE": "Find out more about "
+          },
+          "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
+        },
+        "CLAIM_NOT_PAID_AFTER_JUDGMENT" : {
+          "PARAGRAPH_1": "If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.",
+          "PARAGRAPH_2": "The claimant can instruct the court to undertake different enforcement processes. This is called 'enforcing the judgment'. The claimant can ask the court to issue&#58",
+          "LI_1": "a warrant of control - for goods owned by the defendant",
+          "LI_2": "an attachment of earnings order - for a portion of the defendant’s earnings",
+          "LI_3": "a third-party debt order - for the defendant’s savings",
+          "LI_4": "a charging order - for the defendant’s assets",
+          "LINK_1": {
+            "TEXT": "what to do if a defendant does not pay money after a judgment (opens in a new window)",
+            "TEXT_BEFORE": "Find more detail about "
+          },
+          "SUBTITLE_1": "Fees",
+          "LINK_2": {
+            "TEXT": "about civil court fees (opens in a new window)",
+            "TEXT_BEFORE": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select. Find out "
+          }
+        },
+        "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
+          "SUBTITLE_1": "If part of the judgment or claim amount has been paid",
+          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court."
+        },
+        "SETTLE_CLAIM" : {
+          "SUBTITLE_1": "If the claim is paid or you agree the balance is settled",
+          "TEXT_UPDATE_WITHOUT_LINK": "Update the claim in the online service by selecting tell us you’ve settled the claim.",
+          "LINK_2": {
+            "TEXT": "contactocmc@justice.gov.uk",
+            "TEXT_BEFORE": "You can also email ",
+            "TEXT_AFTER": " to say the claim is settled. You should include:"
+          },
+          "LI_1": "your name",
+          "LI_2": "the claim number",
+          "LI_3": "the date the final payment cleared in your account",
+          "SUBTITLE_2": "Claims settled through a small claims mediator",
+          "TEXT_1": "If a mediator settled your claim, the mediator will update your case record for you.",
+          "NOT_SETTLED": {
+            "LINK_1": {
+              "TEXT": "tell us you’ve settled the claim",
+              "TEXT_BEFORE": "Update the claim in the online service by selecting"
+            }
+          }
+        },
+        "AMEND_CLAIM_DETAILS" : {
+          "TEXT_1": "If you want to change the details of your claim, including:",
+          "LI_1": "the reasons for the claim",
+          "LI_2": "the claim amount",
+          "LI_3": "the person you are claiming against",
+          "LINK_1": {
+            "TEXT": "making an application",
+            "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
+            "TEXT_AFTER": " , you will have to pay a fee."
+          },
+          "LINK_2": {
+            "TEXT": "Check the fees list (opens in a new window)",
+            "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
+            "TEXT_AFTER": " to make sure you pay the correct fee."
+          },
+          "SUBTITLE_1": "If the defendant’s address is wrong",
+          "LINK_3": {
+            "TEXT": "contactocmc@justice.gov.uk",
+            "TEXT_BEFORE": "You can send an amended claim form, with the correct address written in red ink. Email the amended form to "
+          },
+          "SUBTITLE_2": "To update your contact details",
+          "LINK_4": {
+            "TEXT": "send a message to the court",
+            "TEXT_BEFORE": "To update your contact details, "
+          }
+        },
+        "CLAIM_ENDED" : {
+          "LINK_1": {
+            "TEXT": "notice of discontinuance (opens in a new window)",
+            "TEXT_BEFORE": "To tell the court your claim has ended, you need to fill in and send a form called a ",
+            "TEXT_AFTER": " to the court and the other parties in the case."
+          },
+          "TEXT_1": "You cannot upload a notice of discontinuance to the Money claims system.",
+          "LINK_2": {
+            "TEXT": "contact the court (opens in a new window)",
+            "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
+            "TEXT_AFTER": " handling your case."
+          }
+        },
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Mae eich negeseuon wedi’u rhestru ar eich dangosfwrdd.",
           "LINK": {
@@ -750,6 +861,47 @@
               "TEXT": "ask for more time to do what is required by a court order",
               "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
             }
+          }
+        },
+        "CHANGE_THE_HEARING_DATE": {
+          "LINK_1": {
+            "TEXT": "apply to adjourn the hearing",
+            "TEXT_BEFORE": "To ask to change the hearing date (known as an adjournment) you will need to"
+          },
+          "PARAGRAPH_1": "You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.",
+          "PARAGRAPH_2": "You should give the court dates when you would be able to attend a hearing. The other parties will also need to agree to the change.",
+          "PARAGRAPH_3": "You may need to attend a hearing to discuss your application to change the date.",
+          "LINK_2": {
+            "TEXT": "Check the fees guidance (opens in a new window)",
+            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee",
+            "TEXT_AFTER": "to make sure you pay the correct fee."
+          },
+          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees."
+        },
+        "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
+          "PARAGRAPH_1": "You can apply to change the details of the hearing, such as:",
+          "LIST_1": "the location",
+          "LIST_2": "the hearing type - in person or video hearing",
+          "LINK_1": {
+            "TEXT": "apply to the court",
+            "TEXT_BEFORE": "You have to",
+            "TEXT_AFTER": "to ask for the court to consider changing the hearing details."
+          },
+          "LINK_2": {
+            "TEXT": "fees in civil cases (opens in a new window)",
+            "TEXT_BEFORE": "Find out more about"
+          },
+          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application."
+        },
+        "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
+          "PARAGRAPH_1": "You can ask for help and support during your hearing.",
+          "LIST_1": "ramps or accessible toilets",
+          "LIST_2": "a hearing loop",
+          "LIST_3": "forms in large print",
+          "LIST_4": "guidance in audio or easy read formats",
+          "LINK_1": {
+            "TEXT": "Find the contact details for the court (opens in a new window)",
+            "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
           }
         }
       },
