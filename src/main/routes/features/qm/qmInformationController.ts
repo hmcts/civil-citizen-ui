@@ -2,6 +2,7 @@ import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
   BACK_URL,
+  CCJ_PAID_AMOUNT_URL,
   DATE_PAID_URL,
   QM_CREATE_QUERY_URL,
   QM_FOLLOW_UP_URL,
@@ -24,7 +25,10 @@ import {
   attachmentOfEarningsOrderUrl,
   chargingOrderUrl,
   checkCivilFeesListFullListUrl,
-  checkCivilFeesListUrl, discontinueClaimUrl,
+  checkCivilFees_Ex50Url,
+  checkCivilFeesListUrl,
+  discontinueClaimUrl,
+  countyCourtJudgmentsUri,
   findCourtTribunalUrl,
   thirdPartyDebtOrderUrl,
   warrantOfControlUrl,
@@ -117,6 +121,85 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
       }
+      case QualifyingQuestionTypeOption.GENERAL_UPDATE:{
+        showAnythingElseSection = true;
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_2`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`);
+        break;
+      }
+      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID:{
+        showAnythingElseSection = true;
+        const isCCJLinkEnabled = claim.isClaimant() &&
+            claim.isDeadLinePassed() &&
+            claim.isDefendantNotResponded();
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_1`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_2`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_3`, {lng: lang})}</li>
+            </ul>`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
+          .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
+        if (isCCJLinkEnabled) {
+          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.' );
+        } else {
+          pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED`);
+        }
+        pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
+        break;
+      }
+      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT:{
+        showAnythingElseSection = true;
+        pageSection
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_2`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LI_1`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LI_2`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LI_3`, {lng: lang})}</li>
+              <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LI_4`, {lng: lang})}</li>
+            </ul>`)
+          .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT`, whatToDoUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT_BEFORE`, '.', null, true)
+          .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.SUBTITLE_1`)
+          .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT`, checkCivilFees_Ex50Url, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_BEFORE`, '.', null, true);
+
+        break;
+      }
+      case QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE:
+        showAnythingElseSection = true;
+        pageSection.addLink(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAdjournHearing=true`), `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_1.TEXT_BEFORE`, '.')
+          .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_2`)
+          .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_3`)
+          .addLink(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_2.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_2.TEXT_AFTER`, '', true)
+          .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_4`);
+        break;
+      case QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING:
+        showAnythingElseSection = true;
+        pageSection.addParagraph(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.PARAGRAPH_1`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+            <li>${t(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LIST_1`, {lng: lang})}</li>
+            <li>${t(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LIST_2`, {lng: lang})}</li>
+            </ul>`)
+          .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`), `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_AFTER`)
+          .addParagraph(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.PARAGRAPH_2`)
+          .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT_BEFORE`, '.', '', true);
+        break;
+      case QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING:
+        showAnythingElseSection = true;
+        pageSection.addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_1`)
+          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
+            <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_1`, {lng: lang})}</li>
+            <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_2`, {lng: lang})}</li>
+            <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_3`, {lng: lang})}</li>
+            <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_4`, {lng: lang})}</li>
+            </ul>`)
+          .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT_BEFORE`, '.', '', true);
+        break;
       case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT:{
         showAnythingElseSection = true;
         pageSection
@@ -188,6 +271,12 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SUBMIT_RESPONSE_CLAIM',
   [QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.SEE_THE_CLAIM_ON_MY_ACCOUNT',
   [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT]: 'PAGES.QM.QUALIFY.TITLES.VIEW_DOCUMENTS_ON_MY_ACCOUNT',
+  [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_THE_HEARING_DATE',
+  [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING]: 'PAGES.QM.QUALIFY.TITLES.CHANGE_SOMETHING_ABOUT_THE_HEARING',
+  [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING]: 'PAGES.QM.QUALIFY.TITLES.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING',
+  [QualifyingQuestionTypeOption.GENERAL_UPDATE]: 'PAGES.QM.QUALIFY.TITLES.GENERAL_UPDATE',
+  [QualifyingQuestionTypeOption.CLAIM_NOT_PAID]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_NOT_PAID',
+  [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_NOT_PAID_AFTER_JUDGMENT',
   [QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT]: 'PAGES.QM.QUALIFY.TITLES.PAID_OR_PARTIALLY_PAID_JUDGMENT',
   [QualifyingQuestionTypeOption.SETTLE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SETTLE_CLAIM',
   [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS]: 'PAGES.QM.QUALIFY.TITLES.AMEND_CLAIM_DETAILS',

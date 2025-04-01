@@ -64,6 +64,9 @@ describe('Query management Information controller', () => {
       [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
+      [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, false, 'You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.'],
+      [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, false, 'You can apply to change the details of the hearing, such as:'],
+      [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, false, 'You can ask for help and support during your hearing.'],
     ])('should return SEND_DOCUMENTS information for %s', async (questionType, isCaseProgression, expectedText) => {
       mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
 
@@ -102,6 +105,41 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain('If the issue is not urgent');
         expect(res.text).toContain('If the issue is urgent');
         expect(res.text).not.toContain('Anything else');
+      });
+  });
+
+  it.each([
+    [QualifyingQuestionTypeOption.GENERAL_UPDATE, false, 'Get a general update on what is happening with the case', 'We cannot give updates on emails, forms or applications you have already sent to us.'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, true, 'Understand what happens if the claim is not paid', '<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/ccj/paid-amount>request a county court judgment (CCJ)</a>'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, false, 'Understand what happens if the claim is not paid', '<p class="govuk-body ">If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ).</p>'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, false, 'Understand what happens if the judgment is not paid', 'If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.'],
+  ])('should return GET_UPDATE information for %s with isCcjLinkEnabled %s', async (questionType, isCcjLinkEnabled, title:string, textLink: string ) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
+
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+    mockGetClaimById.mockImplementation(() => {
+      if (isCcjLinkEnabled) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate()-1);
+
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.respondent1ResponseDeadline = yesterday;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      }
+
+      return claim;
+    });
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain(textLink);
+        expect(res.text).toContain('Get an update on my case');
+        expect(res.text).toContain('Anything else');
       });
   });
 

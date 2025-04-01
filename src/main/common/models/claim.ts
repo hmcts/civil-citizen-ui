@@ -87,6 +87,7 @@ import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/qm/queryManagement';
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -196,6 +197,9 @@ export class Claim {
   queryManagement?: QueryManagement;
   // Index signature to allow dynamic property access
   [key: string]: any;
+  //Query management
+  qmApplicantLipQueries?: CaseQueries;
+  qmDefendantLipQueries?: CaseQueries;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
