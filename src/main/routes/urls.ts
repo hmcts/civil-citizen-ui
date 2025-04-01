@@ -413,3 +413,4 @@ export const QM_CREATE_QUERY_URL = `${QM_BASE}/create_query/:qmType`;
 export const QM_FOLLOW_UP_URL = `${QM_BASE}/follow-up`;
 export const QM_INFORMATION_URL = `${QM_BASE}/information/:qmType/:qmQualifyOption`;
 export const QM_VIEW_QUERY_URL = `${QM_BASE}/view-query`;
+export const QM_CONFIRMATION_URL = `${QM_BASE}/confirmation`;
