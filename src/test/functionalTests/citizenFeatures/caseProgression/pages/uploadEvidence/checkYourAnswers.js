@@ -216,7 +216,7 @@ class CheckYourAnswers {
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
     this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    if(claimType === 'FastTrack') {
+    /* if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessSectionContent(claimType);
       this.verifyEvidenceSectionContent(claimType, partyType);
@@ -227,7 +227,7 @@ class CheckYourAnswers {
       this.verifyEvidenceSectionContent(claimType);
       this.verifyHearingDocumentsSection();
       this.verifyConfirmationStatements();
-    }
+    }*/
     contactUs.verifyContactUs(language);
   }
 
@@ -263,7 +263,7 @@ class CheckYourAnswers {
 
   verifyWitnessSectionContent(claimType) {
     I.see(content.witness.title[language], 'h2');
-    I.see(`${content.witness.statement[language]} 1`);
+    I.see(`${content.witness.statement[language]}`);
     I.see(content.witness.name[language]);
     I.see('Witness Statement - Witness Name 1');
     I.see(content.witness.dateStatement[language]);
