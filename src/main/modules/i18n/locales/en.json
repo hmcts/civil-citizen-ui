@@ -5653,7 +5653,8 @@
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Enter message subject",
       "MESSAGE_DETAILS": "Enter message details",
-      "HEARING_RELATED": "Select yes if your message is about a hearing"
+      "HEARING_RELATED": "Select yes if your message is about a hearing",
+      "MORE_THAN_200": "Message subject must be no longer than 200 characters"
     }
   },
   "BANNERS" : {
