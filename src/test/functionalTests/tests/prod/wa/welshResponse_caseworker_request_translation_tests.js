@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@regression-cui-r1');
+Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@skip-regression-cui-r1');
 
 Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -34,7 +34,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
-  await ResponseSteps.EnterPersonalDetails(claimRef, false);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
@@ -45,7 +45,11 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async 
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   sharedData.language = 'en';

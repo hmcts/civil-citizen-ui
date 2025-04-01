@@ -1,12 +1,11 @@
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
-  goToHearingClaimant,
-  goToHearingPartAdmitDefendant,
+  mediationCARMClaimantDefendant,
   judgmentRequestedClaimantDisagrees,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
@@ -14,7 +13,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@nightly');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@nightly');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({
   I,
@@ -36,14 +35,14 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
   await api.waitForFinishedBusinessProcess();
 
   if (isDashboardServiceEnabled) {
-    const notification = goToHearingClaimant();
+    const notification = mediationCARMClaimantDefendant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 
   if (isDashboardServiceEnabled) {
     await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const notification = goToHearingPartAdmitDefendant(1345);
+    const notification = mediationCARMClaimantDefendant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
 }).tag('@regression-cui-r2');

@@ -1,4 +1,3 @@
-
 const { getClaimFee } = require('./claimAmountAndFee');
 
 const createLipClaim = (user, userId, totalClaimAmount, language = undefined) => {

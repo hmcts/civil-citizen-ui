@@ -382,6 +382,11 @@
     "APPLICATION_DOCUMENTS": {
       "APPLICANT": "Applicant ",
       "RESPONDENT": "Respondent "
+    },
+    "QUERY_MANAGEMENT_DASHBOARD": {
+      "APPLICATION_HEADING": "Applications and messages to the court",
+      "APPLICATIONS_TASK": "View all applications to the court",
+      "VIEW_MESSAGES_TASK": "View your messages to the court"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {

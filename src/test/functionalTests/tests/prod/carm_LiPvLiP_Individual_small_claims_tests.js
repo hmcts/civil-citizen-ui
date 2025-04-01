@@ -36,7 +36,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   console.log('Security code', securityCode);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
+  await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');

@@ -22,7 +22,7 @@ const content = {
 
 class ContactUs {
 
-  verifyContactUs(language = 'en') {
+  async verifyContactUs(language = 'en') {
     if (!verified) {
       I.click(`//span[contains(text(),'${content.title[language]}')]`);
       I.waitForContent(content.email[language], 60);
@@ -30,7 +30,7 @@ class ContactUs {
       I.see(content.telephone[language], 'h3');
       I.see('0300 123 7050');
       I.see(content.openingHours[language]);
-      I.seeElement('[href=\'https://www.gov.uk/call-charges\']');
+      await I.seeElement('[href=\'https://www.gov.uk/call-charges\']');
       verified = true;
     }
   }

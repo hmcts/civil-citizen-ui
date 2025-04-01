@@ -1,6 +1,7 @@
 const I = actor();
-const ResponseToDefence = require('../pages/responseToDefence');
+const ResponseToDefence = require('../../createClaim/pages/responseToDefence');
 const responseToDefence = new ResponseToDefence();
+const mediationSteps = require('./lipDefendantResponseSteps');
 
 const paths = {
   links: {
@@ -59,6 +60,11 @@ class ResponseToDefenceLipVLipSteps {
     if (fastTrack == 'fast') {
       await this.verifyDQForFastTrack();
     } else {
+      await mediationSteps.EnterTelephoneMediationDetails();
+      await mediationSteps.goToPhoneDetailsScreen();
+      await mediationSteps.ConfirmPhoneDetails();
+      await mediationSteps.ConfirmEmailDetails();
+      await mediationSteps.EnterUnavailableDates();
       await this.verifyDQForSmallClaims();
     }
     await this.verifyDashboardLoaded();
@@ -186,8 +192,7 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDashboardLoaded();
     I.click(paths.links.free_mediation);
     await responseToDefence.verifyFreeMediation();
-    await responseToDefence.verifyChoseNoFreeMediation();
-    await responseToDefence.verifyChoseNoFreeMediationReasons();
+    await responseToDefence.verifyChoseYesFreeMediation();
     await this.verifyDashboardLoaded();
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
@@ -357,6 +362,11 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.settle_the_claim_for);
     await responseToDefence.paymentNotInFullNoToSettle();
     await this.verifyDashboardLoaded();
+    await mediationSteps.EnterTelephoneMediationDetails();
+    await mediationSteps.goToPhoneDetailsScreen();
+    await mediationSteps.ConfirmPhoneDetails();
+    await mediationSteps.ConfirmEmailDetails();
+    await mediationSteps.EnterUnavailableDates();
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
@@ -391,10 +401,11 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.have_you_been_paid);
     await responseToDefence.paymentNotInFullNoPaid();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.free_mediation);
-    await responseToDefence.verifyFreeMediation();
-    await responseToDefence.verifyChoseYesFreeMediation();
-    await this.verifyDashboardLoaded();
+    await mediationSteps.EnterTelephoneMediationDetails();
+    await mediationSteps.goToPhoneDetailsScreen();
+    await mediationSteps.ConfirmPhoneDetails();
+    await mediationSteps.ConfirmEmailDetails();
+    await mediationSteps.EnterUnavailableDates();
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
@@ -457,7 +468,7 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyAreYourExpertsVulnerable();
     await responseToDefence.verifyDoYouOrExpertsNeedToAttendHearing();
     await responseToDefence.verifyHearingAtSpecificCourt();
-    await responseToDefence.verifyWelshLanguage();
+    await responseToDefence.verifyWelshLanguageForFT();
   }
 
 }

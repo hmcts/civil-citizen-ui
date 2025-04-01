@@ -31,9 +31,11 @@ import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/gene
 import {
   isGaForLipsEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
+  isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {GA_SUBMIT_OFFLINE} from 'routes/urls';
+import * as UpdateQueryManagementDashboard from 'services/features/qm/queryManagementService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -41,6 +43,11 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const appReq = <AppRequest>req;
 appReq.params = {id: '123'};
 
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -341,6 +348,47 @@ describe('dashboardService', () => {
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
 
+      describe('Query management flag', () => {
+        beforeEach(() => {
+          jest.resetAllMocks();
+        });
+
+        afterAll(() => {
+          (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+        });
+
+        it('should trigger call to query management service for updating task items', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+          (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+
+          const queryManagementSpy = jest.spyOn(UpdateQueryManagementDashboard, 'updateQueryManagementDashboardItems');
+          const dashboard = new Dashboard(mockExpectedDashboardInfo);
+
+          jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+          const claim = new Claim();
+          claim.defendantUserDetails = {};
+
+          await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq, true, true);
+
+          expect(queryManagementSpy).toBeCalledTimes(1);
+        });
+
+        it('should not trigger query management service call if flag is disabled', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+          const queryManagementSpy = jest.spyOn(UpdateQueryManagementDashboard, 'updateQueryManagementDashboardItems');
+
+          const dashboard = new Dashboard(mockExpectedDashboardInfo);
+          jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+          const claim = new Claim();
+
+          await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq);
+
+          expect(queryManagementSpy).not.toBeCalled();
+        });
+      });
+
       it('ExtractDocumentFromNotificationList', async () => {
         //Given
         const notificationList: DashboardNotificationList = new DashboardNotificationList();
@@ -474,7 +522,7 @@ describe('dashboardService', () => {
       });
 
       it('getContactCourtLink when claim is taken offline', async () => {
-        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
         //Given
         const claim = new Claim();
         claim.id = '1234567890';
@@ -491,7 +539,8 @@ describe('dashboardService', () => {
         const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
-        expect(result).toBeUndefined();
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toBeUndefined();
       });
 
       it('getContactCourtLink when Gaflag is enable and  whitelisted', async () => {
@@ -560,6 +609,22 @@ describe('dashboardService', () => {
 
     });
     describe('Hide/Show Application Section', () => {
+      let dashboard: Dashboard;
+      let dashboardExpected: Dashboard;
+
+      beforeEach(() => {
+        jest.resetAllMocks();
+        dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+
+        dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+      });
 
       //Given
       const mockGet = jest.fn().mockResolvedValue({
@@ -576,16 +641,6 @@ describe('dashboardService', () => {
             'test'),
         ),
       });
-      const dashboard = new Dashboard(
-        Array.of(new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('Applications', 'Applications', []),
-        ));
-
-      const dashboardExpected = new Dashboard(
-        Array.of(new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('test', 'test', []),
-        ));
 
       it('Application section when GaFlag enabled and location not whitelisted and the case is not assigned to defendant', async () => {
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
@@ -691,12 +746,6 @@ describe('dashboardService', () => {
       });
 
       it('Application section when GaFlag enabled and the case is assigned to defendant', async () => {
-
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
@@ -725,13 +774,7 @@ describe('dashboardService', () => {
       });
 
       it('Application section when GaFlag enabled and ea not whitelisted and the case is assigned to defendant', async () => {
-
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
-        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 

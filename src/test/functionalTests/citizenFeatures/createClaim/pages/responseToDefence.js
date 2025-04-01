@@ -177,7 +177,6 @@ class ResponseToDefence {
       await I.see('Go to your account');
     } else {
       await I.see('You\'ve rejected their response');
-      await I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     }
   }
 
@@ -680,9 +679,7 @@ class ResponseToDefence {
 
   async verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation() {
     I.waitForContent('Do you agree the defendant has paid',60);
-    I.see('Free telephone mediation');
-    I.see('Will you try free mediation?');
-    I.see('Contact number');
+    I.see('Availability for mediation');
     I.see('Hearing requirements');
     I.see('Have you already got a report written by an expert?');
     I.see('Welsh language');
@@ -953,8 +950,21 @@ class ResponseToDefence {
     I.waitForContent('Welsh and English',60);
     I.see('Welsh language', 'h1');
     I.see('Welsh is an official language of Wales.');
-    I.see('You can use Welsh in court hearings.');
-    I.see('Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
+    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.');
+    I.see('What languages will you, your experts and your witnesses speak at the hearing?');
+    I.see('What languages will the documents be provided in?');
+    I.see('English');
+    I.see('Welsh');
+    await I.click(paths.options.english_language);
+    await I.click(paths.options.document_language);
+    await I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyWelshLanguageForFT(){
+    I.waitForContent('Welsh and English',60);
+    I.see('Welsh language', 'h1');
+    I.see('Welsh is an official language of Wales.');
+    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
     I.see('What languages will you, your experts and your witnesses speak at the hearing?');
     I.see('What languages will the documents be provided in?');
     I.see('English');
@@ -1096,7 +1106,6 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     I.see('Email');
     I.see('Telephone');
   }
@@ -1126,8 +1135,8 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('You agreed to try free mediation.');
-    I.see('Your mediation appointment will be arranged within 28 days.');
+    I.see('A mediation appointment will now be arranged by the Small Claims Mediation Service.');
+    I.see('within the next 28 days.');
     I.see('Email');
     I.see('Telephone');
   }
@@ -1136,8 +1145,7 @@ class ResponseToDefence {
     I.waitForContent('Welsh and English',60);
     I.see('Welsh language', 'h1');
     I.see('Welsh is an official language of Wales.');
-    I.see('You can use Welsh in court hearings.');
-    I.see('Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
+    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.');
     I.see('What languages will you, your experts and your witnesses speak at the hearing?');
     I.see('What languages will the documents be provided in?');
     I.see('English');
