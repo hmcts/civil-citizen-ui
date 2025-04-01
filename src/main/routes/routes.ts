@@ -440,7 +440,6 @@ import createQueryController from 'routes/features/queryManagement/createQueryCo
 import createQueryCheckYourAnswerController from 'routes/features/queryManagement/createQueryCheckYourAnswerController';
 import qmConfirmationController from 'routes/features/queryManagement/qmConfirmationController';
 
-
 export default [
   homeController,
   dashboardController,
