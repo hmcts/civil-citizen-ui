@@ -3,13 +3,14 @@ import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
-import {BACK_URL, QM_CYA} from 'routes/urls';
+import {BACK_URL, QM_CONFIRMATION_URL, QM_CYA} from 'routes/urls';
 import {getCancelUrl, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {
   createApplicantCitizenQuery,
   createRespondentCitizenQuery,
   getSummarySections,
 } from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const viewPath = 'features/queryManagement/createQueryCheckYourAnswer.njk';
 const createQueryCheckYourAnswerController = Router();
@@ -39,7 +40,7 @@ createQueryCheckYourAnswerController.post(QM_CYA, async (req: AppRequest, res: R
       await createRespondentCitizenQuery(claim, updatedClaim, req);
     }
     await saveQueryManagement(claimId, null, 'createQuery', req);
-    res.status(200).send('Request was successful');
+    res.redirect(constructResponseUrlWithIdParams(claimId, QM_CONFIRMATION_URL));
   } catch (error) {
     next(error);
   }
