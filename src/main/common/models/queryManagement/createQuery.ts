@@ -8,7 +8,6 @@ export class CreateQuery {
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
     messageSubject: string;
 
-
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_DETAILS'})
     messageDetails: string;
 
