@@ -3,7 +3,6 @@ import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseDocument} from 'models/document/caseDocument';
 
 export class CreateQuery {
-  @ValidateIf(o => o.messageSubject !== undefined)
   @MaxLength(200, {message: 'ERRORS.QUERY_MANAGEMENT.MORE_THAN_200'})
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
     messageSubject: string;
