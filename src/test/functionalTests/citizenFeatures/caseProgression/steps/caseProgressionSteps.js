@@ -51,18 +51,18 @@ class CaseProgressionSteps {
         latestUpdateTab.nextAction('Upload documents');
       }
     }
-    uploadYourDocumentsIntroduction.verifyPageContent(claimRef, claimAmount, language);
-    uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
+    await uploadYourDocumentsIntroduction.verifyPageContent(claimRef, claimAmount, language);
+    await uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
     whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimRef, claimAmount, claimType);
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
     whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
-    uploadYourDocument.verifyPageContent(claimRef, claimAmount, claimType);
+    await uploadYourDocument.verifyPageContent(claimRef, claimAmount, claimType);
     if (claimType === 'FastTrack') {
-      uploadYourDocument.inputDataForFastTrackSections(claimType);
+      await uploadYourDocument.inputDataForFastTrackSections(claimType);
     } else {
-      uploadYourDocument.inputDataForSmallClaimsSections(claimType);
+      await uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
-    uploadYourDocument.nextAction(buttons.continue[language]);
+    await uploadYourDocument.nextAction(buttons.continue[language]);
     checkYourAnswers.verifyPageContent(claimRef, claimAmount, claimType, partyType);
     checkYourAnswers.clickConfirm();
     checkYourAnswers.nextAction(buttons.submit[language]);
