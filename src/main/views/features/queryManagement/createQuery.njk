@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
@@ -38,11 +38,10 @@
         } if form.errorFor('messageSubject')
       }) }}
 
-      {{ govukCharacterCount({
+      {{ govukTextarea({
         id: 'messageDetails',
         name: 'messageDetails',
         value: form.model.messageDetails,
-        maxlength: 200,
         label: {
           text: t('PAGES.QM.QUERY_FORM.BODY_TITLE')
         },
