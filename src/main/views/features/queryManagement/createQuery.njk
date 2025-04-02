@@ -1,4 +1,4 @@
-{% extends "claim-details-tpl.njk" %}
+{% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -14,7 +14,7 @@
   {{ setPageTitle(t, pageHeaders.pageTitle) }}
 {% endblock %}
 
-{% block content %}
+{% block nestedContent %}
   {% if form != null and form.hasErrors() %}
     {{ errorSummary(form.getAllErrors(), t) }}
   {% endif %}
