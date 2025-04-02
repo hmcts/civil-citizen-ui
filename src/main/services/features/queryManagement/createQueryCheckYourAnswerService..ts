@@ -10,7 +10,7 @@ import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-
+import {v4 as uuidV4} from 'uuid';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -71,7 +71,9 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
     qmApplicantCitizenQueries = updatedClaim.qmApplicantCitizenQueries;
   }
   qmApplicantCitizenQueries.caseMessages.push({
+    'id': uuidV4(),
     'value': {
+      'id': uuidV4(),
       'body': claim.queryManagement.createQuery.messageDetails,
       'name': claim.getClaimantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,
