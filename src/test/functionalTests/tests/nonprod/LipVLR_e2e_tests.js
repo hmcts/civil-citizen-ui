@@ -12,7 +12,7 @@ const {
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent, expectedState;
 
-Feature('Lip v LR e2e Tests');
+Feature('Lip v LR e2e Tests').tag('@api @noc @regression');
 
 Before(async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI - @api @noc @regression', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async ({
   I,
   api,
 }) => {
@@ -68,7 +68,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI - @api @
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI - @api @noc @regression', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI', async ({
   I,
   api,
 }) => {
