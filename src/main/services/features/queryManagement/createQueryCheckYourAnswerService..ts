@@ -116,7 +116,9 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
     qmRespondentCitizenQueries = updatedClaim.qmRespondentCitizenQueries;
   }
   qmRespondentCitizenQueries.caseMessages.push({
+    'id': uuidV4(),
     'value': {
+      'id': uuidV4(),
       'body': claim.queryManagement.createQuery.messageDetails,
       'name': claim.getDefendantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,
