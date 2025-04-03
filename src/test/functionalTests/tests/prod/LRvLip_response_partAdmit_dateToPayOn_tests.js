@@ -55,4 +55,4 @@ Scenario('Response with PartAdmit and Date to PayOn', async () => {
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   // Enable this after CIV-16777
   //await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-})
+});

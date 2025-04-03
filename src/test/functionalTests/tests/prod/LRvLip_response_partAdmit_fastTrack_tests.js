@@ -40,4 +40,4 @@ Scenario('Response with PartAdmit-AlreadyPaid', async () => {
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForFastTrack(claimRef, false);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
-})
+});
