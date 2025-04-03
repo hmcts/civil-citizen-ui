@@ -436,6 +436,7 @@ import gaUnavailabilityDatesResponseConfirmationController
 import qmStartController from 'routes/features/qm/qmStartController';
 import qmWhatToDoController from 'routes/features/qm/qmWhatToDoController';
 import qmInformationController from 'routes/features/qm/qmInformationController';
+import qmConfirmationController from 'routes/features/qm/qmConfirmationController';
 
 export default [
   homeController,
@@ -787,4 +788,5 @@ export default [
   qmStartController,
   qmWhatToDoController,
   qmInformationController,
+  qmConfirmationController,
 ];
