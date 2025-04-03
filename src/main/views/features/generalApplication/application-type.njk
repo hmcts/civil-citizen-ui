@@ -129,7 +129,7 @@
                   {
                     value: ApplicationTypeOption.ADJOURN_HEARING,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
-                    checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                    checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING or isAdjournHearing,
                     hint: {
                       text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
                     }
@@ -203,7 +203,7 @@
                                 {
                                   value: ApplicationTypeOption.ADJOURN_HEARING,
                                   html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
-                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING or isAdjournHearing,
                                   hint: {
                                     text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
                                   }
