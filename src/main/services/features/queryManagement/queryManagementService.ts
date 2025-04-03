@@ -79,7 +79,7 @@ export const saveQueryManagement = async (claimId: string, value: any, queryMana
 };
 
 export const getQueryManagement = async (claimId: string, req: Request): Promise<QueryManagement> => {
-  const claim = await getClaimById(claimId, req,true);
+  const claim = await getClaimById(req.params.id, req,true);
   if (!claim.queryManagement) {
     return new QueryManagement();
   }
