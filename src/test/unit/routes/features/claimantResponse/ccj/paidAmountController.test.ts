@@ -106,7 +106,18 @@ describe('CCJ - Paid amount', () => {
         });
       expect(res.status).toBe(200);
       expect(res.text).toContain(TestMessages.PAID_AMOUNT_NOT_GREATER);
+      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
     });
+    // TODO undo this once the stop from choosing yes to part payment journey
+    // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+    //   const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
+    //     .send({
+    //       option: 'yes',
+    //       amount: '10',
+    //     });
+    //   expect(res.status).toBe(302);
+    //   expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+    // });
 
     it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
       const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
@@ -114,8 +125,8 @@ describe('CCJ - Paid amount', () => {
           option: 'yes',
           amount: '10',
         });
-      expect(res.status).toBe(302);
-      expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
     });
 
     it('should redirect to paid amount summary page if option no is selected', async () => {
@@ -137,14 +148,25 @@ describe('CCJ - Paid amount', () => {
     beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaimantIntention                                                    ;
     });
-    it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+    // TODO undo this once the stop from choosing yes to part payment journey
+    // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+    //   const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
+    //     .send({
+    //       option: 'yes',
+    //       amount: '10',
+    //     });
+    //   expect(res.status).toBe(302);
+    //   expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+    // });
+
+    it('should return error to paid amount summary page if option yes', async () => {
       const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
         .send({
           option: 'yes',
           amount: '10',
         });
-      expect(res.status).toBe(302);
-      expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
     });
 
     it('should redirect to paid amount summary page if option no is selected', async () => {
@@ -153,14 +175,25 @@ describe('CCJ - Paid amount', () => {
       expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
     });
 
-    it('(FROM TASK-LIST) should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+    // TODO undo this once the stop from choosing yes to part payment journey
+    // it('(FROM TASK-LIST) should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
+    //   const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
+    //     .send({
+    //       option: 'yes',
+    //       amount: '10',
+    //     });
+    //   expect(res.status).toBe(302);
+    //   expect(res.get('location')).toBe(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
+    // });
+
+    it('(FROM TASK-LIST) should error to paid amount summary page if option yes', async () => {
       const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
         .send({
           option: 'yes',
           amount: '10',
         });
-      expect(res.status).toBe(302);
-      expect(res.get('location')).toBe(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
     });
 
     it('(FROM TASK-LIST) should redirect to paid amount summary page if option no is selected', async () => {
