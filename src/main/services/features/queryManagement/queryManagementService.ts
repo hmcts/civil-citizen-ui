@@ -70,7 +70,7 @@ const determineTaskStatus = (taskItem: DashboardTask, claim: Claim) => {
 };
 
 export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
-  const claim = await getClaimById(claimId, req,true);
+  const claim = await getClaimById(req.params.id, req,true);
   if (!claim.queryManagement) {
     claim.queryManagement = new QueryManagement();
   }
