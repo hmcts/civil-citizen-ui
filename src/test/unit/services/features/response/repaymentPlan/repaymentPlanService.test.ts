@@ -32,7 +32,7 @@ describe('Repayment Plan Service', () => {
   describe('getRepaymentPlanForm', () => {
     it('should get empty form when no data exist', async () => {
       //When
-      const form = getRepaymentPlanForm(new Claim());
+      const form = await getRepaymentPlanForm(new Claim());
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -51,7 +51,7 @@ describe('Repayment Plan Service', () => {
       claim.partialAdmission.paymentIntention = new PaymentIntention();
 
       //When
-      const form = getRepaymentPlanForm(claim);
+      const form = await getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -67,7 +67,7 @@ describe('Repayment Plan Service', () => {
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       //When
-      const form = getRepaymentPlanForm(claim);
+      const form = await getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -96,7 +96,7 @@ describe('Repayment Plan Service', () => {
       claim.partialAdmission.howMuchDoYouOwe.amount = 1000;
 
       //When
-      const form = getRepaymentPlanForm(claim,true);
+      const form = await getRepaymentPlanForm(claim,true);
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
@@ -124,7 +124,7 @@ describe('Repayment Plan Service', () => {
       claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
 
       //When
-      const form = getRepaymentPlanForm(claim);
+      const form = await getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
@@ -133,7 +133,7 @@ describe('Repayment Plan Service', () => {
       expect(form.firstRepaymentDate).toStrictEqual(FIRST_PAYMENT_DATE);
     });
 
-    it('part admit - should set total claimed amount to be partial amount defendant is claiming to be', () => {
+    it('part admit - should set total claimed amount to be partial amount defendant is claiming to be', async () => {
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
       claim.partialAdmission = {};
@@ -141,16 +141,16 @@ describe('Repayment Plan Service', () => {
         amount: PART_ADMIT_AMOUNT,
       };
 
-      const form = getRepaymentPlanForm(claim, true);
+      const form = await getRepaymentPlanForm(claim, true);
 
       expect(form.totalClaimAmount).toBe(PART_ADMIT_AMOUNT);
     });
 
-    it('should not set total claim amount to be partial amount if partial admission is false', () => {
+    it('should not set total claim amount to be partial amount if partial admission is false', async () => {
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
 
-      const form = getRepaymentPlanForm(claim, false);
+      const form = await getRepaymentPlanForm(claim, false);
 
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
     });
