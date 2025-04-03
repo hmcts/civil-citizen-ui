@@ -5,7 +5,7 @@ import {
 import {getCancelUrl} from 'services/features/queryManagement/queryManagementService';
 
 const qmConfirmationController = Router();
-const qmConfirmationViewPath = 'features/qm/qm-confirmation-template.njk';
+const qmConfirmationViewPath = 'features/queryManagement/qm-confirmation-template.njk';
 
 qmConfirmationController.get(QM_CONFIRMATION_URL, (req, res) => {
   const claimId = req.params.id;

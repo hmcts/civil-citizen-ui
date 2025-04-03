@@ -10,12 +10,12 @@ import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {v4 as uuidv4} from 'uuid';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim): SummaryRow[] => {
-  const lng = 'en';
+export const getSummarySections = (claimId: string, claim: Claim, lng: string): SummaryRow[] => {
   const createQuery = claim.queryManagement.createQuery;
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
@@ -71,7 +71,9 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
     qmApplicantCitizenQueries = updatedClaim.qmApplicantCitizenQueries;
   }
   qmApplicantCitizenQueries.caseMessages.push({
+    "id": uuidv4(),
     'value': {
+      "id": uuidv4(),
       'body': claim.queryManagement.createQuery.messageDetails,
       'name': claim.getClaimantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,
