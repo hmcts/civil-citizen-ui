@@ -7,6 +7,7 @@ import {Request} from 'express';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
+import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -54,4 +55,9 @@ export const getRedisStoreForSession = () => {
     prefix: 'citizen-ui-session:',
     ttl: 86400, //prune expired entries every 24h
   });
+};
+
+export const fetchClaimTotal = async (claim: Claim) => {
+  const caseDataInterest = translateDraftClaimToCCDInterest(claim);
+  return await Promise.all([civilServiceClient.calculateClaimTotalAmount(caseDataInterest)]);
 };
