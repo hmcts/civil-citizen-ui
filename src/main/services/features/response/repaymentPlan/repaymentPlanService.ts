@@ -4,7 +4,7 @@ import {Claim} from 'common/models/claim';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {translateDraftClaimToCCDInterest} from "services/translation/claim/ccdTranslation";
+import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
