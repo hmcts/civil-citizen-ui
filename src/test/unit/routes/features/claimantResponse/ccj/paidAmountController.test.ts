@@ -108,7 +108,7 @@ describe('CCJ - Paid amount', () => {
       expect(res.text).toContain(TestMessages.PAID_AMOUNT_NOT_GREATER);
       expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
     });
-    // TODO undo this once the stop from choosing yes to part payment journey
+    // TODO undo when part payment journey is restored
     // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
     //   const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
     //     .send({
@@ -148,7 +148,7 @@ describe('CCJ - Paid amount', () => {
     beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaimantIntention                                                    ;
     });
-    // TODO undo this once the stop from choosing yes to part payment journey
+    // TODO undo when part payment journey is restored
     // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
     //   const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
     //     .send({
@@ -175,7 +175,7 @@ describe('CCJ - Paid amount', () => {
       expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
     });
 
-    // TODO undo this once the stop from choosing yes to part payment journey
+    // TODO undo when part payment journey is restored
     // it('(FROM TASK-LIST) should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
     //   const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
     //     .send({
