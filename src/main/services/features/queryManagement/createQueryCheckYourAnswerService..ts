@@ -73,9 +73,9 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
     qmApplicantCitizenQueries = updatedClaim.qmApplicantCitizenQueries;
   }
   qmApplicantCitizenQueries.caseMessages.push({
-    "id": uuidv4(),
+    'id': uuidv4(),
     'value': {
-      "id": uuidv4(),
+      'id': uuidv4(),
       'body': claim.queryManagement.createQuery.messageDetails,
       'name': claim.getClaimantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,
@@ -118,7 +118,9 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
     qmRespondentCitizenQueries = updatedClaim.qmRespondentCitizenQueries;
   }
   qmRespondentCitizenQueries.caseMessages.push({
+    'id': uuidv4(),
     'value': {
+      'id': uuidv4(),
       'body': claim.queryManagement.createQuery.messageDetails,
       'name': claim.getDefendantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,
