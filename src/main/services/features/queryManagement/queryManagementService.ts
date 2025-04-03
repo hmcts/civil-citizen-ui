@@ -87,7 +87,7 @@ export const getQueryManagement = async (claimId: string, req: Request): Promise
 };
 
 export const deleteQueryManagement = async (claimId: string, req: Request): Promise<void> => {
-  const claim = await getClaimById(claimId, req,true);
+  const claim = await getClaimById(req.params.id, req,true);
   await deleteFieldDraftClaimFromStore(claimId, claim, 'queryManagement');
 };
 
