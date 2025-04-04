@@ -3,6 +3,12 @@ import {addDaysToDate, addMonths} from './dateUtils';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {t} from 'i18next';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const WEEKDAYS = 7;
 const frequencyTextMap: Record<TransactionSchedule, string> = {
@@ -132,4 +138,9 @@ export const getRepaymentLength = (claim: Claim, lng: string): string => {
   }
 
   return repaymentLength;
+};
+
+export const fetchClaimTotal = async (claim: Claim) => {
+  const caseDataInterest = translateDraftClaimToCCDInterest(claim);
+  return  await civilServiceClient.calculateClaimTotalAmount(caseDataInterest);
 };

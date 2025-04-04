@@ -29,7 +29,8 @@ export const getFirstPaymentExampleDate = () => {
 repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, (async (req, res, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-    const form = getRepaymentPlanForm(claim);
+
+    const form = await getRepaymentPlanForm(claim);
     renderView(new GenericForm(form), res);
   } catch (error) {
     next(error);
@@ -41,7 +42,7 @@ repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
-      const savedValues = getRepaymentPlanForm(claim);
+      const savedValues = await getRepaymentPlanForm(claim);
       const form: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       form.validateSync();
       if (form.hasErrors()) {
