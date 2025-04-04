@@ -10,7 +10,8 @@ let claimRef;
 
 Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@full-admit');
 
-Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {
+// TODO undo when part payment journey is restored
+Scenario.skip('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
