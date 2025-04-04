@@ -20,8 +20,8 @@ const getForm = (totalClaimAmount: number, repaymentPlan: RepaymentPlan, firstRe
 
 const getRepaymentPlanForm = async (claim: Claim, isPartialAdmission?: boolean) => {
   try {
-    const [calculateClaimTotalAmount1] = await Promise.all([fetchClaimTotal(claim)]);
-    console.log(calculateClaimTotalAmount1);
+    const calculateClaimTotalAmount = await fetchClaimTotal(claim);
+    console.log(calculateClaimTotalAmount);
     const totalClaimAmount = isPartialAdmission ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
 
     if (isPartialAdmission && claim.partialAdmission?.paymentIntention?.repaymentPlan) {
