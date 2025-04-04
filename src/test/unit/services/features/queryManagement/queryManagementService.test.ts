@@ -248,7 +248,6 @@ describe('get Caption', () => {
 });
 
 describe('Uploading files', () => {
-  const mockKey = 'testKey';
   const appRequest: AppRequest = {
     params: { id: '1', appId: '89' },
   } as unknown as AppRequest;
@@ -261,7 +260,7 @@ describe('Uploading files', () => {
     documentSize: 12345,
     createdDatetime: '2025-03-27T17:02:09.858Z' as unknown as Date,
   };
-  const draftStoreGetFilesMock = jest.spyOn(draftStoreService, 'getQueryFilesFromRedis');
+
   beforeEach(() => {
     jest.resetAllMocks();
     const fileToUpload = {
@@ -272,8 +271,6 @@ describe('Uploading files', () => {
       buffer: Buffer.from('test'),
     };
     jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(returnedFile);
-    jest.spyOn(draftStoreService, 'generateRedisKeyForFile').mockReturnValue(mockKey);
-    draftStoreGetFilesMock.mockResolvedValue([]);
     jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
   });
 
