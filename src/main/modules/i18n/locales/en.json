@@ -904,6 +904,28 @@
             "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
           }
         }
+      },
+      "HEADINGS": {
+        "PAGE_TITLE": "Enter message details",
+        "HEADING": "Enter message details",
+        "CAPTION": "Send a message"
+      },
+      "QUERY_FORM": {
+        "SUBJECT_TITLE": "Message subject",
+        "SUBJECT_HINT": "The subject should be a summary of your message",
+        "BODY_TITLE": "Message details",
+        "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
+        "IS_HEARING": "Is your message about a hearing?",
+        "DOCUMENTS_TITLE": "Upload documents (optional)",
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+      },
+      "SEND_MESSAGE_CYA": {
+        "ENTER_MESSAGE": "Enter message details",
+        "MESSAGE_SUBJECT": "Message subject",
+        "MESSAGE_DETAILS": "Message details",
+        "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
+        "UPLOAD_DOCUMENTS": "Upload documents (optional)",
+        "SEND_MESSAGE": "Send message"
       }
     },
     "SUBJECT_TO_FRC": {
@@ -5779,7 +5801,13 @@
     },
     "VALID_FINAL_DATE": "Enter a date when the final payment was made.",
     "VALID_PAID_IN_FULL_DATE": "Paid in full date must be on or after the date of the judgment",
-    "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "This feature is currently not available, please see guidance below"
+    "FEATURE_UNAVAILABLE_GUIDANCE_BELOW": "This feature is currently not available, please see guidance below",
+    "QUERY_MANAGEMENT": {
+      "MESSAGE_SUBJECT": "Enter message subject",
+      "MESSAGE_DETAILS": "Enter message details",
+      "HEARING_RELATED": "Select yes if your message is about a hearing",
+      "MORE_THAN_200": "Message subject must be no longer than 200 characters"
+    }
   },
   "BANNERS" : {
     "CUI_CP" : {

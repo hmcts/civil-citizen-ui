@@ -5,6 +5,7 @@ import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOpt
 import {CCDClaimantPayBySetDate} from '../ccdResponse/ccdPayBySetDate';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export interface EventDto {
   event: CaseEvent,
@@ -29,4 +30,6 @@ export interface ClaimUpdate {
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
   applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
   applicant1ClaimSettledDate?: Date;
+  qmApplicantCitizenQueries?: CaseQueries;
+  qmRespondentCitizenQueries?: CaseQueries;
 }

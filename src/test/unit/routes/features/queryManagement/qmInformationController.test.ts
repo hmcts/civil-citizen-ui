@@ -7,15 +7,15 @@ import {
   QM_FOLLOW_UP_URL,
   QM_INFORMATION_URL,
 } from 'routes/urls';
-import {getCancelUrl, getCaption} from 'services/features/qm/queryManagementService';
-import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {getCancelUrl, getCaption} from 'services/features/queryManagement/queryManagementService';
+import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import * as utilityService from 'modules/utilityService';
 import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/services/features/qm/queryManagementService');
+jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 jest.mock('modules/utilityService');
