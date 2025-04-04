@@ -1,10 +1,11 @@
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCoSCEnabled, isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { Request, Response } from 'express';
 import * as utilityService from 'modules/utilityService';
 import { isGAForLiPEnabled } from 'routes/guards/generalAplicationGuard';
 import {civilClaimResponseMock} from '../../../utils/mockDraftStore';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
 
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -72,6 +73,28 @@ describe('GAFlagGuard', () => {
     ];
     jest.spyOn(utilityService , 'getClaimById').mockResolvedValueOnce(claim);
     await isGAForLiPEnabled(req as Request, res as Response, next);
+    expect(next).toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+  });
+  it('should call next if defendant response language is welsh to create a COSC application', async () => {
+    (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
+    (isCoSCEnabled as jest.Mock).mockReturnValueOnce(true);
+    const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH };
+    claim.generalApplications = [
+      {
+        'id': 'test',
+        'value': {
+          'caseLink': {
+            'CaseReference': '6789',
+          },
+          'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+        },
+      },
+    ];
+    jest.spyOn(utilityService , 'getClaimById').mockResolvedValueOnce(claim);
+    const MOCK_REQUEST_COSC = { originalUrl: '/case/1741/general-application/cosc/ask-proof', params: { id: '123' } } as unknown as Request;
+    await isGAForLiPEnabled(MOCK_REQUEST_COSC, res as Response, next);
     expect(next).toHaveBeenCalled();
     expect(res.redirect).not.toHaveBeenCalled();
   });

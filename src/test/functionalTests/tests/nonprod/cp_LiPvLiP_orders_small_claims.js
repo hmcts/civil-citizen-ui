@@ -9,7 +9,7 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem, notification;
 
-Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims');
+Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims').tag('@case-progression');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -18,7 +18,8 @@ Before(async ({api}) => {
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
   await api.waitForFinishedBusinessProcess();
 });

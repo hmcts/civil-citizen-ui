@@ -2,7 +2,7 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
@@ -15,9 +15,9 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025';
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant ');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant').tag('@full-admit @api @nightly');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date - @api @nightly', async ({
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
   I,
   api,
 }) => {
