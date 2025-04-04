@@ -17,6 +17,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('common/utils/repaymentUtils', () => ({fetchClaimTotal: jest.fn(() => Promise.resolve({}))}));
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;
