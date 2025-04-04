@@ -438,6 +438,7 @@ import qmWhatToDoController from 'routes/features/queryManagement/qmWhatToDoCont
 import qmInformationController from 'routes/features/queryManagement/qmInformationController';
 import createQueryController from 'routes/features/queryManagement/createQueryController';
 import createQueryCheckYourAnswerController from 'routes/features/queryManagement/createQueryCheckYourAnswerController';
+import qmConfirmationController from 'routes/features/queryManagement/qmConfirmationController';
 
 export default [
   homeController,
@@ -789,6 +790,7 @@ export default [
   qmStartController,
   qmWhatToDoController,
   qmInformationController,
+  qmConfirmationController,
   createQueryCheckYourAnswerController,
   createQueryController,
 ];
