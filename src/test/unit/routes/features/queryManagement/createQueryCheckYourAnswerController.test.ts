@@ -87,7 +87,7 @@ describe('create query check your answer controller', () => {
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
           expect(createApplicantCitizenQuery).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
           expect(saveQueryManagement).toHaveBeenCalled();
@@ -106,7 +106,7 @@ describe('create query check your answer controller', () => {
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
           expect(createRespondentCitizenQuery).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
           expect(saveQueryManagement).toHaveBeenCalled();
