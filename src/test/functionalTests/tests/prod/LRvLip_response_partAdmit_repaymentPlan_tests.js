@@ -50,4 +50,4 @@ Scenario('Response with PartAdmit and Repayment plan', async () => {
   await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-}).tag('@regression-cui-r1');
+});
