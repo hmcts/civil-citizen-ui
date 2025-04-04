@@ -60,7 +60,8 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', 
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({
+// TODO undo when part payment journey is restored
+Scenario.skip('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({
   I,
   api,
 }) => {
@@ -93,7 +94,8 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept'
   }
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept', async ({api}) => {
+// TODO undo when part payment journey is restored
+Scenario.skip('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
