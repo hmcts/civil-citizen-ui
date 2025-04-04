@@ -1,7 +1,7 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
   BACK_URL, QM_INFORMATION_URL,
-  QM_WHAT_DO_YOU_WANT_TO_DO_URL,
+  QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
 } from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
@@ -10,25 +10,26 @@ import {
   QualifyingQuestionTypeOption,
   RadioButtonItems,
   WhatToDoTypeOption,
-} from 'form/models/qm/queryManagement';
+} from 'form/models/queryManagement/queryManagement';
 import { t } from 'i18next';
 import {
   getCancelUrl,
   getCaption,
   getQueryManagement,
   saveQueryManagement,
-} from 'services/features/qm/queryManagementService';
+} from 'services/features/queryManagement/queryManagementService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const qmWhatToDoController = Router();
-const qmStartViewPath = 'features/qm/qm-questions-template.njk';
+const qmStartViewPath = 'features/queryManagement/qm-questions-template.njk';
 
 const QUERY_MANAGEMENT_PROPERTY_NAME = 'qualifyingQuestion';
 
-const getRedirectPath = (qmType: WhatToDoTypeOption, option: QualifyingQuestionTypeOption) => {
-  return QM_INFORMATION_URL.replace(':qmType', qmType).replace(':qmQualifyOption', option);
+const getRedirectPath = (qmType: WhatToDoTypeOption, option: QualifyingQuestionTypeOption, claimId: string) => {
+  return [QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE, QualifyingQuestionTypeOption.SOLVE_PROBLEM_SOMETHING_ELSE, QualifyingQuestionTypeOption.SEND_UPDATE_SOMETHING_ELSE].includes(option) ? constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY) :
+    QM_INFORMATION_URL.replace(':qmType', qmType).replace(':qmQualifyOption', option);
 };
 
 const getValidationMessage = (option: WhatToDoTypeOption) => {
@@ -142,7 +143,7 @@ qmWhatToDoController.post(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next
       return renderView(claimId,qmType, form, res);
     }
     await saveQueryManagement(redisKey, form.model, QUERY_MANAGEMENT_PROPERTY_NAME, req);
-    const redirectPath = getRedirectPath(qmType, option);
+    const redirectPath = getRedirectPath(qmType, option, claimId);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectPath));
   } catch (error) {
     next(error);
