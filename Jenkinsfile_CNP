@@ -5,7 +5,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 
 def type = "nodejs"
-def product = "civil-citizen-ui"
+def product = "Civil-Citizen-UI"
 def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
