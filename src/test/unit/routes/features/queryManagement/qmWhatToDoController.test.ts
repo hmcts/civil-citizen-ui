@@ -3,20 +3,16 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  QM_INFORMATION_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
+  QM_INFORMATION_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {getCaption, getQueryManagement, saveQueryManagement} from 'services/features/qm/queryManagementService';
-import {QualifyingQuestionTypeOption, QueryManagement, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {getCaption, getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {QualifyingQuestionTypeOption, QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/services/features/qm/queryManagementService');
+jest.mock('services/features/queryManagement/queryManagementService');
 
 const CONTROLLER_URL = QM_WHAT_DO_YOU_WANT_TO_DO_URL;
 
@@ -124,6 +120,21 @@ describe('Query management what do do controller', () => {
         },
       );
     });
+
+    it.each([
+      [WhatToDoTypeOption.MANAGE_HEARING, QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE],
+    ])(
+      'should redirect page when %s with %s selected',
+      async (qmType, option) => {
+        await request(app)
+          .post(getUrlByQmType(qmType))
+          .send({option})
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(QUERY_MANAGEMENT_CREATE_QUERY);
+          });
+      },
+    );
 
     it('should return http 500 when has error', async () => {
       const mockSaveDraftClaim = saveQueryManagement as jest.Mock;
