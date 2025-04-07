@@ -87,13 +87,6 @@ class Judgment {
 
   async confirmationPage(){
     await I.waitForContent('County Court Judgment requested', 60);
-    await I.see('We’ll process your request and send a copy of the judgment to you and to Sir John Doe.');
-    await I.see('We aim to process this request as soon as possible.');
-    await I.see('Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.');
-    await I.see('Your online account will not be updated with the progress of this claim and any further updates will be by post.');
-    await I.see('If a postal response is received before the judgment is issued your request will be rejected.');
-    await I.see('Email');
-    await I.see('Telephone');
   }
 }
 

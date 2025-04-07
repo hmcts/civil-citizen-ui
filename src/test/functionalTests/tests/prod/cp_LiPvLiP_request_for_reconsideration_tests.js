@@ -15,7 +15,7 @@ const claimType = 'SmallClaimsThousand';
 const claimAmount = '£1,000';
 let caseData, claimNumber, claimRef, taskListItem, notification, deadline, todayDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Request for reconsideration');
+Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@case-progression');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -24,7 +24,8 @@ Before(async ({api}) => {
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.performCaseProgressedToSDO(config.legalAdvisor, claimRef, claimType);
   await api.waitForFinishedBusinessProcess();
   deadline = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(1));

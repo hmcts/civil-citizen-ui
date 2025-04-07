@@ -23,9 +23,10 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled, isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {updateQueryManagementDashboardItems} from 'services/features/queryManagement/queryManagementService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,6 +35,9 @@ const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'M
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+  const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.issueDate);
+  const welshGaEnabled = await isGaForWelshEnabled();
+
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     for (const item of dashboard.items) {
@@ -53,8 +57,10 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (!isGAFlagEnable
       || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
       || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-      || (claim.isAnyPartyBilingual() && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
+      || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    } else if (queryManagementFlagEnabled) {
+      updateQueryManagementDashboardItems(dashboard, GA_DASHBOARD_EXCLUSIONS[0], claim);
     }
 
     return dashboard;
@@ -149,7 +155,8 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string, isGAlinkEnabled = false) : Promise<iWantToLinks> => {
   if ((claim.ccdState && isGAlinkEnabled || !claim.isCaseIssuedPending() && !claim.isClaimSettled()
     && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
-    if (claim.isAnyPartyBilingual()) {
+    const welshGaEnabled = await isGaForWelshEnabled();
+    if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: GA_SUBMIT_OFFLINE,

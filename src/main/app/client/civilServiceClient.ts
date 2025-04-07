@@ -366,6 +366,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION, claimId, updatedApplication, req);
   }
 
+  async submitInitiateGeneralApplicationEventForCosc(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION_COSC, claimId, updatedApplication, req);
+  }
+
   async submitRequestForReconsideration(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
@@ -397,6 +401,10 @@ export class CivilServiceClient {
       logger.error('Error when calculating extended response deadline');
       throw err;
     }
+  }
+
+  async submitQueryManagementRaiseQuery(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.QUERY_MANAGEMENT_RAISE_QUERY, claimId, updatedClaim, req);
   }
 
   async calculateExtendedResponseDeadline(extendedDeadline: Date, plusDays: number, req: AppRequest): Promise<Date> {

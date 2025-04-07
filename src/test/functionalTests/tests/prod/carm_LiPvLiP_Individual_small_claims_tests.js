@@ -17,7 +17,7 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual @nightly @carm');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual').tag('@nightly @carm');
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -36,7 +36,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   console.log('Security code', securityCode);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
+  await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');

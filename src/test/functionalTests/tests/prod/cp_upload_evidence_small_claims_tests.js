@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
 let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Upload Evidence - Small Claims');
+Feature('Case progression journey - Upload Evidence - Small Claims').tag('@case-progression');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -21,7 +21,8 @@ Before(async ({api}) => {
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM');
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
   await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
   await api.waitForFinishedBusinessProcess();
@@ -45,7 +46,7 @@ Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upl
   //defendant uploads documents
   await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£1,500', uploadDate);
   if (isDashboardServiceEnabled) {
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
+    //await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }

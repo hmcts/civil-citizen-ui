@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL, COSC_FINAL_PAYMENT_DATE_URL,
+  BACK_URL, COSC_FINAL_PAYMENT_DATE_URL,
   GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
@@ -20,7 +20,7 @@ askProofOfDebtPaymentGuidanceController.get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANC
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    let backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
+    let backLinkUrl = BACK_URL;
     if(claim.generalApplication == null) {
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);

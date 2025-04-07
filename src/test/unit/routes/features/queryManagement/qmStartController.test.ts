@@ -4,16 +4,16 @@ import nock from 'nock';
 import config from 'config';
 import {
   APPLICATION_TYPE_URL,
-  QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL, QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
+  QUERY_MANAGEMENT_CREATE_QUERY, QM_FOLLOW_UP_URL, QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {getQueryManagement, saveQueryManagement} from 'services/features/qm/queryManagementService';
-import {QueryManagement, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/services/features/qm/queryManagementService');
+jest.mock('services/features/queryManagement/queryManagementService');
 
 const CONTROLLER_URL = QM_START_URL;
 describe('Query management start Controller', () => {
@@ -92,7 +92,7 @@ describe('Query management start Controller', () => {
         .send({option: WhatToDoTypeOption.GET_SUPPORT})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QM_CREATE_QUERY_URL.replace(':qmType', WhatToDoTypeOption.GET_SUPPORT));
+          expect(res.header.location).toEqual(QUERY_MANAGEMENT_CREATE_QUERY);
         });
     });
 
@@ -112,7 +112,7 @@ describe('Query management start Controller', () => {
         .send({option: WhatToDoTypeOption.SOMETHING_ELSE})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QM_CREATE_QUERY_URL.replace(':qmType', WhatToDoTypeOption.SOMETHING_ELSE));
+          expect(res.header.location).toEqual(QUERY_MANAGEMENT_CREATE_QUERY);
         });
     });
 
