@@ -185,6 +185,7 @@ export async function isGaForWelshEnabled(): Promise<boolean> {
 
 export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
   const isLRQueryManagementEnabled = await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+  const isLipQueryManagementEnabled = await isQueryManagementEnabled(claim.submittedDate) as boolean;
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  return !(isLRQueryManagementEnabled && isSettledOrDiscontinued && (!claim.previousCCDState || claim.eaCourtLocation === YesNoUpperCase.NO));
+  return !(isSettledOrDiscontinued && (isLRQueryManagementEnabled && !isLipQueryManagementEnabled && !claim.previousCCDState) || (isLRQueryManagementEnabled && isLipQueryManagementEnabled && claim.eaCourtLocation === YesNoUpperCase.NO));
 }
