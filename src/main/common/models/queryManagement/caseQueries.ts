@@ -8,12 +8,12 @@ export interface CaseQueries {
 }
 
 export interface QueryMessage {
-  id: string;
+  id?: string;
   value: CaseMessage;
 }
 
 export interface CaseMessage {
-  id: string;
+  id?: string;
   subject: string;
   name: string;
   body: string;
@@ -26,6 +26,6 @@ export interface CaseMessage {
 }
 
 export interface FormDocument {
-  id: string;
-  value: Document;
+  id?: string;
+  value?: Document;
 }
