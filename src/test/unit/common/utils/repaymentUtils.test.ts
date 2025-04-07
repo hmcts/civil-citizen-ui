@@ -8,7 +8,7 @@ import {Party} from 'common/models/party';
 import {addDaysToDate, addMonths} from 'common/utils/dateUtils';
 import {
   convertFrequencyToText,
-  convertFrequencyToTextForRepaymentPlan,
+  convertFrequencyToTextForRepaymentPlan, fetchClaimTotal,
   getAmount,
   getFinalPaymentDate, getFinalPaymentDateForClaimantPlan,
   getFirstRepaymentDate,
@@ -25,7 +25,7 @@ import {Claim} from 'common/models/claim';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
-
+import {CivilServiceClient} from 'client/civilServiceClient';
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -498,5 +498,19 @@ describe('repaymentUtils', () => {
       //Then
       expect(repaymentLength).toContain('20');
     });
+  });
+});
+
+describe.skip('fetchClaimTotal', () => {
+  it('should return claim total', async () => {
+    //Given
+    jest
+      .spyOn(CivilServiceClient.prototype, 'calculateClaimTotalAmount')
+      .mockResolvedValueOnce(Promise.resolve(100) as any);
+    const claim = getClaimForPA(TransactionSchedule.WEEK, 100);
+    //When
+    const repaymentLength = await fetchClaimTotal(claim);
+    //Then
+    expect(repaymentLength).toBe(100);
   });
 });

@@ -10,6 +10,7 @@ import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../../main/modules/oidc');
+jest.mock('common/utils/repaymentUtils', () => ({fetchClaimTotal: jest.fn(() => Promise.resolve(0))}));
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -2,6 +2,7 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import {Claim} from 'common/models/claim';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
+import {fetchClaimTotal} from 'common/utils/repaymentUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
@@ -17,8 +18,10 @@ const getForm = (totalClaimAmount: number, repaymentPlan: RepaymentPlan, firstRe
   );
 };
 
-const getRepaymentPlanForm = (claim: Claim, isPartialAdmission?: boolean) => {
+const getRepaymentPlanForm = async (claim: Claim, isPartialAdmission?: boolean) => {
   try {
+    const calculateClaimTotalAmount = await fetchClaimTotal(claim);
+    console.log(calculateClaimTotalAmount);
     const totalClaimAmount = isPartialAdmission ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
 
     if (isPartialAdmission && claim.partialAdmission?.paymentIntention?.repaymentPlan) {
