@@ -13,9 +13,9 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@nightly');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
 
-Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({
+Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,
   api,
 }) => {
@@ -47,7 +47,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
   }
 }).tag('@regression-cui-r2');
 
-Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
@@ -60,7 +60,7 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @c
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept @citizenUI @partAdmit @nightly - @api', async ({
+Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({
   I,
   api,
 }) => {
@@ -93,7 +93,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
   }
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
