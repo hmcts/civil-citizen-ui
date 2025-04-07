@@ -14,13 +14,10 @@ import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Request} from 'express';
-import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('common/utils/repaymentUtils', () => ({fetchClaimTotal: jest.fn(() => Promise.resolve({}))}));
-const MOCK_REQUEST = {params: {id: 1}} as unknown as Request;
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;
@@ -36,7 +33,7 @@ describe('Repayment Plan Service', () => {
   describe('getRepaymentPlanForm', () => {
     it('should get empty form when no data exist', async () => {
       //When
-      const form = await getRepaymentPlanForm(new Claim(), <AppRequest>MOCK_REQUEST);
+      const form = await getRepaymentPlanForm(new Claim());
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -55,7 +52,7 @@ describe('Repayment Plan Service', () => {
       claim.partialAdmission.paymentIntention = new PaymentIntention();
 
       //When
-      const form = await getRepaymentPlanForm(claim, <AppRequest>MOCK_REQUEST);
+      const form = await getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -71,7 +68,7 @@ describe('Repayment Plan Service', () => {
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       //When
-      const form = await getRepaymentPlanForm(claim, <AppRequest>MOCK_REQUEST);
+      const form = await getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -100,7 +97,7 @@ describe('Repayment Plan Service', () => {
       claim.partialAdmission.howMuchDoYouOwe.amount = 1000;
 
       //When
-      const form = await getRepaymentPlanForm(claim,<AppRequest>MOCK_REQUEST, true);
+      const form = await getRepaymentPlanForm(claim, true);
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
@@ -128,7 +125,7 @@ describe('Repayment Plan Service', () => {
       claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
 
       //When
-      const form = await getRepaymentPlanForm(claim, <AppRequest>MOCK_REQUEST);
+      const form = await getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
@@ -145,7 +142,7 @@ describe('Repayment Plan Service', () => {
         amount: PART_ADMIT_AMOUNT,
       };
 
-      const form = await getRepaymentPlanForm(claim,<AppRequest>MOCK_REQUEST, true);
+      const form = await getRepaymentPlanForm(claim, true);
 
       expect(form.totalClaimAmount).toBe(PART_ADMIT_AMOUNT);
     });
@@ -154,7 +151,7 @@ describe('Repayment Plan Service', () => {
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
 
-      const form = await getRepaymentPlanForm(claim, <AppRequest>MOCK_REQUEST, false);
+      const form = await getRepaymentPlanForm(claim, false);
 
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
     });

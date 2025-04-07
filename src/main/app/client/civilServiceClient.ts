@@ -404,10 +404,9 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateClaimTotalAmount(claim: ClaimUpdate, req: AppRequest): Promise<number> {
-    const config = this.getConfig(req);
+  async calculateClaimTotalAmount(claim: ClaimUpdate): Promise<number> {
     try {
-      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL, claim, config);
+      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL, claim, {headers: {'Content-Type': 'application/json'}});
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating claim total amount');
