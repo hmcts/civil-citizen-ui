@@ -49,4 +49,4 @@ Scenario('Response with RejectAll and AlreadyPaid', async ({api}) => {
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
-}).tag('@regression-cui-r1');
+});
