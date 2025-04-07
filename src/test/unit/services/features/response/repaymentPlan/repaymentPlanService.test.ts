@@ -15,7 +15,7 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Request} from 'express';
-import {AppRequest} from "models/AppRequest";
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
