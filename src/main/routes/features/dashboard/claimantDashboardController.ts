@@ -81,7 +81,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
-      const isQMFlagEnabled = await isQueryManagementEnabled(claim.issueDate);
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
         = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);

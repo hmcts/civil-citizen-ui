@@ -64,7 +64,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-      const isQMFlagEnabled = await isQueryManagementEnabled(claim.issueDate);
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
 
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
 
