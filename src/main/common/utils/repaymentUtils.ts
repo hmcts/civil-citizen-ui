@@ -6,6 +6,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -140,7 +141,11 @@ export const getRepaymentLength = (claim: Claim, lng: string): string => {
   return repaymentLength;
 };
 
-export const fetchClaimTotal = async (claim: Claim) => {
+export const fetchClaimTotal = async (claim: Claim, req: AppRequest) => {
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
-  return  await civilServiceClient.calculateClaimTotalAmount(caseDataInterest);
+  try {
+    return await civilServiceClient.calculateClaimTotalAmount(caseDataInterest, req);
+  } catch (e) {
+    return 0;
+  }
 };

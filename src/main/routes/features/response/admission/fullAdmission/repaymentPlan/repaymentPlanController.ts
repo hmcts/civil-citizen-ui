@@ -30,7 +30,7 @@ repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, (async
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
 
-    const form = await getRepaymentPlanForm(claim);
+    const form = await getRepaymentPlanForm(claim, <AppRequest>req);
     renderView(new GenericForm(form), res);
   } catch (error) {
     next(error);
@@ -42,7 +42,7 @@ repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
-      const savedValues = await getRepaymentPlanForm(claim);
+      const savedValues = await getRepaymentPlanForm(claim, <AppRequest>req);
       const form: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       form.validateSync();
       if (form.hasErrors()) {

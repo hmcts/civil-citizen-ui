@@ -26,10 +26,13 @@ import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {Request} from 'express';
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+const MOCK_REQUEST = {params: {id: 1}} as unknown as Request;
 const getClaimForFA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
   const amount = paymentAmount ? paymentAmount : 50;
   const claim = new Claim();
@@ -508,7 +511,7 @@ describe('fetchClaimTotal', () => {
       .mockResolvedValueOnce(Promise.resolve(100) as any);
     const claim = getClaimForPA(TransactionSchedule.WEEK, 100);
     //When
-    const repaymentLength = await fetchClaimTotal(claim);
+    const repaymentLength = await fetchClaimTotal(claim, <AppRequest>MOCK_REQUEST);
     //Then
     expect(repaymentLength).toBe(100);
   });

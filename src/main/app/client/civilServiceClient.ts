@@ -30,7 +30,8 @@ import {
   CIVIL_SERVICE_UPDATE_TASK_STATUS_URL,
   CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
   CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL,
-  CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST,
+  CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -403,9 +404,10 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateClaimTotalAmount(claim: ClaimUpdate): Promise<number> {
+  async calculateClaimTotalAmount(claim: ClaimUpdate, req: AppRequest): Promise<number> {
+    const config = this.getConfig(req);
     try {
-      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL, claim, {headers: {'Content-Type': 'application/json'}});
+      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL, claim, config);
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating claim total amount');
