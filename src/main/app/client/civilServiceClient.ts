@@ -31,6 +31,7 @@ import {
   CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
   CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL,
   CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST,
+  CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -398,7 +399,17 @@ export class CivilServiceClient {
       const response = await this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
       return response.data as number;
     } catch (err: unknown) {
-      logger.error('Error when calculating extended response deadline');
+      logger.error('Error when calculating interest');
+      throw err;
+    }
+  }
+
+  async calculateClaimTotalAmount(claim: ClaimUpdate): Promise<number> {
+    try {
+      const response = await this.client.post(CIVIL_SERVICE_CALCULATE_TOTAL_CLAIM_AMOUNT_URL, claim, {headers: {'Content-Type': 'application/json'}});
+      return response.data as number;
+    } catch (err: unknown) {
+      logger.error('Error when calculating claim total amount');
       throw err;
     }
   }
