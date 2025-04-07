@@ -1,6 +1,9 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
+import {YesNoUpperCase} from 'form/models/yesNo';
 
 let ldClient: LDClient;
 let testData: TestData;
@@ -18,6 +21,7 @@ const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
 const IS_COSC_ENABLED = 'isCoSCEnabled';
 const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 const QUERY_MANAGEMENT = 'cui-query-management';
+const LR_QUERY_MANAGEMENT = 'query-management';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -170,4 +174,10 @@ export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
   return await getFlagValue(QUERY_MANAGEMENT, epoch) as boolean;
+}
+
+export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
+  const isLRQueryManagementEnabled = await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+  const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
+  return !(isLRQueryManagementEnabled && isSettledOrDiscontinued && (!claim.previousCCDState || claim.eaCourtLocation === YesNoUpperCase.NO));
 }
