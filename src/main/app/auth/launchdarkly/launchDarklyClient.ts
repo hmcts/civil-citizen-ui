@@ -3,7 +3,7 @@ import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk'
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
-import {YesNoUpperCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 let ldClient: LDClient;
 let testData: TestData;
@@ -184,8 +184,11 @@ export async function isGaForWelshEnabled(): Promise<boolean> {
 }
 
 export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
-  const isLRQueryManagementEnabled = await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
-  const isLipQueryManagementEnabled = await isQueryManagementEnabled(claim.submittedDate) as boolean;
+  const isLRQueryManagementEnabled = true;//await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+  const isLipQueryManagementEnabled = false;//await isQueryManagementEnabled(claim.submittedDate) as boolean;
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  return !(isSettledOrDiscontinued && (isLRQueryManagementEnabled && !isLipQueryManagementEnabled && !claim.previousCCDState) || (isLRQueryManagementEnabled && isLipQueryManagementEnabled && claim.eaCourtLocation === YesNoUpperCase.NO));
+  return (isSettledOrDiscontinued &&
+      isLRQueryManagementEnabled &&
+      ((!isLipQueryManagementEnabled && !claim.previousCCDState) ||
+          (isLipQueryManagementEnabled && claim.eaCourtLocation === YesNoUpperCamelCase.NO)));
 }

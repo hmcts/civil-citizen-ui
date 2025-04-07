@@ -24,7 +24,7 @@ import {
   InterestEndDateType,
   SameRateInterestType,
 } from 'form/models/claimDetails';
-import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
 import {Document} from 'common/models/document/document';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -195,7 +195,8 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
-  eaCourtLocation?: YesNoUpperCase;
+  eaCourtLocation?: YesNoUpperCamelCase;
+  previousCCDState?: string;
   // Index signature to allow dynamic property access
   [key: string]: any;
   //Query management
