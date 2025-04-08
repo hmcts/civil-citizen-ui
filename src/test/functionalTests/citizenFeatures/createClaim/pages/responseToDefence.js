@@ -657,6 +657,21 @@ class ResponseToDefence {
     await I.click(paths.buttons.submit_response);
   }
 
+  async verifyCheckYourAnswersRejectAllYesToProceedSmallClaim() {
+    I.waitForContent('Do you want to proceed with the claim?',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Availability for mediation', 'h2');
+    I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
+    I.see('Dates unavailable');
+    I.see('Hearing requirements', 'h2');
+    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?');
+    I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?');
+    I.see('Please select your preferred court hearing location');
+    I.see('What languages will the documents be provided in?');
+    await I.click(paths.buttons.submit_response);
+  }
+
   async verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim() {
     I.waitForContent('Do you agree the defendant has paid £700?',60);
     I.see('Do you want to settle the claim for the £700?');

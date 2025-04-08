@@ -300,6 +300,29 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
+  async ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAllSmallClaim(caseReference, claimNumber)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForRejectAllDisputeAll();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.decide_whether_to_proceed);
+    await responseToDefence.inputProceedWithTheClaim();
+    await this.verifyDashboardLoaded();
+    await mediationSteps.EnterTelephoneMediationDetails();
+    await mediationSteps.goToPhoneDetailsScreen();
+    await mediationSteps.ConfirmPhoneDetails();
+    await mediationSteps.ConfirmEmailDetails();
+    await mediationSteps.EnterUnavailableDates();
+    await this.verifyDashboardLoaded();
+    await this.verifyDQForSmallClaims();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.verifyCheckYourAnswersRejectAllYesToProceedSmallClaim();
+    await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+  }
+
   async ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(caseReference, claimNumber)
   {
     await responseToDefence.open(caseReference);
