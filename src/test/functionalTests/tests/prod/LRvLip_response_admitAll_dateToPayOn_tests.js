@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with AdmitAll and Date to PayOn');
+Feature('Response with AdmitAll and Date to PayOn').tag('@full-admit');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -44,4 +44,4 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-}).tag('@regression-cui-r1');
+});

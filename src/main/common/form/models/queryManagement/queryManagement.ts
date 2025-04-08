@@ -1,6 +1,7 @@
 import {IsDefined} from 'class-validator';
 import {ValidationArgs} from 'form/models/genericForm';
 import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 
 export class Hint {
   text: string;
@@ -97,4 +98,5 @@ export enum QualifyingQuestionTypeOption {
 export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
   qualifyingQuestion : QualifyingQuestion;
+  createQuery: CreateQuery;
 }
