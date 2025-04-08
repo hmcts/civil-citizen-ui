@@ -113,7 +113,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
     iWantToLinks.push(viewAllApplicationLink);
   }
   if (viewMessages) {
-    iWantToLinks.push(viewMessages)
+    iWantToLinks.push(viewMessages);
   }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);

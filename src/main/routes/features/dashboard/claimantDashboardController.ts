@@ -151,7 +151,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
   if (viewMessages) {
-    iWantToLinks.push(viewMessages)
+    iWantToLinks.push(viewMessages);
   }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
