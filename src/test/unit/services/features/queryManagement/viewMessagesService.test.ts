@@ -29,7 +29,7 @@ describe('View Messages Service', () => {
     const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeDefined();
   });
-  
+
   it('should not the generate the view message if the flag is off', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.DEFENDANT;
