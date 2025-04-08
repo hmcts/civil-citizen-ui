@@ -11,32 +11,34 @@ describe('View Messages Service', () => {
     claim.caseRole = CaseRole.CLAIMANT;
     claim.qmApplicantCitizenQueries = {
       caseRole: CaseRole.CLAIMANT,
-      caseMessages: [{id: '12345', subject: 'Test Message'}]
+      caseMessages: [{id: '12345', subject: 'Test Message'}],
     };
     jest.spyOn(launchDarklyService, 'isQueryManagementEnabled').mockResolvedValueOnce(true);
-    const generatedLink = await getViewMessagesLink(req, claim, 'en')
+    const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeDefined();
-  })
+  });
+
   it('should generate the view messages link for defendant', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.DEFENDANT;
     claim.qmRespondentCitizenQueries = {
       caseRole: CaseRole.DEFENDANT,
-      caseMessages: [{id: '12345', subject: 'Test Message'}]
+      caseMessages: [{id: '12345', subject: 'Test Message'}],
     };
     jest.spyOn(launchDarklyService, 'isQueryManagementEnabled').mockResolvedValueOnce(true);
-    const generatedLink = await getViewMessagesLink(req, claim, 'en')
+    const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeDefined();
-  })
+  });
+  
   it('should not the generate the view message if the flag is off', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.DEFENDANT;
     claim.qmRespondentCitizenQueries = {
       caseRole: CaseRole.DEFENDANT,
-      caseMessages: [{id: '12345', subject: 'Test Message'}]
+      caseMessages: [{id: '12345', subject: 'Test Message'}],
     };
     jest.spyOn(launchDarklyService, 'isQueryManagementEnabled').mockResolvedValueOnce(false);
-    const generatedLink = await getViewMessagesLink(req, claim, 'en')
+    const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeUndefined();
-  })
-})
+  });
+});

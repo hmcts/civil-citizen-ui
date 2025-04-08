@@ -17,4 +17,4 @@ export const getViewMessagesLink = async (req: AppRequest, claim: Claim, lng: st
       };
     }
   }
-}
+};
