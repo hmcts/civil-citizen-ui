@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure@OPS/DTSPO-24729---DO-NOT-MERGE")
+@Library("Infrastructure@OPS-DTSPO-24729-DoNotMerge")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 
