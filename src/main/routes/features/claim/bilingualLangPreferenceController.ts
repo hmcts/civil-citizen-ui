@@ -2,6 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveClaimantBilingualLangPreference,
+  setCookieLanguage,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
@@ -9,7 +10,6 @@ import {
 } from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {
   createDraftClaimInStoreWithExpiryTime,
   getCaseDataFromStore,
@@ -19,6 +19,7 @@ import {claimLanguagePreferenceGuard} from 'routes/guards/claimLanguagePreferenc
 import {Claim} from 'models/claim';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {isGaForWelshEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const bilingualLangPreferenceViewPath = 'features/claim/claim-bilingual-language-preference';
 const claimBilingualLangPreferenceController = Router();
@@ -26,8 +27,9 @@ const claimBilingualLangPreferenceController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(bilingualLangPreferenceViewPath, {form, pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE'});
+async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
+  const welshGaEnabled = await isGaForWelshEnabled();
+  res.render(bilingualLangPreferenceViewPath, {form, pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE', welshGaEnabled});
 }
 
 claimBilingualLangPreferenceController.get(
@@ -59,7 +61,7 @@ claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      res.cookie('lang', form.model.option === ClaimBilingualLanguagePreference.ENGLISH ? 'en' : 'cy');
+      res.cookie('lang', setCookieLanguage(form.model.option));
       await saveClaimantBilingualLangPreference(userId, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_TASK_LIST_URL));
     }
