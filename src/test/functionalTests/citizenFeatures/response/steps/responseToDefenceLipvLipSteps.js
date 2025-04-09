@@ -297,7 +297,6 @@ class ResponseToDefenceLipVLipSteps {
       await this.verifyDQForFastTrack();
       await this.verifyDashboardLoaded();
       I.click(paths.links.check_and_submit_your_response);
-      await responseToDefence.verifyCheckYourAnswersRejectAllYesToProceed();
     }
     if (claimType === 'SmallClaims') {
       await mediationSteps.EnterTelephoneMediationDetails();
@@ -309,8 +308,8 @@ class ResponseToDefenceLipVLipSteps {
       await this.verifyDQForSmallClaims();
       await this.verifyDashboardLoaded();
       I.click(paths.links.check_and_submit_your_response);
-      await responseToDefence.verifyCheckYourAnswersRejectAllYesToProceedSmallClaim();
     }
+    await responseToDefence.verifyCheckYourAnswersRejectAllYesToProceed(claimType);
     await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
