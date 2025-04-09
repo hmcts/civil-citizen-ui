@@ -645,29 +645,22 @@ class ResponseToDefence {
     await I.click(paths.buttons.submit_response);
   }
 
-  async verifyCheckYourAnswersRejectAllYesToProceed() {
+  async verifyCheckYourAnswersRejectAllYesToProceed(claimType) {
     I.waitForContent('Do you want to proceed with the claim?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Hearing requirements', 'h2');
-    I.see('Have you tried to settle this claim before going to court?');
-    I.see('Do you want an extra 4 weeks to try to settle the claim?');
-    I.see('Are there any documents the claimant has that you want the court to consider?');
-    I.see('What languages will the documents be provided in?');
-    await I.click(paths.buttons.submit_response);
-  }
-
-  async verifyCheckYourAnswersRejectAllYesToProceedSmallClaim() {
-    I.waitForContent('Do you want to proceed with the claim?',60);
-    I.see('Check your answers', 'h1');
-    I.see('Your response','h2');
-    I.see('Availability for mediation', 'h2');
-    I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
-    I.see('Dates unavailable');
-    I.see('Hearing requirements', 'h2');
-    I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?');
-    I.see('Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?');
-    I.see('Please select your preferred court hearing location');
+    if (claimType === 'FastTrack') {
+      I.see('Have you tried to settle this claim before going to court?');
+      I.see('Do you want an extra 4 weeks to try to settle the claim?');
+      I.see('Are there any documents the claimant has that you want the court to consider?');
+    }
+    if (claimType === 'SmallClaims') {
+      I.see('Availability for mediation', 'h2');
+      I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
+      I.see('Dates unavailable');
+      I.see('Do you consider that this claim is suitable for determination without a hearing,i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?');
+    }
     I.see('What languages will the documents be provided in?');
     await I.click(paths.buttons.submit_response);
   }
