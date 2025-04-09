@@ -4462,7 +4462,7 @@
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
       "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
-      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest. Please note any interest will accrue until judgment or settlement date.",
       "TITLE": "Your repayment plan"
     },
     "REPAYMENT_PLAN_SUMMARY": {

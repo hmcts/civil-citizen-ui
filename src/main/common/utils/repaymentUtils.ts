@@ -140,7 +140,12 @@ export const getRepaymentLength = (claim: Claim, lng: string): string => {
   return repaymentLength;
 };
 
-export const fetchClaimTotal = async (claim: Claim) => {
+export const fetchClaimTotal = async (claim: Claim): Promise<number> => {
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
-  return  await civilServiceClient.calculateClaimTotalAmount(caseDataInterest);
+  try {
+    return await civilServiceClient.calculateClaimTotalAmount(caseDataInterest);
+  } catch (error) {
+    console.error(error);
+  }
+  return 0;
 };
