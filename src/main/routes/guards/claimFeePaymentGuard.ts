@@ -9,7 +9,7 @@ export const claimFeePaymentGuard = (async (req: AppRequest, res: Response, next
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    if (await checkIfClaimFeeHasChanged(claimId, claim, req)) {
+    if (claim?.isDraftClaim() && await checkIfClaimFeeHasChanged(claimId, claim, req)) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_CHANGE_URL.replace(':id', claimId)));
     } else {
       next();
