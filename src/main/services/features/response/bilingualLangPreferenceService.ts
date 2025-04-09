@@ -43,17 +43,17 @@ const saveClaimantBilingualLangPreference = async (userId: string, form: Generic
   }
 };
 
-const getSelectedLanguage = async (language: String) => {
-    switch(language) {
-       case ClaimBilingualLanguagePreference.ENGLISH:
-        return ClaimBilingualLanguagePreference.ENGLISH;
-      case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
-        return ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      case ClaimBilingualLanguagePreference.WELSH:
-        return ClaimBilingualLanguagePreference.WELSH;
-      default:
-        return undefined;
-    }
+const getSelectedLanguage = async (language: string) => {
+  switch(language) {
+    case ClaimBilingualLanguagePreference.ENGLISH:
+      return ClaimBilingualLanguagePreference.ENGLISH;
+    case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
+      return ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    case ClaimBilingualLanguagePreference.WELSH:
+      return ClaimBilingualLanguagePreference.WELSH;
+    default:
+      return undefined;
+  }
 };
 const getClaim = async (claimId: string): Promise<Claim> => {
   const claim = await getCaseDataFromStore(claimId);
@@ -64,16 +64,16 @@ const getClaim = async (claimId: string): Promise<Claim> => {
 };
 
 const setCookieLanguage = (language: string) => {
-   switch(language) {
-      case ClaimBilingualLanguagePreference.ENGLISH:
-      case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
-        return 'en';
-      case ClaimBilingualLanguagePreference.WELSH:
-        return 'cy';
-      default:
-        return 'en';
-    }
-}
+  switch(language) {
+    case ClaimBilingualLanguagePreference.ENGLISH:
+    case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
+      return 'en';
+    case ClaimBilingualLanguagePreference.WELSH:
+      return 'cy';
+    default:
+      return 'en';
+  }
+};
 
 export {
   getBilingualLangPreference,

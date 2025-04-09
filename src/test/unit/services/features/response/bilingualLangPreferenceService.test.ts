@@ -230,14 +230,12 @@ describe('Bilingual Langiage Preference Service', () => {
       expect(lang).toEqual('en');
     });
 
-
     it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
       //When
       const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH);
       //Then
       expect(lang).toEqual('cy');
     });
-
 
     it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
       //When
