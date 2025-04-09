@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit-AlreadyPaid - Small Claims');
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims').tag('@citizenUI @part-admit @nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async () => {
+Scenario('Response with PartAdmit-AlreadyPaid', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -53,4 +53,4 @@ Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', a
   /* await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitAmountPaid, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing); */
-}).tag('@regression-cui-r1');
+});

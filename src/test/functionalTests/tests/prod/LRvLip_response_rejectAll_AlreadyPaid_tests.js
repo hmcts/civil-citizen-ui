@@ -11,7 +11,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and AlreadyPaid');
+Feature('Response with RejectAll and AlreadyPaid').tag('@citizenUI @reject-all @nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -27,7 +27,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {
+Scenario('Response with RejectAll and AlreadyPaid', async ({api}) => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -49,4 +49,4 @@ Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllAlreadyPaid, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes);
-}).tag('@regression-cui-r1');
+});
