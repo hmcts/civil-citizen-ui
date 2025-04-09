@@ -8,7 +8,7 @@ const {caseOffline, caseOfflineAfterSDO} = require('../../specClaimHelpers/dashb
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('Lip v Lip - Case Offline Tests');
+Feature('Lip v Lip - Case Offline Tests').tag('@case-offline');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
