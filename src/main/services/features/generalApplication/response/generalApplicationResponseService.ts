@@ -160,7 +160,7 @@ export const isApplicationFullyVisibleToRespondent = (application: ApplicationRe
 export const isApplicationVisibleToRespondentForClaimant = (application: ApplicationResponse): boolean => {
   return isApplicationFullyVisibleToRespondentForClaimant(application)
   || (!!application.case_data?.judicialDecision);
-}
+};
 
 export const isApplicationFullyVisibleToRespondentForClaimant = (application: ApplicationResponse): boolean => {
   const parentClaimantIsApplicant = application.case_data.parentClaimantIsApplicant;
