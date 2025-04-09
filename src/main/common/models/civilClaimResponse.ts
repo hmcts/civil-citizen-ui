@@ -89,6 +89,7 @@ import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDiscl
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
+import {CcdStatementOfTruth} from "models/ccdResponse/ccdStatementOfTruth";
 
 export class CivilClaimResponse {
   id: string;
@@ -322,6 +323,7 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentSummaryObject?:string;
   joJudgementByAdmissionIssueDate?: Date;
   joDJCreatedDate?: Date;
+  uiStatementOfTruth?: CcdStatementOfTruth;
 }
 
 export interface ClaimFeeData {

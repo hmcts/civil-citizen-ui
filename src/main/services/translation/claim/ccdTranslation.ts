@@ -25,6 +25,7 @@ import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMedi
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
+import {convertToCCDStatementOfTruth} from "services/translation/response/convertToCCDStatementOfTruth";
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -63,6 +64,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     app1MediationNonAttendanceDocs: [],
     isFlightDelayClaim: claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     flightDelayDetails: claim.delayedFlight?.option === YesNo.YES ? toCCDFlightDetails(claim.flightDetails) : undefined,
+    uiStatementOfTruth:convertToCCDStatementOfTruth(claim.claimDetails.statementOfTruth),
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
