@@ -45,7 +45,7 @@ claimBilingualLangPreferenceController.get(
           await civilServiceClient.createDashboard(<AppRequest> req);
         }
         const form: GenericYesNo = new GenericYesNo();
-        renderView(new GenericForm<GenericYesNo>(form), res);
+        await renderView(new GenericForm<GenericYesNo>(form), res);
       } catch (error) {
         next(error);
       }
@@ -59,7 +59,7 @@ claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_
     form.validateSync();
     const userId = (<AppRequest>req).session?.user?.id;
     if (form.hasErrors()) {
-      renderView(form, res);
+      await renderView(form, res);
     } else {
       res.cookie('lang', setCookieLanguage(form.model.option));
       await saveClaimantBilingualLangPreference(userId, form.model);

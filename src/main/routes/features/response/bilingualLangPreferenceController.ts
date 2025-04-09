@@ -31,7 +31,7 @@ bilingualLangPreferenceController.get(
     (async () => {
       try {
         const form: GenericYesNo = await getBilingualLangPreference(req);
-        renderView(new GenericForm<GenericYesNo>(form), res);
+        await renderView(new GenericForm<GenericYesNo>(form), res);
       } catch (error) {
         next(error);
       }
@@ -44,7 +44,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SELECT_WELSH_AND_ENGLISH_OPTION'));
     form.validateSync();
     if (form.hasErrors()) {
-      renderView(form, res);
+      await renderView(form, res);
     } else {
       res.cookie('lang', setCookieLanguage(form.model.option));
       await saveBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
