@@ -2,23 +2,23 @@ import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
   BACK_URL,
-  CCJ_PAID_AMOUNT_URL,
-  DATE_PAID_URL,
-  QM_CREATE_QUERY_URL,
   QM_FOLLOW_UP_URL,
   QM_INFORMATION_URL,
   QM_VIEW_QUERY_URL,
+  CCJ_PAID_AMOUNT_URL,
+  DATE_PAID_URL,
+  QUERY_MANAGEMENT_CREATE_QUERY,
   UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 
 import {
   QualifyingQuestionTypeOption,
   WhatToDoTypeOption,
-} from 'form/models/qm/queryManagement';
+} from 'form/models/queryManagement/queryManagement';
 import {
   getCancelUrl,
   getCaption,
-} from 'services/features/qm/queryManagementService';
+} from 'services/features/queryManagement/queryManagementService';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
@@ -42,13 +42,13 @@ import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const qmInformationController = Router();
 
-const qmStartViewPath = 'features/qm/qm-information-template.njk';
+const qmStartViewPath = 'features/queryManagement/qm-information-template.njk';
 let showAnythingElseSection = false;
 
 const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
   const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
   pageSection
-    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
+    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
@@ -121,7 +121,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
       }
-      case QualifyingQuestionTypeOption.GENERAL_UPDATE:{
+      case QualifyingQuestionTypeOption.GENERAL_UPDATE: {
         showAnythingElseSection = true;
         pageSection
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
@@ -129,11 +129,11 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`);
         break;
       }
-      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID:{
+      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID: {
         showAnythingElseSection = true;
         const isCCJLinkEnabled = claim.isClaimant() &&
-            claim.isDeadLinePassed() &&
-            claim.isDefendantNotResponded();
+          claim.isDeadLinePassed() &&
+          claim.isDefendantNotResponded();
         pageSection
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
@@ -145,14 +145,14 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
           .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
         if (isCCJLinkEnabled) {
-          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.' );
+          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.');
         } else {
           pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED`);
         }
         pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
         break;
       }
-      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT:{
+      case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT: {
         showAnythingElseSection = true;
         pageSection
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_1`)
@@ -200,20 +200,20 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
             </ul>`)
           .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT_BEFORE`, '.', '', true);
         break;
-      case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT:{
+      case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT: {
         showAnythingElseSection = true;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`);
         break;
       }
-      case QualifyingQuestionTypeOption.SETTLE_CLAIM:{
+      case QualifyingQuestionTypeOption.SETTLE_CLAIM: {
         showAnythingElseSection = true;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
-        if (claim.isClaimant() && !claim.isClaimSettled()){
+        if (claim.isClaimant() && !claim.isClaimSettled()) {
           pageSection
-            .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
+            .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
         } else {
           pageSection
             .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_UPDATE_WITHOUT_LINK`);
@@ -229,7 +229,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_1`);
         break;
       }
-      case QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS:{
+      case QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS: {
         showAnythingElseSection = true;
         pageSection
           .addParagraph(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.TEXT_1`)
@@ -238,15 +238,15 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
                 <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_2`, {lng: lang})}</li>
                 <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_3`, {lng: lang})}</li>
               </ul>`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAmendClaim=true`), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAmendClaim=true`), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT`, checkCivilFeesListFullListUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_AFTER`, null, true)
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, '.')
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_2`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.');
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.');
         break;
       }
-      case QualifyingQuestionTypeOption.CLAIM_ENDED:{
+      case QualifyingQuestionTypeOption.CLAIM_ENDED: {
         showAnythingElseSection = true;
         pageSection
           .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT`, discontinueClaimUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_AFTER`, null, true)
@@ -287,7 +287,7 @@ const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qm
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
   const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
-  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_CREATE_QUERY_URL.replace(':qmType', qmType));
+  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
 
   const contents = getContent(claimId,claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {
