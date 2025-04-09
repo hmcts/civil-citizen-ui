@@ -326,7 +326,6 @@ export interface CCDClaim extends ClaimUpdate {
   //Query management
   qmApplicantCitizenQueries?: CaseQueries;
   qmRespondentCitizenQueries?: CaseQueries;
-  eaCourtLocation?: YesNoUpperCamelCase;
   previousCCDState?: string;
 }
 

@@ -195,7 +195,6 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
-  eaCourtLocation?: YesNoUpperCamelCase;
   previousCCDState?: string;
   // Index signature to allow dynamic property access
   [key: string]: any;
