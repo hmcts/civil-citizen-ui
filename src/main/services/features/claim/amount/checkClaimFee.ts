@@ -7,6 +7,9 @@ import {calculateInterestToDate} from 'common/utils/interestUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 export const checkIfClaimFeeHasChanged = async (claimId: string, claim: Claim, req: AppRequest) => {
+  if(!claim?.isDraftClaim()) {
+    return false;
+  }
   const interestToDate = await calculateInterestToDate(claim);
   const newClaimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
   const oldClaimFee = claim.claimFee?.calculatedAmountInPence;
