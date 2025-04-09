@@ -293,11 +293,6 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.decide_whether_to_proceed);
     await responseToDefence.inputProceedWithTheClaim();
     await this.verifyDashboardLoaded();
-    if (claimType === 'FastTrack') {
-      await this.verifyDQForFastTrack();
-      await this.verifyDashboardLoaded();
-      I.click(paths.links.check_and_submit_your_response);
-    }
     if (claimType === 'SmallClaims') {
       await mediationSteps.EnterTelephoneMediationDetails();
       await mediationSteps.goToPhoneDetailsScreen();
@@ -306,6 +301,11 @@ class ResponseToDefenceLipVLipSteps {
       await mediationSteps.EnterUnavailableDates();
       await this.verifyDashboardLoaded();
       await this.verifyDQForSmallClaims();
+      await this.verifyDashboardLoaded();
+      I.click(paths.links.check_and_submit_your_response);
+    }
+    else {
+      await this.verifyDQForFastTrack();
       await this.verifyDashboardLoaded();
       I.click(paths.links.check_and_submit_your_response);
     }
