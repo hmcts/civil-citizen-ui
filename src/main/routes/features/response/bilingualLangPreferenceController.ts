@@ -3,7 +3,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getBilingualLangPreference,
   saveBilingualLangPreference,
-  setCookieLanguage
+  setCookieLanguage,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
@@ -20,7 +20,7 @@ const bilingualLangPreferenceViewPath = 'features/response/bilingual-language-pr
 const bilingualLangPreferenceController = Router();
 
 async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
- const welshGaEnabled = await isGaForWelshEnabled();
+  const welshGaEnabled = await isGaForWelshEnabled();
   res.render(bilingualLangPreferenceViewPath, {form, welshGaEnabled});
 }
 
