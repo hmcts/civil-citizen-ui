@@ -1463,7 +1463,8 @@
       "PAGE_TITLE": "Language",
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
-      "WELSH_AND_ENGLISH": "Welsh"
+      "WELSH_AND_ENGLISH": "Welsh and English",
+      "WELSH": "Welsh"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
