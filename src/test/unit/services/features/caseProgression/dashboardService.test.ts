@@ -989,6 +989,29 @@ describe('dashboardService', () => {
       //Then
       expect(result).toBeDefined();
     });
+
+    it('getContactCourtLink when Gaflag is false and isGAlinkEnabled is enable and Lr Defendant', async () => {
+
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en', true);
+
+      //Then
+      expect(result).toBeDefined();
+    });
+
   });
 });
 
