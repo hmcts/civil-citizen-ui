@@ -1,10 +1,31 @@
-import {IsDefined, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
+import {
+  IsDefined,
+  IsNumber,
+  Min,
+  Validate,
+  ValidateIf,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 import {EqualToOrLessThanPropertyValueValidator} from 'common/form/validators/equalToOrLessThanPropertyValueValidator';
 import {MIN_AMOUNT_VALUE} from 'common/form/validators/validationConstraints';
 import {YesNo} from '../../../form/models/yesNo';
 
+// temporary stop users from choosing yes to paid amount
+@ValidatorConstraint({ name: 'cannotChooseYesPaidAmount', async: false })
+class PaidAmountValidator implements ValidatorConstraintInterface {
+  validate(value: YesNo) {
+    return value !== YesNo.YES;
+  }
+
+  defaultMessage() {
+    return 'ERRORS.FEATURE_UNAVAILABLE_GUIDANCE_BELOW';
+  }
+}
+
 export class PaidAmount {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION_DO_NADDO'})
+  @Validate(PaidAmountValidator)
     option?: YesNo;
 
   totalAmount?: number;

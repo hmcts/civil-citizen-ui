@@ -74,7 +74,7 @@ describe('Choose how to proceed Controller', () => {
       await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.FEATURE_UNAVAILABLE_GUIDANCE_BELOW'));
+          expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
         });
     });
 
