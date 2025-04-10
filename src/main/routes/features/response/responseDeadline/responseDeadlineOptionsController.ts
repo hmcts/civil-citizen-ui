@@ -13,19 +13,16 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
 const responseDeadlineService = new ResponseDeadlineService();
 
 async function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string): Promise<void> {
-  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   res.render(responseDeadlineOptionsViewPath, {
     form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantFullName(),
-    isReleaseTwoEnabled,
   });
 }
 

@@ -11,7 +11,6 @@ import {ResponseDeadlineService} from 'services/features/response/responseDeadli
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 const responseDeadlineService = new ResponseDeadlineService();
 const agreedResponseDeadlineViewPath = 'features/response/responseDeadline/agreed-response-deadline';
@@ -24,13 +23,11 @@ agreedResponseDeadlineController
       try {
         const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
-        const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
           today: new Date(),
           claimantName: claim.getClaimantFullName(),
           backLink,
-          isReleaseTwoEnabled,
         });
       } catch (error) {
         next(error);
@@ -47,14 +44,12 @@ agreedResponseDeadlineController
         const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
         const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
         await form.validate();
-        const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
         if (form.hasErrors()) {
           res.render(agreedResponseDeadlineViewPath, {
             form,
             today: new Date(),
             claimantName: claim.getClaimantFullName(),
             backLink,
-            isReleaseTwoEnabled,
           });
         } else {
           await responseDeadlineService.saveAgreedResponseDeadline(redisKey, agreedResponseDeadlineDate.date);

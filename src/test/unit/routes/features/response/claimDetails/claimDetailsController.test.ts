@@ -16,13 +16,11 @@ import {PartyType} from 'models/partyType';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-import { isCUIReleaseTwoEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import civilClaimResponsePDFTimeline from '../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 
 const nock = require('nock');
 
@@ -51,7 +49,6 @@ describe('Claim details page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    isReleaseTwo.mockResolvedValue(false);
   });
 
   describe('on Get', () => {
@@ -82,7 +79,7 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('000MC009'); // case number
+          expect(res.text).toContain('1111'); // case number
           expect(res.text).toContain(totalClaimAmount); // tottal claim amount
           expect(res.text).toContain('House repair'); // claim reason
           expect(res.text).toContain('200'); // claim amount
@@ -144,7 +141,7 @@ describe('Claim details page', () => {
         });
     });
 
-    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled flags are enabled', async () => {
+    it('should return your new claim details page with values from civil-service', async () => {
       nock(civilServiceUrl)
         .get('/cases/1713273393110043')
         .reply(200, CivilClaimResponseMock);
@@ -155,7 +152,6 @@ describe('Claim details page', () => {
         .post('/fees/claim/calculate-interest')
         .times(3)
         .reply(200, '0');
-      isReleaseTwo.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
