@@ -241,7 +241,7 @@ describe('translate draft claim to ccd version', () => {
     const ccdClaim = await translateClaimantResponseDJToCCD(claim);
 
     // Normalize strings
-    const expectedString = 'The judgment will order the defendants to pay £9050.00, including the claim fee and interest, if applicable, as shown: ### Claim amount £9000 ### Claim fee amount £50 ## Subtotal £9050.00 ## Total still owed £9050.00';
+    const expectedString = 'The judgment will order the defendants to pay £9050.00, including the claim fee and interest, if applicable, as shown: ### Claim amount £9000 ### Claim interest amount £0 ### Claim fee amount £50 ## Subtotal £9050.00 ## Total still owed £9050.00';
     const normalizedExpectedString = normalizeWhitespace(expectedString);
     const normalizedReceivedString = normalizeWhitespace(ccdClaim.repaymentSummaryObject);
 
