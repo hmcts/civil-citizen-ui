@@ -30,7 +30,7 @@ import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForLipsEnabledAndLocationWhiteListed, isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {GA_SUBMIT_OFFLINE} from 'routes/urls';
@@ -74,6 +74,9 @@ describe('dashboardService', () => {
     });
   });
   describe('as Defendant', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
     describe('Dashboard', () => {
       const mockNotificationInfo = [
         {
@@ -482,6 +485,7 @@ describe('dashboardService', () => {
 
       it('getContactCourtLink when claim is taken offline', async () => {
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false)
         //Given
         const claim = new Claim();
         claim.id = '1234567890';
