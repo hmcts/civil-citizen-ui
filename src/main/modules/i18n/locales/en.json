@@ -140,10 +140,14 @@
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "COURT_STAFF_DISCLOSURE": "Court staff can help with your application. They cannot give you legal advice.",
       "EMAIL": "Email",
       "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
       "OPENING_HOURS_CARM": "Monday to Friday, 8.30am to 5pm.",
       "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "SEND_MESSAGE": "Send a message",
+      "SEND_MESSAGE_LINK": "Send a message to the court",
+      "SEND_MESSAGE_RESPONSE": "You will be able to see the response on the dashboard.",
       "TITLE": "Contact us for help",
       "TELEPHONE": "Telephone",
       "TELEPHONE_CARM": "Telephone",
@@ -2611,6 +2615,7 @@
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
+        "CONTACT_APPLY_COURT": "Contact or apply to the court",
         "DEBT_RESPITE_SCHEME": "Debt Respite (Breathing Space) SchemeCH1 creditors’ responsibilities to the court",
         "FIND_INFO_COURT": "Find information about my court",
         "FIND_MEDIATION": "Find out about mediation",
