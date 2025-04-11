@@ -8,7 +8,7 @@ const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/das
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('LR v Lip - Case Offline Tests');
+Feature('LR v Lip - Case Offline Tests').tag('@case-offline');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -40,4 +40,4 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@regression');
+}).tag('@case-progression @regression');

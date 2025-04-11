@@ -42,7 +42,7 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_RESPONDENT_INFORMATION_URL,
   MAKE_APPLICATION_TO_COURT,
-  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_SUBMIT_OFFLINE,
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_SUBMIT_OFFLINE, VIEW_THE_JUDGMENT_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -56,6 +56,7 @@ import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export const replaceDashboardPlaceholders = async (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<string> => {
 
@@ -78,6 +79,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
+  const welshGaEnabled = await isGaForWelshEnabled();
 
   valuesMap.set('{VIEW_CLAIM_URL}', CLAIM_DETAILS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', VIEW_CLAIMANT_INFO.replace(':id', claimId));
@@ -90,7 +92,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_JUDGEMENT}', '#');
+  valuesMap.set('{VIEW_JUDGEMENT}', VIEW_THE_JUDGMENT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
@@ -127,7 +129,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', REQUEST_FOR_RECONSIDERATION_COMMENTS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_SDO_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)));
-  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', claim.isAnyPartyBilingual() ? GA_SUBMIT_OFFLINE : APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', (claim.isAnyPartyBilingual() && !welshGaEnabled) ? GA_SUBMIT_OFFLINE : APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocument(claim))));
@@ -140,8 +142,6 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{VIEW_COSC_CERTIFICATE_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.CERTIFICATE_OF_DEBT_PAYMENT)));
   valuesMap.set('{MAKE_APPLICATION_TO_COURT_URL}', MAKE_APPLICATION_TO_COURT);
   valuesMap.set('{COMFIRM_YOU_PAID_JUDGMENT_DEBT}', GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_JUDGMENT_BY_ADMISSION_DEFENDANT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT)));
-  valuesMap.set('{VIEW_JUDGMENT_BY_ADMISSION_CLAIMANT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT)));
   valuesMap.set('{NOTICE_OF_DISCONTINUANCE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.respondent1NoticeOfDiscontinueAllPartyViewDoc?.documentLink?.document_binary_url)));
 
   if (claimantRequirements) {

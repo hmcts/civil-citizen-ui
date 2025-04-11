@@ -2,25 +2,25 @@ import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
   BACK_URL,
-  QM_CREATE_QUERY_URL, QM_FOLLOW_UP_URL,
-  QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
+  QM_FOLLOW_UP_URL,
+  QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
 } from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
-import {RadioButtonItems, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/qm/queryManagement';
+import {RadioButtonItems, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import { t } from 'i18next';
 import {
   deleteQueryManagement,
   getCancelUrl,
   getQueryManagement,
   saveQueryManagement,
-} from 'services/features/qm/queryManagementService';
+} from 'services/features/queryManagement/queryManagementService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const qmStartController = Router();
-const qmStartViewPath = 'features/qm/qm-questions-template.njk';
+const qmStartViewPath = 'features/queryManagement/qm-questions-template.njk';
 
 const QUERY_MANAGEMENT_PROPERTY_NAME = 'whatDoYouWantToDo';
 
@@ -30,9 +30,9 @@ const getRedirectPath = (option: WhatToDoTypeOption) => {
 
 const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.CHANGE_CASE]: APPLICATION_TYPE_URL,
-  [WhatToDoTypeOption.GET_SUPPORT]: QM_CREATE_QUERY_URL,
+  [WhatToDoTypeOption.GET_SUPPORT]: QUERY_MANAGEMENT_CREATE_QUERY,
   [WhatToDoTypeOption.FOLLOW_UP]: QM_FOLLOW_UP_URL,
-  [WhatToDoTypeOption.SOMETHING_ELSE]: QM_CREATE_QUERY_URL,
+  [WhatToDoTypeOption.SOMETHING_ELSE]: QUERY_MANAGEMENT_CREATE_QUERY,
 };
 
 const getItems = (option: string, lng: string) => {
