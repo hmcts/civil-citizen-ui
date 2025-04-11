@@ -25,7 +25,7 @@ import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMedi
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
-import {convertToCCDStatementOfTruth} from "services/translation/response/convertToCCDStatementOfTruth";
+import {convertToCCDStatementOfTruth} from 'services/translation/response/convertToCCDStatementOfTruth';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
