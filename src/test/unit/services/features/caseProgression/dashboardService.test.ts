@@ -485,7 +485,7 @@ describe('dashboardService', () => {
 
       it('getContactCourtLink when claim is taken offline', async () => {
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
-        (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false)
+        (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
         //Given
         const claim = new Claim();
         claim.id = '1234567890';
