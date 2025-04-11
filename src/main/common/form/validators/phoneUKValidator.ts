@@ -10,7 +10,7 @@ export class PhoneUKValidator implements ValidatorConstraintInterface {
 
   validate(value: string) {
     const ukPhonePattern = this.UK_PHONE_REGEX;
-    const normalised = value?.toString().replace(/\s/g, '');
+    const normalised = value?.toString();
     if (!value) {
       return true;
     }
