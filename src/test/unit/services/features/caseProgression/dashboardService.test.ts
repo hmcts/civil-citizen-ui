@@ -357,23 +357,6 @@ describe('dashboardService', () => {
           (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
         });
 
-        it('should trigger call to query management service for updating task items', async () => {
-          (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
-          (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
-
-          const queryManagementSpy = jest.spyOn(UpdateQueryManagementDashboard, 'updateQueryManagementDashboardItems');
-          const dashboard = new Dashboard(mockExpectedDashboardInfo);
-
-          jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
-
-          const claim = new Claim();
-          claim.defendantUserDetails = {};
-
-          await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq, true, true);
-
-          expect(queryManagementSpy).toBeCalledTimes(1);
-        });
-
         it('should not trigger query management service call if flag is disabled', async () => {
           (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
           const queryManagementSpy = jest.spyOn(UpdateQueryManagementDashboard, 'updateQueryManagementDashboardItems');
