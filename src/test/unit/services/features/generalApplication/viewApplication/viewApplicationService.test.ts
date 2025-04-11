@@ -846,7 +846,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when
-      const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
+      const result = await getResponseFromCourtSection(mockedAppRequest, '1', true, 'en');
 
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
@@ -869,7 +869,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.DEFENDANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when'
-      const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
+      const result = await getResponseFromCourtSection(mockedAppRequest, '1', true, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 August 2024');

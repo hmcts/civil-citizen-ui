@@ -25,15 +25,15 @@ import {canUploadAddlDoc} from 'services/features/generalApplication/additionalD
 /**
  * Creates Response from court summary list by sorting on response time.
  */
-export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
+export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, showButtons: boolean, lang: string): Promise<CourtResponseSummaryList[]> => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
   return [
     ...getJudgeDirectionWithNotice(claim, req, application, lang),
     ...getHearingNoticeResponses(application, lang),
-    ...getHearingOrderResponses(req, application, lang),
-    ...getRequestMoreInfoResponse(claimId, application, lang),
-    ...getJudgesDirectionsOrder(req, application, lang),
+    ...getHearingOrderResponses(req, application, showButtons, lang),
+    ...getRequestMoreInfoResponse(claimId, application, showButtons, lang),
+    ...getJudgesDirectionsOrder(req, application, showButtons, lang),
     ...getJudgeApproveEdit(application, lang),
     ...getJudgeDismiss(application, lang),
     ...getWrittenRepSequentialDocument(req, application, lang),
@@ -75,7 +75,7 @@ export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, appli
   return courtResponseSummaryList;
 };
 
-export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: ApplicationResponse, showButtons: boolean, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   const claimId = req.params.id;
   const directionOrderDocuments = applicationResponse?.case_data?.directionOrderDocument;
@@ -89,7 +89,7 @@ export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: A
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})}">${directionOrderDocument.value.documentLink.document_filename}</a>`;
         const createdDatetime = directionOrderDocument?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng}), createdDatetime, lng);
-        const judgeDirectionOrderButton = createResponseToRequestButton(applicationResponse, lng, judgesDirectionsOrderUrl);
+        const judgeDirectionOrderButton = showButtons? createResponseToRequestButton(applicationResponse, lng, judgesDirectionsOrderUrl) : null;
         return new CourtResponseSummaryList(rows, createdDatetime, judgeDirectionOrderButton);
       });
   }
@@ -134,11 +134,11 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
   return courtResponseSummaryList;
 };
 
-export const getHearingOrderResponses = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+export const getHearingOrderResponses = (req: AppRequest, applicationResponse: ApplicationResponse, showButtons: boolean, lng: string): CourtResponseSummaryList[] => {
   const hearingOrders = applicationResponse?.case_data?.hearingOrderDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   let uploadAddlDocsButton :ResponseButton = null;
-  if(canUploadAddlDoc(applicationResponse)) {
+  if(showButtons && canUploadAddlDoc(applicationResponse)) {
     const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
   }
@@ -176,7 +176,7 @@ export const getHearingNoticeResponses = (applicationResponse: ApplicationRespon
   return courtResponseSummaryList;
 };
 
-export const getRequestMoreInfoResponse = (claimId: string, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+export const getRequestMoreInfoResponse = (claimId: string, applicationResponse: ApplicationResponse, showButtons: boolean, lng: string): CourtResponseSummaryList[] => {
   const requestMoreInfos = applicationResponse?.case_data?.requestForInformationDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 
@@ -192,7 +192,7 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng}) ,createdDatetime, lng);
         const respondToRequestHref = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_RESPOND_ADDITIONAL_INFO_URL);
         let respondToRequestButton = null;
-        if (!documentName.includes('Translated') && applicationResponse.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION) {
+        if (showButtons && !documentName.includes('Translated') && applicationResponse.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION) {
           respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), respondToRequestHref);
         }
         return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);

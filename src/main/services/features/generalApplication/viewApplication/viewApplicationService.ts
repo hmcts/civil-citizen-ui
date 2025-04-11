@@ -221,9 +221,9 @@ export const getRespondentDocuments = (applicationResponse : ApplicationResponse
   return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
 };
 
-export const getResponseFromCourtSection = async (req: AppRequest, applicationId: string, lang?: string): Promise<CourtResponseSummaryList[]> => {
+export const getResponseFromCourtSection = async (req: AppRequest, applicationId: string, showButtons: boolean, lang?: string): Promise<CourtResponseSummaryList[]> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
-  return await buildResponseFromCourtSection(req, applicationResponse, lang);
+  return await buildResponseFromCourtSection(req, applicationResponse, showButtons, lang);
 };
 
 const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: string, createdBy: string) => {
