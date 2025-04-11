@@ -1,4 +1,4 @@
 export interface CcdStatementOfTruth {
-  name: string,
+  name?: string,
   role?: string,
 }
