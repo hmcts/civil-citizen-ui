@@ -34,7 +34,6 @@ import {
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {GA_SUBMIT_OFFLINE} from 'routes/urls';
-import * as UpdateQueryManagementDashboard from 'services/features/queryManagement/queryManagementService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -73,6 +72,11 @@ describe('dashboardService', () => {
     });
   });
   describe('as Defendant', () => {
+
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+
     describe('Dashboard', () => {
       const mockNotificationInfo = [
         {
@@ -345,26 +349,6 @@ describe('dashboardService', () => {
 
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
-      });
-
-      describe('Query management flag', () => {
-        beforeEach(() => {
-          jest.resetAllMocks();
-        });
-
-        it('should not trigger query management service call if flag is disabled', async () => {
-
-          const queryManagementSpy = jest.spyOn(UpdateQueryManagementDashboard, 'updateQueryManagementDashboardItems');
-
-          const dashboard = new Dashboard(mockExpectedDashboardInfo);
-          jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
-
-          const claim = new Claim();
-
-          await getDashboardForm(ClaimantOrDefendant.DEFENDANT, claim, '1234567890',appReq);
-
-          expect(queryManagementSpy).not.toBeCalled();
-        });
       });
 
       it('ExtractDocumentFromNotificationList', async () => {
