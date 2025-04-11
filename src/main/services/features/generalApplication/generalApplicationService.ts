@@ -650,7 +650,7 @@ export const saveUnavailabilityDatesConfirmation = async (claimId: string, hasUn
 };
 
 export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, claim: Claim): string => {
-  const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
+  const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
   const applicationIndex = queryParamNumber(req, 'index');
   const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
   if (req.body.option === YesNo.YES || options.indexOf(applicationType) !== -1  || claim?.generalApplication?.agreementFromOtherParty === YesNo.YES) {

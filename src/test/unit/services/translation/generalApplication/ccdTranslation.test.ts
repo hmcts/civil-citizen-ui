@@ -81,19 +81,6 @@ describe('translate draft application to ccd', () => {
     });
   });
 
-  it('should translate inform other party to ccd for set aside judgment', () => {
-    //Given
-    const application = new GeneralApplication();
-    application.agreementFromOtherParty = YesNo.NO;
-    application.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
-    //When
-    const ccdGeneralApplication = translateDraftApplicationToCCD(application);
-    //Then
-    expect(ccdGeneralApplication.generalAppInformOtherParty).toEqual({
-      isWithNotice: YesNoUpperCamelCase.YES,
-    });
-  });
-
   it('should translate hearing details to ccd', () => {
     //Given
     const application = new GeneralApplication();

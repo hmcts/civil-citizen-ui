@@ -6,7 +6,6 @@ import {
 import { OrderJudge } from 'models/generalApplication/orderJudge';
 import {
   ApplicationType,
-  ApplicationTypeOption,
 } from 'models/generalApplication/applicationType';
 import { CcdGeneralApplicationTypes } from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
 import { toCCDYesNo } from 'services/translation/response/convertToCCDYesNo';
@@ -111,11 +110,6 @@ const toCCDRespondentAgreement = (agreementFromOtherParty: YesNo): CcdGeneralApp
 };
 
 const toCCDInformOtherParty = (applicationTypes: ApplicationType[], agreementFromOtherParty: YesNo, informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
-  if (applicationTypes.length === 1 && applicationTypes[0].option === ApplicationTypeOption.SET_ASIDE_JUDGEMENT && agreementFromOtherParty === YesNo.NO) {
-    return {
-      isWithNotice: toCCDYesNo(YesNo.YES),
-    };
-  }
   return informOtherParty
     ? {
       isWithNotice: toCCDYesNo(informOtherParty.option as YesNo),
