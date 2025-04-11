@@ -31,7 +31,7 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, Par
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       amount = claim.partialAdmissionPaymentAmount();
-      const form = getRepaymentPlanForm(claim, true) as PartialAdmissionRepaymentPlanForm;
+      const form = await getRepaymentPlanForm(claim, true) as PartialAdmissionRepaymentPlanForm;
       renderView(new GenericForm(form), res, amount);
     } catch (error) {
       next(error);
@@ -43,7 +43,7 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
-      const repaymentPlan = getRepaymentPlanForm(claim, true);
+      const repaymentPlan = await getRepaymentPlanForm(claim, true);
       const repaymentPlanForm: GenericForm<PartialAdmissionRepaymentPlanForm> = new GenericForm(new PartialAdmissionRepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       repaymentPlanForm.validateSync();
       if (repaymentPlanForm.hasErrors()) {
