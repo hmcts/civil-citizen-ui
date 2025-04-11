@@ -31,7 +31,6 @@ import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/gene
 import {
   isGaForLipsEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
-  isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {GA_SUBMIT_OFFLINE} from 'routes/urls';
@@ -353,12 +352,8 @@ describe('dashboardService', () => {
           jest.resetAllMocks();
         });
 
-        afterAll(() => {
-          (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
-        });
-
         it('should not trigger query management service call if flag is disabled', async () => {
-          (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+
           const queryManagementSpy = jest.spyOn(UpdateQueryManagementDashboard, 'updateQueryManagementDashboardItems');
 
           const dashboard = new Dashboard(mockExpectedDashboardInfo);
