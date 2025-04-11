@@ -90,6 +90,7 @@ import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeCon
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 import {CcdStatementOfTruth} from "models/ccdResponse/ccdStatementOfTruth";
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export class CivilClaimResponse {
   id: string;
@@ -324,6 +325,9 @@ export interface CCDClaim extends ClaimUpdate {
   joJudgementByAdmissionIssueDate?: Date;
   joDJCreatedDate?: Date;
   uiStatementOfTruth?: CcdStatementOfTruth;
+  //Query management
+  qmApplicantCitizenQueries?: CaseQueries;
+  qmRespondentCitizenQueries?: CaseQueries;
 }
 
 export interface ClaimFeeData {
