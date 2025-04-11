@@ -235,6 +235,24 @@
         },
         "jsonBody": 0.1
       }
+    },{
+      "request": {
+        "method": "POST",
+        "urlPattern": "/fees/claim/total-claim-amount",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": 0.1
+      }
     }
+
   ]
 }
