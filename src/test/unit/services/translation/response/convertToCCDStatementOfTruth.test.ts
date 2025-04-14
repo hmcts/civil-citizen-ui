@@ -15,8 +15,8 @@ describe('translate Statement of Truth to CCD version', () => {
   });
 
   it('if value provided, should have translated values', () => {
-    const toBeTranslated: QualifiedStatementOfTruthClaimIssue = new QualifiedStatementOfTruthClaimIssue(true, null, null, 'Clay', 'Mint');
-    const expected: CcdStatementOfTruth = {name: 'Clay', role: 'Mint'};
+    const toBeTranslated: QualifiedStatementOfTruthClaimIssue = new QualifiedStatementOfTruthClaimIssue(true, null, null, 'Clay Mint', 'claimant');
+    const expected: CcdStatementOfTruth = {name: 'Clay Mint', role: 'claimant'};
     const actual = convertToCCDStatementOfTruth(toBeTranslated);
 
     expect(actual).toEqual(expected);
