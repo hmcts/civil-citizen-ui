@@ -1,4 +1,5 @@
 const I = actor();
+const cy = require('../../../../main/modules/i18n/locales/cy.json');
 
 class GovPay {
 
@@ -18,10 +19,13 @@ class GovPay {
     I.fillField('//*[@id="address-city"]', 'London');
     I.fillField('//*[@id="address-postcode"]', 'N65BQ');
     I.fillField('//*[@id="email"]', 'test@mailinator.com');
-    if (language === 'BOTH')
-      await I.click('Parhau');
-    else 
+    if (language === 'BOTH') {
+      const continueButton = cy.COMMON.BUTTONS.CONTINUE;
+      await I.click(continueButton);
+    }
+    else {
       await I.click('Continue');
+    }
   }
 
   confirmPayment(language) {
