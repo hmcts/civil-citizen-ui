@@ -10,6 +10,7 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../main/modules/draft-store');
@@ -118,6 +119,36 @@ describe('Upload Evidence Document service', () => {
       expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
       expect(formattedSummary.summaryList.rows[1].key.text).toEqual('test.text');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/1/general-application/upload-documents?id=2');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
+    });
+    it('should get Summary List for COSC application when has content', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID)];
+        const uploadDocument = new UploadGAFiles();
+        uploadDocument.caseDocument = mockCaseDocument;
+        uploadDocument.fileUpload = file;
+        claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
+        claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
+        return claim;
+      });
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const formattedSummary = summarySection(
+        {
+          title: '',
+          summaryRows: [],
+        });
+      //When
+      await getSummaryList(formattedSummary, '123', '1');
+      //Then
+      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('test.text');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/1/general-application/cosc/upload-documents?id=1');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
+      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('test.text');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/1/general-application/cosc/upload-documents?id=2');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
   });

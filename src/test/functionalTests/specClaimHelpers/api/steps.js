@@ -70,7 +70,7 @@ const data = {
   CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER: (user, userId, totalClaimAmount) => createLipClaimDefendantSoleTrader(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY: (user, userId, totalClaimAmount) => createLipClaimSoleTraderVCompany(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
-
+  DEFENDANT_RESPONSE: (response, camundaEvent) => require('../fixtures/events/defendantLRResponse').respondToClaim(response, camundaEvent),
 };
 
 let caseId, eventName, payload;
@@ -357,7 +357,7 @@ module.exports = {
     console.log('End of submitHwfEventForUser()');
   },
 
-  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType, manualPIP = false) => {
+  createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = true, partyType, manualPIP = false) => {
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
@@ -400,17 +400,19 @@ module.exports = {
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
 
+    console.log('carmEnabled value is .. ', carmEnabled);
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
-      console.log('carm not enabled, updating submitted date to past for legacy cases');
       await apiRequest.setupTokens(config.systemUpdate);
+      console.log('carm not enabled, updating submitted date to past for legacy cases');
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to before carm date for legacy cases');
-    }
+    }*/
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual', language) => {
+  createLiPClaim: async (user, claimType, carmEnabled = true, partyType = 'Individual', language) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -452,6 +454,8 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
+    console.log('carmEnabled flag .. ', carmEnabled);
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
     if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
       console.log('carm not enabled, updating submitted date to past for legacy cases');
@@ -465,7 +469,7 @@ module.exports = {
       const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after minti date');
-    }
+    }*/
 
     await apiRequest.setupTokens(user);
     let newPayload = {
@@ -481,7 +485,7 @@ module.exports = {
     return caseId;
   },
 
-  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = false) => {
+  createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = true) => {
     console.log(' Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
     caseId = null;
@@ -516,19 +520,15 @@ module.exports = {
     }
     await waitForFinishedBusinessProcess(caseId);
 
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
+    console.log('carmEnabled flag .. ', carmEnabled);
+    /* Not needed this anymore as CARM is live, all FTs should be on live cases
+    if (!carmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after carm date');
-    } else {
       console.log('carm not enabled, updating submitted date to past for legacy cases');
-      await apiRequest.setupTokens(config.systemUpdate);
       const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date');
-    }
+      console.log('submitted date update to before carm date for legacy cases');
+    }*/
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
@@ -602,7 +602,36 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '', eaCase = true) => {
+  defendantLRResponse: async (user, response, camundaEvent, expectedState) => {
+    await apiRequest.setupTokens(user);
+
+    eventName = 'DEFENDANT_RESPONSE_SPEC';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let defendantResponseData = data.DEFENDANT_RESPONSE(response, camundaEvent);
+
+    caseData = returnedCaseData;
+
+    for (let pageId of Object.keys(defendantResponseData.userInput)) {
+      await assertValidDataSpec(defendantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent('AWAITING_APPLICANT_INTENTION');
+
+    await waitForFinishedBusinessProcess(caseId);
+
+    if (expectedState) {
+      const responseData = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(responseData.state, expectedState);
+    }
+
+    deleteCaseFields('respondent1Copy');
+
+    console.log('End of defendantResponse()');
+  },
+
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = true, expectedEndState, mintiTrack = '', eaCase = true) => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
@@ -686,7 +715,7 @@ module.exports = {
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user, carmEnabled = false, mediationReason) => {
+  mediationUnsuccessful: async (user, carmEnabled = true, mediationReason) => {
     console.log('This is inside mediationUnsuccessful : ' + caseId);
     eventName = 'MEDIATION_UNSUCCESSFUL';
 

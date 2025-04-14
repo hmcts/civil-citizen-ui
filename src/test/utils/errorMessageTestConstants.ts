@@ -203,5 +203,8 @@ export const enum TestMessages {
   CCJ_CONFIRMATION_NO_LONGER_RESPONSE = 'can no longer respond to your claim online.',
   CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_JO = 'We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to',
   VALID_DATE_NOT_IN_THE_FUTURE = 'Date of the final payment must be today or in the past',
-  UNABLE_TO_PROVIDE_EVIDENCE = 'Add details of why you&#39;re not able to provide evidence'
+  VALID_PAID_IN_FULL_DATE = 'Paid in full date must be on or after the date of the judgment',
+  UNABLE_TO_PROVIDE_EVIDENCE = 'Add details of why you&#39;re not able to provide evidence',
+  QUERY_MANAGEMENT_YOU_MUST_SELECT = 'You must select what you want to do before you can continue.',
+
 }

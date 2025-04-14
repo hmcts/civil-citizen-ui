@@ -23,9 +23,10 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled, isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {updateQueryManagementDashboardItems} from 'services/features/queryManagement/queryManagementService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,16 +35,19 @@ const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'M
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+  const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.issueDate);
+  const welshGaEnabled = await isGaForWelshEnabled();
+
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
-    dashboard.items.forEach((taskList) => {
-      taskList.tasks.forEach((task) => {
-        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
-        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
-        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
-        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
-      });
-    });
+    for (const item of dashboard.items) {
+      for (const task of item.tasks) {
+        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
+        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
+        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
+        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+      }
+    }
     //exclude Carm sections
     if (!isCarmApplicable){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
@@ -51,10 +55,12 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
     //exclude Applications sections
     if (!isGAFlagEnable
-      || claim.defendantUserDetails === undefined
+      || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
       || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-      || (claim.isAnyPartyBilingual() && claim.generalApplications.length === 0)) {
+      || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    } else if (queryManagementFlagEnabled) {
+      updateQueryManagementDashboardItems(dashboard, GA_DASHBOARD_EXCLUSIONS[0], claim);
     }
 
     return dashboard;
@@ -87,30 +93,30 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   }
   const applicantNotifications = genAppsByRole.get(ApplicantOrRespondent.APPLICANT).length > 0
     ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.APPLICANT), ApplicantOrRespondent.APPLICANT, req)
-    : null;
+    : new Map<string, DashboardNotificationList>();
   const respondentNotifications = genAppsByRole.get(ApplicantOrRespondent.RESPONDENT).length > 0
     ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.RESPONDENT), ApplicantOrRespondent.RESPONDENT, req)
-    : null;
+    : new Map<string, DashboardNotificationList>();
 
   if (dashboardNotifications) {
-    dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
-    });
-    applicantNotifications?.forEach((value, gaRef, map) => {
-      value.items.forEach((notification) => {
-        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
-      });
+    for (const notification of dashboardNotifications.items) {
+      notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
+      notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
+    }
+    for (const [gaRef, value] of applicantNotifications) {
+      for (const notification of value.items) {
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+      }
       dashboardNotifications.items.push(...(value?.items ?? []));
-    });
-    respondentNotifications?.forEach((value, gaRef, map) => {
-      value.items.forEach((notification) => {
-        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
-      });
+    }
+    for (const [gaRef, value] of respondentNotifications) {
+      for (const notification of value.items) {
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+      }
       dashboardNotifications.items.push(...(value?.items ?? []));
-    });
+    }
     sortDashboardNotifications(dashboardNotifications, mainClaimNotificationIds);
     return dashboardNotifications;
   } else {
@@ -147,9 +153,10 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 }
 
 export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
-  if (claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-   && claim.defendantUserDetails !== undefined && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) ) {
-    if (claim.isAnyPartyBilingual()) {
+  if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+    && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
+    const welshGaEnabled = await isGaForWelshEnabled();
+    if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: GA_SUBMIT_OFFLINE,
@@ -158,6 +165,7 @@ export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFl
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+        removeTargetBlank: true,
       };
     } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {

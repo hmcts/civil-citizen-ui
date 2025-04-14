@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit and Date to PayOn - Small Claims');
+Feature('Response with PartAdmit and Date to PayOn - Small Claims').tag('@citizenUI @part-admit @nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -30,7 +30,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @nightly', async ({api}) => {
+Scenario('Response with PartAdmit and Date to PayOn', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -43,11 +43,16 @@ Scenario('Response with PartAdmit and Date to PayOn @citizenUI @partAdmit @night
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
-}).tag('@regression-cui-r1');
+  // Enable this after CIV-16777
+  //await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitWithPartPaymentOnSpecificDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
+});

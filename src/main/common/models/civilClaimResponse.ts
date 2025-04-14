@@ -89,6 +89,7 @@ import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDiscl
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export class CivilClaimResponse {
   id: string;
@@ -320,6 +321,11 @@ export interface CCDClaim extends ClaimUpdate {
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   repaymentSummaryObject?:string;
+  joJudgementByAdmissionIssueDate?: Date;
+  joDJCreatedDate?: Date;
+  //Query management
+  qmApplicantCitizenQueries?: CaseQueries;
+  qmRespondentCitizenQueries?: CaseQueries;
 }
 
 export interface ClaimFeeData {

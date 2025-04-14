@@ -98,6 +98,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantResponse.chooseHowToProceed.option = toCUIChoosesHowToProceed[ccdClaim.applicant1LiPResponse?.applicant1ChoosesHowToProceed];
   claim.caseRole = ccdClaim.caseRole;
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
+  claim.claimInterest = toCUIYesNo(ccdClaim.claimInterest);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
   claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = toCUIApplicant1RepaymentPlan(ccdClaim);
@@ -114,6 +115,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
   claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
   claim.joIsLiveJudgmentExists = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
+  claim.joJudgementByAdmissionIssueDate = ccdClaim.joJudgementByAdmissionIssueDate;
+  claim.joDJCreatedDate = ccdClaim.joDJCreatedDate;
   return claim;
 };
 

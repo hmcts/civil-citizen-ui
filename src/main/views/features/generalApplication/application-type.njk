@@ -18,7 +18,7 @@
       {
         value: ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
         html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM') + '</strong>',
-        checked: form.model.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
+        checked: form.model.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE or isAmendClaim,
         hint: {
           text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM_DESCRIPTION')
         }
@@ -80,7 +80,11 @@
 {% endset %}
 
 {% block nestedContent %}
-          <h1 class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
+          {% if isQMEnabled %}
+            <h1 class="govuk-caption-l">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
+          {% else %}
+            <h1 class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
+          {% endif %}
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
 
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.WHEN_YOU_REQUEST') }}</p>
@@ -125,7 +129,7 @@
                   {
                     value: ApplicationTypeOption.ADJOURN_HEARING,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
-                    checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                    checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING or isAdjournHearing,
                     hint: {
                       text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
                     }
@@ -133,7 +137,7 @@
                   {
                     value: ApplicationTypeOption.EXTEND_TIME,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME') + '</strong>',
-                    checked: form.model.option === ApplicationTypeOption.EXTEND_TIME,
+                    checked: form.model.option === ApplicationTypeOption.EXTEND_TIME or isAskMoreTime,
                     hint: {
                       html: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_1') + '<br><br>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_2')
                     }
@@ -199,7 +203,7 @@
                                 {
                                   value: ApplicationTypeOption.ADJOURN_HEARING,
                                   html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
-                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING or isAdjournHearing,
                                   hint: {
                                     text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
                                   }
@@ -207,7 +211,7 @@
                                 {
                                   value: ApplicationTypeOption.EXTEND_TIME,
                                   html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME') + '</strong>',
-                                  checked: form.model.option === ApplicationTypeOption.EXTEND_TIME,
+                                  checked: form.model.option === ApplicationTypeOption.EXTEND_TIME or isAskMoreTime,
                                   hint: {
                                     html: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_1') + '<br><br>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_2')
                                   }

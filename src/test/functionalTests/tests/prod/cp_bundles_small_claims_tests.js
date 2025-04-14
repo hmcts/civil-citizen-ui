@@ -15,7 +15,7 @@ const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims');
+Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@case-progression');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
@@ -25,7 +25,8 @@ Before(async ({api}) => {
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM');
+    await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
