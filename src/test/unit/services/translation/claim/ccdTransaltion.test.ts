@@ -19,7 +19,7 @@ import {InterestClaimFromType, InterestEndDateType} from 'form/models/claimDetai
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {TotalInterest} from 'form/models/interest/totalInterest';
 import {CCDInterestType} from 'models/ccdResponse/ccdInterestType';
-import {CcdStatementOfTruth} from "models/ccdResponse/ccdStatementOfTruth";
+import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
