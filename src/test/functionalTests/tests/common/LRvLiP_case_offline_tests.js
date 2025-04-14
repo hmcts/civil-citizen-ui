@@ -9,7 +9,7 @@ const testTimeHelper = require('../../helpers/test_time_helper');
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('LR v Lip - Case Offline Tests');
+Feature('LR v Lip - Case Offline Tests').tag('@case-offline');
 
 // Before(async ({api}) => {
 //   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -51,11 +51,12 @@ Scenario('Case is taken offline after SDO for non early adopters', async ({api})
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = caseOfflineAfterSDO();
-    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM', false);
+    await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM', false);
+    await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.claimantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
   await testTimeHelper.addTestEndTime('LR v Lip Case is taken offline after SDO for non early adopters');
-}).tag('@regression');
+}).tag('@case-progression @regression');

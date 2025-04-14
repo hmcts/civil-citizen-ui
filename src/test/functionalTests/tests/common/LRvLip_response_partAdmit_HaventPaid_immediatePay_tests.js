@@ -15,7 +15,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims');
+Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims').tag('@part-admit');
 
 // Before(async ({api}) => {
 //   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -54,7 +54,11 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655

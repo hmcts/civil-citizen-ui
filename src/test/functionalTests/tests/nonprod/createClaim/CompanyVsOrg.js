@@ -11,7 +11,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
   claimFee = 115, claimantPartyType = 'Company';
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@regression-r2');
+Feature('Create Lip v Lip claim - Company vs Org').tag('@create-claim @regression-r2');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -92,6 +92,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = false;
+  const interestAmount = 10;
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -111,7 +112,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
   } else {
     await steps.clickPayClaimFee();
   }
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee);
+  await steps.verifyAndPayClaimFee(claimAmount, claimFee, interestAmount);
   await api.waitForFinishedBusinessProcess();
   await testTimeHelper.addTestEndTime('Create Claim -  Company vs Org - Fast track - with variable interest - no hwf');
 });

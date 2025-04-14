@@ -5,7 +5,7 @@ import {fail} from 'assert';
 import supertest from 'supertest';
 import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
 
-const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
+const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.A11Y_CHUNKS ?? '1'), parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0'));
 const pa11y = require('pa11y');
 import {retry} from '../functionalTests/specClaimHelpers/api/retryHelper.js';
 
@@ -17,7 +17,7 @@ console.log(networkInterfaces);
 
 // Create a Pa11y test server with Node.js and Express
 const express = require('express');
-const port = 3000;
+const port = 3000 + parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0');
 const app = express();
 
 class PallyIssue {
@@ -62,7 +62,7 @@ describe('Accessibility', async () => {
   for (let url of urlsList) {
     it('Test of '+url,async () => {
       app.get(url, (req: any, res: any) => {
-        url = url.replace(':id', '1645882162449409').replace(':appId', '1720536653906339');
+        url = url.replace(':id', '1645882162449409').replace(':appId', '1720536653906339').replace(':qmType', 'SEND_DOCUMENTS').replace(':qmQualifyOption', 'ENFORCEMENT_REQUESTS');
         const filePath = translateUrlToFilePath(url);
         const fileContent = fs.readFileSync(filePath,  'utf8');
         res.send(fileContent);
@@ -77,3 +77,21 @@ describe('Accessibility', async () => {
   }
   server.close();
 });
+
+function getChunkAtIndex(array: string[], numChunks: number, index: number) {
+  console.log('numChunks ' + numChunks);
+  console.log('index ' + index);
+
+  if (!Array.isArray(array) || numChunks <= 0 || index < 0 || index >= numChunks) {
+    throw new Error('Invalid input: Provide a valid array, a positive number of chunks, and a valid index.');
+  }
+
+  const chunkSize = Math.floor(array.length / numChunks);
+  const remainder = array.length % numChunks; 
+
+  const start = index * chunkSize + Math.min(index, remainder);
+
+  const end = start + chunkSize + (index < remainder ? 1 : 0);
+
+  return array.slice(start, end);
+}

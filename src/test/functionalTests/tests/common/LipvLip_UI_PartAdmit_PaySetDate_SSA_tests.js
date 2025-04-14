@@ -3,14 +3,14 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@nightly');
+Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@part-admit @nightly');
 
 Scenario('Verify the Eligibility Check journey', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();

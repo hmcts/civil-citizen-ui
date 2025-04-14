@@ -6,16 +6,18 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {ApplicationTypeOption, LinKFromValues} from 'models/generalApplication/applicationType';
 import {YesNo} from 'form/models/yesNo';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export const checkYourAnswersGAGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-
+    const gaCoscUrl = '/cosc/';
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     const hasRequiredFields = isGARequiredFieldsPresent(claim);
+    const welshGaEnabled = await isGaForWelshEnabled();
     //If mainCase has bilingual party submission is not allowed.
-    if (claim.isAnyPartyBilingual()) return res.redirect(await getCancelUrl(claimId, null));
+    if (claim.isAnyPartyBilingual() && !welshGaEnabled && !req.url.includes(gaCoscUrl)) return res.redirect(await getCancelUrl(claimId, null));
 
     if (!applicationTypes.length) return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`));
 

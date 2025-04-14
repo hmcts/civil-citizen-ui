@@ -16,7 +16,7 @@ const claimAmount = '£1,500';
 const feeAmount = '123';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims').tag('@case-progression');
 
 // Before(async ({api}) => {
 //   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
@@ -46,7 +46,8 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
   await api.waitForFinishedBusinessProcess();
@@ -77,8 +78,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
   }
-  await testTimeHelper.addTestEndTime('Apply for Help with Fees Journey - Small Claims');
-}).tag('@regression-cp');
+});
 
 Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   await testTimeHelper.addTestStartTime('Pay the Hearing Fee Journey - Small Claims');
@@ -112,5 +112,4 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
-  await testTimeHelper.addTestEndTime('Pay the Hearing Fee Journey - Small Claims');
-}).tag('@regression-cp');
+});

@@ -37,10 +37,10 @@ const content = {
 
 class WelshLanguage {
 
-  async selectLanguageOption(carmEnabled = false) {
+  async selectLanguageOption(smallClaims = true) {
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
-    if (carmEnabled) {
+    if (smallClaims) {
       await I.see(content.descriptionTextMediation[language]);
       await I.see(content.hintTextMediation[language]);
     } else {

@@ -308,7 +308,7 @@ class CreateClaim {
     I.waitForContent('For example the date an invoice was overdue or that you told someone they owed you the money.',60);
     I.see('When are you claiming interest from?', 'h1');
     I.see('The date you submit the claim');
-    I.see('If you submit after 4pm it will be the next working day.');
+    I.see('The interest will then be calculated up until the claim is settled or a Judgement has been made.');
     I.see('A particular date');
     I.click(paths.options.when_will_you_claim_interest_from);
     this.clickNextAction(paths.buttons.save_and_continue);
@@ -559,7 +559,7 @@ class CreateClaim {
     return claimReference;
   }
 
-  async verifyAndInputPayYourClaimFee(claimAmount, claimFee) {
+  async verifyAndInputPayYourClaimFee(claimAmount, claimFee, interestAmount) {
     I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     I.see('Pay your claim fee', 'h1');
     I.see('Claim amount');
@@ -567,7 +567,7 @@ class CreateClaim {
     I.see('Claim fee');
     I.see(claimFee);
     I.see('Total claim amount');
-    I.see(claimAmount+claimFee);
+    I.see(claimAmount+claimFee+interestAmount);
     I.see('If you settle out of court we won\'t refund your claim fee.');
     await I.waitForText(`continue to payment(£${claimFee})`);
     await I.click('continue to payment');
@@ -716,6 +716,7 @@ class CreateClaim {
     await I.fillField(paths.fields.OrgpartyName, 'Defendant Org name');
     await I.fillField(paths.fields.OrgContactPerson, 'Defendant contact name');
     await this.selectAddress(false);
+    I.waitForText('This must be their personal email address', 60);
     I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
     this.clickNextAction(paths.buttons.save_and_continue);
     I.fillField(paths.fields.telephone_number, '07800000000');

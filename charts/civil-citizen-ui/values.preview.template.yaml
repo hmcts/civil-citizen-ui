@@ -464,7 +464,7 @@ civil-service:
       SPRING_CLOUD_BOOTSTRAP_ENABLED: true
       RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      LAUNCH_DARKLY_ENV: aat
+      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       CMC_DB_HOST: "{{ .Values.postgresql.releaseNameOverride}}"
@@ -483,7 +483,7 @@ civil-service:
       ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       ASSIGN_ROLES_ON_STARTUP: true
-      COURT_LOCATION_WA_DMN_ENABLED: false
+      COURT_LOCATION_WA_DMN_ENABLED: true
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
@@ -559,6 +559,14 @@ em-ccdorc:
       CCD_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CALLBACK_HTTP_SCHEME: https
       CALLBACK_DOMAIN: em-ccdorc-${SERVICE_FQDN}
+    keyVaults:
+      em-ccdorc:
+        resourceGroup: em-ccdorc
+        secrets:
+          - name: microservicekey-em-ccd-orchestrator
+            alias: S2S_KEY
+          - name: notification-api-key
+            alias: NOTIFICATION_API_KEY
 
 em-stitching:
   enabled: true
@@ -583,6 +591,14 @@ em-stitching:
       RUN_DB_MIGRATION_ON_STARTUP: true
       FLYWAY_POSTGRESQL_TRANSACTIONAL_LOCK: false
       LOGGING_LEVEL_UK_GOV_HMCTS_REFORM_EM: DEBUG
+    keyVaults:
+      em-stitching:
+        resourceGroup: em-stitching
+        secrets:
+          - name: docmosis-access-key
+            alias: DOCMOSIS_ACCESS_KEY
+          - name: microservicekey-em-stitching-api
+            alias: S2S_KEY
 
 ccd-case-document-am-api:
   enabled: true
