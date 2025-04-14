@@ -135,6 +135,8 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) =
 // LiP Individual vs LiP Sole Trader
 Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
   await testTimeHelper.addTestStartTime('LiP vs LiP Successful Mediation');
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantSoleTrader');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
