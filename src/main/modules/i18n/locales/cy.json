@@ -926,6 +926,9 @@
         "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
         "UPLOAD_DOCUMENTS": "Upload documents (optional)",
         "SEND_MESSAGE": "Send message"
+      },
+      "VIEW_QUERY": {
+        "PAGE_TITLE": "Messages"
       }
     },
     "SUBJECT_TO_FRC": {
