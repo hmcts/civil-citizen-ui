@@ -63,8 +63,11 @@
   {% set sendMessageTitle = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE') %}
   {% set sendMessageLink = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_LINK') %}
   {% set sendMessageHint = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_RESPONSE') %}
+  {% if disableSendMessage %}
   {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
-
+  {% else %}
+  {% set qmContent = _widgetRedesign(disclosure, callChargesWidget) %}
+  {% endif %}
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
   {% endif %}
