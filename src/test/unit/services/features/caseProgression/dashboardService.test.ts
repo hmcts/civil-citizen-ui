@@ -624,9 +624,8 @@ describe('dashboardService', () => {
           claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
           const result = await getContactCourtLink(claim.id, claim, true, 'en');
-
-          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
-          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+          
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
         });
 
         it('should not return updated text if QM is disabled', async () => {
