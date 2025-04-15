@@ -930,6 +930,14 @@
         "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
         "UPLOAD_DOCUMENTS": "Upload documents (optional)",
         "SEND_MESSAGE": "Send message"
+      },
+      "VIEW_QUERY": {
+        "MESSAGE_SUBJECT": "Message subject",
+        "SENT_ON": "Sent on",
+        "LAST_UPDATED_BY": "Last updated by",
+        "LAST_UPDATED_ON": "Last updated on",
+        "STATUS": "Status",
+        "PAGE_TITLE": "Messages"
       }
     },
     "SUBJECT_TO_FRC": {
