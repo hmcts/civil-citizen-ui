@@ -65,7 +65,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
-
+      const disableSendMessage = !claim.hasClaimTakenOffline() && !claim.hasClaimBeenDismissed();
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
 
       const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
@@ -89,6 +89,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           helpSupportLinks,
           lang,
           isQMFlagEnabled,
+          disableSendMessage,
         },
       );
     } else {
