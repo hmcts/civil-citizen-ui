@@ -51,6 +51,8 @@ function renderPage(res: Response, req: Request, claimantDetails: GenericForm<Pa
 
 claimantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const value = 1+1;
+    console.log('value: ', value);
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
     const claimantDetails = new GenericForm<PartyDetails>(claimant.partyDetails);
