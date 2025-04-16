@@ -1,15 +1,19 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
-  BACK_URL,
+  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
   QM_VIEW_QUERY_URL
 } from 'routes/urls';
-import {Claim} from 'models/claim';
-import {AppRequest} from 'models/AppRequest';
+import { Claim } from 'models/claim';
+import { AppRequest } from 'models/AppRequest';
 import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import { CivilServiceClient } from 'client/civilServiceClient';
 import {
-  getClaimantDocuments,
-} from 'services/features/dashboard/ordersAndNoticesService';
+  getApplicantCitizenQueries,
+  getRespondentCitizenQueries
+} from 'services/features/queryManagement/queryManagementService';
+import { CaseRole } from 'form/models/caseRoles';
+import { dateTimeFormat } from 'common/utils/dateUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -18,19 +22,20 @@ const qmViewQueriesController = Router();
 const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
 
 const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
+  const queries = claim.caseRole === CaseRole.CLAIMANT
+    ? await getApplicantCitizenQueries(claim)
+    : await getRespondentCitizenQueries(claim);
 
-  const claimantDocuments = await getClaimantDocuments(claim, claimId, lang);
-  const pageHeaders = {
-    heading: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
-    caption: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
-    pageTitle: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
-  };
-  const backLinkUrl = BACK_URL;
+  if (queries?.caseMessages) {
+    queries.caseMessages.forEach(query => {
+      query.value.createdOn = dateTimeFormat(new Date(query.value.createdOn).toISOString(), lang);
+    });
+  }
 
   res.render(viewQueriesPath, {
-    claimantDocuments: claimantDocuments,
-    backLinkUrl,
-    pageHeaders
+    queries,
+    pageTitle: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
+    dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
 };
 
