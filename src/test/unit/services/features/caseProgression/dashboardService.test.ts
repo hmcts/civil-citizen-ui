@@ -580,14 +580,16 @@ describe('dashboardService', () => {
           region: '2',
           baseLocation: '0909089',
         };
-        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        beforeEach(() => {
+          (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        });
 
         it('should return updated text with QM enabled', async () => {
           (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
           claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
           const result = await getContactCourtLink(claim.id, claim, true, 'en');
-          
+
           expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
         });
 
