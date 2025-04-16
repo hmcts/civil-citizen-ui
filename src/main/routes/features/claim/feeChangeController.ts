@@ -6,6 +6,7 @@ import {getClaimById} from 'modules/utilityService';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {calculateInterestToDate} from 'common/utils/interestUtils';
 
 const feeChangeViewPath = 'features/claim/fee-change';
 const feeChangeController = Router();
@@ -17,7 +18,8 @@ feeChangeController.get(CLAIM_FEE_CHANGE_URL, (async (req: AppRequest, res: Resp
   try {
     const user: UserDetails = req.session.user;
     const claim = await getClaimById(req.params.id, req, true);
-    const newClaimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount, req);
+    const interestToDate = await calculateInterestToDate(claim);
+    const newClaimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
     const claimFee =  convertToPoundsFilter(newClaimFeeData.calculatedAmountInPence);
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const redirectUrl = draftClaimData?.draftClaim ? CLAIMANT_TASK_LIST_URL : draftClaimData.claimCreationUrl;

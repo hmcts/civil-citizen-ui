@@ -35,6 +35,7 @@ describe('Submit claimant response to ccd', () => {
   const claim = new Claim();
   claim.claimantResponse = new ClaimantResponse();
   claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
+
   it('should submit claimant response successfully when there are no errors', async () => {
     //Given
     nock(citizenBaseUrl)
@@ -75,6 +76,7 @@ describe('Submit claimant response to ccd', () => {
   describe('Submit claimant response with CCJ data to ccd', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
     claim.respondent1 = new Party();
+
     it('should submit claimant response with ccj data successfully when there are no errors', async () => {
       //Given
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;

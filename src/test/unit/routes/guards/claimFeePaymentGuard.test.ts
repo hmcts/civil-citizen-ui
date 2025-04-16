@@ -53,7 +53,9 @@ describe('Claim Fee Payment Guard', () => {
   });
   it('should redirect if claim fee has changed', async () => {
     //Given
-    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    const claim = new Claim();
+    claim.draftClaimCreatedAt = new Date();
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     (checkIfClaimFeeHasChanged as jest.Mock).mockResolvedValueOnce(true);
     //When
     await claimFeePaymentGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
