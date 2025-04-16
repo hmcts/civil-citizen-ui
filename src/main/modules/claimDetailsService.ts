@@ -4,10 +4,7 @@ import {ResponseType} from '../common/form/models/responseType';
 import { calculateInterestToDate } from 'common/utils/interestUtils';
 
 export const getTotalAmountWithInterestAndFees = async (claim: Claim) => {
-  let interestToDate = 0;
-  if (claim.hasInterest()) {
-    interestToDate = await calculateInterestToDate(claim);
-  }
+  const interestToDate = await calculateInterestToDate(claim);
   return (claim.totalClaimAmount || 0) + interestToDate + (convertToPoundsFilter(claim?.claimFee?.calculatedAmountInPence) || 0);
 };
 
