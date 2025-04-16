@@ -928,7 +928,14 @@
         "SEND_MESSAGE": "Send message"
       },
       "VIEW_QUERY": {
-        "PAGE_TITLE": "Messages"
+        "PAGE_TITLE": "Negeseuon",
+        "MESSAGE_SUBJECT": "Pwnc y neges",
+        "SENT_ON": "Anfonwyd ar",
+        "LAST_UPDATED_BY": "Diweddarwyd diwethaf gan",
+        "LAST_UPDATED_ON": "Diweddarwyd diwethaf ar",
+        "STATUS": "Statws",
+        "UPDATED_BY_COURT_STAFF": "Staff y Llys",
+        "UPDATED_BY_COURT_YOY": "Chi"
       }
     },
     "SUBJECT_TO_FRC": {
