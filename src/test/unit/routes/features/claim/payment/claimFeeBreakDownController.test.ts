@@ -50,6 +50,9 @@ describe('on GET', () => {
     nock(civilServiceUrl)
       .post('/fees/claim/calculate-interest')
       .reply(200, '100');
+    nock(civilServiceUrl)
+      .post('/fees/claim/interest')
+      .reply(200, '100');
   });
 
   it('should handle the get call of fee summary details', async () => {
@@ -67,6 +70,7 @@ describe('on GET', () => {
       },
       isInterestFromASpecificDate: () => false,
       hasBusinessProcessFinished: () => false,
+      hasInterest:() => true,
     };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
@@ -108,6 +112,7 @@ describe('on GET', () => {
       },
       hasBusinessProcessFinished: () => false,
       isInterestFromASpecificDate: () => false,
+      hasInterest:() => true,
     };
     const mockClaimFee = 100;
     const mockTotalAmount = 1200;
@@ -115,6 +120,7 @@ describe('on GET', () => {
 
     const mockBusinessProcessData = {
       hasBusinessProcessFinished: () => false,
+      isInterestFromASpecificDate: () => false,
     };
     (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
     //when-then
