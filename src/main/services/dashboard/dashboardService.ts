@@ -26,7 +26,6 @@ import {
   isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled, isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
-import {updateQueryManagementDashboardItems} from 'services/features/queryManagement/queryManagementService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -35,7 +34,7 @@ const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'M
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
-  const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.issueDate);
+  const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const welshGaEnabled = await isGaForWelshEnabled();
 
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
@@ -57,10 +56,8 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (!isGAFlagEnable
       || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
       || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-      || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
+      || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-    } else if (queryManagementFlagEnabled) {
-      updateQueryManagementDashboardItems(dashboard, GA_DASHBOARD_EXCLUSIONS[0], claim);
     }
 
     return dashboard;
