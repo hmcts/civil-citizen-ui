@@ -5,11 +5,6 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  globals: {
-    'ts-jest': {
-      isolatedModules: true
-    }
-  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
@@ -21,7 +16,6 @@ module.exports = {
     '^services/(.*)$': '<rootDir>/src/main/services/$1',
     '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1'
   },
-  setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
-  coverageProvider: 'v8',
+  setupFilesAfterEnv: ['./jest.setup.redis-mock.js', './jest.setup.js'],
   workerIdleMemoryLimit: '1024MB'
 };

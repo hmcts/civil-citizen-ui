@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowJs": true,
+    "isolatedModules": true,
     "lib": [
       "es6",
       "es2017.object",
