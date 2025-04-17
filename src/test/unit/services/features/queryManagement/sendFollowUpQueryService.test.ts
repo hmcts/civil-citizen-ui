@@ -37,7 +37,6 @@ describe('sendFollowUpQueryService', () => {
 
     beforeEach(() => {
       jest.resetAllMocks();
-      jest.resetModules();
       const fileToUpload = {
         fieldname: 'test',
         originalname: 'test',
@@ -50,7 +49,6 @@ describe('sendFollowUpQueryService', () => {
     });
     afterAll(() => {
       jest.clearAllMocks();
-      jest.resetModules();
     });
     it('should return the form with updated summary rows and call save doc to redis', async () => {
       const createQuery = new SendFollowUpQuery();
