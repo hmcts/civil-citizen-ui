@@ -23,7 +23,6 @@ import {Dashboard} from 'models/dashboard/dashboard';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {Claim} from 'models/claim';
-import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -165,18 +164,4 @@ export const removeSelectedDocument = async (req: AppRequest, index: number): Pr
     logger.error(error);
     throw error;
   }
-};
-
-export const getApplicantCitizenQueries = (claim: Claim): CaseQueries | undefined => {
-  if (claim.qmApplicantCitizenQueries) {
-    return claim.qmApplicantCitizenQueries;
-  }
-  return undefined;
-};
-
-export const getRespondentCitizenQueries = (claim: Claim): CaseQueries | undefined => {
-  if (claim.qmRespondentCitizenQueries) {
-    return claim.qmRespondentCitizenQueries;
-  }
-  return undefined;
 };
