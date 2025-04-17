@@ -25,7 +25,6 @@ const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
-
 export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
   if (!claim.queryManagement) {
