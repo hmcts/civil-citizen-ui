@@ -17,6 +17,8 @@ export const toCCDLanguage = (language: ClaimBilingualLanguagePreference): CCDLa
       return CCDLanguage.ENGLISH;
     case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
       return CCDLanguage.BOTH;
+    case ClaimBilingualLanguagePreference.WELSH:
+      return CCDLanguage.WELSH;
     default: return undefined;
   }
 };
