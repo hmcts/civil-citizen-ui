@@ -2623,7 +2623,8 @@
         "REPRESENT_MYSELF": "Represent myself at a hearing",
         "TELL_US_SETTLED": "Tell us you've settled the claim",
         "VIEW_ALL_APPLICATIONS": "View all existing applications",
-        "WHAT_EXPECT_HEARING": "What to expect at a hearing"
+        "WHAT_EXPECT_HEARING": "What to expect at a hearing",
+        "VIEW_ALL_MESSAGES": "View messages"
       },
       "TITLE": "Your money claims account",
       "UPDATING_STATUS": "Updating status, please refresh page.",
