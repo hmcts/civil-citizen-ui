@@ -3,12 +3,10 @@ import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 
-// Defines the shape of each query item and its computed metadata
 export interface QueryListItem {
   id: string;
   subject: string;
   createdOn: Date;
-  createdBy: string;
   parentId?: string;
   children: QueryListItem[];
   body: string;
@@ -26,19 +24,16 @@ export class ViewQueriesService {
       : claim.qmRespondentCitizenQueries;
   }
 
-  // Build hierarchical QueryListItem tree with computed fields
   public static buildQueryListItems(claim: Claim, lang: string): QueryListItem[] {
     const queries = this.getCaseQueries(claim);
     if (!queries?.caseMessages) {
       return [];
     }
 
-    // 1. Map raw messages into QueryListItem objects
-    const allItems: QueryListItem[] = queries.caseMessages.map(message => ({
-      id: message.value.id!,
+    const allQueryItems: QueryListItem[] = queries.caseMessages.map(message => ({
+      id: message.value.id,
       subject: message.value.subject,
       createdOn: new Date(message.value.createdOn),
-      createdBy: message.value.createdBy,
       parentId: message.value.parentId ?? null,
       body: message.value.body,
       children: [],
@@ -48,57 +43,47 @@ export class ViewQueriesService {
       lastUpdatedBy: null,
     }));
 
-    // 2. Build lookup map
+    // To make live easier when there multiple follow-up queries, map these into a child array, with initial query being the parent
+    // If a query does not have a parentId, we can derive it was the initial Parent query.
     const lookup = new Map<string, QueryListItem>();
-    allItems.forEach(item => lookup.set(item.id, item));
+    allQueryItems.forEach(item => lookup.set(item.id, item));
 
-    // 3. Link children to parent and collect roots
-    const rootItems: QueryListItem[] = [];
-    allItems.forEach(item => {
-      if (item.body) {
-        const parent = lookup.get(item.body);
-        if (parent) {
-          parent.children.push(item);
+    const parentQueryItems: QueryListItem[] = [];
+    allQueryItems.forEach(queryItem => {
+      if (queryItem.body) {
+        const isChildQuery = lookup.get(queryItem.body);
+        if (isChildQuery) {
+          isChildQuery.children.push(queryItem);
         }
       } else {
-        rootItems.push(item);
+        parentQueryItems.push(queryItem);
       }
     });
 
-    // 4. Recursively assign lastUpdatedOn (Date)
-    function assignLastUpdatedOn(item: QueryListItem): Date {
-      let latest = item.createdOn;
-      item.children.forEach(child => {
-        const childLatest = assignLastUpdatedOn(child);
-        if (childLatest > latest) {
-          latest = childLatest;
-        }
-      });
-      item.lastUpdatedOn = latest;
-      return latest;
-    }
-    rootItems.forEach(root => assignLastUpdatedOn(root));
+    // Determine the date the query thread was last updated on i.e. the created date of the latest query.
+    parentQueryItems.forEach(parent => {
+      const latest = parent.children.reduce((latestDate, child) =>
+        child.createdOn > latestDate ? child.createdOn : latestDate, parent.createdOn,
+      );
+      parent.lastUpdatedOn = latest;
+    });
 
-    // 5. Count messages and determine who updated last
-    function countMessages(item: QueryListItem): number {
-      return 1 + item.children.reduce((sum, child) => sum + countMessages(child), 0);
-    }
-    rootItems.forEach(item => {
-      const totalCount = countMessages(item);
+    // Determine who has last updated the query thread, if the number of queries, parent and child are odd,
+    // it was updated by claimant/defendant user, else if even last updated by court user
+    parentQueryItems.forEach(parent => {
+      const totalCount = 1 + parent.children.length;
       const isEven = totalCount % 2 === 0;
-      item.lastUpdatedBy = isEven
+      parent.lastUpdatedBy = isEven
         ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF'
         : 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_YOU';
     });
 
-    // 6. Format date fields for the view
-    function formatDates(item: QueryListItem): void {
-      item.createdOnString = dateTimeFormat(item.createdOn.toISOString(), lang);
-      item.lastUpdatedOnString = dateTimeFormat(item.lastUpdatedOn!.toISOString(), lang);
-      item.children.forEach(formatDates);
-    }
-    rootItems.forEach(formatDates);
+    // Format dates for UI display
+    parentQueryItems.forEach(parent => {
+      parent.createdOnString = dateTimeFormat(parent.createdOn.toISOString(), lang);
+      parent.lastUpdatedOnString = dateTimeFormat(parent.lastUpdatedOn.toISOString(), lang);
+    });
 
-    return rootItems;
+    return parentQueryItems;
   }
 }
