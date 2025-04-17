@@ -40,6 +40,7 @@ describe('Query management start Controller', () => {
 
   afterAll(() => {
     jest.clearAllMocks();
+    jest.resetModules();
   });
 
   describe('on GET', () => {

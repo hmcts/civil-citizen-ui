@@ -32,7 +32,10 @@ describe('create query check your answer controller', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-
+  afterAll(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
   describe('GET', () => {
     it('should render query page', async () => {
       mockGetClaimById.mockImplementation(async () => {

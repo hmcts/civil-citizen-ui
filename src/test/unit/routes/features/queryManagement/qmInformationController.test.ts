@@ -44,7 +44,10 @@ describe('Query management Information controller', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-
+  afterAll(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
   describe('on GET', () => {
 
     beforeEach(() => {

@@ -44,9 +44,11 @@ describe('Query management what do do controller', () => {
       claim.queryManagement = new QueryManagement();
       return claim;
     });
-
   });
-
+  afterAll(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
   describe('on GET', () => {
 
     it.each([
