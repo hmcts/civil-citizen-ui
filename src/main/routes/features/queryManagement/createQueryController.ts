@@ -77,7 +77,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
   const claim = await getClaimById(claimId, req, true);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
   const existingQuery = claim.queryManagement?.createQuery;
-  const hearingDate = new UpcomingHearingDate(req.body['year'], req.body['month'], req.body['day'])
+  const hearingDate = new UpcomingHearingDate(req.body['year'], req.body['month'], req.body['day']);
   const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated'], hearingDate);
   if (existingQuery) {
     createQuery.uploadedFiles = existingQuery.uploadedFiles;

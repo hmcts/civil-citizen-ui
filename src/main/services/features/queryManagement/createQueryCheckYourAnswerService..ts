@@ -93,7 +93,7 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
       createdOn: date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? claim.queryManagement.createQuery.hearingDate.date.toISOString() : undefined
+      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? claim.queryManagement.createQuery.hearingDate.date.toISOString() : undefined,
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmApplicantCitizenQueries}, req).catch(error => {
@@ -139,7 +139,7 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
       'createdOn': date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? claim.queryManagement.createQuery.hearingDate.date.toISOString() : undefined
+      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? claim.queryManagement.createQuery.hearingDate.date.toISOString() : undefined,
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmRespondentCitizenQueries}, req).catch(error => {

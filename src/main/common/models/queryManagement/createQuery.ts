@@ -4,13 +4,12 @@ import {
   IsNotEmpty, Max,
   MaxLength, Min, Validate,
   ValidateIf,
-  ValidateNested
+  ValidateNested,
 } from 'class-validator';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseDocument} from 'models/document/caseDocument';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInPastValidator} from 'form/validators/optionalDateNotInPastValidator';
-
 
 export class CreateQuery {
   @MaxLength(200, {message: 'ERRORS.QUERY_MANAGEMENT.MORE_THAN_200'})
@@ -71,9 +70,8 @@ export class UpcomingHearingDate {
     month?: number;
 
   @ValidateIf(o => (o.day || o.month || o.year))
-  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
+  @Min(new Date().getFullYear(), {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
     year?: number;
-
 
   constructor(year?: string, month?: string, day?: string) {
     this.date = DateConverter.convertToDate(year, month, day);
