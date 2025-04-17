@@ -8,20 +8,12 @@
 {% endblock %}
 
 {% set REQUEST_EXTENSION_DEFAULT %}
-    {% if isReleaseTwoEnabled %}
-        {{  t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_DEFAULT_R2') | safe }}
-    {% else %}
-        {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_DEFAULT') | safe }}
-    {% endif %}
+  {{  t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_DEFAULT_R2') | safe }}
 {% endset %}
 
 
 {% set REQUEST_EXTENSION_MORE %}
-    {% if isReleaseTwoEnabled %}
-        {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_MORE_R2') | safe  }}
-    {% else %}
-        {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_MORE') | safe  }}
-    {% endif %}
+  {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_MORE_R2') | safe  }}
 {% endset %}
 
 {% block content %}

@@ -15,11 +15,7 @@
   class="govuk-link" target="_blank" rel="noopener noreferrer">FORM_NAME</a>'
     | replace('FORM_NAME', t('PAGES.RESPONSE_DEADLINE_OPTIONS.FORM'))%}
   <p class="govuk-body">
-     {% if isReleaseTwoEnabled %}
-        {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED_R2') }}
-      {% else %}
-          {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED', {claimantName : claimantName}) }} 
-     {% endif %}
+     {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED_R2') }}
      {{ formLink | safe}}.
   </p>
   <p class="govuk-body govuk-!-margin-top-6">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.EMAIL_FORM') }}</p>
@@ -32,11 +28,7 @@
 {% endset -%}
 
 {% set OPTION_AGREED %}
-    {% if isReleaseTwoEnabled %}
-        {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED_R2') }}
-    {% else %}
-        {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED', { claimantName: claimantName  }) | safe }}
-    {% endif %}
+  {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED_R2') }}
 {% endset %}
 
 {% block content %}
