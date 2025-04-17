@@ -2,12 +2,10 @@ import {AppRequest} from 'models/AppRequest';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import {UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as utilityService from 'modules/utilityService';
-import {removeSelectedDocument, uploadSelectedFile} from 'services/features/queryManagement/sendFollowUpQueryService';
+import {uploadSelectedFile} from 'services/features/queryManagement/sendFollowUpQueryService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/i18n');
@@ -78,54 +76,5 @@ describe('Uploading files', () => {
     await uploadSelectedFile(appRequest, createQuery);
     expect(saveSpy).toBeCalled();
     expect(appRequest.session.fileUpload).toBeDefined();
-  });
-
-  it('should remove selected file and save the new list to redis', async () => {
-    const claim = new Claim();
-    claim.queryManagement = new QueryManagement();
-    claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
-    claim.queryManagement.sendFollowUpQuery.uploadedFiles = [{
-      'caseDocument': {
-        'createdBy': 'test',
-        'createdDatetime': '2025-03-27T17:02:09.858Z',
-        'documentLink': {
-          'document_binary_url': '',
-          'document_filename': '',
-          'document_url': '',
-        },
-        'documentName': 'name',
-        'documentSize': 12345,
-        'documentType': null,
-      },
-      'fileUpload': {
-        'buffer': {
-          'data': [
-            116,
-            101,
-            115,
-            116,
-          ],
-          'type': 'Buffer',
-        },
-        'fieldname': 'test',
-        'mimetype': 'text/plain',
-        'originalname': 'test',
-        'size': 123,
-      },
-    } as unknown as UploadQMAdditionalFile];
-    mockGetClaimById.mockImplementation(async () => {
-      return claim;
-    });
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('1234');
-    const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    const appRequest: AppRequest = {
-      params: {id: '1234', appId: '896'},
-      session: {
-        fileUpload: undefined,
-      },
-    } as unknown as AppRequest;
-    await removeSelectedDocument(appRequest, 0);
-    expect(claim.queryManagement.sendFollowUpQuery.uploadedFiles.length).toBe(0);
-    expect(saveSpy).toBeCalledWith('1234', claim);
   });
 });
