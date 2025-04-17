@@ -20,7 +20,4 @@ jest.mock('launchdarkly-node-server-sdk', () => ({
 }));
 afterAll(() => {
   jest.clearAllMocks();
-  if (global.gc) {
-    global.gc();
-  }
 });
