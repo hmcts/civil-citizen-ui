@@ -45,14 +45,14 @@ nodejs:
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
-  memoryRequests: 1024Mi
-  cpuRequests: 2500m
-  memoryLimits: 2048Mi
-  cpuLimits: 2500m
-  devcpuRequests: 500m
-  devmemoryRequests: 1Gi
-  devcpuLimits: 2
-  devmemoryLimits: 2Gi
+  memoryRequests: 4Gi
+  cpuRequests: 4000m
+  memoryLimits: 4Gi
+  cpuLimits: 3500m
+  devmemoryRequests: 8Gi
+  devcpuRequests: 4000m
+  devmemoryLimits: 8Gi
+  devcpuLimits: 4500m
   readinessDelay: 130
   livenessDelay: 130
   keyVaults:

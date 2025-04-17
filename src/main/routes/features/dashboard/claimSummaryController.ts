@@ -32,6 +32,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
+import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -107,10 +108,13 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
   iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  const viewMessages = await getViewMessagesLink(req, claim, lng);
   if(viewAllApplicationLink) {
     iWantToLinks.push(viewAllApplicationLink);
   }
-
+  if (viewMessages) {
+    iWantToLinks.push(viewMessages);
+  }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 
