@@ -32,7 +32,7 @@ describe('Send follow query controller', () => {
   });
   describe('GET', () => {
     beforeEach(() => {
-      jest.resetModules();
+      jest.resetAllMocks();
     });
     it('should render query page', async () => {
       mockGetClaimById.mockResolvedValue(new Claim());

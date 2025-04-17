@@ -10,7 +10,7 @@ describe('View Messages Service', () => {
     jest.clearAllMocks();
   });
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   it('should generate the view messages link for claimant', async () => {
     const claim = new Claim();
