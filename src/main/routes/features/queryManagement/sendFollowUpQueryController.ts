@@ -104,7 +104,7 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       return await renderView(form, claim, claimId, res, formattedSummary, req);
     } else {
       await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
-      res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
+      return res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
     }
   } catch (error) {
     next(error);
