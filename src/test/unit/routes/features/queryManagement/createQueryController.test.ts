@@ -44,7 +44,7 @@ describe('create query conroller', () => {
           expect(res.text).toContain('The subject should be a summary of your message');
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('Include as many details as possible so case workers can respond to your message');
-          expect(res.text).toContain('Is your message about a hearing?');
+          expect(res.text).toContain('Is your message about an upcoming hearing?');
           expect(res.text).toContain('Upload documents (optional)');
         });
     });
@@ -63,11 +63,13 @@ describe('create query conroller', () => {
     });
 
     it('should pre fill field values when session data is set', async () => {
-      const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes'};
+      const date = new Date();
+      const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes',
+        'year': (date.getFullYear() + 1).toString(), 'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = preFilledData as CreateQuery;
+        claim.queryManagement.createQuery = preFilledData as unknown as CreateQuery;
         return claim;
       });
 
@@ -93,7 +95,9 @@ describe('create query conroller', () => {
         return new Claim();
       });
       const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
-      const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes'};
+      const date = new Date();
+      const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes', 'year': (date.getFullYear() + 1).toString(),
+        'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send(data);
       expect(res.status).toBe(302);
       expect(saveQueryManagement).toHaveBeenCalled();
@@ -108,7 +112,7 @@ describe('create query conroller', () => {
       expect(res.text).toContain('There was a problem');
       expect(res.text).toContain('Enter message subject');
       expect(res.text).toContain('Enter message details');
-      expect(res.text).toContain('Select yes if your message is about a hearing');
+      expect(res.text).toContain('Is your message about an upcoming hearing?');
     });
 
     it('should trigger redirect on successful file upload', async () => {
