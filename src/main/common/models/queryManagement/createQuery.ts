@@ -68,34 +68,4 @@ export class UploadQMAdditionalFile {
     this.fileUpload = fileUpload;
     this.caseDocument = caseDocument;
   }
-
-}
-
-export class UpcomingHearingDate {
-  @ValidateIf(o => ((o.day !== undefined && o.month !== undefined && o.day && o.month && o.year && o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999)
-    || (o.day !== undefined && o.month !== undefined && !o.day && !o.month && !o.year)))
-  @IsDate({message: 'ERRORS.QUERY_MANAGEMENT.VALID_DATE_BLANK'})
-  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_FUTURE_DATE'})
-    date?: Date;
-
-  @ValidateIf(o => (o.day || o.month || o.year))
-  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_DAY'})
-  @Max(31, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_DAY'})
-    day?: number;
-
-  @ValidateIf(o => (o.day || o.month || o.year))
-  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
-  @Max(12, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
-    month?: number;
-
-  @ValidateIf(o => (o.day || o.month || o.year))
-  @Min(new Date().getFullYear(), {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
-    year?: number;
-
-  constructor(year?: string, month?: string, day?: string) {
-    this.date = DateConverter.convertToDate(year, month, day);
-    this.year = Number(year);
-    this.month = Number(month);
-    this.day = Number(day);
-  }
 }

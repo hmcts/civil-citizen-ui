@@ -6,7 +6,7 @@ import config from 'config';
 import * as utilityService from 'modules/utilityService';
 import { Claim } from 'models/claim';
 import { QueryManagement } from 'form/models/queryManagement/queryManagement';
-import {CreateQuery, UpcomingHearingDate} from 'models/queryManagement/createQuery';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 import * as createCheckYourAnswerService from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
 import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
 import { CivilServiceClient } from 'client/civilServiceClient';
@@ -39,8 +39,7 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
         const date = new Date();
-        const hearingDate = new UpcomingHearingDate((date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
       await request(app)
@@ -81,9 +80,8 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.CLAIMANT;
         claim.queryManagement = new QueryManagement();
-        const date = new Date();
-        const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
+        const date = new Date()
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
       const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined);
@@ -104,8 +102,7 @@ describe('create query check your answer controller', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.queryManagement = new QueryManagement();
         const date = new Date();
-        const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
       const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined);
@@ -125,8 +122,7 @@ describe('create query check your answer controller', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.queryManagement = new QueryManagement();
         const date = new Date();
-        const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));

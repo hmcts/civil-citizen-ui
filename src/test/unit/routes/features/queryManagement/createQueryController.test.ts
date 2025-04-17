@@ -7,7 +7,7 @@ import * as QueryManagementService from 'services/features/queryManagement/query
 import * as utilityService from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import {CreateQuery, UpcomingHearingDate} from 'models/queryManagement/createQuery';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -64,12 +64,12 @@ describe('create query conroller', () => {
 
     it('should pre fill field values when session data is set', async () => {
       const date = new Date();
-      const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
-      const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes', 'hearingDate': hearingDate};
+      const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes',
+      'year': (date.getFullYear() + 1).toString(), 'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = preFilledData as CreateQuery;
+        claim.queryManagement.createQuery = preFilledData as unknown as CreateQuery;
         return claim;
       });
 
