@@ -27,7 +27,9 @@ describe('Send follow query controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   describe('GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();

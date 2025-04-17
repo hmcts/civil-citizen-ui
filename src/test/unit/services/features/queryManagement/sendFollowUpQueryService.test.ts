@@ -47,7 +47,9 @@ describe('sendFollowUpQueryService', () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(returnedFile);
       jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
     });
-
+    afterAll(() => {
+      jest.clearAllMocks();
+    })
     it('should return the form with updated summary rows and call save doc to redis', async () => {
       const createQuery = new SendFollowUpQuery();
       const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
