@@ -47,7 +47,6 @@ describe('Query management what do do controller', () => {
   });
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   describe('on GET', () => {
 

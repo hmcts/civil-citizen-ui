@@ -28,7 +28,6 @@ describe('create query conroller', () => {
 
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   describe('GET', () => {
     beforeEach(() => {

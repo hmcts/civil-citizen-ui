@@ -14,7 +14,6 @@ const req = {params: {id: '123'}, session: {user: {id: '12345667'}}} as unknown 
 describe('Check Answers response service', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   describe('getSummarySections', () => {
     it('getSummarySections', () => {

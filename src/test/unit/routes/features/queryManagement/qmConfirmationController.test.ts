@@ -20,7 +20,6 @@ describe('Query management Confirmation Controller', () => {
   });
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   describe('on GET', () => {
     it('should return query management confirmation page', async () => {

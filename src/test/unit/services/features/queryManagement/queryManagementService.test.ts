@@ -77,7 +77,6 @@ const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 describe('dashboard items update', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   const exclusionTask = new DashboardTaskList('Applications', 'Applications', []);
   const dashboard = new Dashboard(mockExpectedDashboardInfo);
@@ -116,7 +115,6 @@ describe('dashboard items update', () => {
 describe('save queryManagement data', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   it('should save data successfully when query management not exists', async () => {
     //Given
@@ -172,7 +170,6 @@ describe('save queryManagement data', () => {
 describe('get queryManagement', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   it('should get data successfully when query management not exists', async () => {
     //Given
@@ -209,7 +206,6 @@ describe('get queryManagement', () => {
 describe('get CancelUrl', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   it('get cancel url', async () => {
     //when
@@ -224,7 +220,6 @@ describe('get CancelUrl', () => {
 describe('get Caption', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   it('get caption GET_UPDATE', async () => {
     //when
@@ -270,7 +265,6 @@ describe('get Caption', () => {
 describe('Uploading files', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   const appRequest: AppRequest = {
     params: { id: '1', appId: '89' },

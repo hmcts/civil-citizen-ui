@@ -8,7 +8,6 @@ const req = {params: {id: '123'}} as unknown as AppRequest;
 describe('View Messages Service', () => {
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
   beforeEach(() => {
     jest.clearAllMocks();

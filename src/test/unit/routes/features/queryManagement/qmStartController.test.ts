@@ -29,7 +29,6 @@ describe('Query management start Controller', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
     jest.resetAllMocks();
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
@@ -40,7 +39,6 @@ describe('Query management start Controller', () => {
 
   afterAll(() => {
     jest.clearAllMocks();
-    jest.resetModules();
   });
 
   describe('on GET', () => {
