@@ -80,10 +80,7 @@ describe('Full Admit Set Date Payment Service', () => {
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = {
         option: YesNo.YES,
       };
-      
-      console.log('Is Partial Admission:', claim.isPartialAdmission());
-      console.log('Partial Admission Payment Intention:', claim.partialAdmission?.paymentIntention);
-      console.log('Full Admission Payment Intention:', claim.fullAdmission?.paymentIntention);
+
       // When
       const details = getSetDatePaymentDetails(claim, lang);
 
@@ -124,22 +121,22 @@ describe('Full Admit Set Date Payment Service', () => {
       expect(details.defendantName).toBe(claim.getDefendantFullName());
       expect(details.proposedSetDate).toBe(formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lang));
     });
-  
+
     it('should catch and throw an error', () => {
       // Given
       const claim = new Claim();
       const expectedError = new Error('Test error message');
-      
+
       claim.getDefendantFullName = () => {
         throw expectedError;
       };
-      
+
       claim.getPaymentIntention = () => null;
-      
+
       try {
         // When
         getSetDatePaymentDetails(claim, lang);
-        
+
         expect(true).toBe(false);
       } catch (error) {
         // Then

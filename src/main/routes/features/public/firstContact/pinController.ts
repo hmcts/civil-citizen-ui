@@ -42,7 +42,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
       const pin = pinForm.model.pin;
       if (pin.length === 8 && firstContact?.claimReference) {
         const redirectUrl: string = await civilServiceClient.verifyOcmcPin(pin, firstContact?.claimReference);
-        console.log('RedirectUrl : ', redirectUrl);
         res.redirect(redirectUrl);
       } else if (firstContact?.claimReference) {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, firstContact?.claimReference);
