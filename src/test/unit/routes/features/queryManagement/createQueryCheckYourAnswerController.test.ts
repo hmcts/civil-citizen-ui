@@ -80,7 +80,7 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.CLAIMANT;
         claim.queryManagement = new QueryManagement();
-        const date = new Date()
+        const date = new Date();
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });

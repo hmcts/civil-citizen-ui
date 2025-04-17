@@ -65,7 +65,7 @@ describe('create query conroller', () => {
     it('should pre fill field values when session data is set', async () => {
       const date = new Date();
       const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes',
-      'year': (date.getFullYear() + 1).toString(), 'month': date.getMonth().toString(), 'day': date.getDay().toString()};
+        'year': (date.getFullYear() + 1).toString(), 'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
