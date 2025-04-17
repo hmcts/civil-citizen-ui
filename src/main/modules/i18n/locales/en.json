@@ -908,7 +908,8 @@
       "HEADINGS": {
         "PAGE_TITLE": "Enter message details",
         "HEADING": "Enter message details",
-        "CAPTION": "Send a message"
+        "CAPTION": "Send a message",
+        "FOLLOW_UP_CAPTION": "Send a follow up message"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Message subject",
@@ -926,6 +927,12 @@
         "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
         "UPLOAD_DOCUMENTS": "Upload documents (optional)",
         "SEND_MESSAGE": "Send message"
+      },
+      "FOLLOW_UP_QUERY": {
+        "BODY_TITLE": "Message details",
+        "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
+        "DOCUMENTS_TITLE": "Upload documents (optional)",
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       }
     },
     "SUBJECT_TO_FRC": {

@@ -2,6 +2,7 @@ import {IsDefined} from 'class-validator';
 import {ValidationArgs} from 'form/models/genericForm';
 import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
 import {CreateQuery} from 'models/queryManagement/createQuery';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 export class Hint {
   text: string;
@@ -99,4 +100,5 @@ export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
   qualifyingQuestion : QualifyingQuestion;
   createQuery: CreateQuery;
+  sendFollowUpQuery: SendFollowUpQuery
 }

@@ -111,23 +111,28 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
 
 export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery): Promise<void> => {
   try {
-    const uploadQMAdditionalFile = new UploadQMAdditionalFile();
-    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    uploadQMAdditionalFile.fileUpload = fileUpload;
-    const form = new GenericForm(uploadQMAdditionalFile);
-    form.validateSync();
-    if (!form.hasErrors()) {
-      uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-    } else {
-      const errors = translateErrors(form.getAllErrors(), t);
-      req.session.fileUpload = JSON.stringify(errors);
-    }
+    const uploadQMAdditionalFile = await createUploadDocLinks(req);
     await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
   } catch (err) {
     logger.error(err);
     throw err;
   }
 };
+
+export const createUploadDocLinks = async (req: AppRequest) => {
+  const uploadQMAdditionalFile = new UploadQMAdditionalFile();
+  const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+  uploadQMAdditionalFile.fileUpload = fileUpload;
+  const form = new GenericForm(uploadQMAdditionalFile);
+  form.validateSync();
+  if (!form.hasErrors()) {
+    uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
+  } else {
+    const errors = translateErrors(form.getAllErrors(), t);
+    req.session.fileUpload = JSON.stringify(errors);
+  }
+  return uploadQMAdditionalFile;
+}
 
 const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery): Promise<void> => {
   try {
