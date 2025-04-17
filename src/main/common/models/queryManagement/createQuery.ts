@@ -22,17 +22,36 @@ export class CreateQuery {
   @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})
     isHearingRelated: string;
 
-  @ValidateNested()
-  @ValidateIf(o => o.isHearingRelated === 'yes')
-    hearingDate?: UpcomingHearingDate;
+  @ValidateIf(o => o.isHearingRelated === 'yes' && ((o.day !== undefined && o.month !== undefined && o.day && o.month && o.year && o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 1)
+    || (o.day !== undefined && o.month !== undefined && !o.day && !o.month && !o.year)))
+  @IsDate({message: 'ERRORS.QUERY_MANAGEMENT.VALID_DATE_BLANK'})
+  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_FUTURE_DATE'})
+  date?: Date;
+
+  @ValidateIf(o => (o.day || o.month || o.year))
+  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_DAY'})
+  @Max(31, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_DAY'})
+  day?: number;
+
+  @ValidateIf(o => (o.day || o.month || o.year))
+  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
+  @Max(12, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
+  month?: number;
+
+  @ValidateIf(o => (o.day || o.month || o.year))
+  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
+  year?: number;
 
   uploadedFiles: UploadQMAdditionalFile[];
 
-  constructor(messageSubject?: string, messageDetails?: string, isHearingRelated?: string, hearingDate?: UpcomingHearingDate, fileUpload?: FileUpload, uploadedFiles?: FileUpload[]) {
+  constructor(messageSubject?: string, messageDetails?: string, isHearingRelated?: string, year?: string, month?: string, day?: string, fileUpload?: FileUpload, uploadedFiles?: FileUpload[]) {
     this.messageSubject = messageSubject;
     this.messageDetails = messageDetails;
     this.isHearingRelated = isHearingRelated;
-    this.hearingDate = hearingDate;
+    this.date = DateConverter.convertToDate(year, month, day);
+    this.year = Number(year);
+    this.month = Number(month);
+    this.day = Number(day);
     this.uploadedFiles = [];
   }
 

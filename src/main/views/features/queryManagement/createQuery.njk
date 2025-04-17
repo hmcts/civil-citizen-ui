@@ -55,8 +55,8 @@
       }) }}
         {% set hearingDateHtml %}
           {{ govukDateInput({
-            id: "hearingDate",
-            name: "hearingDate",
+            id: "date",
+            name: "date",
             type: "number",
             inputmode: "numeric",
             fieldset: {
@@ -67,11 +67,11 @@
               }
             },
             errorMessage: {
-              html: '<p class="govuk-error-message">' + t(form.errorFor('hearingDate')) + '</p>' +
+              html: '<p class="govuk-error-message">' + t(form.errorFor('date')) + '</p>' +
               '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
               '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
               '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-            } if (form.hasFieldError('hearingDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+            } if (form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
             items: [
               {
                 classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",

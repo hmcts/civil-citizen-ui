@@ -6,7 +6,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import {CreateQuery, UpcomingHearingDate} from 'models/queryManagement/createQuery';
+import {CreateQuery} from 'models/queryManagement/createQuery';
 import multer from 'multer';
 import {
   getCancelUrl,
@@ -77,8 +77,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
   const claim = await getClaimById(claimId, req, true);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
   const existingQuery = claim.queryManagement?.createQuery;
-  const hearingDate = new UpcomingHearingDate(req.body['year'], req.body['month'], req.body['day']);
-  const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated'], hearingDate);
+  const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated'], req.body['year'], req.body['month'], req.body['day']);
   if (existingQuery) {
     createQuery.uploadedFiles = existingQuery.uploadedFiles;
   }
