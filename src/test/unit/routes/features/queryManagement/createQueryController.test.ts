@@ -26,9 +26,15 @@ describe('create query conroller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
+
   describe('GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();
+      jest.resetModules();
     });
     it('should render query page', async () => {
       mockGetClaimById.mockImplementation(async () => {
