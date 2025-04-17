@@ -36,7 +36,7 @@ export class CreateQuery {
   @ValidateIf(o => (o.day || o.month || o.year))
   @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
-   month?: number;
+    month?: number;
 
   @ValidateIf(o => (o.day || o.month || o.year))
   @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
