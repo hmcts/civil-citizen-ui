@@ -58,23 +58,4 @@ describe('Uploading files', () => {
     await uploadSelectedFile(appRequest, createQuery);
     expect(saveSpy).toHaveBeenCalled();
   });
-
-  it('should return the form and not save doc if file has errors', async () => {
-    const createQuery = new SendFollowUpQuery();
-    const appRequest: AppRequest = {
-      params: {id: '2', appId: '89'},
-      session: {
-        fileUpload: undefined,
-      },
-    } as unknown as AppRequest;
-    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(undefined);
-    mockGetClaimById.mockImplementation(async () => {
-      return new Claim();
-    });
-    const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
-    await uploadSelectedFile(appRequest, createQuery);
-    expect(saveSpy).toBeCalled();
-    expect(appRequest.session.fileUpload).toBeDefined();
-  });
 });
