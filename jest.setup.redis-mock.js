@@ -18,8 +18,6 @@ jest.mock('ioredis', () => jest.requireActual('ioredis-mock'));
 jest.mock('launchdarkly-node-server-sdk', () => ({
   init: jest.fn().mockReturnValue(ldClientMock),
 }));
-afterEach(() => {
-  if (global.gc) {
-    global.gc(); // Forces garbage collection
-  }
+afterAll(() => {
+  jest.clearAllMocks();
 });
