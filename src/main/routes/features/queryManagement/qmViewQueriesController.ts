@@ -7,13 +7,8 @@ import { Claim } from 'models/claim';
 import { AppRequest } from 'models/AppRequest';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
-import {
-  getApplicantCitizenQueries,
-  getRespondentCitizenQueries
-} from 'services/features/queryManagement/queryManagementService';
-import { CaseRole } from 'form/models/caseRoles';
-import { dateTimeFormat } from 'common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {QueryListItem, ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -22,18 +17,11 @@ const qmViewQueriesController = Router();
 const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
 
 const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
-  const queries = claim.caseRole === CaseRole.CLAIMANT
-    ? await getApplicantCitizenQueries(claim)
-    : await getRespondentCitizenQueries(claim);
 
-  if (queries?.caseMessages) {
-    queries.caseMessages.forEach(query => {
-      query.value.createdOn = dateTimeFormat(new Date(query.value.createdOn).toISOString(), lang);
-    });
-  }
+  const rootItems: QueryListItem[] = ViewQueriesService.buildQueryListItems(claim, lang);
 
   res.render(viewQueriesPath, {
-    queries,
+    rootItems,
     pageTitle: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });

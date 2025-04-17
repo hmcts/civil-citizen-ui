@@ -27,19 +27,19 @@
           </tr>
         </thead>
         <tbody class="govuk-table__body">
-          {% for item in queries.caseMessages %}
+          {% for item in rootItems %}
             <tr class="govuk-table__row">
               <td class="govuk-table__cell">
-                <a href="{{ 'dummylink' }}" class="govuk-link">{{ item.value.subject }}</a>
+                <a href="{{ 'dummylink' }}" class="govuk-link">{{ item.subject }}</a>
               </td>
               <td class="govuk-table__cell">
-                {{ item.value.createdOn }}
+                {{ item.createdOnString }}
               </td>
               <td class="govuk-table__cell">
-                {{ t('item.lastUpdatedBy') }}
+                {{ t(item.lastUpdatedBy) }}
               </td>
               <td class="govuk-table__cell">
-                {{ item.value.createdOn }}
+                {{ item.lastUpdatedOnString }}
               </td>
               <td class="govuk-table__cell">
                 {{ t('to be added CIV-16864') }}
