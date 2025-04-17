@@ -148,9 +148,9 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
 };
 
 const getStringDate = (query: CreateQuery): string => {
-    const month = query.month.toString().padStart(2, '0');
-    const day = query.day.toString().padStart(2, '0');
-    return query.year + '-' + month + '-' + day;
+  const month = query.month.toString().padStart(2, '0');
+  const day = query.day.toString().padStart(2, '0');
+  return query.year + '-' + month + '-' + day;
 };
 
 const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string) => {

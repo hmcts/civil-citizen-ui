@@ -26,21 +26,21 @@ export class CreateQuery {
     || (o.day !== undefined && o.month !== undefined && !o.day && !o.month && !o.year)))
   @IsDate({message: 'ERRORS.QUERY_MANAGEMENT.VALID_DATE_BLANK'})
   @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_FUTURE_DATE'})
-  date?: Date;
+    date?: Date;
 
   @ValidateIf(o => (o.day || o.month || o.year))
   @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_DAY'})
   @Max(31, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_DAY'})
-  day?: number;
+    day?: number;
 
   @ValidateIf(o => (o.day || o.month || o.year))
   @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_MONTH'})
-  month?: number;
+   month?: number;
 
   @ValidateIf(o => (o.day || o.month || o.year))
   @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
-  year?: number;
+    year?: number;
 
   uploadedFiles: UploadQMAdditionalFile[];
 
