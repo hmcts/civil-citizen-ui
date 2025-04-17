@@ -60,7 +60,7 @@ describe('Check Answers response service', () => {
             createdOn: new Date().toISOString(),
             'attachments': [],
             'isHearingRelated': YesNoUpperCamelCase.YES,
-            'hearingDate': '2025-04-04'
+            'hearingDate': '2025-04-04',
           },
         }],
       };
@@ -90,7 +90,7 @@ describe('Check Answers response service', () => {
             createdOn: new Date().toISOString(),
             'attachments': [],
             'isHearingRelated': YesNoUpperCamelCase.YES,
-            'hearingDate': '2025-05-05'
+            'hearingDate': '2025-05-05',
           },
         }],
       };
