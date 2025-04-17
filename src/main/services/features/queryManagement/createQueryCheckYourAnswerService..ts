@@ -3,7 +3,7 @@ import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CASE_DOCUMENT_VIEW_URL, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
-import {UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
+import {UpcomingHearingDate, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import {AppRequest} from 'models/AppRequest';
 import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -11,6 +11,7 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {v4 as uuidV4} from 'uuid';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -21,6 +22,7 @@ export const getSummarySections = (claimId: string, claim: Claim): SummaryRow[] 
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
     ...getMessageDescription(createQuery.messageDetails, claimId, lng),
     ...getMessageAboutHearing(createQuery.isHearingRelated, claimId, lng),
+    ...getHearingDate(createQuery.isHearingRelated, createQuery.hearingDate, claimId, lng),
     ...getUploadedFiles(createQuery.uploadedFiles, claimId, lng),
   ];
 };
@@ -47,6 +49,16 @@ const getMessageAboutHearing = (aboutHearing: string, claimId: string, lng: stri
     aboutHearing,
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
+};
+
+const getHearingDate = (hearingRelated: string, hearingDate: UpcomingHearingDate, claimId: string, lng: string) => {
+  if (hearingRelated === YesNo.YES) {
+    return [summaryRow(
+      t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_HEARING_DATE', {lng}),
+      formatDateToFullDate(hearingDate.date, lng),
+      constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
+      t('COMMON.BUTTONS.CHANGE', {lng}))];
+  } else return [];
 };
 
 const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string) => {
@@ -81,6 +93,7 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
       createdOn: date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? claim.queryManagement.createQuery.hearingDate.date.toISOString() : undefined
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmApplicantCitizenQueries}, req).catch(error => {
@@ -126,6 +139,7 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
       'createdOn': date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? claim.queryManagement.createQuery.hearingDate.date.toISOString() : undefined
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmRespondentCitizenQueries}, req).catch(error => {

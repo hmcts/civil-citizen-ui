@@ -6,7 +6,7 @@ import config from 'config';
 import * as utilityService from 'modules/utilityService';
 import { Claim } from 'models/claim';
 import { QueryManagement } from 'form/models/queryManagement/queryManagement';
-import { CreateQuery } from 'models/queryManagement/createQuery';
+import {CreateQuery, UpcomingHearingDate} from 'models/queryManagement/createQuery';
 import * as createCheckYourAnswerService from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
 import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
 import { CivilServiceClient } from 'client/civilServiceClient';
@@ -38,7 +38,9 @@ describe('create query check your answer controller', () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
+        const date = new Date();
+        const hearingDate = new UpcomingHearingDate((date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
         return claim;
       });
       await request(app)
@@ -50,7 +52,7 @@ describe('create query check your answer controller', () => {
           expect(res.text).toContain('Enter message details');
           expect(res.text).toContain('Message subject');
           expect(res.text).toContain('Message details');
-          expect(res.text).toContain('Is your message about a hearing?');
+          expect(res.text).toContain('Is your message about an upcoming hearing?');
           expect(res.text).toContain('Upload documents (optional)');
         });
     });
@@ -79,7 +81,9 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.CLAIMANT;
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
+        const date = new Date();
+        const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
         return claim;
       });
       const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined);
@@ -99,7 +103,9 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.DEFENDANT;
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
+        const date = new Date();
+        const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
         return claim;
       });
       const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined);
@@ -118,7 +124,9 @@ describe('create query check your answer controller', () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.DEFENDANT;
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes');
+        const date = new Date();
+        const hearingDate = new UpcomingHearingDate(date.getFullYear().toString(), date.getMonth().toString(), date.getDay().toString());
+        claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', hearingDate);
         return claim;
       });
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
