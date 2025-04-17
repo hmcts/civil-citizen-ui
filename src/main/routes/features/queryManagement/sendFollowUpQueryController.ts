@@ -50,6 +50,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const sendFollowQuery = claim.queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
+    const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
     let form = new GenericForm(sendFollowQuery);
     const formattedSummary = summarySection(
       {
@@ -65,6 +66,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
     if (req.query?.id) {
       const index = req.query.id;
       await removeSelectedDocument(req, Number(index) - 1);
+      return res.redirect(currentUrl);
     }
     await getSummaryList(formattedSummary, req);
     await renderView(form, claim, claimId, res, formattedSummary, req);

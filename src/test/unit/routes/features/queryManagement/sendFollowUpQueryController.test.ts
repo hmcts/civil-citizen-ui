@@ -54,7 +54,7 @@ describe('Send follow query controller', () => {
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE + '?id=1')
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
           expect(removeDocSpy).toHaveBeenCalled();
         });
     });
@@ -67,7 +67,7 @@ describe('Send follow query controller', () => {
       mockGetClaimById.mockResolvedValue(claim);
 
       await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE + '?id=1')
+        .get(QM_FOLLOW_UP_MESSAGE)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('test body');
