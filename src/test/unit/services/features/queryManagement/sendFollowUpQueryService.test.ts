@@ -20,7 +20,6 @@ jest.mock('../../../../../main/modules/utilityService');
 
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
-describe('sendFollowUpQueryService', () => {
   describe('Uploading files', () => {
     const appRequest: AppRequest = {
       params: {id: '1', appId: '89'},
@@ -130,4 +129,3 @@ describe('sendFollowUpQueryService', () => {
       expect(saveSpy).toBeCalledWith('1234', claim);
     });
   });
-});
