@@ -34,6 +34,7 @@ describe('create query check your answer controller', () => {
   });
   afterAll(() => {
     jest.clearAllMocks();
+    delete require.cache[require.resolve('../../../../../main/app')];
   });
   describe('GET', () => {
     it('should render query page', async () => {
