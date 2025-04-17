@@ -30,14 +30,9 @@ describe('create query conroller', () => {
     jest.clearAllMocks();
     jest.resetModules();
   });
-  afterAll(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
-  });
   describe('GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();
-      jest.resetModules();
     });
     it('should render query page', async () => {
       mockGetClaimById.mockImplementation(async () => {
