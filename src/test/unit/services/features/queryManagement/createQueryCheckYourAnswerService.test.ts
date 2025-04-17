@@ -12,7 +12,9 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 const req = {params: {id: '123'}, session: {user: {id: '12345667'}}} as unknown as AppRequest;
 describe('Check Answers response service', () => {
-
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   describe('getSummarySections', () => {
     it('getSummarySections', () => {
       const claim = new Claim();

@@ -6,8 +6,11 @@ import {CaseRole} from 'form/models/caseRoles';
 
 const req = {params: {id: '123'}} as unknown as AppRequest;
 describe('View Messages Service', () => {
-  beforeEach(() => {
+  afterAll(() => {
     jest.clearAllMocks();
+  });
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
   it('should generate the view messages link for claimant', async () => {
     const claim = new Claim();

@@ -29,11 +29,16 @@ describe('Query management start Controller', () => {
   });
 
   beforeEach(() => {
+    jest.resetAllMocks();
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
       return claim;
     });
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   describe('on GET', () => {

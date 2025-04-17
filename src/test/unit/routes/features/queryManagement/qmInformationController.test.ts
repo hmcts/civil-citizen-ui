@@ -41,12 +41,10 @@ describe('Query management Information controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  beforeEach(() => {
-    jest.resetAllMocks();
+  afterAll(() => {
+    jest.clearAllMocks();
   });
-
   describe('on GET', () => {
-
     beforeEach(() => {
       jest.resetAllMocks();
     });
