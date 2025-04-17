@@ -4,7 +4,11 @@ import {AppRequest} from 'models/AppRequest';
 import { CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase, isGaForLipsEnabled,
+  isCaseProgressionV1Enable,
+  isDashboardEnabledForCase,
+  isCarmEnabledForCase,
+  isGaForLipsEnabled,
+  isQueryManagementEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -61,7 +65,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
+      const disableSendMessage = !claim.hasClaimTakenOffline() && !claim.hasClaimBeenDismissed();
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
 
       const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
@@ -84,6 +89,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           helpSupportTitle,
           helpSupportLinks,
           lang,
+          isQMFlagEnabled,
+          disableSendMessage,
         },
       );
     } else {
