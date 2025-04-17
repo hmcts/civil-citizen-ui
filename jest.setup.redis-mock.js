@@ -20,5 +20,4 @@ jest.mock('launchdarkly-node-server-sdk', () => ({
 }));
 afterAll(() => {
   jest.clearAllMocks();
-  jest.resetModules();
 });
