@@ -27,7 +27,7 @@ Scenario('Response with RejectAll and DisputeAll - Claimant Welsh - GA (Ask for 
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe');
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', undefined, '', 'BOTH');
     console.log('Creating GA app as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');

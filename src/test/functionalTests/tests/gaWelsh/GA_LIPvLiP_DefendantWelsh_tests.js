@@ -31,6 +31,6 @@ Scenario('Response with RejectAll and DisputeAll - Defendant Welsh - GA (Ask for
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe');
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', undefined, '', 'BOTH');
   }
 });
