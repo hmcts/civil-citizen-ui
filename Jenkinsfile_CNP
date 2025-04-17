@@ -10,7 +10,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-16887-LiP-query-documents"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
