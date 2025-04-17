@@ -132,7 +132,7 @@ export const createUploadDocLinks = async (req: AppRequest) => {
     req.session.fileUpload = JSON.stringify(errors);
   }
   return uploadQMAdditionalFile;
-}
+};
 
 const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery): Promise<void> => {
   try {

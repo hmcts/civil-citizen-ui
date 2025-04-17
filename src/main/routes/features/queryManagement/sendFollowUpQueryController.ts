@@ -14,7 +14,7 @@ import multer from 'multer';
 import {
   getSummaryList,
   removeSelectedDocument,
-  uploadSelectedFile
+  uploadSelectedFile,
 } from 'services/features/queryManagement/sendFollowUpQueryService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
@@ -45,7 +45,6 @@ const pageHeaders = {
   pageTitle: 'PAGES.QM.HEADINGS.PAGE_TITLE',
 };
 
-
 sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
@@ -72,7 +71,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   } catch (error) {
     next(error);
   }
-}))
+}));
 
 sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file-upload'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -108,6 +107,6 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
   } catch (error) {
     next(error);
   }
-}))
+}));
 
-export default sendFollowUpQueryController
+export default sendFollowUpQueryController;

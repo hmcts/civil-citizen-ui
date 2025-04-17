@@ -7,7 +7,7 @@ import {QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
 import {
   createUploadDocLinks,
   getQueryManagement,
-  saveQueryManagement
+  saveQueryManagement,
 } from 'services/features/queryManagement/queryManagementService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
@@ -16,7 +16,7 @@ const logger = Logger.getLogger('sendFollowUpQueryService');
 
 export const uploadSelectedFile = async (req: AppRequest, sendFollowUpQuery: SendFollowUpQuery): Promise<void> => {
   try {
-    const uploadQMAdditionalFile = await createUploadDocLinks(req)
+    const uploadQMAdditionalFile = await createUploadDocLinks(req);
     await saveDocumentToUploaded(req, uploadQMAdditionalFile, sendFollowUpQuery);
   } catch (err) {
     logger.error(err);

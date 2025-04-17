@@ -100,5 +100,5 @@ export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
   qualifyingQuestion : QualifyingQuestion;
   createQuery: CreateQuery;
-  sendFollowUpQuery: SendFollowUpQuery
+  sendFollowUpQuery: SendFollowUpQuery;
 }
