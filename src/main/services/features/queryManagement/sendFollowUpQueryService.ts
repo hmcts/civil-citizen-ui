@@ -3,7 +3,7 @@ import {UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
+import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import {
   createUploadDocLinks,
   getQueryManagement,
@@ -44,7 +44,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
     let index = 0;
     uploadedFiles.forEach((file: UploadQMAdditionalFile) => {
       index++;
-      formattedSummary.summaryList.rows.push(summaryRow(file.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY + '?id=' + index), 'Remove document'));
+      formattedSummary.summaryList.rows.push(summaryRow(file.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE + '?id=' + index), 'Remove document'));
     });
   }
 };

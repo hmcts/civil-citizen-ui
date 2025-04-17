@@ -36,6 +36,9 @@ describe('Query management start Controller', () => {
     });
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   describe('on GET', () => {
     it('should return query management start page', async () => {
       await request(app)
