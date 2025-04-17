@@ -1,37 +1,50 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {
   DEFENDANT_SUMMARY_URL,
   GA_ACCEPT_DEFENDANT_OFFER_URL,
   GA_AGREE_TO_ORDER_URL,
+  GA_APPLICATION_RESPONSE_SUMMARY_URL,
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
-  GA_APPLICATION_RESPONSE_SUMMARY_URL,
   UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
-import {AppRequest} from 'common/models/AppRequest';
+import { AppRequest } from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
   getApplicationSections,
   getCourtDocuments,
   getRespondentDocuments,
-  getResponseFromCourtSection, getResponseSummaryCardSections,
+  getResponseFromCourtSection,
+  getResponseSummaryCardSections,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
-import {queryParamNumber} from 'common/utils/requestUtils';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import { queryParamNumber } from 'common/utils/requestUtils';
+import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import {
-  getApplicationFromGAService, getApplicationIndex, hasRespondentResponded,
+  getApplicationFromGAService,
+  getApplicationIndex,
+  hasRespondentResponded,
   saveApplicationTypesToGaResponse,
 } from 'services/features/generalApplication/generalApplicationService';
-import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {deleteDraftClaimFromStore, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
-import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
-import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
-import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
+import { DocumentsViewComponent } from 'form/models/documents/DocumentsViewComponent';
+import {
+  constructResponseUrlWithIdAndAppIdParams,
+  constructResponseUrlWithIdParams,
+} from 'common/utils/urlFormatter';
+import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
+import { YesNoUpperCamelCase } from 'form/models/yesNo';
+import {
+  deleteDraftClaimFromStore,
+  generateRedisKeyForGA,
+} from 'modules/draft-store/draftStoreService';
+import { isRespondentAllowedToRespond } from 'services/features/generalApplication/response/viewApplicationService';
+import { Claim } from 'models/claim';
+import { getClaimById } from 'modules/utilityService';
+import { canUploadAddlDoc } from 'services/features/generalApplication/additionalDocumentService';
+import {
+  isApplicationFullyVisibleToRespondent,
+  isApplicationFullyVisibleToRespondentForClaimant,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const viewApplicationToRespondentController = Router();
 const viewPathPreResponse = 'features/generalApplication/response/view-application';
@@ -52,7 +65,10 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const applicantDocuments: DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
-    const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
+    const applicationFullyVisible = claim.isClaimant()
+      ? isApplicationFullyVisibleToRespondentForClaimant(applicationResponse)
+      : isApplicationFullyVisibleToRespondent(applicationResponse);
+    const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, applicationFullyVisible, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
@@ -83,6 +99,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
       isAllowedToRespond,
       caseProgressionCaseState,
       uploadDocsTrialUrl,
+      applicationFullyVisible,
     });
   } catch (error) {
     next(error);

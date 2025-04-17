@@ -6,7 +6,7 @@ import {
   buildRespondentApplicationSummaryRow,
   getRespondToApplicationCaption,
   hideGAAppAsRespondentForClaimant,
-  isApplicationVisibleToRespondent, isApplicationVisibleToRespondentForClaimant,
+  isApplicationVisibleToRespondent, isApplicationFullyVisibleToRespondentForClaimant,
   saveRespondentAgreeToOrder,
   saveRespondentHearingArrangement,
   saveRespondentHearingContactDetails,
@@ -683,7 +683,7 @@ describe('General Application Response service', () => {
           generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.YES},
         },
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
     test('should return true when parentClaimantIsApplicant is undefined and isWithNotice is YES', () => {
@@ -693,7 +693,7 @@ describe('General Application Response service', () => {
           generalAppInformOtherParty: {isWithNotice: YesNoUpperCamelCase.YES},
         },
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(false);
     });
 
     it('should return true when application is not cloaked and state is not APPLICATION_ADD_PAYMENT', () => {
@@ -701,7 +701,7 @@ describe('General Application Response service', () => {
         case_data: {applicationIsCloaked: YesNoUpperCamelCase.NO},
         state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
     it('should return true when application is uncloaked once and state is not APPLICATION_ADD_PAYMENT', () => {
@@ -710,7 +710,7 @@ describe('General Application Response service', () => {
         case_data: {applicationIsUncloakedOnce: YesNoUpperCamelCase.YES},
         state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
     test('should return true when parentClaimantIsApplicant is YES', () => {
@@ -718,7 +718,7 @@ describe('General Application Response service', () => {
         ...baseApplication,
         case_data: {parentClaimantIsApplicant: YesNoUpperCamelCase.YES},
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
     test('should return true when respondent has agreed', () => {
@@ -728,7 +728,7 @@ describe('General Application Response service', () => {
           generalAppRespondentAgreement: {hasAgreed: YesNoUpperCamelCase.YES},
         },
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
     test('should return false when application is cloaked and state is APPLICATION_ADD_PAYMENT', () => {
@@ -739,7 +739,7 @@ describe('General Application Response service', () => {
         },
         state: ApplicationState.APPLICATION_ADD_PAYMENT,
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(false);
     });
 
     test('should return true when judicial decision requests sending app to other party and payment is SUCCESS', () => {
@@ -754,7 +754,7 @@ describe('General Application Response service', () => {
           },
         },
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(true);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(true);
     });
 
     it('should return false when requestMoreInfoOption is SEND_APP_TO_OTHER_PARTY but status is not SUCCESS', () => {
@@ -764,7 +764,7 @@ describe('General Application Response service', () => {
           generalAppPBADetails: {additionalPaymentDetails: {status: 'FAILED'}},
         },
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(false);
     });
 
     test('should return false when none of the conditions are met', () => {
@@ -785,7 +785,7 @@ describe('General Application Response service', () => {
         } as unknown,
         state: ApplicationState.APPLICATION_ADD_PAYMENT,
       } as ApplicationResponse;
-      expect(isApplicationVisibleToRespondentForClaimant(application)).toBe(false);
+      expect(isApplicationFullyVisibleToRespondentForClaimant(application)).toBe(false);
     });
 
   });
