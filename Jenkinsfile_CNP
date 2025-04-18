@@ -1,11 +1,11 @@
 #!groovy
 
-@Library("Infrastructure")
+@Library("Infrastructure@OPS-DTSPO-24729-DoNotMerge")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 
 def type = "nodejs"
-def product = "civil"
+def product = "civil-citizen-ui"
 def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
