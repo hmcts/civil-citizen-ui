@@ -18,9 +18,7 @@ describe('Query management Confirmation Controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
+
   describe('on GET', () => {
     it('should return query management confirmation page', async () => {
       await request(app)

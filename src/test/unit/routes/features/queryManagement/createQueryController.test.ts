@@ -26,9 +26,6 @@ describe('create query conroller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
   describe('GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();
