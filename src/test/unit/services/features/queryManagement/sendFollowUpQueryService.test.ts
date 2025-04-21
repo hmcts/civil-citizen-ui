@@ -1,68 +1,61 @@
-/*
-//import {AppRequest} from 'models/AppRequest';
-import {CaseDocument} from 'models/document/caseDocument';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {AppRequest} from 'models/AppRequest';
+//import {CaseDocument} from 'models/document/caseDocument';
+//import {CivilServiceClient} from 'client/civilServiceClient';
+//import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 //import * as draftStoreService from 'modules/draft-store/draftStoreService';
 //import {Claim} from 'models/claim';
 //import * as utilityService from 'modules/utilityService';
-//import {removeSelectedDocument, uploadSelectedFile} from 'services/features/queryManagement/sendFollowUpQueryService';
-//import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
-//import {UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
+import {/*removeSelectedDocument,*/ uploadSelectedFile} from 'services/features/queryManagement/sendFollowUpQueryService';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
+import {UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 //import {QueryManagement} from 'form/models/queryManagement/queryManagement';
+import {createUploadDocLinks, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 
-jest.mock('../../../../../main/modules/i18n');
-jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
-  use: jest.fn(),
-}));
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/utilityService');
-
-//const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+jest.mock('services/features/queryManagement/queryManagementService');
 
 describe('Uploading files', () => {
-/!*  const appRequest: AppRequest = {
+  const appRequest: AppRequest = {
     params: {id: '1', appId: '89'},
-  } as unknown as AppRequest;*!/
+  } as unknown as AppRequest;
 
-  const returnedFile: CaseDocument = {
+  /*  const returnedFile: CaseDocument = {
     createdBy: 'test',
     documentLink: {'document_binary_url': '', 'document_filename': '', 'document_url': ''},
     documentName: 'name',
     documentType: null,
     documentSize: 12345,
     createdDatetime: '2025-03-27T17:02:09.858Z' as unknown as Date,
-  };
+  };*/
 
   beforeEach(() => {
-    jest.resetAllMocks();
-    const fileToUpload = {
+    jest.clearAllMocks();
+    /*    const fileToUpload = {
       fieldname: 'test',
       originalname: 'test',
       mimetype: 'text/plain',
       size: 123,
       buffer: Buffer.from('test'),
-    };
-    jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(returnedFile);
-    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
+    };*/
+    //jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(returnedFile);
+    //jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
+
   });
   afterAll(() => {
     jest.clearAllMocks();
   });
 
-/!*  it('should return the form with updated summary rows and call save doc to redis', async () => {
+  it('should return the form with updated summary rows and call save doc to redis', async () => {
     const createQuery = new SendFollowUpQuery();
-    const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
+    //const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    const saveQueryManagementMock = saveQueryManagement as jest.Mock;
 
-    mockGetClaimById.mockImplementation(async () => {
-      return new Claim();
-    });
+    (createUploadDocLinks as jest.Mock).mockResolvedValue(new UploadQMAdditionalFile());
+
     await uploadSelectedFile(appRequest, createQuery);
-    expect(saveSpy).toHaveBeenCalled();
+    expect(saveQueryManagementMock).toHaveBeenCalled();
   });
-  it('should remove selected file and save the new list to redis', async () => {
+
+/*  it('should remove selected file and save the new list to redis', async () => {
     const claim = new Claim();
     claim.queryManagement = new QueryManagement();
     claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
@@ -128,6 +121,5 @@ describe('Uploading files', () => {
     await uploadSelectedFile(appRequest, createQuery);
     expect(saveSpy).toBeCalled();
     expect(appRequest.session.fileUpload).toBeDefined();
-  });*!/
+  });*/
 });
-*/
