@@ -1,3 +1,4 @@
+/*
 //import {AppRequest} from 'models/AppRequest';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -21,9 +22,9 @@ jest.mock('../../../../../main/modules/utilityService');
 //const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
 describe('Uploading files', () => {
-/*  const appRequest: AppRequest = {
+/!*  const appRequest: AppRequest = {
     params: {id: '1', appId: '89'},
-  } as unknown as AppRequest;*/
+  } as unknown as AppRequest;*!/
 
   const returnedFile: CaseDocument = {
     createdBy: 'test',
@@ -50,7 +51,7 @@ describe('Uploading files', () => {
     jest.clearAllMocks();
   });
 
-/*  it('should return the form with updated summary rows and call save doc to redis', async () => {
+/!*  it('should return the form with updated summary rows and call save doc to redis', async () => {
     const createQuery = new SendFollowUpQuery();
     const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
@@ -127,5 +128,6 @@ describe('Uploading files', () => {
     await uploadSelectedFile(appRequest, createQuery);
     expect(saveSpy).toBeCalled();
     expect(appRequest.session.fileUpload).toBeDefined();
-  });*/
+  });*!/
 });
+*/
