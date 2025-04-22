@@ -3,9 +3,6 @@ import {app} from '../../../../../main/app';
 import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
-import {
-  getQueryManagement,
-} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
 import {Claim} from 'models/claim';
@@ -14,7 +11,7 @@ import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
 
-const queryManagementMock = getQueryManagement as jest.Mock;
+const queryManagementMock = queryManagementService.getQueryManagement as jest.Mock;
 
 describe('Send follow query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
