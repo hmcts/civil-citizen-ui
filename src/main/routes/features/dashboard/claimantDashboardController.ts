@@ -19,7 +19,13 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isCaseProgressionV1Enable, isCUIReleaseTwoEnabled, isCarmEnabledForCase, isGaForLipsEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {
+  isCaseProgressionV1Enable,
+  isCUIReleaseTwoEnabled,
+  isCarmEnabledForCase,
+  isGaForLipsEnabled,
+  isQueryManagementEnabled,
+} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
@@ -76,6 +82,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
+      const disableSendMessage = !claim.hasClaimTakenOffline() && !claim.hasClaimBeenDismissed();
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
         = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
@@ -98,8 +106,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         iWantToLinks,
         helpSupportTitle,
         helpSupportLinks,
+        disableSendMessage,
         lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
+        isQMFlagEnabled,
       });
 
     } else {
