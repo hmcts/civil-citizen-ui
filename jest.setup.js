@@ -1,6 +1,6 @@
-afterAll(() => {
-  const nock = require('nock');
+const nock = require('nock');
 
+afterAll(() => {
   nock.cleanAll();
   nock.restore();
 });
