@@ -10,11 +10,14 @@ import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLang
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import express from 'express';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const isGaForWelshEnabled = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
 describe('Bilingual Langiage Preference Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockGetClaimById = utilityService.getClaimById as jest.Mock;
@@ -230,15 +233,24 @@ describe('Bilingual Langiage Preference Service', () => {
       expect(lang).toEqual('en');
     });
 
-    it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
+    it('should set the cookies lang field to en when Lang selected is WELSH', async () => {
       //When
       const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH);
       //Then
       expect(lang).toEqual('cy');
     });
 
-    it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
+    it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is off', async () => {
       //When
+      isGaForWelshEnabled.mockResolvedValue(false);
+      const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      //Then
+      expect(lang).toEqual('cy');
+    });
+
+    it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is On', async () => {
+      //When
+      isGaForWelshEnabled.mockResolvedValue(true);
       const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
       //Then
       expect(lang).toEqual('en');
