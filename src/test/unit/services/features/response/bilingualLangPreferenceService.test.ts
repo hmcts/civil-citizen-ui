@@ -3,21 +3,18 @@ import * as utilityService from 'modules/utilityService';
 import {
   getBilingualLangPreference,
   saveBilingualLangPreference,
-  saveClaimantBilingualLangPreference, setCookieLanguage,
+  saveClaimantBilingualLangPreference, getCookieLanguage,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {Claim} from 'common/models/claim';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import express from 'express';
-import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
-const isGaForWelshEnabled = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
 describe('Bilingual Langiage Preference Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockGetClaimById = utilityService.getClaimById as jest.Mock;
@@ -228,30 +225,28 @@ describe('Bilingual Langiage Preference Service', () => {
   describe('setCookieLanguage for claim', () =>{
     it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
       //When
-      const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.ENGLISH);
+      const lang = getCookieLanguage(false, ClaimBilingualLanguagePreference.ENGLISH);
       //Then
       expect(lang).toEqual('en');
     });
 
     it('should set the cookies lang field to en when Lang selected is WELSH', async () => {
       //When
-      const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH);
+      const lang = getCookieLanguage(true, ClaimBilingualLanguagePreference.WELSH);
       //Then
       expect(lang).toEqual('cy');
     });
 
     it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is off', async () => {
       //When
-      isGaForWelshEnabled.mockResolvedValue(false);
-      const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      const lang = getCookieLanguage(false, ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
       //Then
       expect(lang).toEqual('cy');
     });
 
     it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is On', async () => {
       //When
-      isGaForWelshEnabled.mockResolvedValue(true);
-      const lang = await setCookieLanguage(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      const lang = getCookieLanguage(true, ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
       //Then
       expect(lang).toEqual('en');
     });

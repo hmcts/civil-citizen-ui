@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveClaimantBilingualLangPreference,
-  setCookieLanguage,
+  getCookieLanguage,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
@@ -61,7 +61,7 @@ claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_
     if (form.hasErrors()) {
       await renderView(form, res);
     } else {
-      res.cookie('lang', setCookieLanguage(form.model.option));
+      res.cookie('lang', getCookieLanguage(await isGaForWelshEnabled(), form.model.option));
       await saveClaimantBilingualLangPreference(userId, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_TASK_LIST_URL));
     }

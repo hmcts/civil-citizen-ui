@@ -3,7 +3,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getBilingualLangPreference,
   saveBilingualLangPreference,
-  setCookieLanguage,
+  getCookieLanguage,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
@@ -46,7 +46,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async
     if (form.hasErrors()) {
       await renderView(form, res);
     } else {
-      res.cookie('lang', setCookieLanguage(form.model.option));
+      res.cookie('lang', getCookieLanguage(await isGaForWelshEnabled(), form.model.option));
       await saveBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
