@@ -139,6 +139,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual seal claim', async () => {
       //given
+      isGaForWelshEnabled.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;

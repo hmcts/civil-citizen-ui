@@ -57,8 +57,8 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
     defendantDocumentsArray.push(...getDefendantTranslatedResponse(claim, claimId, lang));
   } else {
     defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
-    defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
   }
+  defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantRequestForReconsideration(claim, claimId, lang));
   if (isCaseProgressionEnabled) {
     defendantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, false));
