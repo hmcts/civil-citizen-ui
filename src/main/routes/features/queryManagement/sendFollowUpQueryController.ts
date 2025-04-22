@@ -5,11 +5,10 @@ import {GenericForm} from 'form/models/genericForm';
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {
-  getCancelUrl, getQueryManagement, saveQueryManagement,
+  getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {removeSelectedDocument} from "services/features/queryManagement/sendFollowUpQueryService";
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -59,10 +58,10 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
 
     if (req.query?.id) {
       const index = req.query.id;
-      await removeSelectedDocument(req, Number(index) - 1);
+      await removeSelectedDocument(req, Number(index) - 1, true);
       return res.redirect(currentUrl);
     }
-    //await getSummaryList(formattedSummary, req);
+    await getSummaryList(formattedSummary, req,  true);
     await renderView(form, claimId, res, formattedSummary, req);
   } catch (error) {
     next(error);
@@ -88,13 +87,13 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       });
 
     if (req.body.action === 'uploadButton') {
-      //await uploadSelectedFile(req, sendFollowUpQuery);
+      await uploadSelectedFile(req, sendFollowUpQuery, true);
       return res.redirect(`${currentUrl}`);
     }
 
     form.validateSync();
     if (form.hasErrors()) {
-      //await getSummaryList(formattedSummary, req);
+      await getSummaryList(formattedSummary, req, true);
       return await renderView(form, claimId, res, formattedSummary, req);
     } else {
       await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);

@@ -1,20 +1,20 @@
-//import request from 'supertest';
-//import {app} from '../../../../../main/app';
-//import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
+import request from 'supertest';
+import {app} from '../../../../../main/app';
+import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
-//import * as sendFollowService from 'services/features/queryManagement/sendFollowUpQueryService';
-//import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
-//import {Claim} from 'models/claim';
-//import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-//import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
-//import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {
+  getQueryManagement,
+} from 'services/features/queryManagement/queryManagementService';
+import {QueryManagement} from 'form/models/queryManagement/queryManagement';
+import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
+import {Claim} from 'models/claim';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/oidc');
-//jest.mock('services/features/queryManagement/sendFollowUpQueryService');
-//jest.mock('services/features/queryManagement/queryManagementService');
+jest.mock('services/features/queryManagement/queryManagementService');
 
-////const queryManagementMock = getQueryManagement as jest.Mock;
+const queryManagementMock = getQueryManagement as jest.Mock;
 
 describe('Send follow query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,14 +26,14 @@ describe('Send follow query controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('GET', () => {
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
 
     it('should render query page', async () => {
-      /*      queryManagementMock.mockResolvedValue(new QueryManagement());
-
+      queryManagementMock.mockResolvedValue(new QueryManagement());
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE)
         .expect((res) => {
@@ -43,23 +43,20 @@ describe('Send follow query controller', () => {
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('Include as many details as possible so case workers can respond to your message');
           expect(res.text).toContain('Upload documents (optional)');
-        });*/
+        });
     });
 
-    /*
     it('should call through to removeSelectedDocument when the query param is passed', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
-      //const removeDocSpy = jest.spyOn(sendFollowService, 'removeSelectedDocument');
+      const removeDocSpy = jest.spyOn(queryManagementService, 'removeSelectedDocument');
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE + '?id=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          //expect(removeDocSpy).toHaveBeenCalled();
+          expect(removeDocSpy).toHaveBeenCalledTimes(1);
         });
     });
-*/
 
-    /*
     it('should pre fill field values when session data is set', async () => {
       const preFilledData = {'messageDetails': 'test body'};
       const claim = new Claim();
@@ -74,7 +71,6 @@ describe('Send follow query controller', () => {
           expect(res.text).toContain('test body');
         });
     });
-*/
   });
 
 /*

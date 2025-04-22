@@ -19,6 +19,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -65,10 +66,10 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
 };
 
-export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery, isFollowUp: false): Promise<void> => {
+export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
   try {
     const uploadQMAdditionalFile = await createUploadDocLinks(req);
-    await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
+    await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery, isFollowUp);
   } catch (err) {
     logger.error(err);
     throw err;
@@ -90,19 +91,19 @@ export const createUploadDocLinks = async (req: AppRequest) => {
   return uploadQMAdditionalFile;
 };
 
-const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery): Promise<void> => {
+const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
   try {
     if (file.caseDocument) {
       createQuery.uploadedFiles.push(file);
     }
-    await saveQueryManagement(req.params.id, createQuery, 'createQuery', req);
+    await saveQueryManagement(req.params.id, createQuery, isFollowUp? 'sendFollowUpQuery' : 'createQuery', req);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp: false): Promise<void> => {
+export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
   const queryManagement = await getQueryManagement(req.params.id, req);
   const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
 
@@ -124,7 +125,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
   }
 };
 
-export const removeSelectedDocument = async (req: AppRequest, index: number, isFollowUp: false): Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, index: number, isFollowUp = false): Promise<void> => {
 
   try {
     const queryManagement = await getQueryManagement(req.params.id, req);
