@@ -4,19 +4,16 @@ import {SummarySection} from 'models/summaryList/summarySections';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
-import {
-  createUploadDocLinks,
-  getQueryManagement,
-  saveQueryManagement,
-} from 'services/features/queryManagement/queryManagementService';
+
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
+import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('sendFollowUpQueryService');
 
 export const uploadSelectedFile = async (req: AppRequest, sendFollowUpQuery: SendFollowUpQuery): Promise<void> => {
   try {
-    const uploadQMAdditionalFile = await createUploadDocLinks(req);
+    const uploadQMAdditionalFile = new UploadQMAdditionalFile();//await createUploadDocLinks(req);
     await saveDocumentToUploaded(req, uploadQMAdditionalFile, sendFollowUpQuery);
   } catch (err) {
     logger.error(err);
@@ -29,7 +26,7 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
     if (file.caseDocument) {
       sendFollowUpQuery.uploadedFiles.push(file);
     }
-    await saveQueryManagement(req.params.id, sendFollowUpQuery, 'sendFollowUpQuery', req);
+    //await saveQueryManagement(req.params.id, sendFollowUpQuery, 'sendFollowUpQuery', req);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -37,7 +34,7 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
 };
 
 export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest): Promise<void> => {
-  const queryManagement = await getQueryManagement(req.params.id, req);
+  const queryManagement = new QueryManagement();//await getQueryManagement(req.params.id, req);
   if (queryManagement.sendFollowUpQuery) {
     const uploadedFiles = queryManagement.sendFollowUpQuery.uploadedFiles;
     const claimId = req.params.id;
@@ -51,10 +48,10 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
 
 export const removeSelectedDocument = async (req: AppRequest, index: number): Promise<void> => {
   try {
-    const queryManagement = await getQueryManagement(req.params.id, req);
+    const queryManagement = new QueryManagement();//await getQueryManagement(req.params.id, req);
     const sendFollowUpQuery = queryManagement.sendFollowUpQuery;
     sendFollowUpQuery.uploadedFiles.splice(index, 1);
-    await saveQueryManagement(req.params.id, sendFollowUpQuery, 'sendFollowUpQuery', req);
+    //await saveQueryManagement(req.params.id, sendFollowUpQuery, 'sendFollowUpQuery', req);
   } catch (error) {
     logger.error(error);
     throw error;
