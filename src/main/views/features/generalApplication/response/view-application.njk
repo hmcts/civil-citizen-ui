@@ -121,28 +121,30 @@
       html: responseFromCourtHtml
     }) }}
   {% endif %}
-  {% if applicationTypeCards %}
-    <div class="govuk-form-group">
-      {% for summaryCard in applicationTypeCards %}
-        {{ govukSummaryList(summaryCard) }}
-      {% endfor %}
-    </div>
-  {% endif %}
-  <div class="govuk-section-break--s govuk-section-break--visible"></div>
-  <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
-    <div class="govuk-form-group">
-      {{ govukSummaryList({
-        rows: summaryRows
-      }) }}
-    </div>
-  </div>
-
-      {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
-        {{ govukDetails({
-          summaryHtml: applicationDocuments,
-          html: applicationDocumentsHtml
+  {% if applicationFullyVisible %}
+    {% if applicationTypeCards %}
+      <div class="govuk-form-group">
+        {% for summaryCard in applicationTypeCards %}
+          {{ govukSummaryList(summaryCard) }}
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="govuk-section-break--s govuk-section-break--visible"></div>
+    <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
+      <div class="govuk-form-group">
+        {{ govukSummaryList({
+          rows: summaryRows
         }) }}
-      {% endif %}
+      </div>
+    </div>
+
+    {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
+      {{ govukDetails({
+        summaryHtml: applicationDocuments,
+        html: applicationDocumentsHtml
+      }) }}
+    {% endif %}
+  {% endif %}
 </div>
 {% if(isAllowedToRespond) %}
   {{ govukButton({
