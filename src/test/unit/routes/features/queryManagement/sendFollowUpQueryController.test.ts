@@ -32,7 +32,7 @@ describe('Send follow query controller', () => {
     });
 
     it('should render query page', async () => {
-/*      queryManagementMock.mockResolvedValue(new QueryManagement());
+      /*      queryManagementMock.mockResolvedValue(new QueryManagement());
 
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE)
