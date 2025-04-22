@@ -27,7 +27,7 @@ describe('Send follow query controller', () => {
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('GET', () => {
@@ -73,16 +73,15 @@ describe('Send follow query controller', () => {
     });
   });
 
-/*
   describe('POST', () => {
 
     it('should redirect on successful form', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
-      //const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
+      const saveQueryManagement = jest.spyOn(queryManagementService, 'saveQueryManagement');
       const data = {'messageDetails': 'test body'};
       const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send(data);
       expect(res.status).toBe(302);
-      //expect(saveQueryManagement).toHaveBeenCalled();
+      expect(saveQueryManagement).toHaveBeenCalled();
     });
 
     it('should render the page with errors for the missing fields', async () => {
@@ -95,12 +94,12 @@ describe('Send follow query controller', () => {
 
     it('should trigger redirect on successful file upload', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
-      //jest.spyOn(QueryManagementService, 'uploadSelectedFile');
+      const uploadSelectedFile = jest.spyOn(queryManagementService, 'uploadSelectedFile');
       await request(app).post(QM_FOLLOW_UP_MESSAGE).send({action: 'uploadButton'})
         .expect(res => {
           expect(res.status).toBe(302);
+          expect(uploadSelectedFile).toHaveBeenCalled();
         });
     });
   });
-*/
 });
