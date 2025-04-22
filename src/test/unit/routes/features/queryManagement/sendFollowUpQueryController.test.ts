@@ -11,8 +11,8 @@ import config from 'config';
 //import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('services/features/queryManagement/sendFollowUpQueryService');
-jest.mock('services/features/queryManagement/queryManagementService');
+//jest.mock('services/features/queryManagement/sendFollowUpQueryService');
+//jest.mock('services/features/queryManagement/queryManagementService');
 
 ////const queryManagementMock = getQueryManagement as jest.Mock;
 
