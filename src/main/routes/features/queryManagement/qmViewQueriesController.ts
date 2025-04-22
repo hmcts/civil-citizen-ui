@@ -1,7 +1,7 @@
-import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
-  QM_VIEW_QUERY_URL
+  QM_VIEW_QUERY_URL,
 } from 'routes/urls';
 import { Claim } from 'models/claim';
 import { AppRequest } from 'models/AppRequest';
@@ -18,10 +18,10 @@ const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
 
 const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
 
-  const rootItems: QueryListItem[] = ViewQueriesService.buildQueryListItems(claim, lang);
+  const parentQueryItems: QueryListItem[] = ViewQueriesService.buildQueryListItems(claim, lang);
 
   res.render(viewQueriesPath, {
-    rootItems,
+    parentQueryItems,
     pageTitle: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
@@ -39,3 +39,4 @@ qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: Request, res: Respon
 }) as RequestHandler);
 
 export default qmViewQueriesController;
+

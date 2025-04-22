@@ -9,7 +9,6 @@ export interface QueryListItem {
   createdOn: Date;
   parentId?: string;
   children: QueryListItem[];
-  body: string;
   lastUpdatedOn: Date;
   lastUpdatedOnString: string;
   createdOnString: string;
@@ -35,7 +34,6 @@ export class ViewQueriesService {
       subject: message.value.subject,
       createdOn: new Date(message.value.createdOn),
       parentId: message.value.parentId ?? null,
-      body: message.value.body,
       children: [],
       lastUpdatedOn: null,
       lastUpdatedOnString: null,
@@ -43,15 +41,13 @@ export class ViewQueriesService {
       lastUpdatedBy: null,
     }));
 
-    // To make live easier when there multiple follow-up queries, map these into a child array, with initial query being the parent
-    // If a query does not have a parentId, we can derive it was the initial Parent query.
     const lookup = new Map<string, QueryListItem>();
     allQueryItems.forEach(item => lookup.set(item.id, item));
 
     const parentQueryItems: QueryListItem[] = [];
     allQueryItems.forEach(queryItem => {
-      if (queryItem.body) {
-        const isChildQuery = lookup.get(queryItem.body);
+      if (queryItem.parentId) {
+        const isChildQuery = lookup.get(queryItem.parentId);
         if (isChildQuery) {
           isChildQuery.children.push(queryItem);
         }
@@ -75,10 +71,9 @@ export class ViewQueriesService {
       const isEven = totalCount % 2 === 0;
       parent.lastUpdatedBy = isEven
         ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF'
-        : 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_YOU';
+        : 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
     });
 
-    // Format dates for UI display
     parentQueryItems.forEach(parent => {
       parent.createdOnString = dateTimeFormat(parent.createdOn.toISOString(), lang);
       parent.lastUpdatedOnString = dateTimeFormat(parent.lastUpdatedOn.toISOString(), lang);
