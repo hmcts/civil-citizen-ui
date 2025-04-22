@@ -794,5 +794,5 @@ export default [
   qmConfirmationController,
   createQueryCheckYourAnswerController,
   createQueryController,
-  qmViewQueriesController
+  qmViewQueriesController,
 ];
