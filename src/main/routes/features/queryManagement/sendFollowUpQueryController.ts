@@ -9,6 +9,7 @@ import {
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
+import {removeSelectedDocument} from "services/features/queryManagement/sendFollowUpQueryService";
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -57,8 +58,8 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
     }
 
     if (req.query?.id) {
-      //const index = req.query.id;
-      //await removeSelectedDocument(req, Number(index) - 1);
+      const index = req.query.id;
+      await removeSelectedDocument(req, Number(index) - 1);
       return res.redirect(currentUrl);
     }
     //await getSummaryList(formattedSummary, req);
