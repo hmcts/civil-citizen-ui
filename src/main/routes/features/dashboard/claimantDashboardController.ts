@@ -28,6 +28,7 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -131,10 +132,10 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  const viewMessages = await getViewMessagesLink(req, claim, lng);
   if(viewAllApplicationLink) {
     iWantToLinks.push(viewAllApplicationLink);
   }
-
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
@@ -142,7 +143,9 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     || (isCaseProgressionEnabled && showGetDebtRespiteLinkCaseProgression && claim.isClaimant())) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
-
+  if (viewMessages) {
+    iWantToLinks.push(viewMessages);
+  }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 

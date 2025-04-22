@@ -2621,7 +2621,8 @@
         "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
         "TELL_US_SETTLED": "Dweud wrthym eich bod wedi setlo’r hawliad",
         "VIEW_ALL_APPLICATIONS": "Gweld pob cais presennol",
-        "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
+        "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad",
+        "VIEW_ALL_MESSAGES": "Gweld negeseuon"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "UPDATING_STATUS": "Diweddaru statws, adnewyddwch y dudalen.",

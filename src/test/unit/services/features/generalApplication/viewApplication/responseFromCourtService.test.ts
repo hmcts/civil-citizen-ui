@@ -138,7 +138,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when
-      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
       expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST');
     });
     it('should not show respond to the request button for awaiting additional information for request more information', async () => {
@@ -150,7 +150,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when
-      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
       expect(result[1].responseButton).toEqual(null);
     });
   });
@@ -358,7 +358,7 @@ describe('View Application service', () => {
         ],
       };
       //when
-      const result = getJudgesDirectionsOrder(mockedAppRequest, applicationResponse, 'en');
+      const result = getJudgesDirectionsOrder(mockedAppRequest, applicationResponse, true, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 January 2024');
@@ -645,7 +645,7 @@ describe('View Application service', () => {
       applicationResponse.case_data.hearingOrderDocument = setMockHearingOrderDocuments();
 
       //when
-      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, true, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 August 2024');
@@ -662,7 +662,7 @@ describe('View Application service', () => {
       applicationResponse.state = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
 
       //when
-      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, true, 'en');
       //then
       expect(result[0].responseButton).toBeInstanceOf(ResponseButton);
       expect(result[0].responseButton.title).toContain('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS');
@@ -672,7 +672,7 @@ describe('View Application service', () => {
       //given
       const applicationResponse = new ApplicationResponse();
       //when
-      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, true,'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -698,7 +698,7 @@ describe('View Application service', () => {
         parentClaimantIsApplicant: undefined,
       };
       //when
-      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, true, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -717,7 +717,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when
-      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
 
       //then
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
@@ -751,8 +751,8 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
-      //when'
-      const result = await buildResponseFromCourtSection(mockedAppRequest, application, 'en');
+      //when
+      const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
       //then
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[1].rows[0].value.html).toEqual('1 August 2024');
@@ -777,7 +777,7 @@ describe('View Application service', () => {
       applicationResponse.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
 
       //when
-      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
+      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, true, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('2 May 2024');
@@ -1069,7 +1069,7 @@ describe('View Application service', () => {
       const applicationResponse: ApplicationResponse = undefined;
       const claim = new Claim();
       //when
-      const moreInfoResponse = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
+      const moreInfoResponse = getRequestMoreInfoResponse(claim.id, applicationResponse, true, 'en');
       const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
       const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
       const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
@@ -1090,7 +1090,7 @@ describe('View Application service', () => {
       caseData.writtenRepConcurrentDocument = undefined;
 
       //When
-      const moreInfoResponse = getRequestMoreInfoResponse('1', applicationResponse, 'en');
+      const moreInfoResponse = getRequestMoreInfoResponse('1', applicationResponse, true, 'en');
       const dismissalOrder = getJudgeDismiss(applicationResponse, 'en');
       const  writtenRepSequentialDocument = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
       const  writtenRepConcurrentDocument = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
