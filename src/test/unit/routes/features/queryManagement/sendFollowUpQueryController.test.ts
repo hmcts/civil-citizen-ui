@@ -3,12 +3,9 @@ import {app} from '../../../../../main/app';
 import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
-//import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import * as utilityService from 'modules/utilityService';
 import {Claim} from 'models/claim';
-//import * as utilityService from 'modules/utilityService';
-//import {Claim} from 'models/claim';
-//import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
+import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -16,7 +13,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/utilityService');
 
-const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+const queryManagementMock = getQueryManagement as jest.Mock;
 
 describe('Send follow query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +32,7 @@ describe('Send follow query controller', () => {
   describe('GET', () => {
 
     it('should render query page', async () => {
-      mockGetClaimById.mockResolvedValue(new Claim());
+      queryManagementMock.mockResolvedValue(new Claim());
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE)
         .expect((res) => {
@@ -48,7 +45,7 @@ describe('Send follow query controller', () => {
         });
     });
 
-    /*    it('should call through to removeSelectedDocument when the query param is passed', async () => {
+    it('should call through to removeSelectedDocument when the query param is passed', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
       const removeDocSpy = jest.spyOn(queryManagementService, 'removeSelectedDocument');
       await request(app)
@@ -72,10 +69,10 @@ describe('Send follow query controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('test body');
         });
-    });*/
+    });
   });
 
-/*  describe('POST', () => {
+  describe('POST', () => {
 
     it('should redirect on successful form', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
@@ -103,5 +100,5 @@ describe('Send follow query controller', () => {
           expect(uploadSelectedFile).toHaveBeenCalled();
         });
     });
-  });*/
+  });
 });
