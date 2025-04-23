@@ -6,12 +6,13 @@ import config from 'config';
 import {Claim} from 'models/claim';
 import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
+import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
-jest.mock('../../../../../main/modules/utilityService');
 
 const queryManagementMock = getQueryManagement as jest.Mock;
 
