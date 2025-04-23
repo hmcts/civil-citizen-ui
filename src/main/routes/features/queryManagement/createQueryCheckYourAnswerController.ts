@@ -9,7 +9,7 @@ import {
   createApplicantCitizenQuery,
   createRespondentCitizenQuery,
   getSummarySections,
-} from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
+} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const viewPath = 'features/queryManagement/createQueryCheckYourAnswer.njk';

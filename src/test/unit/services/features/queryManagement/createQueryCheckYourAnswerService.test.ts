@@ -1,7 +1,7 @@
 import {
   createApplicantCitizenQuery, createRespondentCitizenQuery,
   getSummarySections,
-} from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
+} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
