@@ -40,7 +40,7 @@ export class ViewQueriesService {
       lastUpdatedOnString: null,
       createdOnString: null,
       lastUpdatedBy: null,
-      status: null
+      status: null,
     }));
 
     const lookup = new Map<string, QueryListItem>();
@@ -76,7 +76,7 @@ export class ViewQueriesService {
         : 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
       parent.status = isEven
         ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED'
-        : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'
+        : 'PAGES.QM.VIEW_QUERY.STATUS_SENT';
     });
 
     parentQueryItems.forEach(parent => {

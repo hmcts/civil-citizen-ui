@@ -62,14 +62,14 @@ describe('View query controller', () => {
           createdOnString: '01 Jan 2025',
           lastUpdatedBy: 'Court staff',
           lastUpdatedOnString: '02 Jan 2025',
-          status: 'Response received'
+          status: 'Response received',
         },
         {
           subject: 'Another Test Subject',
           createdOnString: '21 Jan 2025',
           lastUpdatedBy: 'You',
           lastUpdatedOnString: '25 Jan 2025',
-          status: 'Message sent'
+          status: 'Message sent',
         },
       ]);
 
