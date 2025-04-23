@@ -121,14 +121,14 @@ withPipeline(type, product, component) {
   onPR {
     env.ENVIRONMENT = "preview"
     env.A11Y_CHUNKS=4
-    env.NODE_OPTIONS= "--max-old-space-size=16384"
+    env.NODE_OPTIONS= "--max-old-space-size=8192"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     loadVaultSecrets(secrets)
   }
   onMaster {
     env.ENVIRONMENT="aat"
-    env.NODE_OPTIONS= "--max-old-space-size=16384"
+    env.NODE_OPTIONS= "--max-old-space-size=8192"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     loadVaultSecrets(secrets)
   }
