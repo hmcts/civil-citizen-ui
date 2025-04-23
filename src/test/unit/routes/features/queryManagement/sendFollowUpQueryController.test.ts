@@ -13,7 +13,6 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
-jest.mock('../../../../../main/modules/utilityService');
 
 const queryManagementMock = queryManagementService.getQueryManagement as jest.Mock;
 
