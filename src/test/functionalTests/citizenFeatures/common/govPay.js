@@ -5,7 +5,7 @@ const en = require('../../../../main/modules/i18n/locales/en.json');
 class GovPay {
 
   getLanguage(language) {
-    return (language === 'ENGLISH') ? en : cy;
+    return (language === 'BOTH') ? cy : en;
   }
 
   async addValidCardDetails(feeAmount, language) {
