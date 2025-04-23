@@ -62,12 +62,14 @@ describe('View query controller', () => {
           createdOnString: '01 Jan 2025',
           lastUpdatedBy: 'Court staff',
           lastUpdatedOnString: '02 Jan 2025',
+          status: 'Response received'
         },
         {
           subject: 'Another Test Subject',
           createdOnString: '21 Jan 2025',
           lastUpdatedBy: 'You',
           lastUpdatedOnString: '25 Jan 2025',
+          status: 'Message sent'
         },
       ]);
 
@@ -82,13 +84,13 @@ describe('View query controller', () => {
       expect(res.text).toContain('01 Jan 2025');
       expect(res.text).toContain('Court staff');
       expect(res.text).toContain('02 Jan 2025');
-      expect(res.text).toContain('to be added CIV-16864'); // status to be implemented
+      expect(res.text).toContain('Response received');
       // Row 2
       expect(res.text).toContain('Another Test Subject');
       expect(res.text).toContain('21 Jan 2025');
       expect(res.text).toContain('You');
       expect(res.text).toContain('25 Jan 2025');
-      expect(res.text).toContain('to be added CIV-16864');
+      expect(res.text).toContain('Message sent');
     });
 
     it('should render query page with no items', async () => {

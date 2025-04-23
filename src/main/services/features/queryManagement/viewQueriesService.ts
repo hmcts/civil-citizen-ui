@@ -13,6 +13,7 @@ export interface QueryListItem {
   lastUpdatedOnString: string;
   createdOnString: string;
   lastUpdatedBy: string;
+  status: string;
 }
 
 export class ViewQueriesService {
@@ -39,6 +40,7 @@ export class ViewQueriesService {
       lastUpdatedOnString: null,
       createdOnString: null,
       lastUpdatedBy: null,
+      status: null
     }));
 
     const lookup = new Map<string, QueryListItem>();
@@ -64,7 +66,7 @@ export class ViewQueriesService {
       parent.lastUpdatedOn = latest;
     });
 
-    // Determine who has last updated the query thread, if the number of queries, parent and child are odd,
+    // Determine who has last updated the query thread, if the number of queries parent + child are odd,
     // it was updated by claimant/defendant user, else if even last updated by court user
     parentQueryItems.forEach(parent => {
       const totalCount = 1 + parent.children.length;
@@ -72,6 +74,9 @@ export class ViewQueriesService {
       parent.lastUpdatedBy = isEven
         ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF'
         : 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
+      parent.status = isEven
+        ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED'
+        : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'
     });
 
     parentQueryItems.forEach(parent => {

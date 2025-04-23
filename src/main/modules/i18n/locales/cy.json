@@ -939,7 +939,9 @@
         "LAST_UPDATED_ON": "Diweddarwyd diwethaf ar",
         "STATUS": "Statws",
         "UPDATED_BY_COURT_STAFF": "Staff y Llys",
-        "UPDATED_BY_YOU": "Chi"
+        "UPDATED_BY_YOU": "Chi",
+        "STATUS_SENT": "Neges wedi’i hanfon",
+        "STATUS_RECEIVED": "Ymateb wedi cyrraedd"
       }
     },
     "SUBJECT_TO_FRC": {

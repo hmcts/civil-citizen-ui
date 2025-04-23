@@ -939,7 +939,9 @@
         "LAST_UPDATED_ON": "Last updated on",
         "STATUS": "Status",
         "UPDATED_BY_COURT_STAFF": "Court staff",
-        "UPDATED_BY_YOU": "You"
+        "UPDATED_BY_YOU": "You",
+        "STATUS_SENT": "Message sent",
+        "STATUS_RECEIVED": "Response received"
       }
     },
     "SUBJECT_TO_FRC": {

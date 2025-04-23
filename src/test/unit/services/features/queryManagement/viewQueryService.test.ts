@@ -72,6 +72,7 @@ describe('ViewQueriesService', () => {
     expect(parent1.lastUpdatedBy).toBe('PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF');
     expect(parent1.createdOnString).toBe('formatted-2025-02-20T12:00:00.000Z-en');
     expect(parent1.lastUpdatedOnString).toBe('formatted-2025-02-22T12:00:00.000Z-en');
+    expect(parent1.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_RECEIVED');
 
     const parent2 = result[1];
     expect(parent2.id).toBe('parentQuery2');
@@ -81,5 +82,6 @@ describe('ViewQueriesService', () => {
     expect(parent2.lastUpdatedBy).toBe('PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU');
     expect(parent2.createdOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
     expect(parent2.lastUpdatedOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
+    expect(parent2.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_SENT');
   });
 });
