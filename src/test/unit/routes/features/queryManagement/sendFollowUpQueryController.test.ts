@@ -24,7 +24,7 @@ describe('Send follow query controller', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   describe('GET', () => {
