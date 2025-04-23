@@ -5,11 +5,15 @@ import nock from 'nock';
 import config from 'config';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
+//import * as utilityService from 'modules/utilityService';
 //import {Claim} from 'models/claim';
 //import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('services/features/queryManagement/queryManagementService');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
+jest.mock('../../../../../main/modules/utilityService');
 
 const queryManagementMock = queryManagementService.getQueryManagement as jest.Mock;
 
