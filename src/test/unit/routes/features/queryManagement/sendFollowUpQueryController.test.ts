@@ -84,6 +84,18 @@ describe('Send follow query controller', () => {
       expect(saveQueryManagement).toHaveBeenCalled();
     });
 
+    it('should redirect on successful form when exists a follow up', async () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
+      queryManagementMock.mockResolvedValue(claim.queryManagement);
+      const saveQueryManagement = jest.spyOn(queryManagementService, 'saveQueryManagement');
+      const data = {'messageDetails': 'test body'};
+      const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send(data);
+      expect(res.status).toBe(302);
+      expect(saveQueryManagement).toHaveBeenCalled();
+    });
+
     it('should render the page with errors for the missing fields', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
       const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send({});
