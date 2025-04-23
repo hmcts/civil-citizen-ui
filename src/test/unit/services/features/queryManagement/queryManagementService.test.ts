@@ -28,9 +28,7 @@ const req = { params: { id: '123' } } as unknown as express.Request;
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
 describe('save queryManagement data', () => {
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
+
   it('should save data successfully when query management not exists', async () => {
     //Given
     const claimExpected = new Claim();
@@ -83,9 +81,7 @@ describe('save queryManagement data', () => {
 });
 
 describe('get queryManagement', () => {
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
+
   it('should get data successfully when query management not exists', async () => {
     //Given
     const claimExpected = new Claim();
@@ -119,9 +115,7 @@ describe('get queryManagement', () => {
 });
 
 describe('get CancelUrl', () => {
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
+
   it('get cancel url', async () => {
     //when
     const result = getCancelUrl('1');
@@ -133,9 +127,7 @@ describe('get CancelUrl', () => {
 });
 
 describe('get Caption', () => {
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
+
   it('get caption GET_UPDATE', async () => {
     //when
     const result = getCaption(WhatToDoTypeOption.GET_UPDATE);
@@ -178,9 +170,7 @@ describe('get Caption', () => {
 });
 
 describe('Uploading files', () => {
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
+
   const appRequest: AppRequest = {
     params: { id: '1', appId: '89' },
   } as unknown as AppRequest;

@@ -10,6 +10,7 @@ import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery} from 'models/queryManagement/createQuery';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/utilityService');
@@ -26,9 +27,6 @@ describe('create query conroller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
   describe('GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();

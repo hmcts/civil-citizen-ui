@@ -1,21 +1,14 @@
 import {NextFunction, Response, Router} from 'express';
 import {BACK_URL, QM_CYA, QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {getClaimById} from 'modules/utilityService';
 import {GenericForm} from 'form/models/genericForm';
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {
-  getCancelUrl, saveQueryManagement,
+  getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
-import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {
-  getSummaryList,
-  removeSelectedDocument,
-  uploadSelectedFile,
-} from 'services/features/queryManagement/sendFollowUpQueryService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -25,7 +18,7 @@ const upload = multer({
   },
 });
 
-async function renderView(form: GenericForm<SendFollowUpQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
+async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
   const backLinkUrl = BACK_URL;
@@ -48,8 +41,8 @@ const pageHeaders = {
 sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req, true);
-    const sendFollowQuery = claim.queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
+    const queryManagement = await getQueryManagement(claimId, req);
+    const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
     const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
     let form = new GenericForm(sendFollowQuery);
     const formattedSummary = summarySection(
@@ -65,11 +58,11 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
 
     if (req.query?.id) {
       const index = req.query.id;
-      await removeSelectedDocument(req, Number(index) - 1);
+      await removeSelectedDocument(req, Number(index) - 1, true);
       return res.redirect(currentUrl);
     }
-    await getSummaryList(formattedSummary, req);
-    await renderView(form, claim, claimId, res, formattedSummary, req);
+    await getSummaryList(formattedSummary, req,  true);
+    await renderView(form, claimId, res, formattedSummary, req);
   } catch (error) {
     next(error);
   }
@@ -78,9 +71,9 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
 sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file-upload'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req, true);
+    const queryManagement = await getQueryManagement(claimId, req);
     const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
-    const existingQuery = claim.queryManagement?.sendFollowUpQuery;
+    const existingQuery = queryManagement?.sendFollowUpQuery;
     const sendFollowUpQuery = new SendFollowUpQuery(req.body['messageDetails']);
     if (existingQuery) {
       sendFollowUpQuery.uploadedFiles = existingQuery.uploadedFiles;
@@ -94,14 +87,14 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       });
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req, sendFollowUpQuery);
+      await uploadSelectedFile(req, sendFollowUpQuery, true);
       return res.redirect(`${currentUrl}`);
     }
 
     form.validateSync();
     if (form.hasErrors()) {
-      await getSummaryList(formattedSummary, req);
-      return await renderView(form, claim, claimId, res, formattedSummary, req);
+      await getSummaryList(formattedSummary, req, true);
+      return await renderView(form, claimId, res, formattedSummary, req);
     } else {
       await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
       return res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));

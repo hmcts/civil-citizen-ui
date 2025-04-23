@@ -3,20 +3,18 @@ import {app} from '../../../../../main/app';
 import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
-import * as sendFollowService from 'services/features/queryManagement/sendFollowUpQueryService';
-import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
-import * as utilityService from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
+import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('services/features/queryManagement/queryManagementService');
-jest.mock('../../../../../main/modules/utilityService');
-jest.mock('services/features/queryManagement/sendFollowUpQueryService');
+jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
 
-const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+const queryManagementMock = getQueryManagement as jest.Mock;
 
 describe('Send follow query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,15 +25,15 @@ describe('Send follow query controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-  afterAll(() => {
-    jest.clearAllMocks();
+
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
+
   describe('GET', () => {
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
+
     it('should render query page', async () => {
-      mockGetClaimById.mockResolvedValue(new Claim());
+      queryManagementMock.mockResolvedValue(new Claim());
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE)
         .expect((res) => {
@@ -49,22 +47,22 @@ describe('Send follow query controller', () => {
     });
 
     it('should call through to removeSelectedDocument when the query param is passed', async () => {
-      mockGetClaimById.mockResolvedValue(new Claim());
-      const removeDocSpy = jest.spyOn(sendFollowService, 'removeSelectedDocument');
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const removeDocSpy = jest.spyOn(queryManagementService, 'removeSelectedDocument');
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE + '?id=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(removeDocSpy).toHaveBeenCalled();
+          expect(removeDocSpy).toHaveBeenCalledTimes(1);
         });
     });
 
     it('should pre fill field values when session data is set', async () => {
-      const preFilledData = { 'messageDetails': 'test body' };
+      const preFilledData = {'messageDetails': 'test body'};
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.sendFollowUpQuery = preFilledData as SendFollowUpQuery;
-      mockGetClaimById.mockResolvedValue(claim);
+      queryManagementMock.mockResolvedValue(claim.queryManagement);
 
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE)
@@ -77,13 +75,9 @@ describe('Send follow query controller', () => {
 
   describe('POST', () => {
 
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-
     it('should redirect on successful form', async () => {
-      mockGetClaimById.mockResolvedValue(new Claim());
-      const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const saveQueryManagement = jest.spyOn(queryManagementService, 'saveQueryManagement');
       const data = {'messageDetails': 'test body'};
       const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send(data);
       expect(res.status).toBe(302);
@@ -91,7 +85,7 @@ describe('Send follow query controller', () => {
     });
 
     it('should render the page with errors for the missing fields', async () => {
-      mockGetClaimById.mockResolvedValue(new Claim());
+      queryManagementMock.mockResolvedValue(new QueryManagement());
       const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send({});
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
@@ -99,11 +93,12 @@ describe('Send follow query controller', () => {
     });
 
     it('should trigger redirect on successful file upload', async () => {
-      mockGetClaimById.mockResolvedValue(new Claim());
-      jest.spyOn(QueryManagementService, 'uploadSelectedFile');
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const uploadSelectedFile = jest.spyOn(queryManagementService, 'uploadSelectedFile');
       await request(app).post(QM_FOLLOW_UP_MESSAGE).send({action: 'uploadButton'})
         .expect(res => {
           expect(res.status).toBe(302);
+          expect(uploadSelectedFile).toHaveBeenCalled();
         });
     });
   });
