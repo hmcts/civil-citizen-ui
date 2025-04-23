@@ -19,4 +19,5 @@ export interface CCDRespondentLiPResponse {
 export enum CCDRespondentResponseLanguage {
   'ENGLISH' = 'ENGLISH',
   'BOTH' = 'BOTH',
+  'WELSH' = 'WELSH',
 }
