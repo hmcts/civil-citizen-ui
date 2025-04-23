@@ -3,8 +3,9 @@ import {app} from '../../../../../main/app';
 import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
-import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
+//import {QueryManagement} from 'form/models/queryManagement/queryManagement';
+import * as utilityService from 'modules/utilityService';
+import {Claim} from 'models/claim';
 //import * as utilityService from 'modules/utilityService';
 //import {Claim} from 'models/claim';
 //import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
@@ -13,8 +14,9 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
+jest.mock('../../../../../main/modules/utilityService');
 
-const queryManagementMock = queryManagementService.getQueryManagement as jest.Mock;
+const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
 describe('Send follow query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -33,7 +35,7 @@ describe('Send follow query controller', () => {
   describe('GET', () => {
 
     it('should render query page', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
+      mockGetClaimById.mockResolvedValue(new Claim());
       await request(app)
         .get(QM_FOLLOW_UP_MESSAGE)
         .expect((res) => {

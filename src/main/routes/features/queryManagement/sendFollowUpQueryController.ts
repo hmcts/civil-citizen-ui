@@ -5,10 +5,11 @@ import {GenericForm} from 'form/models/genericForm';
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {
-  getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
+  getCancelUrl, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
+import {getClaimById} from 'modules/utilityService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -41,8 +42,8 @@ const pageHeaders = {
 sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const queryManagement = await getQueryManagement(claimId, req);
-    const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
+    const claim = await getClaimById(claimId, req, true);
+    const sendFollowQuery = claim.queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
     const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
     let form = new GenericForm(sendFollowQuery);
     const formattedSummary = summarySection(
@@ -71,9 +72,9 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
 sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file-upload'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const queryManagement = await getQueryManagement(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
-    const existingQuery = queryManagement?.sendFollowUpQuery;
+    const existingQuery = claim.queryManagement?.sendFollowUpQuery;
     const sendFollowUpQuery = new SendFollowUpQuery(req.body['messageDetails']);
     if (existingQuery) {
       sendFollowUpQuery.uploadedFiles = existingQuery.uploadedFiles;
