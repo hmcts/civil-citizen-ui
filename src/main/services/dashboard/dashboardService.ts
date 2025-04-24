@@ -149,7 +149,7 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   return undefined;
 }
 
-export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string, isGAlinkEnabled): Promise<iWantToLinks> => {
+export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string, isGAlinkEnabled = false): Promise<iWantToLinks> => {
 
   if ((claim.ccdState && isGAlinkEnabled || !claim.isCaseIssuedPending() && !claim.isClaimSettled()
     && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
