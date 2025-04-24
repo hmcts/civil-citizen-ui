@@ -24,7 +24,7 @@ const content ={
   },
   mediationHeading: {
     en: 'Add a single date or longer period of time that you cannot attend meditation',
-    cy: '',
+    cy: 'Ychwanegwch un dyddiad neu gyfnod hwy o amser na allwch fynychu myfyrdod',
   },
 };
 
@@ -42,7 +42,7 @@ class AvailabilityDates {
 
   async enterUnavailableDates(meditation = false) {
 
-    const { language } = sharedData; 
+    const { language } = sharedData;
     if (meditation){
       await I.waitForContent(content.mediationHeading[language], config.WaitForText);
     } else {
@@ -66,8 +66,8 @@ class AvailabilityDates {
     await I.fillField(fields.longerPeriodEndDay, '20');
     await I.fillField(fields.longerPeriodEndMonth, month);
     await I.fillField(fields.longerPeriodEndYear, year);
-
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click('button[class=\'govuk-button\']');
+    //TODO - Revert to a Language Specific click for this page as this is an interimn solution as the Button names are differing in the journey.
   }
 }
 
