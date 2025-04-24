@@ -3,7 +3,7 @@ import {
   deleteQueryManagement,
   getCancelUrl,
   getCaption,
-  getQueryManagement, removeSelectedDocument,
+  getQueryManagement, getSummaryList, removeSelectedDocument,
   saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import { QueryManagement, WhatDoYouWantToDo, WhatToDoTypeOption } from 'form/models/queryManagement/queryManagement';
@@ -15,6 +15,7 @@ import { CaseDocument } from 'models/document/caseDocument';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import { CreateQuery, UploadQMAdditionalFile } from 'models/queryManagement/createQuery';
+import {SummarySection} from "models/summaryList/summarySections";
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -185,7 +186,7 @@ describe('Uploading files', () => {
   };
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     const fileToUpload = {
       fieldname: 'test',
       originalname: 'test',
@@ -275,6 +276,26 @@ describe('Uploading files', () => {
     await removeSelectedDocument(appRequest, 0);
     expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);
     expect(saveSpy).toBeCalledWith('1234', claim);
+  });
+
+  it('should get Summary List not follow up', async () => {
+    const summaryList = {summaryList: undefined, title: ''} as SummarySection;
+    const appRequest: AppRequest = {
+      params: { id: '1', appId: '89' },
+      session: {
+        fileUpload: undefined,
+      },
+    } as unknown as AppRequest;
+    mockGetClaimById.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.createQuery = new CreateQuery();
+      return claim;
+    });
+
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
+    await getSummaryList(summaryList, appRequest ,false);
+    expect(summaryList).toEqual(summaryList);
   });
 });
 

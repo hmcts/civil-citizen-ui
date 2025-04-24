@@ -104,7 +104,8 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
 };
 
 export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
-  const queryManagement = await getQueryManagement(req.params.id, req);
+  const claim = await getClaimById(req.params.id, req, true);
+  const queryManagement = claim.queryManagement;
   const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
 
   if (query) {
@@ -126,9 +127,9 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
 };
 
 export const removeSelectedDocument = async (req: AppRequest, index: number, isFollowUp = false): Promise<void> => {
-
   try {
-    const queryManagement = await getQueryManagement(req.params.id, req);
+    const claim = await getClaimById(req.params.id, req, true);
+    const queryManagement = claim.queryManagement;
     const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
     query.uploadedFiles.splice(index, 1);
     await saveQueryManagement(req.params.id, query, isFollowUp ? 'sendFollowUpQuery' : 'createQuery', req);
