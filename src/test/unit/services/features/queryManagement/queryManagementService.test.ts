@@ -285,6 +285,32 @@ describe('Uploading files', () => {
     expect(saveSpy).toBeCalledWith('1234', claim);
   });
 
+});
+
+describe('getSummaryList', () => {
+
+  const returnedFile: CaseDocument = {
+    createdBy: 'test',
+    documentLink: { 'document_binary_url': '', 'document_filename': '', 'document_url': '' },
+    documentName: 'name',
+    documentType: null,
+    documentSize: 12345,
+    createdDatetime: '2025-03-27T17:02:09.858Z' as unknown as Date,
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    const fileToUpload = {
+      fieldname: 'test',
+      originalname: 'test',
+      mimetype: 'text/plain',
+      size: 123,
+      buffer: Buffer.from('test'),
+    };
+    jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(returnedFile);
+    jest.spyOn(TypeOfDocumentSectionMapper, 'mapToSingleFile').mockReturnValue(fileToUpload);
+  });
+
   it('should get Summary List not follow up', async () => {
     const summarySections =
         {
@@ -372,5 +398,162 @@ describe('Uploading files', () => {
     await getSummaryList(summarySections.sections[0], appRequest ,false);
     expect(summarySections).toEqual(summaryExpected);
   });
+
+  it('should get Summary List is follow up', async () => {
+    const summarySections =
+        {
+          sections: [{
+            title: 'test',
+            summaryList: {
+              rows: [
+                {
+                  key: {
+                    text: 'Full name',
+                  },
+                  value: {
+                    text: 'PARTY_NAME',
+                  },
+                  actions: {
+                    items: [{
+                      href: '',
+                      text: 'Change',
+                    }],
+                  },
+                },
+              ],
+            },
+          }],
+        };
+
+    const summaryExpected =
+        {
+          sections: [
+            {
+              title: 'test',
+              summaryList: {
+                rows: [
+                  {
+                    key: {
+                      text: 'Full name',
+                    },
+                    value: {
+                      text: 'PARTY_NAME',
+                    },
+                    actions: {
+                      items: [{
+                        href: '',
+                        text: 'Change',
+                      }],
+                    },
+                  },
+                  {
+                    key: {
+                      text: 'name',
+                    },
+                    value: {
+                      html: '',
+                    },
+                    actions: {
+                      items: [{
+                        href: '/case/1/qm/follow-up-message?id=1',
+                        text: 'Remove document',
+                        visuallyHiddenText: 'name',
+                      }],
+                    },
+                  },
+                ],
+              },
+            }],
+        };
+
+    const appRequest: AppRequest = {
+      params: { id: '1', appId: '89' },
+      session: {
+        fileUpload: undefined,
+      },
+    } as unknown as AppRequest;
+    mockGetClaimById.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.sendFollowUpQuery = new CreateQuery();
+      claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
+        new UploadQMAdditionalFile(file, returnedFile),
+      ] as unknown as UploadQMAdditionalFile[];
+      return claim;
+    });
+
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
+    await getSummaryList(summarySections.sections[0], appRequest ,true);
+    expect(summarySections).toEqual(summaryExpected);
+  });
+
 });
 
+describe('removeSelectedDocument', () => {
+
+  const returnedFile: CaseDocument = {
+    createdBy: 'test',
+    documentLink: { 'document_binary_url': '', 'document_filename': '', 'document_url': '' },
+    documentName: 'name',
+    documentType: null,
+    documentSize: 12345,
+    createdDatetime: '2025-03-27T17:02:09.858Z' as unknown as Date,
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should remove Selected Document not follow up', async () => {
+
+    const appRequest: AppRequest = {
+      params: { id: '1', appId: '89' },
+      session: {
+        fileUpload: undefined,
+      },
+    } as unknown as AppRequest;
+    mockGetClaimById.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.createQuery = new CreateQuery();
+      claim.queryManagement.createQuery.uploadedFiles= [
+        new UploadQMAdditionalFile(file, returnedFile),
+      ] as unknown as UploadQMAdditionalFile[];
+      return claim;
+    });
+
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
+    const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+    await removeSelectedDocument(appRequest, 1 ,false);
+    expect(spySave).toBeCalledTimes(1);
+
+  });
+
+  it('should removeSelectedDocument is follow up', async () => {
+
+    const appRequest: AppRequest = {
+      params: { id: '1', appId: '89' },
+      session: {
+        fileUpload: undefined,
+      },
+    } as unknown as AppRequest;
+    mockGetClaimById.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.sendFollowUpQuery = new CreateQuery();
+      claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
+        new UploadQMAdditionalFile(file, returnedFile),
+      ] as unknown as UploadQMAdditionalFile[];
+      return claim;
+    });
+
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
+    const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+    await removeSelectedDocument(appRequest, 1 ,true);
+    expect(spySave).toBeCalledTimes(1);
+
+  });
+
+});
