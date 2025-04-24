@@ -21,8 +21,7 @@
   {% endif %}
 
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
-  <div class="govuk-grid-row">
-    <form class="govuk-grid-column-two-thirds" method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+    <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
       {{ csrfProtection(csrf) }}
       {{ govukInput({
         id: 'messageSubject',
@@ -171,6 +170,4 @@
 
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </form>
-  </div>
-
 {% endblock %}
