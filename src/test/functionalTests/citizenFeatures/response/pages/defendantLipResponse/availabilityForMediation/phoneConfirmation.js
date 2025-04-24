@@ -1,8 +1,8 @@
 const I = actor();
 const config = require('../../../../../../config');
 const ContactUs = require('../../../../common/contactUs');
-const sharedData = require("../../../../../sharedData");
-const cButtons = require("../../../../../commonComponents/cButtons");
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../../commonComponents/cButtons');
 
 const contactUs = new ContactUs();
 

@@ -1,7 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
-const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
   singleDate: 'input[id="items-0-single-date"]',
