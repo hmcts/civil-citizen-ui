@@ -15,7 +15,6 @@ import { CaseDocument } from 'models/document/caseDocument';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import { CreateQuery, UploadQMAdditionalFile } from 'models/queryManagement/createQuery';
-import {SummarySection} from "models/summaryList/summarySections";
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -27,6 +26,14 @@ jest.mock('../../../../../main/modules/utilityService');
 
 const req = { params: { id: '123' } } as unknown as express.Request;
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+
+const file = {
+  fieldname: 'selectedFile',
+  originalname: 'test.text',
+  mimetype: 'text/plain',
+  size: 123,
+  buffer: Buffer.from('Test file content'),
+};
 
 describe('save queryManagement data', () => {
 
@@ -279,7 +286,72 @@ describe('Uploading files', () => {
   });
 
   it('should get Summary List not follow up', async () => {
-    const summaryList = {summaryList: undefined, title: ''} as SummarySection;
+    const summarySections =
+        {
+          sections: [{
+            title: 'test',
+            summaryList: {
+              rows: [
+                {
+                  key: {
+                    text: 'Full name',
+                  },
+                  value: {
+                    text: 'PARTY_NAME',
+                  },
+                  actions: {
+                    items: [{
+                      href: '',
+                      text: 'Change',
+                    }],
+                  },
+                },
+              ],
+            },
+          }],
+        };
+
+    const summaryExpected =
+        {
+          sections: [
+            {
+              title: 'test',
+              summaryList: {
+                rows: [
+                  {
+                    key: {
+                      text: 'Full name',
+                    },
+                    value: {
+                      text: 'PARTY_NAME',
+                    },
+                    actions: {
+                      items: [{
+                        href: '',
+                        text: 'Change',
+                      }],
+                    },
+                  },
+                  {
+                    key: {
+                      text: 'name',
+                    },
+                    value: {
+                      html: '',
+                    },
+                    actions: {
+                      items: [{
+                        href: '/case/1/qm/create-query?id=1',
+                        text: 'Remove document',
+                        visuallyHiddenText: 'name',
+                      }],
+                    },
+                  },
+                ],
+              },
+            }],
+        };
+
     const appRequest: AppRequest = {
       params: { id: '1', appId: '89' },
       session: {
@@ -290,12 +362,15 @@ describe('Uploading files', () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery();
+      claim.queryManagement.createQuery.uploadedFiles= [
+        new UploadQMAdditionalFile(file, returnedFile),
+      ] as unknown as UploadQMAdditionalFile[];
       return claim;
     });
 
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
-    await getSummaryList(summaryList, appRequest ,false);
-    expect(summaryList).toEqual(summaryList);
+    await getSummaryList(summarySections.sections[0], appRequest ,false);
+    expect(summarySections).toEqual(summaryExpected);
   });
 });
 
