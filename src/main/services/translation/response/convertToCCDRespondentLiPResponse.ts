@@ -30,6 +30,8 @@ export const toCCDRespondentResponseLanguage = (language: ClaimBilingualLanguage
       return CCDRespondentResponseLanguage.ENGLISH;
     case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
       return CCDRespondentResponseLanguage.BOTH;
+    case ClaimBilingualLanguagePreference.WELSH:
+      return CCDRespondentResponseLanguage.WELSH;
     default: return undefined;
   }
 };
