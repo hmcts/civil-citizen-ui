@@ -22,7 +22,7 @@ export class CreateQuery {
   @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})
     isHearingRelated: string;
 
-  @ValidateIf(o => o.isHearingRelated === 'yes' && ((o.day !== undefined && o.month !== undefined && o.day && o.month && o.year && o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 1)
+  @ValidateIf(o => o.isHearingRelated === 'yes' && ((o.day !== undefined && o.month !== undefined && o.day && o.month && o.year && o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999)
     || (o.day !== undefined && o.month !== undefined && !o.day && !o.month && !o.year)))
   @IsDate({message: 'ERRORS.QUERY_MANAGEMENT.VALID_DATE_BLANK'})
   @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_FUTURE_DATE'})
@@ -39,7 +39,7 @@ export class CreateQuery {
     month?: number;
 
   @ValidateIf(o => (o.day || o.month || o.year))
-  @Min(1, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
+  @Min(999, {message: 'ERRORS.QUERY_MANAGEMENT.VALID_YEAR'})
     year?: number;
 
   uploadedFiles: UploadQMAdditionalFile[];
