@@ -9,6 +9,7 @@ import {Claim} from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {VIEW_DEFENDANT_INFO} from 'routes/urls';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -30,6 +31,7 @@ describe('View Defendant Information', () => {
   });
   it('should return contact defendant details from claim ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
+    jest.spyOn(launchDarkly, 'isDefendantNoCOnlineForCase').mockResolvedValue(false);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
       .get(VIEW_DEFENDANT_INFO)
@@ -47,6 +49,7 @@ describe('View Defendant Information', () => {
   });
   it('should return contact defendant LR details from claim when NOC submitted for LiP Defendant ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
+    jest.spyOn(launchDarkly, 'isDefendantNoCOnlineForCase').mockResolvedValue(true);
     caseData.specRespondent1Represented = YesNoUpperCamelCase.YES;
     caseData.respondentSolicitorDetails= {
       'address': {
@@ -71,6 +74,7 @@ describe('View Defendant Information', () => {
 
   it('should return contact defendant LR correspondence address details after NOC submitted and sol details updated ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
+    jest.spyOn(launchDarkly, 'isDefendantNoCOnlineForCase').mockResolvedValue(true);
     caseData.specRespondent1Represented = YesNoUpperCamelCase.YES;
     caseData.respondentSolicitor1EmailAddress = 'abc@gmail.com';
     caseData.respondentSolicitorDetails= {
