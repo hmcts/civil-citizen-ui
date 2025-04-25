@@ -1,0 +1,104 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t(selectedQueryItem.subject) %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+        </div>
+      </div>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">Your message</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+              <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Message details</dt>
+                  <dd class="govuk-summary-list__value">{{ selectedQueryItem.body }}</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Is your message about a hearing?</dt>
+                  <dd class="govuk-summary-list__value">{{ selectedQueryItem.isHearingRelated }}</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Upload documents (optional)</dt>
+                  <dd class="govuk-summary-list__value">{{ 'document link to be added' }}</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent by</dt>
+                  <dd class="govuk-summary-list__value">{{ 'You' }}</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent on</dt>
+                  <dd class="govuk-summary-list__value">{{ selectedQueryItem.createdOnString }}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if selectedQueryItem.children %}
+        <div class="govuk-grid-row">
+          {% for child in selectedQueryItem.children %}
+            <div class="govuk-grid-column-three-quarters">
+              <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                  <h2 class="govuk-summary-card__title">
+                    {% if loop.index % 2 == 1 %}
+                      Court's response
+                    {% else %}
+                      Your message
+                    {% endif %}
+                  </h2>
+                </div>
+                <div class="govuk-summary-card__content">
+                  <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Message details</dt>
+                      <dd class="govuk-summary-list__value">{{ child.body }}</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Is your message about a hearing?</dt>
+                      <dd class="govuk-summary-list__value">{{ child.isHearingRelated }}</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Upload documents (optional)</dt>
+                      <dd class="govuk-summary-list__value">{{ 'document link to be added' }}</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent by</dt>
+                      <dd class="govuk-summary-list__value">
+                        {% if loop.index % 2 == 0 %}
+                          You
+                        {% else %}
+                          Court staff
+                        {% endif %}
+                      </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent on</dt>
+                      <dd class="govuk-summary-list__value">{{ child.createdOnString }}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </main>
+  </div>
+{% endblock %}

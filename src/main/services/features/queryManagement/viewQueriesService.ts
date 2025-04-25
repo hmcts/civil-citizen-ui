@@ -1,11 +1,15 @@
 import {Claim} from 'models/claim';
-import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
 import {dateTimeFormat} from 'common/utils/dateUtils';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export interface QueryListItem {
   id: string;
   subject: string;
+  body: string;
+  attachments?: FormDocument[];
+  isHearingRelated: YesNoUpperCamelCase;
   createdOn: Date;
   parentId?: string;
   children: QueryListItem[];
@@ -33,6 +37,9 @@ export class ViewQueriesService {
     const allQueryItems: QueryListItem[] = queries.caseMessages.map(message => ({
       id: message.value.id,
       subject: message.value.subject,
+      body: message.value.body,
+      attachments: message.value.attachments,
+      isHearingRelated: message.value.isHearingRelated,
       createdOn: new Date(message.value.createdOn),
       parentId: message.value.parentId ?? null,
       children: [],

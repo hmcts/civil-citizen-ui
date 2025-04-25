@@ -1,43 +1,44 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
-  QM_VIEW_QUERY_URL,
+  QM_QUERY_DETAILS_URL,
+  BACK_URL
 } from 'routes/urls';
 import { Claim } from 'models/claim';
 import { AppRequest } from 'models/AppRequest';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {QueryListItem, ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const qmViewQueriesController = Router();
-const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
+const qmViewQueryDetailsController = Router();
+const viewQueriesPath = 'features/queryManagement/qm-view-query-details-template';
 
-const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
-
-  const parentQueryItems: QueryListItem[] = ViewQueriesService.buildQueryListItems(claim, lang);
+const renderView = async (res: Response, claimId: string, claim: Claim, lang: string, selectedQueryItem: QueryListItem): Promise<void> => {
+  const backLinkUrl = BACK_URL;
 
   res.render(viewQueriesPath, {
     claimId,
-    parentQueryItems,
+    selectedQueryItem,
     pageTitle: 'PAGES.QM.VIEW_QUERY.PAGE_TITLE',
-    dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
+    backLinkUrl
   });
 };
 
-qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: Request, res: Response, next: NextFunction) => {
+qmViewQueryDetailsController.get(QM_QUERY_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const queryId = req.params.queryId;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    renderView(res, claimId, claim, lang);
+    const parentQueryItems = ViewQueriesService.buildQueryListItems(claim, lang);
+    const selectedQueryItem = parentQueryItems.find(item => item.id === queryId);
+    renderView(res, claimId, claim, lang, selectedQueryItem);
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-export default qmViewQueriesController;
+export default qmViewQueryDetailsController;
 
