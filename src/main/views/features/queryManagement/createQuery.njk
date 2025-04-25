@@ -111,14 +111,14 @@
               items: [{
                 value: 'yes',
                 checked: true if form.model.isHearingRelated=="yes" else false,
-                text: t('COMMON.YES'),
+                text: t('COMMON.VARIATION_4.YES')
                 conditional: {
                   html: hearingDateHtml
                 }
               },{
                 value: 'no',
                 checked: true if form.model.isHearingRelated=="no" else false,
-                text: t('COMMON.NO')
+                text: t('COMMON.VARIATION_4.NO')
               }],
               errorMessage: {
                 text: t(form.errorFor('isHearingRelated'))

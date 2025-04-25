@@ -15,8 +15,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim): SummaryRow[] => {
-  const lng = 'en';
+export const getSummarySections = (claimId: string, claim: Claim, lng: string): SummaryRow[] => {
   const createQuery = claim.queryManagement.createQuery;
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
@@ -46,10 +45,12 @@ const getMessageDescription = (messageDetails: string, claimId: string, lng: str
 const getMessageAboutHearing = (aboutHearing: string, claimId: string, lng: string) => {
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_ABOUT_HEARING', {lng}),
-    aboutHearing,
+    yesNoFormatter4(aboutHearing as YesNo, lng),
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
+
+const yesNoFormatter4 = (yesNo: YesNo, lng: string): string => t(`COMMON.VARIATION_4.${yesNo.toUpperCase()}`, {lng});
 
 const getHearingDate = (hearingRelated: string, hearingDate: Date, claimId: string, lng: string) => {
   if (hearingRelated === YesNo.YES) {
