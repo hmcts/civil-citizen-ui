@@ -8,6 +8,35 @@
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE') }}
 {% endblock %}
+{% set items = [
+    { value: "ClaimBilingualLanguagePreference.ENGLISH",
+      checked: true if form.model.option==ClaimBilingualLanguagePreference.ENGLISH else false,
+      html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.ENGLISH') + "</span>"
+    },
+    {
+      value: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
+      checked: true if form.model.option==ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH else false,
+      html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.WELSH_AND_ENGLISH') + "</span>"
+    }
+] %}
+{% if welshGaEnabled %}
+    {% set items = [
+     { value: "ClaimBilingualLanguagePreference.ENGLISH",
+          checked: true if form.model.option==ClaimBilingualLanguagePreference.ENGLISH else false,
+          html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.ENGLISH') + "</span>"
+     },
+     {
+        value: ClaimBilingualLanguagePreference.WELSH,
+        checked: true if form.model.option==ClaimBilingualLanguagePreference.WELSH else false,
+        html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.WELSH') + "</span>"
+     },
+     {
+        value: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
+        checked: true if form.model.option==ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH else false,
+        html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.WELSH_AND_ENGLISH') + "</span>"
+     }]
+    %}
+{% endif %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -53,18 +82,7 @@
             {{ govukRadios({
               idPrefix: id,
               name: name,
-              items: [
-                {
-                  value: ClaimBilingualLanguagePreference.ENGLISH,
-                  checked: true if form.model.option==ClaimBilingualLanguagePreference.ENGLISH else false,
-                  html: "<span>" + t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.ENGLISH') + "</span>"
-                },
-                {
-                  value: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
-                  checked: true if form.model.option==ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH else false,
-                  html: "<span>" + t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.WELSH') + "</span>"
-                }
-              ],
+              items: items,
               errorMessage: {
                 html: t(form.errorFor(name))
               } if form.hasFieldError(name)
