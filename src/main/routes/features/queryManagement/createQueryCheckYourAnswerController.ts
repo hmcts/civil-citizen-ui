@@ -21,9 +21,10 @@ const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 createQueryCheckYourAnswerController.get(QM_CYA, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const backLinkUrl = BACK_URL;
     const cancelUrl = getCancelUrl(req.params.id);
-    res.render(viewPath, {summaryRows: getSummarySections(req.params.id, claim), backLinkUrl, cancelUrl});
+    res.render(viewPath, {summaryRows: getSummarySections(req.params.id, claim, lang), backLinkUrl, cancelUrl});
   } catch (error) {
     next(error);
   }
