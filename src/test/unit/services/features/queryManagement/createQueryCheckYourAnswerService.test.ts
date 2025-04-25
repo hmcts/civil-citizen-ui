@@ -1,7 +1,7 @@
 import {
   createApplicantCitizenQuery, createRespondentCitizenQuery,
   getSummarySections,
-} from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
+} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
@@ -26,7 +26,7 @@ describe('Check Answers response service', () => {
           documentLink: {document_binary_url: 'http://dm-store:8080/documents/bf4a2ac9-a036-4d7d-b999-dcccc4d92197/binary'} as Document,
         },
       } as UploadQMAdditionalFile];
-      const summaryRows = getSummarySections('123455', claim);
+      const summaryRows = getSummarySections('123455', claim,'en');
       expect(summaryRows.length).toBe(4);
     });
   });
