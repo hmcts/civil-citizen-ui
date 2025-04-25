@@ -924,12 +924,11 @@
         "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
-        "ENTER_MESSAGE": "Enter message details",
-        "MESSAGE_SUBJECT": "Message subject",
-        "MESSAGE_DETAILS": "Message details",
-        "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
-        "UPLOAD_DOCUMENTS": "Upload documents (optional)",
-        "SEND_MESSAGE": "Send message"
+        "MESSAGE_SUBJECT": "Pwnc y neges",
+        "MESSAGE_DETAILS": "Manylion y neges",
+        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad?",
+        "UPLOAD_DOCUMENTS": "Uwchlwytho dogfennau (dewisol)",
+        "SEND_MESSAGE": "Anfon neges"
       },
       "VIEW_QUERY": {
         "PAGE_TITLE": "Negeseuon",
