@@ -11,7 +11,7 @@ def camundaBranch = "master"
 def dmnBranch = "feat/CIV_16854"
 def waStandaloneBranch = "master"
 def ccdBranch = "feat/CIV_16854"
-def generalappCCDBranch = "master"
+def generalappCCDBranch = "CIV-16855"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
