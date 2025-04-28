@@ -599,7 +599,6 @@ describe('Claim Summary Controller Defendant', () => {
     describe.each(testCases)('Query management dashboard links', (testCase) => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
         jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
-        isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
         isGAForLiPEnabledMock.mockResolvedValue(true);
         isDashboardEnabledForCase.mockResolvedValue(true);
         const claim = new Claim();
