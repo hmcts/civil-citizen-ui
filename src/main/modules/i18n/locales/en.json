@@ -924,7 +924,6 @@
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
-        "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Message subject",
         "MESSAGE_DETAILS": "Message details",
         "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
@@ -1467,7 +1466,8 @@
       "PAGE_TITLE": "Language",
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
-      "WELSH_AND_ENGLISH": "Welsh"
+      "WELSH_AND_ENGLISH": "Welsh and English",
+      "WELSH": "Welsh"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -5070,12 +5070,15 @@
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "County Court Judgment request",
       "CLAIMANT_DQ": "Claimant Directions Questionnaire",
+      "TRANSLATED_CLAIMANT_DQ": "Translated Claimant Directions Questionnaire",
       "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
       "CLAIMANT_TIMELINE": "Claimant timeline of events",
       "COURT_DOCUMENTS": "Documents from the court",
       "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
       "DEFENDANT_DQ": "Defendant Directions Questionnaire",
+      "TRANSLATED_DEFENDANT_DQ": "Translated Defendant Directions Questionnaire",
       "DEFENDANT_RESPONSE": "Defendant response",
+      "TRANSLATED_DEFENDANT_RESPONSE": "Translated Defendant response",
       "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
@@ -5086,6 +5089,7 @@
       "PARTICULARS_CLAIM": "Particulars of claim",
       "RESPOND_TO_DEFENCE": "Respond to defence",
       "SEALED_CLAIM": "Sealed Claim form",
+      "TRANSLATED_SEALED_CLAIM": "Translated Sealed Claim form",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
