@@ -519,7 +519,6 @@ describe('claimant Dashboard Controller', () => {
     describe.each(testCases)('Query management dashboard links', (testCase) => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
         jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
-        jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
         const claim = new Claim();
         claim.caseRole = testCase.caseRole;
         claim.ccdState = testCase.ccdState;
