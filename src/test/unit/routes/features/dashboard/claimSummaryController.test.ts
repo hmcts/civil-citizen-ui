@@ -27,9 +27,10 @@ import { ApplicationResponse } from 'common/models/generalApplication/applicatio
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL } from 'routes/urls';
+import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/urls';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -585,6 +586,42 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
           expect(res.text).not.toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
         });
+    });
+
+    const testCases = [
+      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.CASE_PROGRESSION },
+      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.HEARING_READINESS },
+      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING },
+      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.DECISION_OUTCOME },
+      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.All_FINAL_ORDERS_ISSUED },
+    ];
+
+    describe.each(testCases)('Query management dashboard links', (testCase) => {
+      it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
+        jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
+        isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+        isGAForLiPEnabledMock.mockResolvedValue(true);
+        isDashboardEnabledForCase.mockResolvedValue(true);
+        const claim = new Claim();
+        claim.caseRole = testCase.caseRole;
+        claim.ccdState = testCase.ccdState;
+        jest
+          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+          .mockResolvedValueOnce(claim);
+        jest
+          .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+          .mockResolvedValueOnce([]);
+
+        await testSession
+          .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.COURT_STAFF_DISCLOSURE'));
+            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE'));
+            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_LINK'));
+            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_RESPONSE'));
+            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE'));
+          });
+      });
     });
   });
 });
