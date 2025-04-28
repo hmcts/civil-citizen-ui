@@ -1,0 +1,26 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% block nestedContent %}
+{{ headingWithCaption(t, 'PAGES.QM.HEADINGS.CAPTION','PAGES.QM.HEADINGS.HEADING') }}
+  {% if summaryRows %}
+      <div class="govuk-!-margin-bottom-9 govuk-border-colour-border-top-1">
+        <div class="govuk-form-group">
+          {{ govukSummaryList({
+            rows: summaryRows
+          }) }}
+        </div>
+      </div>
+    {% endif %}
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('PAGES.QM.SEND_MESSAGE_CYA.SEND_MESSAGE')
+          }) }}
+          <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+        </div>
+      </form>
+    {% endblock %}
