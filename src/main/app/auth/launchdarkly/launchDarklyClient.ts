@@ -21,6 +21,7 @@ const IS_COSC_ENABLED = 'isCoSCEnabled';
 const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 const QUERY_MANAGEMENT = 'cui-query-management';
 const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
+const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
 const LR_QUERY_MANAGEMENT = 'query-management';
 
 async function getClient(): Promise<void> {
@@ -179,6 +180,13 @@ export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
 
 export async function isGaForWelshEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_WELSH) as boolean;
+}
+
+export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  return await getFlagValue(IS_DEFENDANT_NOC_ONLINE_FOR_CASE, epoch) as boolean;
 }
 
 export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
