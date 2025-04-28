@@ -1,7 +1,7 @@
 import { Pact } from '@pact-foundation/pact';
 import { resolve } from 'path';
 import axios from 'axios';
-import { PACT_DIRECTORY_PATH } from './utils';
+import { PACT_DIRECTORY_PATH } from '../utils';
 
 const mockProvider = new Pact({
   log: resolve(process.cwd(), 'src/test/contract/log', 'pact.log'),
