@@ -1,10 +1,11 @@
 import { Pact } from '@pact-foundation/pact';
 import { resolve } from 'path';
 import axios from 'axios';
+import { PACT_DIRECTORY_PATH } from './utils';
 
 const mockProvider = new Pact({
   log: resolve(process.cwd(), 'src/test/contract/log', 'pact.log'),
-  dir: resolve(process.cwd(), 'src/test/contract/pacts'),
+  dir: PACT_DIRECTORY_PATH,
   logLevel: 'info',
   consumer: 'civil_citizen_ui',
   provider: 's2s_auth',
