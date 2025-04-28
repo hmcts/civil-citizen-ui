@@ -185,7 +185,10 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionsOrders = claim.getDocumentDetailsList(DocumentType.SDO_ORDER);
+  const standardDirectionsOrders = [
+    ...claim.getDocumentDetailsList(DocumentType.SDO_ORDER),
+    ...claim.getDocumentDetailsList(DocumentType.SDO_TRANSLATED_DOCUMENT),
+  ];
 
   const caseDocuments: DocumentInformation[] = [];
   if (standardDirectionsOrders && standardDirectionsOrders.length > 0) {
