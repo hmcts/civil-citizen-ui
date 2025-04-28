@@ -941,6 +941,22 @@
         "UPDATED_BY_YOU": "You",
         "STATUS_SENT": "Message sent",
         "STATUS_RECEIVED": "Response received"
+      },
+      "VIEW_QUERY_DETAILS": {
+        "PAGE_TITLE": "Message details",
+        "YOUR_MESSAGE": "Your message",
+        "COURTS_RESPONSE": "Court's response",
+        "MESSAGE_DETAILS": "Message details",
+        "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
+        "MESSAGE_ABOUT_HEARING_YES": "Yes",
+        "MESSAGE_ABOUT_HEARING_NO": "No",
+        "HEARING_DATE": "What is the date of the hearing?",
+        "UPLOADED_DOCUMENTS": "Uploaded documents (optional)",
+        "SENT_BY": "Sent by",
+        "SENT_BY_YOU": "You",
+        "SENT_BY_COURT_STAFF": "Court staff",
+        "SENT_ON": "Sent on",
+        "SEND_FOLLOW_UP": "Send a follow up message"
       }
     },
     "SUBJECT_TO_FRC": {

@@ -941,6 +941,22 @@
         "UPDATED_BY_YOU": "Chi",
         "STATUS_SENT": "Neges wedi’i hanfon",
         "STATUS_RECEIVED": "Ymateb wedi cyrraedd"
+      },
+      "VIEW_QUERY_DETAILS": {
+        "PAGE_TITLE": "Manylion y neges",
+        "YOUR_MESSAGE": "Eich neges",
+        "COURTS_RESPONSE": "Ymateb y llys",
+        "MESSAGE_DETAILS": "Manylion y neges",
+        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
+        "MESSAGE_ABOUT_HEARING_YES": "Ydy",
+        "MESSAGE_ABOUT_HEARING_NO": "Nac ydy",
+        "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
+        "UPLOADED_DOCUMENTS": "Dogfennau wedi’u huwchlwytho (dewisol)",
+        "SENT_BY": "Anfonwyd gan",
+        "SENT_BY_YOU": "Chi",
+        "SENT_BY_COURT_STAFF": "Staff y Llys",
+        "SENT_ON": "Anfonwyd ar",
+        "SEND_FOLLOW_UP": "Anfon neges ddilynol"
       }
     },
     "SUBJECT_TO_FRC": {

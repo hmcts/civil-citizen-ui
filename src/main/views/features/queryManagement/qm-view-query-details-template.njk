@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -20,28 +21,34 @@
         <div class="govuk-grid-column-three-quarters">
           <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
-              <h2 class="govuk-summary-card__title">Your message</h2>
+              <h2 class="govuk-summary-card__title">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}</h2>
             </div>
             <div class="govuk-summary-card__content">
               <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Message details</dt>
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_DETAILS') }}</dt>
                   <dd class="govuk-summary-list__value">{{ selectedQueryItem.body }}</dd>
                 </div>
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Is your message about a hearing?</dt>
-                  <dd class="govuk-summary-list__value">{{ selectedQueryItem.isHearingRelated }}</dd>
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
+                  <dd class="govuk-summary-list__value">
+                    {% if selectedQueryItem.isHearingRelated %}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
+                    {% else %}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
+                    {% endif %}
+                  </dd>
                 </div>
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Upload documents (optional)</dt>
-                  <dd class="govuk-summary-list__value">{{ 'document link to be added' }}</dd>
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.UPLOADED_DOCUMENTS') }}</dt>
+                  <dd class="govuk-summary-list__value">{{ documentLink | safe }}</dd>
                 </div>
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent by</dt>
-                  <dd class="govuk-summary-list__value">{{ 'You' }}</dd>
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY') }}</dt>
+                  <dd class="govuk-summary-list__value">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}</dd>
                 </div>
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent on</dt>
+                  <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_ON') }}</dt>
                   <dd class="govuk-summary-list__value">{{ selectedQueryItem.createdOnString }}</dd>
                 </div>
               </dl>
@@ -58,38 +65,44 @@
                 <div class="govuk-summary-card__title-wrapper">
                   <h2 class="govuk-summary-card__title">
                     {% if loop.index % 2 == 1 %}
-                      Court's response
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
                     {% else %}
-                      Your message
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
                     {% endif %}
                   </h2>
                 </div>
                 <div class="govuk-summary-card__content">
                   <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Message details</dt>
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_DETAILS') }}</dt>
                       <dd class="govuk-summary-list__value">{{ child.body }}</dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Is your message about a hearing?</dt>
-                      <dd class="govuk-summary-list__value">{{ child.isHearingRelated }}</dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Upload documents (optional)</dt>
-                      <dd class="govuk-summary-list__value">{{ 'document link to be added' }}</dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent by</dt>
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
                       <dd class="govuk-summary-list__value">
-                        {% if loop.index % 2 == 0 %}
-                          You
+                        {% if child.isHearingRelated %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
                         {% else %}
-                          Court staff
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
                         {% endif %}
                       </dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">Sent on</dt>
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.UPLOADED_DOCUMENTS') }}</dt>
+                      <dd class="govuk-summary-list__value">{{ documentLink | safe }}</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY') }}</dt>
+                      <dd class="govuk-summary-list__value">
+                        {% if loop.index % 2 == 0 %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}
+                        {% else %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_COURT_STAFF') }}
+                        {% endif %}
+                      </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_ON') }}</dt>
                       <dd class="govuk-summary-list__value">{{ child.createdOnString }}</dd>
                     </div>
                   </dl>
@@ -99,6 +112,19 @@
           {% endfor %}
         </div>
       {% endif %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% if selectedQueryItem.status == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
+            {{ govukButton({
+              text: t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP'),
+              classes: "govuk-button--secondary remove-row",
+              href: followUpScreen
+            }) }}
+          {% endif %}
+        </div>
+      </div>
+
     </main>
   </div>
 {% endblock %}
