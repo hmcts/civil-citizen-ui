@@ -22,8 +22,8 @@ describe('Service Authorisation Provider Pact Test', () => {
 
   describe('Service Authorisation Provider generate service token', () => {
     const BASE_URL = 'http://localhost:4502';
-    const MICRO_SERVICE_NAME = 'xui_webapp';
-    const MICRO_SERVICE_TOKEN = 'someToken';
+    const MICRO_SERVICE_NAME = 'someMicroServiceName';
+    const MICRO_SERVICE_TOKEN = 'someMicroServiceToken';
 
     beforeAll(async () => {
       await mockProvider.addInteraction({
