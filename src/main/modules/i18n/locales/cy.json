@@ -912,7 +912,8 @@
       "HEADINGS": {
         "PAGE_TITLE": "Rhowch fanylion y neges",
         "HEADING": "Rhowch fanylion y neges",
-        "CAPTION": "Anfon neges"
+        "CAPTION": "Anfon neges",
+        "FOLLOW_UP_CAPTION": "Send a follow up message"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Pwnc y neges",

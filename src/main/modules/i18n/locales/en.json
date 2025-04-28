@@ -925,6 +925,7 @@
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Message subject",
         "MESSAGE_DETAILS": "Message details",
         "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
