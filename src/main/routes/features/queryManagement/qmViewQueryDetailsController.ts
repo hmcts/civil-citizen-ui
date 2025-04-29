@@ -44,4 +44,3 @@ qmViewQueryDetailsController.get(QM_QUERY_DETAILS_URL, (async (req: Request, res
 }) as RequestHandler);
 
 export default qmViewQueryDetailsController;
-

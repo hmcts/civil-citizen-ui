@@ -97,7 +97,6 @@ describe('ViewQueriesService', () => {
     const child = parent1.children[0];
     expect(child.childDocumentLink).toBe('formatted-url');
 
-
     const parent2 = result[1];
     expect(parent2.id).toBe('parentQuery2');
     expect(parent2.subject).toBe('another subject');
