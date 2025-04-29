@@ -108,7 +108,8 @@
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Uwchlwytho dogfennau ychwanegol",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd",
-      "CLOSE_AND_RETURN_TO_DETAILS": "Cau a dychwelyd i fanylion yr achos"
+      "CLOSE_AND_RETURN_TO_DETAILS": "Cau a dychwelyd i fanylion yr achos",
+      "CONFIRM_PAYMENT": "Cadarnhau’r taliad"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -3468,6 +3469,9 @@
         "MSG1": "Efallai y bydd arnoch angen mynychu gwrandawiad fel bod y barnwr yn gallu ystyried y cais gyda chi a’r partïon eraill a phenderfynu ar y camau nesaf.",
         "MSG2": "Nid yw’r gwrandawiad hwn ar gyfer trafod yr hawliad. Gwrandawiad ar wahân yw hwn i drafod y cais.",
         "TITLE": "Trefniadau ar gyfer gwrandawiad y cais"
+      },
+      "GA_PAYMENT": {
+        "SEND_PAYMENT_CONFIRMATION": "Byddwn yn anfon eich cadarnhad taliad yma"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
         "ACCOUNT_NOT_UPDATED": "Roedd eich taliad yn llwyddiannus ond efallai nad yw’ch cyfrif wedi’i ddiweddaru eto. Ceisiwch adnewyddu eich cyfrif yn nes ymlaen.",

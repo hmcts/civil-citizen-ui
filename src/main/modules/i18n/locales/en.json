@@ -108,7 +108,8 @@
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard",
-      "CLOSE_AND_RETURN_TO_DETAILS": "Close and return to case details"
+      "CLOSE_AND_RETURN_TO_DETAILS": "Close and return to case details",
+      "CONFIRM_PAYMENT": "Confirm payment"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee",
@@ -3468,6 +3469,9 @@
         "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
         "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
         "TITLE": "Application hearing arrangements"
+      },
+      "GA_PAYMENT": {
+        "SEND_PAYMENT_CONFIRMATION": "We’ll send your payment confirmation here"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
         "ACCOUNT_NOT_UPDATED": "Your payment was successful but your account might not have been updated yet. Try refreshing your account later on.",
