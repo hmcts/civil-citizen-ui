@@ -919,14 +919,16 @@
         "SUBJECT_HINT": "The subject should be a summary of your message",
         "BODY_TITLE": "Message details",
         "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
-        "IS_HEARING": "Is your message about a hearing?",
+        "IS_HEARING": "Is your message about an upcoming hearing?",
+        "HEARING_DATE": "What is the date of the hearing?",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "MESSAGE_SUBJECT": "Message subject",
         "MESSAGE_DETAILS": "Message details",
-        "MESSAGE_ABOUT_HEARING": "Is your message about a hearing?",
+        "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
+        "MESSAGE_HEARING_DATE": "What is the date of the hearing?",
         "UPLOAD_DOCUMENTS": "Upload documents (optional)",
         "SEND_MESSAGE": "Send message"
       },
@@ -5827,8 +5829,14 @@
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Enter message subject",
       "MESSAGE_DETAILS": "Enter message details",
-      "HEARING_RELATED": "Select yes if your message is about a hearing",
-      "MORE_THAN_200": "Message subject must be no longer than 200 characters"
+      "HEARING_RELATED": "Select yes if your message is about an upcoming hearing",
+      "MORE_THAN_200": "Message subject must be no longer than 200 characters",
+      "VALID_DAY": "The date of the hearing must include a day",
+      "VALID_MONTH": "The date of the hearing must include a month",
+      "VALID_YEAR": "The date of the hearing must include a year",
+      "VALID_DATE": "You must enter a valid date for the hearing",
+      "VALID_DATE_BLANK": "You must enter a date for the upcoming hearing",
+      "VALID_FUTURE_DATE": "The date of the hearing must be in the future"
     }
   },
   "BANNERS" : {
