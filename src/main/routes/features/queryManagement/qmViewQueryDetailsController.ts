@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   QM_QUERY_DETAILS_URL,
-  BACK_URL, QM_FOLLOW_UP_URL
+  BACK_URL, QM_FOLLOW_UP_URL,
 } from 'routes/urls';
 import { Claim } from 'models/claim';
 import { AppRequest } from 'models/AppRequest';
@@ -25,7 +25,7 @@ const renderView = async (res: Response, claimId: string, claim: Claim, lang: st
     selectedQueryItem,
     followUpScreen,
     claimId,
-    backLinkUrl
+    backLinkUrl,
   });
 };
 

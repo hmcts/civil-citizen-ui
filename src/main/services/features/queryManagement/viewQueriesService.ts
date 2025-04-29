@@ -3,7 +3,7 @@ import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {formatDocumentViewURL} from "common/utils/formatDocumentURL";
+import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 
 export interface QueryListItem {
   id: string;
