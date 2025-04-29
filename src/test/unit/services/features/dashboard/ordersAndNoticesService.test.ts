@@ -346,9 +346,9 @@ describe('View Orders And Notices Service', () => {
       const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-          'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
-          '21 June 2022',
-          new DocumentLinkInformation(documentUrl, documentName),
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
       );
       const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
