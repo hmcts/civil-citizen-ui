@@ -932,6 +932,18 @@
         "MESSAGE_HEARING_DATE": "What is the date of the hearing?",
         "UPLOAD_DOCUMENTS": "Upload documents (optional)",
         "SEND_MESSAGE": "Send message"
+      },
+      "VIEW_QUERY": {
+        "PAGE_TITLE": "Messages",
+        "MESSAGE_SUBJECT": "Message subject",
+        "SENT_ON": "Sent on",
+        "LAST_UPDATED_BY": "Last updated by",
+        "LAST_UPDATED_ON": "Last updated on",
+        "STATUS": "Status",
+        "UPDATED_BY_COURT_STAFF": "Court staff",
+        "UPDATED_BY_YOU": "You",
+        "STATUS_SENT": "Message sent",
+        "STATUS_RECEIVED": "Response received"
       }
     },
     "SUBJECT_TO_FRC": {

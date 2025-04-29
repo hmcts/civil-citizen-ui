@@ -165,4 +165,3 @@ export const removeSelectedDocument = async (req: AppRequest, index: number): Pr
     throw error;
   }
 };
-

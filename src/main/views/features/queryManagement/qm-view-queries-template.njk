@@ -1,0 +1,54 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t("PAGES.QM.VIEW_QUERY.PAGE_TITLE") %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+        </div>
+      </div>
+
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.MESSAGE_SUBJECT') }}</th>
+            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.SENT_ON') }}</th>
+            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_BY') }}</th>
+            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_ON') }}</th>
+            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.STATUS') }}</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for item in parentQueryItems %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <a href="{{ 'dummylink' }}" class="govuk-link">{{ item.subject }}</a>
+              </td>
+              <td class="govuk-table__cell">
+                {{ item.createdOnString }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ t(item.lastUpdatedBy) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ item.lastUpdatedOnString }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ t(item.status) }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </main>
+  </div>
+{% endblock %}
