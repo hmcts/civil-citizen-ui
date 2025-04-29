@@ -919,14 +919,16 @@
         "SUBJECT_HINT": "Dylai’r pwnc fod yn grynodeb o’ch neges",
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
-        "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad?",
+        "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
+        "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
         "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "MESSAGE_SUBJECT": "Pwnc y neges",
         "MESSAGE_DETAILS": "Manylion y neges",
-        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad?",
+        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
+        "MESSAGE_HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "UPLOAD_DOCUMENTS": "Uwchlwytho dogfennau (dewisol)",
         "SEND_MESSAGE": "Anfon neges"
       }
@@ -5809,7 +5811,13 @@
       "MESSAGE_SUBJECT": "Rhowch fanylion pwnc y neges",
       "MESSAGE_DETAILS": "Rhowch fanylion y neges",
       "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad",
-      "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod"
+      "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod",
+      "VALID_DAY": "Rhaid i ddyddiad y gwrandawiad gynnwys diwrnod",
+      "VALID_MONTH": "Rhaid i ddyddiad y gwrandawiad gynnwys mis",
+      "VALID_YEAR": "Rhaid i ddyddiad y gwrandawiad gynnwys blwyddyn",
+      "VALID_DATE": "Rhaid ichi nodi dyddiad dilys ar gyfer y gwrandawiad",
+      "VALID_DATE_BLANK": "Rhaid ichi nodi dyddiad ar gyfer y gwrandawiad sydd ar y gweill",
+      "VALID_FUTURE_DATE": "Rhaid i ddyddiad y gwrandawiad fod yn y dyfodol"
     }
   },
   "BANNERS" : {
