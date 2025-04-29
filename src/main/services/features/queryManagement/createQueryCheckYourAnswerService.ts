@@ -3,7 +3,7 @@ import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CASE_DOCUMENT_VIEW_URL, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
-import {UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
+import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import {AppRequest} from 'models/AppRequest';
 import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -11,16 +11,17 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {v4 as uuidV4} from 'uuid';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim): SummaryRow[] => {
-  const lng = 'en';
+export const getSummarySections = (claimId: string, claim: Claim, lng: string): SummaryRow[] => {
   const createQuery = claim.queryManagement.createQuery;
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
     ...getMessageDescription(createQuery.messageDetails, claimId, lng),
     ...getMessageAboutHearing(createQuery.isHearingRelated, claimId, lng),
+    ...getHearingDate(createQuery.isHearingRelated, createQuery.date, claimId, lng),
     ...getUploadedFiles(createQuery.uploadedFiles, claimId, lng),
   ];
 };
@@ -44,9 +45,21 @@ const getMessageDescription = (messageDetails: string, claimId: string, lng: str
 const getMessageAboutHearing = (aboutHearing: string, claimId: string, lng: string) => {
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_ABOUT_HEARING', {lng}),
-    aboutHearing,
+    yesNoFormatter4(aboutHearing as YesNo, lng),
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
+};
+
+const yesNoFormatter4 = (yesNo: YesNo, lng: string): string => t(`COMMON.VARIATION_4.${yesNo.toUpperCase()}`, {lng});
+
+const getHearingDate = (hearingRelated: string, hearingDate: Date, claimId: string, lng: string) => {
+  if (hearingRelated === YesNo.YES) {
+    return [summaryRow(
+      t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_HEARING_DATE', {lng}),
+      formatDateToFullDate(hearingDate, lng),
+      constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
+      t('COMMON.BUTTONS.CHANGE', {lng}))];
+  } else return [];
 };
 
 const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string) => {
@@ -81,6 +94,7 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
       createdOn: date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery)  : undefined,
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmApplicantCitizenQueries}, req).catch(error => {
@@ -126,11 +140,18 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
       'createdOn': date.toISOString(),
       'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
       'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery) : undefined,
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmRespondentCitizenQueries}, req).catch(error => {
     throw error;
   });
+};
+
+const getStringDate = (query: CreateQuery): string => {
+  const month = query.month.toString().padStart(2, '0');
+  const day = query.day.toString().padStart(2, '0');
+  return query.year + '-' + month + '-' + day;
 };
 
 const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string) => {
