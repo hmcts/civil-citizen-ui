@@ -201,7 +201,7 @@ const getTrialArrangementsDocument = (claim: Claim, claimId: string, lang: strin
 const getDefendantResponse = (claim: Claim, claimId: string, lang: string) => {
   const defendResponse =
     claim.isLRDefendant() ?
-      claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) :
+      claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) ?? claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) :
       isBilingual(claim.claimBilingualLanguagePreference) ?
         claim.getDocumentDetails(DocumentType.DEFENCE_TRANSLATED_DOCUMENT) :
         claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
