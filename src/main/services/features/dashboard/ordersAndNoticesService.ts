@@ -212,7 +212,7 @@ const getDefendantResponse = (claim: Claim, claimId: string, lang: string) => {
 const getDefendantResponseFrom = (claim: Claim, claimId: string, lang: string) => {
   const defendResponse =
     claim.isLRDefendant()
-      ? claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT)
+      ? claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) ?? claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE)
       : claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
   return defendResponse ? Array.of(
     setUpDocumentLinkObject(defendResponse.documentLink, defendResponse.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE')) : [];
