@@ -8,7 +8,6 @@ import { AppRequest } from 'models/AppRequest';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import {QueryListItem, ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
-import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -20,17 +19,10 @@ const renderView = async (res: Response, claimId: string, claim: Claim, lang: st
   const backLinkUrl = BACK_URL;
   // url to be updated once we have CIV-16951 send follow up message
   const followUpScreen = QM_FOLLOW_UP_URL.replace(':id', claimId);
-  const firstAttachment = selectedQueryItem.attachments?.[0];
-
-  let documentLink: string | undefined;
-  if (firstAttachment?.value?.document_binary_url) {
-     documentLink = formatDocumentViewURL(firstAttachment.value.document_filename, claimId, firstAttachment.value.document_binary_url);
-  }
 
   res.render(viewQueriesPath, {
     pageTitle: 'PAGES.QM.VIEW_QUERY_DETAILS.PAGE_TITLE',
     selectedQueryItem,
-    documentLink,
     followUpScreen,
     claimId,
     backLinkUrl

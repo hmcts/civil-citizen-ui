@@ -7,6 +7,10 @@ jest.mock('common/utils/dateUtils', () => ({
   dateTimeFormat: jest.fn((date, lang) => `formatted-${date}-${lang}`),
 }));
 
+jest.mock('common/utils/formatDocumentURL', () => ({
+  formatDocumentViewURL: jest.fn(() => 'formatted-url'),
+}));
+
 describe('ViewQueriesService', () => {
   it('should return empty array when no queries', () => {
     const claim = new Claim();
@@ -47,6 +51,14 @@ describe('ViewQueriesService', () => {
             subject: 'test subject',
             createdOn: '2025-02-22T12:00:00Z',
             parentId: 'parentQuery1',
+            attachments: [
+              {
+                value: {
+                  document_filename: 'document1.pdf',
+                  document_binary_url: 'binary-url-1',
+                },
+              },
+            ],
           },
         },
         {
@@ -55,6 +67,14 @@ describe('ViewQueriesService', () => {
             subject: 'another subject',
             createdOn: '2025-02-27T12:00:00Z',
             parentId: null,
+            attachments: [
+              {
+                value: {
+                  document_filename: 'document1.pdf',
+                  document_binary_url: 'binary-url-1',
+                },
+              },
+            ],
           },
         },
       ],
@@ -73,6 +93,10 @@ describe('ViewQueriesService', () => {
     expect(parent1.createdOnString).toBe('formatted-2025-02-20T12:00:00.000Z-en');
     expect(parent1.lastUpdatedOnString).toBe('formatted-2025-02-22T12:00:00.000Z-en');
     expect(parent1.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_RECEIVED');
+    expect(parent1.parentDocumentLink).toBe(null);
+    const child = parent1.children[0];
+    expect(child.childDocumentLink).toBe('formatted-url');
+
 
     const parent2 = result[1];
     expect(parent2.id).toBe('parentQuery2');
@@ -83,5 +107,7 @@ describe('ViewQueriesService', () => {
     expect(parent2.createdOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
     expect(parent2.lastUpdatedOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
     expect(parent2.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_SENT');
+    expect(parent2.parentDocumentLink).toBe('formatted-url');
+
   });
 });

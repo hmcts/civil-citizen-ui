@@ -3,6 +3,7 @@ import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {formatDocumentViewURL} from "common/utils/formatDocumentURL";
 
 export interface QueryListItem {
   id: string;
@@ -18,6 +19,8 @@ export interface QueryListItem {
   createdOnString: string;
   lastUpdatedBy: string;
   status: string;
+  parentDocumentLink?: string;
+  childDocumentLink?: string;
 }
 
 export class ViewQueriesService {
@@ -34,21 +37,31 @@ export class ViewQueriesService {
       return [];
     }
 
-    const allQueryItems: QueryListItem[] = queries.caseMessages.map(message => ({
-      id: message.value.id,
-      subject: message.value.subject,
-      body: message.value.body,
-      attachments: message.value.attachments,
-      isHearingRelated: message.value.isHearingRelated,
-      createdOn: new Date(message.value.createdOn),
-      parentId: message.value.parentId ?? null,
-      children: [],
-      lastUpdatedOn: null,
-      lastUpdatedOnString: null,
-      createdOnString: null,
-      lastUpdatedBy: null,
-      status: null,
-    }));
+    const allQueryItems: QueryListItem[] = queries.caseMessages.map(message => {
+      const attachment = message.value.attachments?.[0];
+      const documentLink = attachment?.value?.document_binary_url
+        ? formatDocumentViewURL(attachment.value.document_filename, claim.id, attachment.value.document_binary_url)
+        : null;
+
+      return {
+        id: message.value.id,
+        subject: message.value.subject,
+        body: message.value.body,
+        attachments: message.value.attachments,
+        isHearingRelated: message.value.isHearingRelated,
+        createdOn: new Date(message.value.createdOn),
+        parentId: message.value.parentId ?? null,
+        children: [],
+        lastUpdatedOn: null,
+        lastUpdatedOnString: null,
+        createdOnString: null,
+        lastUpdatedBy: null,
+        parentDocumentLink: null,
+        childDocumentLink: null,
+        status: null,
+        ...(message.value.parentId ? { childDocumentLink: documentLink } : { parentDocumentLink: documentLink }),
+      };
+    });
 
     const lookup = new Map<string, QueryListItem>();
     allQueryItems.forEach(item => lookup.set(item.id, item));
