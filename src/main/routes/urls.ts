@@ -406,11 +406,14 @@ export const GA_UNAVAILABILITY_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_UR
 export const GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/unavailability-confirmation`;
 export const GA_PAYMENT_SUCCESSFUL_COSC_URL = `${BASE_COSC_URL}/:appId/payment-successful`;
 export const GA_PAYMENT_UNSUCCESSFUL_COSC_URL = `${BASE_COSC_URL}/:appId/payment-unsuccessful`;
+
 export const QM_BASE = `${BASE_CASE_URL}/qm`;
 export const QM_START_URL = `${QM_BASE}/start`;
 export const QM_WHAT_DO_YOU_WANT_TO_DO_URL = `${QM_BASE}/what-you-want-to-do/:qmType`;
-export const QM_CREATE_QUERY_URL = `${QM_BASE}/create_query/:qmType`;
 export const QM_FOLLOW_UP_URL = `${QM_BASE}/follow-up`;
 export const QM_INFORMATION_URL = `${QM_BASE}/information/:qmType/:qmQualifyOption`;
 export const QM_VIEW_QUERY_URL = `${QM_BASE}/view-query`;
+export const QM_CYA = `${QM_BASE}/create-query-cya`;
+export const QUERY_MANAGEMENT_CREATE_QUERY = `${QM_BASE}/create-query`;
 export const QM_CONFIRMATION_URL = `${QM_BASE}/confirmation`;
+export const QM_VIEW_MESSAGES = `${QM_BASE}/view-messages`;
