@@ -354,30 +354,8 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for defendant stitched response when welsh enabled', async () => {
-      //given
-      isGaForWelshEnabled.mockResolvedValue(true);
-      const documentName = 'test_response_000MC001.pdf';
-      const claim = new Claim();
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getDefendantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-          'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
-          '21 June 2022',
-          new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-
     it('should get data array for defendant lip response', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
