@@ -481,7 +481,7 @@ class createGASteps {
     return generalApplicationID;
   }
 
-  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice', org = '') {
+  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice', org = '', language = 'ENGLISH') {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'More time to do what is required by a court order';
     let feeAmount;
@@ -584,8 +584,8 @@ class createGASteps {
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.addValidCardDetails(feeAmount, language);
+    govPay.confirmPayment(language);
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 

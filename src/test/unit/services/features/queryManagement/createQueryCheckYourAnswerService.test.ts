@@ -1,7 +1,7 @@
 import {
   createApplicantCitizenQuery, createRespondentCitizenQuery,
   getSummarySections,
-} from 'services/features/queryManagement/createQueryCheckYourAnswerService.';
+} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
@@ -17,15 +17,16 @@ describe('Check Answers response service', () => {
     it('getSummarySections', () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes');
+      const date = new Date();
+      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
       claim.queryManagement.createQuery.uploadedFiles = [{
         caseDocument: {
           documentName: 'abc',
           documentLink: {document_binary_url: 'http://dm-store:8080/documents/bf4a2ac9-a036-4d7d-b999-dcccc4d92197/binary'} as Document,
         },
       } as UploadQMAdditionalFile];
-      const summaryRows = getSummarySections('123455', claim);
-      expect(summaryRows.length).toBe(4);
+      const summaryRows = getSummarySections('123455', claim,'en');
+      expect(summaryRows.length).toBe(5);
     });
   });
 
@@ -36,7 +37,8 @@ describe('Check Answers response service', () => {
       const claim = new Claim();
       const updated = new Claim();
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes');
+      const date = new Date();
+      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createApplicantCitizenQuery(claim, updated, req);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
@@ -58,11 +60,12 @@ describe('Check Answers response service', () => {
             createdOn: new Date().toISOString(),
             'attachments': [],
             'isHearingRelated': YesNoUpperCamelCase.YES,
+            'hearingDate': '2025-04-04',
           },
         }],
       };
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes');
+      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', '2025', '4', '4');
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createApplicantCitizenQuery(claim, updated, req);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
@@ -87,11 +90,12 @@ describe('Check Answers response service', () => {
             createdOn: new Date().toISOString(),
             'attachments': [],
             'isHearingRelated': YesNoUpperCamelCase.YES,
+            'hearingDate': '2025-05-05',
           },
         }],
       };
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes');
+      claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', '2025', '5', '5');
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createRespondentCitizenQuery(claim, updated, req);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
