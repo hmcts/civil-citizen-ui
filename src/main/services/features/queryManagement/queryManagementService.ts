@@ -139,4 +139,3 @@ export const removeSelectedDocument = async (req: AppRequest, index: number, isF
     throw error;
   }
 };
-
