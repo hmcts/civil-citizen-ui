@@ -64,7 +64,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     app1MediationNonAttendanceDocs: [],
     isFlightDelayClaim: claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     flightDelayDetails: claim.delayedFlight?.option === YesNo.YES ? toCCDFlightDetails(claim.flightDetails) : undefined,
-    uiStatementOfTruth:convertToCCDStatementOfTruth(claim.claimDetails.statementOfTruth),
+    uiStatementOfTruth:convertToCCDStatementOfTruth(claim.claimDetails?.statementOfTruth),
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {
