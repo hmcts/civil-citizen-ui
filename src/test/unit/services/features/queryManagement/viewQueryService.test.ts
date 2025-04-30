@@ -99,7 +99,6 @@ describe('ViewQueriesService', () => {
     expect(child.childDocumentLinks).toEqual(['formatted-url']);
     expect(child.createdOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
 
-
     const parent2 = result[1];
     expect(parent2.id).toBe('parentQuery2');
     expect(parent2.subject).toBe('another subject');
