@@ -122,6 +122,8 @@ export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQue
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
     }
+    //release the file memory
+    delete uploadQMAdditionalFile.fileUpload;
     await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
   } catch (err) {
     logger.error(err);
