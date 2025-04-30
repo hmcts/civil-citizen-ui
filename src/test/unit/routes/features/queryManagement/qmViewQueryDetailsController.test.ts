@@ -62,8 +62,8 @@ describe('View query controller', () => {
           lastUpdatedOnString: '01 Jan 2025',
           lastUpdatedBy: 'You',
           status: 'Message sent',
-          parentDocumentLink: 'null',
-          childDocumentLink: null,
+          parentDocumentLinks: 'null',
+          childDocumentLinks: null,
         },
         {
           id: '654321',
@@ -77,8 +77,8 @@ describe('View query controller', () => {
           lastUpdatedOnString: '09 Feb 2025',
           lastUpdatedBy: 'Court staff',
           status: 'Message received',
-          parentDocumentLink: 'banana.pdf',
-          childDocumentLink: 'banana.pdf',
+          parentDocumentLinks: 'banana.pdf',
+          childDocumentLinks: 'banana.pdf',
           children: [
             {
               id: '789654',
@@ -93,8 +93,8 @@ describe('View query controller', () => {
               lastUpdatedOnString: '09 Feb 2025',
               lastUpdatedBy: 'Court staff',
               status: 'Response received',
-              parentDocumentLink: 'banana.pdf',
-              childDocumentLink: 'banana.pdf',
+              parentDocumentLinks: 'banana.pdf',
+              childDocumentLinks: 'banana.pdf',
             },
           ],
         },

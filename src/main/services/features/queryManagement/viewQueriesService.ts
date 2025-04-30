@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
-import {dateTimeFormat} from 'common/utils/dateUtils';
+import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 
@@ -11,6 +11,7 @@ export interface QueryListItem {
   body: string;
   attachments?: FormDocument[];
   isHearingRelated: YesNoUpperCamelCase;
+  hearingDate?: string;
   createdOn: Date;
   parentId?: string;
   children: QueryListItem[];
@@ -19,8 +20,9 @@ export interface QueryListItem {
   createdOnString: string;
   lastUpdatedBy: string;
   status: string;
-  parentDocumentLink?: string;
-  childDocumentLink?: string;
+  parentDocumentLinks?: string[];
+  childDocumentLinks?: string[];
+  hearingDateString?: string;
 }
 
 export class ViewQueriesService {
@@ -38,10 +40,15 @@ export class ViewQueriesService {
     }
 
     const allQueryItems: QueryListItem[] = queries.caseMessages.map(message => {
-      const attachment = message.value.attachments?.[0];
-      const documentLink = attachment?.value?.document_binary_url
-        ? formatDocumentViewURL(attachment.value.document_filename, claim.id, attachment.value.document_binary_url)
-        : null;
+      const attachments = message.value.attachments ?? [];
+      const documentLinks: string[] = [];
+
+      attachments.forEach(attachment => {
+        const { document_filename, document_binary_url } = attachment.value ?? {};
+        if (document_binary_url) {
+          documentLinks.push(formatDocumentViewURL(document_filename, claim.id, document_binary_url));
+        }
+      });
 
       return {
         id: message.value.id,
@@ -49,6 +56,7 @@ export class ViewQueriesService {
         body: message.value.body,
         attachments: message.value.attachments,
         isHearingRelated: message.value.isHearingRelated,
+        hearingDate: message.value.hearingDate,
         createdOn: new Date(message.value.createdOn),
         parentId: message.value.parentId ?? null,
         children: [],
@@ -56,10 +64,11 @@ export class ViewQueriesService {
         lastUpdatedOnString: null,
         createdOnString: null,
         lastUpdatedBy: null,
-        parentDocumentLink: null,
-        childDocumentLink: null,
+        parentDocumentLinks: null,
+        childDocumentLinks: null,
+        hearingDateString: null,
         status: null,
-        ...(message.value.parentId ? { childDocumentLink: documentLink } : { parentDocumentLink: documentLink }),
+        ...(message.value.parentId ? { childDocumentLinks: documentLinks } : { parentDocumentLinks: documentLinks }),
       };
     });
 
@@ -102,6 +111,11 @@ export class ViewQueriesService {
     parentQueryItems.forEach(parent => {
       parent.createdOnString = dateTimeFormat(parent.createdOn.toISOString(), lang);
       parent.lastUpdatedOnString = dateTimeFormat(parent.lastUpdatedOn.toISOString(), lang);
+      parent.hearingDateString = formatDateToFullDate(new Date(parent.hearingDate), lang);
+
+      parent.children.forEach(child => {
+        child.createdOnString = dateTimeFormat(child.createdOn.toISOString(), lang);
+      });
     });
 
     return parentQueryItems;
