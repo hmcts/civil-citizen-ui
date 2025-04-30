@@ -61,6 +61,8 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
   form.validateSync();
   if (!form.hasErrors()) {
     uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
+    //release file memory
+    delete uploadedDocument.fileUpload;
     uploadAdditionalDocuments.push(uploadedDocument);
     await saveDraftClaim(generateRedisKey(req), claim);
   } else {
