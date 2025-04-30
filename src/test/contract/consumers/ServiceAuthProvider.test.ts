@@ -1,7 +1,10 @@
 import { Pact } from '@pact-foundation/pact';
+import { authenticator } from 'otplib';
 import { resolve } from 'path';
-import axios from 'axios';
 import { PACT_DIRECTORY_PATH } from '../utils';
+import { generateServiceToken } from 'client/serviceAuthProviderClient';
+
+jest.mock('otplib');
 
 const mockProvider = new Pact({
   log: resolve(process.cwd(), 'src/test/contract/log', 'pact.log'),
@@ -21,9 +24,9 @@ describe('Service Authorisation Provider Pact Test', () => {
   });
 
   describe('Service Authorisation Provider generate service token', () => {
-    const BASE_URL = 'http://localhost:4502';
     const MICRO_SERVICE_NAME = 'someMicroServiceName';
     const MICRO_SERVICE_TOKEN = 'someMicroServiceToken';
+    const PASSWORD = 'somePassword';
 
     beforeAll(async () => {
       await mockProvider.addInteraction({
@@ -32,7 +35,7 @@ describe('Service Authorisation Provider Pact Test', () => {
         withRequest: {
           method: 'POST',
           path: '/lease',
-          body: {microservice: MICRO_SERVICE_NAME, oneTimePassword: 'password'},
+          body: {microservice: MICRO_SERVICE_NAME, oneTimePassword: PASSWORD},
           headers: {'Content-Type': 'application/json'},
         },
         willRespondWith: {
@@ -44,13 +47,11 @@ describe('Service Authorisation Provider Pact Test', () => {
     });
 
     test('should receive a token when making a request to the lease endpoint', async () => {
-      const response = await axios.post(`${BASE_URL}/lease`, {
-        microservice: MICRO_SERVICE_NAME,
-        oneTimePassword: 'password',
-      });
+      (authenticator.generate as jest.Mock).mockImplementation(() => PASSWORD);
 
-      expect(response.status).toBe(200);
-      expect(response.data).toBe(MICRO_SERVICE_TOKEN);
+      const response = await generateServiceToken(MICRO_SERVICE_NAME, 'someS2sSecret');
+
+      expect(response).toBe(MICRO_SERVICE_TOKEN);
 
       await mockProvider.verify();
     });
