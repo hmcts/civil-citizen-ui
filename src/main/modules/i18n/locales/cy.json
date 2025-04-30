@@ -81,6 +81,7 @@
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
     "IF_NECESSARY_DOCUMENTS": "Os bydd angen, bydd yr holl ddogfennau sy’n ymwneud â’r cais hwn, gan gynnwys unrhyw ymateb gan y llys, yn cael eu cyfieithu. Byddwch yn cael eich hysbysu pan fydd y rhain ar gael.",
+    "UPLOADED_FILES": "Ffeiliau wedi’u huwchlwytho",
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ôl",
@@ -914,7 +915,7 @@
         "PAGE_TITLE": "Rhowch fanylion y neges",
         "HEADING": "Rhowch fanylion y neges",
         "CAPTION": "Anfon neges",
-        "FOLLOW_UP_CAPTION": "Send a follow up message"
+        "FOLLOW_UP_CAPTION": "Anfon neges ddilynol"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Pwnc y neges",

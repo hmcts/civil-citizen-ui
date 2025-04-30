@@ -81,6 +81,7 @@
       "TOWN_OR_CITY": "Town or city"
     },
     "IF_NECESSARY_DOCUMENTS": "If necessary, all documents relating to this application, including any response from the court, will be translated. You will be notified when these are available.",
+    "UPLOADED_FILES": "Uploaded files",
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
@@ -939,7 +940,7 @@
         "BODY_TITLE": "Message details",
         "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
-        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       }
     },
     "SUBJECT_TO_FRC": {

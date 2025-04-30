@@ -12,13 +12,10 @@
 {% endblock %}
 
 {% block nestedContent %}
-  {% if form != null and form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
-  {% endif %}
 
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
-  <div class="govuk-grid-row">
-    <form class="govuk-grid-column-two-thirds" method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+
+    <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
       {{ csrfProtection(csrf) }}
       {{ govukTextarea({
         id: 'messageDetails',
@@ -58,7 +55,7 @@
       </div>
 
       {% if formattedSummary.summaryList.rows.length > 0 %}
-        <h2 class="govuk-heading-m">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILES') }}</h2>
+        <h2 class="govuk-heading-m">{{ t('COMMON.UPLOADED_FILES') }}</h2>
         <div class="govuk-section-break--s govuk-section-break--visible"></div>
         {% for row in formattedSummary.summaryList.rows %}
           <dl class="govuk-summary-list govuk-!-margin-bottom-0">
@@ -81,6 +78,5 @@
 
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </form>
-  </div>
 
 {% endblock %}
