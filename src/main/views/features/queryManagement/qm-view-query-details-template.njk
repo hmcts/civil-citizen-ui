@@ -40,14 +40,14 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
                       <dd class="govuk-summary-list__value">
-                        {% if child.isHearingRelated %}
+                        {% if child.isHearingRelated == 'Yes' %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
                         {% else %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
                         {% endif %}
                       </dd>
                     </div>
-                    {% if child.isHearingRelated %}
+                    {% if child.isHearingRelated == 'Yes' %}
                       <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.HEARING_DATE') }}
@@ -108,14 +108,14 @@
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
                   <dd class="govuk-summary-list__value">
-                    {% if selectedQueryItem.isHearingRelated %}
+                    {% if selectedQueryItem.isHearingRelated == 'Yes' %}
                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
                     {% else %}
                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
                     {% endif %}
                   </dd>
                 </div>
-                {% if selectedQueryItem.isHearingRelated %}
+                {% if selectedQueryItem.isHearingRelated == 'Yes' %}
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.HEARING_DATE') }}

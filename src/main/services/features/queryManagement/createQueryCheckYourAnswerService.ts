@@ -76,7 +76,7 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
   if (!updatedClaim.qmApplicantCitizenQueries) {
 
     qmApplicantCitizenQueries = {
-      'partyName': claim.getClaimantFullName(),
+      'partyName': 'Claimant',
       'roleOnCase': claim.caseRole,
       'caseMessages': [],
     };
@@ -122,7 +122,7 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
   if (!updatedClaim.qmRespondentCitizenQueries) {
 
     qmRespondentCitizenQueries = {
-      'partyName': claim.getDefendantFullName(),
+      'partyName': 'Defendant',
       'roleOnCase': claim.caseRole,
       'caseMessages': [],
     };

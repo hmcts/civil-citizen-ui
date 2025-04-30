@@ -44,6 +44,8 @@ describe('ViewQueriesService', () => {
             subject: 'test subject',
             createdOn: '2025-02-20T12:00:00Z',
             parentId: null,
+            isHearingRelated: 'Yes',
+            hearingDate: new Date('2025-05-10'),
           },
         },
         {
@@ -68,6 +70,7 @@ describe('ViewQueriesService', () => {
             subject: 'another subject',
             createdOn: '2025-02-27T12:00:00Z',
             parentId: null,
+            isHearingRelated: 'No',
             attachments: [
               {
                 value: {
@@ -95,6 +98,7 @@ describe('ViewQueriesService', () => {
     expect(parent1.lastUpdatedOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
     expect(parent1.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_RECEIVED');
     expect(parent1.parentDocumentLinks).toEqual([]);
+    expect(parent1.hearingDateString).toBe(`fullDate-${new Date('2025-05-10')}-en`);
     const child = parent1.children[0];
     expect(child.childDocumentLinks).toEqual(['formatted-url']);
     expect(child.createdOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
@@ -109,6 +113,6 @@ describe('ViewQueriesService', () => {
     expect(parent2.lastUpdatedOnString).toBe('formatted-2025-02-27T12:00:00.000Z-en');
     expect(parent2.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_SENT');
     expect(parent2.parentDocumentLinks).toEqual(['formatted-url']);
-
+    expect(parent2.hearingDateString).toBe(null);
   });
 });

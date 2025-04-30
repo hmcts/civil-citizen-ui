@@ -111,8 +111,9 @@ export class ViewQueriesService {
     parentQueryItems.forEach(parent => {
       parent.createdOnString = dateTimeFormat(parent.createdOn.toISOString(), lang);
       parent.lastUpdatedOnString = dateTimeFormat(parent.lastUpdatedOn.toISOString(), lang);
-      parent.hearingDateString = formatDateToFullDate(new Date(parent.hearingDate), lang);
-
+      if (parent.isHearingRelated === 'Yes' && parent.hearingDate) {
+        parent.hearingDateString = formatDateToFullDate(new Date(parent.hearingDate), lang);
+      }
       parent.children.forEach(child => {
         child.createdOnString = dateTimeFormat(child.createdOn.toISOString(), lang);
       });
