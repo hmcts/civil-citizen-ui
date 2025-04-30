@@ -1,5 +1,5 @@
-import {QualifiedStatementOfTruthClaimIssue} from "form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue";
-import {CcdStatementOfTruth} from "models/ccdResponse/ccdStatementOfTruth";
+import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
+import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 
 export const convertToCCDStatementOfTruth = (statementOfTruthClaimIssue: QualifiedStatementOfTruthClaimIssue): CcdStatementOfTruth => {
   return {
