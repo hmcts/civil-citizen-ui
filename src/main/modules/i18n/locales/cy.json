@@ -559,7 +559,7 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Unrhyw beth arall",
-        "MESSAGE_TO_THE_COURT": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
+        "MESSAGE_TO_THE_COURT": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
         "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny.",
         "SEND_A_MESSAGE": "Anfon neges"
       },
@@ -604,9 +604,9 @@
           "GENERAL_UPDATE": "Cael diweddariad cyffredinol ar beth sy’n digwydd gyda’r achos",
           "CLAIM_NOT_PAID": "Deall beth fydd yn digwydd os na fydd yr hawliad yn cael ei dalu",
           "CLAIM_NOT_PAID_AFTER_JUDGMENT": "Deall beth fydd yn digwydd os na fydd y dyfarniad yn cael ei dalu",
-          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
-          "SETTLE_CLAIM": "Settle a claim",
-          "AMEND_CLAIM_DETAILS": "Amend the claim details",
+          "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Diweddaru’r llys ar ddyfarniad neu hawliad a dalwyd yn rhannol",
+          "SETTLE_CLAIM": "Setlo hawliad",
+          "AMEND_CLAIM_DETAILS": "Diwygio manylion yr hawliad",
           "CLAIM_ENDED": "Tell the court my claim has ended",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
@@ -755,53 +755,53 @@
           }
         },
         "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
-          "SUBTITLE_1": "If part of the judgment or claim amount has been paid",
-          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court."
+          "SUBTITLE_1": "Os yw rhan o’r dyfarniad neu ran o swm yr hawliad wedi’i dalu",
+          "PARAGRAPH_1": "Mae’r diffynnydd wedi talu rhan o swm yr hawliad, nid oes rhaid i chi ddiweddaru’r llys."
         },
         "SETTLE_CLAIM" : {
-          "SUBTITLE_1": "If the claim is paid or you agree the balance is settled",
-          "TEXT_UPDATE_WITHOUT_LINK": "Update the claim in the online service by selecting tell us you’ve settled the claim.",
+          "SUBTITLE_1": "Os yw’r hawliad yn cael ei dalu neu os ydych chi’n cytuno bod y balans wedi’i setlo",
+          "TEXT_UPDATE_WITHOUT_LINK": "Diweddarwch yr hawliad yn y gwasanaeth ar-lein drwy ddewis dywedwch wrthym eich bod wedi setlo’r hawliad.",
           "LINK_2": {
-            "TEXT": "contactocmc@justice.gov.uk",
-            "TEXT_BEFORE": "You can also email ",
-            "TEXT_AFTER": " to say the claim is settled. You should include:"
+            "TEXT": "ymholiadaucymraeg@justice.gov.uk",
+            "TEXT_BEFORE": "Gallwch hefyd anfon e-bost i ",
+            "TEXT_AFTER": " i ddweud bod yr hawliad wedi’i setlo.  Dylech gynnwys:"
           },
-          "LI_1": "your name",
-          "LI_2": "the claim number",
-          "LI_3": "the date the final payment cleared in your account",
-          "SUBTITLE_2": "Claims settled through a small claims mediator",
-          "TEXT_1": "If a mediator settled your claim, the mediator will update your case record for you.",
+          "LI_1": "eich enw",
+          "LI_2": "rhif yr hawliad",
+          "LI_3": "y dyddiad pan wnaeth y taliad terfynol glirio yn eich cyfrif",
+          "SUBTITLE_2": "Hawliadau a setlwyd drwy gyfryngwr hawliadau bychan",
+          "TEXT_1": "Os bu i gyfryngwr setlo eich hawliad, bydd y cyfryngwr yn diweddaru cofnod eich achos.",
           "NOT_SETTLED": {
             "LINK_1": {
-              "TEXT": "tell us you’ve settled the claim",
-              "TEXT_BEFORE": "Update the claim in the online service by selecting"
+              "TEXT": "dywedwch wrthym eich bod wedi setlo’r hawliad.",
+              "TEXT_BEFORE": "Diweddarwch yr hawliad yn y gwasanaeth ar-lein drwy ddewis"
             }
           }
         },
         "AMEND_CLAIM_DETAILS" : {
-          "TEXT_1": "If you want to change the details of your claim, including:",
-          "LI_1": "the reasons for the claim",
-          "LI_2": "the claim amount",
-          "LI_3": "the person you are claiming against",
+          "TEXT_1": "Os ydych chi eisiau newid manylion eich hawliad, gan gynnwys:",
+          "LI_1": "y rhesymau dros yr hawliad",
+          "LI_2": "swm yr hawliad",
+          "LI_3": "yr unigolyn rydych chi’n gwneud hawliad yn ei erbyn",
           "LINK_1": {
-            "TEXT": "making an application",
-            "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
-            "TEXT_AFTER": " , you will have to pay a fee."
+            "TEXT": "wneud cais",
+            "TEXT_BEFORE": "Mae’n rhaid i chi wneud cais i amrywio manylion yr hawliad. Gwnewch hyn drwy  ",
+            "TEXT_AFTER": " , a bydd rhaid i chi dalu ffi."
           },
           "LINK_2": {
-            "TEXT": "Check the fees list (opens in a new window)",
-            "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
-            "TEXT_AFTER": " to make sure you pay the correct fee."
+            "TEXT": "Gwiriwch y rhestr ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Os ydych yn newid swm yr hawliad, bydd yr achos yn cael ei symud all-lein ac efallai bydd y ffi llys mae’n rhaid i chi ei thalu yn newid. ",
+            "TEXT_AFTER": " i wneud yn siŵr eich bod yn talu’r ffi gywir."
           },
-          "SUBTITLE_1": "If the defendant’s address is wrong",
+          "SUBTITLE_1": "Os yw cyfeiriad y diffynnydd yn anghywir",
           "LINK_3": {
-            "TEXT": "contactocmc@justice.gov.uk",
-            "TEXT_BEFORE": "You can send an amended claim form, with the correct address written in red ink. Email the amended form to "
+            "TEXT": "ymholiadaucymraeg@justice.gov.uk",
+            "TEXT_BEFORE": "Gallwch anfon y ffurflen hawlio ddiwygiedig, gyda’r cyfeiriad cywir wedi’i nodi arni mewn inc coch. Anfonwch y ffurflen ddiwygiedig i "
           },
-          "SUBTITLE_2": "To update your contact details",
+          "SUBTITLE_2": "I ddiweddaru eich manylion cyswllt",
           "LINK_4": {
-            "TEXT": "send a message to the court",
-            "TEXT_BEFORE": "To update your contact details, "
+            "TEXT": "anfonwch neges i’r llys.",
+            "TEXT_BEFORE": "I ddiweddaru eich manylion cyswllt, "
           }
         },
         "CLAIM_ENDED" : {
