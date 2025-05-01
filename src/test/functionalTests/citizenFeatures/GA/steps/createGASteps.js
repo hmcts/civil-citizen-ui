@@ -50,10 +50,23 @@ const uploadN245FormPage = new N245Upload();
 class createGASteps {
 
   async askToSetAsideJudgementGA(caseRef, parties, communicationType = 'notice') {
-    //Cannot be withoutnotice
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Set aside (remove) a judgment';
-    const feeAmount = '313';
+    
+    let feeAmount;
+
+    switch (communicationType) {
+      case 'consent':
+        feeAmount = '123';
+        break;
+      case 'notice':
+        feeAmount = '313';
+        break;
+      case 'withoutnotice':
+        feeAmount = '123';
+        break;
+    }
+    
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -69,6 +82,13 @@ class createGASteps {
       await agreementFromOtherPartyPage.verifyPageContent(applicationType);
       await agreementFromOtherPartyPage.nextAction('No');
       await agreementFromOtherPartyPage.nextAction('Continue');
+      if (communicationType == 'notice') {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDoInformOption();
+      } else {
+        await informOtherPartiesPage.verifyPageContent(applicationType);
+        await informOtherPartiesPage.selectAndVerifyDontInformOption();
+      }
     }
 
     await applicationCostsPage.verifyPageContent(applicationType, feeAmount);
@@ -461,7 +481,7 @@ class createGASteps {
     return generalApplicationID;
   }
 
-  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice', org = '') {
+  async askForMoreTimeCourtOrderGA(caseRef, parties, communicationType = 'withoutnotice', org = '', language = 'ENGLISH') {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'More time to do what is required by a court order';
     let feeAmount;
@@ -564,8 +584,8 @@ class createGASteps {
     await applyHelpFeeSelectionPage.nextAction('No');
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
-    await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.addValidCardDetails(feeAmount, language);
+    govPay.confirmPayment(language);
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
