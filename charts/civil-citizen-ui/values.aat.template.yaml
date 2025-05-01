@@ -126,7 +126,7 @@ civil-service:
       REFERENCE_DATABASE_MIGRATION: true
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
-      STITCHING_API_ENABLED: false
+      STITCHING_API_ENABLED: true
       DOCUMENT_MANAGEMENT_SECURED: true
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
@@ -483,7 +483,7 @@ civil-general-applications:
       DASHBOARD_API_URL: http://${SERVICE_NAME}-java
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      STITCHING_API_ENABLED: false
+      STITCHING_API_ENABLED: true
 
 postgresql:
   enabled: false
