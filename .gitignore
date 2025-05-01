@@ -37,11 +37,14 @@ coverage/
 smoke-output/
 functional-output/
 test-results/
+src/test/contract/pacts/
+src/test/contract/log/
 
 .vscode/
 .yarn/
 .yarnrc
 package-lock.json
+.mirrord
 
 **/Chart.lock
 **/charts/civil-citizen-ui/charts*
