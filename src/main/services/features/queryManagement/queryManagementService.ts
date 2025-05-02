@@ -116,13 +116,13 @@ export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQue
     uploadQMAdditionalFile.fileUpload = fileUpload;
     const form = new GenericForm(uploadQMAdditionalFile);
     form.validateSync();
+    delete uploadQMAdditionalFile.fileUpload; //release the file memory
     if (!form.hasErrors()) {
       uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
     }
-    delete uploadQMAdditionalFile.fileUpload; //release the file memory
     await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
   } catch (err) {
     logger.error(err);
