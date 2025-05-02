@@ -6,8 +6,8 @@ import config from 'config';
 @ValidatorConstraint({ name: 'cannotChooseSettlementAgreement', async: false })
 class ChooseHowToProceedValidator implements ValidatorConstraintInterface {
   validate(value: ChooseHowProceed) {
-    const sAEnabled = config.get<boolean>('featureToggles.settlementAgreementEnabled') || false;
-    return value !== ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT || sAEnabled;
+    const settlementAgreementEnabled = config.get<boolean>('featureToggles.settlementAgreementEnabled') || false;
+    return value !== ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT || settlementAgreementEnabled;
   }
 
   defaultMessage() {
