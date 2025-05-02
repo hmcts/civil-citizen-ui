@@ -82,6 +82,7 @@ export const createUploadDocLinks = async (req: AppRequest) => {
   uploadQMAdditionalFile.fileUpload = fileUpload;
   const form = new GenericForm(uploadQMAdditionalFile);
   form.validateSync();
+  delete uploadQMAdditionalFile.fileUpload; // release file memory
   if (!form.hasErrors()) {
     uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
   } else {
