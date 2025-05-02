@@ -417,4 +417,5 @@ export const QM_CYA = `${QM_BASE}/create-query-cya`;
 export const QUERY_MANAGEMENT_CREATE_QUERY = `${QM_BASE}/create-query`;
 export const QM_CONFIRMATION_URL = `${QM_BASE}/confirmation`;
 export const QM_VIEW_MESSAGES = `${QM_BASE}/view-messages`;
+export const QM_FOLLOW_UP_MESSAGE = `${QM_BASE}/follow-up-message`;
 export const QM_QUERY_DETAILS_URL = `${QM_BASE}/view-query/:queryId/query-details`;
