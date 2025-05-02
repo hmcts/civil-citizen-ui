@@ -1,6 +1,6 @@
-{% set startDate = new Date("2025-05-06") %}
-{% set endDate = new Date("2025-05-14") %}
-{% set currentDate = new Date() %}
+{% set startDate = "2025-05-06" | addDaysTranslated(0, t)%}
+{% set endDate = "2025-05-14" | addDaysTranslated(0, t)  %}
+{% set currentDate = "now" | addDaysTranslated(0, t) %}
 
 {% if currentDate >= startDate and currentDate < endDate %}
   <div class="hmcts-banner">
