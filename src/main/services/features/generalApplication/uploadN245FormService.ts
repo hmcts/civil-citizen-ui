@@ -47,6 +47,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise
     saveN245Form(redisKey, claim, uploadedN245Details);
   }
   const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
+  delete uploadedN245Details.fileUpload; // release file memory
   return Promise.resolve({ form, documentName });
 };
 
