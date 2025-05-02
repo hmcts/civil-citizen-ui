@@ -17,10 +17,13 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@part-admit @skip-regression-cui-r1');
+Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@part-admit @skip-regression-cui-r1').tag('@local-testing');
+
+Before(async () => {
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+});
 
 Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
-  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
