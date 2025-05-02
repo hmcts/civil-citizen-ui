@@ -62,6 +62,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
       form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
     }
   }
 }

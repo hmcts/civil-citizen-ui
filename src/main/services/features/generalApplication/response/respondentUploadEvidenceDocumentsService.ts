@@ -61,13 +61,13 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     form.validateSync();
     if (!form.hasErrors()) {
       uploadDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      delete uploadDocument.fileUpload; // release file memory
       await saveDocumentsToUploaded(redisKey, uploadDocument);
       await getSummaryList(summarySection, redisKey, claimId, appId);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
     }
+    delete uploadDocument.fileUpload; // release file memory
   } catch(error) {
     logger.error(error);
     throw error;
