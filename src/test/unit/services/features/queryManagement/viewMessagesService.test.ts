@@ -9,6 +9,7 @@ describe('View Messages Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
   it('should generate the view messages link for claimant', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;

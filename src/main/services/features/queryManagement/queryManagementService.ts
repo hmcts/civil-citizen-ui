@@ -6,7 +6,7 @@ import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/q
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {
-  CANCEL_URL, QUERY_MANAGEMENT_CREATE_QUERY,
+  CANCEL_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {SummarySection} from 'models/summaryList/summarySections';
@@ -18,56 +18,13 @@ import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/create
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {Dashboard} from 'models/dashboard/dashboard';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {Claim} from 'models/claim';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
-
-export const updateQueryManagementDashboardItems = (dashboard: Dashboard, gaExclusion: DashboardTaskList, claim: Claim) => {
-  dashboard.items.forEach(item => {
-    if (item.categoryEn === gaExclusion.categoryEn) {
-      updateDashboardTaskHeader(item, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.APPLICATION_HEADING');
-      item.tasks.forEach(taskItem => {
-        if (taskItem.taskNameEn.includes('Contact the court to request a change to my case')) {
-          updateDashboardTaskItem(taskItem, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.APPLICATIONS_TASK');
-        } else {
-          updateDashboardTaskItem(taskItem, 'COMMON.QUERY_MANAGEMENT_DASHBOARD.VIEW_MESSAGES_TASK');
-          determineTaskStatus(taskItem, claim);
-        }
-      });
-    }
-  });
-};
-
-const updateDashboardTaskHeader = (header: DashboardTaskList, updatedValueLocation: string) => {
-  header.categoryEn = t(updatedValueLocation, {lng: 'en'});
-  header.categoryCy = t(updatedValueLocation, {lng: 'cy'});
-};
-
-const updateDashboardTaskItem = (item: DashboardTask, updatedValueLocation: string) => {
-  item.taskNameEn = t(updatedValueLocation, {lng: 'en'});
-  item.taskNameCy = t(updatedValueLocation, {lng: 'cy'});
-};
-
-const determineTaskStatus = (taskItem: DashboardTask, claim: Claim) => {
-  if (claim.isClaimant()) {
-    if (!claim.qmApplicantLipQueries) {
-      taskItem.statusEn = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'en'});
-      taskItem.statusCy = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'cy'});
-    }
-  } else {
-    if (!claim.qmDefendantLipQueries) {
-      taskItem.statusEn = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'en'});
-      taskItem.statusCy = t('PAGES.TASK_LIST.NOT_AVAILABLE_YET', {lng: 'cy'});
-    }
-  }
-};
 
 export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
@@ -109,58 +66,74 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
 };
 
-export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery): Promise<void> => {
+export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
   try {
-    const uploadQMAdditionalFile = new UploadQMAdditionalFile();
-    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    uploadQMAdditionalFile.fileUpload = fileUpload;
-    const form = new GenericForm(uploadQMAdditionalFile);
-    form.validateSync();
-    delete uploadQMAdditionalFile.fileUpload; //release the file memory
-    if (!form.hasErrors()) {
-      uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-    } else {
-      const errors = translateErrors(form.getAllErrors(), t);
-      req.session.fileUpload = JSON.stringify(errors);
-    }
-    await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery);
+    const uploadQMAdditionalFile = await createUploadDocLinks(req);
+    await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery, isFollowUp);
   } catch (err) {
     logger.error(err);
     throw err;
   }
 };
 
-const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery): Promise<void> => {
+export const createUploadDocLinks = async (req: AppRequest) => {
+  const uploadQMAdditionalFile = new UploadQMAdditionalFile();
+  const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+  uploadQMAdditionalFile.fileUpload = fileUpload;
+  const form = new GenericForm(uploadQMAdditionalFile);
+  form.validateSync();
+  if (!form.hasErrors()) {
+    uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
+  } else {
+    const errors = translateErrors(form.getAllErrors(), t);
+    req.session.fileUpload = JSON.stringify(errors);
+  }
+  return uploadQMAdditionalFile;
+};
+
+const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalFile, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
   try {
     if (file.caseDocument) {
       createQuery.uploadedFiles.push(file);
     }
-    await saveQueryManagement(req.params.id, createQuery, 'createQuery', req);
+    await saveQueryManagement(req.params.id, createQuery, isFollowUp? 'sendFollowUpQuery' : 'createQuery', req);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest): Promise<void> => {
-  const queryManagement = await getQueryManagement(req.params.id, req);
-  if (queryManagement.createQuery) {
-    const uploadedFiles = queryManagement.createQuery.uploadedFiles;
+export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
+  const claim = await getClaimById(req.params.id, req, true);
+  const queryManagement = claim.queryManagement;
+  const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
+
+  if (query) {
+    const uploadedFiles = query.uploadedFiles;
     const claimId = req.params.id;
     let index = 0;
     uploadedFiles.forEach((file: UploadQMAdditionalFile) => {
       index++;
-      formattedSummary.summaryList.rows.push(summaryRow(file.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY + '?id=' + index), 'Remove document'));
+      formattedSummary.summaryList.rows.push(
+        summaryRow(
+          file.caseDocument.documentName,
+          '',
+          constructResponseUrlWithIdParams(claimId, (isFollowUp ? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY) + '?id=' + index),
+          'Remove document',
+        ),
+      );
     });
   }
 };
 
-export const removeSelectedDocument = async (req: AppRequest, index: number): Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, index: number, isFollowUp = false): Promise<void> => {
   try {
-    const queryManagement = await getQueryManagement(req.params.id, req);
-    const createQuery = queryManagement.createQuery;
-    createQuery.uploadedFiles.splice(index, 1);
-    await saveQueryManagement(req.params.id, createQuery, 'createQuery', req);
+    const claim = await getClaimById(req.params.id, req, true);
+    const queryManagement = claim.queryManagement;
+    const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
+    query.uploadedFiles.splice(index, 1);
+    await saveQueryManagement(req.params.id, query, isFollowUp ? 'sendFollowUpQuery' : 'createQuery', req);
+
   } catch (error) {
     logger.error(error);
     throw error;
