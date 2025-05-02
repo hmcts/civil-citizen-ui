@@ -16,9 +16,6 @@
 {% endblock %}
 
 {% block nestedContent %}
-  {% if form != null and form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
-  {% endif %}
 
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
