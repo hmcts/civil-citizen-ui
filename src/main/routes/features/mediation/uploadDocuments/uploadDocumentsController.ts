@@ -82,6 +82,7 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
 
       form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     }
+    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload; //release memory
   }
 }
 
