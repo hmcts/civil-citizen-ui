@@ -73,8 +73,8 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
     form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
     form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
-
     form.validateSync();
+    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload; //release memory
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
         && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
@@ -82,7 +82,6 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
 
       form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     }
-    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload; //release memory
   }
 }
 

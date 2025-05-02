@@ -42,12 +42,13 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise
   uploadedN245Details.fileUpload = fileUpload;
   const form = new GenericForm(uploadedN245Details);
   form.validateSync();
+  delete uploadedN245Details.fileUpload; // release file memory
   if (!form.hasErrors()) {
     uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-    saveN245Form(redisKey, claim, uploadedN245Details);
+    await saveN245Form(redisKey, claim, uploadedN245Details);
   }
   const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
-  delete uploadedN245Details.fileUpload; // release file memory
+
   return Promise.resolve({ form, documentName });
 };
 

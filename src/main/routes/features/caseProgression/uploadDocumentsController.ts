@@ -56,13 +56,13 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
     form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
 
     form.validateSync();
+    delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
       form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
     }
   }
 }

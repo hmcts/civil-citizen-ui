@@ -97,13 +97,6 @@ describe('UploadN245 Form service', () => {
     expect(uploadedData).toEqual({
       form: {
         model: {
-          fileUpload: {
-            fieldname: 'selectedFile',
-            originalname: 'test.text',
-            mimetype: 'text/plain',
-            size: 123,
-            buffer,
-          },
           caseDocument: {
             createdBy: 'test',
             documentLink: {
