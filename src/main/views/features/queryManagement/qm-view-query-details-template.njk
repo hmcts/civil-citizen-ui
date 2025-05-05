@@ -34,7 +34,13 @@
                 <div class="govuk-summary-card__content">
                   <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_DETAILS') }}</dt>
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
+                        {% if loop.index % 2 == 1 %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_MESSAGE_DETAILS') }}
+                        {% else %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_DETAILS') }}
+                        {% endif %}
+                      </dt>
                       <dd class="govuk-summary-list__value">{{ child.body }}</dd>
                     </div>
                     <div class="govuk-summary-list__row">

@@ -959,6 +959,7 @@
         "YOUR_MESSAGE": "Your message",
         "COURTS_RESPONSE": "Court's response",
         "MESSAGE_DETAILS": "Message details",
+        "COURT_MESSAGE_DETAILS": "Response details",
         "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
         "MESSAGE_ABOUT_HEARING_YES": "Yes",
         "MESSAGE_ABOUT_HEARING_NO": "No",

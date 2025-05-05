@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   QM_QUERY_DETAILS_URL,
-  BACK_URL, QM_FOLLOW_UP_URL,
+  BACK_URL, QM_FOLLOW_UP_MESSAGE,
 } from 'routes/urls';
 import { Claim } from 'models/claim';
 import { AppRequest } from 'models/AppRequest';
@@ -17,8 +17,7 @@ const viewQueriesPath = 'features/queryManagement/qm-view-query-details-template
 
 const renderView = async (res: Response, claimId: string, claim: Claim, lang: string, selectedQueryItem: QueryListItem): Promise<void> => {
   const backLinkUrl = BACK_URL;
-  // url to be updated once we have CIV-16951 send follow up message
-  const followUpScreen = QM_FOLLOW_UP_URL.replace(':id', claimId);
+  const followUpScreen = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId);
 
   res.render(viewQueriesPath, {
     pageTitle: 'PAGES.QM.VIEW_QUERY_DETAILS.PAGE_TITLE',

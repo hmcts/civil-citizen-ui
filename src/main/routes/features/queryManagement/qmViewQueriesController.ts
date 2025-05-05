@@ -33,7 +33,7 @@ qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: Request, res: Respon
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    renderView(res, claimId, claim, lang);
+    await renderView(res, claimId, claim, lang);
   } catch (error) {
     next(error);
   }
