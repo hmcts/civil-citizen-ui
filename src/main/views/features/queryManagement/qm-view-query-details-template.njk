@@ -162,10 +162,10 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-          {% if selectedQueryItem.status == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
+          {% if not isClaimOffLine or selectedQueryItem.status == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
             {{ govukButton({
               text: t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP'),
-              classes: "govuk-button--secondary remove-row",
+              classes: "govuk-button--secondary",
               href: followUpScreen
             }) }}
           {% endif %}

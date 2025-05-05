@@ -7,6 +7,7 @@ import * as ViewQueriesService from 'services/features/queryManagement/viewQueri
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {FormDocument} from 'models/queryManagement/caseQueries';
+
 const mockBuildQueryListItems = ViewQueriesService.ViewQueriesService.buildQueryListItems as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
@@ -160,6 +161,34 @@ describe('View query controller', () => {
           expect(res.text).toContain('Sent on');
           expect(res.text).toContain('09 Feb 2025');
         });
+    });
+
+    it('should render query details without follow Up Button', async () => {
+
+      const claimOffLine = { ...claim };
+      claimOffLine.case_data.ccdState = 'CASE_DISMISSED';
+      claimOffLine.state = 'CASE_DISMISSED';
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimOffLine);
+
+      await request(app)
+        .get(QM_QUERY_DETAILS_URL.replace(':id', claimId).replace(':queryId', '123456'))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Query 1');
+          expect(res.text).toContain('Your message');
+          expect(res.text).toContain('Message details');
+          expect(res.text).toContain('super important information, probably');
+          expect(res.text).toContain('Is your message about an upcoming hearing?');
+          expect(res.text).toContain('No');
+          expect(res.text).toContain('Uploaded documents (optional)');
+          expect(res.text).toContain('Sent by');
+          expect(res.text).toContain('You');
+          expect(res.text).toContain('Sent on');
+          expect(res.text).not.toContain('Send a follow up message');
+        });
+
     });
   });
 });
