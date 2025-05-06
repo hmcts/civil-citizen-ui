@@ -9,15 +9,13 @@
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "../../macro/button.njk" import addButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageHeaders.pageTitle) }}
 {% endblock %}
 
 {% block nestedContent %}
-  {% if form != null and form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
-  {% endif %}
 
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
@@ -51,8 +49,55 @@
           text: t(form.errorFor('messageDetails'))
         } if form.errorFor('messageDetails')
       }) }}
+        {% set hearingDateHtml %}
+          {{ govukDateInput({
+            id: "date",
+            name: "date",
+            type: "number",
+            inputmode: "numeric",
+            fieldset: {
+              legend: {
+                text: t('PAGES.QM.QUERY_FORM.HEARING_DATE'),
+                isPageHeading: false,
+                classes: 'govuk-fieldset__legend--s'
+              }
+            },
+            errorMessage: {
+              html: '<p class="govuk-error-message">' + t(form.errorFor('date')) + '</p>' +
+              '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
+              '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
+              '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
+            } if (form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+            items: [
+              {
+                classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                id: "day",
+                label: t('COMMON.DAY'),
+                name: "day",
+                value: form.model.day,
+                max: 31
+              },
+              {
+                classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                id: "month",
+                label: t('COMMON.MONTH'),
+                name: "month",
+                value: form.model.month,
+                max: 12
+              },
+              {
+                classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                id: "year",
+                label: t('COMMON.YEAR'),
+                name: "year",
+                value: form.model.year,
+                max: 9999
+              }
+            ]
+          }) }}
+        {% endset -%}
         {{ govukRadios({
-              classes: 'govuk-radios--inline',
+              classes: 'govuk-radios',
               id: 'isHearingRelated',
               name: 'isHearingRelated',
               fieldset: {
@@ -63,7 +108,10 @@
               items: [{
                 value: 'yes',
                 checked: true if form.model.isHearingRelated=="yes" else false,
-                text: t('COMMON.VARIATION_4.YES')
+                text: t('COMMON.VARIATION_4.YES'),
+                conditional: {
+                  html: hearingDateHtml
+                }
               },{
                 value: 'no',
                 checked: true if form.model.isHearingRelated=="no" else false,

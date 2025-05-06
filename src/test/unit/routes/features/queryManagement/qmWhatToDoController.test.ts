@@ -44,7 +44,6 @@ describe('Query management what do do controller', () => {
       claim.queryManagement = new QueryManagement();
       return claim;
     });
-
   });
 
   describe('on GET', () => {
