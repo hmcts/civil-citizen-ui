@@ -64,10 +64,10 @@ export class ViewQueriesService {
       if (queryItem.value.parentId) {
         const viewObject = viewObjects.find((item) => item.id = queryItem.value.parentId);
         if (viewObject.createdBy !== queryItem.value.createdBy) {
-          viewObject.lastUpdatedOn = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF';
+          viewObject.lastUpdatedBy = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF';
           viewObject.status = 'STATUS_RECEIVED';
         } else {
-          viewObject.lastUpdatedOn = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
+          viewObject.lastUpdatedBy = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
           viewObject.status = 'PAGES.QM.VIEW_QUERY.STATUS_SENT';
         }
         viewObject.lastUpdatedOn = dateTimeFormat(queryItem.value.createdOn, lang);
