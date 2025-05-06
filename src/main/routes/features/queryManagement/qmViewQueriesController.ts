@@ -8,7 +8,7 @@ import { AppRequest } from 'models/AppRequest';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {QueryListItem, ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
+import {ViewObjects, ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -18,7 +18,7 @@ const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
 
 const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
 
-  const parentQueryItems: QueryListItem[] = ViewQueriesService.buildQueryListItems(claim, lang);
+  const parentQueryItems:ViewObjects[] = ViewQueriesService.buildQueryListItems(claim, lang);
 
   res.render(viewQueriesPath, {
     claimId,
