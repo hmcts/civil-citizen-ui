@@ -50,6 +50,7 @@ import {
 } from 'services/translation/response/convertToCCDDisclosureOfDocuments';
 import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
+import {convertToDefendantCCDStatementOfTruth} from 'services/translation/response/convertToCCDStatementOfTruth';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -111,6 +112,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specRespondent1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.directionQuestionnaire?.hearing),
     respondent1DQClaimantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing),
     respondentResponsePcqId: claim.respondentResponsePcqId,
+    respondent1LiPStatementOfTruth: convertToDefendantCCDStatementOfTruth(claim.defendantStatementOfTruth),
   };
 };
-
