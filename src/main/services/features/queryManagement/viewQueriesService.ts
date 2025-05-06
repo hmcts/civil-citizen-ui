@@ -1,29 +1,9 @@
 import {Claim} from 'models/claim';
-import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
-
-export interface QueryListItem {
-  id: string;
-  subject: string;
-  body: string;
-  attachments?: FormDocument[];
-  isHearingRelated: YesNoUpperCamelCase;
-  hearingDate?: string;
-  createdOn: Date;
-  parentId?: string;
-  children: QueryListItem[];
-  lastUpdatedOn: Date;
-  lastUpdatedOnString: string;
-  createdOnString: string;
-  lastUpdatedBy: string;
-  status: string;
-  parentDocumentLinks?: string[];
-  childDocumentLinks?: string[];
-  hearingDateString?: string;
-}
 
 export class ViewObjects {
   id: string;
@@ -124,10 +104,6 @@ export class ViewQueriesService {
 
   public static buildQueryListItemsByQueryId(claim: Claim, queryId: string, lang: string): QueryDetail {
     const queries = this.getCaseQueries(claim);
-    if (!queries?.caseMessages) {
-      return undefined;
-    }
-
     const parent = queries.caseMessages.find(claim => claim.id === queryId);
     const children = queries.caseMessages.filter(item => item.value.parentId === queryId);
     const combined = [parent, ...children];
