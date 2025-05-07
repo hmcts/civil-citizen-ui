@@ -5295,7 +5295,7 @@ __metadata:
     follow-redirects: 1.15.6
     git-rev-sync: ^3.0.2
     glob: ^10.0.0
-    govuk-frontend: 5.3.1
+    govuk-frontend: 5.10.0
     helmet: ^7.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
@@ -8124,10 +8124,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:5.3.1":
-  version: 5.3.1
-  resolution: "govuk-frontend@npm:5.3.1"
-  checksum: b87c2208a7b971cc6ac1d0c19eb188fe1f40587af6e904d60a18ed9e5e9fef2ad9cec53734b38ad512c4fbd6c947677845d0afeff4594c59f18905485b0d0ae9
+"govuk-frontend@npm:5.10.0":
+  version: 5.10.0
+  resolution: "govuk-frontend@npm:5.10.0"
+  checksum: 49f4abde3bdc9a558d1a71ef6c665afe1ff41b7c2b62e5e64a55d72e26f414c45964ff8350c2730c5c072c39e9b1fd6b8b18ce55b4017167a676c99dc19216f6
   languageName: node
   linkType: hard
 
