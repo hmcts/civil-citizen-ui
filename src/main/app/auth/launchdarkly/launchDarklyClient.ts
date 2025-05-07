@@ -191,9 +191,16 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
 
 export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
   const isLRQueryManagementEnabled = await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
+  console.log('isLRQueryManagementEnabled => ', isLRQueryManagementEnabled);
+  console.log('claim.ccdState => ', claim.ccdState);
+  console.log('isSettledOrDiscontinued => ', isSettledOrDiscontinued);
+  console.log('claim.previousCCDState => ', claim.previousCCDState);
   if (isLRQueryManagementEnabled && isSettledOrDiscontinued && claim.previousCCDState){
+    console.log('is GA enabled');
     return await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   }
+  console.log('is GA disabled');
   return false;
 }
