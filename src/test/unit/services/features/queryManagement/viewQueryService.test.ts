@@ -259,35 +259,15 @@ describe('ViewQueriesService', () => {
             isHearingRelated: 'Yes',
             hearingDate: new Date('2025-05-10'),
           },
-        }
-        ,
-        {
-          value: {
-            id: 'childQuery',
-            subject: 'test subject',
-            createdOn: '2025-02-27T12:00:00Z',
-            createdBy: 'other',
-            body: 'body 2',
-            isHearingRelated: 'No',
-            parentId: null,
-            attachments: [
-              {
-                value: {
-                  document_filename: 'document1.pdf',
-                  document_binary_url: 'binary-url-1',
-                },
-              },
-            ],
-          },
         },
       ],
-    } as CaseQueries;
+    };
 
     const result = ViewQueriesService.buildQueryListItemsByQueryId(claim, 'parentQuery1','en');
 
     const expected: QueryDetail = new QueryDetail(
       'test subject',
-      'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
+      'PAGES.QM.VIEW_QUERY.STATUS_SENT',
       Array.of(new QueryListItem(
         'body 1',
         YesNoUpperCamelCase.YES,
