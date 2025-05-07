@@ -7,8 +7,9 @@ import { Claim } from 'models/claim';
 import { AppRequest } from 'models/AppRequest';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
-import {QueryDetail, ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
+import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 import {CaseState} from 'form/models/claimDetails';
+import {QueryDetail} from 'form/models/queryManagement/viewQuery';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

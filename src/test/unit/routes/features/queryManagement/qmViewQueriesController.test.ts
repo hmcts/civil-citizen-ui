@@ -7,6 +7,7 @@ import * as ViewQueriesService from 'services/features/queryManagement/viewQueri
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {ViewObjects} from 'form/models/queryManagement/viewQuery';
 const mockBuildQueryListItems = ViewQueriesService.ViewQueriesService.buildQueryListItems as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
@@ -56,22 +57,26 @@ describe('View query controller', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
-      mockBuildQueryListItems.mockReturnValue([
-        {
-          subject: 'Test Subject',
-          createdOnString: '01 Jan 2025',
-          lastUpdatedBy: 'Court staff',
-          lastUpdatedOnString: '02 Jan 2025',
-          status: 'Response received',
-        },
-        {
-          subject: 'Another Test Subject',
-          createdOnString: '21 Jan 2025',
-          lastUpdatedBy: 'You',
-          lastUpdatedOnString: '25 Jan 2025',
-          status: 'Message sent',
-        },
-      ]);
+      mockBuildQueryListItems.mockReturnValue(Array.of(
+        new ViewObjects(
+          '1',
+          'you',
+          'Test Subject',
+          '13 February 2025, 11:30:10 am',
+          'Court staff',
+          '13 February 2025, 11:30:10 am',
+          'Response received',
+        ),
+        new ViewObjects(
+          '2',
+          'you',
+          'another Test Subject',
+          '13 February 2025, 11:30:10 am',
+          'Court staff',
+          '13 February 2025, 11:30:10 am',
+          'Response received',
+        ),
+      ));
 
       const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
       expect(res.text).toContain('Message subject');
@@ -81,16 +86,16 @@ describe('View query controller', () => {
       expect(res.text).toContain('Status');
       // Row 1
       expect(res.text).toContain('Test Subject');
-      expect(res.text).toContain('01 Jan 2025');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
       expect(res.text).toContain('Court staff');
-      expect(res.text).toContain('02 Jan 2025');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
       expect(res.text).toContain('Response received');
       // Row 2
-      expect(res.text).toContain('Another Test Subject');
-      expect(res.text).toContain('21 Jan 2025');
-      expect(res.text).toContain('You');
-      expect(res.text).toContain('25 Jan 2025');
-      expect(res.text).toContain('Message sent');
+      expect(res.text).toContain('another Test Subject');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
+      expect(res.text).toContain('Court staff');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
+      expect(res.text).toContain('Response received');
     });
 
     it('should render query page with no items', async () => {

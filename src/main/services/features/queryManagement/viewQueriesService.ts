@@ -1,64 +1,9 @@
 import {Claim} from 'models/claim';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CaseRole} from 'form/models/caseRoles';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
-
-export class ViewObjects {
-  id: string;
-  createdBy: string;
-  subject: string;
-  sentOn: string;
-  lastUpdatedBy: string;
-  lastUpdatedOn: string;
-  status: string;
-
-  constructor(id: string, createdBy: string, subject: string, sentOn: string, lastUpdatedBy: string, lastUpdatedOn: string, status: string) {
-    this.id = id;
-    this.createdBy = createdBy;
-    this.subject = subject;
-    this.sentOn = sentOn;
-    this.lastUpdatedBy = lastUpdatedBy;
-    this.lastUpdatedOn = lastUpdatedOn;
-    this.status = status;
-  }
-}
-
-export class formattedDocument {
-  fileName: string;
-  documentUrl: string;
-}
-
-export class queryListItem {
-  messageDetails: string;
-  isHearingRelated: YesNoUpperCamelCase;
-  hearingDate?: string;
-  documents: formattedDocument[];
-  sentBy: string;
-  sentOn: string;
-
-  constructor(messageDetails: string, isHearingRelated: YesNoUpperCamelCase, documents: formattedDocument[], sentBy: string, sentOn: string, hearingDate?: string ) {
-    this.messageDetails = messageDetails;
-    this.isHearingRelated = isHearingRelated;
-    this.hearingDate = hearingDate;
-    this.documents = documents;
-    this.sentBy = sentBy;
-    this.sentOn = sentOn;
-  }
-}
-
-export class QueryDetail {
-  title: string;
-  lastStatus: string;
-  items: queryListItem[];
-
-  constructor(title: string, lastStatus: string, items: queryListItem[]) {
-    this.title = title;
-    this.lastStatus = lastStatus;
-    this.items = items;
-  }
-}
+import {QueryDetail, QueryListItem, ViewObjects} from 'form/models/queryManagement/viewQuery';
 
 export class ViewQueriesService {
 
@@ -118,7 +63,7 @@ export class ViewQueriesService {
         };
       }) || [];
 
-      return new queryListItem(
+      return new QueryListItem(
         body,
         isHearingRelated,
         documents,
