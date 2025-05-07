@@ -582,7 +582,7 @@
           "TEXT": "Anfon dogfennau"
         },
         "SOLVE_PROBLEM": {
-          "TEXT": "Datrys problem rwy’n ei chael gan ddefnyddio’r system hawliadau am arian",
+          "TEXT": "Datrys problem rwy’n cael gyda’r system Hawliadau am Arian",
           "HINT": "Hawliadau am arian yw'r system i wneud a rheoli eich hawliad ar-lein"
         },
         "MANAGE_HEARING": {
@@ -611,14 +611,14 @@
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
-          "ENFORCEMENT_REQUESTS": "Send enforcement requests",
-          "CLAIM_DOCUMENTS_AND_EVIDENCE": "Send claim documents and evidence",
+          "ENFORCEMENT_REQUESTS": "Anfon ceisiadau gorfodi",
+          "CLAIM_DOCUMENTS_AND_EVIDENCE": "Anfon dogfennau a thystiolaeth",
           "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
-          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "See the claim on my account",
-          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
-          "CHANGE_THE_HEARING_DATE": "Change the hearing date",
-          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Change something about the hearing",
-          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing"
+          "SEE_THE_CLAIM_ON_MY_ACCOUNT": "Gweld yr hawliad yn fy nghyfrif",
+          "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "Gweld y dogfennau yn fy nghyfrif",
+          "CHANGE_THE_HEARING_DATE": "Newid dyddiad y gwrandawiad",
+          "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Newid rhywbeth am y gwrandawiad",
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Gofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad"
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
@@ -678,10 +678,10 @@
       },
       "CAPTIONS": {
         "CHANGE_CASE": "CAPTION CHANGE_CASE",
-        "GET_UPDATE": "Cael diweddariad ar fy achos",
+        "GET_UPDATE": "Anfon diweddariad ar fy achos",
         "SEND_UPDATE": "Anfonwch ddiweddariad am fy achos",
         "SEND_DOCUMENTS": "Anfon dogfennau",
-        "SOLVE_PROBLEM": "Datrys problem rwy’n ei chael gan ddefnyddio’r system hawliadau am arian",
+        "SOLVE_PROBLEM": "Datrys problem rwy’n cael gyda’r system Hawliadau am Arian",
         "MANAGE_HEARING": "Rheoli eich gwrandawiad",
         "GET_SUPPORT": "CAPTION GET_SUPPORT",
         "FOLLOW_UP": "CAPTION FOLLOW_UP",
@@ -693,26 +693,26 @@
       "QUALIFY_SECTIONS": {
         "COMMON_SOLVE_PROBLEMS": {
           "LINK_1": {
-            "TEXT": "send a message to the court",
-            "TEXT_BEFORE": "If the issue is not urgent, you can ",
-            "TEXT_AFTER": ". We try to answer messages within 10 days, but it could take longer."
+            "TEXT": "anfon neges i’r llys.",
+            "TEXT_BEFORE": "Os nad yw’n fater brys, gallwch ",
+            "TEXT_AFTER": " Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny."
           },
           "LINK_2": {
-            "TEXT": "contact details for the court (opens in a new window)",
-            "TEXT_BEFORE": "If the issue is urgent, you should call the court handling your case. Find the "
+            "TEXT": "fanylion cyswllt y llys (yn agor mewn ffenestr newydd).",
+            "TEXT_BEFORE": "Os yw’n fater brys, dylech ffonio’r llys sy’n delio â’ch achos. Chwiliwch am "
           }
         },
         "SUBMIT_RESPONSE_CLAIM" : {
-          "SUBTITLE_1": "Get support to respond",
-          "PARAGRAPH_1": "If you cannot submit a response using the Money claims system you should contact the court for help."
+          "SUBTITLE_1": "Cael cymorth i ymateb",
+          "PARAGRAPH_1": "Os na allwch ddefnyddio’r system Hawliadau am Arian i gyflwyno ymateb dylech gysylltu â’r llys i gael cymorth."
         },
         "SEE_THE_CLAIM_ON_MY_ACCOUNT" : {
-          "SUBTITLE_1": "Get support to see the claim on your account",
-          "PARAGRAPH_1": "If the claim has been issued and you cannot see it on the Money claims system, you should contact the court for help."
+          "SUBTITLE_1": "Cael cymorth i weld yr hawliad yn eich cyfrif",
+          "PARAGRAPH_1": "Os yw’r hawliad wedi cychwyn ac ni allwch ei weld ar y system Hawliadau am Arian, dylech gysylltu â’r llys i gael cymorth."
         },
         "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
-          "SUBTITLE_1": "Get support to view the documents on your account",
-          "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
+          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn fy nghyfrif",
+          "PARAGRAPH_1": "Os na allwch weld y dogfennau a uwchlwythwyd gennych chi neu’r parti arall yn eich cyfrif, dylech gysylltu â’r llys i gael cymorth."
         },
         "GENERAL_UPDATE" : {
           "PARAGRAPH_1": "Ni allwn roi diweddariadau ar negeseuon e-bost, ffurflenni neu geisiadau rydych eisoes wedi’u hanfon atom.",
@@ -806,15 +806,15 @@
         },
         "CLAIM_ENDED" : {
           "LINK_1": {
-            "TEXT": "notice of discontinuance (opens in a new window)",
-            "TEXT_BEFORE": "To tell the court your claim has ended, you need to fill in and send a form called a ",
-            "TEXT_AFTER": " to the court and the other parties in the case."
+            "TEXT": "hysbysiad dirwyn i ben (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "I ddweud wrth y llys bod eich hawliad wedi dod i ben bydd angen i chi lenwi ac anfon ffurflen o’r enw ",
+            "TEXT_AFTER": " i’r llys ac at y partïon eraill yn yr achos."
           },
-          "TEXT_1": "You cannot upload a notice of discontinuance to the Money claims system.",
+          "TEXT_1": "Ni allwch uwchlwytho hysbysiad dirwyn i ben i’r system Hawliadau am Arian.",
           "LINK_2": {
-            "TEXT": "contact the court (opens in a new window)",
-            "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
-            "TEXT_AFTER": " handling your case."
+            "TEXT": "gysylltu â’r llys (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "I anfon hawliad dirwyn i ben i’r llys, dylech ",
+            "TEXT_AFTER": " sy’n delio â’ch achos."
           }
         },
         "FOLLOW_UP": {
@@ -828,86 +828,86 @@
           "PARAGRAPH_3": "Peidiwch ag anfon neges ddilynol os yw wedi bod yn llai na 10 diwrnod ers i chi anfon eich neges olaf i’r llys gan y gallai hyn arafu’r ymateb gan y llys."
         },
         "ENFORCEMENT_REQUESTS": {
-          "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
+          "PARAGRAPH_1": "Ni ellir defnyddio’r system Hawliadau am Arian i uwchlwytho ceisiadau gorfodi.",
           "LINK_1": {
-            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new window)",
-            "TEXT_BEFORE": "There is guidance on "
+            "TEXT": "beth i’w wneud os nad yw diffynnydd yn talu ar ôl iddynt gael dyfarniad (yn agor mewn ffenestr newydd).",
+            "TEXT_BEFORE": "Mae yna gyfarwyddyd ar "
           },
-          "PARAGRAPH_2": "There are various options for you to enforce a judgment, you will have to fill in forms and submit them to the court.",
-          "PARAGRAPH_3": "The options for enforcing a judgment are&#58;",
+          "PARAGRAPH_2": "Gallwch orfodi dyfarniad mewn sawl ffordd. Bydd angen i chi lenwi ffurflenni a’u cyflwyno i’r llys.",
+          "PARAGRAPH_3": "Yr opsiynau ar gyfer gorfodi dyfarniad yw&#58;",
           "LINK_2": {
-            "TEXT": "warrant of control"
+            "TEXT": "gwarant reolaeth (yn agor mewn ffenestr newydd)"
           },
           "LINK_3": {
-            "TEXT": "attachment of earnings order"
+            "TEXT": "gorchymyn atafaelu enillion (yn agor mewn ffenestr newydd)"
           },
           "LINK_4": {
-            "TEXT": "third-party debt order"
+            "TEXT": "gorchymyn dyled trydydd parti neu orchymyn arwystlo (yn agor mewn ffenestr newydd)"
           },
           "LINK_5": {
             "TEXT": "charging order"
           },
           "LINK_6": {
-            "TEXT": "check the civil fees list",
-            "TEXT_BEFORE": "Each option has its own fee, ",
-            "TEXT_AFTER": "to find the costs for the option you select. "
+            "TEXT": "gwiriwch y rhestr ffioedd sifil (yn agor mewn ffenestr newydd) ",
+            "TEXT_BEFORE": "Mae yna ffi yn daladwy am bob opsiwn, ",
+            "TEXT_AFTER": "i weld y costau ar gyfer yr opsiwn rydych yn ei ddewis. "
           }
         },
         "CLAIM_DOCUMENTS_AND_EVIDENCE": {
-          "SUBTITLE_1": "You cannot upload claim evidence yet",
-          "PARAGRAPH_1": "Your case is not at the correct stage for you to upload claim documents and evidence.",
-          "PARAGRAPH_2": "You will be able to send claim evidence once the judge has issued a directions order. The directions order will have instructions on how to send the evidence as well as any deadlines for sending evidence.",
+          "SUBTITLE_1": "Ni allwch uwchlwytho tystiolaeth ar gyfer yr hawliad eto",
+          "PARAGRAPH_1": "Nid yw eich achos yn y cam cywir i chi allu uwchlwytho dogfennau a thystiolaeth ar gyfer yr hawliad",
+          "PARAGRAPH_2": "Byddwch yn gallu anfon tystiolaeth unwaith y bydd y barnwr wedi gwneud gorchymyn cyfarwyddiadau. Bydd y gorchymyn cyfarwyddiadau yn cynnwys gwybodaeth am sut i anfon y dystiolaeth ynghyd â manylion unrhyw derfynau amser ar gyfer anfon tystiolaeth.",
           "CP_STATE": {
             "LINK_1": {
-              "TEXT": "upload evidence and documents to the file",
-              "TEXT_BEFORE": "To upload evidence to your case, select "
+              "TEXT": "uwchlwytho tystiolaeth a dogfennau i’r ffeil.",
+              "TEXT_BEFORE": "I uwchlwytho tystiolaeth i’ch achos, dewiswch "
             },
-            "PARAGRAPH_1": "When you are saving the files, make sure the file names make it clear what the file is, for example: ‘yourname-evidencetype.doc’. For documents related to experts, witnesses, witness statements, the file name will be created by the system.",
+            "PARAGRAPH_1": "Pan fyddwch yn cadw’r ffeiliau, sicrhewch fod enwau’r ffeiliau yn disgrifio’n glir beth yw’r ffeil, er enghraifft: ‘yourname-evidencetype.doc’. Ar gyfer dogfennau sy’n ymwneud ag arbenigwyr, tystion, datganiadau tyst, bydd enw’r ffeil yn cael ei greu gan y system.",
             "LINK_2": {
-              "TEXT": "ask for more time to do what is required by a court order",
-              "TEXT_BEFORE": "If you want to upload documents after the upload deadline, the judge may decide late documents will not be considered as part of the claim. If you do want to upload documents after the deadline, you need to "
+              "TEXT": "ofyn am fwy o amser i wneud yr hyn sy’n ofynnol ohonoch gan orchymyn llys.",
+              "TEXT_BEFORE": "Os ydych chi eisiau uwchlwytho dogfennau ar ôl y terfyn amser ar gyfer uwchlwytho, efallai y bydd y barnwr yn penderfynu na fydd dogfennau hwyr yn cael eu hystyried fel rhan o’r hawliad. Os ydych chi eisiau uwchlwytho dogfennau ar ôl y terfyn amser, mae angen i chi "
             }
           }
         },
         "CHANGE_THE_HEARING_DATE": {
           "LINK_1": {
-            "TEXT": "apply to adjourn the hearing",
-            "TEXT_BEFORE": "To ask to change the hearing date (known as an adjournment) you will need to"
+            "TEXT": "wneud cais i ohirio’r gwrandawiad.",
+            "TEXT_BEFORE": "I ofyn am gael newid dyddiad y gwrandawiad (a elwir yn ohiriad) bydd angen i chi"
           },
-          "PARAGRAPH_1": "You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.",
-          "PARAGRAPH_2": "You should give the court dates when you would be able to attend a hearing. The other parties will also need to agree to the change.",
-          "PARAGRAPH_3": "You may need to attend a hearing to discuss your application to change the date.",
+          "PARAGRAPH_1": "Bydd angen i chi ddweud pam eich bod angen newid dyddiad y gwrandawiad a darparu tystiolaeth o’r angen i newid y dyddiad, er enghraifft, tystiolaeth o apwyntiad ysbyty neu wyliau sydd eisoes wedi’i drefnu.",
+          "PARAGRAPH_2": "Dylech roi dyddiadau i’r llys pan fyddech yn gallu mynychu gwrandawiad. Bydd angen i’r partïon eraill hefyd gytuno i’r newid.",
+          "PARAGRAPH_3": "Efallai y bydd angen i chi fynychu gwrandawiad i drafod eich cais i newid y dyddiad.",
           "LINK_2": {
-            "TEXT": "Check the fees guidance (opens in a new window)",
-            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee",
-            "TEXT_AFTER": "to make sure you pay the correct fee."
+            "TEXT": "Gwiriwch y cyfarwyddyd ar ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad llai na 14 diwrnod cyn y gwrandawiad, yna fe godir ffi arnoch. ",
+            "TEXT_AFTER": " i sicrhau eich bod yn talu’r ffi gywir."
           },
-          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees."
+          "PARAGRAPH_4": "Nid oes rhaid i chi dalu am gais i newid dyddiad y gwrandawiad os byddwch yn gwneud y cais mwy na 14 diwrnod cyn dyddiad y gwrandawiad ac mae’r parti arall yn cytuno."
         },
         "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
-          "PARAGRAPH_1": "You can apply to change the details of the hearing, such as:",
-          "LIST_1": "the location",
-          "LIST_2": "the hearing type - in person or video hearing",
+          "PARAGRAPH_1": "Gallwch wneud cais i newid manylion y gwrandawiad, megis:",
+          "LIST_1": "y lleoliad",
+          "LIST_2": "y math o wrandawiad - gwrandawiad wyneb yn wyneb neu wrandawiad fideo",
           "LINK_1": {
-            "TEXT": "apply to the court",
-            "TEXT_BEFORE": "You have to",
-            "TEXT_AFTER": "to ask for the court to consider changing the hearing details."
+            "TEXT": "wneud cais i’r llys",
+            "TEXT_BEFORE": "Mae’n rhaid i chi ",
+            "TEXT_AFTER": " i ofyn i’r llys ystyried newid manylion y gwrandawiad."
           },
           "LINK_2": {
-            "TEXT": "fees in civil cases (opens in a new window)",
-            "TEXT_BEFORE": "Find out more about"
+            "TEXT": "ffioedd mewn achosion sifil (yn agor mewn ffenestr newydd).",
+            "TEXT_BEFORE": "Darllenwch fwy am "
           },
-          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application."
+          "PARAGRAPH_2": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad, bydd rhaid i chi dalu ffi. Efallai y cewch dalu ffi ostyngol os ydych chi’n gwneud mwy nag un cais."
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
-          "PARAGRAPH_1": "You can ask for help and support during your hearing.",
-          "LIST_1": "ramps or accessible toilets",
-          "LIST_2": "a hearing loop",
-          "LIST_3": "forms in large print",
-          "LIST_4": "guidance in audio or easy read formats",
+          "PARAGRAPH_1": "Gallwch ofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad.",
+          "LIST_1": "rampiau neu doiledau hygyrch",
+          "LIST_2": "dolen glyw",
+          "LIST_3": "ffurflenni mewn print bras",
+          "LIST_4": "canllawiau ar ffurf ffeil sain neu fformat hawdd ei ddarllen",
           "LINK_1": {
-            "TEXT": "Find the contact details for the court (opens in a new window)",
-            "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
+            "TEXT": " Dod o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd).",
+            "TEXT_BEFORE": "Er mwyn gofyn am gymorth gyda’ch gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle mae’r gwrandawiad yn cael ei gynnal. Gallwch weld ym mha lys mae eich gwrandawiad yn cael ei wrando yn y gorchymyn cyfarwyddiadau."
           }
         }
       },
