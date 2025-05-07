@@ -845,9 +845,6 @@
             "TEXT": "gorchymyn dyled trydydd parti neu orchymyn arwystlo (yn agor mewn ffenestr newydd)"
           },
           "LINK_5": {
-            "TEXT": "charging order"
-          },
-          "LINK_6": {
             "TEXT": "gwiriwch y rhestr ffioedd sifil (yn agor mewn ffenestr newydd) ",
             "TEXT_BEFORE": "Mae yna ffi yn daladwy am bob opsiwn, ",
             "TEXT_AFTER": "i weld y costau ar gyfer yr opsiwn rydych yn ei ddewis. "
@@ -901,6 +898,7 @@
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "Gallwch ofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad.",
+          "PARAGRAPH_2": "Er enghraifft, gallai hyn fod yn:",
           "LIST_1": "rampiau neu doiledau hygyrch",
           "LIST_2": "dolen glyw",
           "LIST_3": "ffurflenni mewn print bras",
