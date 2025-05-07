@@ -842,12 +842,9 @@
             "TEXT": "attachment of earnings order (opens in a new window)"
           },
           "LINK_4": {
-            "TEXT": "third-party debt order (opens in a new window)"
+            "TEXT": "third-party debt order or charging order (opens in a new window)"
           },
           "LINK_5": {
-            "TEXT": "charging order (opens in a new window)"
-          },
-          "LINK_6": {
             "TEXT": "check the civil fees list (opens in a new window)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
@@ -901,6 +898,7 @@
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "You can ask for help and support during your hearing.",
+          "PARAGRAPH_2": "For example, this could be:",
           "LIST_1": "ramps or accessible toilets",
           "LIST_2": "a hearing loop",
           "LIST_3": "forms in large print",
