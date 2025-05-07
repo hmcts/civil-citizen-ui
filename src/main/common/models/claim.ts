@@ -195,6 +195,7 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
+  previousCCDState?: string;
   // Index signature to allow dynamic property access
   [key: string]: any;
   //Query management
@@ -941,6 +942,10 @@ export class Claim {
 
   isClaimSettled() {
     return this.ccdState === CaseState.CASE_SETTLED;
+  }
+
+  isCaseDiscontinued() {
+    return this.ccdState === CaseState.CASE_DISCONTINUED ;
   }
 
   isDefendantAgreedForMediation() {

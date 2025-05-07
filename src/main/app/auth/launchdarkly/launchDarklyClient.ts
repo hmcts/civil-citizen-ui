@@ -1,6 +1,8 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
 
 let ldClient: LDClient;
 let testData: TestData;
@@ -19,6 +21,8 @@ const IS_COSC_ENABLED = 'isCoSCEnabled';
 const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 const QUERY_MANAGEMENT = 'cui-query-management';
 const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
+const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
+const LR_QUERY_MANAGEMENT = 'query-management';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -41,6 +45,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(IS_COSC_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(LR_QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
@@ -175,4 +180,20 @@ export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
 
 export async function isGaForWelshEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_WELSH) as boolean;
+}
+
+export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  return await getFlagValue(IS_DEFENDANT_NOC_ONLINE_FOR_CASE, epoch) as boolean;
+}
+
+export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
+  const isLRQueryManagementEnabled = await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+  const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
+  if (isLRQueryManagementEnabled && isSettledOrDiscontinued && claim.previousCCDState){
+    return await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+  }
+  return false;
 }

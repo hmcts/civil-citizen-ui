@@ -3,7 +3,7 @@ import * as utilityService from 'modules/utilityService';
 import {
   getBilingualLangPreference,
   saveBilingualLangPreference,
-  saveClaimantBilingualLangPreference,
+  saveClaimantBilingualLangPreference, getCookieLanguage,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {Claim} from 'common/models/claim';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
@@ -112,6 +112,21 @@ describe('Bilingual Langiage Preference Service', () => {
       expect(spySave).toBeCalled();
     });
 
+    it('should save WELSH language preference data successfully when claim exists', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveBilingualLangPreference('123', new GenericYesNo(
+        ClaimBilingualLanguagePreference.WELSH,
+        '',
+      ));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
     it('should rethrow error when error occurs on get claim for ENGLISH bilingual language preference', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
@@ -168,6 +183,21 @@ describe('Bilingual Langiage Preference Service', () => {
       expect(spySave).toBeCalled();
     });
 
+    it('should save WELSH language preference data successfully when claim exists', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveClaimantBilingualLangPreference('123', new GenericYesNo(
+        ClaimBilingualLanguagePreference.WELSH,
+        '',
+      ));
+      //Then
+      expect(spySave).toBeCalled();
+    });
+
     it('should rethrow error when error occurs on get claim for ENGLISH bilingual language preference', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
@@ -190,6 +220,35 @@ describe('Bilingual Langiage Preference Service', () => {
         ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH,
         '',
       ))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+  describe('setCookieLanguage for claim', () =>{
+    it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
+      //When
+      const lang = getCookieLanguage(false, ClaimBilingualLanguagePreference.ENGLISH);
+      //Then
+      expect(lang).toEqual('en');
+    });
+
+    it('should set the cookies lang field to en when Lang selected is WELSH', async () => {
+      //When
+      const lang = getCookieLanguage(true, ClaimBilingualLanguagePreference.WELSH);
+      //Then
+      expect(lang).toEqual('cy');
+    });
+
+    it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is off', async () => {
+      //When
+      const lang = getCookieLanguage(false, ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      //Then
+      expect(lang).toEqual('cy');
+    });
+
+    it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is On', async () => {
+      //When
+      const lang = getCookieLanguage(true, ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      //Then
+      expect(lang).toEqual('en');
     });
   });
 });

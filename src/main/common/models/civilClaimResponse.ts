@@ -326,6 +326,7 @@ export interface CCDClaim extends ClaimUpdate {
   //Query management
   qmApplicantCitizenQueries?: CaseQueries;
   qmRespondentCitizenQueries?: CaseQueries;
+  previousCCDState?: string;
 }
 
 export interface ClaimFeeData {
