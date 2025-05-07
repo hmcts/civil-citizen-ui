@@ -9,7 +9,7 @@ import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
-import {ViewObjects} from "form/models/queryManagement/viewQuery";
+import {ViewObjects} from 'form/models/queryManagement/viewQuery';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
