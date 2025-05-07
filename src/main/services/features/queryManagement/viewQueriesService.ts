@@ -23,7 +23,7 @@ export class ViewQueriesService {
     const viewObjects: ViewObjects[] = [];
     queries.caseMessages.forEach(queryItem => {
       if (queryItem.value.parentId) {
-        const viewObject = viewObjects.find((item) => item.id = queryItem.value.parentId);
+        const viewObject = viewObjects.find((item) => item.id === queryItem.value.parentId);
         if (viewObject.createdBy !== queryItem.value.createdBy) {
           viewObject.lastUpdatedBy = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF';
           viewObject.status = 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED';
