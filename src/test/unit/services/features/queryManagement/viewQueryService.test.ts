@@ -274,7 +274,7 @@ describe('ViewQueriesService', () => {
         [],
         'a71d3791-b58d-4a57-957f-78dc48a12462',
         'formatted-2025-02-20T12:00:00Z-en',
-        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-e',
+        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
       )),
     );
     expect(result.items.length).toBe(1);
