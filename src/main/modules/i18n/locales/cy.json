@@ -607,13 +607,13 @@
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Diweddaru’r llys ar ddyfarniad neu hawliad a dalwyd yn rhannol",
           "SETTLE_CLAIM": "Setlo hawliad",
           "AMEND_CLAIM_DETAILS": "Diwygio manylion yr hawliad",
-          "CLAIM_ENDED": "Tell the court my claim has ended",
+          "CLAIM_ENDED": "Dweud wrth y llys bod fy hawliad wedi dod i ben",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
           "ENFORCEMENT_REQUESTS": "Anfon ceisiadau gorfodi",
           "CLAIM_DOCUMENTS_AND_EVIDENCE": "Anfon dogfennau a thystiolaeth",
-          "SUBMIT_RESPONSE_CLAIM": "Submit a response to a claim",
+          "SUBMIT_RESPONSE_CLAIM": "Cyflwyno ymateb i hawliad",
           "SEE_THE_CLAIM_ON_MY_ACCOUNT": "Gweld yr hawliad yn fy nghyfrif",
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "Gweld y dogfennau yn fy nghyfrif",
           "CHANGE_THE_HEARING_DATE": "Newid dyddiad y gwrandawiad",
@@ -728,12 +728,12 @@
           "PARAGRAPH_3": "Os bydd y diffynnydd yn cynnig talu swm gwahanol a bod yr hawlydd yn gwrthod y cynnig hwnnw, efallai y cynhelir gwrandawiad lle bydd rhaid i’r diffynnydd roi mwy o wybodaeth. Fe ofynnir i’r hawlydd fynychu’r gwrandawiad.",
           "SUBTITLE_1": "Os na fydd y diffynnydd yn talu’r swm llawn neu’n ymateb mewn pryd",
           "LINK_1": {
-            "TEXT": "request a county court judgment (CCJ)",
-            "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
+            "TEXT": "gwneud cais am ddyfarniad llys sirol (CCJ).",
+            "TEXT_BEFORE": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig "
           },
           "LINK_2": {
-            "TEXT": "Darllenwch fwy am beth fydd yn digwydd pan fydd CCJ yn cael ei wneud yn eich erbyn (yn agor mewn ffenestr newydd).",
-            "TEXT_BEFORE": "Find out more about "
+            "TEXT": "beth fydd yn digwydd pan fydd CCJ yn cael ei wneud yn eich erbyn (yn agor mewn ffenestr newydd).",
+            "TEXT_BEFORE": "Darllenwch fwy am "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig gwneud cais am ddyfarniad llys sirol (CCJ)."
         },
