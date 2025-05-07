@@ -26,7 +26,7 @@ export class ViewQueriesService {
         const viewObject = viewObjects.find((item) => item.id = queryItem.value.parentId);
         if (viewObject.createdBy !== queryItem.value.createdBy) {
           viewObject.lastUpdatedBy = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF';
-          viewObject.status = 'STATUS_RECEIVED';
+          viewObject.status = 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED';
         } else {
           viewObject.lastUpdatedBy = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
           viewObject.status = 'PAGES.QM.VIEW_QUERY.STATUS_SENT';
