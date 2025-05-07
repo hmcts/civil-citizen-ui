@@ -34,7 +34,7 @@ export class ViewQueriesService {
         viewObject.lastUpdatedOn = dateTimeFormat(queryItem.value.createdOn, lang);
       } else {
         viewObjects.push(new ViewObjects(
-          queryItem.id,
+          queryItem.value.id,
           queryItem.value.createdBy,
           queryItem.value.subject,
           dateTimeFormat(queryItem.value.createdOn, lang),
@@ -49,8 +49,8 @@ export class ViewQueriesService {
 
   public static buildQueryListItemsByQueryId(claim: Claim, queryId: string, lang: string): QueryDetail {
     const queries = this.getCaseQueries(claim);
-    const parent = queries.caseMessages.find(claim => claim.id === queryId);
-    const children = queries.caseMessages.filter(item => item.value.parentId === queryId);
+    const parent = queries.caseMessages.find(query => query.value.id === queryId);
+    const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
     const lastStatus = combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
     const formatted = combined.map(item => {
