@@ -7,7 +7,7 @@
 
 
 
-    Your money claims account - Money Claims
+    Enter message details - Your money claims account
 
 
   </title>
@@ -29,10 +29,10 @@
   <!-- End Dynatrace -->
 
   <!-- Google Tag Manager -->
-  <script nonce=fodhpQqZt3gYHTnbKyFY9w==>
+  <script nonce=+mSCE8dL2zzWQfKwGQgfjw==>
     window.dataLayer = window.dataLayer || [];
   </script>
-  <script nonce=6tsqJqoLYTr08Dm/549ThA==>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  <script nonce=g9QDtuBmtOeZcspzHBPntQ==>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -297,115 +297,106 @@
       <div class="govuk-grid-column-two-thirds">
 
 
+
+
         <h1 class="govuk-heading-l">
-          <span class="govuk-caption-l">Send a message</span>
+          <span class="govuk-caption-l">Send a follow up message</span>
           Enter message details
         </h1>
 
+        <div class="govuk-grid-row">
+          <form class="govuk-grid-column-two-thirds" method="post" action="/case/1744724860423270/qm/follow-up-message?_csrf=Ej1DfWc0-4vhpcpoEP42M0ay87VqUGFbFY1U" enctype='multipart/form-data' novalidate>
 
-        <div class="govuk-!-margin-bottom-9 govuk-border-colour-border-top-1">
-          <div class="govuk-form-group">
-
-
-
+            <input type="hidden" name="_csrf" value="Ej1DfWc0-4vhpcpoEP42M0ay87VqUGFbFY1U">
 
 
 
 
 
+            <div class="govuk-form-group">
+              <label class="govuk-label" for="messageDetails">
+                Message details
+              </label>
 
-            <dl class="govuk-summary-list">
 
 
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Message subject
-                </dt>
-                <dd class="govuk-summary-list__value">
-                  asdasd
-                </dd>
-
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="/case/1743178763590589/qm/create-query">Change<span class="govuk-visually-hidden"> Message subject</span></a>
-
-                </dd>
-
+              <div id="messageDetails-hint" class="govuk-hint">
+                Include as many details as possible so case workers can respond to your message
               </div>
 
 
 
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Message details
-                </dt>
-                <dd class="govuk-summary-list__value">
-                  dsadas
-                </dd>
+              <textarea class="govuk-textarea" id="messageDetails" name="messageDetails" rows="5" aria-describedby="messageDetails-hint"></textarea>
 
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="/case/1743178763590589/qm/create-query">Change<span class="govuk-visually-hidden"> Message details</span></a>
+            </div>
 
-                </dd>
 
-              </div>
+            <div class="govuk-inset-text">
 
 
 
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Is your message about an upcoming hearing?
-                </dt>
-                <dd class="govuk-summary-list__value">
-                  no
-                </dd>
 
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="/case/1743178763590589/qm/create-query">Change<span class="govuk-visually-hidden"> Is your message about a hearing?</span></a>
-
-                </dd>
-
-              </div>
-
-
-
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-heading-s govuk-!-font-weight-bold" for="query-file-upload">
                   Upload documents (optional)
-                </dt>
-                <dd class="govuk-summary-list__value">
+                </label>
 
-                </dd>
 
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="/case/1743178763590589/qm/create-query">Change<span class="govuk-visually-hidden"> Upload documents (optional)</span></a>
 
-                </dd>
+                <div id="query-file-upload-hint" class="govuk-hint">
+                  <span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>
+                </div>
+
+
+
+                <input class="govuk-file-upload" id="query-file-upload" name="query-file-upload" type="file" aria-describedby="query-file-upload-hint">
 
               </div>
 
 
-            </dl>
 
-          </div>
+
+
+
+
+
+
+              <button value="uploadButton" type="submit" name="action" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0" data-module="govuk-button" id="fileUpload">
+                Upload file
+              </button>
+
+            </div>
+
+
+
+
+
+
+            <div class="govuk-button-group">
+
+
+
+
+
+              <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+              </button>
+
+
+
+
+
+              <a href="/case/1744724860423270/queryManagement/cancel" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >Cancel</a>
+
+
+
+
+            </div>
+
+
+          </form>
         </div>
 
-        <form method="post" novalidate>
-
-          <input type="hidden" name="_csrf" value="CYQVnsBR-wjnAnfdpbmpWapX7eImjNipk8pU">
-
-          <div class="govuk-button-group">
-
-
-
-
-
-            <button type="submit" class="govuk-button" data-module="govuk-button">
-              Send message
-            </button>
-
-            <a href="/case/1743178763590589/queryManagement/cancel" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener">Cancel</a>
-          </div>
-        </form>
 
       </div>
       <div class="govuk-grid-column-one-third">
