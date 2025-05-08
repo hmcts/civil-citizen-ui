@@ -1,8 +1,8 @@
-{% set startDate = "2024-11-28" | addDaysTranslated(0, t)%}
-{% set endDate = "2024-12-05" | addDaysTranslated(0, t)  %}
-{% set currentDate = "now" | addDaysTranslated(0, t) %}
+{% set startDate = "2025-05-06" | addDays(0) %}
+{% set endDate = "2025-05-14" | addDays(0)  %}
+{% set currentDate = "now" | addDays(0) %}
 
-{% if false %}
+{% if currentDate >= startDate and currentDate < endDate %}
   <div class="hmcts-banner">
     <svg class="hmcts-banner-icon" fill="currentColor" focusable="false" xmlns="http://www.w3.org/2000/svg"
          viewBox="0 0 25 25" height="25" width="25">
@@ -11,7 +11,7 @@ C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.
     </svg>
     <div class="hmcts-banner-message">
       <span class="hmcts-banner-assistive">information</span>
-      {{ t('BANNERS.CUI_CP.MESSAGE') }}
+      {{ t('BANNERS.CUI_ILA.MESSAGE') }}
     </div>
   </div>
 {% endif %}
