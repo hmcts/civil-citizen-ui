@@ -3452,10 +3452,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.7.10":
-  version: 13.7.15
-  resolution: "@types/validator@npm:13.7.15"
-  checksum: 4e2c63d57c38def8c8308bea76140342c402527bf273fcdf13ae7d2bdd1b66942aecca8af9418ccf9e38780366d60e5d7dc6b9fe4a6aa74d3b85fec769fe195a
+"@types/validator@npm:^13.11.8":
+  version: 13.15.0
+  resolution: "@types/validator@npm:13.15.0"
+  checksum: c9f033dd8c6a46d55674cbdb293f48aab9e2b12eba935f8373c3a51eb3df47ce4d2991fea92aaaed67fe1158ee769d8f1318d237d3f6bd9b33dfb035c9ddec46
   languageName: node
   linkType: hard
 
@@ -5379,13 +5379,13 @@ __metadata:
   linkType: hard
 
 "class-validator@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "class-validator@npm:0.14.0"
+  version: 0.14.2
+  resolution: "class-validator@npm:0.14.2"
   dependencies:
-    "@types/validator": ^13.7.10
-    libphonenumber-js: ^1.10.14
-    validator: ^13.7.0
-  checksum: f62e4a0ad24cee68f4b2bc70d32b96de90cb598f96bde362b4dbf4234151af8eb6ae225458312a38fc49fa3959844cf61c60e731a8205e9a570454cff8de2710
+    "@types/validator": ^13.11.8
+    libphonenumber-js: ^1.11.1
+    validator: ^13.9.0
+  checksum: e8bc573f178112203781230de4d0aa1785231e457d3a993d80e13ba8163fe32c96cc2651c5d164cc48ade39a9c46cc38b4ded4ded74f3e5662670b2af35f65d1
   languageName: node
   linkType: hard
 
@@ -10243,10 +10243,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.10.14":
-  version: 1.10.28
-  resolution: "libphonenumber-js@npm:1.10.28"
-  checksum: 3a3aac653265751822b495d30c1196a072c52612fb2b7cf0efe38b0ad25a48df2a0bf2220fb7066af1a1734b9cd9ba78ddaf758da5194422bbb57c4c592c381a
+"libphonenumber-js@npm:^1.11.1":
+  version: 1.12.7
+  resolution: "libphonenumber-js@npm:1.12.7"
+  checksum: efa04912927d9d896c34648b3a32354ded97e3fea2e8577a052a90af25607b754ff9b628e0d3c8229f54357eece107c8a625d01586c2c34ad2d0eb0bec1cea31
   languageName: node
   linkType: hard
 
@@ -15118,6 +15118,13 @@ __metadata:
   version: 13.9.0
   resolution: "validator@npm:13.9.0"
   checksum: e2c936f041f61faa42bafd17c6faddf939498666cd82e88d733621c286893730b008959f4cb12ab3e236148a4f3805c30b85e3dcf5e0efd8b0cbcd36c02bfc0c
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.9.0":
+  version: 13.15.0
+  resolution: "validator@npm:13.15.0"
+  checksum: 0d1faacb802336e69fafde33723b6de8e1833d1a3ec2b5202ffc69b95c8140db6d4728760026d738243d706cd324ea84808deea2ed647f571a3171d03ade8031
   languageName: node
   linkType: hard
 
