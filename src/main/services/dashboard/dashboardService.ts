@@ -149,9 +149,9 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   return undefined;
 }
 
-export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string): Promise<iWantToLinks> => {
+export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string, isGAlinkEnabled = false): Promise<iWantToLinks> => {
 
-  if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+  if ((claim.ccdState && isGAlinkEnabled || !claim.isCaseIssuedPending() && !claim.isClaimSettled()
     && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
     const welshGaEnabled = await isGaForWelshEnabled();
     if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
@@ -159,13 +159,13 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: GA_SUBMIT_OFFLINE,
       };
-    } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
+    } else if (!claim.hasClaimTakenOffline() && (isGAFlagEnable || isGAlinkEnabled) && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
         removeTargetBlank: true,
       };
-    } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
+    } else if (isGAlinkEnabled || claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       };
