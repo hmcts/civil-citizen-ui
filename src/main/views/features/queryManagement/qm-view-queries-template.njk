@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <table class="govuk-table">
+      <table class="govuk-table tableWrap">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.MESSAGE_SUBJECT') }}</th>
@@ -30,16 +30,16 @@
           {% for item in parentQueryItems %}
             <tr class="govuk-table__row">
               <td class="govuk-table__cell">
-                <a href="{{ 'dummylink' }}" class="govuk-link">{{ item.subject }}</a>
+                <a href="/case/{{ claimId }}/qm/view-query/{{ item.id }}/query-details" class="govuk-link">{{ item.subject }}</a>
               </td>
               <td class="govuk-table__cell">
-                {{ item.createdOnString }}
+                {{ item.sentOn }}
               </td>
               <td class="govuk-table__cell">
                 {{ t(item.lastUpdatedBy) }}
               </td>
               <td class="govuk-table__cell">
-                {{ item.lastUpdatedOnString }}
+                {{ item.lastUpdatedOn }}
               </td>
               <td class="govuk-table__cell">
                 {{ t(item.status) }}

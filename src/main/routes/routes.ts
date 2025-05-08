@@ -441,6 +441,7 @@ import createQueryCheckYourAnswerController from 'routes/features/queryManagemen
 import qmConfirmationController from 'routes/features/queryManagement/qmConfirmationController';
 import sendFollowUpQueryController from 'routes/features/queryManagement/sendFollowUpQueryController';
 import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueriesController';
+import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
 
 export default [
   homeController,
@@ -797,4 +798,5 @@ export default [
   createQueryController,
   qmViewQueriesController,
   sendFollowUpQueryController,
+  qmViewQueryDetailsController,
 ];

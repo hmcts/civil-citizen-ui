@@ -335,6 +335,20 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
+  it('should replace placeholders for query management View', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{QM_VIEW_MESSAGES_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/qm/view-query';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
   function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {
     return {
       'createdBy': 'Civil',
