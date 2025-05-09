@@ -81,6 +81,7 @@
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
     "IF_NECESSARY_DOCUMENTS": "Os bydd angen, bydd yr holl ddogfennau sy’n ymwneud â’r cais hwn, gan gynnwys unrhyw ymateb gan y llys, yn cael eu cyfieithu. Byddwch yn cael eich hysbysu pan fydd y rhain ar gael.",
+    "UPLOADED_FILES": "Ffeiliau wedi’u huwchlwytho",
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ôl",
@@ -108,7 +109,8 @@
       "UPLOAD_ADDITIONAL_DOCUMENTS": "Uwchlwytho dogfennau ychwanegol",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Cau a dychwelyd i’r dangosfwrdd",
-      "CLOSE_AND_RETURN_TO_DETAILS": "Cau a dychwelyd i fanylion yr achos"
+      "CLOSE_AND_RETURN_TO_DETAILS": "Cau a dychwelyd i fanylion yr achos",
+      "CONFIRM_PAYMENT": "Cadarnhau’r taliad"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -912,23 +914,45 @@
       "HEADINGS": {
         "PAGE_TITLE": "Rhowch fanylion y neges",
         "HEADING": "Rhowch fanylion y neges",
-        "CAPTION": "Anfon neges"
+        "CAPTION": "Anfon neges",
+        "FOLLOW_UP_CAPTION": "Anfon neges ddilynol"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Pwnc y neges",
         "SUBJECT_HINT": "Dylai’r pwnc fod yn grynodeb o’ch neges",
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
-        "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad?",
+        "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
+        "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
         "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Pwnc y neges",
         "MESSAGE_DETAILS": "Manylion y neges",
-        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad?",
+        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
+        "MESSAGE_HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "UPLOAD_DOCUMENTS": "Uwchlwytho dogfennau (dewisol)",
         "SEND_MESSAGE": "Anfon neges"
+      },
+      "VIEW_QUERY": {
+        "PAGE_TITLE": "Negeseuon",
+        "MESSAGE_SUBJECT": "Pwnc y neges",
+        "SENT_ON": "Anfonwyd ar",
+        "LAST_UPDATED_BY": "Diweddarwyd diwethaf gan",
+        "LAST_UPDATED_ON": "Diweddarwyd diwethaf ar",
+        "STATUS": "Statws",
+        "UPDATED_BY_COURT_STAFF": "Staff y Llys",
+        "UPDATED_BY_YOU": "Chi",
+        "STATUS_SENT": "Neges wedi’i hanfon",
+        "STATUS_RECEIVED": "Ymateb wedi cyrraedd"
+      },
+      "FOLLOW_UP_QUERY": {
+        "BODY_TITLE": "Manylion y neges",
+        "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
+        "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       }
     },
     "SUBJECT_TO_FRC": {
@@ -3467,6 +3491,9 @@
         "MSG2": "Nid yw’r gwrandawiad hwn ar gyfer trafod yr hawliad. Gwrandawiad ar wahân yw hwn i drafod y cais.",
         "TITLE": "Trefniadau ar gyfer gwrandawiad y cais"
       },
+      "GA_PAYMENT": {
+        "SEND_PAYMENT_CONFIRMATION": "Byddwn yn anfon eich cadarnhad taliad yma"
+      },
       "GA_PAYMENT_SUCCESSFUL" : {
         "ACCOUNT_NOT_UPDATED": "Roedd eich taliad yn llwyddiannus ond efallai nad yw’ch cyfrif wedi’i ddiweddaru eto. Ceisiwch adnewyddu eich cyfrif yn nes ymlaen.",
         "APPLICATION_SUBMITTED": "Cais wedi'i gyflwyno",
@@ -5816,12 +5843,18 @@
       "MESSAGE_SUBJECT": "Rhowch fanylion pwnc y neges",
       "MESSAGE_DETAILS": "Rhowch fanylion y neges",
       "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad",
-      "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod"
+      "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod",
+      "VALID_DAY": "Rhaid i ddyddiad y gwrandawiad gynnwys diwrnod",
+      "VALID_MONTH": "Rhaid i ddyddiad y gwrandawiad gynnwys mis",
+      "VALID_YEAR": "Rhaid i ddyddiad y gwrandawiad gynnwys blwyddyn",
+      "VALID_DATE": "Rhaid ichi nodi dyddiad dilys ar gyfer y gwrandawiad",
+      "VALID_DATE_BLANK": "Rhaid ichi nodi dyddiad ar gyfer y gwrandawiad sydd ar y gweill",
+      "VALID_FUTURE_DATE": "Rhaid i ddyddiad y gwrandawiad fod yn y dyfodol"
     }
   },
   "BANNERS" : {
-    "CUI_CP" : {
-      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 ar 4 Rhagfyr 2024 a 02:00 ar 5 Rhagfyr 2024 tra bydd Cynnydd Achosion CUI yn cael ei ryddhau."
+    "CUI_ILA" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr Citizen ar gael rhwng 19:00 ar y 13eg o Fai a 02:00 ar y 14eg  o Fai 2025"
     }
   }
 }
