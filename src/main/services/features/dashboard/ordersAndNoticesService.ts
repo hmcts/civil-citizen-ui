@@ -269,8 +269,14 @@ const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => 
 
 const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) => {
   const interlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOCUTORY_JUDGEMENT);
-  return interlocutoryJudgement ? Array.of(
-    setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')) : [];
+  const docLink1 = interlocutoryJudgement
+    ? setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  let translatedInterlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedInterlocutoryJudgement
+    ? setUpDocumentLinkObject(translatedInterlocutoryJudgement.documentLink, translatedInterlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string) => {
