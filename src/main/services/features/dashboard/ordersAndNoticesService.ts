@@ -272,7 +272,7 @@ const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) 
   const docLink1 = interlocutoryJudgement
     ? setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')
     : undefined;
-  let translatedInterlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+  const translatedInterlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
   const docLink2 = translatedInterlocutoryJudgement
     ? setUpDocumentLinkObject(translatedInterlocutoryJudgement.documentLink, translatedInterlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT')
     : undefined;
