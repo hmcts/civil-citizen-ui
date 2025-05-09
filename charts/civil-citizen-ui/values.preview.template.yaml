@@ -58,6 +58,7 @@ aac-manage-case-assignment:
       IDAM_NOC_APPROVER_USERNAME: ${IDAM_NOC_APPROVER_USERNAME}
       IDAM_NOC_APPROVER_PASSWORD: ${IDAM_NOC_APPROVER_PASSWORD}
       NOTIFY_MCA_API_KEY: ${NOTIFY_MCA_API_KEY}
+      DUMMY_PROPERTY: true
     autoscaling:
       enabled: false
 
