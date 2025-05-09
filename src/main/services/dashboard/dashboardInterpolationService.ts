@@ -42,7 +42,7 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_RESPONDENT_INFORMATION_URL,
   MAKE_APPLICATION_TO_COURT,
-  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_SUBMIT_OFFLINE, VIEW_THE_JUDGMENT_URL,
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_SUBMIT_OFFLINE, VIEW_THE_JUDGMENT_URL, QM_VIEW_QUERY_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -143,6 +143,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{MAKE_APPLICATION_TO_COURT_URL}', MAKE_APPLICATION_TO_COURT);
   valuesMap.set('{COMFIRM_YOU_PAID_JUDGMENT_DEBT}', GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL.replace(':id', claimId));
   valuesMap.set('{NOTICE_OF_DISCONTINUANCE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.respondent1NoticeOfDiscontinueAllPartyViewDoc?.documentLink?.document_binary_url)));
+  valuesMap.set('{QM_VIEW_QUERIES}', QM_VIEW_QUERY_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
