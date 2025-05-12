@@ -456,7 +456,7 @@ describe('getSummaryList', () => {
                     },
                     actions: {
                       items: [{
-                        href: '/case/1/qm/follow-up-message?id=1',
+                        href: '/case/1/qm/:queryId/follow-up-message?id=1',
                         text: 'Remove document',
                         visuallyHiddenText: 'name',
                       }],
