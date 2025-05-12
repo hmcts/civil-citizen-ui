@@ -1,4 +1,4 @@
-import { Pact } from '@pact-foundation/pact';
+import { Pact, Matchers } from '@pact-foundation/pact';
 import config from 'config';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 import { getOidcResponse } from '../../../main/app/auth/user/oidc';
@@ -49,7 +49,7 @@ describe('Odic Pact Test', () => {
         willRespondWith: {
           status: 200,
           headers: {'Content-Type': 'application/json'},
-          body: odicResponse,
+          body: Matchers.like(odicResponse),
         },
       });
     });
