@@ -33,8 +33,8 @@ describe('Odic Pact Test', () => {
 
     beforeAll(async () => {
       await mockProvider.addInteraction({
-        state: 'there is a valid client ID in Idam',
-        uponReceiving: 'a POST /o/token request',
+        state: 'a token is requested',
+        uponReceiving: 'a request to get user details',
         withRequest: {
           method: 'POST',
           path: '/o/token',
