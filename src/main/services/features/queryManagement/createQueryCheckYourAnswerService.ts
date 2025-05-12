@@ -96,6 +96,10 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
     const parent = qmApplicantCitizenQueries.caseMessages
       .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
 
+    if (!parent) {
+      throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
+    }
+
     qmApplicantCitizenQueries.caseMessages.push({
       'id': uuidV4(),
       'value': {
@@ -167,6 +171,10 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
   if (isFollowUpQuery) {
     const parent = qmRespondentCitizenQueries.caseMessages
       .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
+
+    if (!parent) {
+      throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
+    }
 
     qmRespondentCitizenQueries.caseMessages.push({
       'id': uuidV4(),
