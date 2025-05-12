@@ -26,8 +26,9 @@ describe('Odic Pact Test', () => {
   });
 
   describe('get Oidc response', () => {
+    //TODO add 'id_token' when the provider test includes it
     const odicResponse = {
-      id_token: 'someIdToken',
+      // id_token: 'someIdToken',
       access_token: 'someAccessToken',
     };
 
@@ -49,7 +50,9 @@ describe('Odic Pact Test', () => {
         willRespondWith: {
           status: 200,
           headers: {'Content-Type': 'application/json'},
-          body: Matchers.like(odicResponse),
+          body: {
+            access_token: Matchers.like(odicResponse.access_token),
+          },
         },
       });
     });
