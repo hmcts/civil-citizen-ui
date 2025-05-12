@@ -27,6 +27,7 @@ describe('Odic Pact Test', () => {
 
   describe('get Oidc response', () => {
     const odicResponse = {
+      id_token: 'someIdToken',
       access_token: 'someAccessToken',
     };
 
