@@ -20,6 +20,8 @@ export interface FirstContact {
 }
 
 export interface AppSession extends Session {
+  parentQueryId: string
+  isFollowUpQuery: boolean;
   user: UserDetails;
   lang: string | undefined;
   previousUrl: string;

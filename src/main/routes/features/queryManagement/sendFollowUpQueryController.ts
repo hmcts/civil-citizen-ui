@@ -42,6 +42,8 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   try {
     const claimId = req.params.id;
     const queryManagement = await getQueryManagement(claimId, req);
+    req.session.parentQueryId = req.params.queryId;
+    console.log(req.session.parentQueryId, 'in send');
     const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
     const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
     let form = new GenericForm(sendFollowQuery);
@@ -78,6 +80,8 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
     const sendFollowUpQuery = new SendFollowUpQuery(req.body['messageDetails']);
     if (existingQuery) {
       sendFollowUpQuery.uploadedFiles = existingQuery.uploadedFiles;
+      console.log(req.session.parentQueryId, 'sendFollowUpQuery.parentId');
+      sendFollowUpQuery.parentId = req.session.parentQueryId;
     }
     const form = new GenericForm(sendFollowUpQuery);
 
@@ -98,6 +102,7 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       return await renderView(form, claimId, res, formattedSummary, req);
     } else {
       await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
+      req.session.isFollowUpQuery = true;
       return res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
     }
   } catch (error) {

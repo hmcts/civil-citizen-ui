@@ -24,7 +24,9 @@ createQueryCheckYourAnswerController.get(QM_CYA, (async (req: AppRequest, res: R
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const backLinkUrl = BACK_URL;
     const cancelUrl = getCancelUrl(req.params.id);
-    res.render(viewPath, {summaryRows: getSummarySections(req.params.id, claim, lang), backLinkUrl, cancelUrl});
+    const isFollowUpQuery = req.session.isFollowUpQuery;
+    console.log(isFollowUpQuery, 'isFollowUpQuery')
+    res.render(viewPath, {summaryRows: getSummarySections(req.params.id, claim, lang, isFollowUpQuery), backLinkUrl, cancelUrl});
   } catch (error) {
     next(error);
   }
@@ -35,10 +37,12 @@ createQueryCheckYourAnswerController.post(QM_CYA, async (req: AppRequest, res: R
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const isFollowUpQuery = req.session.isFollowUpQuery;
+    console.log(isFollowUpQuery, 'isFollowUpQuery')
     if (claim.isClaimant()) {
-      await createApplicantCitizenQuery(claim, updatedClaim, req);
+      await createApplicantCitizenQuery(claim, updatedClaim, req, isFollowUpQuery);
     } else {
-      await createRespondentCitizenQuery(claim, updatedClaim, req);
+      await createRespondentCitizenQuery(claim, updatedClaim, req, isFollowUpQuery);
     }
     await saveQueryManagement(claimId, null, 'createQuery', req);
     res.redirect(constructResponseUrlWithIdParams(claimId, QM_CONFIRMATION_URL));
