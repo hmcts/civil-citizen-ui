@@ -15,7 +15,7 @@ import { CaseDocument } from 'models/document/caseDocument';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import { CreateQuery, UploadQMAdditionalFile } from 'models/queryManagement/createQuery';
-import { SendFollowUpQuery } from 'models/queryManagement/SendFollowUpQuery';
+import { SendFollowUpQuery } from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
