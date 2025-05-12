@@ -257,8 +257,13 @@ const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string)
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
   const manualDetermination = claim.getDocumentDetails(DocumentType.LIP_MANUAL_DETERMINATION);
-  return manualDetermination ? Array.of(
-    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST')) : [];
+  const docLink1 =  manualDetermination ?
+    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST') : undefined;
+  const translatedManualDetermination = claim.getDocumentDetails(DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedManualDetermination
+    ? setUpDocumentLinkObject(translatedManualDetermination.documentLink, translatedManualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => {
