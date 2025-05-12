@@ -287,8 +287,14 @@ const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string)
 
 const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => {
   const settlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT);
-  return settlementAgreement ? Array.of(
-    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')) : [];
+  const docLink1 = settlementAgreement
+    ? setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')
+    : undefined;
+  const translatedSettlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedSettlementAgreement
+    ? setUpDocumentLinkObject(translatedSettlementAgreement.documentLink, translatedSettlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SETTLEMENT_AGREEMENT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCoSCDocument = (claim: Claim, claimId: string, lang: string) => {
