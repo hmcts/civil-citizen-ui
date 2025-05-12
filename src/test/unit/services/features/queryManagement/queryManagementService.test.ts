@@ -15,6 +15,7 @@ import { CaseDocument } from 'models/document/caseDocument';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import { CreateQuery, UploadQMAdditionalFile } from 'models/queryManagement/createQuery';
+import { SendFollowUpQuery } from 'models/queryManagement/SendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -475,7 +476,7 @@ describe('getSummaryList', () => {
     mockGetClaimById.mockImplementation(async () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = new CreateQuery();
+      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
       claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
         new UploadQMAdditionalFile(file, returnedFile),
       ] as unknown as UploadQMAdditionalFile[];
@@ -541,7 +542,7 @@ describe('removeSelectedDocument', () => {
     mockGetClaimById.mockImplementation(async () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = new CreateQuery();
+      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
       claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
         new UploadQMAdditionalFile(file, returnedFile),
       ] as unknown as UploadQMAdditionalFile[];

@@ -27,7 +27,7 @@ describe('Check Answers response service', () => {
           documentLink: {document_binary_url: 'http://dm-store:8080/documents/bf4a2ac9-a036-4d7d-b999-dcccc4d92197/binary'} as Document,
         },
       } as UploadQMAdditionalFile];
-      const summaryRows = getSummarySections('123455', claim,'en');
+      const summaryRows = getSummarySections('123455', claim,'en', false);
       expect(summaryRows.length).toBe(5);
     });
   });
@@ -42,7 +42,7 @@ describe('Check Answers response service', () => {
       const date = new Date();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
       claim.queryManagement.createQuery.uploadedFiles = [];
-      await createApplicantCitizenQuery(claim, updated, req);
+      await createApplicantCitizenQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
 
@@ -69,7 +69,7 @@ describe('Check Answers response service', () => {
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', '2025', '4', '4');
       claim.queryManagement.createQuery.uploadedFiles = [];
-      await createApplicantCitizenQuery(claim, updated, req);
+      await createApplicantCitizenQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
   });
@@ -99,7 +99,7 @@ describe('Check Answers response service', () => {
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', '2025', '5', '5');
       claim.queryManagement.createQuery.uploadedFiles = [];
-      await createRespondentCitizenQuery(claim, updated, req);
+      await createRespondentCitizenQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
   });
