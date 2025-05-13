@@ -622,7 +622,7 @@
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
-            "TEXT": "Cael diweddariad cyffredinol ar yr hyn sy’n digwydd gyda’r achos"
+            "TEXT": "Cael diweddariad cyffredinol ar beth sy’n digwydd gyda’r achos"
           },
           "CLAIM_NOT_PAID": {
             "TEXT": "Deall beth fydd yn digwydd os na thelir yr hawliad"
