@@ -23,7 +23,7 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled, isQueryManagementEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled, isGAlinkEnabled, isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 
@@ -36,6 +36,7 @@ const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', '
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const welshGaEnabled = await isGaForWelshEnabled();
+  const isGAlink = await isGAlinkEnabled(claim);
 
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
@@ -58,7 +59,13 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
       || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      //TODO add the code to
+    } else {
+      if (isGAlink) {
+        dashboard.items = dashboard.items.filter(item => GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      }
     }
+
 
     return dashboard;
   } else {
