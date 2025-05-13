@@ -23,19 +23,13 @@ import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evid
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const addTimeline = (
-  claimId: string,
-  lang: string,
-  section: SummarySection,
-  timeline: DefendantTimeline = new DefendantTimeline([], '')
-) => {
+const addTimeline = (claimId: string, lang: string , section: SummarySection, timeline: DefendantTimeline = new DefendantTimeline([], '')) => {
   const rows = Array.isArray(timeline?.rows) ? timeline.rows : [];
   const comment = timeline?.comment ?? '';
-  
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
 
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', { lng: getLng(lang) }), '', yourTimelineHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', {lng: getLng(lang)}), '', yourTimelineHref, changeLabel(lang)),
   );
 
   for (const item of rows) {
@@ -49,7 +43,6 @@ const addTimeline = (
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', { lng: getLng(lang) }), comment, yourTimelineHref, changeLabel(lang)),
   );
 };
-
 
 const addEvidence = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourEvidenceHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL);
