@@ -8,7 +8,7 @@ class Bundles {
   open(claimRef) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
     this.nextAction('//*[@id="tab_bundles"]');
-    this.verifyLatestUpdatePageContent().then().resolve();
+    this.verifyLatestUpdatePageContent();
   }
 
   nextAction(nextAction) {
@@ -17,11 +17,7 @@ class Bundles {
 
   async verifyLatestUpdatePageContent() {
     this.verifyHeadingDetails();
-    await this.retryUntilExists(async() => {
-      I.wait(10);
-      console.log('The wait is over');
-      I.refreshPage();
-    }, this.verifyBundlesTabContent());
+    this.verifyBundlesTabContent().then().resolve();
     contactUs.verifyContactUs();
   }
 
@@ -34,20 +30,25 @@ class Bundles {
     I.see('Bundles');
   }
 
-  verifyBundlesTabContent() {
+  async verifyBundlesTabContent() {
     I.see('You can find the bundle below.');
-    I.see('As the bundle has now been created, you will have to apply to the court if you want any new documents you upload to be used at your trial or hearing.');
+    await this.retryUntilExists(async () => {
+      I.wait(10);
+      console.log('The wait is over');
+      I.refreshPage();
+    }, I.see('As the bundle has now been created, you will have to apply to the court if you want any new documents you upload to be used at your trial or hearing.'));
+
     I.seeElement('//*[@id="bundles"]/div[1]/div/p[2]/a');
     I.see('Any new documents you upload will not be included in the main bundle. They will be listed separately below and under \'Documents\'.');
-    I.see('Trial Bundle','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[1]');
+    I.see('Trial Bundle', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[1]');
     I.see('Trial Bundle', '//*[@id="bundles"]/div[1]/div/div/table/tbody/tr/td[1]');
-    I.see('Created On','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[2]');
-    I.see('Hearing Date','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[3]');
-    I.see('Document URL','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[4]');
+    I.see('Created On', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[2]');
+    I.see('Hearing Date', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[3]');
+    I.see('Document URL', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[4]');
     I.seeElement('//*[@id="bundles"]/div[1]/div/div/table/tbody/tr/td[4]/a');
   }
 
-  async retryUntilExists(action, locator, maxNumberOfTries =3) {
+  async retryUntilExists(action, locator, maxNumberOfTries = 3) {
     for (let tryNumber = 1; tryNumber <= maxNumberOfTries; tryNumber++) {
       console.log(`retryUntilExists(${locator}): starting try #${tryNumber}`);
       if (tryNumber > 1 && await this.hasSelector(locator)) {
