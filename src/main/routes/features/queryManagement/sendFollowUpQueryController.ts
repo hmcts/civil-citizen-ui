@@ -61,6 +61,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
       await removeSelectedDocument(req, Number(index) - 1, true);
       return res.redirect(currentUrl);
     }
+
     await getSummaryList(formattedSummary, req,  true);
     await renderView(form, claimId, res, formattedSummary, req);
   } catch (error) {
