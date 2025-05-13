@@ -8,16 +8,20 @@ class Bundles {
   open(claimRef) {
     I.amOnPage('/dashboard/' + claimRef + '/defendant');
     this.nextAction('//*[@id="tab_bundles"]');
-    this.verifyLatestUpdatePageContent();
+    this.verifyLatestUpdatePageContent().then().resolve();
   }
 
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent() {
+  async verifyLatestUpdatePageContent() {
     this.verifyHeadingDetails();
-    this.verifyBundlesTabContent();
+    await this.retryUntilExists(async() => {
+      I.wait(10);
+      console.log('The wait is over');
+      I.refreshPage();
+    }, this.verifyBundlesTabContent());
     contactUs.verifyContactUs();
   }
 
@@ -41,6 +45,26 @@ class Bundles {
     I.see('Hearing Date','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[3]');
     I.see('Document URL','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[4]');
     I.seeElement('//*[@id="bundles"]/div[1]/div/div/table/tbody/tr/td[4]/a');
+  }
+
+  async retryUntilExists(action, locator, maxNumberOfTries =3) {
+    for (let tryNumber = 1; tryNumber <= maxNumberOfTries; tryNumber++) {
+      console.log(`retryUntilExists(${locator}): starting try #${tryNumber}`);
+      if (tryNumber > 1 && await this.hasSelector(locator)) {
+        console.log(`retryUntilExists(${locator}): element found before try #${tryNumber} was executed`);
+        break;
+      }
+      await action();
+      if (await this.waitForSelector(locator) != null) {
+        console.log(`retryUntilExists(${locator}): element found after try #${tryNumber} was executed`);
+        break;
+      } else {
+        console.log(`retryUntilExists(${locator}): element not found after try #${tryNumber} was executed`);
+      }
+      if (tryNumber === maxNumberOfTries) {
+        throw new Error(`Maximum number of tries (${maxNumberOfTries}) has been reached in search for ${locator}`);
+      }
+    }
   }
 }
 
