@@ -418,5 +418,5 @@ export const QM_FOLLOW_UP_CYA = `${QM_BASE}/follow-up-query-cya/:queryId`;
 export const QUERY_MANAGEMENT_CREATE_QUERY = `${QM_BASE}/create-query/:queryId`;
 export const QM_CONFIRMATION_URL = `${QM_BASE}/confirmation`;
 export const QM_VIEW_MESSAGES = `${QM_BASE}/view-messages`;
-export const QM_FOLLOW_UP_MESSAGE = `${QM_BASE}/follow-up-message/:queryId`;
+export const QM_FOLLOW_UP_MESSAGE = `${QM_BASE}/:queryId/follow-up-message`;
 export const QM_QUERY_DETAILS_URL = `${QM_BASE}/view-query/:queryId/query-details`;

@@ -67,6 +67,7 @@ appReq.session = {
   fileUpload: undefined,
   issuedAt: 150,
   dashboard: undefined,
+  isFollowUpQuery: undefined,
 };
 const ccdClaim : CCDClaim = {
   legacyCaseReference : '000MC003',

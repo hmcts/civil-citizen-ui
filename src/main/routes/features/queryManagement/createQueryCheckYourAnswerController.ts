@@ -42,9 +42,9 @@ createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req
     const claim = await getClaimById(claimId, req, true);
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (claim.isClaimant()) {
-      await createApplicantCitizenQuery(claim, updatedClaim, req);
+      await createApplicantCitizenQuery(claim, updatedClaim, req, isFollowUpQuery);
     } else {
-      await createRespondentCitizenQuery(claim, updatedClaim, req);
+      await createRespondentCitizenQuery(claim, updatedClaim, req, isFollowUpQuery);
     }
     const propertyName = isFollowUpUrl ? 'sendFollowUpQuery' : 'createQuery';
     await saveQueryManagement(claimId, null, propertyName, req);

@@ -15,6 +15,7 @@ import { CaseDocument } from 'models/document/caseDocument';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import { CreateQuery, UploadQMAdditionalFile } from 'models/queryManagement/createQuery';
+import { SendFollowUpQuery } from 'models/queryManagement/sendFollowUpQuery';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -455,7 +456,7 @@ describe('getSummaryList', () => {
                     },
                     actions: {
                       items: [{
-                        href: '/case/1/qm/follow-up-message?id=1',
+                        href: '/case/1/qm/:queryId/follow-up-message?id=1',
                         text: 'Remove document',
                         visuallyHiddenText: 'name',
                       }],
@@ -475,7 +476,7 @@ describe('getSummaryList', () => {
     mockGetClaimById.mockImplementation(async () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = new CreateQuery();
+      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
       claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
         new UploadQMAdditionalFile(file, returnedFile),
       ] as unknown as UploadQMAdditionalFile[];
@@ -541,7 +542,7 @@ describe('removeSelectedDocument', () => {
     mockGetClaimById.mockImplementation(async () => {
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = new CreateQuery();
+      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
       claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
         new UploadQMAdditionalFile(file, returnedFile),
       ] as unknown as UploadQMAdditionalFile[];

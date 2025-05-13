@@ -108,6 +108,7 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
     return await renderView(form, claim, claimId, res, formattedSummary, req);
   } else {
     await saveQueryManagement(claimId, createQuery, 'createQuery', req);
+    req.session.isFollowUpQuery = false;
     res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
   }
 }));
