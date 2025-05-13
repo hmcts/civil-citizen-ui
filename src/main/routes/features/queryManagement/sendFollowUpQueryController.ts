@@ -17,11 +17,10 @@ const upload = multer({
     fileSize: Infinity,
   },
 });
-let parentId: string;
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', req.params.queryId);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
@@ -42,10 +41,10 @@ const pageHeaders = {
 sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    parentId = req.params.queryId;
+    const queryId = req.params.queryId;
     const queryManagement = await getQueryManagement(claimId, req);
     const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
-    const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', parentId);
+    const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
     let form = new GenericForm(sendFollowQuery);
     const formattedSummary = summarySection(
       {
@@ -76,7 +75,7 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
     const claimId = req.params.id;
     const queryId = req.params.queryId;
     const queryManagement = await getQueryManagement(claimId, req);
-    const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', parentId);
+    const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
     const existingQuery = queryManagement?.sendFollowUpQuery;
     const sendFollowUpQuery = new SendFollowUpQuery(req.body['messageDetails']);
     if (existingQuery) {
@@ -100,9 +99,8 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       await getSummaryList(formattedSummary, req, true);
       return await renderView(form, claimId, res, formattedSummary, req);
     } else {
-      sendFollowUpQuery.parentId = parentId;
+      sendFollowUpQuery.parentId = queryId;
       await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
-      req.session.isFollowUpQuery = true;
       return res.redirect(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId));
     }
   } catch (error) {

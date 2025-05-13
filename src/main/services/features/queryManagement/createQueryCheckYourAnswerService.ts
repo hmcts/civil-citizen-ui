@@ -15,22 +15,22 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim, lng: string, followUpQuery: boolean): SummaryRow[] => {
-  if (followUpQuery) {
+export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollowUpQuery:boolean, queryId = ''): SummaryRow[] => {
+  if (isFollowUpQuery) {
     const followUpQuery = claim.queryManagement.sendFollowUpQuery;
     return [
-      ...getMessageDescription(followUpQuery.messageDetails, claimId, lng),
-      ...getUploadedFiles(followUpQuery.uploadedFiles, claimId, lng),
+      ...getMessageDescription(followUpQuery.messageDetails, claimId, lng, isFollowUpQuery,queryId),
+      ...getUploadedFiles(followUpQuery.uploadedFiles, claimId, lng, isFollowUpQuery, queryId),
     ];
   }
 
   const createQuery = claim.queryManagement.createQuery;
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
-    ...getMessageDescription(createQuery.messageDetails, claimId, lng),
+    ...getMessageDescription(createQuery.messageDetails, claimId, lng, isFollowUpQuery, queryId),
     ...getMessageAboutHearing(createQuery.isHearingRelated, claimId, lng),
     ...getHearingDate(createQuery.isHearingRelated, createQuery.date, claimId, lng),
-    ...getUploadedFiles(createQuery.uploadedFiles, claimId, lng),
+    ...getUploadedFiles(createQuery.uploadedFiles, claimId, lng, isFollowUpQuery, queryId),
   ];
 };
 
@@ -42,11 +42,19 @@ const getMessageSubject = (subject: string, claimId: string, lng: string) => {
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
-const getMessageDescription = (messageDetails: string, claimId: string, lng: string, isFollowUp = false) => {
+const getMessageDescription = (messageDetails: string, claimId: string, lng: string, isFollowUp: boolean, queryId: string) => {
+  if (isFollowUp) {
+    return [summaryRow(
+      t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
+      messageDetails,
+      constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId),
+      t('COMMON.BUTTONS.CHANGE', {lng}))];
+  }
+
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
     messageDetails,
-    constructResponseUrlWithIdParams(claimId, isFollowUp? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY),
+    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
@@ -70,11 +78,18 @@ const getHearingDate = (hearingRelated: string, hearingDate: Date, claimId: stri
   } else return [];
 };
 
-const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string, isFollowUp = false) => {
+const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string, isFollowUp: boolean, queryId: string) => {
+  if (isFollowUp){
+    return [summaryRow(
+      t('PAGES.QM.SEND_MESSAGE_CYA.ATTACHMENTS', {lng}),
+      buildDocLink(uploadedFiles, claimId),
+      constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId),
+      t('COMMON.BUTTONS.CHANGE', {lng}))];
+  }
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.UPLOAD_DOCUMENTS', {lng}),
     buildDocLink(uploadedFiles, claimId),
-    constructResponseUrlWithIdParams(claimId, isFollowUp? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY),
+    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 

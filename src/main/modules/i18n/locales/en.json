@@ -915,7 +915,8 @@
         "PAGE_TITLE": "Enter message details",
         "HEADING": "Enter message details",
         "CAPTION": "Send a message",
-        "FOLLOW_UP_CAPTION": "Send a follow up message"
+        "FOLLOW_UP_CAPTION": "Send a follow up message",
+        "FOLLOW_UP_HEADING": "Check your answers"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Message subject",
@@ -934,6 +935,7 @@
         "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
         "MESSAGE_HEARING_DATE": "What is the date of the hearing?",
         "UPLOAD_DOCUMENTS": "Upload documents (optional)",
+        "ATTACHMENTS": "Attachments",
         "SEND_MESSAGE": "Send message"
       },
       "VIEW_QUERY": {
