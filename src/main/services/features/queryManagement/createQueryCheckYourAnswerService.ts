@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CASE_DOCUMENT_VIEW_URL, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
+import {CASE_DOCUMENT_VIEW_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import {AppRequest} from 'models/AppRequest';
 import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
@@ -15,7 +15,15 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim, lng: string): SummaryRow[] => {
+export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollow = false): SummaryRow[] => {
+  if (isFollow) {
+    const followUp = claim.queryManagement.sendFollowUpQuery;
+    return [
+      ...getMessageDescription(followUp.messageDetails, claimId, lng, isFollow),
+      ...getUploadedFiles(followUp.uploadedFiles, claimId, lng, isFollow),
+    ];
+  }
+
   const createQuery = claim.queryManagement.createQuery;
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
@@ -34,11 +42,11 @@ const getMessageSubject = (subject: string, claimId: string, lng: string) => {
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
-const getMessageDescription = (messageDetails: string, claimId: string, lng: string) => {
+const getMessageDescription = (messageDetails: string, claimId: string, lng: string, isFollowUp = false) => {
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
     messageDetails,
-    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
+    constructResponseUrlWithIdParams(claimId, isFollowUp? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
@@ -62,15 +70,15 @@ const getHearingDate = (hearingRelated: string, hearingDate: Date, claimId: stri
   } else return [];
 };
 
-const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string) => {
+const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string, isFollowUp = false) => {
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.UPLOAD_DOCUMENTS', {lng}),
     buildDocLink(uploadedFiles, claimId),
-    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
+    constructResponseUrlWithIdParams(claimId, isFollowUp? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
-export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest) => {
+export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUp = false) => {
   let qmApplicantCitizenQueries: CaseQueries;
   const date = new Date();
   if (!updatedClaim.qmApplicantCitizenQueries) {
