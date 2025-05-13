@@ -141,7 +141,7 @@
       "REPAYMENT_AMOUNT_HINT": "Dylech ond cynnwys y swm rydych yn ei dalu i glirio'r taliadau rheolaidd a fethwyd yn flaenorol"
     },
     "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)",
+      "CALL_CHARGES": "Gwybodaeth am gostau galwadau (yn agor mewn tab newydd)",
       "COURT_STAFF_DISCLOSURE": "Gall staff y llys eich helpu gyda’ch cais. Ni allant roi cyngor cyfreithiol i chi.",
       "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
@@ -150,8 +150,8 @@
       "SEND_MESSAGE": "Anfon neges",
       "SEND_MESSAGE_LINK": "Anfon neges i’r llys",
       "SEND_MESSAGE_RESPONSE": "Byddwch yn gallu gweld yr ymateb ar y dangosfwrdd.",
-      "TITLE": "Cysylltu â ni am gymorth",
-      "TELEPHONE": "Ffôn",
+      "TITLE": "Cysylltu â ni i gael cymorth",
+      "TELEPHONE": "Rhif ffôn",
       "TELEPHONE_CARM": "Rhif ffôn",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
@@ -559,7 +559,7 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Unrhyw beth arall",
-        "MESSAGE_TO_THE_COURT": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
+        "MESSAGE_TO_THE_COURT": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
         "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny.",
         "SEND_A_MESSAGE": "Anfon neges"
       },
@@ -678,8 +678,8 @@
       },
       "CAPTIONS": {
         "CHANGE_CASE": "CAPTION CHANGE_CASE",
-        "GET_UPDATE": "Anfon diweddariad ar fy achos",
-        "SEND_UPDATE": "Anfonwch ddiweddariad am fy achos",
+        "GET_UPDATE": "Cael diweddariad ar fy achos",
+        "SEND_UPDATE": "Anfon diweddariad ar fy achos",
         "SEND_DOCUMENTS": "Anfon dogfennau",
         "SOLVE_PROBLEM": "Datrys problem rwy’n cael gyda’r system Hawliadau am Arian",
         "MANAGE_HEARING": "Rheoli eich gwrandawiad",
@@ -786,7 +786,7 @@
           "LINK_1": {
             "TEXT": "wneud cais",
             "TEXT_BEFORE": "Mae’n rhaid i chi wneud cais i amrywio manylion yr hawliad. Gwnewch hyn drwy  ",
-            "TEXT_AFTER": " , a bydd rhaid i chi dalu ffi."
+            "TEXT_AFTER": ", a bydd rhaid i chi dalu ffi."
           },
           "LINK_2": {
             "TEXT": "Gwiriwch y rhestr ffioedd (yn agor mewn ffenestr newydd)",
@@ -852,7 +852,7 @@
         },
         "CLAIM_DOCUMENTS_AND_EVIDENCE": {
           "SUBTITLE_1": "Ni allwch uwchlwytho tystiolaeth ar gyfer yr hawliad eto",
-          "PARAGRAPH_1": "Nid yw eich achos yn y cam cywir i chi allu uwchlwytho dogfennau a thystiolaeth ar gyfer yr hawliad",
+          "PARAGRAPH_1": "Nid yw eich achos yn y cam cywir i chi allu uwchlwytho dogfennau a thystiolaeth ar gyfer yr hawliad.",
           "PARAGRAPH_2": "Byddwch yn gallu anfon tystiolaeth unwaith y bydd y barnwr wedi gwneud gorchymyn cyfarwyddiadau. Bydd y gorchymyn cyfarwyddiadau yn cynnwys gwybodaeth am sut i anfon y dystiolaeth ynghyd â manylion unrhyw derfynau amser ar gyfer anfon tystiolaeth.",
           "CP_STATE": {
             "LINK_1": {
