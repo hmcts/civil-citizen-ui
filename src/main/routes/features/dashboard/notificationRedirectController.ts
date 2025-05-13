@@ -58,7 +58,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'VIEW_ORDERS_AND_NOTICES':
       redirectUrl = VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId);
       break;
-    case 'QM_VIEW_MESSAGES_URL':
+    case 'QM_VIEW_MESSAGES_URL_CLICK':
       redirectUrl = QM_VIEW_QUERY_URL.replace(':id', claimId);
       break;
     case 'VIEW_HEARING_NOTICE':
