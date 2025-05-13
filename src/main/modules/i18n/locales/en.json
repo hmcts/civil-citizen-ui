@@ -732,7 +732,7 @@
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
           "LINK_2": {
-            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window).",
+            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
@@ -786,7 +786,7 @@
           "LINK_1": {
             "TEXT": "making an application",
             "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
-            "TEXT_AFTER": " , you will have to pay a fee."
+            "TEXT_AFTER": ", you will have to pay a fee."
           },
           "LINK_2": {
             "TEXT": "Check the fees list (opens in a new window)",

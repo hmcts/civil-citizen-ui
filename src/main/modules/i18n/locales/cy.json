@@ -732,7 +732,7 @@
             "TEXT_BEFORE": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig "
           },
           "LINK_2": {
-            "TEXT": "beth fydd yn digwydd pan fydd CCJ yn cael ei wneud yn eich erbyn (yn agor mewn ffenestr newydd).",
+            "TEXT": "beth fydd yn digwydd pan fydd CCJ yn cael ei wneud yn eich erbyn (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig gwneud cais am ddyfarniad llys sirol (CCJ)."
@@ -745,12 +745,12 @@
           "LI_3": "gorchymyn dyled trydydd parti - ar gyfer cynilion y diffynnydd",
           "LI_4": "gorchymyn arwystlo - ar gyfer asedau’r diffynnydd",
           "LINK_1": {
-            "TEXT": "beth i’w wneud os nad yw diffynnydd yn talu ar ôl cael dyfarniad (yn agor mewn ffenestr newydd).",
+            "TEXT": "beth i’w wneud os nad yw diffynnydd yn talu ar ôl cael dyfarniad (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
           "SUBTITLE_1": "Ffioedd",
           "LINK_2": {
-            "TEXT": "am ffioedd y llys sifil (yn agor mewn ffenestr newydd).",
+            "TEXT": "am ffioedd y llys sifil (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Bydd rhaid i chi dalu ffi pan fyddwch yn gofyn i’r llys orfodi’r dyfarniad, a bydd y swm yn dibynnu ar y dull y byddwch yn ei ddewis. Darllenwch fwy "
           }
         },
@@ -785,7 +785,7 @@
           "LI_3": "yr unigolyn rydych chi’n gwneud hawliad yn ei erbyn",
           "LINK_1": {
             "TEXT": "wneud cais",
-            "TEXT_BEFORE": "Mae’n rhaid i chi wneud cais i amrywio manylion yr hawliad. Gwnewch hyn drwy  ",
+            "TEXT_BEFORE": "Mae’n rhaid i chi wneud cais i amrywio manylion yr hawliad. Gwnewch hyn drwy ",
             "TEXT_AFTER": ", a bydd rhaid i chi dalu ffi."
           },
           "LINK_2": {
@@ -800,7 +800,7 @@
           },
           "SUBTITLE_2": "I ddiweddaru eich manylion cyswllt",
           "LINK_4": {
-            "TEXT": "anfonwch neges i’r llys.",
+            "TEXT": "anfonwch neges i’r llys",
             "TEXT_BEFORE": "I ddiweddaru eich manylion cyswllt, "
           }
         },
@@ -856,12 +856,12 @@
           "PARAGRAPH_2": "Byddwch yn gallu anfon tystiolaeth unwaith y bydd y barnwr wedi gwneud gorchymyn cyfarwyddiadau. Bydd y gorchymyn cyfarwyddiadau yn cynnwys gwybodaeth am sut i anfon y dystiolaeth ynghyd â manylion unrhyw derfynau amser ar gyfer anfon tystiolaeth.",
           "CP_STATE": {
             "LINK_1": {
-              "TEXT": "uwchlwytho tystiolaeth a dogfennau i’r ffeil.",
+              "TEXT": "uwchlwytho tystiolaeth a dogfennau i’r ffeil",
               "TEXT_BEFORE": "I uwchlwytho tystiolaeth i’ch achos, dewiswch "
             },
             "PARAGRAPH_1": "Pan fyddwch yn cadw’r ffeiliau, sicrhewch fod enwau’r ffeiliau yn disgrifio’n glir beth yw’r ffeil, er enghraifft: ‘yourname-evidencetype.doc’. Ar gyfer dogfennau sy’n ymwneud ag arbenigwyr, tystion, datganiadau tyst, bydd enw’r ffeil yn cael ei greu gan y system.",
             "LINK_2": {
-              "TEXT": "ofyn am fwy o amser i wneud yr hyn sy’n ofynnol ohonoch gan orchymyn llys.",
+              "TEXT": "ofyn am fwy o amser i wneud yr hyn sy’n ofynnol ohonoch gan orchymyn llys",
               "TEXT_BEFORE": "Os ydych chi eisiau uwchlwytho dogfennau ar ôl y terfyn amser ar gyfer uwchlwytho, efallai y bydd y barnwr yn penderfynu na fydd dogfennau hwyr yn cael eu hystyried fel rhan o’r hawliad. Os ydych chi eisiau uwchlwytho dogfennau ar ôl y terfyn amser, mae angen i chi "
             }
           }
@@ -891,7 +891,7 @@
             "TEXT_AFTER": " i ofyn i’r llys ystyried newid manylion y gwrandawiad."
           },
           "LINK_2": {
-            "TEXT": "ffioedd mewn achosion sifil (yn agor mewn ffenestr newydd).",
+            "TEXT": "ffioedd mewn achosion sifil (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
           "PARAGRAPH_2": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad, bydd rhaid i chi dalu ffi. Efallai y cewch dalu ffi ostyngol os ydych chi’n gwneud mwy nag un cais."
@@ -904,7 +904,7 @@
           "LIST_3": "ffurflenni mewn print bras",
           "LIST_4": "canllawiau ar ffurf ffeil sain neu fformat hawdd ei ddarllen",
           "LINK_1": {
-            "TEXT": " Dod o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd).",
+            "TEXT": " Dod o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Er mwyn gofyn am gymorth gyda’ch gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle mae’r gwrandawiad yn cael ei gynnal. Gallwch weld ym mha lys mae eich gwrandawiad yn cael ei wrando yn y gorchymyn cyfarwyddiadau."
           }
         }
