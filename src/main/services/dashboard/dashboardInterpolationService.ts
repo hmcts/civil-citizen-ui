@@ -184,7 +184,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
 
     valuesMap.set('{QM_VIEW_MESSAGES_URL_CLICK}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
-      .replace(':locationName', 'QM_VIEW_MESSAGES_URL')
+      .replace(':locationName', 'QM_VIEW_MESSAGES_URL_CLICK')
       .replace(':notificationId', notificationId));
   }
 
