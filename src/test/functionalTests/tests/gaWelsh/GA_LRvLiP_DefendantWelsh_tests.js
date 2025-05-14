@@ -26,6 +26,6 @@ Scenario('Response with RejectAll and DisputeAll - Defendat Welsh - GA (Ask for 
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
+    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe', undefined, '', 'BOTH');
   }
 });
