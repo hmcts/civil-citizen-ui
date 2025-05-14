@@ -32,7 +32,7 @@ import {
   findCourtTribunalUrl,
   thirdPartyDebtOrderUrl,
   warrantOfControlUrl,
-  whatToDoUrl,
+  whatToDoUrl, applicationNoticeUrl,
 } from 'common/utils/externalURLs';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
@@ -254,6 +254,13 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_AFTER`, null, true);
         break;
       }
+      case QualifyingQuestionTypeOption.GA_OFFLINE: {
+        showAnythingElseSection = true;
+        pageSection
+          .addLink(`${qualifySectionInfo}.GA_OFFLINE.LINK_1.TEXT`, applicationNoticeUrl, `${qualifySectionInfo}.GA_OFFLINE.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.GA_OFFLINE.LINK_1.TEXT_AFTER`, null, true)
+          .addLink(`${qualifySectionInfo}.GA_OFFLINE.LINK_2.TEXT`, findCourtTribunalUrl, null, '.', null, true);
+        break;
+      }
 
     }
   }
@@ -281,6 +288,7 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.SETTLE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SETTLE_CLAIM',
   [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS]: 'PAGES.QM.QUALIFY.TITLES.AMEND_CLAIM_DETAILS',
   [QualifyingQuestionTypeOption.CLAIM_ENDED]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_ENDED',
+  [QualifyingQuestionTypeOption.GA_OFFLINE]: 'PAGES.QM.QUALIFY.TITLES.GA_OFFLINE',
 };
 
 const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {

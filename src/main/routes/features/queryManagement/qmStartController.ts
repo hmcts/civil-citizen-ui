@@ -2,12 +2,17 @@ import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
   BACK_URL,
-  QM_FOLLOW_UP_URL,
+  QM_FOLLOW_UP_URL, QM_INFORMATION_URL,
   QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
 } from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
-import {RadioButtonItems, WhatDoYouWantToDo, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
+import {
+  QualifyingQuestionTypeOption,
+  RadioButtonItems,
+  WhatDoYouWantToDo,
+  WhatToDoTypeOption,
+} from 'form/models/queryManagement/queryManagement';
 import { t } from 'i18next';
 import {
   deleteQueryManagement,
@@ -18,21 +23,40 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {
+  isGaForLipsEnabledAndLocationWhiteListed,
+} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getClaimById} from 'modules/utilityService';
 
 const qmStartController = Router();
 const qmStartViewPath = 'features/queryManagement/qm-questions-template.njk';
 
 const QUERY_MANAGEMENT_PROPERTY_NAME = 'whatDoYouWantToDo';
 
-const getRedirectPath = (option: WhatToDoTypeOption) => {
-  return redirectionMap[option] || QM_WHAT_DO_YOU_WANT_TO_DO_URL;
+const getRedirectPath = (option: WhatToDoTypeOption, isGaOnline = false) => {
+  return redirectionMap(isGaOnline)[option] || QM_WHAT_DO_YOU_WANT_TO_DO_URL;
 };
 
-const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
-  [WhatToDoTypeOption.CHANGE_CASE]: APPLICATION_TYPE_URL,
-  [WhatToDoTypeOption.GET_SUPPORT]: QUERY_MANAGEMENT_CREATE_QUERY,
-  [WhatToDoTypeOption.FOLLOW_UP]: QM_FOLLOW_UP_URL,
-  [WhatToDoTypeOption.SOMETHING_ELSE]: QUERY_MANAGEMENT_CREATE_QUERY,
+const isGAOnline = async (req: AppRequest) => {
+  const claim = await getClaimById(req.params.id, req, true);
+  const isInEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+  if (isInEACourt) {
+    return !claim.isAnyPartyBilingual();
+
+  } else {
+    return false;
+  }
+
+};
+
+const redirectionMap = (isGaOnline = false): Partial<Record<WhatToDoTypeOption, string>> =>
+{
+  return {
+    [WhatToDoTypeOption.CHANGE_CASE]: isGaOnline ? APPLICATION_TYPE_URL : QM_INFORMATION_URL.replace(':qmType', WhatToDoTypeOption.CHANGE_CASE).replace(':qmQualifyOption', QualifyingQuestionTypeOption.GA_OFFLINE),
+    [WhatToDoTypeOption.GET_SUPPORT]: QUERY_MANAGEMENT_CREATE_QUERY,
+    [WhatToDoTypeOption.FOLLOW_UP]: QM_FOLLOW_UP_URL,
+    [WhatToDoTypeOption.SOMETHING_ELSE]: QUERY_MANAGEMENT_CREATE_QUERY,
+  };
 };
 
 const getItems = (option: string, lng: string) => {
@@ -94,7 +118,9 @@ qmStartController.post(QM_START_URL, (async (req, res , next) => {
       return renderView(claimId,form, res);
     }
     await saveQueryManagement(redisKey, form.model, QUERY_MANAGEMENT_PROPERTY_NAME, req);
-    const redirectPath = getRedirectPath(option);
+
+    const isGaOnline = await isGAOnline(req as AppRequest);
+    const redirectPath = getRedirectPath(option, isGaOnline);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectPath.replace(':qmType', option)));
   } catch (error) {
     next(error);

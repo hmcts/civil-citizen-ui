@@ -618,7 +618,8 @@
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
           "CHANGE_THE_HEARING_DATE": "Change the hearing date",
           "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Change something about the hearing",
-          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing"
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing",
+          "GA_OFFLINE": "Sut i wneud cais i’r llys"
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
@@ -677,7 +678,7 @@
         }
       },
       "CAPTIONS": {
-        "CHANGE_CASE": "CAPTION CHANGE_CASE",
+        "CHANGE_CASE": "Gwneud cais i’r llys",
         "GET_UPDATE": "Cael yr wybodaeth ddiweddaraf am fy achos",
         "SEND_UPDATE": "Anfonwch ddiweddariad am fy achos",
         "SEND_DOCUMENTS": "Anfon dogfennau",
@@ -908,6 +909,16 @@
           "LINK_1": {
             "TEXT": "Find the contact details for the court (opens in a new window)",
             "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
+          }
+        },
+        "GA_OFFLINE": {
+          "LINK_1": {
+            "TEXT": "lenwi ffurflen N244 (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Er mwyn gwneud cais i’r llys rhaid i chi ",
+            "TEXT_AFTER": " a dychwelyd y ffurflen wedi’i llenwi i’r llys sy’n delio â’ch hawliad."
+          },
+          "LINK_2": {
+            "TEXT": "Dewch o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)"
           }
         }
       },
