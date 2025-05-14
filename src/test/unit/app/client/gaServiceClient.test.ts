@@ -41,7 +41,6 @@ appReq.session = {
   fileUpload: undefined,
   issuedAt: 150,
   dashboard: undefined,
-  isFollowUpQuery: undefined,
 };
 
 describe('GA Service Client', () => {
