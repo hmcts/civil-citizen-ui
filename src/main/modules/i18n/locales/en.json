@@ -4589,7 +4589,7 @@
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
       "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
-      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest. Please note any interest will accrue until judgment or settlement date.",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of judgment, settlement agreement or earlier payment.\nThe above amount does not include the claim fee and any fixed costs claimed which are payable in addition and if judgment is entered on an admission, settlement agreement made or earlier payment, they will be included in the total judgment, settlement agreement or earlier payment amount.",
       "TITLE": "Your repayment plan"
     },
     "REPAYMENT_PLAN_SUMMARY": {
