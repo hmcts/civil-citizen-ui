@@ -105,6 +105,7 @@ class CaseProgressionSteps {
 
   verifyBundle(claimRef, claimType) {
     latestUpdateTab.open(claimRef, claimType,true, false, false, false, false, true);
+    I.wait(5);
     bundlesTab.open(claimRef);
   }
 }
