@@ -19,6 +19,10 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 const claimId = '12345';
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 
+jest.mock('services/dashboard/dashboardService', () => ({
+  getNotifications: jest.fn(),
+}));
+
 describe('View query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
