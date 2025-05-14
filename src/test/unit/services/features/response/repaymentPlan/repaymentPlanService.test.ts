@@ -1,4 +1,5 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as repaymentUtils from 'common/utils/repaymentUtils';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
@@ -17,7 +18,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('common/utils/repaymentUtils', () => ({fetchClaimTotal: jest.fn(() => Promise.resolve({}))}));
+jest.mock('common/utils/repaymentUtils');
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;
@@ -30,9 +31,11 @@ const FIRST_PAYMENT_DATE = new Date('2023-02-14T00:00:00.000');
 
 describe('Repayment Plan Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockFetchClaimTotal = repaymentUtils.fetchClaimTotal as jest.Mock;
   describe('getRepaymentPlanForm', () => {
     it('should get empty form when no data exist', async () => {
       //When
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(undefined));
       const form = await getRepaymentPlanForm(new Claim());
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
@@ -45,6 +48,7 @@ describe('Repayment Plan Service', () => {
 
     it('should get empty form when repayment plan does not exist for part admit journey', async () => {
       //Given
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(undefined));
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -62,6 +66,7 @@ describe('Repayment Plan Service', () => {
 
     it('should get empty form when repayment plan does not exist for full admit journey', async () => {
       //Given
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(undefined));
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -78,7 +83,7 @@ describe('Repayment Plan Service', () => {
 
     it('should return populated form when repayment plan exists for part admit', async () => {
       //Given
-
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT));
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -108,7 +113,7 @@ describe('Repayment Plan Service', () => {
 
     it('should return populated form when repayment plan exists for full admit', async () => {
       //Given
-
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT));
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
@@ -135,6 +140,7 @@ describe('Repayment Plan Service', () => {
     });
 
     it('part admit - should set total claimed amount to be partial amount defendant is claiming to be', async () => {
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(PART_ADMIT_AMOUNT));
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
       claim.partialAdmission = {};
@@ -148,6 +154,7 @@ describe('Repayment Plan Service', () => {
     });
 
     it('should not set total claim amount to be partial amount if partial admission is false', async () => {
+      mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT));
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
 
@@ -161,6 +168,7 @@ describe('Repayment Plan Service', () => {
     it('should save repayment paln data successfully when claim exists for part admit journey', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
+        mockFetchClaimTotal.mockImplementation(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT));
         const claim = new Claim();
         claim.partialAdmission = new PartialAdmission();
         claim.partialAdmission.paymentIntention = new PaymentIntention();
