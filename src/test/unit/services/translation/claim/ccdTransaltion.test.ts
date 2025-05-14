@@ -19,6 +19,7 @@ import {InterestClaimFromType, InterestEndDateType} from 'form/models/claimDetai
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {TotalInterest} from 'form/models/interest/totalInterest';
 import {CCDInterestType} from 'models/ccdResponse/ccdInterestType';
+import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
@@ -121,5 +122,35 @@ describe('translate draft claim to ccd version for interest calculation', () => 
     expect(ccdClaim.interestFromSpecificDateDescription).toBe(undefined);
     expect(ccdClaim.interestClaimUntil).toBe(InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE);
     expect(ccdClaim.submittedDate).toEqual(new Date('2025-01-01T15:00:00'));
+  });
+});
+
+describe('translate statement of truth to ccd version', () => {
+  it('when statement of truth misses name & role', () => {
+    //given
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: undefined};
+    const expected = {name: undefined, role: undefined} as CcdStatementOfTruth;
+
+    //when
+    const ccdClaim = translateDraftClaimToCCD(claim, req as AppRequest);
+
+    //then
+    expect(ccdClaim.uiStatementOfTruth).toEqual(expected);
+  });
+
+  it('when statement of truth contains name and role', () => {
+    //given
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.statementOfTruth = {isFullAmountRejected: false, type: undefined, signerName: 'Clay Mint', signerRole: 'claimant'};
+    const expected = {name: 'Clay Mint', role: 'claimant'} as CcdStatementOfTruth;
+
+    //when
+    const ccdClaim = translateDraftClaimToCCD(claim, req as AppRequest);
+
+    //then
+    expect(ccdClaim.uiStatementOfTruth).toEqual(expected);
   });
 });
