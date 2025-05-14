@@ -8,7 +8,7 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ViewObjects} from 'form/models/queryManagement/viewQuery';
-import * as dashboardService from 'services/dashboard/dashboardService'
+import * as dashboardService from 'services/dashboard/dashboardService';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {CivilServiceClient} from 'client/civilServiceClient';
