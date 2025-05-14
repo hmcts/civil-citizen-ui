@@ -953,6 +953,23 @@
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
         "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+      },
+      "VIEW_QUERY_DETAILS": {
+        "PAGE_TITLE": "Manylion y neges",
+        "YOUR_MESSAGE": "Eich neges",
+        "COURTS_RESPONSE": "Ymateb y llys",
+        "MESSAGE_DETAILS": "Manylion y neges",
+        "COURT_MESSAGE_DETAILS": "Manylion yr ymateb",
+        "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
+        "MESSAGE_ABOUT_HEARING_YES": "Ydy",
+        "MESSAGE_ABOUT_HEARING_NO": "Nac ydy",
+        "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
+        "UPLOADED_DOCUMENTS": "Dogfennau wedi’u huwchlwytho (dewisol)",
+        "SENT_BY": "Anfonwyd gan",
+        "SENT_BY_YOU": "Chi",
+        "SENT_BY_COURT_STAFF": "Staff y Llys",
+        "SENT_ON": "Anfonwyd ar",
+        "SEND_FOLLOW_UP": "Anfon neges ddilynol"
       }
     },
     "SUBJECT_TO_FRC": {
@@ -5853,8 +5870,8 @@
     }
   },
   "BANNERS" : {
-    "CUI_CP" : {
-      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 ar 4 Rhagfyr 2024 a 02:00 ar 5 Rhagfyr 2024 tra bydd Cynnydd Achosion CUI yn cael ei ryddhau."
+    "CUI_ILA" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr Citizen ar gael rhwng 19:00 ar y 13eg o Fai a 02:00 ar y 14eg  o Fai 2025"
     }
   }
 }
