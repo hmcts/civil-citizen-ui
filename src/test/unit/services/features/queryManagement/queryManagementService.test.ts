@@ -456,7 +456,7 @@ describe('getSummaryList', () => {
                     },
                     actions: {
                       items: [{
-                        href: '/case/1/qm/:queryId/follow-up-message?id=1',
+                        href: '/case/1/qm/1/follow-up-message?id=1',
                         text: 'Remove document',
                         visuallyHiddenText: 'name',
                       }],
@@ -468,7 +468,7 @@ describe('getSummaryList', () => {
         };
 
     const appRequest: AppRequest = {
-      params: { id: '1', appId: '89' },
+      params: { id: '1', appId: '89',  queryId: '1'},
       session: {
         fileUpload: undefined,
       },
