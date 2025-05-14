@@ -8,6 +8,10 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ViewObjects} from 'form/models/queryManagement/viewQuery';
+import * as dashboardService from 'services/dashboard/dashboardService'
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {CivilServiceClient} from 'client/civilServiceClient';
 const mockBuildQueryListItems = ViewQueriesService.ViewQueriesService.buildQueryListItems as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
@@ -107,6 +111,24 @@ describe('View query controller', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
       mockBuildQueryListItems.mockReturnValue([]);
+      const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
+      expect(res.text).toContain('Messages');
+      expect(res.text).not.toContain('Test Subject');
+    });
+
+    it('should register click for response notification', async () => {
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claim);
+      mockBuildQueryListItems.mockReturnValue([]);
+      const dashboardNotif = new DashboardNotification('123', '', '',
+        'The court has responded to the message you sent.', '', 'Click', undefined, undefined, '', '');
+      const dashboardNotifList = new DashboardNotificationList();
+      dashboardNotifList.items = Array(dashboardNotif);
+      jest.spyOn(dashboardService, 'getNotifications').mockReturnValue(new Promise(
+        (resolve) => resolve(dashboardNotifList),
+      ));
+      CivilServiceClient.prototype.recordClick = jest.fn().mockResolvedValue({});
       const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
       expect(res.text).toContain('Messages');
       expect(res.text).not.toContain('Test Subject');
