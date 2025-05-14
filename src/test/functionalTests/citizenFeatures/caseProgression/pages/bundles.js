@@ -1,6 +1,5 @@
 const ContactUs = require('../../common/contactUs');
 const I = actor();
-const {retryUntilExists} = require('../../../specClaimHelpers/api/steps');
 
 const contactUs = new ContactUs();
 
