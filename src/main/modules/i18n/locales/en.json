@@ -559,7 +559,7 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
-        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "MESSAGE_TO_THE_COURT": "If you still need an update on your claim, you can send a message to the court.",
         "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
         "SEND_A_MESSAGE": "Send a message"
       },
@@ -720,19 +720,19 @@
           "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended.",
+          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
           "PARAGRAPH_2": "The defendant can decide to&#58",
           "LI_1": "pay the full amount",
           "LI_2": "offer to pay a different amount (if they think they owe less)",
           "LI_3": "defend the claim (if they do not think they owe any money)",
-          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where they defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
           "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
           "LINK_1": {
             "TEXT": "request a county court judgment (CCJ)",
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
           "LINK_2": {
-            "TEXT": "what happens when a CCJ is issued against you (opens in a new window)",
+            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
@@ -786,7 +786,7 @@
           "LINK_1": {
             "TEXT": "making an application",
             "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
-            "TEXT_AFTER": " , you will have to pay a fee."
+            "TEXT_AFTER": ", you will have to pay a fee."
           },
           "LINK_2": {
             "TEXT": "Check the fees list (opens in a new window)",
@@ -842,12 +842,9 @@
             "TEXT": "attachment of earnings order (opens in a new window)"
           },
           "LINK_4": {
-            "TEXT": "third-party debt order (opens in a new window)"
+            "TEXT": "third-party debt order or charging order (opens in a new window)"
           },
           "LINK_5": {
-            "TEXT": "charging order (opens in a new window)"
-          },
-          "LINK_6": {
             "TEXT": "check the civil fees list (opens in a new window)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
@@ -901,6 +898,7 @@
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "You can ask for help and support during your hearing.",
+          "PARAGRAPH_2": "For example, this could be:",
           "LIST_1": "ramps or accessible toilets",
           "LIST_2": "a hearing loop",
           "LIST_3": "forms in large print",
