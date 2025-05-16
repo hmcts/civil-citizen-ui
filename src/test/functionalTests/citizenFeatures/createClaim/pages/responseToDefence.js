@@ -132,6 +132,7 @@ class ResponseToDefence {
   }
 
   async acceptOrRejectTheAmountCYA(acceptOrReject) {
+    I.waitForClickable(paths.buttons.submit_response);
     I.waitForContent('Do you accept or reject the defendant\'s admission?');
     if (acceptOrReject == 'accept') {
       await I.see('I accept this amount');
@@ -143,6 +144,7 @@ class ResponseToDefence {
   }
 
   async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
+    I.waitForClickable(paths.buttons.save_and_continue);
     I.waitForContent('How they want to pay?');
     if (acceptOrReject == 'accept') {
       await I.see('Yes');
