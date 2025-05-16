@@ -163,24 +163,25 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
   if (isLrQmOn) {
     const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {
-      if (isGaOnlineFlag.isGAWelsh) { // the GA is online and user is bilingual
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+        removeTargetBlank: true,
+      };
+    } else { // ga is offline
+      if (isGaOnlineFlag.isGAWelsh) { // the GA is offline and user is bilingual
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
           url: GA_SUBMIT_OFFLINE,
         };
-      } else { // if GA in online and user is not bilingual
+      } else {
+        // TODO I'm not sure we need this ask bi's
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
-          removeTargetBlank: true,
+          url: applicationNoticeUrl,
         };
       }
-    }/* else { // if GA is offline -> I believe is prod issue.
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: applicationNoticeUrl,
-      };
-    }*/
+    }
 
   } else {
     if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()

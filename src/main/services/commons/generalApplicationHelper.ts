@@ -1,6 +1,5 @@
 import {Claim} from 'models/claim';
-import {
-  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled,
+import {isGaForWelshEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
 
@@ -13,7 +12,7 @@ class GaInformation {
 export const isGaOnline = async (claim: Claim): Promise<GaInformation> => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+  const isEaCourt = true;//await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   if ((claim.defendantUserDetails !== undefined ||
       (claim.isLRDefendant() && !!claim.respondentSolicitorDetails))
     && !isSettledOrDiscontinued) { // when the claims is not yet assign to the defendant and not settled or discontinued
@@ -26,6 +25,7 @@ export const isGaOnline = async (claim: Claim): Promise<GaInformation> => {
   } else { //is in EA court
     const welshGaEnabled = await isGaForWelshEnabled();
     if (claim.isAnyPartyBilingual() && !welshGaEnabled) { // if the claim is in EA court and any party is bilingual
+      gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
     } else if (isSettledOrDiscontinued && !claim.previousCCDState) { //when settled or discontinued and no previous state old claims -> ga is offline
       gaInformation.isGaOnline = false;
