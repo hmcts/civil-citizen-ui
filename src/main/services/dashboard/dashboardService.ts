@@ -38,8 +38,8 @@ const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', '
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
+  const isLrQmIsEnabled = await isLRQueryManagementEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
-
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     for (const item of dashboard.items) {
@@ -55,17 +55,19 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
-    //exclude Applications sections
-    if (!isGAFlagEnable
-      || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
-      || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-      || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
-      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-      //TODO add the code change the status of taskList.
-    } else {
-      //if (isGAlink) {
-      //  dashboard.items = dashboard.items.filter(item => GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-      //}
+    if (isLrQmIsEnabled) {
+      const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
+      if (!isGaOnlineFlag.isGaOnline) {
+        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      }
+    } else { // prod code
+      //exclude Applications sections
+      if (!isGAFlagEnable
+          || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
+          || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
+          || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
+        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      }
     }
 
     return dashboard;
@@ -159,7 +161,7 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 
 export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string): Promise<iWantToLinks> => {
 
-  const isLrQmOn = await isLRQueryManagementEnabled();
+  const isLrQmOn = false;//await isLRQueryManagementEnabled();
   if (isLrQmOn) {
     const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {
@@ -175,7 +177,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
           url: GA_SUBMIT_OFFLINE,
         };
       } else {
-        // TODO I'm not sure we need this ask bi's
+        // I'm not sure if we need this
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
           url: applicationNoticeUrl,

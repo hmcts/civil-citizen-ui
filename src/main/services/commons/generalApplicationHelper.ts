@@ -13,8 +13,10 @@ export const isGaOnline = async (claim: Claim): Promise<GaInformation> => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
   const isEaCourt = true;//await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-  if ((claim.defendantUserDetails !== undefined ||
-      (claim.isLRDefendant() && !!claim.respondentSolicitorDetails))
+  if (claim.isCaseIssuedPending()){
+    gaInformation.isGaOnline = false;
+  } else if ((claim.defendantUserDetails === undefined ||
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant
     && !isSettledOrDiscontinued) { // when the claims is not yet assign to the defendant and not settled or discontinued
     gaInformation.isGaOnline = false;
   } else if (claim.hasClaimTakenOffline() ||
