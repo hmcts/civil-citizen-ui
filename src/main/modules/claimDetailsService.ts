@@ -8,6 +8,11 @@ export const getTotalAmountWithInterestAndFees = async (claim: Claim) => {
   return (claim.totalClaimAmount || 0) + interestToDate + (convertToPoundsFilter(claim?.claimFee?.calculatedAmountInPence) || 0);
 };
 
+export const getTotalAmountWithInterest = async (claim: Claim) => {
+  const interestToDate = await calculateInterestToDate(claim);
+  return (claim.totalClaimAmount || 0) + interestToDate;
+};
+
 export const isFullAmountReject = (claim: Claim): boolean => {
   return claim.respondent1.responseType === ResponseType.PART_ADMISSION || claim.respondent1.responseType === ResponseType.FULL_DEFENCE;
 };

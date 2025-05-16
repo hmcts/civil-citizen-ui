@@ -1,4 +1,8 @@
-import {getTotalAmountWithInterestAndFees, isFullAmountReject} from '../../../main/modules/claimDetailsService';
+import {
+  getTotalAmountWithInterest,
+  getTotalAmountWithInterestAndFees,
+  isFullAmountReject,
+} from '../../../main/modules/claimDetailsService';
 import {convertToPoundsFilter} from '../../../main/common/utils/currencyFormat';
 import {deepCopy} from '../../utils/deepCopy';
 import {Claim} from '../../../main/common/models/claim';
@@ -46,6 +50,42 @@ describe('Claim Details service', () => {
       const totalAmount = await getTotalAmountWithInterestAndFees(claimWithoutInterest);
       //Then
       expect(totalAmount).toEqual(caseData.totalClaimAmount + convertToPoundsFilter(caseData.claimFee.calculatedAmountInPence));
+    });
+  });
+
+  describe('getTotalAmountWithInterest', () => {
+    const caseData = mockClaim.case_data;
+
+    it('should return total claim amount including interest', async () => {
+      //when
+      const claim = {
+        totalClaimAmount: 110,
+        hasInterest: () => true,
+        interest: { interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST, totalInterest: { amount: 90 } },
+        claimFee: {
+          code: 'FEE0204',
+          version: 4,
+          calculatedAmountInPence: 7000,
+        },
+        isInterestFromASpecificDate: () => false,
+      };
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .reply(200, claim.interest.totalInterest.amount.toString());
+
+      const totalAmount = await getTotalAmountWithInterest(claim as Claim);
+      //Then
+      expect(totalAmount).toEqual(claim.totalClaimAmount + claim.interest.totalInterest.amount);
+    });
+
+    it('should return total claim amount without interest', async () => {
+      //when
+      const claimWithoutInterest = deepCopy(caseData);
+      claimWithoutInterest.totalInterest = 0;
+      claimWithoutInterest['hasInterest'] = () => false;
+      const totalAmount = await getTotalAmountWithInterest(claimWithoutInterest);
+      //Then
+      expect(totalAmount).toEqual(caseData.totalClaimAmount);
     });
   });
 
