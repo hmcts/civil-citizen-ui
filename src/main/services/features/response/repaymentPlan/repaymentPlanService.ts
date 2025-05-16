@@ -2,8 +2,7 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import {Claim} from 'common/models/claim';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
-import {fetchClaimTotal} from 'common/utils/repaymentUtils';
-
+import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
@@ -20,7 +19,8 @@ const getForm = (totalClaimAmount: number, repaymentPlan: RepaymentPlan, firstRe
 
 const getRepaymentPlanForm = async (claim: Claim, isPartialAdmission?: boolean) => {
   try {
-    const totalClaimAmount = isPartialAdmission ? claim.partialAdmissionPaymentAmount() : await fetchClaimTotal(claim);
+
+    const totalClaimAmount = isPartialAdmission ? claim.partialAdmissionPaymentAmount() : await getTotalAmountWithInterest(claim);
     if (isPartialAdmission && claim.partialAdmission?.paymentIntention?.repaymentPlan) {
       const repaymentPlan = claim.partialAdmission.paymentIntention.repaymentPlan;
       const firstRepaymentDate = new Date(repaymentPlan.firstRepaymentDate);
