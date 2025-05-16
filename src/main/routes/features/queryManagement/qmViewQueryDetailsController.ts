@@ -18,9 +18,9 @@ const qmViewQueryDetailsController = Router();
 const viewQueriesPath = 'features/queryManagement/qm-view-query-details-template';
 const finishedClaim = Array.of(CaseState.CASE_DISMISSED, CaseState.CLOSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM);
 
-const renderView = async (res: Response, claimId: string, claim: Claim, lang: string, selectedQueryItem: QueryDetail): Promise<void> => {
+const renderView = async (res: Response, claimId: string, claim: Claim, selectedQueryItem: QueryDetail, queryId: string): Promise<void> => {
   const backLinkUrl = BACK_URL;
-  const followUpScreen = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId);
+  const followUpScreen = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
   const isClaimOffLine = finishedClaim.includes(claim.ccdState);
   res.render(viewQueriesPath, {
     pageTitle: 'PAGES.QM.VIEW_QUERY_DETAILS.PAGE_TITLE',
@@ -39,7 +39,7 @@ qmViewQueryDetailsController.get(QM_QUERY_DETAILS_URL, (async (req: Request, res
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const selectedQueryItem = ViewQueriesService.buildQueryListItemsByQueryId(claim, queryId, lang);
-    await renderView(res, claimId, claim, lang, selectedQueryItem);
+    await renderView(res, claimId, claim, selectedQueryItem, queryId);
   } catch (error) {
     next(error);
   }

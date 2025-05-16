@@ -1,5 +1,5 @@
 import {NextFunction, Response, Router} from 'express';
-import {BACK_URL, QM_CYA, QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
+import {BACK_URL, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
@@ -20,7 +20,7 @@ const upload = multer({
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', req.params.queryId);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
@@ -41,9 +41,10 @@ const pageHeaders = {
 sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const queryId = req.params.queryId;
     const queryManagement = await getQueryManagement(claimId, req);
     const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
-    const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
+    const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
     let form = new GenericForm(sendFollowQuery);
     const formattedSummary = summarySection(
       {
@@ -72,8 +73,9 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
 sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file-upload'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const queryId = req.params.queryId;
     const queryManagement = await getQueryManagement(claimId, req);
-    const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE);
+    const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
     const existingQuery = queryManagement?.sendFollowUpQuery;
     const sendFollowUpQuery = new SendFollowUpQuery(req.body['messageDetails']);
     if (existingQuery) {
@@ -97,8 +99,9 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       await getSummaryList(formattedSummary, req, true);
       return await renderView(form, claimId, res, formattedSummary, req);
     } else {
+      sendFollowUpQuery.parentId = queryId;
       await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
-      return res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
+      return res.redirect(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId));
     }
   } catch (error) {
     next(error);
