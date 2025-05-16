@@ -4,6 +4,7 @@ import {PartialAdmission} from '../../../../common/models/partialAdmission';
 import {WhyDoYouDisagreeForm} from '../../../../common/models/whyDoYouDisagreeForm';
 import {RejectAllOfClaim} from '../../../../common/form/models/rejectAllOfClaim';
 import {ResponseType} from '../../../../common/form/models/responseType';
+import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
@@ -12,7 +13,7 @@ const getWhyDoYouDisagreeForm = async (claimId: string, type: ResponseType): Pro
   try {
     const claim = await getCaseDataFromStore(claimId);
     const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
-    whyDoYouDisagreeForm.claimAmount = claim.totalClaimAmount;
+    whyDoYouDisagreeForm.claimAmount = await getTotalAmountWithInterest(claim);
 
     if (type === ResponseType.PART_ADMISSION && claim.partialAdmission?.whyDoYouDisagree) {
       whyDoYouDisagreeForm.whyDoYouDisagree = claim.partialAdmission.whyDoYouDisagree;
