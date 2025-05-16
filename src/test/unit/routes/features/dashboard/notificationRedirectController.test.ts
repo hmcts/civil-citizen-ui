@@ -74,6 +74,34 @@ describe('Notification Redirect Controller - Get', () => {
 
   });
 
+  it('Redirect to view queries page', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'QM_VIEW_MESSAGES_URL_CLICK')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/qm/view-query');
+      });
+
+  });
+
   it('Redirect to gov payment page', async () => {
     //given
     const claim: Claim = new Claim();
