@@ -268,8 +268,13 @@ const getManualDetermination = (claim: Claim, claimId: string, lang: string) => 
 
 const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => {
   const ccjRequestAdmission = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_ADMISSION);
-  return ccjRequestAdmission ? Array.of(
-    setUpDocumentLinkObject(ccjRequestAdmission.documentLink, ccjRequestAdmission.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST')) : [];
+  const docLink1 =  ccjRequestAdmission ?
+    setUpDocumentLinkObject(ccjRequestAdmission.documentLink, ccjRequestAdmission.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST') : undefined;
+  const translatedccjRequestAdmission = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_ADMISSION_TRANSLATED);
+  const docLink2 = translatedccjRequestAdmission
+    ? setUpDocumentLinkObject(translatedccjRequestAdmission.documentLink, translatedccjRequestAdmission.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CCJ_REQUEST')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) => {
@@ -286,8 +291,13 @@ const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) 
 
 const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string) => {
   const ccjRequestDetermination = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_DETERMINATION);
-  return ccjRequestDetermination ? Array.of(
-    setUpDocumentLinkObject(ccjRequestDetermination.documentLink, ccjRequestDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST')) : [];
+  const docLink1 =  ccjRequestDetermination ?
+    setUpDocumentLinkObject(ccjRequestDetermination.documentLink, ccjRequestDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST') : undefined;
+  const translatedccjRequestDetermination = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_DETERMINATION_TRANSLATED);
+  const docLink2 = translatedccjRequestDetermination
+    ? setUpDocumentLinkObject(translatedccjRequestDetermination.documentLink, translatedccjRequestDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CCJ_REQUEST')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => {

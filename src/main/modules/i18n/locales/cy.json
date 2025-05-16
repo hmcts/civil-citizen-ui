@@ -5111,6 +5111,7 @@
     },
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "Cais am Ddyfarniad Llys Sirol",
+      "TRANSLATED_CCJ_REQUEST": "Translated County Court Judgment request",
       "CLAIMANT_DQ": "Holiadur Cyfarwyddiadau'r Hawlydd",
       "TRANSLATED_CLAIMANT_DQ": "Holiadur Cyfarwyddiadau Hawlydd a Gyfieithwyd",
       "CLAIMANT_RESPONSE_RECEIPT": "Derbynneb am ymateb yr hawlydd",
