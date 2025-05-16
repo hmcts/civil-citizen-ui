@@ -9,7 +9,6 @@ import {
   isCarmEnabledForCase,
   isGaForLipsEnabled,
   isQueryManagementEnabled,
-  isGAlinkEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -55,7 +54,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
     const isGAFlagEnable = await isGaForLipsEnabled();
-    const isQMLinkEnabled = await isGAlinkEnabled(claim);
+    //const isQMLinkEnabled = await isGaOnline(claim);
     if (isDashboardEnabled) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
@@ -63,7 +62,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable, isQMLinkEnabled);
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -113,7 +112,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks : iWantToLinks[] = [];
 
-  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng, isGAlinkEnabled));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   const viewMessages = await getViewMessagesLink(req, claim, lng);

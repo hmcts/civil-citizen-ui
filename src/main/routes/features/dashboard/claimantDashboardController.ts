@@ -25,7 +25,6 @@ import {
   isCarmEnabledForCase,
   isGaForLipsEnabled,
   isQueryManagementEnabled,
-  isGAlinkEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -85,10 +84,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const isGAFlagEnable = await isGaForLipsEnabled();
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
       const disableSendMessage = !claim.hasClaimTakenOffline() && !claim.hasClaimBeenDismissed();
-      const isGAQMlinkEnabled = await isGAlinkEnabled(claim);
+      //const isGAQMlinkEnabled = await isGAlinkEnabled(claim);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-        = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable, isGAQMlinkEnabled);
+        = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
       hearing.forEach((task) => {
         if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -148,7 +147,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
 
-  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng, isGAlinkEnabled));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   const viewMessages = await getViewMessagesLink(req, claim, lng);
