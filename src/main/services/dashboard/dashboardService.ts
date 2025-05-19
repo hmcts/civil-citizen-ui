@@ -40,6 +40,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isLrQmIsEnabled = await isLRQueryManagementEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
+  const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     for (const item of dashboard.items) {
@@ -56,7 +57,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     if (isLrQmIsEnabled) {
-      const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
+      const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
       //TODO add the logic of show or not the task list Items
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
@@ -164,9 +165,11 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
 
   const isLrQmOn = await isLRQueryManagementEnabled();
   const isLIPQmOn = await isQueryManagementEnabled(claim.submittedDate);
-  //TODO remove the logic when is LIP QM is enabled
+
   if (isLrQmOn && !isLIPQmOn) {
-    const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
+    const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+    const welshGaEnabled = await isGaForWelshEnabled();
+    const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
@@ -179,16 +182,16 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
           url: GA_SUBMIT_OFFLINE,
         };
-      } else {
+      } /*else {
         // I'm not sure if we need this
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
           url: applicationNoticeUrl,
         };
-      }
+      }*/
     }
 
-  } else {
+  } else { // Prod code
     if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
       && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
       const welshGaEnabled = await isGaForWelshEnabled();
