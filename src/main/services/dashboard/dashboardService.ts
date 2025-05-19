@@ -56,9 +56,8 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
-    if (isLrQmIsEnabled) {
+    if (isLrQmIsEnabled) { // logic with LR query management
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
-      //TODO add the logic of show or not the task list Items
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }

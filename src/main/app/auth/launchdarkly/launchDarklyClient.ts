@@ -1,8 +1,6 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 import {TestData} from 'launchdarkly-node-server-sdk/integrations';
-import {Claim} from 'models/claim';
-import {CaseState} from 'form/models/claimDetails';
 
 let ldClient: LDClient;
 let testData: TestData;
@@ -189,11 +187,6 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
   return await getFlagValue(IS_DEFENDANT_NOC_ONLINE_FOR_CASE, epoch) as boolean;
 }
 
-export async function isGAlinkEnabled(claim: Claim): Promise<boolean> {
-  const isLRQueryManagementEnabled = await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
-  const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  if (isLRQueryManagementEnabled && isSettledOrDiscontinued && claim.previousCCDState){
-    return await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-  }
-  return false;
+export async function isLRQueryManagementEnabled(): Promise<boolean> {
+  return await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
 }
