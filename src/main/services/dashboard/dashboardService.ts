@@ -57,6 +57,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
     if (isLrQmIsEnabled) {
       const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
+      //TODO add the logic of show or not the task list Items
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }
@@ -161,8 +162,10 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 
 export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string): Promise<iWantToLinks> => {
 
-  const isLrQmOn = false;//await isLRQueryManagementEnabled();
-  if (isLrQmOn) {
+  const isLrQmOn = await isLRQueryManagementEnabled();
+  const isLIPQmOn = await isQueryManagementEnabled(claim.submittedDate);
+  //TODO remove the logic when is LIP QM is enabled
+  if (isLrQmOn && !isLIPQmOn) {
     const isGaOnlineFlag = await isGaOnline(claim); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {
       return {
