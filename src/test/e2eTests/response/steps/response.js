@@ -453,7 +453,7 @@ class Response {
       I.fillField('#paymentAmount', '250');
       futureDate.setMonth(futureDate.getMonth() + 1);
     } else {
-      I.see('The total amount claimed is £1000.1. <br><br>This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.<br><br>The amount does not include the claim fee and any fixed costs which are payable in addition.', 'p.govuk-body-m');
+      I.see('The total amount claimed is £1000.1. This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.The amount does not include the claim fee and any fixed costs which are payable in addition.', 'p.govuk-body-m');
       I.fillField('#paymentAmount', '500');
     }
 
