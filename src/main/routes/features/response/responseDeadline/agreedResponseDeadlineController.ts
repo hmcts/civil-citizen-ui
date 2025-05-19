@@ -9,7 +9,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-// import {deadLineGuard} from 'routes/guards/deadLineGuard';
+import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
@@ -19,8 +19,8 @@ const agreedResponseDeadlineController = Router();
 
 agreedResponseDeadlineController
   .get(
-    // AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req: Request, res: Response, next: NextFunction) => {
-    AGREED_TO_MORE_TIME_URL,( async (req: Request, res: Response, next: NextFunction) => {
+    AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req: Request, res: Response, next: NextFunction) => {
+    // AGREED_TO_MORE_TIME_URL,( async (req: Request, res: Response, next: NextFunction) => {
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
@@ -38,8 +38,8 @@ agreedResponseDeadlineController
       }
     }) as RequestHandler)
   .post(
-    // AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req, res, next: NextFunction) => {
-    AGREED_TO_MORE_TIME_URL,( async (req, res, next: NextFunction) => {
+    AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req, res, next: NextFunction) => {
+    // AGREED_TO_MORE_TIME_URL,( async (req, res, next: NextFunction) => {
       const {year, month, day} = req.body;
       const redisKey = generateRedisKey(<AppRequest>req);
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
