@@ -20,7 +20,6 @@ import {getRedisStoreForSession} from 'modules/utilityService';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
-  BASE_CASE_PROGRESSION_URL,
   BASE_CLAIM_URL,
   BASE_CLAIMANT_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_RESPONSE_URL,
@@ -80,7 +79,7 @@ import {
   INFORM_OTHER_PARTIES_URL,
   IS_CASE_READY_URL,
   ORDER_JUDGE_URL,
-  PAYING_FOR_APPLICATION_URL, QM_CYA,
+  PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
   QM_INFORMATION_URL,
   QM_START_URL,
@@ -100,7 +99,6 @@ import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragem
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
-import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
@@ -192,7 +190,7 @@ app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
-app.use(BASE_CASE_PROGRESSION_URL, isCaseProgressionV1Enabled);
+//app.use(BASE_CASE_PROGRESSION_URL, isCaseProgressionV1Enabled);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
@@ -219,6 +217,8 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   QM_INFORMATION_URL,
   QM_VIEW_QUERY_URL,
   QM_CYA,
+  QM_FOLLOW_UP_CYA,
+  QM_FOLLOW_UP_MESSAGE,
   QUERY_MANAGEMENT_CREATE_QUERY,
 ], trackHistory);
 

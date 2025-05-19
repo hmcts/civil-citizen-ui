@@ -82,13 +82,13 @@ const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: stri
   if (isFollowUp){
     return [summaryRow(
       t('PAGES.QM.SEND_MESSAGE_CYA.ATTACHMENTS', {lng}),
-      buildDocLink(uploadedFiles, claimId),
+      buildDocLink(uploadedFiles, claimId, lng, isFollowUp),
       constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId),
       t('COMMON.BUTTONS.CHANGE', {lng}))];
   }
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.UPLOAD_DOCUMENTS', {lng}),
-    buildDocLink(uploadedFiles, claimId),
+    buildDocLink(uploadedFiles, claimId, lng),
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
@@ -237,8 +237,11 @@ const getStringDate = (query: CreateQuery): string => {
   return query.year + '-' + month + '-' + day;
 };
 
-const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string) => {
+const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng:string, isFollowUP = false) => {
   let docLinks = '';
+  if (isFollowUP && uploadedFiles.length === 0) {
+    return t('PAGES.QM.SEND_MESSAGE_CYA.NO_DOCUMENTS_UPLOADED', {lng});
+  }
   uploadedFiles.forEach(doc => {
     const docUrl = `${CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
       documentIdExtractor(doc.caseDocument.documentLink.document_binary_url))}`;
