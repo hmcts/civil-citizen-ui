@@ -8,7 +8,6 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraf
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
-
 jest.mock('../../../../../../../main/modules/oidc');
 
 describe('Why do you disagree Full Rejection Controller', () => {
