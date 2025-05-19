@@ -127,4 +127,36 @@ describe('General Application helper', () => {
     expect(expected).toEqual(result);
   });
 
+  it('should GA is offline when is settled with previousCCDState undefined', async () => {
+    //Given
+    const claim = new Claim();
+    claim.defendantUserDetails = 'test';
+    claim.ccdState = CaseState.CASE_SETTLED;
+
+    const expected = new GaInformation();
+    expected.isGaOnline = false;
+    expected.isGAWelsh = false;
+    //When
+    const result = isGaOnline(claim, true, false);
+
+    //Then
+    expect(expected).toEqual(result);
+  });
+
+  it('should GA is offline when is settled with previousCCDState', async () => {
+    //Given
+    const claim = new Claim();
+    claim.defendantUserDetails = 'test';
+    claim.ccdState = CaseState.CASE_SETTLED;
+    claim.previousCCDState = CaseState.AWAITING_APPLICANT_INTENTION;
+    const expected = new GaInformation();
+    expected.isGaOnline = true;
+    expected.isSettledOrDiscontinuedWithPreviousCCDState = true;
+    //When
+    const result = isGaOnline(claim, true, false);
+
+    //Then
+    expect(expected).toEqual(result);
+  });
+
 });
