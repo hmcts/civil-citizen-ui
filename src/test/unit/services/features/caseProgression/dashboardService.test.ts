@@ -1024,7 +1024,7 @@ describe('dashboardService', () => {
         baseLocation: '0909089',
       };
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en', true);
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
       //Then
       expect(result).toBeDefined();
