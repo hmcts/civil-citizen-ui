@@ -257,8 +257,13 @@ const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string)
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
   const manualDetermination = claim.getDocumentDetails(DocumentType.LIP_MANUAL_DETERMINATION);
-  return manualDetermination ? Array.of(
-    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST')) : [];
+  const docLink1 =  manualDetermination ?
+    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST') : undefined;
+  const translatedManualDetermination = claim.getDocumentDetails(DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedManualDetermination
+    ? setUpDocumentLinkObject(translatedManualDetermination.documentLink, translatedManualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => {
@@ -269,8 +274,14 @@ const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => 
 
 const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) => {
   const interlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOCUTORY_JUDGEMENT);
-  return interlocutoryJudgement ? Array.of(
-    setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')) : [];
+  const docLink1 = interlocutoryJudgement
+    ? setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  const translatedInterlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedInterlocutoryJudgement
+    ? setUpDocumentLinkObject(translatedInterlocutoryJudgement.documentLink, translatedInterlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string) => {
