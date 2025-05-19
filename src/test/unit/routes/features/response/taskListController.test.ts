@@ -69,7 +69,7 @@ describe('Claimant details', () => {
           expect(res.text).toContain('Respond to claim');
           expect(res.text).toContain('Submit');
           expect(res.text).toContain('Response deadline:');
-          expect(res.text).toContain('15 May 2025'); // Response deadline value
+          expect(res.text).toContain('15 May 2050'); // Response deadline value
           expect(res.text).toContain('Claim number:');
           expect(res.text).toContain(claim.case_data.legacyCaseReference);
           expect(res.text).toContain('Total claim amount:');

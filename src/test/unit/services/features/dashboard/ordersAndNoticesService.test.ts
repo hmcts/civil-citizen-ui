@@ -542,6 +542,24 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for lip translated manual determination', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for ccj admission', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
