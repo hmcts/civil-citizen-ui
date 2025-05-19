@@ -559,7 +559,7 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
-        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "MESSAGE_TO_THE_COURT": "If you still need an update on your claim, you can send a message to the court.",
         "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
         "SEND_A_MESSAGE": "Send a message"
       },
@@ -720,19 +720,19 @@
           "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended.",
+          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
           "PARAGRAPH_2": "The defendant can decide to&#58",
           "LI_1": "pay the full amount",
           "LI_2": "offer to pay a different amount (if they think they owe less)",
           "LI_3": "defend the claim (if they do not think they owe any money)",
-          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where they defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
           "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
           "LINK_1": {
             "TEXT": "request a county court judgment (CCJ)",
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
           "LINK_2": {
-            "TEXT": "what happens when a CCJ is issued against you (opens in a new window)",
+            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
@@ -786,7 +786,7 @@
           "LINK_1": {
             "TEXT": "making an application",
             "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
-            "TEXT_AFTER": " , you will have to pay a fee."
+            "TEXT_AFTER": ", you will have to pay a fee."
           },
           "LINK_2": {
             "TEXT": "Check the fees list (opens in a new window)",
@@ -842,12 +842,9 @@
             "TEXT": "attachment of earnings order (opens in a new window)"
           },
           "LINK_4": {
-            "TEXT": "third-party debt order (opens in a new window)"
+            "TEXT": "third-party debt order or charging order (opens in a new window)"
           },
           "LINK_5": {
-            "TEXT": "charging order (opens in a new window)"
-          },
-          "LINK_6": {
             "TEXT": "check the civil fees list (opens in a new window)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
@@ -901,6 +898,7 @@
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "You can ask for help and support during your hearing.",
+          "PARAGRAPH_2": "For example, this could be:",
           "LIST_1": "ramps or accessible toilets",
           "LIST_2": "a hearing loop",
           "LIST_3": "forms in large print",
@@ -953,6 +951,23 @@
         "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+      },
+      "VIEW_QUERY_DETAILS": {
+        "PAGE_TITLE": "Message details",
+        "YOUR_MESSAGE": "Your message",
+        "COURTS_RESPONSE": "Court's response",
+        "MESSAGE_DETAILS": "Message details",
+        "COURT_MESSAGE_DETAILS": "Response details",
+        "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
+        "MESSAGE_ABOUT_HEARING_YES": "Yes",
+        "MESSAGE_ABOUT_HEARING_NO": "No",
+        "HEARING_DATE": "What is the date of the hearing?",
+        "UPLOADED_DOCUMENTS": "Uploaded documents (optional)",
+        "SENT_BY": "Sent by",
+        "SENT_BY_YOU": "You",
+        "SENT_BY_COURT_STAFF": "Court staff",
+        "SENT_ON": "Sent on",
+        "SEND_FOLLOW_UP": "Send a follow up message"
       }
     },
     "SUBJECT_TO_FRC": {
@@ -5099,6 +5114,7 @@
       "CLAIMANT_DQ": "Claimant Directions Questionnaire",
       "TRANSLATED_CLAIMANT_DQ": "Translated Claimant Directions Questionnaire",
       "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
+      "TRANSLATED_CLAIMANT_RESPONSE_RECEIPT": "Translated claimant response receipt",
       "CLAIMANT_TIMELINE": "Claimant timeline of events",
       "COURT_DOCUMENTS": "Documents from the court",
       "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
@@ -5109,6 +5125,7 @@
       "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
+      "TRANSLATED_DETERMINATION_REQUEST": "Translated Determination request",
       "DRAFT_CLAIM": "Draft claim form",
       "FINAL_ORDER": "Judge final order",
       "PAGE_CAPTION": "Orders and notices from the court",

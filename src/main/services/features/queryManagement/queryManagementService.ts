@@ -82,6 +82,7 @@ export const createUploadDocLinks = async (req: AppRequest) => {
   uploadQMAdditionalFile.fileUpload = fileUpload;
   const form = new GenericForm(uploadQMAdditionalFile);
   form.validateSync();
+  delete uploadQMAdditionalFile.fileUpload; // release file memory
   if (!form.hasErrors()) {
     uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
   } else {
@@ -106,7 +107,7 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
 export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
   const queryManagement = claim.queryManagement;
-  const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
+  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement.createQuery;
 
   if (query) {
     const uploadedFiles = query.uploadedFiles;
