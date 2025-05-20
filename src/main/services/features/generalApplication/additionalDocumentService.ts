@@ -59,6 +59,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
   const form = new GenericForm(uploadedDocument);
   const uploadAdditionalDocuments = claim.generalApplication.uploadAdditionalDocuments;
   form.validateSync();
+  delete uploadedDocument.fileUpload; //release file memory
   if (!form.hasErrors()) {
     uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
     uploadAdditionalDocuments.push(uploadedDocument);
