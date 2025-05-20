@@ -39,8 +39,8 @@ const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', '
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isLrQmIsEnabled = await isLRQueryManagementEnabled();
+
   const welshGaEnabled = await isGaForWelshEnabled();
-  const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     for (const item of dashboard.items) {
@@ -56,10 +56,25 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
-    if (isLrQmIsEnabled) { // logic with LR query management
+    if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
+      const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      } else {
+        if (isGaOnlineFlag.isSettledOrDiscontinuedWithPreviousCCDState){ // in the case that all the application's tasklist are inactive with isSettledOrDiscontinuedWithPreviousCCDState
+          const taskItem = dashboard
+            .items
+            .find(item => item.categoryEn === 'Applications')
+            .tasks.find(task => task
+              .taskNameEn.includes('Contact the court to request a change to my case')
+                  && task.statusEn === 'Inactive');
+          if (taskItem) {
+            taskItem.statusEn = 'Optional';
+            taskItem.statusCy = 'Dewisol';
+          }
+        }
       }
     } else { // prod code
       //exclude Applications sections
