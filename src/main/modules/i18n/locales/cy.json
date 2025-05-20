@@ -4511,7 +4511,7 @@
       "HOW_OFTEN_RECEIVE_PAYMENTS": "Pa mor aml ydych chi am dderbyn y taliadau hyn?",
       "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "Bydd y llys yn derbyn pa mor aml mae’r diffynnydd am dalu. Byddwn ond yn ystyried eich dewis o ran pa mor aml y bydd yn talu os bydd cynllun gwahanol yn cael ei osod gan farnwr yn ddiweddarach.",
       "LENGTH": "Hyd y cynllun ad-dalu",
-      "LENGTH_SUBTITLE": "The final payment date may be later to reflect any additional interest accrued, any fixed costs claimed and claim fee added to the judgment, settlement agreement or earlier payment amount",
+      "LENGTH_SUBTITLE": "Efallai y bydd y dyddiad talu terfynol yn ddiweddarach i adlewyrchu unrhyw log ychwanegol a gronnwyd, unrhyw gostau sefydlog a hawlir a ffi’r hawliad a ychwanegwyd at y dyfarniad, y cytundeb setlo neu swm y taliad cynharach",
       "PAGE_TITLE": "Eich cynllun ad-dalu",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "REGULAR_PAYMENTS_IN_POUNDS": "Taliadau rheolaidd, mewn punnoedd",
