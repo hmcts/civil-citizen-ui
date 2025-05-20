@@ -1,7 +1,7 @@
 import { Pact, Matchers } from '@pact-foundation/pact';
 import config from 'config';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
-import { getOidcResponse } from '../../../main/app/auth/user/oidc';
+import { getOidcResponse, OidcResponse } from '../../../main/app/auth/user/oidc';
 
 jest.mock('config');
 
@@ -26,9 +26,8 @@ describe('Odic Pact Test', () => {
   });
 
   describe('get Oidc response', () => {
-    //TODO add 'id_token' when the provider test includes it
-    const odicResponse = {
-      // id_token: 'someIdToken',
+    const odicResponse: OidcResponse = {
+      id_token: 'someIdToken',
       access_token: 'someAccessToken',
     };
 
@@ -52,6 +51,7 @@ describe('Odic Pact Test', () => {
           headers: {'Content-Type': 'application/json'},
           body: {
             access_token: Matchers.like(odicResponse.access_token),
+            id_token: odicResponse.id_token,
           },
         },
       });
