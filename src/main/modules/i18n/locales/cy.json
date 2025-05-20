@@ -4362,7 +4362,7 @@
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Pam rydych chi'n anghytuno?",
-      "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi'r hawliad.",
+      "SUBTITLE": "The total amount, including any interest claimed to date, is £{{ claimAmount }}.",
       "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?"
     },
     "PARTNER": {
@@ -4416,6 +4416,7 @@
       "REQUEST": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn os na fyddwch yn talu ar unwaith.",
       "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
       "TITLE": "Pryd ydych chi eisiau talu?",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}.This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
