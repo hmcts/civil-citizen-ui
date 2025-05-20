@@ -10,17 +10,17 @@ export class GaInformation {
 export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  if (isSettledOrDiscontinued) {
-    if (!claim.previousCCDState) {
+  if (isSettledOrDiscontinued) { // if the claim is settled or discontinued
+    if (!claim.previousCCDState) { // if the claim is settled or discontinued and previous CCD state is undefined
       gaInformation.isGaOnline = false;
     } else {
-      gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true;
+      gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
     }
-  } else if (claim.isCaseIssuedPending()){
+  } else if (claim.isCaseIssuedPending()){ // if the claim is not yet issued
     gaInformation.isGaOnline = false;
   } else if ((claim.defendantUserDetails === undefined ||
-      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant
-    && !isSettledOrDiscontinued) { // when the claim is not yet assign to the defendant and not settled or discontinued
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
+    && !isSettledOrDiscontinued) {
     gaInformation.isGaOnline = false;
   } else if (claim.hasClaimTakenOffline() ||
       claim.hasClaimBeenDismissed()) { // not show the ga link if claim is taken offline or dismissed
