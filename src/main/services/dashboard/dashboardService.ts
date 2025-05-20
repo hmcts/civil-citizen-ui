@@ -181,17 +181,12 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
           url: GA_SUBMIT_OFFLINE,
         };
-      } /*else {
-        // I'm not sure if we need this
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: applicationNoticeUrl,
-        };
-      }*/
+      }
     }
 
   } else { // Prod code
-    if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+    if ((claim.ccdState &&
+        !claim.isCaseIssuedPending() && !claim.isClaimSettled()
       && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
       const welshGaEnabled = await isGaForWelshEnabled();
       if (claim.isAnyPartyBilingual() && !welshGaEnabled) {

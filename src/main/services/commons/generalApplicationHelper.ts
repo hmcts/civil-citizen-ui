@@ -10,7 +10,13 @@ export class GaInformation {
 export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  if (claim.isCaseIssuedPending()){
+  if (isSettledOrDiscontinued) {
+    if (!claim.previousCCDState) {
+      gaInformation.isGaOnline = false;
+    } else {
+      gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true;
+    }
+  } else if (claim.isCaseIssuedPending()){
     gaInformation.isGaOnline = false;
   } else if ((claim.defendantUserDetails === undefined ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant
@@ -25,12 +31,6 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
     if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
-    } else if (isSettledOrDiscontinued) {
-      if (!claim.previousCCDState){
-        gaInformation.isGaOnline = false;
-      } else {
-        gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true;
-      }
     }
   }
   return gaInformation;

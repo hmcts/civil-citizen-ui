@@ -30,10 +30,11 @@ import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed, isQueryManagementEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed, isLRQueryManagementEnabled, isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import {GA_SUBMIT_OFFLINE} from 'routes/urls';
+import { GA_SUBMIT_OFFLINE} from 'routes/urls';
+import {GaInformation, isGaOnline} from 'services/commons/generalApplicationHelper';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -46,6 +47,7 @@ jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
 jest.mock('../../../../../main/modules/i18n');
+jest.mock('services/commons/generalApplicationHelper');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -1008,7 +1010,7 @@ describe('dashboardService', () => {
       expect(result).toBeDefined();
     });
 
-    it('getContactCourtLink when Gaflag is false and isGAlinkEnabled is enable and Lr Defendant', async () => {
+    it('getContactCourtLink when QM lR is on and QM LIP is false and isGaOnline is false', async () => {
 
       //Given
       const claim = new Claim();
@@ -1023,13 +1025,77 @@ describe('dashboardService', () => {
         region: '2',
         baseLocation: '0909089',
       };
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isGaOnline as jest.Mock).mockReturnValue(false);
       //When
       const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
       //Then
-      expect(result).toBeDefined();
+      expect(result).toBeUndefined();
     });
 
+    it('getContactCourtLink when QM lR is on and QM LIP is false and Ga is online', async () => {
+
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      const gaInfo = new GaInformation();
+      gaInfo.isGaOnline = true;
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toEqual({
+        text: 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT',
+        url: '/case/1234567890/general-application/application-type?linkFrom=start',
+        removeTargetBlank: true,
+      });
+    });
+
+    it('getContactCourtLink when QM lR is on and QM LIP is false and Ga is offline with welsh', async () => {
+
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      const gaInfo = new GaInformation();
+      gaInfo.isGaOnline = false;
+      gaInfo.isGAWelsh = true;
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toEqual({
+        text: 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT',
+        url: GA_SUBMIT_OFFLINE,
+      });
+    });
   });
 });
 
