@@ -4416,7 +4416,7 @@
       "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don't pay immediately.",
       "REPAYMENT": "I'll suggest a repayment plan",
       "TITLE": "When do you want to pay?",
-      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. <br><br>This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.<br><br>The amount does not include the claim fee and any fixed costs which are payable in addition.",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}.This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
@@ -4516,7 +4516,7 @@
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
       "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
-      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. <br><br>This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.<br><br>The amount does not include the claim fee and any fixed costs which are payable in addition.",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}.This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE": "Your repayment plan"
     },
     "REPAYMENT_PLAN_SUMMARY": {
