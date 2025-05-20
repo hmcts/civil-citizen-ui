@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
@@ -13,7 +14,7 @@
 {% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE')  %}
 {% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2)}) if amount else t('PAGES.PAYMENT_OPTION.TITLE')%}
 {% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
-
+{% set totalAmountClaimedText =  t('PAGES.PAYMENT_OPTION.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
 
 {% block pageTitle %}
@@ -39,9 +40,15 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
-            </legend>
+            {{ govukFieldset({
+                 legend: {
+                   html: title + '<p class="govuk-body-m">' + totalAmountClaimedText + '</p>',
+                   classes: "govuk-fieldset__legend--l",
+                   isPageHeading: true
+                 }
+               })
+            }}
+
             {{ govukRadios({
               idPrefix: "paymentType",
               name: "paymentType",

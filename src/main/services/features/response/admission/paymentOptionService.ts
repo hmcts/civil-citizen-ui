@@ -6,18 +6,20 @@ import {PaymentOptionType}
   from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
+import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
 
 const getPaymentOptionForm = async (claim: Claim, responseType : ResponseType): Promise<PaymentOption> => {
   try {
+    const totalClaimAmount = isPartAdmission(responseType) ? claim.partialAdmissionPaymentAmount() : await getTotalAmountWithInterest(claim);
     if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]);
+      return new PaymentOption(PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType], totalClaimAmount);
     } else if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]);
+      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType], totalClaimAmount);
     }
-    return new PaymentOption();
+    return new PaymentOption(undefined, totalClaimAmount);
   } catch (error) {
     logger.error(error);
     throw error;
