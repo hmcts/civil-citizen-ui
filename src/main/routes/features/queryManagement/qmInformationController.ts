@@ -23,14 +23,13 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {
   attachmentOfEarningsOrderUrl,
-  chargingOrderUrl,
   checkCivilFeesListFullListUrl,
   checkCivilFees_Ex50Url,
   checkCivilFeesListUrl,
   discontinueClaimUrl,
   countyCourtJudgmentsUri,
   findCourtTribunalUrl,
-  thirdPartyDebtOrderUrl,
+  thirdPartyDebtOrChargingOrderUrl,
   warrantOfControlUrl,
   whatToDoUrl, applicationNoticeUrl,
 } from 'common/utils/externalURLs';
@@ -76,10 +75,9 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
               <li><a href="${warrantOfControlUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_2.TEXT`, {lng: lang})}</a></li>
               <li><a href="${attachmentOfEarningsOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_3.TEXT`, {lng: lang})}</a></li>
-              <li><a href="${thirdPartyDebtOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_4.TEXT`, {lng: lang})}</a></li>
-              <li><a href="${chargingOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT`, {lng: lang})}</a></li>
+              <li><a href="${thirdPartyDebtOrChargingOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_4.TEXT`, {lng: lang})}</a></li>
             </ul>`)
-          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT_BEFORE`, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT_AFTER`, null, true);
+          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT_BEFORE`, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT_AFTER`, null, true);
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE:{
@@ -192,6 +190,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
       case QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING:
         showAnythingElseSection = true;
         pageSection.addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_1`)
+          .addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_2`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_1`, {lng: lang})}</li>
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_2`, {lng: lang})}</li>
