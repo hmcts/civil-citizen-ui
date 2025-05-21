@@ -9,6 +9,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
