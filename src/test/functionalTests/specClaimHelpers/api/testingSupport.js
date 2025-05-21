@@ -40,6 +40,7 @@ const isDashboardServiceToggleEnabled = async (caseId = 'noCaseId',  caseSubmitt
       'Authorization': `Bearer ${authToken}`,
     }, {
       submittedDate: caseSubmittedDate, //'2022-05-10T15:59:50'
+      CaseAccessCategory: 'SPEC_CLAIM',
     }, 'POST')
     .then(async response =>  {
       if (response.status === 200) {
