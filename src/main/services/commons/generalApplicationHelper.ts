@@ -1,5 +1,12 @@
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
+import {
+  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForWelshEnabled,
+} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_INFORMATION_URL} from 'routes/urls';
+import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 export class GaInformation {
   isGAWelsh = false;
@@ -34,4 +41,16 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
     }
   }
   return gaInformation;
+};
+
+export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false) => {
+  const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+  const welshGaEnabled = await isGaForWelshEnabled();
+  const isGAInfo = isGaOnline(claim, isEaCourt, welshGaEnabled);
+  if (isGAInfo.isGAWelsh) {
+    return GA_SUBMIT_OFFLINE;
+  } else if (!isGAInfo.isGaOnline) {
+    return QM_INFORMATION_URL.replace(':qmType', WhatToDoTypeOption.CHANGE_CASE).replace(':qmQualifyOption', QualifyingQuestionTypeOption.GA_OFFLINE);
+  }
+  return APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}${isAskMoreTime && '&isAskMoreTime=true'}${isAdjournHearing && '&isAdjournHearing=true'}`;
 };
