@@ -559,7 +559,7 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
-        "MESSAGE_TO_THE_COURT": "If you still need help with your claim, you can send a message to the court.",
+        "MESSAGE_TO_THE_COURT": "If you still need an update on your claim, you can send a message to the court.",
         "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
         "SEND_A_MESSAGE": "Send a message"
       },
@@ -720,19 +720,19 @@
           "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended.",
+          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
           "PARAGRAPH_2": "The defendant can decide to&#58",
           "LI_1": "pay the full amount",
           "LI_2": "offer to pay a different amount (if they think they owe less)",
           "LI_3": "defend the claim (if they do not think they owe any money)",
-          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where they defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
           "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
           "LINK_1": {
             "TEXT": "request a county court judgment (CCJ)",
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
           "LINK_2": {
-            "TEXT": "what happens when a CCJ is issued against you (opens in a new window)",
+            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
@@ -786,7 +786,7 @@
           "LINK_1": {
             "TEXT": "making an application",
             "TEXT_BEFORE": "You must apply to amend the claim details, do this by ",
-            "TEXT_AFTER": " , you will have to pay a fee."
+            "TEXT_AFTER": ", you will have to pay a fee."
           },
           "LINK_2": {
             "TEXT": "Check the fees list (opens in a new window)",
@@ -842,12 +842,9 @@
             "TEXT": "attachment of earnings order (opens in a new window)"
           },
           "LINK_4": {
-            "TEXT": "third-party debt order (opens in a new window)"
+            "TEXT": "third-party debt order or charging order (opens in a new window)"
           },
           "LINK_5": {
-            "TEXT": "charging order (opens in a new window)"
-          },
-          "LINK_6": {
             "TEXT": "check the civil fees list (opens in a new window)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
@@ -901,6 +898,7 @@
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "You can ask for help and support during your hearing.",
+          "PARAGRAPH_2": "For example, this could be:",
           "LIST_1": "ramps or accessible toilets",
           "LIST_2": "a hearing loop",
           "LIST_3": "forms in large print",
@@ -2942,7 +2940,7 @@
       "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
       "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.",
       "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
-      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
+      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, we aim to provide an update within 5- 10 working days.",
       "TITLE": "Some useful information about Help with Fees"
     },
     "EMPLOYMENT_STATUS": {
@@ -5116,6 +5114,7 @@
       "CLAIMANT_DQ": "Claimant Directions Questionnaire",
       "TRANSLATED_CLAIMANT_DQ": "Translated Claimant Directions Questionnaire",
       "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
+      "TRANSLATED_CLAIMANT_RESPONSE_RECEIPT": "Translated claimant response receipt",
       "CLAIMANT_TIMELINE": "Claimant timeline of events",
       "COURT_DOCUMENTS": "Documents from the court",
       "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
@@ -5126,6 +5125,7 @@
       "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
+      "TRANSLATED_DETERMINATION_REQUEST": "Translated Determination request",
       "DRAFT_CLAIM": "Draft claim form",
       "FINAL_ORDER": "Judge final order",
       "PAGE_CAPTION": "Orders and notices from the court",
