@@ -16,7 +16,7 @@ Running the application requires the following tools to be installed in your env
   * [yarn](https://yarnpkg.com/)
   * [Docker](https://www.docker.com)
 
-### Running the application
+### Runninng the application
 
 Install dependencies by executing the following command:
 
