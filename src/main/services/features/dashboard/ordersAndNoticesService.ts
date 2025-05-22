@@ -229,13 +229,13 @@ const getDefendantTranslatedResponse = (claim: Claim, claimId: string, lang: str
 
 const getDefendantNoticeOfDiscontinuanceDoc = (claim: Claim, claimId: string, lang: string) => {
   const defendantNoticeOfDiscontinuance = claim.getDocumentDetails(DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
-  return defendantNoticeOfDiscontinuance && (claim?.confirmOrderGivesPermission === YesNoUpperCase.YES || claim?.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
+  return defendantNoticeOfDiscontinuance && (claim.confirmOrderGivesPermission === YesNoUpperCase.YES || claim.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
     setUpDocumentLinkObject(defendantNoticeOfDiscontinuance.documentLink, defendantNoticeOfDiscontinuance.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE')) : [];
 };
 
 const getDefendantNoticeOfDiscontinuanceTranslatedDoc = (claim: Claim, claimId: string, lang: string) => {
   const defendantNoticeOfDiscontinuanceTranslated = claim.getDocumentDetails(DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
-  return defendantNoticeOfDiscontinuanceTranslated && (claim?.confirmOrderGivesPermission === YesNoUpperCase.YES || claim?.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
+  return defendantNoticeOfDiscontinuanceTranslated && (claim.confirmOrderGivesPermission === YesNoUpperCase.YES || claim.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
     setUpDocumentLinkObject(defendantNoticeOfDiscontinuanceTranslated.documentLink, defendantNoticeOfDiscontinuanceTranslated.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE_TRANSLATED')) : [];
 };
 
