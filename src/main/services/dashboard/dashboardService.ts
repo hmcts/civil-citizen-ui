@@ -209,9 +209,9 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
     }
 
   } else if (isLIPQmOn) {
-    //const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+    const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
     const welshGaEnabled = await isGaForWelshEnabled();
-    const isGaOnlineFlag = isGaOnlineQM(claim, true, welshGaEnabled); // check if ga is online or offline
+    const isGaOnlineFlag = isGaOnlineQM(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
     if(isGaOnlineFlag.isGaOnline){
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),

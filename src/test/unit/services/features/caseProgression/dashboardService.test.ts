@@ -34,7 +34,7 @@ import {
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import { GA_SUBMIT_OFFLINE} from 'routes/urls';
-import {GaInformation, isGaOnline} from 'services/commons/generalApplicationHelper';
+import {GaInformation, isGaOnline, isGaOnlineQM} from 'services/commons/generalApplicationHelper';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -588,11 +588,16 @@ describe('dashboardService', () => {
 
         it('should return updated text with QM enabled', async () => {
           (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
+
+          const gaInfo = new GaInformation();
+          gaInfo.isGaOnline = true;
+          (isGaOnlineQM as jest.Mock).mockReturnValue(gaInfo);
+
           claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
           const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
-          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
         });
 
         it('should not return updated text if QM is disabled', async () => {
