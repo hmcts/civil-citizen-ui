@@ -303,11 +303,26 @@ describe('redirection url', () => {
     const result = await getGaRedirectionUrl(claim, true, true);
 
     //Then
-    expect('/case/:id/general-application/application-type?linkFrom=start&isAskMoreTime=true').toEqual(result);
+    expect('/case/:id/general-application/application-type?linkFrom=start&isAskMoreTime=true&isAdjournHearing=true').toEqual(result);
+  });
+  it('should GA is online without variables', async () => {
+    //Given
+    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.defendantUserDetails = 'test';
+
+    //When
+    const result = await getGaRedirectionUrl(claim);
+
+    //Then
+    expect('/case/:id/general-application/application-type?linkFrom=start').toEqual(result);
   });
   it('should GA is Offline', async () => {
     //Given
-    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(false);
     (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
 
     const claim = new Claim();
