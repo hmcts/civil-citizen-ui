@@ -54,3 +54,24 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   }
   return APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}${isAskMoreTime && '&isAskMoreTime=true'}${isAdjournHearing && '&isAdjournHearing=true'}`;
 };
+
+export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
+  const gaInformation = new GaInformation();
+  const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
+  if (claim.isCaseIssuedPending()) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+  } else if (claim.hasClaimTakenOffline() ||
+      claim.hasClaimBeenDismissed()) { // not show the ga link if claim is taken offline or dismissed
+    gaInformation.isGaOnline = false;
+  } else if (!isEaCourt) { // if the claim is not in EA court, then GA is not online
+    gaInformation.isGaOnline = false;
+  } else if ((claim.defendantUserDetails === undefined ||
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant
+  ) {
+    gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
+  } else if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
+    gaInformation.isGaOnline = false;
+    gaInformation.isGAWelsh = true;
+  }
+  return gaInformation;
+};
