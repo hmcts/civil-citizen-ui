@@ -17,7 +17,7 @@ import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
-  isGaForLipsEnabled
+  isGaForLipsEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
