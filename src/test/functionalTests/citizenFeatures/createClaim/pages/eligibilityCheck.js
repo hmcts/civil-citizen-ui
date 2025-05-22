@@ -258,7 +258,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/information-about-help-with-fees');
     await I.waitForContent('Some useful information about Help with Fees');
     await I.see('Making an application for Help with Fees does not guarantee that you will get your fee covered.');
-    await I.see('You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side).');
+    await I.see('You may still have to pay some or all your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side).');
     await I.see('When you apply for Help with Fees, we aim to provide an update within 5- 10 working days.');
     await I.see('If you want to apply for Help with Fees, you will complete an online form in a new window.');
     await I.see('This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process.');
