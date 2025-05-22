@@ -15,6 +15,7 @@ import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled, isCoSCEnabled,
   isGaForLipsEnabled, isGaForWelshEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {YesNoUpperCase} from 'form/models/yesNo';
 
 export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
@@ -55,6 +56,8 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
   if (isCUIWelshEnabled) {
     defendantDocumentsArray.push(...getDefendantResponseFrom(claim, claimId, lang));
     defendantDocumentsArray.push(...getDefendantTranslatedResponse(claim, claimId, lang));
+    defendantDocumentsArray.push(...getDefendantNoticeOfDiscontinuanceDoc(claim, claimId, lang));
+    defendantDocumentsArray.push(...getDefendantNoticeOfDiscontinuanceTranslatedDoc(claim, claimId, lang));
   } else {
     defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
   }
@@ -222,6 +225,18 @@ const getDefendantTranslatedResponse = (claim: Claim, claimId: string, lang: str
   const defendTranslatedResponse = claim.getDocumentDetails(DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
   return defendTranslatedResponse ? Array.of(
     setUpDocumentLinkObject(defendTranslatedResponse.documentLink, defendTranslatedResponse.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DEFENDANT_RESPONSE')) : [];
+};
+
+const getDefendantNoticeOfDiscontinuanceDoc = (claim: Claim, claimId: string, lang: string) => {
+  const defendantNoticeOfDiscontinuance = claim.getDocumentDetails(DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
+  return defendantNoticeOfDiscontinuance && (claim?.confirmOrderGivesPermission === YesNoUpperCase.YES || claim?.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
+    setUpDocumentLinkObject(defendantNoticeOfDiscontinuance.documentLink, defendantNoticeOfDiscontinuance.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE')) : [];
+};
+
+const getDefendantNoticeOfDiscontinuanceTranslatedDoc = (claim: Claim, claimId: string, lang: string) => {
+  const defendantNoticeOfDiscontinuanceTranslated = claim.getDocumentDetails(DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
+  return defendantNoticeOfDiscontinuanceTranslated && (claim?.confirmOrderGivesPermission === YesNoUpperCase.YES || claim?.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
+    setUpDocumentLinkObject(defendantNoticeOfDiscontinuanceTranslated.documentLink, defendantNoticeOfDiscontinuanceTranslated.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE_TRANSLATED')) : [];
 };
 
 const getDefendantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: string) => {

@@ -9,7 +9,7 @@ import {
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {DocumentType} from 'models/document/documentType';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CaseRole} from 'form/models/caseRoles';
@@ -17,7 +17,7 @@ import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
-  isGaForLipsEnabled,
+  isGaForLipsEnabled
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -328,6 +328,46 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for the original doc of notice of discontinuance', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
+      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for the translated doc of notice of discontinuance', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
+      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE_TRANSLATED',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
