@@ -52,7 +52,11 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   } else if (!isGAInfo.isGaOnline) {
     return QM_INFORMATION_URL.replace(':qmType', WhatToDoTypeOption.CHANGE_CASE).replace(':qmQualifyOption', QualifyingQuestionTypeOption.GA_OFFLINE);
   }
-  return APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}${isAskMoreTime && '&isAskMoreTime=true'}${isAdjournHearing && '&isAdjournHearing=true'}`;
+  const url = APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}` +
+    (isAskMoreTime ? '&isAskMoreTime=true' : '') +
+    (isAdjournHearing ? '&isAdjournHearing=true' : '');
+
+  return url.trim();
 };
 
 export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
