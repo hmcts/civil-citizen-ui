@@ -12,7 +12,7 @@ import {Claim} from 'models/claim';
 import {getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
-import {LinKFromValues} from "models/generalApplication/applicationType";
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');

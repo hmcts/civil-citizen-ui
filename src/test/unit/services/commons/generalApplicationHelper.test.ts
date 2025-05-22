@@ -282,8 +282,5 @@ describe('General Application helper when Lip is on', () => {
     expect(expected).toEqual(result);
   });
 
-
-
-
 });
 
