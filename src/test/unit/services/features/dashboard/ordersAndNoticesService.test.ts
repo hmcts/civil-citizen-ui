@@ -868,6 +868,32 @@ describe('View Orders And Notices Service', () => {
       //Then
       expect(result.documents.length).toEqual(0);
     });
+
+    it('should get translated court officer order when caseworkerEvent toggle on', async () => {
+      //given
+      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      const documentName = 'test_000MC001.pdf';
+      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(1);
+    });
+
+    it('should not get translated court officer order when caseworkerEvent toggle off', async () => {
+      //given
+      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(false);
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      const documentName = 'test_000MC001.pdf';
+      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(0);
+    });
   });
 
   function setUpMockSystemGeneratedCaseDocument(documentName: string, documentType: DocumentType) {

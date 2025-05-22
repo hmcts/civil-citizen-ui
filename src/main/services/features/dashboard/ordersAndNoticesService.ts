@@ -378,9 +378,13 @@ const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
 
 const getCourtOfficerOrder = (claim: Claim, claimId: string, lang: string) => {
   const document = claim.caseProgression?.courtOfficerOrder;
+  const translatedDocument = claim.caseProgression?.translatedCourtOfficerOrder;
   const caseDocuments: DocumentInformation[] = [];
   if (document) {
     caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
+  }
+  if (translatedDocument) {
+    caseDocuments.push(setUpDocumentLinkObject(translatedDocument.documentLink, translatedDocument.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_COURT_OFFICER_ORDER'));
   }
   return caseDocuments;
 };
