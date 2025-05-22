@@ -1,8 +1,13 @@
-import {GaInformation, isGaOnline, isGaOnlineQM} from 'services/commons/generalApplicationHelper';
+import {GaInformation, getGaRedirectionUrl, isGaOnline, isGaOnlineQM} from 'services/commons/generalApplicationHelper';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {
+  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled,
+} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
+
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('General Application helper when LR is on', () => {
   it('should GA is online', async () => {
@@ -284,3 +289,52 @@ describe('General Application helper when Lip is on', () => {
 
 });
 
+describe('redirection url', () => {
+  it('should GA is online', async () => {
+    //Given
+    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.defendantUserDetails = 'test';
+
+    //When
+    const result = await getGaRedirectionUrl(claim, true, true);
+
+    //Then
+    expect('/case/:id/general-application/application-type?linkFrom=start&isAskMoreTime=true').toEqual(result);
+  });
+  it('should GA is Offline', async () => {
+    //Given
+    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.defendantUserDetails = 'test';
+
+    //When
+    const result = await getGaRedirectionUrl(claim, true, true);
+
+    //Then
+    expect('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE').toEqual(result);
+  });
+  it('should GA is welsh', async () => {
+    //Given
+    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(false);
+    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.defendantUserDetails = 'test';
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+
+    //When
+    const result = await getGaRedirectionUrl(claim, true, true);
+
+    //Then
+    expect('/submit-application-offline').toEqual(result);
+  });
+
+});

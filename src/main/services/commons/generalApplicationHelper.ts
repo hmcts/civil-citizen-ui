@@ -46,7 +46,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
 export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false) => {
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
-  const isGAInfo = isGaOnline(claim, isEaCourt, welshGaEnabled);
+  const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {

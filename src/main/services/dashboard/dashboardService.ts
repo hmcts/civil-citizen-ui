@@ -77,9 +77,8 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
         }
       }
     } else if (queryManagementFlagEnabled) {
-      //const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-
-      const isGaOnlineFlag = isGaOnlineQM(claim, true, welshGaEnabled); // check if ga is online or offline
+      const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+      const isGaOnlineFlag = isGaOnlineQM(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
 
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
