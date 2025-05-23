@@ -23,7 +23,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Case progression journey - Fast Track - Claimant and Defendant verify Dashboard an Order being Created', async ({I}) => {
+Scenario('Case progression journey - Fast Track - Claimant and Defendant verify Dashboard an Order being Created @local-testing', async ({I}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //Claimant verifies dashboard

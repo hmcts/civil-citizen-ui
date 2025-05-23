@@ -173,7 +173,6 @@ withPipeline(type, product, component) {
 
   afterAlways('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
   afterSuccess('smoketest:preview') {
@@ -220,7 +219,6 @@ withPipeline(type, product, component) {
 
   afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
   afterSuccess('functionalTest:aat') {

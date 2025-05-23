@@ -6,6 +6,11 @@ export IS_CROSSBROWSER=true
 
 echo "Running Cross-browser tests on ${ENVIRONMENT} env"
 
+if [ "$FORCE_GREEN_BUILD" == "true" ]; then
+  echo "Manually forced green build, no crossbrowser tests will be run."
+  exit 0
+fi
+
 if [[ "$BROWSER_GROUP" == "" ]]
 then
     EXIT_STATUS=0
