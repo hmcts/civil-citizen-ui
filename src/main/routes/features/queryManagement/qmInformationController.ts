@@ -236,7 +236,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
                 <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_2`, {lng: lang})}</li>
                 <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_3`, {lng: lang})}</li>
               </ul>`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim)), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, null, null, true)), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT`, checkCivilFeesListFullListUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_AFTER`, null, true)
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, '.')

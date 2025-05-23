@@ -43,7 +43,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
   return gaInformation;
 };
 
-export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false) => {
+export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false, isAmendClaim = false) => {
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
   const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
@@ -54,7 +54,8 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   }
   const url = APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}` +
     (isAskMoreTime ? '&isAskMoreTime=true' : '') +
-    (isAdjournHearing ? '&isAdjournHearing=true' : '');
+    (isAdjournHearing ? '&isAdjournHearing=true' : '') +
+    (isAmendClaim ? '&isAmendClaim=true' : '');
 
   return url.trim();
 };
