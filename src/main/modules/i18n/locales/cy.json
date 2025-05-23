@@ -1871,6 +1871,7 @@
       "AMOUNT": "Swm",
       "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
       "CLAIM_FEE": "Ffi’r hawliad",
+      "CLAIM_FIXED_COSTS": "Fixed costs",
       "CLAIM_HAS_BEEN_MADE_TEXT": "Dyma'r hawliad sydd wedi'i wneud yn yr achos. Gellir hefyd dod o hyd iddo yn yr adran",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Cyfanswm yr hawliad",
