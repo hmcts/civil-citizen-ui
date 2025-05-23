@@ -29,7 +29,7 @@
     "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep @regression --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm codeceptjs run-workers --suites 2 --grep @regression-carm --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
-    "test:e2e-nightly": "MOCHAWESOME_REPORTFILENAME=e2e-nightly codeceptjs FUNCTIONAL=true run-workers --suites 10 --grep @nightly --reporter mocha-multi --verbose",
+    "test:e2e-nightly": "MOCHAWESOME_REPORTFILENAME=e2e-nightly FUNCTIONAL=true codeceptjs run-workers --suites 10 --grep @nightly --reporter mocha-multi --verbose",
     "test:fullfunctional": "./src/test/functionalTests/run-full-functional-tests.sh",
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",
