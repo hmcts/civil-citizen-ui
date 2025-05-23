@@ -6,7 +6,7 @@ export interface CcdFixedCost {
 
 }
 export const toCCDFixedCost = (fixedCost: FixedCost) => {
-  if (!fixedCost?.calculatedAmountInPence) return undefined;
+  if (!fixedCost) return undefined;
   const ccdFixedCost  = {
     fixedCostAmount: fixedCost.fixedCostAmount,
     claimFixedCosts: fixedCost.claimFixedCosts,
