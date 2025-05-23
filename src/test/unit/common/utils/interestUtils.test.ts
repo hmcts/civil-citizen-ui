@@ -3,13 +3,13 @@ import {
   getInterestDateOrIssueDate,
   getInterestRate,
   getInterestStartDate,
-  calculateInterestToDate,
+  calculateInterestToDate, getFixedCost,
 } from 'common/utils/interestUtils';
 import { Claim } from 'models/claim';
 import { deepCopy } from '../../../utils/deepCopy';
 import { mockClaim as mockResponse } from '../../../utils/mockClaim';
 import { YesNo } from 'form/models/yesNo';
-import {InterestClaimFromType, SameRateInterestType} from 'form/models/claimDetails';
+import {FixedCost, InterestClaimFromType, SameRateInterestType} from 'form/models/claimDetails';
 import { InterestClaimOptionsType } from 'form/models/claim/interest/interestClaimOptionsType';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
@@ -117,4 +117,29 @@ describe('Interest Utils', () => {
     expect(result).toBeTruthy();
     expect(result).toEqual(200);
   });
+
+  it('fix cost is claimed', async () => {
+    const claim = new Claim();
+    claim.fixedCost = <FixedCost> {};
+    claim.fixedCost.fixedCostAmount = '100';
+    claim.fixedCost.claimFixedCosts = 'Yes';
+    const fixedCost = await getFixedCost(claim);
+    expect(fixedCost).toBeTruthy();
+    expect(fixedCost).toEqual(100);
+  });
+
+  it('fixed cost is undefined', async () => {
+    const claim = new Claim();
+    const fixedCost = await getFixedCost(claim);
+    expect(fixedCost).toBeUndefined();
+  });
+
+  it('no fixed cost is claimed', async () => {
+    const claim = new Claim();
+    claim.fixedCost = <FixedCost> {};
+    claim.fixedCost.claimFixedCosts = 'No';
+    const fixedCost = await getFixedCost(claim);
+    expect(fixedCost).toBeUndefined();
+  });
+
 });
