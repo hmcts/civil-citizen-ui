@@ -19,7 +19,7 @@ import {
   CCDHelpWithFees,
   ClaimAmountBreakup,
   ClaimantMediationLip,
-  ClaimFee,
+  ClaimFee, FixedCost,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
@@ -117,6 +117,7 @@ export class Claim {
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
+  fixedCost?: FixedCost;
   specClaimTemplateDocumentFiles?: Document;
   caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;

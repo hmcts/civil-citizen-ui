@@ -25,9 +25,8 @@ describe('Get Judgment amount summary', () => {
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
-    expect(result.claimHasInterest).toEqual(true);
     expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
-    const total = claim.totalClaimAmount + Number(result.interestToDate) + claimFee - claim.getDefendantPaidAmount();
+    const total = claim.totalClaimAmount + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
@@ -39,7 +38,6 @@ describe('Get Judgment amount summary', () => {
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
-    expect(result.claimHasInterest).toEqual(false);
     expect(result.subTotal).toEqual((claim.totalClaimAmount + claimFee).toFixed(2));
     expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
     const total = claim.totalClaimAmount + claimFee - claim.getDefendantPaidAmount();
@@ -55,8 +53,7 @@ describe('Get Judgment amount summary', () => {
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
-    expect(result.claimHasInterest).toEqual(true);
-    const total = claim.totalClaimAmount + Number(result.interestToDate) + claimFee;
+    const total = claim.totalClaimAmount + claimFee;
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
@@ -69,7 +66,6 @@ describe('Get Judgment amount summary', () => {
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
-    expect(result.claimHasInterest).toEqual(false);
     const total = claim.totalClaimAmount + claimFee;
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
