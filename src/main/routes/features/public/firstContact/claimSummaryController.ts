@@ -6,7 +6,7 @@ import {
 } from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {getInterestDetails} from 'common/utils/interestUtils';
+import {getFixedCost, getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {YesNo} from 'form/models/yesNo';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -39,9 +39,10 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const interestData = await getInterestDetails(claim);
         const totalAmount = await getTotalAmountWithInterestAndFees(claim);
         const timelineRows = getClaimTimeline(claim, getLng(lang));
+        const fixedCost = await getFixedCost(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
         res.render('features/public/firstContact/claim-summary', {
-          claim, totalAmount, interestData, timelineRows, timelinePdfUrl, claimId,
+          claim, totalAmount, interestData, timelineRows, timelinePdfUrl, claimId, fixedCost,
         });
       } else {
         res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
