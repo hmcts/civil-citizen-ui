@@ -49,7 +49,8 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track', async ({api}) =
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ', async ({
+// TODO undo when part payment journey is restored
+Scenario.skip('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ', async ({
   I,
   api,
 }) => {
