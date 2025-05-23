@@ -36,6 +36,13 @@ function getInterestToDate(claim: Claim) {
   return interestToDate;
 }
 
+export const getFixedCost = async (claim: Claim) => {
+  if (!claim?.fixedCost || claim?.fixedCost?.claimFixedCosts === YesNo.NO) {
+    return undefined;
+  }
+  return claim?.fixedCost?.fixedCostAmount? +claim?.fixedCost?.fixedCostAmount: 0;
+};
+
 export function getInterestDateOrIssueDate(claim: Claim) : Date | string {
   let interestFromDate = claim?.issueDate;
   if (claim.isInterestFromClaimSubmitDate()) {
