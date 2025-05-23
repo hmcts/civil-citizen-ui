@@ -1,4 +1,4 @@
-const testPath = './src/test'
+const testPath = './src/test';
 
 const { testFilesHelper } = require(`${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js`);
 const testConfig = require(`${testPath}/config.js`);
@@ -7,7 +7,7 @@ const {deleteAllIdamTestUsers} = require(`${testPath}/functionalTests/specClaimH
 
 const getTests = () => {
   if (process.env.FAILED_TEST_FILES)
-    return [...process.env.FAILED_TEST_FILES.split(","), ...process.env.NOT_EXECUTED_TEST_FILES.split(",")];
+    return [...process.env.FAILED_TEST_FILES.split(','), ...process.env.NOT_EXECUTED_TEST_FILES.split(',')];
 
   if (process.env.ENVIRONMENT == 'aat')
     return [`${testPath}/functionalTests/tests/prod/**/*.js`,
