@@ -1,9 +1,10 @@
 const testPath = './src/test';
 
-const { testFilesHelper } = require(`${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js`);
-const testConfig = require(`${testPath}/config.js`);
-const {unAssignAllUsers} = require(`${testPath}/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper`);
-const {deleteAllIdamTestUsers} = require(`${testPath}/functionalTests/specClaimHelpers/api/idamHelper`);
+const { testFilesHelper } = require(`./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js`);
+const testConfig = require(`./src/test/config.js`);
+const {unAssignAllUsers} = require(`./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper`);
+const {deleteAllIdamTestUsers} = require(`./src/test/functionalTests/specClaimHelpers/api/idamHelper`);
+const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {
   if (process.env.FAILED_TEST_FILES)
@@ -21,16 +22,20 @@ const getTests = () => {
 
 exports.config = {
   bootstrapAll: async () => {
-    await testFilesHelper.createTempFailedTestsFile();
-    await testFilesHelper.createPassedTestsFile();
-    await testFilesHelper.createToBeExecutedTestsFile();
-    await testFilesHelper.createNotExecutedTestsFile();
+    if(functional) {
+      await testFilesHelper.createTempFailedTestsFile();
+      await testFilesHelper.createPassedTestsFile();
+      await testFilesHelper.createToBeExecutedTestsFile();
+      await testFilesHelper.createNotExecutedTestsFile();
+    }
   },
   teardownAll: async () => {
-    await testFilesHelper.createFailedTestsFile();
-    await testFilesHelper.writeNotExecutedTestFiles();
-    await testFilesHelper.deleteTempFailedTestsFile();
-    await testFilesHelper.deleteToBeExecutedTestFiles();
+    if(functional) {
+      await testFilesHelper.createFailedTestsFile();
+      await testFilesHelper.writeNotExecutedTestFiles();
+      await testFilesHelper.deleteTempFailedTestsFile();
+      await testFilesHelper.deleteToBeExecutedTestFiles();
+    }
   },
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
@@ -89,7 +94,7 @@ exports.config = {
       fullPageScreenshots: true,
     },
     failedAndNotExecutedTestFilesPlugin: {
-      enabled: true,
+      enabled: functional ?? false,
       require: `${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin`,
     },
   },
