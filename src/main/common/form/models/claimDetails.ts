@@ -27,7 +27,6 @@ export interface ClaimFee {
 }
 
 export interface FixedCost {
-  calculatedAmountInPence: number;
   claimFixedCosts: string;
   fixedCostAmount: string;
 }
