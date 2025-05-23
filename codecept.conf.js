@@ -1,34 +1,43 @@
-/* eslint-disable no-unused-vars */
-const testConfig = require('../config.js');
-const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
-const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
+const testPath = './src/test'
 
-//const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
-process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
-let startTime;
+const { testFilesHelper } = require(`${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js`);
+const testConfig = require(`${testPath}/config.js`);
+const {unAssignAllUsers} = require(`${testPath}/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper`);
+const {deleteAllIdamTestUsers} = require(`${testPath}/functionalTests/specClaimHelpers/api/idamHelper`);
+
+const getTests = () => {
+  if (process.env.FAILED_TEST_FILES)
+    return [...process.env.FAILED_TEST_FILES.split(","), ...process.env.NOT_EXECUTED_TEST_FILES.split(",")];
+
+  if (process.env.ENVIRONMENT == 'aat')
+    return [`${testPath}/functionalTests/tests/prod/**/*.js`,
+      `${testPath}/functionalTests/tests/common/**/*.js`,
+      `${testPath}/e2eTests/tests/**/*.js`];
+
+  return [ `${testPath}/functionalTests/tests/nonprod/**/*.js`,
+    `${testPath}/functionalTests/tests/common/**/*.js`,
+    `${testPath}/e2eTests/tests/**/*.js`];
+};
+
 exports.config = {
   bootstrapAll: async () => {
-    startTime = new Date();
-    console.log(`Starting the tests at ${startTime}`);
+    await testFilesHelper.createTempFailedTestsFile();
+    await testFilesHelper.createPassedTestsFile();
+    await testFilesHelper.createToBeExecutedTestsFile();
+    await testFilesHelper.createNotExecutedTestsFile();
   },
   teardownAll: async () => {
-    const endTime = new Date();
-    const executionTime = (endTime - startTime) / 1000; // in seconds
-    console.log(`Finished the tests at ${endTime}`);
-    console.log(`Total execution time: ${executionTime} seconds`);
+    await testFilesHelper.createFailedTestsFile();
+    await testFilesHelper.writeNotExecutedTestFiles();
+    await testFilesHelper.deleteTempFailedTestsFile();
+    await testFilesHelper.deleteToBeExecutedTestFiles();
   },
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: process.env.ENVIRONMENT == 'aat' ?
-    [ '../functionalTests/tests/prod/**/*.js',
-      '../functionalTests/tests/common/**/*.js',
-      '../e2eTests/tests/**/*.js'] :
-    [ '../functionalTests/tests/nonprod/**/*.js',
-      '../functionalTests/tests/common/**/*.js',
-      '../e2eTests/tests/**/*.js'],
+  tests: getTests(),
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
@@ -51,13 +60,13 @@ exports.config = {
       ignoreHTTPSErrors: true,
     },
     BrowserHelpers: {
-      require: './helpers/browser_helper.js',
+      require: `${testPath}/functionalTests/helpers/browser_helper.js`,
     },
   },
   include: {
-    api: './specClaimHelpers/api/steps.js',
-    wa: './specClaimHelpers/api/stepsWA.js',
-    noc: './specClaimHelpers/api/steps_noc.js',
+    api: `${testPath}/functionalTests/specClaimHelpers/api/steps.js`,
+    wa: `${testPath}/functionalTests/specClaimHelpers/api/stepsWA.js`,
+    noc: `${testPath}/functionalTests/specClaimHelpers/api/steps_noc.js`,
   },
   plugins: {
     autoDelay: {
@@ -78,6 +87,10 @@ exports.config = {
     screenshotOnFail: {
       enabled: true,
       fullPageScreenshots: true,
+    },
+    failedAndNotExecutedTestFilesPlugin: {
+      enabled: true,
+      require: `${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin`,
     },
   },
   mocha: {
