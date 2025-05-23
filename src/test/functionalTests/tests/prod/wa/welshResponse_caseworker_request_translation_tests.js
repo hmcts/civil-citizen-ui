@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@part-admit @skip-regression-cui-r1').tag('@local-testing');
+Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@part-admit @skip-regression-cui-r1')
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
