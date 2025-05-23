@@ -228,7 +228,7 @@ describe('translate draft claim to ccd version', () => {
     expect(ccdClaim.repaymentSuggestion).toBeUndefined();
   });
 
-  it('should get repaymentSummaryObject for default judgement', async () => {
+  it('should get repaymentSummaryObject for default judgement without interest', async () => {
     const claim = new Claim();
     claim.claimFee = {
       calculatedAmountInPence: 5000,

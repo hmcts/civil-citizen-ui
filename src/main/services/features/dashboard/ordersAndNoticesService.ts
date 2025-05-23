@@ -13,14 +13,23 @@ import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled, isCoSCEnabled,
-  isGaForLipsEnabled,
+  isGaForLipsEnabled, isGaForWelshEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
+  const isCUIWelshEnabled = await isGaForWelshEnabled();
+
   const claimantDocumentsArray: DocumentInformation[] = [];
-  claimantDocumentsArray.push(...getClaimantDirectionQuestionnaire(claim, claimId, lang));
-  claimantDocumentsArray.push(...getClaimantSealClaimForm(claim, claimId, lang));
+  if (isCUIWelshEnabled) {
+    claimantDocumentsArray.push(...getClaimantDQ(claim, claimId, lang));
+    claimantDocumentsArray.push(...getClaimantTranslatedDQ(claim, claimId, lang));
+    claimantDocumentsArray.push(...getClaimantSealedClaimForm(claim, claimId, lang));
+    claimantDocumentsArray.push(...getClaimantTranslatedSealedClaimForm(claim, claimId, lang));
+  } else {
+    claimantDocumentsArray.push(...getClaimantDirectionQuestionnaire(claim, claimId, lang));
+    claimantDocumentsArray.push(...getClaimantSealClaimForm(claim, claimId, lang));
+  }
   claimantDocumentsArray.push(...getClaimantRequestForReconsideration(claim, claimId, lang));
 
   if (claim.isClaimant()) {
@@ -40,8 +49,15 @@ export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: 
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCoSCEnabledValue = await isCoSCEnabled();
+  const isCUIWelshEnabled = await isGaForWelshEnabled();
+
   const defendantDocumentsArray: DocumentInformation[] = [];
-  defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
+  if (isCUIWelshEnabled) {
+    defendantDocumentsArray.push(...getDefendantResponseFrom(claim, claimId, lang));
+    defendantDocumentsArray.push(...getDefendantTranslatedResponse(claim, claimId, lang));
+  } else {
+    defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
+  }
   defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantRequestForReconsideration(claim, claimId, lang));
   if (isCaseProgressionEnabled) {
@@ -112,12 +128,36 @@ const getClaimantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: 
     setUpDocumentLinkObject(claimantDq.documentLink, claimantDq.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ')) : [];
 };
 
+const getClaimantDQ = (claim: Claim, claimId: string, lang: string) => {
+  const claimantDq =  claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+  return claimantDq ? Array.of(
+    setUpDocumentLinkObject(claimantDq.documentLink, claimantDq.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ')) : [];
+};
+
+const getClaimantTranslatedDQ = (claim: Claim, claimId: string, lang: string) => {
+  const translatedClaimantDq = claim.getDocumentDetails(DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
+  return translatedClaimantDq ? Array.of(
+    setUpDocumentLinkObject(translatedClaimantDq.documentLink, translatedClaimantDq.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_DQ')) : [];
+};
+
 const getClaimantSealClaimForm = (claim: Claim, claimId: string, lang: string) => {
   const claimantSealClaim = isBilingual(claim.claimantBilingualLanguagePreference) ?
     claim.getDocumentDetails(DocumentType.CLAIM_ISSUE_TRANSLATED_DOCUMENT) :
     claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.CLAIMANT);
   return claimantSealClaim ? Array.of(
     setUpDocumentLinkObject(claimantSealClaim.documentLink, claimantSealClaim.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SEALED_CLAIM')) : [];
+};
+
+const getClaimantSealedClaimForm = (claim: Claim, claimId: string, lang: string) => {
+  const claimantSealClaim = claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.CLAIMANT);
+  return claimantSealClaim ? Array.of(
+    setUpDocumentLinkObject(claimantSealClaim.documentLink, claimantSealClaim.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SEALED_CLAIM')) : [];
+};
+
+const getClaimantTranslatedSealedClaimForm = (claim: Claim, claimId: string, lang: string) => {
+  const translatedClaimantSealClaim = claim.getDocumentDetails(DocumentType.CLAIM_ISSUE_TRANSLATED_DOCUMENT);
+  return translatedClaimantSealClaim ? Array.of(
+    setUpDocumentLinkObject(translatedClaimantSealClaim.documentLink, translatedClaimantSealClaim.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SEALED_CLAIM')) : [];
 };
 
 const getClaimantUnsealClaimForm = (claim: Claim, claimId: string, lang: string) => {
@@ -161,12 +201,27 @@ const getTrialArrangementsDocument = (claim: Claim, claimId: string, lang: strin
 const getDefendantResponse = (claim: Claim, claimId: string, lang: string) => {
   const defendResponse =
     claim.isLRDefendant() ?
-      claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) :
+      claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) ?? claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) :
       isBilingual(claim.claimBilingualLanguagePreference) ?
         claim.getDocumentDetails(DocumentType.DEFENCE_TRANSLATED_DOCUMENT) :
         claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
   return defendResponse ? Array.of(
     setUpDocumentLinkObject(defendResponse.documentLink, defendResponse.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE')) : [];
+};
+
+const getDefendantResponseFrom = (claim: Claim, claimId: string, lang: string) => {
+  const defendResponse =
+    claim.isLRDefendant()
+      ? claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) ?? claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE)
+      : claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
+  return defendResponse ? Array.of(
+    setUpDocumentLinkObject(defendResponse.documentLink, defendResponse.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE')) : [];
+};
+
+const getDefendantTranslatedResponse = (claim: Claim, claimId: string, lang: string) => {
+  const defendTranslatedResponse = claim.getDocumentDetails(DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
+  return defendTranslatedResponse ? Array.of(
+    setUpDocumentLinkObject(defendTranslatedResponse.documentLink, defendTranslatedResponse.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DEFENDANT_RESPONSE')) : [];
 };
 
 const getDefendantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: string) => {
@@ -185,7 +240,10 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionsOrders = claim.getDocumentDetailsList(DocumentType.SDO_ORDER);
+  const standardDirectionsOrders = [
+    ...(claim.getDocumentDetailsList(DocumentType.SDO_ORDER) ?? []),
+    ...(claim.getDocumentDetailsList(DocumentType.SDO_TRANSLATED_DOCUMENT) ?? []),
+  ];
 
   const caseDocuments: DocumentInformation[] = [];
   if (standardDirectionsOrders && standardDirectionsOrders.length > 0) {
@@ -199,8 +257,13 @@ const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string)
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
   const manualDetermination = claim.getDocumentDetails(DocumentType.LIP_MANUAL_DETERMINATION);
-  return manualDetermination ? Array.of(
-    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST')) : [];
+  const docLink1 =  manualDetermination ?
+    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST') : undefined;
+  const translatedManualDetermination = claim.getDocumentDetails(DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedManualDetermination
+    ? setUpDocumentLinkObject(translatedManualDetermination.documentLink, translatedManualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => {
@@ -211,8 +274,14 @@ const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => 
 
 const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) => {
   const interlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOCUTORY_JUDGEMENT);
-  return interlocutoryJudgement ? Array.of(
-    setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')) : [];
+  const docLink1 = interlocutoryJudgement
+    ? setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  const translatedInterlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedInterlocutoryJudgement
+    ? setUpDocumentLinkObject(translatedInterlocutoryJudgement.documentLink, translatedInterlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string) => {
@@ -223,8 +292,14 @@ const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string)
 
 const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => {
   const settlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT);
-  return settlementAgreement ? Array.of(
-    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')) : [];
+  const docLink1 = settlementAgreement
+    ? setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')
+    : undefined;
+  const translatedSettlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedSettlementAgreement
+    ? setUpDocumentLinkObject(translatedSettlementAgreement.documentLink, translatedSettlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SETTLEMENT_AGREEMENT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCoSCDocument = (claim: Claim, claimId: string, lang: string) => {
@@ -296,5 +371,5 @@ const setUpDocumentLinkObject = (document: Document, documentDate: Date, claimId
 };
 
 const isBilingual = (languagePreference : ClaimBilingualLanguagePreference) => {
-  return languagePreference=== ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+  return languagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
 };

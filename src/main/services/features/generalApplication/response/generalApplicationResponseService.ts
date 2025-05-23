@@ -139,6 +139,11 @@ export const saveRespondentStatementOfTruth = async (redisKey: string, statement
 };
 
 export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean => {
+  return isApplicationFullyVisibleToRespondent(application)
+    || (!!application.case_data?.judicialDecision);
+};
+
+export const isApplicationFullyVisibleToRespondent = (application: ApplicationResponse): boolean => {
   const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
@@ -153,6 +158,11 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
 };
 
 export const isApplicationVisibleToRespondentForClaimant = (application: ApplicationResponse): boolean => {
+  return isApplicationFullyVisibleToRespondentForClaimant(application)
+  || (!!application.case_data?.judicialDecision);
+};
+
+export const isApplicationFullyVisibleToRespondentForClaimant = (application: ApplicationResponse): boolean => {
   const parentClaimantIsApplicant = application.case_data.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)

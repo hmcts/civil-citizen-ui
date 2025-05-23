@@ -6,7 +6,7 @@
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 {% from "./macro/newDashboarBack.njk" import back %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
-{% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "./macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "./macro/error-summary.njk" import errorSummary %}
 
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}

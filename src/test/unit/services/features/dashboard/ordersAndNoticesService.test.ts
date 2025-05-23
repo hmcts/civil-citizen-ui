@@ -22,8 +22,10 @@ import {
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const isGaForWelshEnabled = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
 
 describe('View Orders And Notices Service', () => {
 
@@ -77,6 +79,46 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for claimant bilingual dq when cuiWelshFlag is on', async () => {
+      //given
+      isGaForWelshEnabled.mockResolvedValue(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_DQ',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for claimant english dq when cuiWelshFlag is on', async () => {
+      //given
+      isGaForWelshEnabled.mockResolvedValue(true);
+      const documentName = 'claimant_test_000MC001.pdf';
+      const claim = new Claim();
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for claimant seal claim', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -97,6 +139,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual seal claim', async () => {
       //given
+      isGaForWelshEnabled.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -292,8 +335,48 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for defendant stitched response', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for defendant stitched response when welsh enabled', async () => {
+      //given
+      isGaForWelshEnabled.mockResolvedValue(true);
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for defendant lip response', async () => {
       //given
+      isGaForWelshEnabled.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
@@ -318,6 +401,27 @@ describe('View Orders And Notices Service', () => {
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
       claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for defendant lip english response when defendant is bilingual', async () => {
+      //given
+      isGaForWelshEnabled.mockResolvedValue(true);
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
+      claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
@@ -438,6 +542,24 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for lip translated manual determination', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for ccj admission', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -474,6 +596,24 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for translated claimant response receipt', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for ccj determination', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -503,6 +643,24 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for translated settle agreement', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SETTLEMENT_AGREEMENT_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SETTLEMENT_AGREEMENT',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
