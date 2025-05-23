@@ -3,36 +3,11 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
-{% from "../../../macro/help-calculating-interest.njk" import setContent %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
-{% set detailsHtml %}
-  {% if (judgmentSummaryDetails.isBreakDownInterest) %}
-      <p class="govuk-body govuk-!-margin-bottom-0">
-        {{ t('PAGES.JUDGMENT_AMOUNT.HOW_INTEREST_IS_CALCULATED',{reason:judgmentSummaryDetails.howInterestIsCalculatedReason,numberOfDays:
-          judgmentSummaryDetails.numberOfDays}) }}
-      </p>
-      <p class="govuk-body-s">
-        {{ t('PAGES.JUDGMENT_AMOUNT.TOTAL_PERIOD',{
-          interestFromDate: judgmentSummaryDetails.interestStartDate,
-          interestToDate: judgmentSummaryDetails.interestEndDate}) }}
-      </p>
-  {% else %}
-      <p class="govuk-body govuk-!-margin-bottom-0">
-        {{ t('PAGES.JUDGMENT_AMOUNT.INTEREST_TO_DATE_RESPONSE',{
-          interestRate: judgmentSummaryDetails.interestRate,
-          numberOfDays: judgmentSummaryDetails.numberOfDays}) }}
-      </p>
-      <p class="govuk-body-s">
-        {{ t('PAGES.JUDGMENT_AMOUNT.TOTAL_PERIOD',{
-          interestFromDate: judgmentSummaryDetails.interestStartDate,
-          interestToDate: judgmentSummaryDetails.interestEndDate}) }}
-      </p>
-  {% endif %}
-{% endset %}
 
 {% block content %}
     <div class="govuk-width-container">
@@ -54,18 +29,7 @@
                             <td class="govuk-table__cell ">{{ t('COMMON.CLAIM_AMOUNT') }}</td>
                             <td class="govuk-table__cell  govuk-!-text-align-right">{{ t ("£" + claimAmount) }}</td>
                         </tr>
-                        {% if judgmentSummaryDetails.claimHasInterest %}
-                            <tr class="govuk-table__row">
-                                <td class="govuk-table__cell ">
-                                  {{ govukDetails({
-                                    summaryText: t('PAGES.JUDGMENT_AMOUNT.INTEREST_TO_DATE'),
-                                    html: detailsHtml
-                                  }) }}
-                                </td>
-                                <td
-                                        class="govuk-table__cell  govuk-!-text-align-right">{{ t ("£" + judgmentSummaryDetails.interestToDate) }}</td>
-                            </tr>
-                        {% endif %}
+
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell ">{{ t('PAGES.JUDGMENT_AMOUNT.CLAIM_FEE_AMOUNT') }}</td>
                             <td class="govuk-table__cell  govuk-!-text-align-right">{{ t ("£" + judgmentSummaryDetails.claimFeeAmount) }}</td>

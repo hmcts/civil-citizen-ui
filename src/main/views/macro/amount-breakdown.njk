@@ -32,6 +32,14 @@
       <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
     </tr>
    {% endif %}
+   <tr class="govuk-table__row">
+       <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FIXED_COSTS') }}</td>
+       {% if claim.fixedAmount.calculatedAmountInPence !== undefined %}
+         <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.fixedCost.fixedCostAmount | pennies2pounds | currencyFormat(claim.fixedAmount.fixedCostAmount) }}</td>
+       {% else %}
+         <td class="govuk-table__cell govuk-!-text-align-right">£0</td>
+       {% endif %}
+     </tr>
     <tr class="govuk-table__row">
       <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FEE') }}</td>
       {% if claim.claimFee.calculatedAmountInPence !== undefined %}
@@ -39,11 +47,11 @@
       {% else %}
         <td class="govuk-table__cell govuk-!-text-align-right">£0</td>
       {% endif %}
-      </tr>
-      <tr class="govuk-table__row">
-        <td class="govuk-table__cell govuk-!-font-weight-bold">{{ t('PAGES.CLAIM_DETAILS.CLAIM_TOTAL') }}</td>
-        <td class="govuk-table__cell govuk-!-font-weight-bold govuk-!-text-align-right">{{ totalAmount | currencyFormat(totalAmount) }}</td>
-      </tr>
+    </tr>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell govuk-!-font-weight-bold">{{ t('PAGES.CLAIM_DETAILS.CLAIM_TOTAL') }}</td>
+      <td class="govuk-table__cell govuk-!-font-weight-bold govuk-!-text-align-right">{{ totalAmount | currencyFormat(totalAmount) }}</td>
+    </tr>
   </tbody>
 </table>
 
