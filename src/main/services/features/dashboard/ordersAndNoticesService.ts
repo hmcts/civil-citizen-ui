@@ -1,48 +1,77 @@
-import {Claim} from 'models/claim';
-import {DocumentType} from 'models/document/documentType';
+import { Claim } from 'models/claim';
+import { DocumentType } from 'models/document/documentType';
 import {
   DocumentInformation,
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import {Document} from 'models/document/document';
-import {documentIdExtractor} from 'common/utils/stringUtils';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
+import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { DirectionQuestionnaireType } from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import { ClaimBilingualLanguagePreference } from 'models/claimBilingualLanguagePreference';
+import { Document } from 'models/document/document';
+import { documentIdExtractor } from 'common/utils/stringUtils';
 import {
-  isCaseProgressionV1Enable, isCaseWorkerEventsEnabled, isCoSCEnabled,
-  isGaForLipsEnabled, isGaForWelshEnabled,
+  isCaseProgressionV1Enable,
+  isCaseWorkerEventsEnabled,
+  isCoSCEnabled,
+  isGaForLipsEnabled,
+  isGaForWelshEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
-export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: string) => {
+export const getClaimantDocuments = async (
+  claim: Claim,
+  claimId: string,
+  lang: string,
+) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCUIWelshEnabled = await isGaForWelshEnabled();
 
   const claimantDocumentsArray: DocumentInformation[] = [];
   if (isCUIWelshEnabled) {
     claimantDocumentsArray.push(...getClaimantDQ(claim, claimId, lang));
-    claimantDocumentsArray.push(...getClaimantTranslatedDQ(claim, claimId, lang));
-    claimantDocumentsArray.push(...getClaimantSealedClaimForm(claim, claimId, lang));
-    claimantDocumentsArray.push(...getClaimantTranslatedSealedClaimForm(claim, claimId, lang));
+    claimantDocumentsArray.push(
+      ...getClaimantTranslatedDQ(claim, claimId, lang),
+    );
+    claimantDocumentsArray.push(
+      ...getClaimantSealedClaimForm(claim, claimId, lang),
+    );
+    claimantDocumentsArray.push(
+      ...getClaimantTranslatedSealedClaimForm(claim, claimId, lang),
+    );
   } else {
-    claimantDocumentsArray.push(...getClaimantDirectionQuestionnaire(claim, claimId, lang));
-    claimantDocumentsArray.push(...getClaimantSealClaimForm(claim, claimId, lang));
+    claimantDocumentsArray.push(
+      ...getClaimantDirectionQuestionnaire(claim, claimId, lang),
+    );
+    claimantDocumentsArray.push(
+      ...getClaimantSealClaimForm(claim, claimId, lang),
+    );
   }
-  claimantDocumentsArray.push(...getClaimantRequestForReconsideration(claim, claimId, lang));
+  claimantDocumentsArray.push(
+    ...getClaimantRequestForReconsideration(claim, claimId, lang),
+  );
 
   if (claim.isClaimant()) {
-    claimantDocumentsArray.push(...getClaimantUnsealClaimForm(claim, claimId, lang));
+    claimantDocumentsArray.push(
+      ...getClaimantUnsealClaimForm(claim, claimId, lang),
+    );
     claimantDocumentsArray.push(...getClaimantDraftClaim(claim, claimId, lang));
   }
   if (isCaseProgressionEnabled) {
-    claimantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, true));
+    claimantDocumentsArray.push(
+      ...getTrialArrangementsDocument(claim, claimId, lang, true),
+    );
   }
   // Documents for LR only
-  claimantDocumentsArray.push(...getClaimantParticularsOfClaim(claim, claimId, lang));
-  claimantDocumentsArray.push(...getClaimantTimelineEventsDocument(claim, claimId, lang));
-  claimantDocumentsArray.push(...getClaimantResponseToDefenceDocument(claim, claimId, lang));
+  claimantDocumentsArray.push(
+    ...getClaimantParticularsOfClaim(claim, claimId, lang),
+  );
+  claimantDocumentsArray.push(
+    ...getClaimantTimelineEventsDocument(claim, claimId, lang),
+  );
+  claimantDocumentsArray.push(
+    ...getClaimantResponseToDefenceDocument(claim, claimId, lang),
+  );
   return new DocumentsViewComponent('Claimant', claimantDocumentsArray);
 };
 
@@ -344,7 +373,10 @@ const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
   if (documents && documents.length > 0) {
     documents.forEach((documentElement) => {
       const document = documentElement.value;
-      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER'));
+      const documentLabel = document.documentType === DocumentType.FINAL_ORDER_TRANSLATED_DOCUMENT
+        ? 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_FINAL_ORDER'
+        : 'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER';
+      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, documentLabel));
     });
   }
   return caseDocuments;
@@ -352,9 +384,13 @@ const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
 
 const getCourtOfficerOrder = (claim: Claim, claimId: string, lang: string) => {
   const document = claim.caseProgression?.courtOfficerOrder;
+  const translatedDocument = claim.caseProgression?.translatedCourtOfficerOrder;
   const caseDocuments: DocumentInformation[] = [];
   if (document) {
     caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
+  }
+  if (translatedDocument) {
+    caseDocuments.push(setUpDocumentLinkObject(translatedDocument.documentLink, translatedDocument.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_COURT_OFFICER_ORDER'));
   }
   return caseDocuments;
 };
