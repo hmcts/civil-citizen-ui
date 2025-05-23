@@ -56,6 +56,23 @@ describe('Query management Information controller', () => {
     });
 
     it.each([
+      [QualifyingQuestionTypeOption.GA_OFFLINE, 'Make an application to the court'],
+    ])('should return CHANGE_CASE information for %s', async (questionType, expectedText) => {
+      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.CHANGE_CASE');
+
+      const claim = new Claim();
+      mockGetClaimById.mockImplementation(() => claim);
+
+      await request(app)
+        .get(getControllerUrl(WhatToDoTypeOption.CHANGE_CASE, questionType))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(expectedText);
+          expect(res.text).toContain('Anything else');
+        });
+    });
+
+    it.each([
       [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
