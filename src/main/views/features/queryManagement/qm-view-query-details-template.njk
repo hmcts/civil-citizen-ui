@@ -41,25 +41,28 @@
                       </dt>
                       <dd class="govuk-summary-list__value">{{ item.messageDetails }}</dd>
                     </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
-                      <dd class="govuk-summary-list__value">
-                        {% if item.isHearingRelated == 'Yes' %}
-                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
-                        {% else %}
-                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
-                        {% endif %}
-                      </dd>
-                    </div>
-                    {% if item.isHearingRelated == 'Yes' %}
+                    {% if loop.index == 1 %}
                       <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
-                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.HEARING_DATE') }}
-                        </dt>
+                        <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
                         <dd class="govuk-summary-list__value">
-                          {{ item.hearingDate }}
+                          {% if item.isHearingRelated == 'Yes' %}
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
+                          {% else %}
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
+                          {% endif %}
                         </dd>
                       </div>
+
+                      {% if item.isHearingRelated == 'Yes' %}
+                        <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.HEARING_DATE') }}
+                          </dt>
+                          <dd class="govuk-summary-list__value">
+                            {{ item.hearingDate }}
+                          </dd>
+                        </div>
+                      {% endif %}
                     {% endif %}
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
