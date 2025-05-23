@@ -1,7 +1,6 @@
 const fs = require('fs/promises');
 const event = require('codeceptjs').event;
 const lockfile = require('proper-lockfile');
-const path = require('path')
 
 const passedTestFilesPath = 'test-results/functional/passedTestFiles.json';
 const tempFailedTestFilesPath = 'test-results/functional/tempFailedTestFiles.json';
@@ -136,5 +135,5 @@ module.exports.testFilesHelper = {
     const notExecutedTestFiles = toBeExecutedTestFiles.filter(toBeExecutedTestFile => !executedTestFiles.has(toBeExecutedTestFile));
   
     await fs.writeFile(notExecutedTestFilesPath, JSON.stringify(notExecutedTestFiles, null, 2));
-  }
+  },
 };
