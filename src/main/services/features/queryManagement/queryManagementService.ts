@@ -113,6 +113,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
   if (query) {
     const uploadedFiles = query.uploadedFiles;
     const claimId = req.params.id;
+    const queryId = req.params.queryId;
     let index = 0;
     uploadedFiles.forEach((file: UploadQMAdditionalFile) => {
       index++;
@@ -120,7 +121,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
         summaryRow(
           file.caseDocument.documentName,
           '',
-          constructResponseUrlWithIdParams(claimId, (isFollowUp ? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY) + '?id=' + index),
+          constructResponseUrlWithIdParams(claimId, (isFollowUp ? QM_FOLLOW_UP_MESSAGE.replace(':queryId',queryId) : QUERY_MANAGEMENT_CREATE_QUERY) + '?id=' + index),
           'Remove document',
         ),
       );
