@@ -41,6 +41,9 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   const isLrQmIsEnabled = await isLRQueryManagementEnabled();
 
   const welshGaEnabled = await isGaForWelshEnabled();
+  console.log(`Welsh GA enabled: ${welshGaEnabled}`);
+  console.log(`isLrQmIsEnabled: ${isLrQmIsEnabled}`);
+  console.log(`queryManagementFlagEnabled: ${queryManagementFlagEnabled}`);
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     for (const item of dashboard.items) {
@@ -58,7 +61,10 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
     if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+      console.log(`isEACourt: ${isEACourt}`);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+      console.log(`isGaOnlineFlag: ${isGaOnlineFlag}`);
+      console.log(`start dashboard: : ${JSON.stringify(dashboard)}`);
 
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
@@ -85,7 +91,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }
     }
-
+    console.log(`end: : ${JSON.stringify(dashboard)}`);
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
