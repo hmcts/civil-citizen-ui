@@ -287,8 +287,9 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
 
-app.use(contactUsGuard);
-
+if(env !== 'test') {
+  app.use(contactUsGuard);
+}
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
