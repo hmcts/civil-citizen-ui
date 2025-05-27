@@ -18,7 +18,7 @@ export const contactUsGuard = async (
     req.params.id = requestId;
     const redisKey = generateRedisKey(<AppRequest>req);
     const caseData: Claim = await getCaseDataFromStore(redisKey);
-    const isQMFlagEnabled = await isQueryManagementEnabled(caseData.submittedDate);
+    const isQMFlagEnabled = await isQueryManagementEnabled(caseData?.submittedDate);
 
     if(isQMFlagEnabled && !isClaimOffLine.includes(caseData.ccdState)) {
       res.locals.showCreateQuery = true;
