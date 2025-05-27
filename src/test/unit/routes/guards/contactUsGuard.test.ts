@@ -28,6 +28,10 @@ const MOCK_RESPONSE = {
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Contact us for help', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    MOCK_RESPONSE.locals = {};
+  });
   it('should populate request fields when QM is on', async () => {
     //Given
     mockGetCaseData.mockImplementation(async () => {

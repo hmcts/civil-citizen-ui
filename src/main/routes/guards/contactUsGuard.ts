@@ -13,7 +13,7 @@ export const contactUsGuard = async (
   next: NextFunction,
 ): Promise<void> => {
   const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
-  const whitelist = ['eligibility', 'first-contact', 'dashboard'];
+  const whitelist = ['eligibility', 'first-contact'];
   const isWhitelisted = whitelist.some((item) => req.path.includes(item));
   if (isWhitelisted) {
     return next();
@@ -24,6 +24,7 @@ export const contactUsGuard = async (
   const claimId = /^\d+$/.test(requestId) ? requestId : undefined;
 
   if(claimId){
+    req.params.id = claimId; // ensure req.params.id is set for further processing
     const redisKey = generateRedisKey(<AppRequest>req);
     const caseData: Claim = await getCaseDataFromStore(redisKey);
     const isQMFlagEnabled = await isQueryManagementEnabled(caseData?.submittedDate);
