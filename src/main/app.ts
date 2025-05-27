@@ -189,7 +189,6 @@ if(e2eTestMode){
     next();
   });
 }
-app.use(contactUsGuard);
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
@@ -287,6 +286,8 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
+
+app.use(contactUsGuard);
 
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
