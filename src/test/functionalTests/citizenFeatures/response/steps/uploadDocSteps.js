@@ -8,7 +8,7 @@ const typeOfDocuments = new TypeOfDocuments();
 const uploadDocuments = new UploadDocuments();
 const cya = new CheckYourAnswers();
 const confirmation = new Confirmation();
-const TEST_FILE_PATH = 'citizenFeatures/caseProgression/data/TestPDF.pdf';
+const TEST_FILE_PATH = 'src/test/citizenFeatures/caseProgression/data/TestPDF.pdf';
 
 class UploadMediationDocSteps {
   async VerifyDocuments() {
