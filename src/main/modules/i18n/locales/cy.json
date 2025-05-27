@@ -913,7 +913,8 @@
         "PAGE_TITLE": "Rhowch fanylion y neges",
         "HEADING": "Rhowch fanylion y neges",
         "CAPTION": "Anfon neges",
-        "FOLLOW_UP_CAPTION": "Anfon neges ddilynol"
+        "FOLLOW_UP_CAPTION": "Anfon neges ddilynol",
+        "FOLLOW_UP_HEADING": "Gwirio eich atebion"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Pwnc y neges",
@@ -926,12 +927,14 @@
         "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "NO_DOCUMENTS_UPLOADED": "Dim dogfennau wedi'u llwytho i fyny",
         "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Pwnc y neges",
         "MESSAGE_DETAILS": "Manylion y neges",
         "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "MESSAGE_HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "UPLOAD_DOCUMENTS": "Uwchlwytho dogfennau (dewisol)",
+        "ATTACHMENTS": "Atodiadau",
         "SEND_MESSAGE": "Anfon neges"
       },
       "VIEW_QUERY": {
@@ -5135,6 +5138,7 @@
       "SEALED_CLAIM": "Ffurflen Hawlio wedi'i selio",
       "TRANSLATED_SEALED_CLAIM": "Ffurflen Hawliad Wedi'i Selio wedi'i Chyfieithu",
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
+      "TRANSLATED_SETTLEMENT_AGREEMENT": "Cytundeb setlo wedi'i Gyfieithu",
       "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddiadau Safonol",
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
