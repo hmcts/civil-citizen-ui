@@ -7,8 +7,10 @@ const {deleteAllIdamTestUsers} = require('./src/test/functionalTests/specClaimHe
 const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {
-  if (process.env.FAILED_TEST_FILES)
-    return [...process.env.FAILED_TEST_FILES.split(','), ...process.env.NOT_EXECUTED_TEST_FILES.split(',')];
+  if (process.env.PREV_FAILED_TEST_FILES && process.env.PREV_NOT_EXECUTED_TEST_FILES)
+    return [...process.env.PREV_FAILED_TEST_FILES.split(','), ...process.env.PREV_NOT_EXECUTED_TEST_FILES.split(',')];
+
+  if (process.env.PREV_FAILED_TEST_FILES) return process.env.PREV_FAILED_TEST_FILES.split(',');
 
   if (process.env.ENVIRONMENT == 'aat')
     return [`${testPath}/functionalTests/tests/prod/**/*.js`,
@@ -22,19 +24,18 @@ const getTests = () => {
 
 exports.config = {
   bootstrapAll: async () => {
-    if(functional) {
+    if (functional) {
       await testFilesHelper.createTempFailedTestsFile();
-      await testFilesHelper.createPassedTestsFile();
-      await testFilesHelper.createToBeExecutedTestsFile();
-      await testFilesHelper.createNotExecutedTestsFile();
+      await testFilesHelper.createTempPassedTestsFile();
+      await testFilesHelper.createTempToBeExecutedTestsFile();
     }
   },
   teardownAll: async () => {
-    if(functional) {
-      await testFilesHelper.createFailedTestsFile();
-      await testFilesHelper.writeNotExecutedTestFiles();
+    if (functional) {
+      await testFilesHelper.createTestFilesReport();
       await testFilesHelper.deleteTempFailedTestsFile();
-      await testFilesHelper.deleteToBeExecutedTestFiles();
+      await testFilesHelper.deleteTempPassedTestsFile();
+      await testFilesHelper.deleteTempToBeExecutedTestFiles();
     }
   },
   async teardown() {
