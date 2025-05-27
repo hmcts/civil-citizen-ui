@@ -21,10 +21,8 @@ export const contactUsGuard = async (
 
   const requestId = req.path.split('/').filter(Boolean)[1] || undefined; // get claim id
 
-  const claimId = /^\d+$/.test(requestId) ? requestId : undefined;
-
-  if(claimId){
-    req.params.id = claimId; // ensure req.params.id is set for further processing
+  if(requestId){
+    req.params.id = requestId; // ensure req.params.id is set for further processing
     const redisKey = generateRedisKey(<AppRequest>req);
     const caseData: Claim = await getCaseDataFromStore(redisKey);
     const isQMFlagEnabled = await isQueryManagementEnabled(caseData?.submittedDate);
@@ -33,7 +31,7 @@ export const contactUsGuard = async (
       res.locals.showCreateQuery = true;
       res.locals.isQMFlagEnabled = true;
       res.locals.disableSendMessage = true;
-      res.locals.qmStartUrl = constructResponseUrlWithIdParams(claimId, QM_START_URL)+'?linkFrom=start';
+      res.locals.qmStartUrl = constructResponseUrlWithIdParams(requestId, QM_START_URL)+'?linkFrom=start';
     }
   }
   next();
