@@ -13,7 +13,7 @@ export const contactUsGuard = async (
   next: NextFunction,
 ): Promise<void> => {
   const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
-  const whitelist = ['eligibility', 'first-contact'];
+  const whitelist = ['eligibility', 'first-contact', 'view-documents'];
   const isWhitelisted = whitelist.some((item) => req.path.includes(item));
   if (isWhitelisted) {
     return next();
