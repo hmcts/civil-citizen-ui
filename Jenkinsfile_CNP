@@ -1,4 +1,7 @@
 #!groovy
+properties([
+  copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
+]);
 
 @Library("Infrastructure")
 import uk.gov.hmcts.contino.AppPipelineConfig

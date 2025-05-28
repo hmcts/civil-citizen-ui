@@ -28,7 +28,7 @@ compare_ft_groups() {
 }
 
 run_functional_tests() {
-  echo "Running full functional tests on ${ENVIRONMENT} env"
+  echo "Running all functional tests on ${ENVIRONMENT} env"
   if [ "$ENVIRONMENT" = "aat" ] || [ -z "$PR_FT_GROUPS" ]; then
     yarn test:cui-regression
   else
@@ -53,6 +53,7 @@ run_functional_tests() {
 }
 
 run_failed_not_executed_functional_tests() {
+  echo "Running failed and not executed functional test files on ${ENVIRONMENT} env"
   # Collect array elements into a comma-separated string
   PREV_FAILED_TEST_FILES=$(jq -r '.failedTestFiles[]' "$PREV_TEST_FILES_REPORT" | paste -sd "," -)
 
