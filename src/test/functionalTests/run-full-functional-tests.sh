@@ -14,25 +14,24 @@ if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" != "true" ]; then
   yarn playwright install
   yarn test:e2e-nightly
 else 
-  # Define path to failedTestFiles.json
+  # Define path to failedTestFiles.json and prevTestFilesReport.json
   TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
   PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 
-  if [ "$CI" != "true" ]; then
-    [ -f "$TEST_FILES_REPORT" ] && mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
-  fi
-
-  # Check if prevTestFilesReport.json exists and is non-empty
-  if [ ! -f "$PREV_TEST_FILES_REPORT" ] || [ ! -s "$PREV_TEST_FILES_REPORT" ]; then
-    echo "prevTestFilesReport.json not found or is empty."
+  # Check if testFilesReport.json exists and is non-empty
+  if [ ! -f "$TEST_FILES_REPORT" ] || [ ! -s "$TEST_FILES_REPORT" ]; then
+    echo "testFilesReport.json not found or is empty."
     exit 1
 
-  # Check if the JSON array inside prevTestFilesReport.json is empty
-  elif [ "$(jq '.failedTestFiles | length' "$PREV_TEST_FILES_REPORT")" -eq 0 ]; then
-    echo "failedTestFiles in prevTestFilesReport.json contains an empty array."
+  # Check if the JSON array inside testFilesReport.json is empty
+  elif [ "$(jq '.failedTestFiles | length' "$TEST_FILES_REPORT")" -eq 0 ]; then
+    echo "failedTestFiles in testFilesReport.json contains an empty array."
     exit 1
 
   else
+    # Move testFilesReport.json to prevTestFilesReport.json
+    [ -f "$TEST_FILES_REPORT" ] && mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
+
     # Collect array elements into a comma-separated string
     PREV_FAILED_TEST_FILES=$(jq -r '.failedTestFiles[]' "$PREV_TEST_FILES_REPORT" | paste -sd "," -)
 

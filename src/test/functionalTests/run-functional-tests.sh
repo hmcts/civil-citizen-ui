@@ -69,35 +69,34 @@ run_failed_not_executed_functional_tests() {
 
 if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
 
+  # Define path to failedTestFiles.json and prevTestFilesReport.json
   TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
   PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 
-  if [ "$CI" != "true" ]; then
-    [ -f "$TEST_FILES_REPORT" ] && mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
-  fi
-
-   # Check if prevTestFilesReport.json exists and is non-empty
-  if [ ! -f "$PREV_TEST_FILES_REPORT" ] || [ ! -s "$PREV_TEST_FILES_REPORT" ]; then
-    echo "prevTestFilesReport.json not found or is empty."
+  # Check if testFilesReport.json exists and is non-empty
+  if [ ! -f "$TEST_FILES_REPORT" ] || [ ! -s "$TEST_FILES_REPORT" ]; then
+    echo "testFilesReport.json not found or is empty."
     run_functional_tests
-  
-  #Check if latest current git commit is the not the same as git commit of prev test files report 
-  elif [ "$(jq -r 'if .gitCommitId == null then "__NULL__" else .gitCommitId end' "$PREV_TEST_FILES_REPORT")" != "$GIT_COMMIT" ]; then 
+
+  #Check if latest current git commit is the not the same as git commit of test files report 
+  elif [ "$(jq -r 'if .gitCommitId == null then "__NULL__" else .gitCommitId end' "$TEST_FILES_REPORT")" != "$GIT_COMMIT" ]; then 
     echo "The gitCommitId does not match the current GIT_COMMIT.";
     run_functional_tests
   
-  #Check if ft_groups of prev test files report is the same as current ft_groups.
-  elif ! compare_ft_groups "$PREV_TEST_FILES_REPORT"; then
+  #Check if ft_groups of test files report is the same as current ft_groups.
+  elif ! compare_ft_groups "$TEST_FILES_REPORT"; then
     echo "ftGroups do NOT match PR_FT_GROUPS"
     run_functional_tests
 
   # Check if the JSON array inside prevTestFilesReport.json is empty
-  elif [ "$(jq '.failedTestFiles | length' "$PREV_TEST_FILES_REPORT")" -eq 0 ]; then
-    echo "failedTestFiles in prevTestFilesReport.json contains an empty array."
+  elif [ "$(jq '.failedTestFiles | length' "$TEST_FILES_REPORT")" -eq 0 ]; then
+    echo "failedTestFiles in testFilesReport.json contains an empty array."
     run_functional_tests
   
   else
-   run_failed_not_executed_functional_tests
+    #Move testFilesReport.json to prevTestFilesReport.json
+    [ -f "$TEST_FILES_REPORT" ] && mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
+    run_failed_not_executed_functional_tests
   fi
 
 else
