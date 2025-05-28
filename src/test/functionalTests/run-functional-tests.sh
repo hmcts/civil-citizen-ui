@@ -27,28 +27,32 @@ compare_ft_groups() {
   fi
 }
 
+run_functional_test_groups() {
+  command="yarn test:cui-regression --grep "
+  pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
+  
+  regex_pattern=""
+
+  IFS=',' read -ra ft_groups_array <<< "$pr_ft_groups"
+
+  for ft_group in "${ft_groups_array[@]}"; do
+      if [ -n "$regex_pattern" ]; then
+          regex_pattern+="|"
+      fi
+      regex_pattern+="((?=.*@regression)(?=.*@$ft_group))"
+  done
+
+  command+="'$regex_pattern'"
+  echo "Executing: $command"
+  eval "$command"
+}
+
 run_functional_tests() {
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [ "$ENVIRONMENT" = "aat" ] || [ -z "$PR_FT_GROUPS" ]; then
     yarn test:cui-regression
   else
-    command="yarn test:cui-regression --grep "
-    pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
-    
-    regex_pattern=""
-
-    IFS=',' read -ra ft_groups_array <<< "$pr_ft_groups"
-
-    for ft_group in "${ft_groups_array[@]}"; do
-        if [ -n "$regex_pattern" ]; then
-            regex_pattern+="|"
-        fi
-        regex_pattern+="((?=.*@regression)(?=.*@$ft_group))"
-    done
-
-    command+="'$regex_pattern'"
-    echo "Executing: $command"
-    eval "$command"
+    run_functional_test_groups
   fi
 }
 
@@ -64,9 +68,14 @@ run_failed_not_executed_functional_tests() {
   export PREV_FAILED_TEST_FILES="$PREV_FAILED_TEST_FILES"
   export PREV_NOT_EXECUTED_TEST_FILES="$PREV_NOT_EXECUTED_TEST_FILES"
   
-  yarn test:cui-regression
+  if [ -z "$PR_FT_GROUPS" ]; then
+    yarn test:cui-regression
+  else 
+    run_functional_test_groups
+  fi
 }
 
+#MAIN SCRIPT
 if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
 
   # Define path to failedTestFiles.json and prevTestFilesReport.json
