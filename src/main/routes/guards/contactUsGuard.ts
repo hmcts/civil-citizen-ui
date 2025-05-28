@@ -13,13 +13,15 @@ export const contactUsGuard = async (
   next: NextFunction,
 ): Promise<void> => {
   const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
-  const whitelist = ['eligibility', 'first-contact', 'view-documents'];
-  const isWhitelisted = whitelist.some((item) => req.path.includes(item));
+  const whitelist = ['/eligibility', '/first-contact', '/testing-support', '/claim'];
+  const isWhitelisted = whitelist.some((item) => req.path.startsWith(item));
   if (isWhitelisted) {
     return next();
   }
 
-  const requestId = req.path.split('/').filter(Boolean)[1] || undefined; // get claim id
+  const pathId = req.path.split('/').filter(Boolean)[1] || undefined; // get claim id
+
+  const requestId = /^\d+$/.test(pathId) ? pathId : undefined;
 
   if(requestId){
     req.params.id = requestId; // ensure req.params.id is set for further processing

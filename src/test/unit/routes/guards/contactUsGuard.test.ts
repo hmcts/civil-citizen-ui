@@ -94,4 +94,140 @@ describe('Contact us for help', () => {
     expect(MOCK_RESPONSE.locals.disableSendMessage).toBeFalsy();
     expect(MOCK_RESPONSE.locals.qmStartUrl).toBeUndefined();
   });
+
+  it('should not populate request fields when is eligibility', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      return claim;
+    });
+
+    const whitelistRequest = {
+      params: {
+        id: '123',
+      },
+      path: '/eligibility/start',
+    } as unknown as Request;
+    mockIsQueryManagementEnabled.mockImplementation(async () => false);
+
+    //When
+    await contactUsGuard(whitelistRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.locals.showCreateQuery).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.isQMFlagEnabled).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.disableSendMessage).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.qmStartUrl).toBeUndefined();
+  });
+
+  it('should not populate request fields when is first-contact', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_SETTLED;
+      return claim;
+    });
+
+    const whitelistRequest = {
+      params: {
+        id: '123',
+      },
+      path: '/first-contact/start',
+    } as unknown as Request;
+    mockIsQueryManagementEnabled.mockImplementation(async () => false);
+
+    //When
+    await contactUsGuard(whitelistRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.locals.showCreateQuery).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.isQMFlagEnabled).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.disableSendMessage).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.qmStartUrl).toBeUndefined();
+  });
+
+  it('should not populate request fields when is testing-support', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_SETTLED;
+      return claim;
+    });
+
+    const whitelistRequest = {
+      params: {
+        id: '123',
+      },
+      path: '/testing-support/start',
+    } as unknown as Request;
+    mockIsQueryManagementEnabled.mockImplementation(async () => false);
+
+    //When
+    await contactUsGuard(whitelistRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.locals.showCreateQuery).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.isQMFlagEnabled).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.disableSendMessage).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.qmStartUrl).toBeUndefined();
+  });
+
+  it('should not populate request fields when is claim', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_SETTLED;
+      return claim;
+    });
+
+    const whitelistRequest = {
+      params: {
+        id: '123',
+      },
+      path: '/claim/start',
+    } as unknown as Request;
+    mockIsQueryManagementEnabled.mockImplementation(async () => false);
+
+    //When
+    await contactUsGuard(whitelistRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.locals.showCreateQuery).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.isQMFlagEnabled).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.disableSendMessage).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.qmStartUrl).toBeUndefined();
+  });
+
+  it('should not populate request fields when the path url contains at second position a string', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_SETTLED;
+      return claim;
+    });
+
+    const whitelistRequest = {
+      params: {
+        id: '123',
+      },
+      path: '/test/test/start',
+    } as unknown as Request;
+    mockIsQueryManagementEnabled.mockImplementation(async () => false);
+
+    //When
+    await contactUsGuard(whitelistRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.locals.showCreateQuery).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.isQMFlagEnabled).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.disableSendMessage).toBeFalsy();
+    expect(MOCK_RESPONSE.locals.qmStartUrl).toBeUndefined();
+  });
+
 });
