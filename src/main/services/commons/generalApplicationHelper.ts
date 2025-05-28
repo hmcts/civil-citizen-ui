@@ -16,7 +16,8 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
     } else {
       gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
     }
-  } else if (claim.isCaseIssuedPending()){ // if the claim is not yet issued
+  }
+  if (claim.isCaseIssuedPending()){ // if the claim is not yet issued
     gaInformation.isGaOnline = false;
   } else if ((claim.defendantUserDetails === undefined ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
