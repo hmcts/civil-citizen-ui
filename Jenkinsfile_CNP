@@ -23,6 +23,22 @@ static Map<String, Object> secret(String secretName, String envVariable) {
   ]
 }
 
+def copyPrevFailedAndNotExecutedTestFilesJson() {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild.number
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts projectName: env.JOB_NAME, selector: specific("${buildNumber}"), filter: "test-results/functional/testFilesReport.json"
+      sh "mv 'test-results/functional/testFilesReport.json' 'test-results/functional/prevTestFilesReport.json'"
+      buildFound = true
+    } catch (Exception error) {
+      echo "artifact not found: " + error.toString()
+      buildNumber--
+    }
+  }
+}
+
 def getFunctionalTestsGroups() {
   def githubApi = new GithubAPI(this)
   def functionalTestGroups = []
@@ -109,6 +125,10 @@ def checkForFullDeployLabel(branch_name) {
 
 def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
+} 
+
+def checkForRunFailedTestFiles(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "runFailedTestFiles").contains("runFailedTestFiles")
 }
 
 withPipeline(type, product, component) {
@@ -169,6 +189,10 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    if(checkForRunFailedTestFiles(env.BRANCH_NAME)) {
+      copyPrevFailedAndNotExecutedTestFilesJson();
+      env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES = true
+    }
   }
 
   afterAlways('functionalTest:preview') {
