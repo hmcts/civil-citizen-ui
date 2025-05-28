@@ -7,9 +7,17 @@ export class GaInformation {
   isSettledOrDiscontinuedWithPreviousCCDState = false;
 }
 
-export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
+export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
+  if (claim.isCaseIssuedPending() ||
+      claim.hasClaimTakenOffline() ||
+      claim.hasClaimBeenDismissed() ||
+      !isEaCourt) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+    return gaInformation;
+  }
+
   if (isSettledOrDiscontinued) { // if the claim is settled or discontinued
     if (!claim.previousCCDState) { // if the claim is settled or discontinued and previous CCD state is undefined
       gaInformation.isGaOnline = false;
@@ -18,22 +26,14 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
       gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
     }
   }
-  if (claim.isCaseIssuedPending()){ // if the claim is not yet issued
-    gaInformation.isGaOnline = false;
-    return gaInformation;
-  } else if ((claim.defendantUserDetails === undefined ||
-      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
-    && !isSettledOrDiscontinued) {
-    gaInformation.isGaOnline = false;
-    return gaInformation;
-  } else if (claim.hasClaimTakenOffline() ||
-      claim.hasClaimBeenDismissed()) { // not show the ga link if claim is taken offline or dismissed
-    gaInformation.isGaOnline = false;
-    return gaInformation;
-  } else if (!isEaCourt) { // if the claim is not in EA court, then GA is not online
-    gaInformation.isGaOnline = false;
-    return gaInformation;
-  } else { //is in EA court
+  // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
+  if (isEaCourt) {
+    if ((claim.defendantUserDetails === undefined ||
+            (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
+        && !isSettledOrDiscontinued) {
+      gaInformation.isGaOnline = false;
+      return gaInformation;
+    }
     if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
