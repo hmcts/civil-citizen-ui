@@ -63,8 +63,7 @@ run_failed_not_executed_functional_tests() {
   export PREV_FAILED_TEST_FILES="$PREV_FAILED_TEST_FILES"
   export PREV_NOT_EXECUTED_TEST_FILES="$PREV_NOT_EXECUTED_TEST_FILES"
   
-  yarn playwright install
-  yarn test:e2e-nightly
+  yarn test:cui-regression
 }
 
 if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
