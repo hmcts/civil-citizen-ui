@@ -2,7 +2,6 @@
 set -ex
 
 compare_ft_groups() {
-  local report_prev="$1"
   local ft_groups_csv pr_ft_groups_csv
 
   # Extract ftGroups array as a comma-separated string (sorted)
@@ -11,7 +10,7 @@ compare_ft_groups() {
     then "" 
     else (.ftGroups | sort | join(",")) 
     end
-  ' "$report_prev")
+  ' "$TEST_FILES_REPORT")
 
   # Normalize PR_FT_GROUPS (sort, trim spaces, split by comma, then rejoin sorted)
   pr_ft_groups_csv=""
@@ -93,7 +92,7 @@ if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
     run_functional_tests
   
   #Check if ft_groups of test files report is the same as current ft_groups.
-  elif ! compare_ft_groups "$TEST_FILES_REPORT"; then
+  elif ! compare_ft_groups; then
     echo "ftGroups do NOT match PR_FT_GROUPS"
     run_functional_tests
 
