@@ -193,6 +193,7 @@ withPipeline(type, product, component) {
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
     if(checkForRunFailedTestFiles(env.BRANCH_NAME)) {
+      echo "GitHub label: 'runFailedTestFiles' currently on PR"
       copyPrevFailedAndNotExecutedTestFilesJson();
       env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES = true
     }

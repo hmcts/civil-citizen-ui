@@ -32,7 +32,7 @@ run_functional_tests() {
   if [ "$ENVIRONMENT" = "aat" ] || [ -z "$PR_FT_GROUPS" ]; then
     yarn test:cui-regression
   else
-    command="test:cui-regression --grep "
+    command="yarn test:cui-regression --grep "
     pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
     
     regex_pattern=""
@@ -48,7 +48,7 @@ run_functional_tests() {
 
     command+="'$regex_pattern'"
     echo "Executing: $command"
-    yarn "$command"
+    eval "$command"
   fi
 }
 
@@ -80,11 +80,6 @@ if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
   if [ ! -f "$PREV_TEST_FILES_REPORT" ] || [ ! -s "$PREV_TEST_FILES_REPORT" ]; then
     echo "prevTestFilesReport.json not found or is empty."
     run_functional_tests
-
-  # Check if the JSON array inside prevTestFilesReport.json is empty
-  elif [ "$(jq '.failedTestFiles | length' "$PREV_TEST_FILES_REPORT")" -eq 0 ]; then
-    echo "failedTestFiles in prevTestFilesReport.json contains an empty array."
-    run_functional_tests
   
   #Check if latest current git commit is the not the same as git commit of prev test files report 
   elif [ "$(jq -r 'if .gitCommitId == null then "__NULL__" else .gitCommitId end' "$PREV_TEST_FILES_REPORT")" != "$GIT_COMMIT" ]; then 
@@ -95,11 +90,17 @@ if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
   elif ! compare_ft_groups "$PREV_TEST_FILES_REPORT"; then
     echo "ftGroups do NOT match PR_FT_GROUPS"
     run_functional_tests
+
+  # Check if the JSON array inside prevTestFilesReport.json is empty
+  elif [ "$(jq '.failedTestFiles | length' "$PREV_TEST_FILES_REPORT")" -eq 0 ]; then
+    echo "failedTestFiles in prevTestFilesReport.json contains an empty array."
+    run_functional_tests
   
   else
    run_failed_not_executed_functional_tests
   fi
 
-else 
+else
+  echo "env variable 'RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES' is not set to true"
   run_functional_tests
 fi
