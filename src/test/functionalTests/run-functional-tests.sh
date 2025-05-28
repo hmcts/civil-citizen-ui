@@ -95,7 +95,7 @@ if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" = "true" ]; then
   
   else
     #Move testFilesReport.json to prevTestFilesReport.json
-    [ -f "$TEST_FILES_REPORT" ] && mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
+    mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
     run_failed_not_executed_functional_tests
   fi
 

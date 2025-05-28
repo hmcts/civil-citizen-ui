@@ -30,7 +30,7 @@ else
 
   else
     # Move testFilesReport.json to prevTestFilesReport.json
-    [ -f "$TEST_FILES_REPORT" ] && mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
+    mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
 
     # Collect array elements into a comma-separated string
     PREV_FAILED_TEST_FILES=$(jq -r '.failedTestFiles[]' "$PREV_TEST_FILES_REPORT" | paste -sd "," -)
@@ -38,16 +38,11 @@ else
     # Collect array elements into a comma-separated string
     PREV_NOT_EXECUTED_TEST_FILES=$(jq -r '.notExecutedTestFiles[]' "$PREV_TEST_FILES_REPORT" | paste -sd "," -)
 
-    if [ -z "$PREV_FAILED_TEST_FILES" ]; then
-      echo "No failed tests found."
-      exit 1
-    else
-      # Export as environment variable
-      export PREV_FAILED_TEST_FILES="$PREV_FAILED_TEST_FILES"
-      export PREV_NOT_EXECUTED_TEST_FILES="$PREV_NOT_EXECUTED_TEST_FILES"
-      
-      yarn playwright install
-      yarn test:e2e-nightly
-    fi
+    # Export as environment variable
+    export PREV_FAILED_TEST_FILES="$PREV_FAILED_TEST_FILES"
+    export PREV_NOT_EXECUTED_TEST_FILES="$PREV_NOT_EXECUTED_TEST_FILES"
+    
+    yarn playwright install
+    yarn test:e2e-nightly
   fi
 fi
