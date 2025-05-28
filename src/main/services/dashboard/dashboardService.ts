@@ -63,7 +63,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       console.log(`isEACourt: ${isEACourt}`);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
-      console.log(`isGaOnlineFlag: ${isGaOnlineFlag}`);
+      console.log(`isGaOnlineFlag:  ${JSON.stringify(isGaOnlineFlag)}`);
       console.log(`start dashboard: : ${JSON.stringify(dashboard)}`);
 
       if (!isGaOnlineFlag.isGaOnline) {
