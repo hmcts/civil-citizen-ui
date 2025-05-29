@@ -29,6 +29,7 @@ else
     exit 1
 
   else
+    echo "Running failed and not executed functional test files on ${ENVIRONMENT} env"
     # Move testFilesReport.json to prevTestFilesReport.json
     mv "$TEST_FILES_REPORT" "$PREV_TEST_FILES_REPORT"
 
