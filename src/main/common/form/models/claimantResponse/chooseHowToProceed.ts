@@ -7,7 +7,7 @@ import config from 'config';
 class ChooseHowToProceedValidator implements ValidatorConstraintInterface {
   validate(value: ChooseHowProceed) {
     const settlementAgreementEnabled = config.get<boolean>('featureToggles.settlementAgreementEnabled') || false;
-    return value !== ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT || settlementAgreementEnabled;
+    return value !== ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT || true;
   }
 
   defaultMessage() {
