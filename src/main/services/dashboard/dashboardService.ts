@@ -60,7 +60,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
 
-      if (!isGaOnlineFlag.isGaOnline && claim.generalApplications.length === 0) {
+      if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       } else {
         if (isGaOnlineFlag.isSettledOrDiscontinuedWithPreviousCCDState){ // in the case that all the application's tasklist are inactive with isSettledOrDiscontinuedWithPreviousCCDState
