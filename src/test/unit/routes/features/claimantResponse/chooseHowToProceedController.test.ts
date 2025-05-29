@@ -21,6 +21,7 @@ jest.mock('modules/utilityService', () => ({
 describe('Choose how to proceed Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const settlementAgreementEnabled = config.get<boolean>('featureToggles.settlementAgreementEnabled') || false;
 
   beforeAll(() => {
     nock(idamUrl)
@@ -60,21 +61,17 @@ describe('Choose how to proceed Controller', () => {
       });
     });
 
-    // TODO undo this once the stop from choosing settlement agreement is removed
-    // it('should redirect to the claimant response task-list if option SIGN_A_SETTLEMENT_AGREEMENT is selected', async () => {
-    //   await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT})
-    //     .expect((res) => {
-    //       expect(res.status).toBe(302);
-    //       expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
-    //     });
-    // });
-
-    // TODO remove this as well once the stop from choosing settlement agreement is removed
     it('should redirect to the claimant response task-list if option SIGN_A_SETTLEMENT_AGREEMENT is selected', async () => {
       await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT})
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.FEATURE_UNAVAILABLE_GUIDANCE_BELOW'));
+          // TODO undo this once the stop from choosing settlement agreement is removed
+          if (settlementAgreementEnabled) {
+            expect(res.status).toBe(302);
+            expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
+          } else {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('ERRORS.FEATURE_UNAVAILABLE_GUIDANCE_BELOW'));
+          }
         });
     });
 

@@ -7,6 +7,11 @@ import * as ViewQueriesService from 'services/features/queryManagement/viewQueri
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {ViewObjects} from 'form/models/queryManagement/viewQuery';
+import * as dashboardService from 'services/dashboard/dashboardService';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {CivilServiceClient} from 'client/civilServiceClient';
 const mockBuildQueryListItems = ViewQueriesService.ViewQueriesService.buildQueryListItems as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
@@ -17,6 +22,10 @@ jest.mock('services/features/queryManagement/viewQueriesService');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const claimId = '12345';
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+
+jest.mock('services/dashboard/dashboardService', () => ({
+  getNotifications: jest.fn(),
+}));
 
 describe('View query controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -56,22 +65,26 @@ describe('View query controller', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
-      mockBuildQueryListItems.mockReturnValue([
-        {
-          subject: 'Test Subject',
-          createdOnString: '01 Jan 2025',
-          lastUpdatedBy: 'Court staff',
-          lastUpdatedOnString: '02 Jan 2025',
-          status: 'Response received',
-        },
-        {
-          subject: 'Another Test Subject',
-          createdOnString: '21 Jan 2025',
-          lastUpdatedBy: 'You',
-          lastUpdatedOnString: '25 Jan 2025',
-          status: 'Message sent',
-        },
-      ]);
+      mockBuildQueryListItems.mockReturnValue(Array.of(
+        new ViewObjects(
+          '1',
+          'you',
+          'Test Subject',
+          '13 February 2025, 11:30:10 am',
+          'Court staff',
+          '13 February 2025, 11:30:10 am',
+          'Response received',
+        ),
+        new ViewObjects(
+          '2',
+          'you',
+          'another Test Subject',
+          '13 February 2025, 11:30:10 am',
+          'Court staff',
+          '13 February 2025, 11:30:10 am',
+          'Response received',
+        ),
+      ));
 
       const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
       expect(res.text).toContain('Message subject');
@@ -81,16 +94,16 @@ describe('View query controller', () => {
       expect(res.text).toContain('Status');
       // Row 1
       expect(res.text).toContain('Test Subject');
-      expect(res.text).toContain('01 Jan 2025');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
       expect(res.text).toContain('Court staff');
-      expect(res.text).toContain('02 Jan 2025');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
       expect(res.text).toContain('Response received');
       // Row 2
-      expect(res.text).toContain('Another Test Subject');
-      expect(res.text).toContain('21 Jan 2025');
-      expect(res.text).toContain('You');
-      expect(res.text).toContain('25 Jan 2025');
-      expect(res.text).toContain('Message sent');
+      expect(res.text).toContain('another Test Subject');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
+      expect(res.text).toContain('Court staff');
+      expect(res.text).toContain('13 February 2025, 11:30:10 am');
+      expect(res.text).toContain('Response received');
     });
 
     it('should render query page with no items', async () => {
@@ -98,6 +111,24 @@ describe('View query controller', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
       mockBuildQueryListItems.mockReturnValue([]);
+      const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
+      expect(res.text).toContain('Messages');
+      expect(res.text).not.toContain('Test Subject');
+    });
+
+    it('should register click for response notification', async () => {
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claim);
+      mockBuildQueryListItems.mockReturnValue([]);
+      const dashboardNotif = new DashboardNotification('123', '', '',
+        'The court has responded to the message you sent.', '', 'Click', undefined, undefined, '', '');
+      const dashboardNotifList = new DashboardNotificationList();
+      dashboardNotifList.items = Array(dashboardNotif);
+      jest.spyOn(dashboardService, 'getNotifications').mockReturnValue(new Promise(
+        (resolve) => resolve(dashboardNotifList),
+      ));
+      CivilServiceClient.prototype.recordClick = jest.fn().mockResolvedValue({});
       const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
       expect(res.text).toContain('Messages');
       expect(res.text).not.toContain('Test Subject');
