@@ -19,6 +19,7 @@ import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouD
 import {DefendantEvidence} from 'models/evidence/evidence';
 import {toCCDUnavailableDates} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
+import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 
 function getPartialAdmission(claim: Claim, option: YesNo) {
   claim.statementOfMeans = new StatementOfMeans();
@@ -512,5 +513,25 @@ describe('translate response to ccd version', () => {
     //Then
     expect(ccdResponse.respondent1LiPResponse.evidenceComment).toEqual(claim.evidence.comment);
     expect(ccdResponse.respondent1LiPResponse.timelineComment).toEqual(claim.partialAdmission.timeline.comment);
+  });
+
+  it('should translate to respondent1LiPStatementOfTruth - when statement of truth misses name & role', () => {
+    //given
+    claim.defendantStatementOfTruth = {isFullAmountRejected: false, type: undefined};
+    const expected = {name: undefined, role: undefined} as CcdStatementOfTruth;
+    //when
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+    //then
+    expect(ccdResponse.respondent1LiPStatementOfTruth).toEqual(expected);
+  });
+
+  it('should translate to respondent1LiPStatementOfTruth - when statement of truth contains name and role', () => {
+    //given
+    claim.defendantStatementOfTruth = {isFullAmountRejected: false, type: undefined, signerName: 'Test', signerRole: 'Defendant'};
+    const expected = {name: 'Test', role: 'Defendant'} as CcdStatementOfTruth;
+    //when
+    const ccdClaim = translateDraftResponseToCCD(claim, false);
+    //then
+    expect(ccdClaim.respondent1LiPStatementOfTruth).toEqual(expected);
   });
 });

@@ -79,3 +79,5 @@ echo "Setting up Users with role assignments..."
 ./bin/utils/organisational-role-assignment.sh "ga_tribunal_legal_caseworker_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-manager" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests"}' "LEGAL_OPERATIONS"
 ./bin/utils/organisational-role-assignment.sh "ga_tribunal_legal_caseworker_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-viewer" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests"}' "LEGAL_OPERATIONS"
 ./bin/utils/organisational-role-assignment.sh "ga_tribunal_legal_caseworker_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests"}' "LEGAL_OPERATIONS"
+
+./bin/utils/organisational-role-assignment.sh "casewrokerWLU@justice.gov.uk" "Password123" "PUBLIC" "wlu-admin" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"

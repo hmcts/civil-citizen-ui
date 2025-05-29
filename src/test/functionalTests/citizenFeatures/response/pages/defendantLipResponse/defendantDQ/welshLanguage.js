@@ -5,7 +5,7 @@ const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
   speakLanguage: 'input[id="speakLanguage"]',
-  documentLanguage: 'input[id="documentsLanguage-2"]',
+  documentLanguage: 'input[id="documentsLanguage"]',
 };
 
 const content = {

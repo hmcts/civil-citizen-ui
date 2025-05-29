@@ -1,0 +1,114 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t(selectedQueryItem.title) %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ title }}</h1>
+        </div>
+      </div>
+        <div class="govuk-grid-row">
+          {% for item in selectedQueryItem.items%}
+            <div class="govuk-grid-column-three-quarters">
+              <div class="govuk-summary-card">
+                <div class="govuk-summary-card__title-wrapper">
+                  <h2 class="govuk-summary-card__title">
+                    {% if loop.index % 2 == 0 %}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
+                    {% else %}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                    {% endif %}
+                  </h2>
+                </div>
+                <div class="govuk-summary-card__content">
+                  <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
+                        {% if loop.index % 2 == 0 %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_MESSAGE_DETAILS') }}
+                        {% else %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_DETAILS') }}
+                        {% endif %}
+                      </dt>
+                      <dd class="govuk-summary-list__value">{{ item.messageDetails }}</dd>
+                    </div>
+                    {% if loop.index == 1 %}
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') }}</dt>
+                        <dd class="govuk-summary-list__value">
+                          {% if item.isHearingRelated == 'Yes' %}
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES') }}
+                          {% else %}
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO') }}
+                          {% endif %}
+                        </dd>
+                      </div>
+
+                      {% if item.isHearingRelated == 'Yes' %}
+                        <div class="govuk-summary-list__row">
+                          <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.HEARING_DATE') }}
+                          </dt>
+                          <dd class="govuk-summary-list__value">
+                            {{ item.hearingDate }}
+                          </dd>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">
+                        {{ t('PAGES.QM.VIEW_QUERY_DETAILS.UPLOADED_DOCUMENTS') }}
+                      </dt>
+                      <dd class="govuk-summary-list__value">
+                        {% if item.documents.length > 0 %}
+                          {% for link in item.documents %}
+                            <div>{{ link.documentUrl | safe }}</div>
+                          {% endfor %}
+                        {% endif %}
+                      </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY') }}</dt>
+                      <dd class="govuk-summary-list__value">
+                        {% if loop.index % 2 == 0 %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_COURT_STAFF') }}
+                        {% else %}
+                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}
+                        {% endif %}
+                      </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key govuk-!-font-weight-bold">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_ON') }}</dt>
+                      <dd class="govuk-summary-list__value">{{ item.sentOn }}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% if not isClaimOffLine and selectedQueryItem.lastStatus == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
+            {{ govukButton({
+              text: t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP'),
+              classes: "govuk-button--secondary",
+              href: followUpScreen
+            }) }}
+          {% endif %}
+        </div>
+      </div>
+
+    </main>
+  </div>
+{% endblock %}
