@@ -1,0 +1,12 @@
+{
+  "jsc": {
+    "parser": { "syntax": "typescript", "tsx": true, "decorators": true },
+    "experimental": {
+      "plugins": [
+        ["swc_mut_cjs_exports", {}]
+      ]
+    }
+  },
+  "module": { "type": "commonjs" }
+}
+
