@@ -4,8 +4,11 @@ module.exports = {
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.(t|j)sx?$': ['@swc/jest', { jsc: { transform: { hidden: { jest: true } } } }]
+    '^.+\\.ts?$': ['@swc/jest', { jsc: { transform: { hidden: { jest: true } } } }]
   },
+  transformIgnorePatterns: [
+    '/node_modules/',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
