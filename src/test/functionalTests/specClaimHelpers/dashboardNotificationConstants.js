@@ -568,4 +568,10 @@ module.exports = {
       nextSteps: 'View the defendant legal representative contact details',
     };
   },
+  nocForLipCaseGoesOffline: (clientName) => {
+    return {
+      title: clientName + ' has assigned a legal representative to act on their behalf',
+      content: 'This claim will now move offline and you must submit your intention to proceed by using form',
+    };
+  },
 };
