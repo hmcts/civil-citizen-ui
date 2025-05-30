@@ -169,34 +169,34 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(result).toBe('123451');
   });
 
-it('should remove field from claim data and save on redis', async () => {
+  it('should remove field from claim data and save on redis', async () => {
   // Given
-  const draftStoreWithData = createMockDraftStore(undefined);
-  app.locals.draftStoreClient = draftStoreWithData;
+    const draftStoreWithData = createMockDraftStore(undefined);
+    app.locals.draftStoreClient = draftStoreWithData;
 
-  const expectedClaim = {
-    id: CLAIM_ID,
-    case_data: {
-      refreshDataForDJ: true,
+    const expectedClaim = {
       id: CLAIM_ID,
-    },
-  };
+      case_data: {
+        refreshDataForDJ: true,
+        id: CLAIM_ID,
+      },
+    };
 
-  const mockClaim = new Claim();
-  mockClaim.id = CLAIM_ID;
-  mockClaim.totalClaimAmount = 123;
+    const mockClaim = new Claim();
+    mockClaim.id = CLAIM_ID;
+    mockClaim.totalClaimAmount = 123;
 
-  const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
 
-  await deleteFieldDraftClaimFromStore(CLAIM_ID, mockClaim, 'totalClaimAmount');
+    await deleteFieldDraftClaimFromStore(CLAIM_ID, mockClaim, 'totalClaimAmount');
 
-  // compare objects, not raw JSON
-  expect(spySet).toHaveBeenCalledTimes(1);
+    // compare objects, not raw JSON
+    expect(spySet).toHaveBeenCalledTimes(1);
 
-  const [keyArg, jsonArg] = spySet.mock.calls[0];
-  expect(keyArg).toBe(CLAIM_ID);
-  expect(JSON.parse(jsonArg)).toEqual(expectedClaim);
-});
+    const [keyArg, jsonArg] = spySet.mock.calls[0];
+    expect(keyArg).toBe(CLAIM_ID);
+    expect(JSON.parse(jsonArg)).toEqual(expectedClaim);
+  });
 
   describe('findClaimIdsbyUserId', () => {
     let mockKeys: jest.Mock;
