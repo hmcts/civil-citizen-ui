@@ -1,9 +1,10 @@
 module.exports = {
   roots: ['<rootDir>/src/test/unit'],
+  cacheDirectory: '<rootDir>/.jest-cache',
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
+    '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
@@ -17,5 +18,4 @@ module.exports = {
     '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1'
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js', './jest.setup.js'],
-  workerIdleMemoryLimit: '1024MB'
 };
