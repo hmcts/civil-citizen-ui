@@ -45,5 +45,7 @@
       "./node_modules/@types",
       "./typings"
     ]
-  }
+  },
+  "exclude": ["src/test/**/*"]
 }
+
