@@ -8,6 +8,7 @@ coverage/*
 /src/main/public/
 # custom definition files
 /src/main/types/
+/src/test/unit/
 jest.*config.js
 # MoJ boilerplate code
 /src/main/assets/js/mojAll.js

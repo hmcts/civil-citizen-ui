@@ -46,6 +46,6 @@
       "./typings"
     ]
   },
-  "exclude": ["src/test/**/*"]
+  "exclude": ["src/test/unit/*"]
 }
 
