@@ -553,6 +553,11 @@ describe('claimant Dashboard Controller', () => {
         jest
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
+        app.locals = {
+          showCreateQuery : true,
+          isQMFlagEnabled : true,
+          disableSendMessage: true,
+        };
 
         await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res: Response) => {
           expect(res.status).toBe(200);

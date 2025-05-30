@@ -616,6 +616,11 @@ describe('Claim Summary Controller Defendant', () => {
         jest
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
+        app.locals = {
+          showCreateQuery : true,
+          isQMFlagEnabled : true,
+          disableSendMessage : true,
+        };
 
         await testSession
           .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
