@@ -63,12 +63,11 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
 export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
-  if (claim.isCaseIssuedPending()) { // if the claim is not yet issued
-    gaInformation.isGaOnline = false;
-  } else if (claim.hasClaimTakenOffline() ||
-      claim.hasClaimBeenDismissed()) { // not show the ga link if claim is taken offline or dismissed
-    gaInformation.isGaOnline = false;
-  } else if (!isEaCourt) { // if the claim is not in EA court, then GA is not online
+  if (claim.isCaseIssuedPending() ||
+    claim.hasClaimTakenOffline() ||
+    claim.hasClaimBeenDismissed() ||
+    !isEaCourt) { // if the claim is not yet issued
+
     gaInformation.isGaOnline = false;
   } else if ((claim.defendantUserDetails === undefined ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant
