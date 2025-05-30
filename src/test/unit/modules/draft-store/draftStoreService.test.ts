@@ -170,9 +170,10 @@ describe('Draft store service to save and retrieve claim', () => {
   });
 
   it('should remove field from claim data and save on redis', async () => {
-    //Given
+  // Given
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
+
     const expectedClaim = {
       id: CLAIM_ID,
       case_data: {
@@ -180,7 +181,6 @@ describe('Draft store service to save and retrieve claim', () => {
         id: CLAIM_ID,
       },
     };
-    expectedClaim.id = CLAIM_ID;
 
     const mockClaim = new Claim();
     mockClaim.id = CLAIM_ID;
@@ -188,10 +188,14 @@ describe('Draft store service to save and retrieve claim', () => {
 
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
 
-    //When
-    await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
-    //Then
-    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim));
+    await deleteFieldDraftClaimFromStore(CLAIM_ID, mockClaim, 'totalClaimAmount');
+
+    // compare objects, not raw JSON
+    expect(spySet).toHaveBeenCalledTimes(1);
+
+    const [keyArg, jsonArg] = spySet.mock.calls[0];
+    expect(keyArg).toBe(CLAIM_ID);
+    expect(JSON.parse(jsonArg)).toEqual(expectedClaim);
   });
 
   describe('findClaimIdsbyUserId', () => {
