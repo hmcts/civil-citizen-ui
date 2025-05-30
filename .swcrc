@@ -1,12 +1,18 @@
 {
   "jsc": {
     "parser": { "syntax": "typescript", "tsx": true, "decorators": true },
+
+    "transform": {
+      "useDefineForClassFields": false,   // strip “= undefined” fields
+      "hidden": { "jest": true }          // this is to hoist jest.mock / jest.spyOn
+    },
+
     "experimental": {
       "plugins": [
         ["swc_mut_cjs_exports", {}]
       ]
     }
   },
+
   "module": { "type": "commonjs" }
 }
-
