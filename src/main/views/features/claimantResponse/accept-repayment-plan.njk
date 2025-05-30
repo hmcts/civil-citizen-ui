@@ -28,7 +28,9 @@
             <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DEFENDANT_OFFERED_TO_PAY', {defendantName: defendantName, proposedSetDate: proposedSetDate})}}</p>
           {% else %}
             {{ repaymentPlanSummary(repaymentPlan, t) }}
-            <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.INTEREST_HINT_TEXT') }}</p>
+            {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+              <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.INTEREST_HINT_TEXT') }}</p>
+            {% endif %}
           {% endif %}
           <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DO_YOU_ACCEPT') }}</p>
           <form method="post" novalidate>

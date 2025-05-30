@@ -57,6 +57,9 @@
                 ]
               }) }}
             {% endfor %}
+            {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+              <p class="govuk-body">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH_HINT') }}</p>
+            {% endif %}
           {% endif %}
 
           {% if claim.isBusiness() === false %}
