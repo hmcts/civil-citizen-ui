@@ -342,7 +342,7 @@ describe('View Orders And Notices Service', () => {
       claim.courtPermissionNeeded = YesNoUpperCase.NO;
       (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
+      claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
@@ -362,7 +362,7 @@ describe('View Orders And Notices Service', () => {
       claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
       (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
+      claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
@@ -382,7 +382,7 @@ describe('View Orders And Notices Service', () => {
       claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
       (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
+      claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
@@ -402,7 +402,7 @@ describe('View Orders And Notices Service', () => {
       claim.courtPermissionNeeded = YesNoUpperCase.NO;
       (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
+      claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
