@@ -7,6 +7,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {ResponseType} from 'common/form/models/responseType';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
 
@@ -19,6 +20,9 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest
+      .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
+      .mockResolvedValueOnce(Promise.resolve(0.02) as any);
   });
 
   describe('on GET', () => {
