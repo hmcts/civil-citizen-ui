@@ -21,9 +21,13 @@
       {% set errors = form.getAllErrors() %}
       {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
       {% set totalAmount = form.model.totalClaimAmount %}
+      {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT') %}
+      {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.LENGTH_HINT_TEXT') %}
       {% if admission %}
         {% set totalAmountClaimedText = t('PAGES.REPAYMENT_PLAN.ADMIT_YOU_OWE',{amount: amount}) %}
         {% set totalAmount = amount %}
+        {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.ADMIT_YOU_OWE_HINT_TEXT') %}
+        {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.ADMISSION_LENGTH_HINT_TEXT') %}
       {% endif %}
       {% set firstPaymentExample = t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + paymentExampleDate %}
       {% if form.hasErrors() %}
@@ -37,7 +41,7 @@
       <div class="govuk-grid-column-full">
         {% call govukFieldset({
           legend: {
-            html: title + '<p class="govuk-body-m">' + totalAmountClaimedText + '</p>',
+            html: title + '<p class="govuk-body-m">' + totalAmountClaimedText + '</p>' + '<p class="govuk-body-m">' + totalAmountClaimedHintText + '</p>',
             classes: "govuk-fieldset__legend--l",
             isPageHeading: true
           }
@@ -118,7 +122,7 @@
             </div>
           </div>
            <div class="govuk-body repayment-length">
-            <span>{{ t('PAGES.REPAYMENT_PLAN.LENGTH_SUBTITLE') }}</span>
+            <span>{{ repaymentLengthHintText }}</span>
           </div>
         </div>
       </div>
