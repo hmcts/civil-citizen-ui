@@ -38,7 +38,7 @@ class N245Upload {
   }
 
   async uploadN245() {
-    await I.attachFile('#selectedFile', 'citizenFeatures/caseProgression/data/TestPDF.pdf');
+    await I.attachFile('#selectedFile', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestPDF.pdf');
     await I.waitForContent('TestPDF.pdf');
     await I.click('Upload file');
     await I.waitForContent('Uploaded files');

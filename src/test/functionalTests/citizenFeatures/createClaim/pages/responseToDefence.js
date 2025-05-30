@@ -942,7 +942,7 @@ class ResponseToDefence {
     I.waitForContent('The court will consider both parties\' circumstances when deciding where to hold the hearing.',60);
     I.see('You can ask for the hearing to be held at a specific court,');
     I.see('Select a court');
-    I.selectOption('select[name="courtLocation"]', 'Barnet Civil And Family Courts Centre - St Mary\'s Court, Regents Park Road - N3 1BQ');
+    I.selectOption('select[name="courtLocation"]', 'Barnsley Law Courts - The Court House, Westgate - S70 2DW');
     I.see('Tell us why you want the hearing to be held at this court');
     I.fillField('#reason', 'nearest location');
     await I.click(paths.buttons.save_and_continue);
