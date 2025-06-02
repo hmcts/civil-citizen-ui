@@ -90,10 +90,12 @@ export function checkWelshHearingNotice(claim: Claim): boolean {
   const isDocsLanguageWelshDefendant = isWelshLanguage(docsLanguageDefendant);
 
   const isClaimantWelshBilingual =
-    claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
+    || claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH;
 
   const isDefendantLipResponseBoth =
-    claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+    claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH'
+    || claim.respondent1LiPResponse?.respondent1ResponseLanguage === 'WELSH';
 
   return ((claim.isClaimant() && (isClaimantWelshBilingual || isDocsLanguageWelsh)) ||
     (claim.isDefendant() && (isDefendantLipResponseBoth || isDocsLanguageWelshDefendant)));
