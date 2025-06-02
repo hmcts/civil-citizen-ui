@@ -859,8 +859,8 @@ describe('dashboardService', () => {
         const dashboardExpected = new Dashboard(
           Array.of(new DashboardTaskList('Applications', 'Applications', [
             new DashboardTask('1234',
-              'Contact the court to request a change to my case',
-              'test',
+              '<a href=/case/1234567890/general-application/application-type?linkFrom=start rel="noopener noreferrer" class="govuk-link">Contact the court to request a change to my case</a>',
+              '<a href=/case/1234567890/general-application/application-type?linkFrom=start rel="noopener noreferrer" class="govuk-link">Cysylltu â’r llys i wneud cais am newid i fy achos</a>',
               'Optional',
               'Dewisol',
               'test',

@@ -46,19 +46,6 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   console.log(`queryManagementFlagEnabled: ${queryManagementFlagEnabled}`);
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
-    for (const item of dashboard.items) {
-      for (const task of item.tasks) {
-        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
-        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
-        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
-        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
-      }
-    }
-    //exclude Carm sections
-    if (!isCarmApplicable){
-      dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-    }
-
     if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       console.log(`isEACourt: ${isEACourt}`);
@@ -75,23 +62,41 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
             .find(item => item.categoryEn === 'Applications')
             .tasks.find(task => task
               .taskNameEn.includes('Contact the court to request a change to my case')
-                  && task.statusEn === 'Inactive');
+              && task.statusEn === 'Inactive');
           if (taskItem) {
             taskItem.statusEn = 'Optional';
             taskItem.statusCy = 'Dewisol';
+            taskItem.taskNameEn = '<a href={GENERAL_APPLICATIONS_INITIATION_PAGE_URL} rel="noopener noreferrer" class="govuk-link">Contact the court to request a change to my case</a>'.trim();
+            taskItem.taskNameCy = '<a href={GENERAL_APPLICATIONS_INITIATION_PAGE_URL} rel="noopener noreferrer" class="govuk-link">Cysylltu â’r llys i wneud cais am newid i fy achos</a>'.trim();
+
           }
         }
       }
     } else { // prod code
       //exclude Applications sections
       if (!isGAFlagEnable
-          || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
-          || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-          || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
+        || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
+        || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
+        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }
     }
+
+    //exclude Carm sections
+    if (!isCarmApplicable){
+      dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    }
+
+    for (const item of dashboard.items) {
+      for (const task of item.tasks) {
+        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
+        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
+        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
+        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+      }
+    }
     console.log(`end: : ${JSON.stringify(dashboard)}`);
+
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
