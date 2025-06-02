@@ -11,7 +11,11 @@ export const getHowMuchDoYouOweForm = async (claimId: string, lang: string): Pro
     const claim = await getCaseDataFromStore(claimId);
     const claimHasInterest = claim.hasInterest();
     const interestDetails = claimHasInterest ? await getInterestData(claim, lang) : undefined;
-    const totalClaimAmount = claim.totalClaimAmount + (interestDetails ? Number(interestDetails.interestToDate) : 0);
+    const interestAmount = (interestDetails ? Number(interestDetails.interestToDate) : undefined);
+    let totalClaimAmount = claim.totalClaimAmount;
+    if(totalClaimAmount && interestAmount) {
+      totalClaimAmount = totalClaimAmount + interestAmount;
+    }
     if (claim.partialAdmission?.howMuchDoYouOwe?.amount) {
       const admittedAmount = claim.partialAdmission.howMuchDoYouOwe.amount;
       return new HowMuchDoYouOwe(admittedAmount, totalClaimAmount);
