@@ -3972,7 +3972,8 @@
       "SUBTOTAL": "Subtotal",
       "AMOUNT_ALREADY_PAID": "Minus amount already paid",
       "CLAIM_TOTAL": "Total",
-      "JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, plus claim fee, as shown in this table:",
+      "FA_JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, including your claim fee and any interest, as shown in this table:",
+      "PA_JUDGMENT_STATEMENT": "The judgment will order the defendant to pay £{{ subTotal }}, plus claim fee, as shown in this table:",
       "INTEREST_TO_DATE_RESPONSE": "Interest calculated at {{interestRate}}% for {{numberOfDays}} days.",
       "TOTAL_PERIOD": "({{ interestFromDate }} to {{ interestToDate}})",
       "HOW_INTEREST_IS_CALCULATED": "Interest calculated as \"{{ reason }}\" for {{numberOfDays}} days."
