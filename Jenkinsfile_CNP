@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "feat/CIV-17095"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
@@ -127,7 +127,7 @@ def checkForFullDeployLabel(branch_name) {
 
 def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
-} 
+}
 
 def checkForRunFailedTestFiles(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "runFailedTestFiles").contains("runFailedTestFiles")
