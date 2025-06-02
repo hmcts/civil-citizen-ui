@@ -3988,7 +3988,8 @@
       "SUBTOTAL": "Is-gyfanswm",
       "AMOUNT_ALREADY_PAID": "Swm namyn yr hyn a dalwyd eisoes",
       "CLAIM_TOTAL": "Cyfanswm",
-      "JUDGMENT_STATEMENT": "Bydd y dyfarniad yn gorchymyn i’r diffynnydd dalu £{{ subTotal }}, ynghyd â ffi’r hawliad, fel y dangosir yn y tabl hwn:",
+      "FA_JUDGMENT_STATEMENT": "Bydd y dyfarniad yn gorchymyn i'r diffynnydd dalu £{{ subTotal }}, gan gynnwys ffi’r hawliad ac unrhyw log, fel y dangosir yn y tabl hwn:",
+      "PA_JUDGMENT_STATEMENT": "Bydd y dyfarniad yn gorchymyn i’r diffynnydd dalu £{{ subTotal }}, ynghyd â ffi’r hawliad, fel y dangosir yn y tabl hwn:",
       "INTEREST_TO_DATE_RESPONSE": "Llog a gyfrifir ar {{ interestRate }}% am {{ numberOfDays }} diwrnod.",
       "TOTAL_PERIOD": "({{ interestFromDate }} tan {{ interestToDate}})",
       "HOW_INTEREST_IS_CALCULATED": "Cyfrifir llog fel \"{{ reason }}\" am {{numberOfDays}} diwrnod."
