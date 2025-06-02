@@ -6,6 +6,7 @@
       "useDefineForClassFields": false,   // strip “= undefined” fields
       "hidden": { "jest": true }          // this is to hoist jest.mock / jest.spyOn
     },
+    "externalHelpers": false,
 
     "experimental": {
       "plugins": [
@@ -14,5 +15,6 @@
     }
   },
 
-  "module": { "type": "commonjs" }
+  "module": { "type": "commonjs", "noInterop": true },
+  "sourceMaps": false
 }
