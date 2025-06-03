@@ -59,7 +59,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
       if (checkWelshHearingNotice(claim)) {
         if(hearingDocumentWelsh?.value) {
           const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocumentWelsh.value?.documentName, claim.id, hearingDocumentWelsh.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
-          const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
+          const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.TRANSLATED_HEARING_NOTICE', {lng:lang}),hearingDocumentWelsh.value?.createdDatetime,lang);
           hearingRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'}, value:{html: hearingDocumentLink},
           });
         }
