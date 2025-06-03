@@ -362,9 +362,17 @@ const getTranslatedOrders = (claim: Claim, claimId: string, lang: string) => {
 };
 
 const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {
-  const settlementAgreement = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
-  return settlementAgreement ? Array.of(
-    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')) : [];
+
+  const decisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
+  const docLink1 = decisionOnReconsideration
+    ? setUpDocumentLinkObject(decisionOnReconsideration.documentLink, decisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')
+    : undefined;
+  const translatedDecisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+  const docLink2 = translatedDecisionOnReconsideration
+    ? setUpDocumentLinkObject(translatedDecisionOnReconsideration.documentLink, translatedDecisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
+
 };
 
 const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
