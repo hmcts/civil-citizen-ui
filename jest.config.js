@@ -20,6 +20,9 @@ module.exports = {
     '^services/(.*)$': '<rootDir>/src/main/services/$1',
     '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1'
   },
+  collectCoverageFrom: ['src/main/**/*.ts'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/src/test/'],
+  coverageReporters: ['text', 'json'],
   setupFiles: ['./jest.globalMocks.js'],
   setupFilesAfterEnv: ['./jest.setup.js'],
 };
