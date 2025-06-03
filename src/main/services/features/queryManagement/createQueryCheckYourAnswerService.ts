@@ -94,28 +94,28 @@ const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: stri
 };
 
 export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
-  let qmApplicantCitizenQueries: CaseQueries;
+  let queries: CaseQueries;
   const date = new Date();
-  if (!updatedClaim.qmApplicantCitizenQueries) {
+  if (!updatedClaim.queries) {
 
-    qmApplicantCitizenQueries = {
+    queries = {
       'partyName': 'Claimant',
       'roleOnCase': claim.caseRole,
       'caseMessages': [],
     };
   } else {
-    qmApplicantCitizenQueries = updatedClaim.qmApplicantCitizenQueries;
+    queries = updatedClaim.queries;
   }
 
   if (isFollowUpQuery) {
-    const parent = qmApplicantCitizenQueries.caseMessages
+    const parent = queries.caseMessages
       .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
 
     if (!parent) {
       throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
     }
 
-    qmApplicantCitizenQueries.caseMessages.push({
+    queries.caseMessages.push({
       'id': uuidV4(),
       'value': {
         'parentId': parent.value.id,
@@ -130,13 +130,13 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
         'hearingDate': parent.value.isHearingRelated === 'Yes' ? parent.value.hearingDate  : undefined,
       },
     });
-    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmApplicantCitizenQueries}, req).catch(error => {
+    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
       throw error;
     });
     return;
   }
 
-  qmApplicantCitizenQueries.caseMessages.push({
+  queries.caseMessages.push({
     'id': uuidV4(),
     'value': {
       'id': uuidV4(),
@@ -150,7 +150,7 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
       'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery)  : undefined,
     },
   });
-  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmApplicantCitizenQueries}, req).catch(error => {
+  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
     throw error;
   });
 
@@ -170,28 +170,28 @@ const getDocAttachments = (uploadedFiles: UploadQMAdditionalFile[]): FormDocumen
 };
 
 export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
-  let qmRespondentCitizenQueries: CaseQueries;
+  let queries: CaseQueries;
   const date = new Date();
-  if (!updatedClaim.qmRespondentCitizenQueries) {
+  if (!updatedClaim.queries) {
 
-    qmRespondentCitizenQueries = {
+    queries = {
       'partyName': 'Defendant',
       'roleOnCase': claim.caseRole,
       'caseMessages': [],
     };
   } else {
-    qmRespondentCitizenQueries = updatedClaim.qmRespondentCitizenQueries;
+    queries = updatedClaim.queries;
   }
 
   if (isFollowUpQuery) {
-    const parent = qmRespondentCitizenQueries.caseMessages
+    const parent = queries.caseMessages
       .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
 
     if (!parent) {
       throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
     }
 
-    qmRespondentCitizenQueries.caseMessages.push({
+    queries.caseMessages.push({
       'id': uuidV4(),
       'value': {
         'parentId':  parent.value.id,
@@ -206,13 +206,13 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
         'hearingDate': parent.value.isHearingRelated === 'Yes' ? parent.value.hearingDate  : undefined,
       },
     });
-    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmRespondentCitizenQueries}, req).catch(error => {
+    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
       throw error;
     });
     return;
   }
 
-  qmRespondentCitizenQueries.caseMessages.push({
+  queries.caseMessages.push({
     'id': uuidV4(),
     'value': {
       'id': uuidV4(),
@@ -226,7 +226,7 @@ export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: C
       'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery) : undefined,
     },
   });
-  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {qmRespondentCitizenQueries}, req).catch(error => {
+  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
     throw error;
   });
 };

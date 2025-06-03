@@ -25,7 +25,11 @@
                     {% if loop.index % 2 == 0 %}
                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
                     {% else %}
-                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                      {% if item.usersQuery %}
+                        {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                      {% else %}
+                        {{ item.sentBy }}
+                      {% endif %}
                     {% endif %}
                   </h2>
                 </div>
@@ -82,7 +86,11 @@
                         {% if loop.index % 2 == 0 %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_COURT_STAFF') }}
                         {% else %}
-                          {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}
+                          {% if item.usersQuery %}
+                            {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}
+                          {% else %}
+                            {{ item.sentBy }}
+                          {% endif %}
                         {% endif %}
                       </dd>
                     </div>
