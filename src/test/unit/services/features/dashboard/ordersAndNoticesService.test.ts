@@ -730,6 +730,8 @@ describe('View Orders And Notices Service', () => {
     });
 
     it('should get data array for translated decision on Reconsideration', async () => {
+
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       //given
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
