@@ -206,5 +206,6 @@ export const enum TestMessages {
   VALID_PAID_IN_FULL_DATE = 'Paid in full date must be on or after the date of the judgment',
   UNABLE_TO_PROVIDE_EVIDENCE = 'Add details of why you&#39;re not able to provide evidence',
   QUERY_MANAGEMENT_YOU_MUST_SELECT = 'You must select what you want to do before you can continue.',
+  FEATURE_UNAVAILABLE_GUIDANCE_BELOW = 'This feature is currently not available, please see guidance below',
 
 }

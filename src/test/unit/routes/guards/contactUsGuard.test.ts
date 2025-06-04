@@ -1,4 +1,3 @@
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {NextFunction, Request, Response} from 'express';
 import {isQueryManagementEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {contactUsGuard} from 'routes/guards/contactUsGuard';
@@ -6,12 +5,10 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {QM_START_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockIsQueryManagementEnabled = isQueryManagementEnabled as jest.Mock;
 
 const MOCK_REQUEST = {
@@ -34,11 +31,12 @@ describe('Contact us for help', () => {
   });
   it('should populate request fields when QM is on', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
 
     mockIsQueryManagementEnabled.mockImplementation(async () => true);
 
@@ -55,11 +53,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when case is PENDING_CASE_ISSUED', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+        return claim;
+      });
 
     mockIsQueryManagementEnabled.mockImplementation(async () => true);
 
@@ -76,12 +75,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when QM LIP is off', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-      return claim;
-    });
-
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+        return claim;
+      });
     mockIsQueryManagementEnabled.mockImplementation(async () => false);
 
     //When
@@ -97,11 +96,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when is eligibility', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
 
     const whitelistRequest = {
       params: {
@@ -124,11 +124,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when is first-contact', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.CASE_SETTLED;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.CASE_SETTLED;
+        return claim;
+      });
 
     const whitelistRequest = {
       params: {
@@ -151,11 +152,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when is testing-support', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.CASE_SETTLED;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.CASE_SETTLED;
+        return claim;
+      });
 
     const whitelistRequest = {
       params: {
@@ -178,11 +180,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when is claim', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.CASE_SETTLED;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.CASE_SETTLED;
+        return claim;
+      });
 
     const whitelistRequest = {
       params: {
@@ -205,11 +208,12 @@ describe('Contact us for help', () => {
 
   it('should not populate request fields when the path url contains at second position a string', async () => {
     //Given
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.ccdState = CaseState.CASE_SETTLED;
-      return claim;
-    });
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.CASE_SETTLED;
+        return claim;
+      });
 
     const whitelistRequest = {
       params: {
