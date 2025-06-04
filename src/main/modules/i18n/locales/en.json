@@ -1672,7 +1672,8 @@
       "CCJ_HOW_TO_PAY": "How you want the defendant to pay?",
       "CCJ_INSTALMENTS_OF": "Instalments of",
       "CCJ_INSTALMENTS_PAYMENT_FREQUENCY": "How often you want them to make this payment?",
-      "CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
+      "FA_CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant",
+      "PA_CCJ_TOTAL_TO_BE_PAID": "Total to be paid by defendant including claim fee",
       "CCJ_WHEN_DO_YOU_WANT_TO_BE_PAID_BY": "When you want the defendant to pay?",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
@@ -4726,7 +4727,7 @@
           "FIRST_PAYMENT_DATE": "First payment date",
           "FINAL_PAYMENT_DATE": "Final payment date",
           "LENGTH": "Length of repayment plan",
-          "LENGTH_HINT": "this date may change with the addition of the claim fee",
+          "LENGTH_HINT": "This date may change with the addition of the claim fee",
           "REGULAR_PAYMENTS": "Regular payments of"
         }
       },
