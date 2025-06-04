@@ -231,7 +231,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/county-court-judgement/paid-amount-summary`);
     I.waitForContent('The judgment will order the defendant to pay');
     I.see('Judgment amount', 'h1');
-    I.see('including your claim fee and any interest, as shown in this table:');
+    I.see('plus claim fee, as shown in this table:');
     I.see('Amount');
     I.see('Claim amount');
     I.see('Claim fee amount');
