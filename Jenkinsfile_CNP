@@ -11,11 +11,11 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
-def dmnBranch = "master"
+def camundaBranch = "CIV-16914-welsh-translations-for-application-summary"
+def dmnBranch = "CIV-16914-Change-WA-Configuration-for-WLU-and-delay-notifications"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
-def generalappCCDBranch = "master"
+def generalappCCDBranch = "CIV-16914Change-WA-Configuration-for-WLU-and-delay-notifications"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -127,7 +127,7 @@ def checkForFullDeployLabel(branch_name) {
 
 def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
-} 
+}
 
 def checkForRunFailedTestFiles(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "runFailedTestFiles").contains("runFailedTestFiles")
