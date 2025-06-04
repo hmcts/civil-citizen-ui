@@ -120,6 +120,7 @@ describe('Interest Utils', () => {
 
   it('fix cost is claimed', async () => {
     const claim = new Claim();
+    claim.isLRClaimant = () => true;
     claim.fixedCost = <FixedCost> {};
     claim.fixedCost.fixedCostAmount = '100';
     claim.fixedCost.claimFixedCosts = 'Yes';
