@@ -23,7 +23,7 @@ Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects c
     ClaimantResponseSteps.acceptOrRejectPartAdmitPayImmediately(caseId, 'Yes');
     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId, 'Yes');
     ClaimantResponseSteps.formaliseRepayment(caseId, 'Request a CCJ');
-    ClaimantResponseSteps.requestCCJ(caseId);
+    ClaimantResponseSteps.requestCCJ(caseId, false);
     ClaimantResponseSteps.checkAndSubmit(caseId);
     ClaimantResponseSteps.partAdmitClaimantRequestsCCJConfirmation(caseId);
     await ClaimantResponseSteps.resetWiremockScenario();
