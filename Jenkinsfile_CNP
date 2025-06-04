@@ -11,10 +11,10 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
-def dmnBranch = "master"
+def camundaBranch = "CIV-16859-delay-notifications-and-visibility-of-part-discontinuance-document"
+def dmnBranch = "CIV-16859-delay-notifications-and-visibility-of-part-discontinuance"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-16859-delay-notifications-and-visibility-of-part-discontinuance-document"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
