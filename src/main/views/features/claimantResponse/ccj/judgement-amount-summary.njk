@@ -40,12 +40,12 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-l">{{ t('PAGES.JUDGMENT_AMOUNT.TITLE') }}</h1>
-                    {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
-                        <p
-                                class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.PA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
+                    {% if judgmentSummaryDetails.isFullAdmission %}
+                    <p
+                                                  class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.FA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
                     {% else %}
                         <p
-                              class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.FA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
+                                                        class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.PA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
                     {% endif %}
                     <table class="govuk-table">
                         <thead class="govuk-table__head">
