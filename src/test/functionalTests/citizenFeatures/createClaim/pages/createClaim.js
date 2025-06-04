@@ -628,12 +628,12 @@ class CreateClaim {
   }
 
   async answerClaimInterest(selectInterest = false, standardInterest = true) {
-    if (selectInterest == true) {
+    if (selectInterest) {
       I.waitForContent('Do you want to claim interest', 60);
       I.click(paths.options.yes);
       this.clickNextAction(paths.buttons.save_and_continue);
       I.waitForContent('How do you want to claim interest', 60);
-      if (standardInterest == true) {
+      if (standardInterest) {
         I.click(paths.options.same_rate_for_the_whole_period);
         this.clickNextAction(paths.buttons.save_and_continue);
         I.waitForContent('You can claim 8% per year unless you know that a different rate applies', 60);
