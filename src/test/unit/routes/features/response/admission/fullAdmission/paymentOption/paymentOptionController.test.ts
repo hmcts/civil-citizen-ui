@@ -39,7 +39,7 @@ describe('Payment Option Controller', () => {
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('When do you want to pay?');
+          expect(res.text).toContain('When do you want to pay the £0?');
         });
     });
 
