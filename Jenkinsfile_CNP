@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "CIV-17131-Pause-in-Claimant-Response-Journey-LRvLiP"
 def dmnBranch = "CIV-17131-pause-in-claimant-response-journey-LR-v-LIP"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-17131-pause-in-claimant-response-journey-LR-v-LIP"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
