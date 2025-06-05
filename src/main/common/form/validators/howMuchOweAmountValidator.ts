@@ -1,7 +1,7 @@
 import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 
 /**
- * Validates a number against a value of an object property. Returns true if the number is equal to or less than the property value number.
+ * Validates a how much you owe amount against a total amount. Returns true if the amount submitted is equal to or less than the total amount minus one-pence.
  * Will not validate (return true) if the property value is not numeric or is not defined
  */
 @ValidatorConstraint({name: 'howMuchOweAmountValidator'})
@@ -23,8 +23,8 @@ export class HowMuchOweAmountValidator implements ValidatorConstraintInterface {
       if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
         return true;
       }
-
-      return Number(value) <= (propertyValue - 0.01);
+      const ONE_PENCE = 0.01;
+      return Number(value) <= (propertyValue - ONE_PENCE);
     }
     return true;
   }
