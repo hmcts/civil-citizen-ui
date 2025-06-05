@@ -33,6 +33,8 @@
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
     "CLAIMANT": "Claimant",
+    "CLAIMANT_DASHBOARD_HINT_TEXT": "Excluding any interest claimed and claim fee",
+    "DEFENDANT_DASHBOARD_HINT_TEXT": "Excluding any interest claimed, claim fee and any applicable fixed costs",
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",

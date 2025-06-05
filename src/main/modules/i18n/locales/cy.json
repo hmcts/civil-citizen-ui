@@ -33,6 +33,8 @@
     "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
     "CLAIM_NUMBER": "Rhif hawlio",
     "CLAIMANT": "Hawlydd",
+    "CLAIMANT_DASHBOARD_HINT_TEXT": "Ac eithrio unrhyw log a hawlir a ffi’r hawliad",
+    "DEFENDANT_DASHBOARD_HINT_TEXT": "Ac eithrio unrhyw log a hawlir, ffi’r hawliad ac unrhyw gostau sefydlog cymwys",
     "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
     "DASHBOARD": "Dangosfwrdd",
     "DATE": "Dyddiad",
