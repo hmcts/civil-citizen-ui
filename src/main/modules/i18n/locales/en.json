@@ -2512,6 +2512,7 @@
         "CREATED": "Created ",
         "HEARING": "Hearing",
         "HEARING_NOTICE": "Hearing notice",
+        "TRANSLATED_HEARING_NOTICE": "Translated Hearing notice",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
