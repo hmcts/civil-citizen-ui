@@ -108,7 +108,7 @@ import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
-import {mediationPhoneRedirectionGuard} from 'routes/guards/mediationPhoneRedirectionGuard';
+import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -288,7 +288,7 @@ app.use([
 ], GaTrackHistory);
 
 if(env !== 'test') {
-  app.use(mediationPhoneRedirectionGuard);
+  app.use(mediationClaimantPhoneRedirectionGuard);
 }
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
