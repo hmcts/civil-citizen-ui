@@ -55,7 +55,7 @@ class ClaimantResponseSteps {
     clickButton(buttonType.CONTINUE);
     if (includesRepaymentPlan) {
       I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response?page=how-they-want-to-pay-response`);
-      I.waitForContent('How they want to pay?');
+      I.waitForContent('How they want to pay £60?');
       clickButton(buttonType.CONTINUE);
     }
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
