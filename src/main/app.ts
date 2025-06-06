@@ -108,6 +108,7 @@ import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
+import {mediationPhoneRedirectionGuard} from 'routes/guards/mediationPhoneRedirectionGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -286,6 +287,9 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
 
+if(env !== 'test') {
+  app.use(mediationPhoneRedirectionGuard);
+}
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
