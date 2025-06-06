@@ -766,7 +766,7 @@ module.exports = {
         ],
         'respondent1DQLanguage': {
           'court': 'ENGLISH',
-          'documents': 'BOTH',
+          'documents': 'ENGLISH',
         },
         'respondent1DQVulnerabilityQuestions': {
           'vulnerabilityAdjustmentsRequired': 'No',
