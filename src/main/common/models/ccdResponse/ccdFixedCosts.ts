@@ -1,6 +1,6 @@
 import {FixedCosts} from 'form/models/claimDetails';
 
-export interface CcdFixedCost {
+export interface CcdFixedCosts {
   fixedCostAmount: string;
   claimFixedCosts: string;
 
