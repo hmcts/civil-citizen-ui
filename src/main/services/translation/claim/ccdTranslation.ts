@@ -55,7 +55,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
     helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
-    fixedCost: toCCDFixedCost(claim?.fixedCost),
+    fixedCost: toCCDFixedCost(claim?.fixedCosts),
     hwfFeeType: claim.claimDetails?.helpWithFees?.referenceNumber ? FeeType.CLAIMISSUED : undefined,
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
@@ -91,6 +91,6 @@ export const translateDraftClaimToCCDInterest = (claim: Claim): CCDClaim => {
     interestClaimUntil: claim.interest?.interestEndDate,
     submittedDate: claim.submittedDate,
     claimFee :  toCCDClaimFee(claim.claimFee),
-    fixedCost : toCCDFixedCost(claim.fixedCost),
+    fixedCost : toCCDFixedCost(claim.fixedCosts),
   };
 };

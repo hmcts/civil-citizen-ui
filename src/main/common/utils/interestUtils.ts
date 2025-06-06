@@ -37,10 +37,10 @@ function getInterestToDate(claim: Claim) {
 }
 
 export const getFixedCost = async (claim: Claim) => {
-  if (!claim.isLRClaimant() || !claim?.fixedCost || claim?.fixedCost?.claimFixedCosts.toLowerCase() === YesNo.NO) {
+  if (!claim.isLRClaimant() || !claim?.fixedCosts || claim?.fixedCosts?.claimFixedCosts.toLowerCase() === YesNo.NO) {
     return undefined;
   }
-  return claim?.fixedCost?.fixedCostAmount? +claim?.fixedCost?.fixedCostAmount: 0;
+  return claim?.fixedCosts?.fixedCostAmount? +claim?.fixedCosts?.fixedCostAmount: 0;
 };
 
 export function getInterestDateOrIssueDate(claim: Claim) : Date | string {
