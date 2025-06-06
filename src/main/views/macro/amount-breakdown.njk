@@ -32,10 +32,10 @@
       <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
     </tr>
    {% endif %}
-   {% if claim.fixedCost !== undefined %}
+   {% if fixedCost !== undefined %}
      <tr class="govuk-table__row">
         <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FIXED_COSTS') }}</td>
-        <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.fixedCost | pennies2pounds | currencyFormat(claim.fixedAmount.fixedCostAmount) }}</td>
+        <td class="govuk-table__cell govuk-!-text-align-right">{{ fixedCost | pennies2pounds | currencyFormat(fixedCost) }}</td>
      </tr>
    {% endif %}
     <tr class="govuk-table__row">
