@@ -26,7 +26,7 @@ import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {convertToCCDStatementOfTruth} from 'services/translation/response/convertToCCDStatementOfTruth';
-import {toCCDFixedCost} from 'models/ccdResponse/ccdFixedCost';
+import {toCCDFixedCost} from 'models/ccdResponse/ccdFixedCosts';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -55,7 +55,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     specRespondent1Represented: YesNoUpperCamelCase.NO,
     respondent1ResponseDeadline: claim.respondent1ResponseDeadline,
     helpWithFees: toCCDHelpWithFees(claim?.claimDetails?.helpWithFees),
-    fixedCost: toCCDFixedCost(claim?.fixedCosts),
+    fixedCosts: toCCDFixedCost(claim?.fixedCosts),
     hwfFeeType: claim.claimDetails?.helpWithFees?.referenceNumber ? FeeType.CLAIMISSUED : undefined,
     pcqId: claim.pcqId,
     respondent1AdditionalLipPartyDetails: toAdditionalPartyDetails(claim.respondent1),
@@ -91,6 +91,6 @@ export const translateDraftClaimToCCDInterest = (claim: Claim): CCDClaim => {
     interestClaimUntil: claim.interest?.interestEndDate,
     submittedDate: claim.submittedDate,
     claimFee :  toCCDClaimFee(claim.claimFee),
-    fixedCost : toCCDFixedCost(claim.fixedCosts),
+    fixedCosts : toCCDFixedCost(claim.fixedCosts),
   };
 };
