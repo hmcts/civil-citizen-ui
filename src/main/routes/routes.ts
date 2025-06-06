@@ -442,7 +442,7 @@ import qmConfirmationController from 'routes/features/queryManagement/qmConfirma
 import sendFollowUpQueryController from 'routes/features/queryManagement/sendFollowUpQueryController';
 import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueriesController';
 import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
-import claimantTelephoneMediationController from "routes/features/mediation/claimantTelephoneMediationController";
+import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
 
 export default [
   homeController,
