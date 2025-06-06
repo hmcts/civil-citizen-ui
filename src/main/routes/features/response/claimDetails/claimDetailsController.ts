@@ -55,7 +55,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
       claimId: caseNumberPrettify(claimId),
       dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
       ordersAndNoticesUrl: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
-      fixedCost
+      fixedCost,
     });
   } catch (error) {
     next(error);
