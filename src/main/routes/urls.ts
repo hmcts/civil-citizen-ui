@@ -94,6 +94,7 @@ export const MEDIATION_CONTACT_PERSON_CONFIRMATION_URL = `${MEDIATION_URL}/media
 export const MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL = `${MEDIATION_URL}/alternative-contact-person`;
 export const MEDIATION_ALTERNATIVE_EMAIL_URL = `${MEDIATION_URL}/alternative-email`;
 export const MEDIATION_ALTERNATIVE_PHONE_URL = `${MEDIATION_URL}/alternative-phone`;
+export const MEDIATION_CLAIMANT_PHONE_URL = `${MEDIATION_URL}/claimant-phone`;
 export const MEDIATION_NEXT_3_MONTHS_URL = `${MEDIATION_URL}/next-three-months`;
 export const DONT_WANT_FREE_MEDIATION_URL = `${MEDIATION_URL}/i-dont-want-free-mediation`;
 export const CAN_WE_USE_URL = `${MEDIATION_URL}/can-we-use`;

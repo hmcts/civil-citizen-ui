@@ -33,6 +33,7 @@ import {
   convertToPenceFromString,
   formatAmountTwoDecimalPlaces,
 } from 'services/translation/claim/moneyConversation';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -46,6 +47,7 @@ function isClaimantWantToSettleTheClaim(claim: Claim) {
 
 export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
   return {
+    applicant1: toCCDParty(claim.applicant1),
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
     applicant1ClaimMediationSpecRequiredLip: toCCDClaimantMediation(claim.claimantResponse?.mediation),
     applicant1LiPResponse: toCCDClaimantLiPResponse(claim.claimantResponse),
