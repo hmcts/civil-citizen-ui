@@ -1,13 +1,12 @@
 import { Pact } from '@pact-foundation/pact';
 import { authenticator } from 'otplib';
-import { resolve } from 'path';
-import { PACT_DIRECTORY_PATH } from '../utils';
+import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 import { generateServiceToken } from 'client/serviceAuthProviderClient';
 
 jest.mock('otplib');
 
 const mockProvider = new Pact({
-  log: resolve(process.cwd(), 'src/test/contract/log', 'pact.log'),
+  log: PACT_LOG_PATH,
   dir: PACT_DIRECTORY_PATH,
   logLevel: 'info',
   consumer: 'civil_citizen_ui',
@@ -21,6 +20,9 @@ describe('Service Authorisation Provider Pact Test', () => {
   });
   afterAll(async () => {
     await mockProvider.finalize();
+  });
+  afterEach(async () => {
+    await mockProvider.verify();
   });
 
   describe('Service Authorisation Provider generate service token', () => {
@@ -52,8 +54,6 @@ describe('Service Authorisation Provider Pact Test', () => {
       const response = await generateServiceToken(MICRO_SERVICE_NAME, 'someS2sSecret');
 
       expect(response).toBe(MICRO_SERVICE_TOKEN);
-
-      await mockProvider.verify();
     });
   });
 });
