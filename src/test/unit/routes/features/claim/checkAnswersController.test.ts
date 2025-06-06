@@ -233,7 +233,7 @@ describe('Claim - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
-          expect(res.text).toContain('Enter valid contact for claimant');
+          expect(res.text).toContain('Enter telephone number');
         });
     });
     it('should return submit button when Fee is no', async () => {
