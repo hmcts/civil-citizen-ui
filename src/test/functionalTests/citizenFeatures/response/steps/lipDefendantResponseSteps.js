@@ -84,6 +84,10 @@ const SubjectToFrc = require('../pages/defendantLipResponse/defendantDQ/subjectT
 const FrcBandAgreed = require('../pages/defendantLipResponse/defendantDQ/frcBandAgreed');
 const AssignComplexityBand = require('../pages/defendantLipResponse/defendantDQ/assignComplexityBand');
 const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendantDQ/reasonForComplexityBand');
+const DashboardPage = require('../pages/defendantLipResponse/queryManagement/dashboard');
+const CreateQuery = require('../pages/defendantLipResponse/queryManagement/createQuery');
+const QmStart = require('../pages/defendantLipResponse/queryManagement/qmStart');
+
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -172,6 +176,10 @@ const subjectToFrc = new SubjectToFrc();
 const frcBandAgreed = new FrcBandAgreed();
 const assignComplexityBand = new AssignComplexityBand();
 const reasonForComplexityBand = new ReasonForComplexityBand();
+const dashboardPage = new DashboardPage();
+const createQueryPage = new CreateQuery();
+const qmStartPage = new QmStart();
+
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -198,6 +206,14 @@ class ResponseSteps {
     if (addPhoneNum) {
       await contactNumberDetailsPage.enterContactNumber(true);
     }
+  }
+
+  async SendMessageToCourt(subject, message, isHearingRelated) {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.verifyAllContactOptionsPresent();
+    await qmStartPage.selectSomethingElseOption();
+    await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
+    await confirmationPage.verifyQMMessageConfirmation();
   }
 
   async EnterCompDetails(addPhoneNum = true) {
