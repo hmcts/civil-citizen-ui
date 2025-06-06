@@ -91,7 +91,7 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
-import {CcdFixedCost} from 'models/ccdResponse/ccdFixedCost';
+import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
 
 export class CivilClaimResponse {
   id: string;
@@ -288,7 +288,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   claimFee?:CCDClaimFee;
-  fixedCost?:CcdFixedCost;
+  fixedCosts?:CcdFixedCosts;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
