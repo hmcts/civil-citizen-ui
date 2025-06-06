@@ -4922,7 +4922,7 @@
       "PAY_CLAIM_FEE": "Talu ffi’r hawliad",
       "RECEIPT_FOR_PAYMENTS": "Sicrhewch eich bod yn cael derbynneb ar gyfer pob taliad",
       "REQUEST_CCJ_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn",
-      "REQUEST_COURT_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn am £{{ partialAmount }}",
+      "REQUEST_COURT_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn am £{{ partialAmount }} ynghyd â ffi’r hawliad, unrhyw gostau sefydlog ac unrhyw log pellach a hawlir",
       "SIGN_SETTLEMENT_AGREEMENT": "gofyn i chi arwyddo cytundeb setlo i ffurfioli'r cynllun ad-dalu",
       "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol",
       "SEND_STATEMENT_OF_ACC": "Anfonwch ddatganiad diweddaraf eich cwmni neu'ch sefydliad o gyfrifon at {{ claimantName }}, os na wnaethoch hynny eisoes.",
