@@ -10,23 +10,21 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {PartyPhone} from 'models/PartyPhone';
 import {AppRequest} from 'models/AppRequest';
+import {ClaimantTelephone} from 'form/models/mediation/ClaimantTelephone';
 
-const alternativeTelephoneMediationViewPath = 'features/mediation/alternative-telephone';
+const claimantTelephoneMediationViewPath = 'features/mediation/alternative-telephone';
 const claimantTelephoneMediationController = Router();
-const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_ALTERNATIVE_TELEPHONE.';
 
 const renderView = (form: GenericForm<PartyPhone>, res: Response, req: Request): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
-  const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang});
-  res.render(alternativeTelephoneMediationViewPath, {form, pageTitle, pageText, isCarm: true});
+  const pageTitle = t('PAGES.CLAIMANT_PHONE.PAGE_TITLE', {lng: lang});
+  const pageText = t('PAGES.CLAIMANT_PHONE.TITLE_MANDATORY', {lng: lang});
+  res.render(claimantTelephoneMediationViewPath, {form, pageTitle, pageText, isCarm: true});
 };
 
 claimantTelephoneMediationController.get(MEDIATION_CLAIMANT_PHONE_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-
-    //const claimId = req.params.id;
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const form = new GenericForm(claim.applicant1?.partyPhone);
     renderView(form, res, req);
@@ -38,12 +36,11 @@ claimantTelephoneMediationController.get(MEDIATION_CLAIMANT_PHONE_URL, (async (r
 claimantTelephoneMediationController.post(MEDIATION_CLAIMANT_PHONE_URL, (async (req, res, next: NextFunction) => {
   try {
 
-    const form = new GenericForm(new PartyPhone(req.body.alternativeTelephone));
+    const form = new GenericForm(new ClaimantTelephone(req.body.alternativeTelephone));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);
     } else {
-      //const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = req.params.id;
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim: Claim = await getCaseDataFromStore(redisKey);
