@@ -26,7 +26,7 @@ export interface ClaimFee {
   version: number;
 }
 
-export interface FixedCost {
+export interface FixedCosts {
   claimFixedCosts: string;
   fixedCostAmount: string;
 }
