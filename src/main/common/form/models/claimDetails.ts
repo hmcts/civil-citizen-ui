@@ -26,6 +26,11 @@ export interface ClaimFee {
   version: number;
 }
 
+export interface FixedCosts {
+  claimFixedCosts: string;
+  fixedCostAmount: string;
+}
+
 export interface CaseManagementLocation {
 region: string;
 baseLocation: string;

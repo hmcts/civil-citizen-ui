@@ -4,7 +4,8 @@ import {getInterestData} from 'common/utils/interestUtils';
 export const getJudgmentAmountSummary = async (claim: Claim, claimFee: number, lang: string) => {
   const hasDefendantAlreadyPaid = claim.hasDefendantPaid();
   const alreadyPaidAmount = hasDefendantAlreadyPaid ? claim.getDefendantPaidAmount().toFixed(2) : 0;
-  const claimHasInterest = claim.hasInterest();
+  const isFullAdmission = claim.isFullAdmission();
+  const claimHasInterest = isFullAdmission && claim.hasInterest();
   const interestDetails = claimHasInterest ? await getInterestData(claim, lang) : undefined;
   const claimFeeAmount = claim.helpWithFees?.helpWithFeesReferenceNumber ? Number(claim.claimIssuedHwfDetails.outstandingFeeInPounds) : claimFee;
   const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
@@ -18,6 +19,7 @@ export const getJudgmentAmountSummary = async (claim: Claim, claimFee: number, l
     claimHasInterest,
     subTotal,
     total,
+    isFullAdmission,
     ...interestDetails,
   };
 };
