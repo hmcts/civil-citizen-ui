@@ -44,7 +44,7 @@ claimantTelephoneMediationController.post(MEDIATION_CLAIMANT_PHONE_URL, (async (
       const claimId = req.params.id;
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim: Claim = await getCaseDataFromStore(redisKey);
-      claim.applicant1.partyPhone = form.model;
+      claim.applicant1.partyPhone = new PartyPhone(form.model.alternativeTelephone);
 
       await saveDraftClaim(redisKey, claim);
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL));
