@@ -87,9 +87,9 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     if (claim.respondent1?.emailAddress?.emailAddress) {
       form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
     }
-
-    if (!claim.applicant1?.partyPhone?.phone) {
-      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_CONTACT_CLAIMANT')), form.errors);
+    // fixing CIV-17259
+    if (claim.applicant1?.partyPhone === undefined) {
+      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
     }
 
     if (claim.respondent1?.partyPhone?.phone) {
