@@ -9,7 +9,7 @@ import {
   VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
-import {getInterestDetails} from 'common/utils/interestUtils';
+import {getFixedCost, getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
@@ -46,6 +46,8 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     if (claim.hasInterest()) {
       claim.totalInterest = interestData.interest;
     }
+    const fixedCost = await getFixedCost(claim);
+
     res.render(claimDetailsViewPath, {
       claim, totalAmount, interestData, timelineRows, timelinePdfUrl, sealedClaimPdfUrl,
       pageCaption: 'PAGES.CLAIM_DETAILS.THE_CLAIM',
@@ -53,6 +55,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
       claimId: caseNumberPrettify(claimId),
       dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
       ordersAndNoticesUrl: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
+      fixedCost
     });
   } catch (error) {
     next(error);
