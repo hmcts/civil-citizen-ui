@@ -9,7 +9,7 @@ import { Claim } from 'models/claim';
 import { deepCopy } from '../../../utils/deepCopy';
 import { mockClaim as mockResponse } from '../../../utils/mockClaim';
 import { YesNo } from 'form/models/yesNo';
-import {FixedCost, InterestClaimFromType, SameRateInterestType} from 'form/models/claimDetails';
+import {FixedCosts, InterestClaimFromType, SameRateInterestType} from 'form/models/claimDetails';
 import { InterestClaimOptionsType } from 'form/models/claim/interest/interestClaimOptionsType';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
@@ -121,9 +121,9 @@ describe('Interest Utils', () => {
   it('fix cost is claimed', async () => {
     const claim = new Claim();
     claim.isLRClaimant = () => true;
-    claim.fixedCost = <FixedCost> {};
-    claim.fixedCost.fixedCostAmount = '100';
-    claim.fixedCost.claimFixedCosts = 'Yes';
+    claim.fixedCosts = <FixedCosts> {};
+    claim.fixedCosts.fixedCostAmount = '100';
+    claim.fixedCosts.claimFixedCosts = 'Yes';
     const fixedCost = await getFixedCost(claim);
     expect(fixedCost).toBeTruthy();
     expect(fixedCost).toEqual(100);
@@ -137,8 +137,8 @@ describe('Interest Utils', () => {
 
   it('no fixed cost is claimed', async () => {
     const claim = new Claim();
-    claim.fixedCost = <FixedCost> {};
-    claim.fixedCost.claimFixedCosts = 'No';
+    claim.fixedCosts = <FixedCosts> {};
+    claim.fixedCosts.claimFixedCosts = 'No';
     const fixedCost = await getFixedCost(claim);
     expect(fixedCost).toBeUndefined();
   });
