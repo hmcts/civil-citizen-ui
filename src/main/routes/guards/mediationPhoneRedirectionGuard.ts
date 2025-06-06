@@ -8,7 +8,7 @@ export const mediationPhoneRedirectionGuard = (async (req: AppRequest, res: Resp
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    if (claim.applicant1.partyPhone === undefined) {
+    if (req.method ==='GET' && claim.applicant1.partyPhone === undefined && claim.isClaimant()) {
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_CLAIMANT_PHONE_URL));
     } else {
       next();
