@@ -82,6 +82,7 @@ export const createUploadDocLinks = async (req: AppRequest) => {
   uploadQMAdditionalFile.fileUpload = fileUpload;
   const form = new GenericForm(uploadQMAdditionalFile);
   form.validateSync();
+  delete uploadQMAdditionalFile.fileUpload; // release file memory
   if (!form.hasErrors()) {
     uploadQMAdditionalFile.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
   } else {
@@ -111,6 +112,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
   if (query) {
     const uploadedFiles = query.uploadedFiles;
     const claimId = req.params.id;
+    const queryId = req.params.queryId;
     let index = 0;
     uploadedFiles.forEach((file: UploadQMAdditionalFile) => {
       index++;
@@ -118,7 +120,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
         summaryRow(
           file.caseDocument.documentName,
           '',
-          constructResponseUrlWithIdParams(claimId, (isFollowUp ? QM_FOLLOW_UP_MESSAGE : QUERY_MANAGEMENT_CREATE_QUERY) + '?id=' + index),
+          constructResponseUrlWithIdParams(claimId, (isFollowUp ? QM_FOLLOW_UP_MESSAGE.replace(':queryId',queryId) : QUERY_MANAGEMENT_CREATE_QUERY) + '?id=' + index),
           'Remove document',
         ),
       );
