@@ -44,7 +44,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
       if (claimantResponse.isCourtDecisionInFavourOfDefendant) {
         paymentIntention = claim.getPaymentIntention();
       } else if (claimantResponse.isCourtDecisionInFavourOfClaimant) {
-        paymentIntention = claimantResponse.suggestedPaymentIntention;
+        paymentIntention = claimantResponse.suggestedPaymentIntention; //testing
       }
     }
     if (paymentIntention) {
