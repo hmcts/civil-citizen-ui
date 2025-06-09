@@ -6,7 +6,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 
 let claimRef, caseData, claimNumber;
 
-Feature('QM - LIP - Claimant and Defendant Journey @qm');
+Feature('QM - LIP - Claimant and Defendant Journey - Non Hearing @qm');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -14,7 +14,7 @@ Before(async () => {
 });
 
 Scenario('Claimant Send message to court', async ({api, I}) => {
-  claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
   console.log('LIP vs LIP QM claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
   await api.waitForFinishedBusinessProcess();
@@ -25,6 +25,7 @@ Scenario('Claimant Send message to court', async ({api, I}) => {
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await ResponseSteps.SendMessageToCourt('Claimant query', 'Claimant Test message', false);
+  await ResponseSteps.viewYourMessages('Claimant query', 'Claimant Test message', false);
 }).tag('@qm').tag('@nightly');
 
 Scenario('Defendant Send message to court', async ({I}) => {
@@ -32,4 +33,5 @@ Scenario('Defendant Send message to court', async ({I}) => {
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await ResponseSteps.SendMessageToCourt('Defendant query', 'Defendant Test message', false);
+  await ResponseSteps.viewYourMessages('Defendant query', 'Defendant Test message', false);
 }).tag('@qm').tag('@nightly');

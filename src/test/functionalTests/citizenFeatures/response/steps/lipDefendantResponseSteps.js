@@ -87,7 +87,7 @@ const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendant
 const DashboardPage = require('../pages/defendantLipResponse/queryManagement/dashboard');
 const CreateQuery = require('../pages/defendantLipResponse/queryManagement/createQuery');
 const QmStart = require('../pages/defendantLipResponse/queryManagement/qmStart');
-
+const ViewQuery = require('../pages/defendantLipResponse/queryManagement/viewQuery');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -179,7 +179,7 @@ const reasonForComplexityBand = new ReasonForComplexityBand();
 const dashboardPage = new DashboardPage();
 const createQueryPage = new CreateQuery();
 const qmStartPage = new QmStart();
-
+const viewQueryPage = new ViewQuery();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -214,6 +214,13 @@ class ResponseSteps {
     await qmStartPage.selectSomethingElseOption();
     await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
     await confirmationPage.verifyQMMessageConfirmation();
+    await I.click('Go to your dashboard');
+    await I.waitForContent('View your messages to the court', 60);
+  }
+
+  async viewYourMessages(subject, message, isHearingRelated) {
+    await I.click('View your messages to the court');
+    await viewQueryPage.verifyMessagesBeforeFollowUp(subject, message, isHearingRelated);
   }
 
   async EnterCompDetails(addPhoneNum = true) {
