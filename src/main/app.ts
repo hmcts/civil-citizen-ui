@@ -80,7 +80,7 @@ import {
   INFORM_OTHER_PARTIES_URL,
   IS_CASE_READY_URL,
   ORDER_JUDGE_URL,
-  PAYING_FOR_APPLICATION_URL, QM_CYA,
+  PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
   QM_INFORMATION_URL,
   QM_START_URL,
@@ -108,6 +108,7 @@ import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
+import {contactUsGuard} from 'routes/guards/contactUsGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -219,6 +220,8 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   QM_INFORMATION_URL,
   QM_VIEW_QUERY_URL,
   QM_CYA,
+  QM_FOLLOW_UP_CYA,
+  QM_FOLLOW_UP_MESSAGE,
   QUERY_MANAGEMENT_CREATE_QUERY,
 ], trackHistory);
 
@@ -284,6 +287,9 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
 
+if(env !== 'test') {
+  app.use(contactUsGuard);
+}
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 

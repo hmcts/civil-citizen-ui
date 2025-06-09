@@ -6,8 +6,10 @@ export class SendFollowUpQuery {
     messageDetails: string;
 
   uploadedFiles: UploadQMAdditionalFile[];
+  parentId: string;
 
   constructor(messageDetails?: string) {
+    this.parentId = null;
     this.messageDetails = messageDetails;
     this.uploadedFiles = [];
   }
