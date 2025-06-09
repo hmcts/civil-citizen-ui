@@ -11,6 +11,8 @@ export const getJudgmentAmountSummary = async (claim: Claim, claimFee: number, l
   const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   const claimSubTotal = claimAmountAccepted + claimFeeAmount + (interestDetails ? Number(interestDetails.interestToDate) : 0);
   const total = (claimSubTotal - Number(alreadyPaidAmount)).toFixed(2);
+  const totalWithoutFeeAndInterest = (claimAmountAccepted - Number(alreadyPaidAmount)).toFixed(2);
+
   const subTotal = claimSubTotal.toFixed(2);
   return {
     hasDefendantAlreadyPaid,
@@ -20,6 +22,7 @@ export const getJudgmentAmountSummary = async (claim: Claim, claimFee: number, l
     subTotal,
     total,
     isFullAdmission,
+    totalWithoutFeeAndInterest,
     ...interestDetails,
   };
 };

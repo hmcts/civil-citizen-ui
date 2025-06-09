@@ -4670,7 +4670,8 @@
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS":{
         "DEFENDANT_ADMITS": "{{ defendant }} admits they owe you all the money you've claimed. This includes interest if it has been claimed which may continue to accrue on the amount outstanding up to the date of judgment, settlement agreement or earlier payment.",
         "HOW_THEY_WANT_PAY": "How they want to pay?",
-        "THEY_OFFERED_PAY": "They've offered to pay you this in instalments."
+        "THEY_OFFERED_PAY": "They've offered to pay you this in instalments.",
+        "INTEREST_HINT_TEXT": "The final payment date may be later to reflect any additional interest and claim fee added to the judgment, settlement agreement or earlier payment amount"
       },
       "FULL_RESPONSE": "Full response",
       "HOW_PAID": "How they say they paid?",
@@ -4906,7 +4907,7 @@
       "PAY_CLAIM_FEE": "Pay claim fee",
       "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
       "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
-      "REQUEST_COURT_AGAINST_YOU": "request a County Court Judgment against you for £{{ partialAmount }} plus claim fee, any fixed costs and any further interest claimed",
+      "REQUEST_COURT_AGAINST_YOU": "request a County Court Judgment against you for £{{ partialAmount }} plus the claim fee and any fixed costs claimed",
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "SEND_FINANCIAL_DETAILS": "Send your financial details",
       "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",

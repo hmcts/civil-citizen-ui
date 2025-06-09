@@ -45,7 +45,7 @@
                                                   class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.FA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
                     {% else %}
                         <p
-                                                        class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.PA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
+                                                        class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.PA_JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.totalWithoutFeeAndInterest}) }}</p>
                     {% endif %}
                     <table class="govuk-table">
                         <thead class="govuk-table__head">
