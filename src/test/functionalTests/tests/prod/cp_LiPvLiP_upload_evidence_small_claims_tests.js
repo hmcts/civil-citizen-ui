@@ -51,5 +51,5 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
-}).tag('@nightly-regression-cp');
+}).tag('@nightly-regression-cp').tag('@local-testing');;
 
