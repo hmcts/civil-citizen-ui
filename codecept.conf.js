@@ -7,10 +7,14 @@ const {deleteAllIdamTestUsers} = require('./src/test/functionalTests/specClaimHe
 const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {
-  if (process.env.PREV_FAILED_TEST_FILES && process.env.PREV_NOT_EXECUTED_TEST_FILES)
-    return [...process.env.PREV_FAILED_TEST_FILES.split(','), ...process.env.PREV_NOT_EXECUTED_TEST_FILES.split(',')];
+  let prevFailedTestFiles = process.env.PREV_FAILED_TEST_FILES;
+  let prevNotExecutedTestFiles = process.env.PREV_NOT_EXECUTED_TEST_FILES;
 
-  if (process.env.PREV_FAILED_TEST_FILES) return process.env.PREV_FAILED_TEST_FILES.split(',');
+  if (prevFailedTestFiles !== undefined || prevNotExecutedTestFiles !== undefined) {
+    prevFailedTestFiles = prevFailedTestFiles ? prevFailedTestFiles.split(',') : [];
+    prevNotExecutedTestFiles = prevNotExecutedTestFiles ? prevNotExecutedTestFiles.split(',') : [];
+    return [...prevFailedTestFiles, ...prevNotExecutedTestFiles];
+  }
 
   if (process.env.ENVIRONMENT == 'aat')
     return [`${testPath}/functionalTests/tests/prod/**/*.js`,
