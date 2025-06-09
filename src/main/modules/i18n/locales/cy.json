@@ -4611,7 +4611,8 @@
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
         "DEFENDANT_ADMITS": "Mae {{ defendant }} yn cyfaddef fod arno’r holl arian rydych chi wedi’i hawlio ichi. Mae hyn yn cynnwys llog os hawlir a allai barhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.",
         "HOW_THEY_WANT_PAY": "Sut mae am eich talu chi?",
-        "THEY_OFFERED_PAY": "Maent wedi cynnig talu hynny i chi mewn rhandaliadau."
+        "THEY_OFFERED_PAY": "Maent wedi cynnig talu hynny i chi mewn rhandaliadau.",
+        "INTEREST_HINT_TEXT": "Efallai y bydd y dyddiad talu terfynol yn ddiweddarach i adlewyrchu unrhyw log ychwanegol a ffi’r hawliad a ychwanegir at y dyfarniad, cytundeb setlo neu swm y taliad cynharach"
       },
       "FULL_RESPONSE": "Ymateb llawn",
       "HOW_PAID": "Sut mae’n dweud iddo dalu?",
@@ -4847,7 +4848,7 @@
       "PAY_CLAIM_FEE": "Talu ffi’r hawliad",
       "RECEIPT_FOR_PAYMENTS": "Sicrhewch eich bod yn cael derbynneb ar gyfer pob taliad",
       "REQUEST_CCJ_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn",
-      "REQUEST_COURT_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn am £{{ partialAmount }} ynghyd â ffi’r hawliad, unrhyw gostau sefydlog ac unrhyw log pellach a hawlir",
+      "REQUEST_COURT_AGAINST_YOU": "gofyn am Ddyfarniad Llys Sirol yn eich erbyn am £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir",
       "SIGN_SETTLEMENT_AGREEMENT": "gofyn i chi arwyddo cytundeb setlo i ffurfioli'r cynllun ad-dalu",
       "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol",
       "SEND_STATEMENT_OF_ACC": "Anfonwch ddatganiad diweddaraf eich cwmni neu'ch sefydliad o gyfrifon at {{ claimantName }}, os na wnaethoch hynny eisoes.",
