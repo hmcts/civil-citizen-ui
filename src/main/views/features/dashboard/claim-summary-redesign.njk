@@ -33,9 +33,8 @@
           </p>
         {% endif %}
         {% if claimAmountFormatted %}
-          <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
+          <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) + ' (' + hintText+ ')'}}</p>
         {% endif %}
-        <p class="govuk-body-m">{{ hintText }}</p>
 
         <div class="border-small-top"></div>
          <div class="dashboard-notification">
