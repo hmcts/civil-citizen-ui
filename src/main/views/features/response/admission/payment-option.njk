@@ -17,9 +17,9 @@
 {% set totalAmountClaimedText =  t('PAGES.PAYMENT_OPTION.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
 {% set totalAmountHintText =  t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT') %}
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
-{% set claimantTitleHintText = title + '<p class="govuk-body-m">' + totalAmountClaimedText + '</p>' + '<p class="govuk-body-m">' + totalAmountHintText + '</p>' %}
-{% set titleForPartAdminHintText =  title + '<p class="govuk-body-m">' + t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') + '</p>' %}
-{% set defendantTitleHintText = titleForPartAdminHintText if amount else title + '<p class="govuk-body-m">' + totalAmountHintText + '</p>' %}
+{% set claimantTitleHintText = title + '<br><br><p class="govuk-body-m">' + totalAmountClaimedText + '</p>' + '<p class="govuk-body-m">' + totalAmountHintText + '</p>' %}
+{% set titleForPartAdminHintText =  title + '<br><br><p class="govuk-body-m">' + t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') + '</p>' %}
+{% set defendantTitleHintText = titleForPartAdminHintText if amount else title + '<br><br><p class="govuk-body-m">' + totalAmountHintText + '</p>' %}
 {% set titleHintText = claimantTitleHintText if isClaimantResponse else defendantTitleHintText %}
 
 {% block pageTitle %}

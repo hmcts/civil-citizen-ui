@@ -61,6 +61,10 @@
          {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
             <p class="govuk-body">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH_HINT') }}</p>
           {% endif %}
+          {% if claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+            <p class="govuk-body">{{  t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION_PAY_BY_INSTALLMENTS.INTEREST_HINT_TEXT') }}</p>
+          {% endif %}
+
 
           {% if claim.isBusiness() === false %}
             {% if unableToPayFullAmunt %}
