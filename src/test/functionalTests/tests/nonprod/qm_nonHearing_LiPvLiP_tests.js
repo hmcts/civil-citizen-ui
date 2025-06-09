@@ -1,7 +1,6 @@
 const config = require('../../../config');
-const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const { createAccount } = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 
 let claimRef, caseData, claimNumber;
@@ -13,25 +12,42 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Claimant Send message to court', async ({api, I}) => {
+async function loginAndOpenClaim(I, user, claimNumber) {
+  await LoginSteps.EnterCitizenCredentials(user.email, user.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+}
+
+Scenario('Claimant sends non-hearing message to court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
-  console.log('LIP vs LIP QM claim has been created Successfully    <===>  ', claimRef);
+  console.log('Non-hearing QM claim created:', claimRef);
+
   await api.setCaseId(claimRef);
   await api.waitForFinishedBusinessProcess();
+
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
-  console.log('claim number', claimNumber);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.SendMessageToCourt('Claimant query', 'Claimant Test message', false);
-  await ResponseSteps.viewYourMessages('Claimant query', 'Claimant Test message', false);
+  console.log('🧾 Claim number:', claimNumber);
+
+  const subject = 'Claimant query';
+  const message = 'Claimant Test message';
+  const isHearingRelated = false;
+
+  await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  await ResponseSteps.SendMessageToCourt(subject, message, isHearingRelated);
+
+  await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
 }).tag('@qm').tag('@nightly');
 
-Scenario('Defendant Send message to court', async ({I}) => {
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.SendMessageToCourt('Defendant query', 'Defendant Test message', false);
-  await ResponseSteps.viewYourMessages('Defendant query', 'Defendant Test message', false);
+Scenario('Defendant sends non-hearing message to court', async ({ I }) => {
+  const subject = 'Defendant query';
+  const message = 'Defendant Test message';
+  const isHearingRelated = false;
+
+  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await ResponseSteps.SendMessageToCourt(subject, message, isHearingRelated);
+
+  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
 }).tag('@qm').tag('@nightly');

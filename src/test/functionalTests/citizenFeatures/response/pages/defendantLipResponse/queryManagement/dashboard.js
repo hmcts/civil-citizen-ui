@@ -9,6 +9,12 @@ class DashboardPage {
     await I.see('Send a message');
     await I.click('Send a message to the court');
   }
+
+  async clickOnViewMessages () {
+    await I.waitForContent('View messages', config.WaitForText);
+    await I.click('//a[normalize-space()="View messages"]');
+    await I.waitForContent('Messages', config.WaitForText);
+  }
 }
 
 module.exports = DashboardPage;

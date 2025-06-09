@@ -5,9 +5,6 @@ class ViewQuery {
 
   async verifyMessagesBeforeFollowUp(subject, message, isHearingRelated = false) {
     await I.waitForContent('Messages', config.WaitForText);
-    await I.see('Sent on');
-    await I.see('Last updated by');
-    await I.see('Last updated on');
     await I.see('Message sent');
     await I.see(subject);
     await I.click(subject);

@@ -208,6 +208,10 @@ class ResponseSteps {
     }
   }
 
+  async viewYourMessagesInDashboard() {
+    await dashboardPage.clickOnViewMessages();
+  }
+
   async SendMessageToCourt(subject, message, isHearingRelated) {
     await dashboardPage.sendAMessage();
     await qmStartPage.verifyAllContactOptionsPresent();
@@ -219,6 +223,7 @@ class ResponseSteps {
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {
+    await I.waitForContent('View your messages to the court', 60);
     await I.click('View your messages to the court');
     await viewQueryPage.verifyMessagesBeforeFollowUp(subject, message, isHearingRelated);
   }
