@@ -317,6 +317,7 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
   previewCourtOfficerOrder?: CaseDocument;
+  translatedCourtOfficerOrder?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
@@ -328,6 +329,7 @@ export interface CCDClaim extends ClaimUpdate {
   //Query management
   qmApplicantCitizenQueries?: CaseQueries;
   qmRespondentCitizenQueries?: CaseQueries;
+  previousCCDState?: string;
 }
 
 export interface ClaimFeeData {
