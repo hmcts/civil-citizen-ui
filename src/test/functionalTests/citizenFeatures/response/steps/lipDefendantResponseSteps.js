@@ -89,6 +89,8 @@ const CreateQuery = require('../pages/defendantLipResponse/queryManagement/creat
 const QmStart = require('../pages/defendantLipResponse/queryManagement/qmStart');
 const ViewQuery = require('../pages/defendantLipResponse/queryManagement/viewQuery');
 const GetUpdateFromCourt = require('../pages/defendantLipResponse/queryManagement/getUpdateFromCourt');
+const SendUpdateToCourt = require('../pages/defendantLipResponse/queryManagement/sendUpdateToCourt');
+
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -182,6 +184,7 @@ const createQueryPage = new CreateQuery();
 const qmStartPage = new QmStart();
 const viewQueryPage = new ViewQuery();
 const getUpdateFromCourtPage = new GetUpdateFromCourt();
+const SendUpdateToCourtPage = new SendUpdateToCourt();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -234,6 +237,20 @@ class ResponseSteps {
     await getUpdateFromCourtPage.goBack();
     await getUpdateFromCourtPage.selectGetUpdate('CLAIM_NOT_PAID_AFTER_JUDGMENT');
     await I.click('Close and return to case details');
+  }
+
+  async verifySendUpdateToCourtFlow() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.sendUpdateToTheCourt();
+    await SendUpdateToCourtPage.selectSendUpdate('PAID_OR_PARTIALLY_PAID_JUDGMENT');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('SETTLE_CLAIM');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('AMEND_CLAIM_DETAILS');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('CLAIM_ENDED');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('SEND_UPDATE_SOMETHING_ELSE');
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {
