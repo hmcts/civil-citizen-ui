@@ -209,8 +209,9 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
-        CCD_MULTIPARTY_CASE_TYPES: *
-        CCD_MULTIPARTY_EVENTS: *
+        CCD_MULTIPARTY_CASE_TYPES: CIVIL
+        CCD_MULTIPARTY_EVENTS: DEFENDANT_RESPONSE,ACKNOWLEDGE_CLAIM,CLAIMANT_RESPONSE,queryManagementRaiseQuery,queryManagementRespondQuery
+
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
       secrets:
