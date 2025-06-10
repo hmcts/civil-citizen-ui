@@ -34,7 +34,7 @@ nodejs:
 
 aac-manage-case-assignment:
   enabled: true
-  java:
+  java:   
     disableKeyVaults: true
     ingressHost: manage-case-assignment-${SERVICE_NAME}.preview.platform.hmcts.net
     imagePullPolicy: Always
