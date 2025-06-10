@@ -14,6 +14,8 @@ ccd:
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
         DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        CCD_MULTIPARTY_CASE_TYPES: *
+        CCD_MULTIPARTY_EVENTS: *
       secrets:
         DATA_STORE_DB_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
