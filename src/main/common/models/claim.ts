@@ -87,7 +87,7 @@ import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import {CaseQueries} from "models/queryManagement/caseQueries";
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export class Claim {
   resolvingDispute: boolean;
