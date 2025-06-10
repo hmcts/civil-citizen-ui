@@ -26,6 +26,13 @@ class QmStart {
     await I.checkOption('Something else');
     await I.click('Continue');
   }
+
+  async getUpdateFromCourt() {
+    await I.waitForText('What do you want to do?', config.WaitForText);
+    await I.checkOption('Get an update from the court');
+    await I.click('Continue');
+    await I.waitForText('Get an update on my case', config.WaitForText);
+  }
 }
 
 module.exports = QmStart;

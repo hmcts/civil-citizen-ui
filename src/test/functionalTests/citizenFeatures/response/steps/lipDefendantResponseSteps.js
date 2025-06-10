@@ -88,6 +88,7 @@ const DashboardPage = require('../pages/defendantLipResponse/queryManagement/das
 const CreateQuery = require('../pages/defendantLipResponse/queryManagement/createQuery');
 const QmStart = require('../pages/defendantLipResponse/queryManagement/qmStart');
 const ViewQuery = require('../pages/defendantLipResponse/queryManagement/viewQuery');
+const GetUpdateFromCourt = require('../pages/defendantLipResponse/queryManagement/getUpdateFromCourt');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -180,6 +181,7 @@ const dashboardPage = new DashboardPage();
 const createQueryPage = new CreateQuery();
 const qmStartPage = new QmStart();
 const viewQueryPage = new ViewQuery();
+const getUpdateFromCourtPage = new GetUpdateFromCourt();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -220,6 +222,18 @@ class ResponseSteps {
     await confirmationPage.verifyQMMessageConfirmation();
     await I.click('Go to your dashboard');
     await I.waitForContent('View your messages to the court', 60);
+  }
+
+  async verifyCourtUpdateOptionsFlow() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.verifyAllContactOptionsPresent();
+    await qmStartPage.getUpdateFromCourt();
+    await getUpdateFromCourtPage.selectGetUpdate('GENERAL_UPDATE');
+    await getUpdateFromCourtPage.goBack();
+    await getUpdateFromCourtPage.selectGetUpdate('CLAIM_NOT_PAID');
+    await getUpdateFromCourtPage.goBack();
+    await getUpdateFromCourtPage.selectGetUpdate('CLAIM_NOT_PAID_AFTER_JUDGMENT');
+    await I.click('Close and return to case details');
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {
