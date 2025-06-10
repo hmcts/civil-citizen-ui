@@ -69,7 +69,7 @@ describe('Check Answers response service', () => {
       const claim = new Claim();
       const updated = new Claim();
       claim.queryManagement = new QueryManagement();
-      updated.qmApplicantCitizenQueries = {
+      updated.queries = {
         'partyName': 'claimant',
         'roleOnCase': '[CLAIMANT]',
         'caseMessages': [{
@@ -127,7 +127,7 @@ describe('Check Answers response service', () => {
     const claim = new Claim();
     const updated = new Claim();
     claim.queryManagement = new QueryManagement();
-    updated.qmRespondentCitizenQueries = {
+    updated.queries = {
       'partyName': 'defendant',
       'roleOnCase': '[DEFENDANT]',
       'caseMessages': [{
