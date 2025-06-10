@@ -22,23 +22,30 @@ class QmStart {
   }
 
   async selectSomethingElseOption() {
-    await I.waitForText('What do you want to do?', config.WaitForText);
+    await I.waitForContent('What do you want to do?', config.WaitForText);
     await I.checkOption('Something else');
     await I.click('Continue');
   }
 
   async getUpdateFromCourt() {
-    await I.waitForText('What do you want to do?', config.WaitForText);
+    await I.waitForContent('What do you want to do?', config.WaitForText);
     await I.checkOption('Get an update from the court');
     await I.click('Continue');
-    await I.waitForText('Get an update on my case', config.WaitForText);
+    await I.waitForContent('Get an update on my case', config.WaitForText);
   }
 
   async sendUpdateToTheCourt() {
-    await I.waitForText('What do you want to do?', config.WaitForText);
+    await I.waitForContent('What do you want to do?', config.WaitForText);
     await I.checkOption('Send an update to the court');
     await I.click('Continue');
-    await I.waitForText('Send an update on my case', config.WaitForText);
+    await I.waitForContent('Send an update on my case', config.WaitForText);
+  }
+
+  async sendDocumentsToTheCourt() {
+    await I.waitForContent('What do you want to do?', config.WaitForText);
+    await I.checkOption('Send documents');
+    await I.click('Continue');
+    await I.waitForContent('What documents do you want to send?', config.WaitForText);
   }
 }
 

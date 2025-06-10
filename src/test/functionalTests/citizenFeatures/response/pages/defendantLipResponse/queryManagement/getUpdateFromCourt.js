@@ -10,17 +10,17 @@ class GetUpdateFromCourt {
 
     switch (value) {
       case 'GENERAL_UPDATE':
-        await I.waitForText('Get a general update on what is happening with the case', config.WaitForText);
+        await I.waitForContent('Get a general update on what is happening with the case', config.WaitForText);
         await I.see('We cannot give updates on emails, forms or applications you have already sent to us.');
         break;
 
       case 'CLAIM_NOT_PAID':
-        await I.waitForText('Understand what happens if the claim is not paid', config.WaitForText);
+        await I.waitForContent('Understand what happens if the claim is not paid', config.WaitForText);
         await I.see('The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.');
         break;
 
       case 'CLAIM_NOT_PAID_AFTER_JUDGMENT':
-        await I.waitForText('Understand what happens if the judgment is not paid', config.WaitForText);
+        await I.waitForContent('Understand what happens if the judgment is not paid', config.WaitForText);
         await I.see('If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.');
         break;
 
@@ -31,22 +31,8 @@ class GetUpdateFromCourt {
 
   async goBack() {
     await I.click('.govuk-back-link');
-    await I.waitForText('Get an update on my case', config.WaitForText);
+    await I.waitForContent('Get an update on my case', config.WaitForText);
   }
-
-  // async testAllUpdateOptions() {
-  //   const options = ['GENERAL_UPDATE', 'CLAIM_NOT_PAID', 'CLAIM_NOT_PAID_AFTER_JUDGMENT'];
-  //
-  //   for (const value of options) {
-  //     await this.selectUpdateByValue(value);
-  //
-  //     // For the second and third options, go back after verifying
-  //     if (value === 'CLAIM_NOT_PAID' || value === 'CLAIM_NOT_PAID_AFTER_JUDGMENT') {
-  //       await I.click('.govuk-back-link');
-  //       await I.waitForText('Get an update on my case', config.WaitForText); // Confirm you're back
-  //     }
-  //   }
-  // }
 }
 
 module.exports = GetUpdateFromCourt;

@@ -21,8 +21,8 @@ class SendUpdateToCourt {
         description: 'To tell the court your claim has ended, you need to fill in and send a form called a notice of discontinuance (opens in a new window) to the court and the other parties in the case.',
       },
       SEND_UPDATE_SOMETHING_ELSE: {
-        heading: 'Send a message',
-        description: 'Enter message details',
+        heading: 'Enter message details',
+        description: 'The subject should be a summary of your message',
       },
     };
   }
@@ -32,17 +32,16 @@ class SendUpdateToCourt {
     if (!option) {
       throw new Error(`Unknown option value: ${value}`);
     }
-    console.log(`\n📝 Testing Send Update option: ${value}`);
     await I.waitForElement(`input[type="radio"][value="${value}"]`, config.WaitForText);
     await I.checkOption({ css: `input[type="radio"][value="${value}"]` });
     await I.click('Continue');
-    await I.waitForText(option.heading, config.WaitForText);
+    await I.waitForContent(option.heading, config.WaitForText);
     await I.see(option.description);
   }
 
   async goBack() {
     await I.click('.govuk-back-link');
-    await I.waitForText('Send an update on my case', config.WaitForText);
+    await I.waitForContent('Send an update on my case', config.WaitForText);
   }
 }
 
