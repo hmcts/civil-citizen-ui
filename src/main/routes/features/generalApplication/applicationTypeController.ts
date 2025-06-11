@@ -95,7 +95,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       if(!applicationIndex) {
         applicationIndex = claim.generalApplication.applicationTypes.length - 1;
       }
-      if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
+      if (showCCJ && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
         if (claim?.generalApplication?.applicationTypes?.length > 1){
