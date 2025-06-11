@@ -92,6 +92,8 @@ const GetUpdateFromCourt = require('../pages/defendantLipResponse/queryManagemen
 const SendUpdateToCourt = require('../pages/defendantLipResponse/queryManagement/sendUpdateToCourt');
 const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagement/sendDocumentsToCourt');
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
+const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
+
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -188,6 +190,7 @@ const getUpdateFromCourtPage = new GetUpdateFromCourt();
 const SendUpdateToCourtPage = new SendUpdateToCourt();
 const SendDocumentsToCourtPage = new SendDocumentsToCourt();
 const SolveProblemPage = new SolveProblem();
+const ManageHearingPage = new ManageHearing();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -275,6 +278,25 @@ class ResponseSteps {
     await SolveProblemPage.selectOption('VIEW_DOCUMENTS_ON_MY_ACCOUNT');
     await SolveProblemPage.goBack();
     await SolveProblemPage.selectOption('SOLVE_PROBLEM_SOMETHING_ELSE');
+  }
+
+  async manageYourHearing() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.manageYourHearing();
+    await ManageHearingPage.selectOption('CHANGE_THE_HEARING_DATE');
+    await ManageHearingPage.goBack();
+    await ManageHearingPage.selectOption('CHANGE_SOMETHING_ABOUT_THE_HEARING');
+    await ManageHearingPage.goBack();
+    await ManageHearingPage.selectOption('ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING');
+    await ManageHearingPage.goBack();
+    await ManageHearingPage.selectOption('MANAGE_HEARING_SOMETHING_ELSE');
+  }
+
+  async getSupport(subject, message, isHearingRelated) {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.getSupport();
+    await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
+    await confirmationPage.verifyQMMessageConfirmation();
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {

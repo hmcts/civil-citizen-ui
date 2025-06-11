@@ -1,7 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 
-class SelectClaimOptions {
+class SolveProblem {
   constructor() {
     this.options = {
       SUBMIT_RESPONSE_CLAIM: {
@@ -41,4 +41,4 @@ class SelectClaimOptions {
   }
 }
 
-module.exports = SelectClaimOptions;
+module.exports = SolveProblem;

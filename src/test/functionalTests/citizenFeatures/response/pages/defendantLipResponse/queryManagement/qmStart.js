@@ -54,6 +54,20 @@ class QmStart {
     await I.click('Continue');
     await I.waitForContent('What are you trying to do?', config.WaitForText);
   }
+
+  async manageYourHearing() {
+    await I.waitForContent('What do you want to do?', config.WaitForText);
+    await I.checkOption('Manage your hearing');
+    await I.click('Continue');
+    await I.waitForContent('What do you want to do?', config.WaitForText);
+  }
+
+  async getSupport() {
+    await I.waitForContent('What do you want to do?', config.WaitForText);
+    await I.checkOption('Get support as the correspondence I received is unclear');
+    await I.click('Continue');
+    await I.waitForContent('Enter message details', config.WaitForText);
+  }
 }
 
 module.exports = QmStart;
