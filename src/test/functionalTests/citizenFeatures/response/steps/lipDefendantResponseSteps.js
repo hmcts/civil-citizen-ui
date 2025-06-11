@@ -94,7 +94,6 @@ const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagem
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
 
-
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
 const mediationCanWeUse = new MediationCanWeUse();
