@@ -38,7 +38,7 @@ Scenario('Claimant sends non-hearing message to court', async ({ api, I }) => {
 
   await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
   await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Defendant sends non-hearing message to court', async ({ I }) => {
   const subject = 'Defendant query';
@@ -50,4 +50,4 @@ Scenario('Defendant sends non-hearing message to court', async ({ I }) => {
 
   await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
   await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
-}).tag('@qm').tag('@nightly');
+});

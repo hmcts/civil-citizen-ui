@@ -32,29 +32,29 @@ BeforeSuite(async ({ api, I }) => {
 Scenario('Claimant verify Court Update Options flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.verifyCourtUpdateOptionsFlow();
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Claimant verify Send an Update to the court Options flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.verifySendUpdateToCourtFlow();
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Defendant Send documents to the court flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.defendantCitizenUser });
   await ResponseSteps.sendDocuments();
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Applicant Solve a problem to the court flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.solveProblem();
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Applicant Manage your hearing flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.manageYourHearing();
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Defendant Get support flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.defendantCitizenUser });
   await ResponseSteps.getSupport('Defendant Support query', 'Defendant Support  Test message', false);
-}).tag('@qm').tag('@nightly');
+});

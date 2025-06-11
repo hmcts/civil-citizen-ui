@@ -41,7 +41,7 @@ Scenario('Claimant sends message to court', async ({ api, I }) => {
 
   await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
   await ResponseSteps.viewYourMessagesInDashboard();
-}).tag('@qm').tag('@nightly');
+});
 
 Scenario('Defendant sends message to court', async ({ I }) => {
   const subject = 'Defendant Hearing query';
@@ -56,4 +56,4 @@ Scenario('Defendant sends message to court', async ({ I }) => {
 
   await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
   await ResponseSteps.viewYourMessagesInDashboard();
-}).tag('@qm').tag('@nightly');
+});
