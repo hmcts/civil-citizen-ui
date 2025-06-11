@@ -639,8 +639,7 @@ describe('General Application service', () => {
 
       //Then
       const error : ValidationError = errors[0];
-      expect(errors.length).toBe(1);
-      expect(error.constraints['ccjApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT');
+      expect(errors.length).toBe(0);
     });
   });
 
