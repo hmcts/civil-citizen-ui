@@ -21,7 +21,6 @@ import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isCoSCEnabled, isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {YesNo} from 'form/models/yesNo';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
