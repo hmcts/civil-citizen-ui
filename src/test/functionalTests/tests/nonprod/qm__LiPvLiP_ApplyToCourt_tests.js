@@ -23,7 +23,7 @@ async function loginAndSelectClaim({ I, user }) {
   await I.click(claimNumber);
 }
 
-Feature('QM - LIP - Apply to Court scenarios @qm @123');
+Feature('QM - LIP - Apply to Court scenarios @qm');
 
 BeforeSuite(async ({ api, I }) => {
   await claimSetup(api, I);
@@ -42,4 +42,9 @@ Scenario('Claimant verify Send an Update to the court Options flow', async ({ I 
 Scenario('Defendant Send documents to the court flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.defendantCitizenUser });
   await ResponseSteps.sendDocuments();
+}).tag('@qm').tag('@nightly');
+
+Scenario('Applicant Solve a problem to the court flow', async ({ I }) => {
+  await loginAndSelectClaim({ I, user: config.defendantCitizenUser });
+  await ResponseSteps.solveProblem();
 }).tag('@qm').tag('@nightly');

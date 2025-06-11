@@ -47,6 +47,13 @@ class QmStart {
     await I.click('Continue');
     await I.waitForContent('What documents do you want to send?', config.WaitForText);
   }
+
+  async solveProblem() {
+    await I.waitForContent('What do you want to do?', config.WaitForText);
+    await I.checkOption('Solve a problem I am having using the Money claims system');
+    await I.click('Continue');
+    await I.waitForContent('What are you trying to do?', config.WaitForText);
+  }
 }
 
 module.exports = QmStart;

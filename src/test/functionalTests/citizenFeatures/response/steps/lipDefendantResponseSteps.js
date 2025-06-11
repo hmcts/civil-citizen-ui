@@ -91,6 +91,7 @@ const ViewQuery = require('../pages/defendantLipResponse/queryManagement/viewQue
 const GetUpdateFromCourt = require('../pages/defendantLipResponse/queryManagement/getUpdateFromCourt');
 const SendUpdateToCourt = require('../pages/defendantLipResponse/queryManagement/sendUpdateToCourt');
 const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagement/sendDocumentsToCourt');
+const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -186,6 +187,7 @@ const viewQueryPage = new ViewQuery();
 const getUpdateFromCourtPage = new GetUpdateFromCourt();
 const SendUpdateToCourtPage = new SendUpdateToCourt();
 const SendDocumentsToCourtPage = new SendDocumentsToCourt();
+const SolveProblemPage = new SolveProblem();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -261,6 +263,18 @@ class ResponseSteps {
     await SendDocumentsToCourtPage.goBack();
     await SendDocumentsToCourtPage.selectDocumentOrRequestOption('CLAIM_DOCUMENTS_AND_EVIDENCE');
     await I.click('Close and return to case details');
+  }
+
+  async solveProblem() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.solveProblem();
+    await SolveProblemPage.selectOption('SUBMIT_RESPONSE_CLAIM');
+    await SolveProblemPage.goBack();
+    await SolveProblemPage.selectOption('SEE_THE_CLAIM_ON_MY_ACCOUNT');
+    await SolveProblemPage.goBack();
+    await SolveProblemPage.selectOption('VIEW_DOCUMENTS_ON_MY_ACCOUNT');
+    await SolveProblemPage.goBack();
+    await SolveProblemPage.selectOption('SOLVE_PROBLEM_SOMETHING_ELSE');
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {
