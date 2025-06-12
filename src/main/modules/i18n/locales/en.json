@@ -924,7 +924,7 @@
         "IS_HEARING": "Is your message about an upcoming hearing?",
         "HEARING_DATE": "What is the date of the hearing?",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
-        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents related to your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "NO_DOCUMENTS_UPLOADED": "No documents uploaded",
@@ -2512,6 +2512,7 @@
         "CREATED": "Created ",
         "HEARING": "Hearing",
         "HEARING_NOTICE": "Hearing notice",
+        "TRANSLATED_HEARING_NOTICE": "Translated Hearing notice",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
