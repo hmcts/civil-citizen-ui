@@ -650,9 +650,9 @@ describe('Claim Summary Controller Defendant', () => {
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-      });
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+        });
     });
 
     it('should not show welsh party banner if Welsh feature disabled', async () => {
@@ -669,9 +669,9 @@ describe('Claim Summary Controller Defendant', () => {
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-      });
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+        });
     });
   });
 });
