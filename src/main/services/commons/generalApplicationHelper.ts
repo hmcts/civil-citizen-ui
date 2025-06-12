@@ -67,22 +67,25 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   return url.trim();
 };
 
-export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean ): GaInformation => {
+export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
   if (claim.isCaseIssuedPending() ||
-    claim.hasClaimTakenOffline() ||
-    claim.hasClaimBeenDismissed() ||
-    !isEaCourt) { // if the claim is not yet issued
+      claim.hasClaimTakenOffline() ||
+      claim.hasClaimBeenDismissed() ||
+      !isEaCourt) { // if the claim is not yet issued
 
     gaInformation.isGaOnline = false;
   } else if ((claim.defendantUserDetails === undefined ||
-      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant
-  ) {
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
     gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
   } else if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
     gaInformation.isGaOnline = false;
     gaInformation.isGAWelsh = true;
   }
+  console.log('GA Information:', JSON.stringify(gaInformation));
+
+  console.log('Type:', typeof gaInformation.isGaOnline);
+
   return gaInformation;
 };
