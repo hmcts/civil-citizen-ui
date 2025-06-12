@@ -57,7 +57,7 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //defendant performs request for reconsideration
-    notification = orderMadeLA(deadline);
+    notification = orderMadeLA();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await I.click(notification.nextSteps);
     await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Test Inc', deadline);

@@ -38,7 +38,7 @@ Scenario('Claimant performs Request for reconsideration and Defendant adds a com
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //claimant performs request for reconsideration
-    notification = orderMadeLA(deadline);
+    notification = orderMadeLA();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await I.click(notification.nextSteps);
     await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Sir John Doe', deadline);
@@ -71,7 +71,7 @@ Scenario('Defendant performs Request for reconsideration and Claimant adds a com
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //defendant performs request for reconsideration
-    notification = orderMadeLA(deadline);
+    notification = orderMadeLA();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await I.click(notification.nextSteps);
     await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Miss Jane Doe', deadline);
