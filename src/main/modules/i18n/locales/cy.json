@@ -4485,7 +4485,7 @@
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}.",
       "TOTAL_AMOUNT_HINT_TEXT": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.<br><br>Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
-      "TITLE_FOR_PART_ADMIT_HINT_TEXT": "The claim fee and any fixed costs claimed are payable in addition to the claim amount admitted.",
+      "TITLE_FOR_PART_ADMIT_HINT_TEXT": "Mae ffi’r hawliad ac unrhyw gostau sefydlog a hawlwyd yn daladwy yn ogystal â’r swm a addefir.",
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "PERMISSION_FOR_EXPERT": {
@@ -4681,9 +4681,9 @@
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount }} ichi, ynghyd â ffi’r hawliad. Dywedodd mai dyma'r cyfan sydd arno, nid y swm yr oeddech chi'n ei hawlio.",
       "PART_ADMIT_NOT_PAID": {
         "DEFENDANT_ADMITS_THEY_OWE": "Mae {{ defendant }} yn cyfaddef bod arnynt {{ paidAmount }} ichi ynghyd â ffi’r hawliad. Nid ydynt yn credu bod arnynt y swm llawn a hawlir.",
-        "THEY_OFFERED_TO_PAY_YOU": "Mae wedi cynnig talu {{ paidAmount }} ynghyd â ffi’r hawliad i chi mewn rhandaliadau. Dyma'r cyfanswm a delir ichi, ynghyd â ffi’r hawliad.",
-        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "Maen nhw wedi cynnig talu {{ paidAmount }} ynghyd â ffi’r hawliad i chi erbyn {{datePaid}}. Dyma'r cyfanswm y byddwch yn cael eich talu, ynghyd â ffi’r hawliad.",
-        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "Mae wedi cynnig talu {{ paidAmount }} ynghyd â ffi’r hawliad i chi ar unwaith. Dyma'r cyfanswm a delir ichi, ynghyd â ffi’r hawliad.",
+        "THEY_OFFERED_TO_PAY_YOU": "Mae wedi cynnig talu {{ paidAmount }} ynghyd â ffi’r hawliad i chi mewn rhandaliadau. Dyma'r cyfanswm a delir ichi.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "Maen nhw wedi cynnig talu {{ paidAmount }} ynghyd â ffi’r hawliad i chi erbyn {{datePaid}}. Dyma'r cyfanswm y byddwch yn cael eich talu.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "Mae wedi cynnig talu {{ paidAmount }} ynghyd â ffi’r hawliad i chi ar unwaith. Dyma'r cyfanswm a delir ichi.",
         "WHY_THEY_DONT_OWE": "Pam nad oes arnynt y swm sy'n cael ei hawlio?"
       },
       "PAY_EXPENSES": "A ydynt yn talu unrhyw dreuliau?",
