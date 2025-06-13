@@ -34,7 +34,7 @@ import {
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import { GA_SUBMIT_OFFLINE} from 'routes/urls';
-import {GaInformation, isGaOnline, isGaOnlineQM} from 'services/commons/generalApplicationHelper';
+import {GaInformation, isGaOnline} from 'services/commons/generalApplicationHelper';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -52,6 +52,10 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
+
+const gaInfo = new GaInformation();
+gaInfo.isSettledOrDiscontinuedWithPreviousCCDState = true;
+gaInfo.isGaOnline = true;
 
 describe('dashboardService', () => {
   afterAll(() => {
@@ -582,16 +586,9 @@ describe('dashboardService', () => {
           region: '2',
           baseLocation: '0909089',
         };
-        beforeEach(() => {
-          (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
-        });
 
         it('should return updated text with QM enabled', async () => {
           (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
-
-          const gaInfo = new GaInformation();
-          gaInfo.isGaOnline = true;
-          (isGaOnlineQM as jest.Mock).mockReturnValue(gaInfo);
 
           claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
@@ -602,6 +599,8 @@ describe('dashboardService', () => {
 
         it('should not return updated text if QM is disabled', async () => {
           (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+          (isLRQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
+          (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
           claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
           const result = await getContactCourtLink(claim.id, claim, true, 'en');
@@ -611,24 +610,32 @@ describe('dashboardService', () => {
         });
 
         it('should not return updated text if QM is enabled but state is dismissed', async () => {
-          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
           claim.ccdState = CaseState.CASE_DISMISSED;
 
           const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
-          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
-          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+          expect(result).toBeUndefined();
         });
 
-        it('should not return updated text if QM is enabled but state is offline', async () => {
+        it('should not return updated text if QM is enabled but state is PROCEEDS_IN_HERITAGE_SYSTEM', async () => {
           (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
 
           claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
 
           const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
-          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
-          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+          expect(result).toBeUndefined();
+        });
+
+        it('should not return updated text if QM is enabled but state is PENDING_CASE_ISSUED', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+
+          claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result).toBeUndefined();
         });
       });
 
@@ -857,9 +864,6 @@ describe('dashboardService', () => {
           region: '2',
           baseLocation: '0909089',
         };
-        const gaInfo = new GaInformation();
-        gaInfo.isSettledOrDiscontinuedWithPreviousCCDState = true;
-        gaInfo.isGaOnline = true;
 
         const dashboardExpected = new Dashboard(
           Array.of(new DashboardTaskList('Applications', 'Applications', [
@@ -1184,7 +1188,7 @@ describe('dashboardService', () => {
       expect(result).toBeDefined();
     });
 
-    it('getContactCourtLink when QM lR is on and QM LIP is false and isGaOnline is false', async () => {
+    it('getContactCourtLink when QM LR is on and QM LIP is false and isGaOnline is false', async () => {
 
       //Given
       const claim = new Claim();
@@ -1209,7 +1213,7 @@ describe('dashboardService', () => {
       expect(result).toBeUndefined();
     });
 
-    it('getContactCourtLink when QM lR is on and QM LIP is false and Ga is online', async () => {
+    it('getContactCourtLink when QM LR is on and QM LIP is false and Ga is online', async () => {
 
       //Given
       const claim = new Claim();

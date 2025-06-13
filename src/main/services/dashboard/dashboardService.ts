@@ -29,7 +29,7 @@ import {
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaOnline} from 'services/commons/generalApplicationHelper';
-import {CaseState} from "form/models/claimDetails";
+import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
