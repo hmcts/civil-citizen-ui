@@ -31,7 +31,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const linkFrom = req.query.linkFrom;
     const isAskMoreTime:boolean = req.query.isAskMoreTime === 'true';
     const isAmendClaim:boolean = req.query.isAmendClaim === 'true';
-    const isAdjournHearing: boolean = req.query?.isAdjournHearing === 'true';
+    const isAdjournHearing: boolean = req.query.isAdjournHearing === 'true';
     const applicationIndex = queryParamNumber(req, 'index');
 
     if (linkFrom === LinKFromValues.start) {
