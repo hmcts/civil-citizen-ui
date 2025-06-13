@@ -6,8 +6,8 @@ import {
 } from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {getFixedCost, getInterestDetails} from 'common/utils/interestUtils';
-import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import {getInterestDetails} from 'common/utils/interestUtils';
+import {getFixedCost, getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {YesNo} from 'form/models/yesNo';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';

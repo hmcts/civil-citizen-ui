@@ -4681,9 +4681,9 @@
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}, plus the claim fee. They said this is all they owe, not the amount you claimed.",
       "PART_ADMIT_NOT_PAID": {
         "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you {{ paidAmount }} plus the claim fee. They don’t believe they owe the full amount claimed.",
-        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you {{ paidAmount }} plus the claim fee in instalments. This is the total amount you’ll be paid, plus the claim fee.",
-        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you {{ paidAmount }} plus the claim fee by {{datePaid}}. This is the total amount you’ll be paid, plus the claim fee.",
-        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you {{ paidAmount }} plus the claim fee immediately. This is the total amount you’ll be paid, plus the claim fee.",
+        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you {{ paidAmount }} plus the claim fee in instalments. This is the total amount you’ll be paid.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you {{ paidAmount }} plus the claim fee by {{datePaid}}. This is the total amount you’ll be paid.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you {{ paidAmount }} plus the claim fee immediately. This is the total amount you’ll be paid.",
         "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed?"
       },
       "PAY_EXPENSES": "Do they pay any expenses?",
