@@ -559,8 +559,9 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Unrhyw beth arall",
-        "MESSAGE_TO_THE_COURT": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
-        "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny.",
+        "MESSAGE_TO_THE_COURT_V1": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
+        "MESSAGE_TO_THE_COURT_V2": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
+        "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser.",
         "SEND_A_MESSAGE": "Anfon neges"
       },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "Beth ydych chi eisiau ei wneud?",

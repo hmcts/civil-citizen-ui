@@ -28,7 +28,8 @@ import {
   isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
-import {isGaOnline, isGaOnlineQM} from 'services/commons/generalApplicationHelper';
+import {isGaOnline} from 'services/commons/generalApplicationHelper';
+import {CaseState} from "form/models/claimDetails";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -209,10 +210,8 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
     }
 
   } else if (isLIPQmOn) {
-    const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-    const welshGaEnabled = await isGaForWelshEnabled();
-    const isGaOnlineFlag = isGaOnlineQM(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
-    if(isGaOnlineFlag.isGaOnline){
+    const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
+    if(!isClaimOffLine.includes(claim.ccdState)){
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinKFromValues.start}`),
