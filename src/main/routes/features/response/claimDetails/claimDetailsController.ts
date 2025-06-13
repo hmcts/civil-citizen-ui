@@ -9,8 +9,8 @@ import {
   VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
-import {getFixedCost, getInterestDetails} from 'common/utils/interestUtils';
-import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import {getInterestDetails} from 'common/utils/interestUtils';
+import {getFixedCost, getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {getLng} from 'common/utils/languageToggleUtils';

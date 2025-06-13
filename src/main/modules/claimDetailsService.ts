@@ -2,6 +2,7 @@ import {Claim} from '../common/models/claim';
 import {convertToPoundsFilter} from '../common/utils/currencyFormat';
 import {ResponseType} from '../common/form/models/responseType';
 import { calculateInterestToDate } from 'common/utils/interestUtils';
+import {YesNo} from 'form/models/yesNo';
 
 export const getTotalAmountWithInterestAndFees = async (claim: Claim) => {
   const interestToDate = await calculateInterestToDate(claim);
@@ -15,4 +16,11 @@ export const getTotalAmountWithInterest = async (claim: Claim) => {
 
 export const isFullAmountReject = (claim: Claim): boolean => {
   return claim.respondent1.responseType === ResponseType.PART_ADMISSION || claim.respondent1.responseType === ResponseType.FULL_DEFENCE;
+};
+
+export const getFixedCost = async (claim: Claim) => {
+  if (!claim?.fixedCosts || claim?.fixedCosts?.claimFixedCosts.toLowerCase() === YesNo.NO) {
+    return undefined;
+  }
+  return convertToPoundsFilter(claim?.fixedCosts?.fixedCostAmount) || 0;
 };
