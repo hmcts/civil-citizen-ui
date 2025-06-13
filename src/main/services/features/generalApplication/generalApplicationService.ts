@@ -356,17 +356,6 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
     });
 
     errors.push(validationError);
-  } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.joIsLiveJudgmentExists === undefined || claim.joIsLiveJudgmentExists?.option === YesNo.NO)) {
-
-    const validationError = new FormValidationError({
-      target: new GenericYesNo(body.optionOther, ''),
-      value: body.option,
-      constraints: {
-        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
-      },
-      property: 'option',
-    });
-    errors.push(validationError);
   }
 };
 
