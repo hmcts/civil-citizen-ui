@@ -1117,7 +1117,9 @@ export class Claim {
 
   isAnyPartyBilingual() : boolean {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
-      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+      || this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH'
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'WELSH';
   }
 }
 
