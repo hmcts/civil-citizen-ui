@@ -3948,7 +3948,7 @@
       "NO_OPTION": "Nac ydw – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
       "TITLE": "Sut mae am dalu?",
-      "INTEREST_HINT_TEXT": "Efallai y bydd y dyddiad talu terfynol yn ddiweddarach i adlewyrchu unrhyw log ychwanegol a ffi’r hawliad a ychwanegir at y dyfarniad, cytundeb setlo neu swm y taliad cynharach",
+      "INTEREST_HINT_TEXT": "Efallai y bydd y dyddiad talu terfynol yn ddiweddarach i adlewyrchu ychwanegu ffi’r hawliad a fydd yn cael ei ychwanegu at y dyfarniad, cytundeb setlo neu swm y taliad cynharach",
       "NO_OPTION_HINT_TEXT": "Dylai'r diffynnydd fod wedi anfon eu manylion ariannol atoch. Bydd angen i chi eu hanfon atom. Byddwn yn cyhoeddi CCJ yn eu herbyn. Bydd telerau'r CCJ yn dibynnu a ydym yn credu y gallant fforddio eich cynllun ad-dalu a awgrymir."
     },
     "HELP_WITH_FEES": {
@@ -4499,7 +4499,8 @@
       "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
       "TITLE": "Pryd ydych chi eisiau talu?",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}.",
-      "TOTAL_AMOUNT_HINT_TEXT": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.<br><br>Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
+      "TOTAL_AMOUNT_HINT_TEXT1": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.",
+      "TOTAL_AMOUNT_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "Mae ffi’r hawliad ac unrhyw gostau sefydlog a hawlwyd yn daladwy yn ogystal â’r swm a addefir.",
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
@@ -4603,7 +4604,8 @@
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "REGULAR_PAYMENTS_IN_POUNDS": "Taliadau rheolaidd, mewn punnoedd",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}.",
-      "SUBTITLE_HINT_TEXT": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.<br><br>Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
+      "SUBTITLE_HINT_TEXT1": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.",
+      "SUBTITLE_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REPAYMENT_PLAN_SUMMARY": {
@@ -4721,7 +4723,7 @@
       "WHY_THEY_DISAGREE_CLAIM": "Pam ei fod yn anghytuno â’r hawliad?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Pam ei fod anghytuno â’ch tystiolaeth?",
       "WHY_THEY_DISAGREE_TIMELINE": "Pam eu bod yn anghytuno â’ch llinell amser?",
-      "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu {{ amount }} ynghyd â ffi’r hawliad i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu, ynghyd â ffi’r hawliad.",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu {{ amount }} ynghyd â ffi’r hawliad i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "Sut mae am dalu?",
         "SUGGESTED_REPAYMENT": "Awgrymodd y diffynnydd y cynllun ad-dalu hwn",
