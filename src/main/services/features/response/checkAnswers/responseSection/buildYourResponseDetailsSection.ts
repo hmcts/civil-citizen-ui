@@ -51,7 +51,6 @@ const addTimeline = (claimId: string, lang: string , section: SummarySection, ti
   );
 };
 
-
 const addEvidence = (claim: Claim, claimId: string, lang: string , section: SummarySection) => {
   const yourEvidenceHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL);
   const evidenceItem = claim.evidence?.evidenceItem;
