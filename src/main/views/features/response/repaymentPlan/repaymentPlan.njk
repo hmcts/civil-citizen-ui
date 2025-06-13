@@ -21,7 +21,7 @@
       {% set errors = form.getAllErrors() %}
       {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
       {% set totalAmount = form.model.totalClaimAmount %}
-      {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT') %}
+      {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT1') + '<br><br>' + t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT2')%}
       {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.LENGTH_HINT_TEXT') %}
       {% if admission %}
         {% set totalAmountClaimedText = t('PAGES.REPAYMENT_PLAN.ADMIT_YOU_OWE',{amount: amount}) %}

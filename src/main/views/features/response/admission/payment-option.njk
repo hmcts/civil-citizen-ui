@@ -15,12 +15,7 @@
 {% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2)}) if amount else t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : form.model.totalClaimAmount})%}
 {% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
 {% set totalAmountClaimedText =  t('PAGES.PAYMENT_OPTION.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
-{% set totalAmountHintText =  t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT') %}
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
-{% set claimantTitleHintText = title + '<br><br><p class="govuk-body-m">' + totalAmountClaimedText + '</p>' + '<p class="govuk-body-m">' + totalAmountHintText + '</p>' %}
-{% set titleForPartAdminHintText =  title + '<br><br><p class="govuk-body-m">' + t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') + '</p>' %}
-{% set defendantTitleHintText = titleForPartAdminHintText if amount else title + '<br><br><p class="govuk-body-m">' + totalAmountHintText + '</p>' %}
-{% set titleHintText = claimantTitleHintText if isClaimantResponse else defendantTitleHintText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -45,14 +40,24 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ govukFieldset({
-                 legend: {
-                   html: titleHintText,
-                   classes: "govuk-fieldset__legend--l",
-                   isPageHeading: true
-                 }
-               })
-            }}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
+            </legend>
+             {% if isClaimantResponse %}
+               {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+                <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+               {% endif %}
+             {% else %}
+                {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+                  <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
+                {% endif %}
+               {% if claim.responseStatus !== ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus !== ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+                   <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                   <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+                {% endif %}
+              {% endif %}
 
             {{ govukRadios({
               idPrefix: "paymentType",
