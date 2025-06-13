@@ -1,4 +1,5 @@
 import {
+  getFixedCost,
   getTotalAmountWithInterest,
   getTotalAmountWithInterestAndFees,
   isFullAmountReject,
@@ -12,6 +13,7 @@ import {ResponseType} from '../../../main/common/form/models/responseType';
 import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 import nock from 'nock';
 import config from 'config';
+import {FixedCosts} from 'form/models/claimDetails';
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
 
@@ -111,5 +113,33 @@ describe('Claim Details service', () => {
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
       expect(isFullAmountReject(claim)).toBe(true);
     });
+  });
+
+  describe('isFullAmountReject', () => {
+    it('fix cost is claimed', async () => {
+      const claim = new Claim();
+      claim.isLRClaimant = () => true;
+      claim.fixedCosts = <FixedCosts> {};
+      claim.fixedCosts.fixedCostAmount = '100';
+      claim.fixedCosts.claimFixedCosts = 'Yes';
+      const fixedCost = await getFixedCost(claim);
+      expect(fixedCost).toBeTruthy();
+      expect(fixedCost).toEqual(100);
+    });
+
+    it('fixed cost is undefined', async () => {
+      const claim = new Claim();
+      const fixedCost = await getFixedCost(claim);
+      expect(fixedCost).toBeUndefined();
+    });
+
+    it('no fixed cost is claimed', async () => {
+      const claim = new Claim();
+      claim.fixedCosts = <FixedCosts> {};
+      claim.fixedCosts.claimFixedCosts = 'No';
+      const fixedCost = await getFixedCost(claim);
+      expect(fixedCost).toBeUndefined();
+    });
+
   });
 });
