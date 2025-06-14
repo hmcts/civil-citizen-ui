@@ -32,7 +32,7 @@ tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: App
 
 const pageContent = (lng: string) => {
   const makeClaim = t('PAGES.TRY_NEW_SERVICE.CLAIM_INTEREST', { lng });
-  const makeClaimUrl = `<a href="${makeAClaimUrl}" target="_blank">${t('PAGES.TRY_NEW_SERVICE.MAKE_A_CLAIM', { lng })}</a>`;
+  const makeClaimUrl = `<a class="govuk-link" href="${makeAClaimUrl}" target="_blank">${t('PAGES.TRY_NEW_SERVICE.MAKE_A_CLAIM', { lng })}</a>`;
   return new PageSectionBuilder()
     .addMainTitle('PAGES.TRY_NEW_SERVICE.TITLE')
     .addParagraph('PAGES.TRY_NEW_SERVICE.WE_ARE_BUILDING')

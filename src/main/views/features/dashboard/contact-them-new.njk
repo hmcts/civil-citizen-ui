@@ -45,11 +45,11 @@
         <div class="govuk-body govuk-!-margin-bottom-5">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone.phone }}</div>
       {% endif %}
       {% if email.emailAddress %}
-        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
+        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a class="govuk-link" href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
         </div>
       {% endif %}
       {% if solicitorEmailId %}
-        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ solicitorEmailId }}'>{{ solicitorEmailId }}</a>
+        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a class="govuk-link" href='mailto:{{ solicitorEmailId }}'>{{ solicitorEmailId }}</a>
         </div>
       {% endif %}
     </div>
