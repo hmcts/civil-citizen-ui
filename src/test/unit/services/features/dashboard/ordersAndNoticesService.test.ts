@@ -809,6 +809,26 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for translated decision on Reconsideration', async () => {
+
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should not get data array for decision on reconsideration if toggle off', async () => {
       //given
       (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
