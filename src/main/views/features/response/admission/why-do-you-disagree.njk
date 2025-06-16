@@ -14,7 +14,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set header = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE') %}
-      {% set subTitle = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.SUBTITLE', { claimAmount: claimAmount }) %}
+      {% set subTitle = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.SUBTITLE', { claimAmount: claimAmount.toFixed(2) }) %}
       {% set errors = form.getAllErrors()%}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
