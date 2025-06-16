@@ -9,6 +9,12 @@ export const getTotalAmountWithInterestAndFees = async (claim: Claim) => {
   return (claim.totalClaimAmount || 0) + interestToDate + (convertToPoundsFilter(claim?.claimFee?.calculatedAmountInPence) || 0);
 };
 
+export const getTotalAmountWithInterestAndFeesAndFixedCost = async (claim: Claim) => {
+  const totalWithInterest = await getTotalAmountWithInterestAndFees(claim);
+  const fixedCost = await getFixedCost(claim);
+  return totalWithInterest + (fixedCost || 0);
+};
+
 export const getTotalAmountWithInterest = async (claim: Claim) => {
   const interestToDate = await calculateInterestToDate(claim);
   return (claim.totalClaimAmount || 0) + interestToDate;
