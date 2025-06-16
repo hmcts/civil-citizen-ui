@@ -120,7 +120,7 @@ describe('Claim Details service', () => {
       const claim = new Claim();
       claim.isLRClaimant = () => true;
       claim.fixedCosts = <FixedCosts> {};
-      claim.fixedCosts.fixedCostAmount = '100';
+      claim.fixedCosts.fixedCostAmount = '10000';
       claim.fixedCosts.claimFixedCosts = 'Yes';
       const fixedCost = await getFixedCost(claim);
       expect(fixedCost).toBeTruthy();
