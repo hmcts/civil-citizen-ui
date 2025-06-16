@@ -12,8 +12,10 @@
 {% set pageTitle = pageTitleForClaimant if isClaimantResponse else pageTitleForDefendant %}
 
 {% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE')  %}
-{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2)}) if amount else t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : form.model.totalClaimAmount.toFixed(2)})%}
+{% set totalAmount = form.model.totalClaimAmount.toFixed(2) if form.model.totalClaimAmount else 0 %}
+{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2) if amount else totalAmount })%}
 {% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
+
 {% set totalAmountClaimedText =  t('PAGES.PAYMENT_OPTION.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
 
