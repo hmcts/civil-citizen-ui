@@ -24,21 +24,30 @@ import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evid
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const addTimeline = (claimId: string, lang: string , section: SummarySection, timeline: DefendantTimeline = new DefendantTimeline([], '')) => {
+  if (!Array.isArray(timeline?.rows)) {
+    throw new TypeError('Timeline.rows must be an array');
+  }
+  if (typeof timeline.comment !== 'string' && timeline.comment != null) {
+    throw new TypeError('Timeline.comment must be a string or null/undefined');
+  }
+
+  const rows = timeline.rows;
+  const comment = timeline.comment ?? '';
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
 
   section.summaryList.rows.push(
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', {lng: getLng(lang)}), '', yourTimelineHref, changeLabel(lang)),
   );
 
-  for (const item of timeline.rows) {
-    const timelineDate = formatDateToFullDate(new Date(item.date),lang);
+  for (const item of rows) {
+    const timelineDate = formatDateToFullDate(new Date(item.date), lang);
     section.summaryList.rows.push(
       summaryRow(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
     );
   }
 
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', {lng: getLng(lang)}), timeline.comment, yourTimelineHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', { lng: getLng(lang) }), comment, yourTimelineHref, changeLabel(lang)),
   );
 };
 
@@ -115,12 +124,12 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
   switch (claim.respondent1.responseType) {
     case ResponseType.PART_ADMISSION:
       getSummaryRowsForPartAdmission(claim, claimId, lang, yourResponseDetailsSection);
-      addTimeline(claimId, lang, yourResponseDetailsSection, claim.partialAdmission.timeline);
+      addTimeline(claimId, lang, yourResponseDetailsSection, claim.partialAdmission?.timeline);
       addEvidence(claim, claimId, lang, yourResponseDetailsSection);
       break;
     case ResponseType.FULL_DEFENCE:
       getSummaryRowsForFullReject(claim, claimId, lang, yourResponseDetailsSection);
-      addTimeline(claimId, lang, yourResponseDetailsSection, claim.rejectAllOfClaim.timeline);
+      addTimeline(claimId, lang, yourResponseDetailsSection, claim.rejectAllOfClaim?.timeline);
       addEvidence(claim, claimId, lang, yourResponseDetailsSection);
       break;
   }
