@@ -104,3 +104,6 @@ nodejs:
     maxReplicas: 5
     targetCPUUtilizationPercentage: 80
 
+wiremock:
+  enabled: false
+

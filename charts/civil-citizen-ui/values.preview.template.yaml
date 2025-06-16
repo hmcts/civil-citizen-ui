@@ -92,14 +92,13 @@ xui-webapp:
       SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
-      SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
+      SERVICES_WORK_ALLOCATION_TASK_API: http://${SERVICE_NAME}-wiremock
       SERVICES_WA_WORKFLOW_API_URL: http://wa-workflow-api-${SERVICE_FQDN}
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
       SERVICES_DOCUMENTS_API_V2: http://${SERVICE_NAME}-cdam
       JURISDICTIONS: CIVIL
       LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
-
 ccd:
   enabled: true
   ccd:
@@ -616,3 +615,19 @@ ccd-case-document-am-api:
       CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_API_S2S_SECRET: ${CASE_DOCUMENT_AM_API_S2S_SECRET}
     keyVaults: []
+
+wiremock:
+  enabled: true
+  image: "wiremock/wiremock"
+  applicationPort: 8080
+  imagePullPolicy: Always
+  releaseNameOverride: ${SERVICE_NAME}-wiremock
+  ingressHost: wiremock-${SERVICE_NAME}.preview.platform.hmcts.net
+  volumes:
+    - name: wiremock-mocks
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-wm
+  volumeMounts:
+    - name: wiremock-mocks
+      mountPath: /home/wiremock/mappings
+      subPath: mappings
