@@ -17,7 +17,7 @@ const paymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
 function renderView(form: GenericForm<PaymentOption>, res: Response, claim?: Claim) {
-  res.render(citizenPaymentOptionViewPath, {claim, form});
+  res.render(citizenPaymentOptionViewPath, {claim, form, responseType: ResponseType.FULL_ADMISSION});
 }
 
 function redirectToNextPage(claimId: string, form: PaymentOption, res: Response) {
