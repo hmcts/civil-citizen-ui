@@ -44,16 +44,15 @@
               <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
              {% if isClaimantResponse %}
-               {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+               {% if responseType === ResponseType.FULL_ADMISSION %}
                 <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
                 <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
                 <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
                {% endif %}
              {% else %}
-                {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+                {% if responseType === ResponseType.PART_ADMISSION %}
                   <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
-                {% endif %}
-               {% if claim.responseStatus !== ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus !== ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+                {% else %}
                    <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
                    <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
                 {% endif %}
