@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI @noc', async ({
   I,
   api,
 }) => {
@@ -68,7 +68,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async 
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI @noc', async ({
   I,
   api,
 }) => {

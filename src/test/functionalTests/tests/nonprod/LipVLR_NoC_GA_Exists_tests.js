@@ -8,7 +8,7 @@ const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/
 
 let claimRef, claimType, caseData, legacyCaseReference, defendantName, isDashboardServiceEnabled;
 
-Feature('Lip v Lip with GA and perform NoC').tag('@citizenUI @nightly @api @ga');
+Feature('Lip v Lip with GA and perform NoC').tag('@citizenUI @nightly @api @ga @noc');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

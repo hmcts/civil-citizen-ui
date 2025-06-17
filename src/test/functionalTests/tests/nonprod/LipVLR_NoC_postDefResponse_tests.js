@@ -15,7 +15,7 @@ const {
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled;
 const claimType = 'SmallClaims';
 
-Feature('Lip v LR Post Defendant Response e2e Tests').tag('@nightly');
+Feature('Lip v LR Post Defendant Response e2e Tests').tag('@nightly @noc');
 
 Before(async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -45,7 +45,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online @citizenUI', async ({
+Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online @citizenUI @noc', async ({
   I,
   api,
 }) => {
@@ -77,7 +77,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   }
 });
 
-Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline @citizenUI', async ({
+Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline @citizenUI @noc', async ({
   I,
   api,
 }) => {
@@ -102,7 +102,7 @@ Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline 
   }
 });
 
-Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline @citizenUI', async ({
+Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline @citizenUI @noc', async ({
   I,
   api,
 }) => {
