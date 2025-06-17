@@ -19,12 +19,14 @@
       {% set firstPaymentDate = "now" | addDaysTranslated(30, t,'GB') %}
       {% set title = t('PAGES.REPAYMENT_PLAN.TITLE') %}
       {% set errors = form.getAllErrors() %}
-      {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
+      {% set formattedTotalAmountText = form.model.totalClaimAmount.toFixed(2) if form.model.totalClaimAmount else 0 %}
+      {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: formattedTotalAmountText}) %}
       {% set totalAmount = form.model.totalClaimAmount %}
       {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT1') + '<br><br>' + t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT2')%}
       {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.LENGTH_HINT_TEXT') %}
       {% if admission %}
-        {% set totalAmountClaimedText = t('PAGES.REPAYMENT_PLAN.ADMIT_YOU_OWE',{amount: amount}) %}
+        {% set formattedAmountText = amount.toFixed(2) if amount else 0 %}
+        {% set totalAmountClaimedText = t('PAGES.REPAYMENT_PLAN.ADMIT_YOU_OWE',{amount: formattedAmountText}) %}
         {% set totalAmount = amount %}
         {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.ADMIT_YOU_OWE_HINT_TEXT') %}
         {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.ADMISSION_LENGTH_HINT_TEXT') %}
