@@ -11,10 +11,10 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
-def dmnBranch = "master"
+def camundaBranch = "CIV-17132-pause-in-Defendant-Response-Journey-LiP-v-LR"
+def dmnBranch = "CIV-17132-pause-in-defendant-response-journey"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-17132-added-chnages-to-defendant-response-for-lip-vs-lr-"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
