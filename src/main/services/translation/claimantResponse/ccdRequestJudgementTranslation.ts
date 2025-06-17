@@ -66,7 +66,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
   return {
     ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
     ccjPaymentPaidSomeAmount,
-    ccjJudgmentAmountClaimFee: claimFee.toString(),
+    ccjJudgmentAmountClaimFee: claimFee ? claimFee.toString(): undefined,
     ccjJudgmentLipInterest: ccjJudgmentLipInterest.toString(),
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
