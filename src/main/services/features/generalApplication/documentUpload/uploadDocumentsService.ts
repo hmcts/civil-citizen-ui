@@ -20,6 +20,7 @@ export const uploadSelectedFile = async (req: AppRequest): Promise<void> => {
     uploadDocument.fileUpload = fileUpload;
     const form = new GenericForm(uploadDocument);
     form.validateSync();
+    delete uploadDocument.fileUpload; // release file memory
     if (!form.hasErrors()) {
       uploadDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
       await saveDocuments(req, uploadDocument);
