@@ -574,4 +574,12 @@ module.exports = {
       content: 'This claim will now move offline and you must submit your intention to proceed by using form',
     };
   },
+
+  responseToTheClaim: (clientName) => {
+    return {
+      title: 'Response to the claim',
+      content: clientName + ' has rejected the claim. You need to respond by',
+      nextSteps: 'View and respond',
+    };
+  },
 };
