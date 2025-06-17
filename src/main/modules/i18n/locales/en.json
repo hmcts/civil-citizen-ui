@@ -4499,7 +4499,7 @@
       "REPAYMENT": "I'll suggest a repayment plan",
       "TITLE": "When do you want to pay?",
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}.",
-      "TOTAL_AMOUNT_HINT_TEXT1": "This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.",
+      "TOTAL_AMOUNT_HINT_TEXT1": "This amount includes interest if it has been claimed which may continue to accrue to the date of Judgment, settlement agreement or earlier payment.",
       "TOTAL_AMOUNT_HINT_TEXT2": "The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "The claim fee and any fixed costs claimed are payable in addition to the claim amount admitted.",
@@ -4604,7 +4604,7 @@
       "REGULAR_PAYMENTS": "Regular payments of",
       "REGULAR_PAYMENTS_IN_POUNDS": "Regular payments of, in pounds",
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}.",
-      "SUBTITLE_HINT_TEXT1": "This amount includes interest if it has been claimed which will continue to accrue on the amount outstanding up to the date of Judgment, settlement agreement or earlier payment.",
+      "SUBTITLE_HINT_TEXT1": "This amount includes interest if it has been claimed which may continue to accrue to the date of Judgment, settlement agreement or earlier payment.",
       "SUBTITLE_HINT_TEXT2": "The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE": "Your repayment plan"
     },

@@ -4499,7 +4499,7 @@
       "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
       "TITLE": "Pryd ydych chi eisiau talu?",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}.",
-      "TOTAL_AMOUNT_HINT_TEXT1": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.",
+      "TOTAL_AMOUNT_HINT_TEXT1": "Mae’r swm hwn yn cynnwys llog os yw wedi’i hawlio a gall barhau i gronni hyd dyddiad y Dyfarniad, y cytundeb setlo neu daliad cynharach.",
       "TOTAL_AMOUNT_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "Mae ffi’r hawliad ac unrhyw gostau sefydlog a hawlwyd yn daladwy yn ogystal â’r swm a addefir.",
@@ -4604,7 +4604,7 @@
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "REGULAR_PAYMENTS_IN_POUNDS": "Taliadau rheolaidd, mewn punnoedd",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}.",
-      "SUBTITLE_HINT_TEXT1": "Mae’r swm hwn yn cynnwys llog os hawlir, a fydd yn parhau i gronni ar y swm sy’n ddyledus hyd at ddyddiad y dyfarniad, cytundeb setlo neu daliad cynharach.",
+      "SUBTITLE_HINT_TEXT1": "Mae’r swm hwn yn cynnwys llog os yw wedi’i hawlio a gall barhau i gronni hyd dyddiad y Dyfarniad, y cytundeb setlo neu daliad cynharach.",
       "SUBTITLE_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE": "Eich cynllun ad-dalu"
     },
