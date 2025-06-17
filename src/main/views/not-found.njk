@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "./macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set returnLink = '<a href="/dashboard">DASHBOARD</a>' | replace('DASHBOARD', t('COMMON.CIVIL_MONEY_CLAIMS')) %}
