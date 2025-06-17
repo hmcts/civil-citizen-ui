@@ -93,14 +93,12 @@ const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: stri
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
-export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
+export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
   let queries: CaseQueries;
   const date = new Date();
   if (!updatedClaim.queries) {
-
     queries = {
-      'partyName': 'Claimant',
-      'roleOnCase': claim.caseRole,
+      'partyName': 'App queries',
       'caseMessages': [],
     };
   } else {
@@ -121,7 +119,7 @@ export const createApplicantCitizenQuery = async (claim: Claim, updatedClaim: Cl
         'parentId': parent.value.id,
         'id': uuidV4(),
         'body': claim.queryManagement.sendFollowUpQuery.messageDetails,
-        'name': claim.getClaimantFullName(),
+        'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
         'subject': parent.value.subject,
         'createdBy': req.session.user.id,
         'createdOn': date.toISOString(),
@@ -167,68 +165,6 @@ const getDocAttachments = (uploadedFiles: UploadQMAdditionalFile[]): FormDocumen
       document_binary_url: file.caseDocument.documentLink.document_binary_url,
     },
   }));
-};
-
-export const createRespondentCitizenQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
-  let queries: CaseQueries;
-  const date = new Date();
-  if (!updatedClaim.queries) {
-
-    queries = {
-      'partyName': 'Defendant',
-      'roleOnCase': claim.caseRole,
-      'caseMessages': [],
-    };
-  } else {
-    queries = updatedClaim.queries;
-  }
-
-  if (isFollowUpQuery) {
-    const parent = queries.caseMessages
-      .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
-
-    if (!parent) {
-      throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
-    }
-
-    queries.caseMessages.push({
-      'id': uuidV4(),
-      'value': {
-        'parentId':  parent.value.id,
-        'id': uuidV4(),
-        'body': claim.queryManagement.sendFollowUpQuery.messageDetails,
-        'name': claim.getDefendantFullName(),
-        'subject': parent.value.subject,
-        'createdBy': req.session.user.id,
-        'createdOn': date.toISOString(),
-        'attachments': getDocAttachments(claim.queryManagement.sendFollowUpQuery.uploadedFiles),
-        'isHearingRelated': parent.value.isHearingRelated === 'Yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-        'hearingDate': parent.value.isHearingRelated === 'Yes' ? parent.value.hearingDate  : undefined,
-      },
-    });
-    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
-      throw error;
-    });
-    return;
-  }
-
-  queries.caseMessages.push({
-    'id': uuidV4(),
-    'value': {
-      'id': uuidV4(),
-      'body': claim.queryManagement.createQuery.messageDetails,
-      'name': claim.getDefendantFullName(),
-      'subject': claim.queryManagement.createQuery.messageSubject,
-      'createdBy': req.session.user.id,
-      'createdOn': date.toISOString(),
-      'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
-      'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery) : undefined,
-    },
-  });
-  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
-    throw error;
-  });
 };
 
 const getStringDate = (query: CreateQuery): string => {

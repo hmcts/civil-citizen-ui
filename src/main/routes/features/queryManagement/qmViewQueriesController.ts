@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, QM_VIEW_OTHER_QUERIES_URL,
+  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
   QM_VIEW_QUERY_URL,
 } from 'routes/urls';
 import { Claim } from 'models/claim';
@@ -19,8 +19,9 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const qmViewQueriesController = Router();
 const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
 
-const renderView = async (res: Response, userId:string, claimId: string, claim: Claim, lang: string, getUsersQueries: boolean): Promise<void> => {
-  const parentQueryItems:ViewObjects[] = ViewQueriesService.buildQueryListItems(userId, claim, lang, getUsersQueries);
+const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
+
+  const parentQueryItems:ViewObjects[] = ViewQueriesService.buildQueryListItems(claim, lang);
 
   res.render(viewQueriesPath, {
     claimId,
@@ -42,25 +43,16 @@ async function recordNotificationClickForQueryResponse(claim: Claim, claimId: st
   }
 }
 
-async function handleViewQueries(req: Request, res: Response, next: NextFunction, getUserQueries: boolean) {
+qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    const userId = (<AppRequest>req).session?.user?.id;
     await recordNotificationClickForQueryResponse(claim, claimId, req, lang);
-    await renderView(res, userId, claimId, claim, lang, getUserQueries);
+    await renderView(res, claimId, claim, lang);
   } catch (error) {
     next(error);
   }
-}
-
-qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: Request, res: Response, next: NextFunction) => {
-  await handleViewQueries(req, res, next, true);
-}) as RequestHandler);
-
-qmViewQueriesController.get(QM_VIEW_OTHER_QUERIES_URL, (async (req: Request, res: Response, next: NextFunction) => {
-  await handleViewQueries(req, res, next, false);
 }) as RequestHandler);
 
 export default qmViewQueriesController;

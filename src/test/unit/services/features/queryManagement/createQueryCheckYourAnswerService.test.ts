@@ -1,7 +1,4 @@
-import {
-  createApplicantCitizenQuery, createRespondentCitizenQuery,
-  getSummarySections,
-} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
+import {createQuery, getSummarySections} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
@@ -49,7 +46,7 @@ describe('Check Answers response service', () => {
     });
   });
 
-  describe('createApplicantCitizenQuery', () => {
+  describe('createQuery', () => {
     it('should submit the create query for claimant', async () => {
 
       const submitQueryManagementRaiseQuery = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery').mockResolvedValueOnce(undefined);
@@ -59,7 +56,7 @@ describe('Check Answers response service', () => {
       const date = new Date();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
       claim.queryManagement.createQuery.uploadedFiles = [];
-      await createApplicantCitizenQuery(claim, updated, req, false);
+      await createQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
 
@@ -89,7 +86,7 @@ describe('Check Answers response service', () => {
       claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
       claim.queryManagement.sendFollowUpQuery.uploadedFiles = [];
       claim.queryManagement.sendFollowUpQuery.parentId = '12345';
-      await createApplicantCitizenQuery(claim, updated, req, true);
+      await createQuery(claim, updated, req, true);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
 
@@ -116,7 +113,7 @@ describe('Check Answers response service', () => {
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', '2025', '4', '4');
       claim.queryManagement.createQuery.uploadedFiles = [];
-      await createApplicantCitizenQuery(claim, updated, req, false);
+      await createQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
   });
@@ -147,7 +144,7 @@ describe('Check Answers response service', () => {
     claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
     claim.queryManagement.sendFollowUpQuery.uploadedFiles = [];
     claim.queryManagement.sendFollowUpQuery.parentId = '78945';
-    await createRespondentCitizenQuery(claim, updated, req, true);
+    await createQuery(claim, updated, req, true);
     expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
   });
 
@@ -175,12 +172,12 @@ describe('Check Answers response service', () => {
     claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
     claim.queryManagement.sendFollowUpQuery.uploadedFiles = [];
     claim.queryManagement.sendFollowUpQuery.parentId = '78945';
-    await expect(createRespondentCitizenQuery(claim, updated, req, true))
+    await expect(createQuery(claim, updated, req, true))
       .rejects
       .toThrow('Parent query with ID 78945 not found.');
   });
 
-  describe('createRespondentCitizenQuery', () => {
+  describe('createQuery', () => {
     it('should submit the create query for defendant', async () => {
 
       const submitQueryManagementRaiseQuery = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery').mockResolvedValueOnce(undefined);
@@ -205,7 +202,7 @@ describe('Check Answers response service', () => {
       claim.queryManagement = new QueryManagement();
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', '2025', '5', '5');
       claim.queryManagement.createQuery.uploadedFiles = [];
-      await createRespondentCitizenQuery(claim, updated, req, false);
+      await createQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
     });
   });

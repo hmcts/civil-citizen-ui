@@ -10,7 +10,7 @@ export class ViewQueriesService {
     return claim.queries;
   }
 
-  public static buildQueryListItems(userId: string, claim: Claim, lang: string, getUsersQueries: boolean): ViewObjects[] {
+  public static buildQueryListItems(claim: Claim, lang: string): ViewObjects[] {
 
     const queries = this.getCaseQueries(claim);
     if (!queries?.caseMessages) {
@@ -35,23 +35,23 @@ export class ViewQueriesService {
           queryItem.value.createdBy,
           queryItem.value.subject,
           dateTimeFormat(queryItem.value.createdOn, lang),
-          getUsersQueries ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : queryItem.value.name,
+          'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU',
           dateTimeFormat(queryItem.value.createdOn, lang),
           'PAGES.QM.VIEW_QUERY.STATUS_SENT',
         ));
       }
     });
-    return viewObjects.filter(viewObject => getUsersQueries ? viewObject.createdBy === userId :  viewObject.createdBy !== userId);
+    return viewObjects;
   }
 
-  public static buildQueryListItemsByQueryId(userId: string, claim: Claim, queryId: string, lang: string): QueryDetail {
+  public static buildQueryListItemsByQueryId(claim: Claim, queryId: string, lang: string): QueryDetail {
     const queries = this.getCaseQueries(claim);
     const parent = queries.caseMessages.find(query => query.value.id === queryId);
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
     const lastStatus = combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
     const formatted = combined.map(item => {
-      const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn, name } = item.value;
+      const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn } = item.value;
       const documents = attachments?.map(doc => {
         const { document_filename, document_binary_url } = doc.value ?? {};
         return {
@@ -64,10 +64,9 @@ export class ViewQueriesService {
         body,
         isHearingRelated,
         documents,
-        name,
+        createdBy,
         dateTimeFormat(createdOn, lang),
         formatDateToFullDate(new Date(hearingDate), lang),
-        createdBy === userId,
       );
     });
     return new QueryDetail(parent.value.subject, lastStatus, formatted);

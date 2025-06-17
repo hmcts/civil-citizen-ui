@@ -38,8 +38,7 @@ qmViewQueryDetailsController.get(QM_QUERY_DETAILS_URL, (async (req: Request, res
     const queryId = req.params.queryId;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    const userId = (<AppRequest>req).session?.user?.id;
-    const selectedQueryItem = ViewQueriesService.buildQueryListItemsByQueryId(userId, claim, queryId, lang);
+    const selectedQueryItem = ViewQueriesService.buildQueryListItemsByQueryId(claim, queryId, lang);
     await renderView(res, claimId, claim, selectedQueryItem, queryId);
   } catch (error) {
     next(error);

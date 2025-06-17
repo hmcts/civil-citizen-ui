@@ -2,8 +2,8 @@ import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesS
 import {Claim} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
-//import {QueryDetail, QueryListItem} from 'form/models/queryManagement/viewQuery';
-//import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {FormattedDocument, QueryDetail, QueryListItem} from 'form/models/queryManagement/viewQuery';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('common/utils/dateUtils', () => ({
   dateTimeFormat: jest.fn((date, lang) => `formatted-${date}-${lang}`),
@@ -14,38 +14,34 @@ jest.mock('common/utils/formatDocumentURL', () => ({
   formatDocumentViewURL: jest.fn(() => 'formatted-url'),
 }));
 
-const USER_ID = 'a71d3791-b58d-4a57-957f-78dc48a12462';
-const testCases = [
-  {
-    role: CaseRole.CLAIMANT,
-    property: 'queries',
-    getUsersQueries: true,
-  },
-  {
-    role: CaseRole.DEFENDANT,
-    property: 'queries',
-    getUsersQueries: true,
-  },
-];
-
 describe('ViewQueriesService', () => {
   it('should return empty array when no queries ', () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
-    claim.queries = {partyName: '', roleOnCase: '', caseMessages: [] };
+    claim.queries = { partyName: 'All queries', caseMessages: [] };
 
-    const result = ViewQueriesService.buildQueryListItems(USER_ID, claim, 'en', true);
+    const result = ViewQueriesService.buildQueryListItems(claim, 'en');
     expect(result).toEqual([]);
   });
 
-  it.each(testCases)('should return parent with child queries for %s', ({ role, property , getUsersQueries}) => {
+  const testCases = [
+    {
+      role: CaseRole.CLAIMANT,
+      property: 'queries',
+    },
+    {
+      role: CaseRole.DEFENDANT,
+      property: 'queries',
+    },
+  ];
+
+  it.each(testCases)('should return parent with child queries for %s', ({ role, property }) => {
     const claim = new Claim();
     claim.caseRole = role;
     claim[property] = {
       caseMessages: [
         {
           value: {
-            createdBy: USER_ID,
             id: 'parentQuery1',
             subject: 'test subject',
             createdOn: '2025-02-20T12:00:00Z',
@@ -56,7 +52,6 @@ describe('ViewQueriesService', () => {
         },
         {
           value: {
-            createdBy: USER_ID,
             id: 'childQuery',
             subject: 'test subject',
             createdOn: '2025-02-27T12:00:00Z',
@@ -73,7 +68,6 @@ describe('ViewQueriesService', () => {
         },
         {
           value: {
-            createdBy: USER_ID,
             id: 'parentQuery2',
             subject: 'another subject',
             createdOn: '2025-02-27T12:00:00Z',
@@ -92,7 +86,7 @@ describe('ViewQueriesService', () => {
       ],
     } as CaseQueries;
 
-    const result = ViewQueriesService.buildQueryListItems(USER_ID,claim, 'en', getUsersQueries);
+    const result = ViewQueriesService.buildQueryListItems(claim, 'en');
     expect(result.length).toBe(2);
 
     const parent1 = result[0];
@@ -110,7 +104,7 @@ describe('ViewQueriesService', () => {
     expect(parent2.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_SENT');
   });
 
-  it.each(testCases)('should return parent with child queries with COURT_STAFF for %s', ({ role, property, getUsersQueries }) => {
+  it.each(testCases)('should return parent with child queries with COURT_STAFF for %s', ({ role, property }) => {
     const claim = new Claim();
     claim.caseRole = role;
     claim[property] = {
@@ -121,7 +115,7 @@ describe('ViewQueriesService', () => {
             id: 'parentQuery1',
             subject: 'test subject',
             createdOn: '2025-02-20T12:00:00Z',
-            createdBy: USER_ID,
+            createdBy: 'a71d3791-b58d-4a57-957f-78dc48a12462',
             parentId: null,
             isHearingRelated: 'Yes',
             hearingDate: new Date('2025-05-10'),
@@ -149,7 +143,7 @@ describe('ViewQueriesService', () => {
             id: 'parentQuery2',
             subject: 'another subject',
             createdOn: '2025-02-27T12:00:00Z',
-            createdBy: USER_ID,
+            createdBy: 'a71d3791-b58d-4a57-957f-78dc48a12462',
             parentId: null,
             isHearingRelated: 'No',
             attachments: [
@@ -165,7 +159,7 @@ describe('ViewQueriesService', () => {
       ],
     } as CaseQueries;
 
-    const result = ViewQueriesService.buildQueryListItems(USER_ID, claim, 'en', getUsersQueries);
+    const result = ViewQueriesService.buildQueryListItems(claim, 'en');
     expect(result.length).toBe(2);
 
     const parent1 = result[0];
@@ -183,7 +177,6 @@ describe('ViewQueriesService', () => {
     expect(parent2.status).toBe('PAGES.QM.VIEW_QUERY.STATUS_SENT');
   });
 
-  /*
   it.each(testCases)('should return queries by with parent id for %s', ({ role, property }) => {
     const claim = new Claim();
     claim.caseRole = role;
@@ -195,7 +188,7 @@ describe('ViewQueriesService', () => {
             subject: 'test subject',
             body: 'body 1',
             createdOn: '2025-02-20T12:00:00Z',
-            createdBy: USER_ID,
+            createdBy: 'a71d3791-b58d-4a57-957f-78dc48a12462',
             parentId: null,
             isHearingRelated: 'Yes',
             hearingDate: new Date('2025-05-10'),
@@ -223,7 +216,7 @@ describe('ViewQueriesService', () => {
       ],
     } as CaseQueries;
 
-    const result = ViewQueriesService.buildQueryListItemsByQueryId(USER_ID, claim, 'parentQuery1','en');
+    const result = ViewQueriesService.buildQueryListItemsByQueryId(claim, 'parentQuery1','en');
 
     const expected: QueryDetail = new QueryDetail(
       'test subject',
@@ -232,29 +225,25 @@ describe('ViewQueriesService', () => {
         'body 1',
         YesNoUpperCamelCase.YES,
         [],
+        'a71d3791-b58d-4a57-957f-78dc48a12462',
         'formatted-2025-02-20T12:00:00Z-en',
         'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
-        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
-        true,
       ),
 
       new QueryListItem(
         'body 2',
         YesNoUpperCamelCase.NO,
         Array.of(new FormattedDocument('document1.pdf', 'formatted-url')),
-        'undefined',
+        'other',
         'formatted-2025-02-27T12:00:00Z-en',
         'fullDate-Invalid Date-en',
-        true,
       )),
     );
     expect(result.items.length).toBe(2);
     expect(result).toEqual(expected);
 
   });
-*/
 
-  /*
   it.each(testCases)('should return queries by without parent id for %s', ({ role, property }) => {
     const claim = new Claim();
     claim.caseRole = role;
@@ -275,7 +264,7 @@ describe('ViewQueriesService', () => {
       ],
     };
 
-    const result = ViewQueriesService.buildQueryListItemsByQueryId('userID', claim, 'parentQuery1','en');
+    const result = ViewQueriesService.buildQueryListItemsByQueryId(claim, 'parentQuery1','en');
 
     const expected: QueryDetail = new QueryDetail(
       'test subject',
@@ -287,13 +276,11 @@ describe('ViewQueriesService', () => {
         'a71d3791-b58d-4a57-957f-78dc48a12462',
         'formatted-2025-02-20T12:00:00Z-en',
         'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
-        true,
       )),
     );
     expect(result.items.length).toBe(1);
     expect(result).toEqual(expected);
 
   });
-*/
 
 });
