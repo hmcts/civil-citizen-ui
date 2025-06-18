@@ -98,7 +98,7 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
   const date = new Date();
   if (!updatedClaim.queries) {
     queries = {
-      'partyName': 'App queries',
+      'partyName': 'All queries',
       'caseMessages': [],
     };
   } else {
