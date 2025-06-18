@@ -33,7 +33,7 @@ function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPla
     defendantName,
     proposedSetDate,
     pageTitle: 'PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE',
-    claim,
+    responseStatus : claim.responseStatus,
   });
 }
 
