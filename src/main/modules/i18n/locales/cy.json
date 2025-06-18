@@ -971,6 +971,11 @@
         "SENT_BY_COURT_STAFF": "Staff y Llys",
         "SENT_ON": "Anfonwyd ar",
         "SEND_FOLLOW_UP": "Anfon neges ddilynol"
+      },
+      "SHARE_QUERY_CONFIRMATION": {
+        "PAGE_TITLE": "Anfon neges",
+        "PAGE_HEADING": "Rhannu’r neges hon gyda’r parti arall",
+        "PARAGRAPH_1": "Mae’r holl negeseuon a ddefnyddir gan y system yn cael eu rhannu gyda’r parti arall yn yr achos, ynghyd â chael eu hanfon i’r llys."
       }
     },
     "SUBJECT_TO_FRC": {
