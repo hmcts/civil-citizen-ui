@@ -5,6 +5,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {
+  deleteQueryManagement,
   getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -42,7 +43,11 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   try {
     const claimId = req.params.id;
     const queryId = req.params.queryId;
+    const linkFrom = req.query.linkFrom;
     const queryManagement = await getQueryManagement(claimId, req);
+    if (linkFrom === 'start') {
+      await deleteQueryManagement(claimId, req);
+    }
     const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
     const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
     let form = new GenericForm(sendFollowQuery);
