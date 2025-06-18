@@ -68,7 +68,6 @@ describe('Check Answers response service', () => {
       claim.queryManagement = new QueryManagement();
       updated.queries = {
         'partyName': 'claimant',
-        'roleOnCase': '[CLAIMANT]',
         'caseMessages': [{
           'value': {
             'id':'12345',
@@ -96,7 +95,6 @@ describe('Check Answers response service', () => {
       const updated = new Claim();
       updated.qmApplicantCitizenQueries = {
         'partyName': 'defendant',
-        'roleOnCase': '[CLAIMANT]',
         'caseMessages': [{
           'value': {
             'body': 'message details',
@@ -126,7 +124,6 @@ describe('Check Answers response service', () => {
     claim.queryManagement = new QueryManagement();
     updated.queries = {
       'partyName': 'defendant',
-      'roleOnCase': '[DEFENDANT]',
       'caseMessages': [{
         'value': {
           'id':'78945',
@@ -154,7 +151,6 @@ describe('Check Answers response service', () => {
     claim.queryManagement = new QueryManagement();
     updated.qmRespondentCitizenQueries = {
       'partyName': 'defendant',
-      'roleOnCase': '[DEFENDANT]',
       'caseMessages': [{
         'value': {
           'id':'78945999',
@@ -185,7 +181,6 @@ describe('Check Answers response service', () => {
       const updated = new Claim();
       updated.qmRespondentCitizenQueries = {
         'partyName': 'defendant',
-        'roleOnCase': '[DEFENDANT]',
         'caseMessages': [{
           'value': {
             'body': 'message details',
