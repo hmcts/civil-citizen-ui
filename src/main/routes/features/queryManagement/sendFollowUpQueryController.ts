@@ -10,6 +10,7 @@ import {
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
+import {generateRedisKey} from "modules/draft-store/draftStoreService";
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -45,7 +46,8 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
     const queryId = req.params.queryId;
     const linkFrom = req.query.linkFrom;
     if (linkFrom === 'start') {
-      await deleteQueryManagement(claimId, req);
+      const redisKey = generateRedisKey(req);
+      await deleteQueryManagement(redisKey, req);
     }
     const queryManagement = await getQueryManagement(claimId, req);
     const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
