@@ -21,7 +21,6 @@ async function renderView(req: AppRequest, res: Response, claim: Claim, lang: st
     claimFee: claimFee.toFixed(2),
     judgmentSummaryDetails,
     pageTitle: 'PAGES.JUDGMENT_AMOUNT.PAGE_TITLE',
-    claim,
   });
 }
 
