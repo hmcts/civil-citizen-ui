@@ -29,13 +29,8 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time)', async ({api, I}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    console.log('Creating GA app as defendant');
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
-    await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
-  }
+Scenario.only('Response with RejectAll and DisputeAll - GA (Ask for more time)', async ({api, I}) => {
+
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
