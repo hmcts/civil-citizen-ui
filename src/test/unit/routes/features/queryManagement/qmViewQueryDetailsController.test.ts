@@ -71,7 +71,7 @@ describe('View query controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Query 1');
-          //expect(res.text).toContain('Your message');
+          expect(res.text).toContain('Your message');
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('super important information, probably');
           expect(res.text).toContain('Is your message about an upcoming hearing?');
@@ -99,7 +99,7 @@ describe('View query controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Query 1');
-          //expect(res.text).toContain('Your message');
+          expect(res.text).toContain('Your message');
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('super important information, probably');
           expect(res.text).toContain('Is your message about an upcoming hearing?');
