@@ -10,7 +10,7 @@ import {
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {generateRedisKey} from "modules/draft-store/draftStoreService";
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
