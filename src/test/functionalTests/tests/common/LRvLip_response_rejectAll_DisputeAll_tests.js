@@ -6,8 +6,6 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
-
 let claimRef;
 let caseData;
 let claimNumber;
@@ -29,7 +27,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario.only('Response with RejectAll and DisputeAll - GA (Ask for more time)', async ({api, I}) => {
+Scenario.only('Response with RejectAll and DisputeAll - GA (Ask for more time)', async ({api}) => {
 
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
