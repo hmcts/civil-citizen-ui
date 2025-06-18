@@ -63,10 +63,11 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
   const claimantAcceptedPaidAmount = claimantResponse.ccjRequest?.paidAmount;
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
   const ccjJudgmentLipInterest = claim.hasInterest() ? await calculateInterestToDate(claim) : 0;
+  const ccjJudgmentAmountClaimFee = claimFee ? claimFee.toString(): null;
   return {
     ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
     ccjPaymentPaidSomeAmount,
-    ccjJudgmentAmountClaimFee: claimFee ? claimFee.toString(): undefined,
+    ccjJudgmentAmountClaimFee,
     ccjJudgmentLipInterest: ccjJudgmentLipInterest.toString(),
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),

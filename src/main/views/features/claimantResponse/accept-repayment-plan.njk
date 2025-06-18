@@ -28,10 +28,10 @@
             <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DEFENDANT_OFFERED_TO_PAY', {defendantName: defendantName, proposedSetDate: proposedSetDate})}}</p>
           {% else %}
             {{ repaymentPlanSummary(repaymentPlan, t) }}
-            {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+            {% if responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
               <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.INTEREST_HINT_TEXT') }}</p>
             {% endif %}
-            {% if claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+            {% if responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
               <p class="govuk-body">{{  t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION_PAY_BY_INSTALLMENTS.INTEREST_HINT_TEXT') }}</p>
             {% endif %}
           {% endif %}

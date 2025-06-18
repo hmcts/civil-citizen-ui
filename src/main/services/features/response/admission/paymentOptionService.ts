@@ -14,16 +14,24 @@ const logger = Logger.getLogger('paymentOptionService');
 const getPaymentOptionForm = async (claim: Claim, responseType : ResponseType): Promise<PaymentOption> => {
   try {
     const totalClaimAmount = isPartAdmission(responseType) ? claim.partialAdmissionPaymentAmount() : await getTotalAmountWithInterest(claim);
-    if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType], totalClaimAmount);
-    } else if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType], totalClaimAmount);
-    }
-    return new PaymentOption(undefined, totalClaimAmount);
+    const paymentOption = getPaymentOptionType(claim, responseType);
+    return new PaymentOption(paymentOption, totalClaimAmount);
   } catch (error) {
     logger.error(error);
     throw error;
   }
+};
+
+const getPaymentOptionType = (claim: Claim, responseType: ResponseType): PaymentOptionType | undefined => {
+  if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
+    return PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType];
+  }
+
+  if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
+    return PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType];
+  }
+
+  return undefined;
 };
 
 const savePaymentOptionData = async (claimId: string, form: PaymentOption, responseType: ResponseType) => {

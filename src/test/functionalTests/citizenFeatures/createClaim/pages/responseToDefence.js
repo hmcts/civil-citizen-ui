@@ -100,7 +100,7 @@ class ResponseToDefence {
   async verifyDefResponseForPartAdmitInstallmentPayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('The defendant suggested this repayment plan:');
-    I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee in instalments. This is the total amount you’ll be paid, plus the claim fee.`);
+    I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee in instalments. They don’t believe they owe the full amount claimed.`);
     await I.click(paths.buttons.continue);
   }
 
