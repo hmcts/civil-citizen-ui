@@ -88,6 +88,13 @@ describe('checkWelshHearingNotice', () => {
     expect(result).toBe(true);
   });
 
+  it('should return true when claimant = true and isClaimantWelshBilingual = WELSH', () => {
+    (claim.isClaimant as jest.Mock).mockReturnValue(true);
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    const result = checkWelshHearingNotice(claim);
+    expect(result).toBe(true);
+  });
+
   it('should return true when claimant = true and docsLanguageClaimant = WELSH', () => {
     (claim.isClaimant as jest.Mock).mockReturnValue(true);
     claim.claimantResponse = {
@@ -123,6 +130,13 @@ describe('checkWelshHearingNotice', () => {
   it('should return true when defendant = true and respondent1LiPResponse = BOTH', () => {
     (claim.isDefendant as jest.Mock).mockReturnValue(true);
     claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH };
+    const result = checkWelshHearingNotice(claim);
+    expect(result).toBe(true);
+  });
+
+  it('should return true when defendant = true and respondent1LiPResponse = WELSH', () => {
+    (claim.isDefendant as jest.Mock).mockReturnValue(true);
+    claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.WELSH };
     const result = checkWelshHearingNotice(claim);
     expect(result).toBe(true);
   });

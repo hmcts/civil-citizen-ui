@@ -328,6 +328,7 @@ export interface CCDClaim extends ClaimUpdate {
   uiStatementOfTruth?: CcdStatementOfTruth;
   //Query management
   queries?: CaseQueries;
+  previousCCDState?: string;
 }
 
 export interface ClaimFeeData {

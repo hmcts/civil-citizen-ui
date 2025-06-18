@@ -18,6 +18,7 @@ import {
   isGaForLipsEnabled,
   isGaForWelshEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {YesNoUpperCase} from 'form/models/yesNo';
 
 export const getClaimantDocuments = async (
   claim: Claim,
@@ -84,6 +85,8 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
   if (isCUIWelshEnabled) {
     defendantDocumentsArray.push(...getDefendantResponseFrom(claim, claimId, lang));
     defendantDocumentsArray.push(...getDefendantTranslatedResponse(claim, claimId, lang));
+    defendantDocumentsArray.push(...getDefendantNoticeOfDiscontinuanceDoc(claim, claimId, lang));
+    defendantDocumentsArray.push(...getDefendantNoticeOfDiscontinuanceTranslatedDoc(claim, claimId, lang));
   } else {
     defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
   }
@@ -253,6 +256,18 @@ const getDefendantTranslatedResponse = (claim: Claim, claimId: string, lang: str
     setUpDocumentLinkObject(defendTranslatedResponse.documentLink, defendTranslatedResponse.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DEFENDANT_RESPONSE')) : [];
 };
 
+const getDefendantNoticeOfDiscontinuanceDoc = (claim: Claim, claimId: string, lang: string) => {
+  const defendantNoticeOfDiscontinuance = claim.getDocumentDetails(DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
+  return defendantNoticeOfDiscontinuance && (claim.confirmOrderGivesPermission === YesNoUpperCase.YES || claim.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
+    setUpDocumentLinkObject(defendantNoticeOfDiscontinuance.documentLink, defendantNoticeOfDiscontinuance.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE')) : [];
+};
+
+const getDefendantNoticeOfDiscontinuanceTranslatedDoc = (claim: Claim, claimId: string, lang: string) => {
+  const defendantNoticeOfDiscontinuanceTranslated = claim.getDocumentDetails(DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
+  return defendantNoticeOfDiscontinuanceTranslated && (claim.confirmOrderGivesPermission === YesNoUpperCase.YES || claim.courtPermissionNeeded === YesNoUpperCase.NO) ? Array.of(
+    setUpDocumentLinkObject(defendantNoticeOfDiscontinuanceTranslated.documentLink, defendantNoticeOfDiscontinuanceTranslated.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE_TRANSLATED')) : [];
+};
+
 const getDefendantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: string) => {
   const defendantDq = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.DEFENDANT);
   return defendantDq ? Array.of(
@@ -362,9 +377,17 @@ const getTranslatedOrders = (claim: Claim, claimId: string, lang: string) => {
 };
 
 const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {
-  const settlementAgreement = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
-  return settlementAgreement ? Array.of(
-    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')) : [];
+
+  const decisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
+  const docLink1 = decisionOnReconsideration
+    ? setUpDocumentLinkObject(decisionOnReconsideration.documentLink, decisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')
+    : undefined;
+  const translatedDecisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+  const docLink2 = translatedDecisionOnReconsideration
+    ? setUpDocumentLinkObject(translatedDecisionOnReconsideration.documentLink, translatedDecisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
+
 };
 
 const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
