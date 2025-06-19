@@ -5122,6 +5122,7 @@
       "CLAIMANT_TIMELINE": "Claimant timeline of events",
       "COURT_DOCUMENTS": "Documents from the court",
       "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
+      "DECISION_ON_RECONSIDERATION_TRANSLATED": "Translated Decision on Reconsideration Request",
       "DEFENDANT_DQ": "Defendant Directions Questionnaire",
       "TRANSLATED_DEFENDANT_DQ": "Translated Defendant Directions Questionnaire",
       "DEFENDANT_RESPONSE": "Defendant response",
@@ -5881,6 +5882,9 @@
   "BANNERS" : {
     "CUI_ILA" : {
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 13th May 2025 and 02:00 on 14th May 2025"
+    },
+    "WELSH_PARTY" : {
+      "MESSAGE" : "A party in this case has expressed a Welsh language preference. Delays to visibility of documents could be caused during translation processes."
     }
   }
 }

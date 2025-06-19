@@ -8,7 +8,7 @@ import {
   isDashboardEnabledForCase,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled,
+  isQueryManagementEnabled, isGaForWelshEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -75,6 +75,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           req.session.dashboard.taskIdHearingUploadDocuments = task.id;
         }
       });
+      const welshEnabled = await isGaForWelshEnabled();
+      const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
@@ -89,6 +91,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           helpSupportLinks,
           lang,
           isQMFlagEnabled,
+          showWelshPartyBanner,
         },
       );
     } else {
@@ -106,7 +109,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks : iWantToLinks[] = [];
 
