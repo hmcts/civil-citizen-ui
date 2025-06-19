@@ -545,8 +545,8 @@ class ResponseSteps {
     await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
   }
 
-  async EnterHowMuchMoneyYouOweError(claimRef) {
-    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef);
+  async EnterHowMuchMoneyYouOweError(claimRef, amount) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef, amount);
   }
 
   async EnterEmployerDetails() {
