@@ -5146,6 +5146,7 @@
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "TRANSLATED_SETTLEMENT_AGREEMENT": "Translated Settlement Agreement Request",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
+      "TRANSLATED_STANDARD_DIRECTIONS_ORDER": "Translated Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form",
