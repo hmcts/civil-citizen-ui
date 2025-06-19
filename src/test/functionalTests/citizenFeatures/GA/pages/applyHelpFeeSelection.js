@@ -29,6 +29,19 @@ class ApplyHelpFeeSelection {
     contactUs.verifyContactUs();
   }
 
+  async confirmActions(option, tries = 0){
+    const currentUrl = await I.grabCurrentUrl();
+    await this.verifyPageContent();
+    this.nextAction(option);
+    this.nextAction('Continue');
+    const redirectedUrl = await I.grabCurrentUrl();
+    if (currentUrl === redirectedUrl && tries < 3) {
+      tries = ++tries;
+      console.log('Retrying apply help with fees page... attempt ', tries);
+      await this.confirmActions(option, tries);
+    }
+  }
+
   verifyBreadcrumbs() {
     I.see('Back', '//a[@class="govuk-back-link"]');
   }
