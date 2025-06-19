@@ -143,7 +143,7 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    I.wait(5);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
@@ -1142,7 +1142,7 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    I.wait(5);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
