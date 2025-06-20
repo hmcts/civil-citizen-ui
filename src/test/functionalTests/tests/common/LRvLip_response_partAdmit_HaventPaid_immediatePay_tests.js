@@ -36,7 +36,7 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalAmount);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, 1500);
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
