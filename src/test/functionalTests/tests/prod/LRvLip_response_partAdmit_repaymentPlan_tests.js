@@ -37,7 +37,7 @@ Scenario('Response with PartAdmit and Repayment plan', async () => {
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
   await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalAmount);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, repaymentPlan);
