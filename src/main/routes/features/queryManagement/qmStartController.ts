@@ -2,8 +2,8 @@ import {RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
   BACK_URL,
-  QM_FOLLOW_UP_URL,
-  QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
+  QM_FOLLOW_UP_URL, QM_SHARE_QUERY_CONFIRMATION,
+  QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
 } from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
@@ -30,9 +30,9 @@ const getRedirectPath = (option: WhatToDoTypeOption) => {
 
 const redirectionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.CHANGE_CASE]: APPLICATION_TYPE_URL,
-  [WhatToDoTypeOption.GET_SUPPORT]: QUERY_MANAGEMENT_CREATE_QUERY,
+  [WhatToDoTypeOption.GET_SUPPORT]: QM_SHARE_QUERY_CONFIRMATION,
   [WhatToDoTypeOption.FOLLOW_UP]: QM_FOLLOW_UP_URL,
-  [WhatToDoTypeOption.SOMETHING_ELSE]: QUERY_MANAGEMENT_CREATE_QUERY,
+  [WhatToDoTypeOption.SOMETHING_ELSE]: QM_SHARE_QUERY_CONFIRMATION,
 };
 
 const getItems = (option: string, lng: string) => {
