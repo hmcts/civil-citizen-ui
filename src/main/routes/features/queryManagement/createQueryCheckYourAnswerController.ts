@@ -59,6 +59,7 @@ createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req
     const propertyName = isFollowUpUrl ? 'sendFollowUpQuery' : 'createQuery';
     //save the information
     await saveQueryManagement(claimId, null, propertyName, req);
+    delete req.session.qmShareConfirmed;
     res.redirect(constructResponseUrlWithIdParams(claimId, QM_CONFIRMATION_URL));
   } catch (error) {
     next(error);

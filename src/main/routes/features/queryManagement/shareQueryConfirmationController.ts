@@ -74,6 +74,7 @@ shareQueryConfirmationController.post(QM_SHARE_QUERY_CONFIRMATION, (async (req: 
     if (form.hasErrors()) {
       await renderView(lang, form, res, claimId, req);
     } else {
+      req.session.qmShareConfirmed = true;
       res.redirect(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY));
     }
   } catch (error) {
