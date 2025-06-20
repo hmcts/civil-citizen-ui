@@ -14,8 +14,9 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.TITLE') %}
-      {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.SUBTITLE', { totalAmount: form.model.totalAmount }) %}
+      {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.SUBTITLE', { totalAmount: form.model.totalAmount.toFixed(2) if form.model.totalAmount else 0 }) %}
       {% set amountAsString = '' + form.model.amount %}
+      {% set subtitleHintText = '<p class="govuk-body-m">' + description + '</p>' + '<p class="govuk-body-m">' + t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.SUBTITLE_HINT_TEXT') + '</p>' %}
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
@@ -43,7 +44,7 @@
               },
               classes: "govuk-!-width-two-thirds",
               hint : {
-                text: description
+                html: subtitleHintText
               },
               errorMessage: {
                 text: t(form.errorFor('amount'))
