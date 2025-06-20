@@ -19,7 +19,7 @@
       html: "<span>" + t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.WELSH_AND_ENGLISH') + "</span>"
     }
 ] %}
-{% if welshGaEnabled %}
+{% if welshEnabled %}
     {% set items = [
      { value: "ClaimBilingualLanguagePreference.ENGLISH",
           checked: true if form.model.option==ClaimBilingualLanguagePreference.ENGLISH else false,
