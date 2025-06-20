@@ -1,6 +1,5 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL,
   BACK_URL,
   QM_FOLLOW_UP_URL,
   QM_INFORMATION_URL,
@@ -31,18 +30,24 @@ import {
   findCourtTribunalUrl,
   thirdPartyDebtOrChargingOrderUrl,
   warrantOfControlUrl,
-  whatToDoUrl,
+  whatToDoUrl, applicationNoticeUrl,
 } from 'common/utils/externalURLs';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 
 const qmInformationController = Router();
 
 const qmStartViewPath = 'features/queryManagement/qm-information-template.njk';
-let showAnythingElseSection = false;
+
+enum Version {
+  IF_YOU_STILL_NEED_AN_UPDATE = 'V1',
+  IF_YOU_STILL_NEED_HELP = 'V2',
+}
+
+let showAnythingElseSection: Version = undefined;
 
 const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
   const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
@@ -51,13 +56,13 @@ const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, clai
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
-const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string): ClaimSummarySection[] => {
+const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string): Promise<ClaimSummarySection[]> => {
 
   const qualifySectionInfo = 'PAGES.QM.QUALIFY_SECTIONS';
   const pageSection = new PageSectionBuilder();
   if (isFollowUpScreen) {
-    showAnythingElseSection = false;
-    const linkHref =  QM_VIEW_QUERY_URL.replace(':id', claimId);
+    showAnythingElseSection = undefined;
+    const linkHref = QM_VIEW_QUERY_URL.replace(':id', claimId);
     pageSection
       .addParagraph(`${qualifySectionInfo}.FOLLOW_UP.PARAGRAPH_1`)
       .addLink(`${qualifySectionInfo}.FOLLOW_UP.LINK.TEXT`, linkHref, `${qualifySectionInfo}.FOLLOW_UP.LINK.TEXT_BEFORE`, `${qualifySectionInfo}.FOLLOW_UP.LINK.TEXT_AFTER`)
@@ -66,7 +71,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
   } else {
     switch (qualifyQuestionType) {
       case QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addParagraph(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.PARAGRAPH_1`)
           .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_1.TEXT`, whatToDoUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_1.TEXT_BEFORE`, null, null, true)
@@ -81,12 +86,12 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE:{
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         if(claim.isCaseProgressionCaseState()) {
           pageSection
             .addLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,UPLOAD_YOUR_DOCUMENTS_URL), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_1.TEXT_BEFORE`, '.')
             .addParagraph(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.PARAGRAPH_1`)
-            .addLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAskMoreTime=true`), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT_BEFORE`, '.');
+            .addLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, true)), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT_BEFORE`, '.');
         } else {
           pageSection
             .addSubTitle(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.SUBTITLE_1`)
@@ -96,7 +101,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM:{
-        showAnythingElseSection = false;
+        showAnythingElseSection = undefined;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`);
@@ -104,7 +109,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT:{
-        showAnythingElseSection = false;
+        showAnythingElseSection = undefined;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.PARAGRAPH_1`);
@@ -112,7 +117,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT:{
-        showAnythingElseSection = false;
+        showAnythingElseSection = undefined;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.PARAGRAPH_1`);
@@ -120,7 +125,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.GENERAL_UPDATE: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_AN_UPDATE;
         pageSection
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_2`)
@@ -128,7 +133,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         const isCCJLinkEnabled = claim.isClaimant() &&
           claim.isDeadLinePassed() &&
           claim.isDefendantNotResponded();
@@ -151,7 +156,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_2`)
@@ -168,8 +173,8 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE:
-        showAnythingElseSection = true;
-        pageSection.addLink(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAdjournHearing=true`), `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_1.TEXT_BEFORE`, '.')
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
+        pageSection.addLink(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, null, true)), `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_1.TEXT_BEFORE`, '.')
           .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_2`)
           .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_3`)
@@ -177,18 +182,18 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_4`);
         break;
       case QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING:
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection.addParagraph(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.PARAGRAPH_1`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
             <li>${t(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LIST_1`, {lng: lang})}</li>
             <li>${t(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LIST_2`, {lng: lang})}</li>
             </ul>`)
-          .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`), `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_AFTER`)
+          .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim)), `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_AFTER`)
           .addParagraph(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.PARAGRAPH_2`)
           .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT_BEFORE`, '.', '', true);
         break;
       case QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING:
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection.addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_2`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
@@ -200,14 +205,14 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
           .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT_BEFORE`, '.', '', true);
         break;
       case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`);
         break;
       }
       case QualifyingQuestionTypeOption.SETTLE_CLAIM: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
         if (claim.isClaimant() && !claim.isClaimSettled()) {
@@ -229,7 +234,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addParagraph(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.TEXT_1`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
@@ -237,7 +242,7 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
                 <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_2`, {lng: lang})}</li>
                 <li>${t(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LI_3`, {lng: lang})}</li>
               </ul>`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAmendClaim=true`), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, null, null, true)), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT`, checkCivilFeesListFullListUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_AFTER`, null, true)
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, '.')
@@ -246,11 +251,18 @@ const getContent = (claimId: string,claim: Claim, isFollowUpScreen: boolean, qua
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_ENDED: {
-        showAnythingElseSection = true;
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT`, discontinueClaimUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_AFTER`, null, true)
           .addParagraph(`${qualifySectionInfo}.CLAIM_ENDED.TEXT_1`)
           .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_AFTER`, null, true);
+        break;
+      }
+      case QualifyingQuestionTypeOption.GA_OFFLINE: {
+        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
+        pageSection
+          .addLink(`${qualifySectionInfo}.GA_OFFLINE.LINK_1.TEXT`, applicationNoticeUrl, `${qualifySectionInfo}.GA_OFFLINE.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.GA_OFFLINE.LINK_1.TEXT_AFTER`, null, true)
+          .addLink(`${qualifySectionInfo}.GA_OFFLINE.LINK_2.TEXT`, findCourtTribunalUrl, null, '.', null, true);
         break;
       }
 
@@ -280,15 +292,16 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
   [QualifyingQuestionTypeOption.SETTLE_CLAIM]: 'PAGES.QM.QUALIFY.TITLES.SETTLE_CLAIM',
   [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS]: 'PAGES.QM.QUALIFY.TITLES.AMEND_CLAIM_DETAILS',
   [QualifyingQuestionTypeOption.CLAIM_ENDED]: 'PAGES.QM.QUALIFY.TITLES.CLAIM_ENDED',
+  [QualifyingQuestionTypeOption.GA_OFFLINE]: 'PAGES.QM.QUALIFY.TITLES.GA_OFFLINE',
 };
 
-const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang:string, res: Response)=> {
+const renderView = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang: string, res: Response) => {
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
-  const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
+  const title = isFollowUpScreen ? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
   const createQueryUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
 
-  const contents = getContent(claimId,claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
+  const contents = await getContent(claimId, claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {
     backLinkUrl,
     pageTitle: title,
@@ -307,7 +320,7 @@ qmInformationController.get([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req,
   const claim:Claim = await getClaimById(claimId, req,true);
   const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;
   const isFollowUpScreen = req.path === QM_FOLLOW_UP_URL.replace(':id', claimId);
-  renderView(claimId,claim, isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
+  await renderView(claimId,claim, isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
 }) as RequestHandler);
 
 qmInformationController.post([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req, res , next) => {

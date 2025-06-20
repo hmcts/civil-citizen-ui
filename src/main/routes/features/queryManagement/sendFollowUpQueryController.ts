@@ -5,10 +5,12 @@ import {GenericForm} from 'form/models/genericForm';
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {
+  deleteQueryManagement,
   getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -42,6 +44,11 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   try {
     const claimId = req.params.id;
     const queryId = req.params.queryId;
+    const linkFrom = req.query.linkFrom;
+    if (linkFrom === 'start') {
+      const redisKey = generateRedisKey(req);
+      await deleteQueryManagement(redisKey, req);
+    }
     const queryManagement = await getQueryManagement(claimId, req);
     const sendFollowQuery = queryManagement?.sendFollowUpQuery || new SendFollowUpQuery();
     const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);

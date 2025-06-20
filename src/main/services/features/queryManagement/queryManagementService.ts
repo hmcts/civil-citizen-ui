@@ -64,6 +64,7 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.SEND_DOCUMENTS]: 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS',
   [WhatToDoTypeOption.SOLVE_PROBLEM]: 'PAGES.QM.CAPTIONS.SOLVE_PROBLEM',
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
+  [WhatToDoTypeOption.CHANGE_CASE]: 'PAGES.QM.CAPTIONS.CHANGE_CASE',
 };
 
 export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {

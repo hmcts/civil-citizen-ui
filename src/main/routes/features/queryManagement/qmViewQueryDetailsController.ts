@@ -20,7 +20,7 @@ const finishedClaim = Array.of(CaseState.CASE_DISMISSED, CaseState.CLOSED, CaseS
 
 const renderView = async (res: Response, claimId: string, claim: Claim, selectedQueryItem: QueryDetail, queryId: string): Promise<void> => {
   const backLinkUrl = BACK_URL;
-  const followUpScreen = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);
+  const followUpScreen = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId)+'?linkFrom=start';
   const isClaimOffLine = finishedClaim.includes(claim.ccdState);
   res.render(viewQueriesPath, {
     pageTitle: 'PAGES.QM.VIEW_QUERY_DETAILS.PAGE_TITLE',
