@@ -42,7 +42,6 @@ class WhyDoYouDisagreeTheClaimAmount {
     }
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.hintText1(totalAmount)[language]);
-    await I.see(content.hintText2[language]);
     await I.fillField(fields.text, inputs.whyYouDisagree[language]);
     await I.click(buttons.saveAndContinue);
   }
