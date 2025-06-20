@@ -52,7 +52,7 @@ class createGASteps {
   async askToSetAsideJudgementGA(caseRef, parties, communicationType = 'notice') {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Set aside (remove) a judgment';
-    
+
     let feeAmount;
 
     switch (communicationType) {
@@ -66,7 +66,7 @@ class createGASteps {
         feeAmount = '123';
         break;
     }
-    
+
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
@@ -145,9 +145,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -234,9 +232,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -351,9 +347,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -466,9 +460,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -580,9 +572,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount, language);
     govPay.confirmPayment(language);
@@ -695,9 +685,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -814,9 +802,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -930,9 +916,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -1046,9 +1030,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -1071,7 +1053,7 @@ class createGASteps {
         feeAmount = '123';
         break;
       case 'notice':
-        feeAmount = '213';
+        feeAmount = '313';
         break;
       case 'withoutnotice':
         feeAmount = '123';
@@ -1162,9 +1144,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -1278,9 +1258,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -1366,9 +1344,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -1482,9 +1458,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
@@ -1632,9 +1606,7 @@ class createGASteps {
 
     I.wait(2);
 
-    await applyHelpFeeSelectionPage.verifyPageContent();
-    await applyHelpFeeSelectionPage.nextAction('No');
-    await applyHelpFeeSelectionPage.nextAction('Continue');
+    await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();

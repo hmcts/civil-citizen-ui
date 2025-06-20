@@ -389,7 +389,7 @@ module.exports = {
         },
         'respondent1DQLanguage': {
           'court': 'ENGLISH',
-          'documents': 'WELSH',
+          'documents': 'ENGLISH',
         },
         'respondent1DQVulnerabilityQuestions': {
           'vulnerabilityAdjustmentsRequired': 'Yes',

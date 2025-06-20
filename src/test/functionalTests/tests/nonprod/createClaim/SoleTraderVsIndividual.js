@@ -82,6 +82,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = false;
+  const standardInterestAmount = 10;
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -100,7 +101,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
   } else {
     await steps.clickPayClaimFee();
   }
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee);
+  await steps.verifyAndPayClaimFee(claimAmount, claimFee, standardInterestAmount);
   await api.waitForFinishedBusinessProcess();
 });
 

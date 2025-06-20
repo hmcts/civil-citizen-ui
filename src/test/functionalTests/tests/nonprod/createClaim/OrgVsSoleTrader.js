@@ -49,7 +49,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
   console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
-  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person', undefined, 'company');
   console.log('Creating GA app as defendant');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -88,6 +88,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
   selectedHWF = false;
   claimInterestFlag = true;
   StandardInterest = false;
+  const standardInterestAmount = 10;
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -107,7 +108,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
   } else {
     await steps.clickPayClaimFee();
   }
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee);
+  await steps.verifyAndPayClaimFee(claimAmount, claimFee, standardInterestAmount);
   await api.waitForFinishedBusinessProcess();
 });
 

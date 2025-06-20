@@ -308,7 +308,7 @@ class CreateClaim {
     I.waitForContent('For example the date an invoice was overdue or that you told someone they owed you the money.',60);
     I.see('When are you claiming interest from?', 'h1');
     I.see('The date you submit the claim');
-    I.see('The interest will then be calculated up until the claim is settled or a Judgement has been made.');
+    I.see('The interest will then be calculated up until the claim is settled or a Judgment has been made.');
     I.see('A particular date');
     I.click(paths.options.when_will_you_claim_interest_from);
     this.clickNextAction(paths.buttons.save_and_continue);
@@ -347,17 +347,13 @@ class CreateClaim {
     I.see('£1520.00');
     if (claimInterestFlag === true) {
       I.see('Interest to date');
-      I.see('£0.33');
+      I.see('£0.00');
       I.seeElement(paths.links.how_is_interest_calculated);
     }
     I.see('Claim fee');
     I.see('£115');
     I.see('Total claim amount');
-    if (claimInterestFlag === true) {
-      I.see('£1635.33');
-    }else{
-      I.see('£1635');
-    }
+    I.see('£1635.00');
     I.see('If you settle out of court', 'h3');
     I.see('We won’t refund your claim fee.');
     I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
@@ -632,12 +628,12 @@ class CreateClaim {
   }
 
   async answerClaimInterest(selectInterest = false, standardInterest = true) {
-    if (selectInterest == true) {
+    if (selectInterest) {
       I.waitForContent('Do you want to claim interest', 60);
       I.click(paths.options.yes);
       this.clickNextAction(paths.buttons.save_and_continue);
       I.waitForContent('How do you want to claim interest', 60);
-      if (standardInterest == true) {
+      if (standardInterest) {
         I.click(paths.options.same_rate_for_the_whole_period);
         this.clickNextAction(paths.buttons.save_and_continue);
         I.waitForContent('You can claim 8% per year unless you know that a different rate applies', 60);
