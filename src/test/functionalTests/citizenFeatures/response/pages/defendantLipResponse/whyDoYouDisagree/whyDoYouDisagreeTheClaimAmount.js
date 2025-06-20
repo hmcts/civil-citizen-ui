@@ -15,12 +15,12 @@ const content = {
     en: 'Why do you disagree with the claim amount?',
     cy: 'Pam eich bod yn anghytuno â swm yr hawliad?',
   },
-  hintText1: {
-    en: 'The total amount claimed is £', 
-    cy:'Y cyfanswm a hawlir yw £',
-  },
+  hintText1: (totalAmount) => ({
+    en: `The total amount, including any interest claimed to date, is £${totalAmount}.`,
+    cy:`Y cyfanswm, gan gynnwys unrhyw log a hawlir hyd yn hyn, yw £${totalAmount}.`,
+  }),
   hintText2: {
-    en: 'This includes the claim fee and any interest.', 
+    en: 'This includes the claim fee and any interest.',
     cy:'Mae hyn yn cynnwys ffi\'r hawliad.',
   },
 };
@@ -33,15 +33,15 @@ const inputs = {
 };
 
 class WhyDoYouDisagreeTheClaimAmount {
-  async enterReason (claimRef, responseType) {
-    const { language } = sharedData; 
+  async enterReason (claimRef, responseType, totalAmount) {
+    const { language } = sharedData;
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/why-do-you-disagree');
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/why-do-you-disagree');
     }
     await I.waitForContent(content.heading[language], config.WaitForText);
-    await I.see(content.hintText1[language]);
+    await I.see(content.hintText1(totalAmount)[language]);
     await I.see(content.hintText2[language]);
     await I.fillField(fields.text, inputs.whyYouDisagree[language]);
     await I.click(buttons.saveAndContinue);
