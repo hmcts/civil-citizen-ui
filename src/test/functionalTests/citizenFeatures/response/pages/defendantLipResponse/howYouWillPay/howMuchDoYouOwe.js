@@ -20,11 +20,11 @@ const content = {
 
 class HowMuchDoYouOwe {
 
-  async enterHowMuchMoneyDoYouOwe(claimRef, amount) {
+  async enterHowMuchMoneyDoYouOwe(claimRef, amount, partAdmit, totalAmount) {
     const { language } = sharedData;
     await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-do-you-owe');
     await I.waitForContent(content.heading[language], config.WaitForText);
-    await I.see(content.hintText(amount)[language]);
+    await I.see(content.hintText(totalAmount)[language]);
     await I.fillField(fields.amount, amount);
     await I.click(cButtons.saveAndContinue[language]);
   }
