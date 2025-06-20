@@ -209,9 +209,6 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
-        CCD_MULTIPARTY_CASE_TYPES: CIVIL
-        CCD_MULTIPARTY_EVENTS: DEFENDANT_RESPONSE,ACKNOWLEDGE_CLAIM,CLAIMANT_RESPONSE,queryManagementRaiseQuery,queryManagementRespondQuery
-
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
       secrets:
@@ -384,8 +381,8 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
+    image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
-    image: hmctspublic.azurecr.io/civil/service:pr-6663
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
     devmemoryRequests: 2048Mi

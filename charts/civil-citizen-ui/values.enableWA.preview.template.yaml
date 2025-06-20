@@ -197,22 +197,6 @@ am-org-role-mapping-service:
       JUDICIAL_REF_APP_V2_FILTER_AUTHS_BY_APP_ID: true
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
 
-wa-initiation-batch:
-  job:
-    schedule: "*/1 * * * *"
-    releaseNameOverride: "{{ .Release.Name }}-wa-task-batch"
-wa-reconfiguration-batch:
-  job:
-    schedule: "*/1 * * * *"
-    releaseNameOverride: "{{ .Release.Name }}-reconfiguration"
-wa-termination-batch:
-  job:
-    schedule: "*/1 * * * *"
-    releaseNameOverride: "{{ .Release.Name }}-termination-batch"
-wa-message-cron-service:
-  job:
-    schedule: "*/1 * * * *"
-    releaseNameOverride: "{{ .Release.Name }}-wa-message-cron"
 xui-webapp:
   nodejs:
     environment:
