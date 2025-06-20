@@ -1,6 +1,5 @@
 import {Claim} from 'models/claim';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
-import {CaseRole} from 'form/models/caseRoles';
 import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {QueryDetail, QueryListItem, ViewObjects} from 'form/models/queryManagement/viewQuery';
@@ -8,9 +7,7 @@ import {QueryDetail, QueryListItem, ViewObjects} from 'form/models/queryManageme
 export class ViewQueriesService {
 
   private static getCaseQueries(claim: Claim): CaseQueries | undefined {
-    return claim.caseRole === CaseRole.CLAIMANT
-      ? claim.qmApplicantCitizenQueries
-      : claim.qmRespondentCitizenQueries;
+    return claim.queries;
   }
 
   public static buildQueryListItems(claim: Claim, lang: string): ViewObjects[] {
