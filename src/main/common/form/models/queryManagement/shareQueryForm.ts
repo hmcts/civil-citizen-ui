@@ -7,6 +7,6 @@ export class ShareQueryForm {
 
   constructor(confirmed?: boolean) {
     this.confirmed = confirmed;
-    }
   }
+}
 

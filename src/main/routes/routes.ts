@@ -800,5 +800,5 @@ export default [
   qmViewQueriesController,
   sendFollowUpQueryController,
   qmViewQueryDetailsController,
-  shareQueryConfirmationController
+  shareQueryConfirmationController,
 ];
