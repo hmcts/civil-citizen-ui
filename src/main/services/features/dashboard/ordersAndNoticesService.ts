@@ -284,19 +284,14 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionsOrders = [
-    ...(claim.getDocumentDetailsList(DocumentType.SDO_ORDER) ?? []),
-    ...(claim.getDocumentDetailsList(DocumentType.SDO_TRANSLATED_DOCUMENT) ?? []),
-  ];
-
-  const caseDocuments: DocumentInformation[] = [];
-  if (standardDirectionsOrders && standardDirectionsOrders.length > 0) {
-    standardDirectionsOrders.forEach((documentElement) => {
-      const document = documentElement.value;
-      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER'));
-    });
-  }
-  return caseDocuments;
+  const standardDirectionOrder = claim.getDocumentDetails(DocumentType.SDO_ORDER);
+  const docLink1 =  standardDirectionOrder ?
+    setUpDocumentLinkObject(standardDirectionOrder.documentLink, standardDirectionOrder.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER') : undefined;
+  const translatedSdo = claim.getDocumentDetails(DocumentType.SDO_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedSdo
+    ? setUpDocumentLinkObject(translatedSdo.documentLink, translatedSdo.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
