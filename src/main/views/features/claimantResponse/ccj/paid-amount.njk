@@ -31,8 +31,8 @@
             {% set name = "option" %}
             {% set yesHtml %}
               <div class="govuk-inset-text">
-                <p>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET') }}<a target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225_LINK') }}>{{  t('N225') }}</a>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_2') }}<a target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225A_LINK') }}>{{  t('N225a') }}</a>.<br/>
-                {{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_3') }}<a href="mailto:contactocmc@justice.gov.uk">{{  t('contactocmc@justice.gov.uk') }}</a>{{  t('.') }}</p>
+                <p>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET') }}<a class="govuk-link" target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225_LINK') }}>{{  t('N225') }}</a>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_2') }}<a target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225A_LINK') }}>{{  t('N225a') }}</a>.<br/>
+                {{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_3') }}<a class="govuk-link" href="mailto:contactocmc@justice.gov.uk">{{  t('contactocmc@justice.gov.uk') }}</a>{{  t('.') }}</p>
               </div>
               {{ govukInput({
                 id: "amount",
