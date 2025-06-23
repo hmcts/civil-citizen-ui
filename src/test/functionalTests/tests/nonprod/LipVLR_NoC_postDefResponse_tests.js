@@ -8,11 +8,14 @@ const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/te
 const {
   payClaimFee,
   nocForLip,
+  nocForLipCaseGoesOffline,
+  responseToTheClaim,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
-let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent, expectedState;
+let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled;
+const claimType = 'SmallClaims';
 
-Feature('Lip v LR e2e Tests').tag('@api @noc @regression');
+Feature('Lip v LR Post Defendant Response e2e Tests').tag('@nightly @noc');
 
 Before(async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -27,7 +30,6 @@ Before(async ({I, api}) => {
     claimRef = await steps.checkAndSubmit(selectedHWF);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     legacyCaseReference = await caseData.legacyCaseReference;
-    defendantName = await caseData.respondent1.partyName;
     await api.setCaseId(claimRef);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
@@ -43,11 +45,16 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async ({
+Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online @citizenUI @noc', async ({
   I,
   api,
 }) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+    await api.waitForFinishedBusinessProcess();
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    defendantName = await caseData.respondent1.partyName;
+
     await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
     await api.checkUserCaseAccess(config.defendantCitizenUser, false);
     await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
@@ -62,17 +69,24 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async 
       await I.click(notification.nextSteps);
     }
 
-    camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
-    expectedState = 'AWAITING_APPLICANT_INTENTION';
-    await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent, expectedState);
+    if (isDashboardServiceEnabled) {
+      const notification = responseToTheClaim(defendantName);
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI', async ({
+Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline @citizenUI @noc', async ({
   I,
   api,
 }) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
+    await api.waitForFinishedBusinessProcess();
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    defendantName = await caseData.respondent1.partyName;
+
     await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
     await api.checkUserCaseAccess(config.defendantCitizenUser, false);
     await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
@@ -82,22 +96,22 @@ Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI', async ({
     await I.click(legacyCaseReference);
 
     if (isDashboardServiceEnabled) {
-      const notification = nocForLip(defendantName);
+      const notification = nocForLipCaseGoesOffline(defendantName);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
-      await I.click(notification.nextSteps);
     }
-
-    camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
-    expectedState = 'PROCEEDS_IN_HERITAGE_SYSTEM';
-    await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_ADMISSION', camundaEvent, expectedState);
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @citizenUI - @api @noc @nightly', async ({
+Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline @citizenUI @noc', async ({
   I,
   api,
 }) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
+    await api.waitForFinishedBusinessProcess();
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    defendantName = await caseData.respondent1.partyName;
+
     await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
     await api.checkUserCaseAccess(config.defendantCitizenUser, false);
     await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
@@ -107,38 +121,8 @@ Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @citizenUI - @api @n
     await I.click(legacyCaseReference);
 
     if (isDashboardServiceEnabled) {
-      const notification = nocForLip(defendantName);
+      const notification = nocForLipCaseGoesOffline(defendantName);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
-      await I.click(notification.nextSteps);
     }
-
-    camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
-    expectedState = 'PROCEEDS_IN_HERITAGE_SYSTEM';
-    await api.defendantLRResponse(config.defendantSolicitorUser, 'PART_ADMISSION', camundaEvent, expectedState);
-  }
-});
-
-Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim @citizenUI - @api @noc @nightly', async ({
-  I,
-  api,
-}) => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
-    await api.checkUserCaseAccess(config.defendantCitizenUser, false);
-    await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
-
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await I.amOnPage('/dashboard');
-    await I.click(legacyCaseReference);
-
-    if (isDashboardServiceEnabled) {
-      const notification = nocForLip(defendantName);
-      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
-      await I.click(notification.nextSteps);
-    }
-
-    camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
-    expectedState = 'PROCEEDS_IN_HERITAGE_SYSTEM';
-    await api.defendantLRResponse(config.defendantSolicitorUser, 'COUNTER_CLAIM', camundaEvent, expectedState);
   }
 });
