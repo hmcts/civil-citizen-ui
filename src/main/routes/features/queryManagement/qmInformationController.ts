@@ -8,7 +8,7 @@ import {
   CCJ_PAID_AMOUNT_URL,
   DATE_PAID_URL,
   QUERY_MANAGEMENT_CREATE_QUERY,
-  UPLOAD_YOUR_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL, QM_SHARE_QUERY_CONFIRMATION,
 } from 'routes/urls';
 
 import {
@@ -286,7 +286,7 @@ const renderView = (claimId: string, claim: Claim, isFollowUpScreen: boolean, qm
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
   const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
-  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
+  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION);
 
   const contents = getContent(claimId,claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {
