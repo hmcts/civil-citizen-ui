@@ -41,6 +41,12 @@ Scenario('Claimant sends message to court', async ({ api, I }) => {
 
   await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
   await ResponseSteps.viewYourMessagesInDashboard();
+
+  // API test integration
+
+  // await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  // await ResponseSteps.followUpMessage(subject, message, isHearingRelated);
+  // await ResponseSteps.verifyFollowUpMessage(subject);
 });
 
 Scenario('Defendant sends message to court', async ({ I }) => {
