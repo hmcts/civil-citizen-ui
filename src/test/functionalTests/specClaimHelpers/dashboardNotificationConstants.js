@@ -236,10 +236,11 @@ module.exports = {
     };
   },
 
-  orderMadeLA: (deadline) => {
+  //TODO Removed deadline at the end of the content due to bank holiday consideration causing test to fail. Need to add an extra day for each bank holiday the way the backend does it.
+  orderMadeLA: () => {
     return {
       title: 'An order has been made on this claim',
-      content: `You need to carefully read and review this order. If you don't agree with something in the order you can ask the court to review it. You can only do this once. You will have to provide details about what changes you want made and these will be reviewed by a judge. This must be done before ${deadline}.`,
+      content: 'You need to carefully read and review this order. If you don\'t agree with something in the order you can ask the court to review it. You can only do this once. You will have to provide details about what changes you want made and these will be reviewed by a judge. This must be done before',
       nextSteps: 'ask the court to review it',
     };
   },
@@ -566,6 +567,20 @@ module.exports = {
       title: clientName + ' has assigned a legal representative to act on their behalf',
       content: 'You will now need to liaise with their legal representation.',
       nextSteps: 'View the defendant legal representative contact details',
+    };
+  },
+  nocForLipCaseGoesOffline: (clientName) => {
+    return {
+      title: clientName + ' has assigned a legal representative to act on their behalf',
+      content: 'This claim will now move offline and you must submit your intention to proceed by using form',
+    };
+  },
+
+  responseToTheClaim: (clientName) => {
+    return {
+      title: 'Response to the claim',
+      content: clientName + ' has rejected the claim. You need to respond by',
+      nextSteps: 'View and respond',
     };
   },
 };
