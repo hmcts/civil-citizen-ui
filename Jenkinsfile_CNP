@@ -217,7 +217,7 @@ withPipeline(type, product, component) {
             reportName: "Preview Accessibility results ${index + 1}"
           ])
         }
-        throw error;
+        error("One or more accessibility tests failed. Please check the reports for details.")
       }
     }
   }
