@@ -218,7 +218,7 @@ withPipeline(type, product, component) {
             reportName: "Preview Accessibility results ${index + 1}"
           ])
         }
-        error "Accessibility tests failed: ${error.message}"
+        error "Accessibility tests failed. Please check the reports for details."
       }
     }
   }
