@@ -70,7 +70,7 @@ describe('Choose how to proceed Controller', () => {
             expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
           } else {
             expect(res.status).toBe(200);
-            expect(res.text).toContain(t('ERRORS.FEATURE_UNAVAILABLE_GUIDANCE_BELOW'));
+            expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
           }
         });
     });

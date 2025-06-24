@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../macro/task-list.njk" import taskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
 {% from "../../macro/notifications.njk" import notifications %}
@@ -9,6 +9,9 @@
 {% block nestedContent %}
         {% block warning_message %}
           {% include "../../macro/banner.njk" %}
+        {% endblock %}
+        {% block welsh_party_message %}
+          {% include "../../macro/welsh_party_banner.njk" %}
         {% endblock %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
