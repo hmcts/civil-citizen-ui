@@ -5305,7 +5305,7 @@
       "TITLE": "Cadarnhau eich bod wedi cael eich talu",
       "ENTER_THE_DATE": "Nodwch y dyddiad y cawsoch eich talu’r swm llawn a nodwyd ar y dyfarniad",
       "HINT": "Os ydych wedi cael eich talu mewn rhandaliadau, nodwch ddyddiad y taliad olaf a gawsoch. Er enghraifft, 16 04 2021",
-      "CONFIRM": "Rwy’n cadarnhau bod y swm llawn a nodwyd ar y dyfarniad wedi’i dalu i mi. Unwaith y byddwch yn cadarnhau hyn, ni ellir ei newid.",
+      "CONFIRM": "Rwy'n cadarnhau bod y dyfarniad wedi'i fodloni. Unwaith y byddwch wedi cadarnhau hyn, ni ellir ei newid.",
       "JUDGMENT_LINK": "Gweld y dyfarniad a wnaed yn erbyn y diffynnydd",
       "CHECK_ERROR_MESSAGE": "Cadarnhewch fod y swm llawn wedi'i dalu i chi"
     },
