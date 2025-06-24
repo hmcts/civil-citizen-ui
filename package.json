@@ -42,6 +42,7 @@
     "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip codeceptjs run --grep @galip --reporter mocha-multi --verbose",
     "test:pact": "jest -c jest.pact.config.js",
     "pact:publish": "ts-node src/test/contract/publish/publish.ts",
+    "demo": "echo abc",
     "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish"
   },
   "dependencies": {
