@@ -8,15 +8,19 @@ import {
   QM_START_URL,
   QM_WHAT_DO_YOU_WANT_TO_DO_URL,
   QM_SHARE_QUERY_CONFIRMATION,
+  GA_SUBMIT_OFFLINE,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
+import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
+jest.mock('services/commons/generalApplicationHelper.ts');
 
 const CONTROLLER_URL = QM_START_URL;
 describe('Query management start Controller', () => {
@@ -79,13 +83,39 @@ describe('Query management start Controller', () => {
         });
     });
 
-    it('should redirect page when CHANGE_CASE', async () => {
+    it('should redirect page when CHANGE_CASE when GA is Offline open New guidance scree', async () => {
+      const getUrlMock = getGaRedirectionUrl as jest.Mock;
+      getUrlMock.mockReturnValue('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE');
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: WhatToDoTypeOption.CHANGE_CASE})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(APPLICATION_TYPE_URL);
+          expect(res.header.location).toEqual('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE');
+        });
+    });
+
+    it('should redirect page when CHANGE_CASE when GA is Welsh', async () => {
+      const getUrlMock = getGaRedirectionUrl as jest.Mock;
+      getUrlMock.mockReturnValue(GA_SUBMIT_OFFLINE);
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({option: WhatToDoTypeOption.CHANGE_CASE})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(GA_SUBMIT_OFFLINE);
+        });
+    });
+
+    it('should redirect page when CHANGE_CASE when GA online', async () => {
+      const getUrlMock = getGaRedirectionUrl as jest.Mock;
+      getUrlMock.mockReturnValue(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`);
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({option: WhatToDoTypeOption.CHANGE_CASE})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual('/case/:id/general-application/application-type?linkFrom=start');
         });
     });
 
