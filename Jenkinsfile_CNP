@@ -204,7 +204,9 @@ withPipeline(type, product, component) {
 
   afterAlways('build') {
     stage('Accessibility') {
+      try {
         yarnBuilder.yarn('tests:a11y:parallel')
+      } catch (Exception error) {
         for (int index = 0; index < A11Y_CHUNKS.toInteger(); index++) {
           publishHTML([
             allowMissing: true,
@@ -214,6 +216,8 @@ withPipeline(type, product, component) {
             reportFiles: "a11y-${index + 1}.html",
             reportName: "Preview Accessibility results ${index + 1}"
           ])
+        }
+        error "Accessibility tests failed. Please check the reports for details."
       }
     }
   }
