@@ -15,7 +15,7 @@ done
 
 
 # Wait for all jobs and check exit codes
-#exit_code=0
+exit_code=0
 for pid in "${pids[@]}"; do
   wait "$pid" || exit_code=1
 done
