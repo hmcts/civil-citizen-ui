@@ -207,6 +207,7 @@ withPipeline(type, product, component) {
       try {
         yarnBuilder.yarn('tests:a11y:parallel')
       } catch (Exception error) {
+        echo "Accessibility tests failed: ${error}"
         for (int index = 0; index < A11Y_CHUNKS.toInteger(); index++) {
           publishHTML([
             allowMissing: true,
@@ -217,7 +218,7 @@ withPipeline(type, product, component) {
             reportName: "Preview Accessibility results ${index + 1}"
           ])
         }
-        throw error;
+        error "Accessibility tests failed: ${error.message}"
       }
     }
   }
