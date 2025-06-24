@@ -11,11 +11,12 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
   const claimFee = 50;
+  const interest = 0.15;
 
   beforeEach(() => {
     nock(civilServiceUrl)
       .post('/fees/claim/calculate-interest')
-      .reply(200, '0.15');
+      .reply(200, interest.toString());
   });
 
   it('get summary details when claimInterest=Yes.', async () => {
@@ -26,7 +27,7 @@ describe('Get Judgment amount summary', () => {
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
-    const total = claim.totalClaimAmount + claimFee - claim.getDefendantPaidAmount();
+    const total = claim.totalClaimAmount + interest + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
@@ -53,7 +54,7 @@ describe('Get Judgment amount summary', () => {
 
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
-    const total = claim.totalClaimAmount + claimFee;
+    const total = claim.totalClaimAmount + claimFee + interest;
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
