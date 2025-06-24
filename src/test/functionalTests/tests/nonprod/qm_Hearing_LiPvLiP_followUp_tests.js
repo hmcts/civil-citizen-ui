@@ -12,7 +12,7 @@ Feature('QM - LIP - Follow up tests @regression-qm');
 Before(async () => {
   await Promise.all([
     createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password),
-    createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password)
+    createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password),
   ]);
 });
 
