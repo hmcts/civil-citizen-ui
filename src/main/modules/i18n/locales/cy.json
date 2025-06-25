@@ -938,7 +938,7 @@
         "SEND_MESSAGE": "Anfon neges"
       },
       "VIEW_QUERY": {
-        "PAGE_TITLE": "Negeseuon",
+        "PAGE_TITLE": "Negeseuon i’r llys",
         "MESSAGE_SUBJECT": "Pwnc y neges",
         "SENT_ON": "Anfonwyd ar",
         "LAST_UPDATED_BY": "Diweddarwyd diwethaf gan",
@@ -957,7 +957,9 @@
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
+        "MESSAGE": "Neges",
         "YOUR_MESSAGE": "Eich neges",
+        "FOLLOW_UP_MESSAGE": "Neges ddilynol",
         "COURTS_RESPONSE": "Ymateb y llys",
         "MESSAGE_DETAILS": "Manylion y neges",
         "COURT_MESSAGE_DETAILS": "Manylion yr ymateb",
@@ -965,7 +967,8 @@
         "MESSAGE_ABOUT_HEARING_YES": "Ydy",
         "MESSAGE_ABOUT_HEARING_NO": "Nac ydy",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
-        "UPLOADED_DOCUMENTS": "Dogfennau wedi’u huwchlwytho (dewisol)",
+        "UPLOADED_DOCUMENTS": "Atodiadau",
+        "NO_DOCUMENTS_UPLOADED": "Dim dogfennau wedi’u llwytho",
         "SENT_BY": "Anfonwyd gan",
         "SENT_BY_YOU": "Chi",
         "SENT_BY_COURT_STAFF": "Staff y Llys",

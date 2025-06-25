@@ -23,9 +23,13 @@
                 <div class="govuk-summary-card__title-wrapper">
                   <h2 class="govuk-summary-card__title">
                     {% if loop.index % 2 == 0 %}
-                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
+                    {% elseif loop.index === 1 and item.raisedByUser === true %}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                    {% elseif loop.index === 1 and item.raisedByUser  === false %}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE') }}
                     {% else %}
-                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.FOLLOW_UP_MESSAGE') }}
                     {% endif %}
                   </h2>
                 </div>
@@ -73,6 +77,8 @@
                           {% for link in item.documents %}
                             <div>{{ link.documentUrl | safe }}</div>
                           {% endfor %}
+                        {% else %}
+                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.NO_DOCUMENTS_UPLOADED') }}
                         {% endif %}
                       </dd>
                     </div>
@@ -81,8 +87,10 @@
                       <dd class="govuk-summary-list__value">
                         {% if loop.index % 2 == 0 %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_COURT_STAFF') }}
-                        {% else %}
+                        {% elseif item.raisedByUser === true %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}
+                        {% else %}
+                          {{ item.sentByName }}
                         {% endif %}
                       </dd>
                     </div>
