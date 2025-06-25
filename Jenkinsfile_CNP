@@ -214,7 +214,7 @@ withPipeline(type, product, component) {
                error "Accessibility tests failed. One or more chunks did not pass."
              }
      }
-
+    }
   }
 
   before('smoketest:aat') {
