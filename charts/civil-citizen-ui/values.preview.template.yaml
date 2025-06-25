@@ -381,8 +381,8 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
+    image: hmctspublic.azurecr.io/civil/service:pr-6663
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
     devmemoryRequests: 2048Mi
