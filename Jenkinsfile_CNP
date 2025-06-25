@@ -205,6 +205,7 @@ withPipeline(type, product, component) {
   afterSuccess('build') {
     stage('Accessibility') {
        yarnBuilder.yarn('tests:a11y:parallel')
+       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*'
      }
   }
 
