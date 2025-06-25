@@ -206,15 +206,7 @@ withPipeline(type, product, component) {
     stage('Accessibility') {
        yarnBuilder.yarn('tests:a11y:parallel')
        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
-        // Read the result file (written by your a11y script)
-           script {
-             def failed = readFile('functional-output/accessibility-report/a11y_failures.boolean')
-                           .trim().toInteger()
-             if (failed == 1) {
-               error "Accessibility tests failed. One or more chunks did not pass."
-             }
      }
-    }
   }
 
   before('smoketest:aat') {

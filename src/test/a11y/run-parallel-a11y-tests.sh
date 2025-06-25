@@ -24,8 +24,7 @@ done
 
 if [[ $exit_code -ne 0 ]]; then
   echo "One or more accessibility tests failed."
-  HAS_FAILURE=1
+  exit 1
 fi
 
-echo $HAS_FAILURE > a11y_failures.boolean
 echo "All accessibility tests completed successfully."
