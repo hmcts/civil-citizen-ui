@@ -204,22 +204,13 @@ withPipeline(type, product, component) {
 
   afterSuccess('build') {
     stage('Accessibility') {
-      steps {
-        script {
-          try {
-            yarnBuilder.yarn('tests:a11y:parallel')
-          } catch (e) {
-            echo "Accessibility tests failed: ${e}"
-            // Re-throw if you want the build to fail
-            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
-            throw e
-          }
-        }
-      }
-      post {
-        always {
-          steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
-        }
+      try {
+        yarnBuilder.yarn('tests:a11y:parallel')
+      } catch (Exception error) {
+        throw error;
+      } finally {
+        echo 'Archiving artifacts...'
+         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
       }
     }
   }
