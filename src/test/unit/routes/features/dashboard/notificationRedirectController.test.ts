@@ -1,23 +1,29 @@
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import { app } from '../../../../../main/app';
 import config from 'config';
 import * as DraftStoreService from 'modules/draft-store/draftStoreService';
 import * as ApplyHelpFeeSelectionService from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
-import {Claim} from 'models/claim';
-import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
-import {DocumentType} from 'models/document/documentType';
-import {DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT} from 'routes/urls';
-import {CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL} from 'client/civilServiceUrls';
-import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import { Claim } from 'models/claim';
+import { SystemGeneratedCaseDocuments } from 'models/document/systemGeneratedCaseDocuments';
+import { DocumentType } from 'models/document/documentType';
+import {
+  DASHBOARD_NOTIFICATION_REDIRECT,
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
+} from 'routes/urls';
+import { CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL } from 'client/civilServiceUrls';
+import { civilClaimResponseMock } from '../../../../utils/mockDraftStore';
+import { CivilServiceClient } from 'client/civilServiceClient';
 import * as StringUtils from 'common/utils/stringUtils';
-import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import {CaseRole} from 'form/models/caseRoles';
-import {CCDRespondentLiPResponse, CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
-import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
-import {CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
+import { getCaseProgressionHearingMock } from '../../../../utils/caseProgression/mockCaseProgressionHearing';
+import { ClaimBilingualLanguagePreference } from 'models/claimBilingualLanguagePreference';
+import { CaseRole } from 'form/models/caseRoles';
+import {
+  CCDRespondentLiPResponse,
+  CCDRespondentResponseLanguage,
+} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import { checkWelshHearingNotice } from 'services/features/caseProgression/hearing/hearingService';
+import { CaseProgressionHearingDocuments } from 'models/caseProgression/caseProgressionHearing';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -213,6 +219,35 @@ describe('Notification Redirect Controller - Get', () => {
       });
   });
 
+  it('Redirect to dashboard if documentId is awaiting-translation', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_FINAL_ORDER')
+        .replace(':notificationId', '321')
+        .replace(':documentId', 'awaiting-translation'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /dashboard/123/claimantNewDesign?errorAwaitingTranslation');
+      });
+  });
+
   it('Redirect to view hearing notice with document Id', async () => {
     //given
     const claim: Claim = new Claim();
@@ -248,6 +283,7 @@ describe('Notification Redirect Controller - Get', () => {
     //given
     const claim: Claim = new Claim();
     claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
 
     nock(civilServiceUrl)
       .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
@@ -269,7 +305,7 @@ describe('Notification Redirect Controller - Get', () => {
       //then
       .expect((res: Response) => {
         expect(res.status).toBe(302);
-        expect(res.text).toBe('Found. Redirecting to /dashboard/123/defendant?errorAwaitingTranslation');
+        expect(res.text).toBe('Found. Redirecting to /dashboard/123/claimantNewDesign?errorAwaitingTranslation');
       });
     expect(checkDocumentId).toHaveBeenCalledTimes(1);
   });
