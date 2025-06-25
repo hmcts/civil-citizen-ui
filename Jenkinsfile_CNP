@@ -211,8 +211,14 @@ withPipeline(type, product, component) {
           } catch (e) {
             echo "Accessibility tests failed: ${e}"
             // Re-throw if you want the build to fail
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
             throw e
           }
+        }
+      }
+      post {
+        always {
+          steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
         }
       }
     }
