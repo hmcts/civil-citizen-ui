@@ -6,7 +6,6 @@ import {
   QM_VIEW_QUERY_URL,
   CCJ_PAID_AMOUNT_URL,
   DATE_PAID_URL,
-  QUERY_MANAGEMENT_CREATE_QUERY,
   UPLOAD_YOUR_DOCUMENTS_URL, QM_SHARE_QUERY_CONFIRMATION,
 } from 'routes/urls';
 
@@ -52,7 +51,7 @@ let showAnythingElseSection: Version = undefined;
 const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
   const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
   pageSection
-    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
+    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
@@ -247,7 +246,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, '.')
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_2`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.');
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.');
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_ENDED: {
