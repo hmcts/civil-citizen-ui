@@ -204,22 +204,8 @@ withPipeline(type, product, component) {
 
   afterSuccess('build') {
     stage('Accessibility') {
-      try {
-        yarnBuilder.yarn('tests:a11y:parallel')
-      } catch (Exception error) {
-        for (int index = 0; index < A11Y_CHUNKS.toInteger(); index++) {
-          publishHTML([
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: "functional-output/accessibility-report",
-            reportFiles: "a11y-${index + 1}.html",
-            reportName: "Preview Accessibility results ${index + 1}"
-          ])
-        }
-        throw error;
-      }
-    }
+       yarnBuilder.yarn('tests:a11y:parallel')
+     }
   }
 
   before('smoketest:aat') {
