@@ -5411,6 +5411,7 @@
       "DATE_FLIGHT_REQUIRED": "Date of flight is required",
       "FLIGHT_NUMBER_REQUIRED": "Flight number is required"
     },
+    "DOCUMENTS_BEING_TRANSLATED": "Document is being translated and will be visible to both parties on the case once translation is uploaded.",
     "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
     "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
     "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
