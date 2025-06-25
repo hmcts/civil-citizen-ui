@@ -20,7 +20,7 @@ import {
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
-import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
+import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_START_URL} from 'routes/urls';
 import {
   isGaForLipsEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
@@ -29,6 +29,7 @@ import {
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaOnline} from 'services/commons/generalApplicationHelper';
+import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -66,12 +67,17 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
           }
         }
       }
-    } else { // prod code
+    } else if (queryManagementFlagEnabled) {
+      //remove Applications sections
+      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+
+    }
+    else { // prod code
       //exclude Applications sections
       if (!isGAFlagEnable
         || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
         || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || queryManagementFlagEnabled) {
+        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }
     }
@@ -203,7 +209,17 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       }
     }
 
-  } else { // Prod code
+  } else if (isLIPQmOn) {
+    const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
+    if(!isClaimOffLine.includes(claim.ccdState)){
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinKFromValues.start}`),
+        removeTargetBlank: true,
+      };
+    }
+  }
+  else { // Prod code
     if ((claim.ccdState &&
         !claim.isCaseIssuedPending() && !claim.isClaimSettled()
       && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
