@@ -215,12 +215,6 @@ withPipeline(type, product, component) {
           }
         }
       }
-      post {
-          always {
-            echo 'Archiving accessibility reports...'
-            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*', onlyIfSuccessful: false
-        }
-      }
     }
   }
 
