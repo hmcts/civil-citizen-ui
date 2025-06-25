@@ -239,7 +239,6 @@ const getStringDate = (query: CreateQuery): string => {
 
 const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng:string) => {
   let docLinks = '';
-  console.log(uploadedFiles)
   if (uploadedFiles.length === 0) {
     return t('PAGES.QM.SEND_MESSAGE_CYA.NO_DOCUMENTS_UPLOADED', {lng});
   }
