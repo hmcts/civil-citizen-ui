@@ -973,7 +973,16 @@
         "SENT_BY_YOU": "You",
         "SENT_BY_COURT_STAFF": "Court staff",
         "SENT_ON": "Sent on",
-        "SEND_FOLLOW_UP": "Send a follow up message"
+        "SEND_FOLLOW_UP": "Send a follow up message",
+        "SEND_FOLLOW_UP_INFO": {
+          "HEADER": "Send a follow up message",
+          "LINE_1": "Only send follow up messages related to the original query.",
+          "LINE_2": "Sending follow up messages that are not related will delay the court’s response."
+        },
+        "COURT_IS_REVIEWING_INFO": {
+          "HEADER": "The court is reviewing the message",
+          "LINE_1": "Our team will read the message and respond."
+        }
       }
     },
     "SUBJECT_TO_FRC": {

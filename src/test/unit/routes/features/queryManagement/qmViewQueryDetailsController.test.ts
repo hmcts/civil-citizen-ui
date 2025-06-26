@@ -129,6 +129,10 @@ describe('View query controller', () => {
           expect(res.text).toContain('You');
           expect(res.text).toContain('Sent on');
           expect(res.text).toContain('Send a follow up message');
+          expect(res.text).toContain('Only send follow up messages related to the original query.');
+          expect(res.text).toContain('Sending follow up messages that are not related will delay the court’s response.');
+          expect(res.text).not.toContain('The court is reviewing the message');
+          expect(res.text).not.toContain('Our team will read the message and respond.');
         });
     });
 
@@ -159,7 +163,11 @@ describe('View query controller', () => {
           expect(res.text).toContain('Sent by');
           expect(res.text).toContain('You');
           expect(res.text).toContain('Sent on');
+          expect(res.text).toContain('The court is reviewing the message');
+          expect(res.text).toContain('Our team will read the message and respond.');
           expect(res.text).not.toContain('Send a follow up message');
+          expect(res.text).not.toContain('Only send follow up messages related to the original query.');
+          expect(res.text).not.toContain('Sending follow up messages that are not related will delay the court’s response.');
         });
     });
 
@@ -192,7 +200,11 @@ describe('View query controller', () => {
           expect(res.text).toContain('Sent by');
           expect(res.text).toContain('You');
           expect(res.text).toContain('Sent on');
+          expect(res.text).toContain('The court is reviewing the message');
+          expect(res.text).toContain('Our team will read the message and respond.');
           expect(res.text).not.toContain('Send a follow up message');
+          expect(res.text).not.toContain('Only send follow up messages related to the original query.');
+          expect(res.text).not.toContain('Sending follow up messages that are not related will delay the court’s response.');
         });
     });
   });

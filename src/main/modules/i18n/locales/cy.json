@@ -973,7 +973,16 @@
         "SENT_BY_YOU": "Chi",
         "SENT_BY_COURT_STAFF": "Staff y Llys",
         "SENT_ON": "Anfonwyd ar",
-        "SEND_FOLLOW_UP": "Anfon neges ddilynol"
+        "SEND_FOLLOW_UP": "Anfon neges ddilynol",
+        "SEND_FOLLOW_UP_INFO": {
+          "HEADER": "Anfon neges ddilynol",
+          "LINE_1": "Dylech ond anfon negeseuon dilynol sy’n ymwneud â’r ymholiad gwreiddiol.",
+          "LINE_2": "Bydd anfon negeseuon dilynol nad ydynt yn ymwneud â’r mater gwreiddiol yn achosi oedi gyda’r ymateb gan y llys."
+        },
+        "COURT_IS_REVIEWING_INFO": {
+          "HEADER": "Mae’r llys yn adolygu’r neges",
+          "LINE_1": "Bydd ein tîm yn darllen y neges ac yn ymateb."
+        }
       }
     },
     "SUBJECT_TO_FRC": {
