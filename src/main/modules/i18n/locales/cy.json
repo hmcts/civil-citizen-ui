@@ -926,7 +926,7 @@
         "HEADING": "Rhowch fanylion y neges",
         "CAPTION": "Anfon neges",
         "FOLLOW_UP_CAPTION": "Anfon neges ddilynol",
-        "FOLLOW_UP_HEADING": "Gwirio eich atebion"
+        "FOLLOW_UP_HEADING": "Adolygu manylion y neges"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Pwnc y neges",
@@ -962,6 +962,7 @@
         "STATUS_RECEIVED": "Ymateb wedi cyrraedd"
       },
       "FOLLOW_UP_QUERY": {
+        "WARNING_TEXT": "Gall yr holl bartïon weld unrhyw negeseuon dilynol.",
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
