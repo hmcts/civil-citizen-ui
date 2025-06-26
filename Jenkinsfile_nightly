@@ -96,7 +96,7 @@ withNightlyPipeline(type, product, component) {
   env.CIVIL_GENERAL_APPLICATIONS_URL = params.CIVIL_GENERAL_APPLICATIONS_URL
   env.TESTS_FOR_ACCESSIBILITY = false
   overrideVaultEnvironments([
-    'aat': params.ENVIRONMENT == 'preview' ? 'aat' : 'demo'
+    'aat': params.ENVIRONMENT == 'preview' ? 'aat' : params.ENVIRONMENT
   ])
   loadVaultSecrets(secrets)
 
