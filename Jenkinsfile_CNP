@@ -1,4 +1,7 @@
 #!groovy
+properties([
+  copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
+]);
 
 @Library("Infrastructure")
 import uk.gov.hmcts.contino.AppPipelineConfig
@@ -21,6 +24,21 @@ static Map<String, Object> secret(String secretName, String envVariable) {
    name       : secretName,
    envVariable: envVariable
   ]
+}
+
+def copyPrevFailedAndNotExecutedTestFilesJson() {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts projectName: env.JOB_NAME, selector: specific("${buildNumber}"), filter: "test-results/functional/testFilesReport.json"
+      buildFound = true
+    } catch (Exception error) {
+      echo "artifact not found: " + error.toString()
+      buildNumber--
+    }
+  }
 }
 
 def getFunctionalTestsGroups() {
@@ -169,11 +187,11 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    copyPrevFailedAndNotExecutedTestFilesJson();
   }
 
   afterAlways('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
   afterSuccess('smoketest:preview') {
@@ -216,11 +234,11 @@ withPipeline(type, product, component) {
 
   before('functionalTest:aat') {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    copyPrevFailedAndNotExecutedTestFilesJson();
   }
 
   afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
   }
 
   afterSuccess('functionalTest:aat') {

@@ -31,6 +31,7 @@ import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -43,6 +44,7 @@ const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
+const isGAForWelshEnabledMock = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
 const mockExpectedDashboardInfo=
   [{
     'categoryEn': 'Hearing',
@@ -616,6 +618,11 @@ describe('Claim Summary Controller Defendant', () => {
         jest
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
+        app.locals = {
+          showCreateQuery : true,
+          isQMFlagEnabled : true,
+          disableSendMessage : true,
+        };
 
         await testSession
           .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
@@ -627,6 +634,44 @@ describe('Claim Summary Controller Defendant', () => {
             expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE'));
           });
       });
+    });
+
+    it('should show welsh party banner', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isGAForLiPEnabledMock.mockResolvedValue(false);
+      isGAForWelshEnabledMock.mockResolvedValue(true);
+
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+        });
+    });
+
+    it('should not show welsh party banner if Welsh feature disabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isGAForLiPEnabledMock.mockResolvedValue(false);
+      isGAForWelshEnabledMock.mockResolvedValue(false);
+
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+        });
     });
   });
 });
