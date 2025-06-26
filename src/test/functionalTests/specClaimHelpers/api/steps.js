@@ -459,7 +459,7 @@ module.exports = {
     if (qmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
       console.log('QM not enabled, updating submitted date to past for legacy cases');
-      const submittedDate = {'submittedDate':'2025-07-11T15:59:50'};
+      const submittedDate = {'submittedDate':'2025-12-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after QM date');
     }
