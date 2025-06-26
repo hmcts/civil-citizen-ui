@@ -111,11 +111,7 @@ withNightlyPipeline(type, product, component) {
         copyPrevFailedAndNotExecutedTestFilesJson()
       }
     }
-  }
 
-  enableFullFunctionalTest(200)
-
-  if(!forceGreenBuild) {
     afterAlways('fullFunctionalTest') {
       archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     }
