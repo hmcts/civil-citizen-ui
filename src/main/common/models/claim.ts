@@ -195,6 +195,7 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
+  previousCCDState?: string;
   // Index signature to allow dynamic property access
   [key: string]: any;
   //Query management
@@ -506,7 +507,12 @@ export class Claim {
       });
       return djDoc.value;
     }
-
+    if (documentType === DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT) {
+      return this.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc;
+    }
+    if (documentType === DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT) {
+      return this.respondent1NoticeOfDiscontinueAllPartyViewDoc;
+    }
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
@@ -943,6 +949,10 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
+  isCaseDiscontinued() {
+    return this.ccdState === CaseState.CASE_DISCONTINUED ;
+  }
+
   isDefendantAgreedForMediation() {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
@@ -1107,7 +1117,9 @@ export class Claim {
 
   isAnyPartyBilingual() : boolean {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
-      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+      || this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH'
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'WELSH';
   }
 }
 
