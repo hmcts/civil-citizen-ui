@@ -88,7 +88,5 @@ export const IGNORED_URLS = [
   urls.DEFENDANT_DOCUMENTS_URL,
 
   urls.QM_BASE, //no controller for the base
-  //TODO remove after view and create query view are completed
-  urls.QM_VIEW_QUERY_URL,
-  urls.QUERY_MANAGEMENT_CREATE_QUERY,
+
 ];
