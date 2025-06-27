@@ -10,7 +10,6 @@ export const shareQueryConfirmationGuard = (req: AppRequest, res: Response, next
     if (!req.session?.qmShareConfirmed) {
       res.redirect(constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION));
     } else {
-      delete req.session.qmShareConfirmed;
       next();
     }
   } catch (error) {
