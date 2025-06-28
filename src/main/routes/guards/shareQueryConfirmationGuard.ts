@@ -1,0 +1,19 @@
+import {Response, NextFunction } from 'express';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { QM_SHARE_QUERY_CONFIRMATION } from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+
+export const shareQueryConfirmationGuard = (req: AppRequest, res: Response, next: NextFunction): void => {
+  try {
+    const claimId = req.params.id;
+
+    if (!req.session?.qmShareConfirmed) {
+      res.redirect(constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION));
+    } else {
+      delete req.session.qmShareConfirmed;
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+};

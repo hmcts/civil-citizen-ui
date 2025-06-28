@@ -415,6 +415,7 @@ export const QM_INFORMATION_URL = `${QM_BASE}/information/:qmType/:qmQualifyOpti
 export const QM_VIEW_QUERY_URL = `${QM_BASE}/view-query`;
 export const QM_CYA = `${QM_BASE}/create-query-cya`;
 export const QM_FOLLOW_UP_CYA = `${QM_BASE}/:queryId/follow-up-query-cya`;
+export const QM_SHARE_QUERY_CONFIRMATION = `${QM_BASE}/share-query`;
 export const QUERY_MANAGEMENT_CREATE_QUERY = `${QM_BASE}/create-query`;
 export const QM_CONFIRMATION_URL = `${QM_BASE}/confirmation`;
 export const QM_FOLLOW_UP_MESSAGE = `${QM_BASE}/:queryId/follow-up-message`;

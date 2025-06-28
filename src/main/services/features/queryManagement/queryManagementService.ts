@@ -108,7 +108,7 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
 export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
   const queryManagement = claim.queryManagement;
-  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement.createQuery;
+  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement?.createQuery;
 
   if (query) {
     const uploadedFiles = query.uploadedFiles;

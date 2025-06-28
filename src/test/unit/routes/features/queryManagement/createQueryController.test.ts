@@ -14,6 +14,9 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/utilityService');
+jest.mock('routes/guards/shareQueryConfirmationGuard', () => ({
+  shareQueryConfirmationGuard: (req: any, res: any, next: any) => next(),
+}));
 
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
