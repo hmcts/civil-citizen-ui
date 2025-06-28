@@ -118,6 +118,7 @@ const setupConfig = {
     api: './specClaimHelpers/api/steps.js',
     wa: './specClaimHelpers/api/stepsWA.js',
     noc: './specClaimHelpers/api/steps_noc.js',
+    qm: './specClaimHelpers/api/steps_qm.js',
   },
   mocha: {
     reporterOptions: {

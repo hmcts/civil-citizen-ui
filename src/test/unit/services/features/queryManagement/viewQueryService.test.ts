@@ -15,10 +15,10 @@ jest.mock('common/utils/formatDocumentURL', () => ({
 }));
 
 describe('ViewQueriesService', () => {
-  it('should return empty array when no queries', () => {
+  it('should return empty array when no queries ', () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
-    claim.qmApplicantCitizenQueries = { caseMessages: [] };
+    claim.queries = { partyName: 'All queries', caseMessages: [] };
 
     const result = ViewQueriesService.buildQueryListItems(claim, 'en');
     expect(result).toEqual([]);
@@ -27,11 +27,11 @@ describe('ViewQueriesService', () => {
   const testCases = [
     {
       role: CaseRole.CLAIMANT,
-      property: 'qmApplicantCitizenQueries',
+      property: 'queries',
     },
     {
       role: CaseRole.DEFENDANT,
-      property: 'qmRespondentCitizenQueries',
+      property: 'queries',
     },
   ];
 
@@ -111,6 +111,7 @@ describe('ViewQueriesService', () => {
       caseMessages: [
         {
           value: {
+
             id: 'parentQuery1',
             subject: 'test subject',
             createdOn: '2025-02-20T12:00:00Z',

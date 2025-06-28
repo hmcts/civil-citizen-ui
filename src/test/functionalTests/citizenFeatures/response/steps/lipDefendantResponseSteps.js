@@ -304,6 +304,19 @@ class ResponseSteps {
     await viewQueryPage.verifyMessagesBeforeFollowUp(subject, message, isHearingRelated);
   }
 
+  async followUpMessage(subject, message, isHearingRelated) {
+    await I.waitForContent('View your messages to the court', 60);
+    await I.click('View your messages to the court');
+    await viewQueryPage.verifyFollowUp(subject, message, isHearingRelated);
+    await viewQueryPage.sendFollowUpMessage();
+  }
+
+  async verifyFollowUpMessage(subject) {
+    await I.waitForContent('View your messages to the court', 60);
+    await I.click('View your messages to the court');
+    await viewQueryPage.verifyMessagesAfterFollowUp(subject);
+  }
+
   async EnterCompDetails(addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
