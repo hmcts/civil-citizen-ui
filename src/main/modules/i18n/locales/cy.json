@@ -552,7 +552,7 @@
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Neges wedi’i hanfon",
-        "CONFIRMATION_TEXT": "Mae eich neges wedi’i hanfon i’r llys",
+        "CONFIRMATION_TEXT": "Mae eich neges wedi’i hanfon i’r llys ac at y partïon eraill",
         "CONFIRMATION_TEXT_1": "Bydd ein tîm yn darllen eich neges ac yn ceisio ymateb o fewn 10 niwrnod gwaith.",
         "CONFIRMATION_TEXT_2": "Byddwch yn cael eich hysbysu pan fydd y llys yn ymateb i’ch neges a byddwch yn gallu gweld yr ymateb yn eich dangosfwrdd.",
         "GO_TO_DASHBOARD": "Mynd i’ch dangosfwrdd"
@@ -936,9 +936,10 @@
         "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "HEADING": "Adolygu manylion y neges",
         "NO_DOCUMENTS_UPLOADED": "Dim dogfennau wedi'u llwytho i fyny",
         "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Pwnc y neges",
@@ -965,7 +966,7 @@
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
