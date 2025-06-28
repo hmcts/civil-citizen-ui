@@ -4,7 +4,7 @@ import {Document} from 'models/document/document';
 export interface CaseQueries {
   caseMessages: QueryMessage[];
   partyName: string;
-  roleOnCase: string;
+  roleOnCase?: string;
 }
 
 export interface QueryMessage {
