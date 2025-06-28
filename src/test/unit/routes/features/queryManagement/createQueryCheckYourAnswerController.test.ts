@@ -71,7 +71,7 @@ describe('create query check your answer controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Send a follow up message');
-          expect(res.text).toContain('Check your answers');
+          expect(res.text).toContain('Review message details');
           expect(res.text).toContain('Dummy details');
         });
     });
