@@ -329,8 +329,7 @@ export interface CCDClaim extends ClaimUpdate {
   joDJCreatedDate?: Date;
   uiStatementOfTruth?: CcdStatementOfTruth;
   //Query management
-  qmApplicantCitizenQueries?: CaseQueries;
-  qmRespondentCitizenQueries?: CaseQueries;
+  queries?: CaseQueries;
   previousCCDState?: string;
 }
 

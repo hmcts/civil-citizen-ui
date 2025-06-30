@@ -9,7 +9,7 @@ import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDar
 export const getViewMessagesLink = async (req: AppRequest, claim: Claim, lng: string): Promise<iWantToLinks> => {
   const isQueryManagementLipEnabled = await isQueryManagementEnabled(claim.submittedDate);
   if (isQueryManagementLipEnabled) {
-    const messages = claim.isClaimant() ? claim.qmApplicantCitizenQueries : claim.qmRespondentCitizenQueries;
+    const messages = claim.queries;
     if (messages && messages.caseMessages.length > 0) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_MESSAGES', {lng}),
