@@ -1,0 +1,90 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "referToJudge",
+    "PageID": "ReferToJudge",
+    "PageDisplayOrder": 1,
+    "PageFieldDisplayOrder": 1,
+    "PageColumnNumber": 1,
+    "DisplayContext": "COMPLEX",
+    "ShowSummaryChangeOption": "Y"
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "generalAppUrgencyRequirement",
+    "PageFieldDisplayOrder": 1,
+    "DisplayContext": "OPTIONAL",
+    "PageID": "GAUrgencyRecordPage",
+    "PageDisplayOrder": 3,
+    "PageColumnNumber": 1,
+    "PageShowCondition": "referToJudge = \"DO_NOT_SHOW_IN_UI\"",
+    "ShowSummaryChangeOption": "N",
+    "Publish": "Y"
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "generalAppType",
+    "DisplayContext": "OPTIONAL",
+    "PageID": "GATypePage",
+    "PageDisplayOrder": 1,
+    "PageFieldDisplayOrder": 1,
+    "PageColumnNumber": 1,
+    "PageShowCondition": "referToJudge = \"DO_NOT_SHOW_IN_UI\"",
+    "ShowSummaryChangeOption": "N",
+    "Publish": "Y"
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "judicialDecision",
+    "PageID": "GAJudicialDecision",
+    "PageFieldDisplayOrder": 1,
+    "PageDisplayOrder": 1,
+    "PageColumnNumber": 1,
+    "PageShowCondition": "referToJudge = \"DO_NOT_SHOW_IN_UI\"",
+    "DisplayContext": "OPTIONAL",
+    "ShowSummaryChangeOption": "N",
+    "Publish": "Y"
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "isCcmccLocation",
+    "PageFieldDisplayOrder": 1,
+    "DisplayContext": "OPTIONAL",
+    "PageID": "isMultiPartyPage",
+    "PageDisplayOrder": 8,
+    "PageColumnNumber": 1,
+    "PageShowCondition": "generalAppUrgencyRequirement = \"DO_NOT_SHOW_IN_UI\"",
+    "ShowSummaryChangeOption": "N",
+    "Publish": "Y"
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "generalAppSuperClaimType",
+    "PageFieldDisplayOrder": 1,
+    "DisplayContext": "OPTIONAL",
+    "PageID": "isMultiPartyPage2",
+    "PageDisplayOrder": 9,
+    "PageColumnNumber": 1,
+    "ShowSummaryChangeOption": "N",
+    "PageShowCondition": "generalAppUrgencyRequirement = \"DO_NOT_SHOW_IN_UI\"",
+    "Publish": "Y"
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "REFER_TO_JUDGE",
+    "CaseFieldID": "gaWaTrackLabel",
+    "PageFieldDisplayOrder": 1,
+    "DisplayContext": "OPTIONAL",
+    "PageID": "isMultiPartyPage2",
+    "PageDisplayOrder": 9,
+    "PageColumnNumber": 1,
+    "ShowSummaryChangeOption": "N",
+    "Publish": "Y"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseEventID": "TRIGGER_GA_LANGUAGE_UPDATE",
+    "UserRole": "caseworker-civil-systemupdate",
+    "CRUD": "CRU"
+  }
+]

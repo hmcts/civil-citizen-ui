@@ -1,0 +1,14 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "LINK_GENERAL_APPLICATION_CASE_TO_PARENT_CASE",
+    "Name": "Link Application",
+    "Description": "Link Application",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0
+  }
+]

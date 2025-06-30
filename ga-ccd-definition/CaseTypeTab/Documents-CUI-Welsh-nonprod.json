@@ -1,0 +1,11 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "TabID": "Documents",
+    "TabLabel": "Application documents",
+    "TabDisplayOrder": 4,
+    "CaseFieldID": "preTranslationGaDocuments",
+    "TabFieldDisplayOrder": 21,
+    "DisplayContextParameter": "#TABLE(documentType, createdDatetime, documentLink)"
+  }
+]

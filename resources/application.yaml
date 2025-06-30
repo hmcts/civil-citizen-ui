@@ -1,0 +1,23 @@
+server:
+  port: 4550
+
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+
+config:
+  enableSwagger: ${ENABLE_SWAGGER:true}
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.reform.wastandalonetaskbpmn.controllers
+  writer-with-order-by-keys: true
+
+spring:
+  application:
+    name: Wa standalone task bpmn

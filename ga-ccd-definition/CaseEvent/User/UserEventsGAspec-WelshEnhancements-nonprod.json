@@ -1,0 +1,16 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "TRIGGER_GA_LANGUAGE_UPDATE",
+    "Name": "Update GA Language Preference",
+    "Description": "Update General App Language Preference",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0,
+    "CallBackURLAboutToSubmitEvent": "${CCD_DEF_GEN_APP_SERVICE_BASE_URL}/cases/callbacks/about-to-submit",
+    "Publish": "Y"
+  }
+]

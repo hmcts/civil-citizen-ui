@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0krfa3s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <bpmn:message id="Message_1pi3bbk" name="createTaskMessage" />
+  <bpmn:process id="wa-task-initiation-ia-asylum" name="Create User Task" isExecutable="true" camunda:historyTimeToLive="P90D">
+    <bpmn:endEvent id="userTaskCompleted" name="User task completed">
+      <bpmn:incoming>Flow_1t5gjw4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="processTask" name="${name}" camunda:dueDate="${dueDate != null ? dueDate : &#39;P2D&#39;}">
+      <bpmn:incoming>Flow_0mvvsq2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t5gjw4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1t5gjw4" sourceRef="processTask" targetRef="userTaskCompleted" />
+    <bpmn:startEvent id="createTaskMessage" name="Create User task message received">
+      <bpmn:outgoing>Flow_1azvh3y</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_153v0nn" messageRef="Message_08deb9v" />
+    </bpmn:startEvent>
+    <bpmn:subProcess id="cancelSubProcess" triggeredByEvent="true">
+      <bpmn:startEvent id="cancelTasks" name="Cancel Process">
+        <bpmn:outgoing>Flow_0fy4joa</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_0vxc2ge" messageRef="Message_1k0m2ip" />
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_0fy4joa" sourceRef="cancelTasks" targetRef="cancelledTasksCompleted" />
+      <bpmn:endEvent id="cancelledTasksCompleted">
+        <bpmn:incoming>Flow_0fy4joa</bpmn:incoming>
+      </bpmn:endEvent>
+    </bpmn:subProcess>
+    <bpmn:boundaryEvent id="Event_0pjf0p1" attachedToRef="processTask">
+      <bpmn:outgoing>Flow_000q9nr</bpmn:outgoing>
+      <bpmn:escalationEventDefinition id="EscalationEventDefinition_0wsk9z8" camunda:escalationCodeVariable="wa-esc-cancellation" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_000q9nr" sourceRef="Event_0pjf0p1" targetRef="userTaskTerminated" />
+    <bpmn:endEvent id="userTaskTerminated" name="User task terminated">
+      <bpmn:incoming>Flow_000q9nr</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0sajioj" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0mvvsq2" sourceRef="processStartTimer" targetRef="processTask" />
+    <bpmn:intermediateCatchEvent id="processStartTimer" name="Process start timer">
+      <bpmn:incoming>Flow_078o46j</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mvvsq2</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0bz05im">
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${execution.hasVariable('delayUntil') ? delayUntil : '2000-01-01T00:00:00'}</bpmn:timeDate>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1azvh3y" sourceRef="createTaskMessage" targetRef="idempotencyCheck" />
+    <bpmn:subProcess id="Activity_0aq15v4" triggeredByEvent="true">
+      <bpmn:endEvent id="Event_1bcr3ue" name="Warn Process Completed">
+        <bpmn:incoming>Flow_1th85jg</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0icj10p" sourceRef="Event_0piep6v" targetRef="Activity_1etkl8e" />
+      <bpmn:startEvent id="Event_0piep6v" name="Warning Process" isInterrupting="false">
+        <bpmn:outgoing>Flow_0icj10p</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_0e8toh3" messageRef="Message_0dksf5o" />
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_1th85jg" sourceRef="Activity_1etkl8e" targetRef="Event_1bcr3ue" />
+      <bpmn:serviceTask id="Activity_1etkl8e" name="Warning Topic" camunda:type="external" camunda:topic="wa-warning-topic">
+        <bpmn:incoming>Flow_0icj10p</bpmn:incoming>
+        <bpmn:outgoing>Flow_1th85jg</bpmn:outgoing>
+      </bpmn:serviceTask>
+    </bpmn:subProcess>
+    <bpmn:serviceTask id="idempotencyCheck" name="Idempotency Check" camunda:type="external" camunda:topic="idempotencyCheck">
+      <bpmn:incoming>Flow_1azvh3y</bpmn:incoming>
+      <bpmn:outgoing>Flow_187ot1x</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_187ot1x" sourceRef="idempotencyCheck" targetRef="Gateway_1630pti" />
+    <bpmn:exclusiveGateway id="Gateway_1630pti" name="isDuplicate?">
+      <bpmn:incoming>Flow_187ot1x</bpmn:incoming>
+      <bpmn:outgoing>Flow_078o46j</bpmn:outgoing>
+      <bpmn:outgoing>Flow_05z430k</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_078o46j" name="no" sourceRef="Gateway_1630pti" targetRef="processStartTimer">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isDuplicate==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1k24qth" name="already handled">
+      <bpmn:incoming>Flow_05z430k</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_0l1bfi9" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_05z430k" name="yes" sourceRef="Gateway_1630pti" targetRef="Event_1k24qth">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isDuplicate==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:message id="Message_1wn1xe7" name="Message_1tqgb06" />
+  <bpmn:message id="Message_059jkd9" name="Message_2e8dj6o" />
+  <bpmn:message id="Message_15v1c3c" name="Message_0tvklcc" />
+  <bpmn:message id="Message_1kti91o" name="Message_3jahboo" />
+  <bpmn:message id="Message_10ip1nj" name="Message_1k3lo6g" />
+  <bpmn:message id="Message_1chfuh0" name="Message_32m3riq" />
+  <bpmn:message id="Message_116brv9" name="Message_0ejfc7c" />
+  <bpmn:message id="Message_01j1wf0" name="Message_1lp92gp" />
+  <bpmn:message id="Message_09oo3rf" name="Message_3ev7ae9" />
+  <bpmn:message id="Message_0wjufdz" name="Message_150cggv" />
+  <bpmn:message id="Message_0p3owoe" name="Message_34h7ks7" />
+  <bpmn:message id="Message_0us4veh" name="Message_0am77j3" />
+  <bpmn:message id="Message_1gnhxls" name="Message_3hfebm6" />
+  <bpmn:message id="Message_0z5ffbb" name="Message_0d1a163" />
+  <bpmn:message id="Message_0nirg8l" name="Message_34onq2q" />
+  <bpmn:message id="Message_1lelsr1" name="Message_3hlgl5b" />
+  <bpmn:message id="Message_1dme7oc" name="Message_16ae01r" />
+  <bpmn:message id="Message_1aezus4" name="Message_3r1h3he" />
+  <bpmn:message id="Message_18jl9gq" name="Message_2vn13rr" />
+  <bpmn:message id="Message_08deb9v" name="createTaskMessage" />
+  <bpmn:message id="Message_1k0m2ip" name="cancelTasks" />
+  <bpmn:escalation id="Escalation_0q8q2uv" name="escalateCancellation" />
+  <bpmn:message id="Message_05nfuoz" name="Message_0k619qd" />
+  <bpmn:escalation id="Escalation_0sj9fef" name="Escalation_Cancel_Task" escalationCode="cTasks" />
+  <bpmn:message id="Message_0dksf5o" name="warnProcess" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="wa-task-initiation-ia-asylum">
+      <bpmndi:BPMNEdge id="Flow_05z430k_di" bpmnElement="Flow_05z430k">
+        <di:waypoint x="530" y="265" />
+        <di:waypoint x="530" y="332" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="536" y="296" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_078o46j_di" bpmnElement="Flow_078o46j">
+        <di:waypoint x="555" y="240" />
+        <di:waypoint x="662" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="602" y="222" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_187ot1x_di" bpmnElement="Flow_187ot1x">
+        <di:waypoint x="410" y="240" />
+        <di:waypoint x="505" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1azvh3y_di" bpmnElement="Flow_1azvh3y">
+        <di:waypoint x="218" y="240" />
+        <di:waypoint x="310" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mvvsq2_di" bpmnElement="Flow_0mvvsq2">
+        <di:waypoint x="698" y="240" />
+        <di:waypoint x="790" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_000q9nr_di" bpmnElement="Flow_000q9nr">
+        <di:waypoint x="840" y="182" />
+        <di:waypoint x="840" y="113" />
+        <di:waypoint x="1132" y="113" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t5gjw4_di" bpmnElement="Flow_1t5gjw4">
+        <di:waypoint x="890" y="240" />
+        <di:waypoint x="1132" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0mqu4ld_di" bpmnElement="userTaskCompleted">
+        <dc:Bounds x="1132" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1125" y="265" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h3qguy_di" bpmnElement="processTask">
+        <dc:Bounds x="790" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0836shu_di" bpmnElement="createTaskMessage">
+        <dc:Bounds x="182" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="265" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ujt1n5_di" bpmnElement="cancelSubProcess" isExpanded="true">
+        <dc:Bounds x="690" y="430" width="365" height="210" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0fy4joa_di" bpmnElement="Flow_0fy4joa">
+        <di:waypoint x="818" y="520" />
+        <di:waypoint x="942" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_006cei4_di" bpmnElement="cancelTasks">
+        <dc:Bounds x="782" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="761" y="545" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rf35yg_di" bpmnElement="cancelledTasksCompleted">
+        <dc:Bounds x="942" y="502" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0spho4n_di" bpmnElement="userTaskTerminated">
+        <dc:Bounds x="1132" y="95" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1124" y="138" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1e6ls8v_di" bpmnElement="processStartTimer">
+        <dc:Bounds x="662" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="648" y="265" width="65" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0aq15v4_di" bpmnElement="Activity_0aq15v4" isExpanded="true">
+        <dc:Bounds x="230" y="440" width="410" height="210" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1th85jg_di" bpmnElement="Flow_1th85jg">
+        <di:waypoint x="490" y="530" />
+        <di:waypoint x="542" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0icj10p_di" bpmnElement="Flow_0icj10p">
+        <di:waypoint x="318" y="530" />
+        <di:waypoint x="390" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1bcr3ue_di" bpmnElement="Event_1bcr3ue">
+        <dc:Bounds x="542" y="512" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="526" y="555" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18dmg2v_di" bpmnElement="Event_0piep6v">
+        <dc:Bounds x="282" y="512" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="258" y="555" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0aty9pt_di" bpmnElement="Activity_1etkl8e">
+        <dc:Bounds x="390" y="490" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qsrfk2_di" bpmnElement="idempotencyCheck">
+        <dc:Bounds x="310" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1630pti_di" bpmnElement="Gateway_1630pti" isMarkerVisible="true">
+        <dc:Bounds x="505" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="185" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1k24qth_di" bpmnElement="Event_1k24qth">
+        <dc:Bounds x="512" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="491" y="375" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1x0xdl7_di" bpmnElement="Event_0pjf0p1">
+        <dc:Bounds x="822" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

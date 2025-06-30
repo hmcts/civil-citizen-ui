@@ -1,0 +1,30 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseFieldID": "isApplicantResponded",
+    "AccessControl": [
+      {
+        "UserRoles": [
+          "CITIZEN-CLAIMANT-PROFILE",
+          "caseworker-civil-systemupdate",
+          "citizen-profile"
+        ],
+        "CRUD": "CRU"
+      }
+    ]
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "CaseFieldID": "isRespondentResponded",
+    "AccessControl": [
+      {
+        "UserRoles": [
+          "CITIZEN-DEFENDANT-PROFILE",
+          "caseworker-civil-systemupdate",
+          "citizen-profile"
+        ],
+        "CRUD": "RU"
+      }
+    ]
+  }
+]

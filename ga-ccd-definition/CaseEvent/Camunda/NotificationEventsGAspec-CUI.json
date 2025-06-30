@@ -1,0 +1,67 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "NOTIFY_APPLICANT_LIP_HWF",
+    "Name": "Notify lip app help with fees",
+    "Description": "Notify lip app help with fees",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "CallBackURLAboutToSubmitEvent": "${CCD_DEF_GEN_APP_SERVICE_BASE_URL}/cases/callbacks/about-to-submit",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "NOTIFY_APPLICANT_TRANSLATED_DOCUMENT_UPLOADED_GA",
+    "Name": "Notify lip translated docs",
+    "Description": "Notify lip translated docs",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "CallBackURLAboutToSubmitEvent": "${CCD_DEF_GEN_APP_SERVICE_BASE_URL}/cases/callbacks/about-to-submit",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "NOTIFY_RESPONDENT_TRANSLATED_DOCUMENT_UPLOADED_GA",
+    "Name": "Notify lip translated docs",
+    "Description": "Notify lip translated docs",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "CallBackURLAboutToSubmitEvent": "${CCD_DEF_GEN_APP_SERVICE_BASE_URL}/cases/callbacks/about-to-submit",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "SEND_TRANSLATED_ORDER_TO_LIP_APPLICANT",
+    "Name": "Send translated order",
+    "Description": "Bulk print translated order applicant",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "CallBackURLAboutToSubmitEvent": "${CCD_DEF_GEN_APP_SERVICE_BASE_URL}/cases/callbacks/about-to-submit",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0
+  },
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "SEND_TRANSLATED_ORDER_TO_LIP_RESPONDENT",
+    "Name": "Send translated order",
+    "Description": "Bulk print translated order respondent",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "CallBackURLAboutToSubmitEvent": "${CCD_DEF_GEN_APP_SERVICE_BASE_URL}/cases/callbacks/about-to-submit",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N",
+    "RetriesTimeoutURLAboutToSubmitEvent": 0
+  }
+]

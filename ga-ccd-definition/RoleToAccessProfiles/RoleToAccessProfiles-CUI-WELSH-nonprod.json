@@ -1,0 +1,11 @@
+[
+  {
+    "RoleName" : "idam:wlu-admin",
+    "Authorisation": "",
+    "CaseTypeID": "GENERALAPPLICATION",
+    "AccessProfiles": "wlu-admin",
+    "ReadOnly": "N",
+    "Disabled": "F",
+    "CaseAccessCategories": "SPEC_CLAIM"
+  }
+]

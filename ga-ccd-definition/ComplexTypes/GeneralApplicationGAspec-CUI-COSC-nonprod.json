@@ -1,0 +1,10 @@
+[
+  {
+    "ID": "GeneralApplicationGAspec",
+    "ListElementCode": "certOfSC",
+    "FieldType": "CertOfSC",
+    "ElementLabel": " ",
+    "SecurityClassification": "Public",
+    "Searchable": "N"
+  }
+]

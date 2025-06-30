@@ -1,0 +1,14 @@
+[
+  {
+    "ID": "PreTranslationGaDocumentType",
+    "ListElementCode": "APPLICATION_SUMMARY_DOC",
+    "ListElement": "Application Summary doc",
+    "DisplayOrder": 1
+  },
+  {
+    "ID": "PreTranslationGaDocumentType",
+    "ListElementCode": "RESPOND_TO_APPLICATION_SUMMARY_DOC",
+    "ListElement": "Respondent Response doc",
+    "DisplayOrder": 2
+  }
+]

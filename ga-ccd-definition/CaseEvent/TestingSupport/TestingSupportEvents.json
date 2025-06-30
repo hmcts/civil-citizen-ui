@@ -1,0 +1,13 @@
+[
+  {
+    "CaseTypeID": "GENERALAPPLICATION",
+    "ID": "UPDATE_GA_CASE_DATA",
+    "Name": "Update ga case data",
+    "Description": "Testing support event to update ga case data ",
+    "PreConditionState(s)": "*",
+    "PostConditionState": "*",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N",
+    "ShowEventNotes": "N"
+  }
+]
