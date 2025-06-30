@@ -1,7 +1,7 @@
 import {Response, NextFunction} from 'express';
 import {
   clearShareQuerySessionIfLeftJourney,
-  shareQueryConfirmationGuard
+  shareQueryConfirmationGuard,
 } from 'routes/guards/shareQueryConfirmationGuard';
 import {AppRequest} from 'models/AppRequest';
 
