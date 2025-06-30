@@ -62,9 +62,6 @@ describe('Accessibility', async () => {
   for (let url of urlsList) {
     it('Test of '+url,async () => {
       app.get(url, (req: any, res: any) => {
-        app.request.session = {
-          qmShareConfirmed: true,
-        };
         url = url
           .replace(':id', '1645882162449409')
           .replace(':appId', '1720536653906339')
