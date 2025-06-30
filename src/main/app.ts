@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import * as path from 'path';
+import favicon from 'serve-favicon';
 import session from 'express-session';
 import 'express-async-errors';
 
@@ -124,7 +125,7 @@ app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/dist/govuk/assets')));
+app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
