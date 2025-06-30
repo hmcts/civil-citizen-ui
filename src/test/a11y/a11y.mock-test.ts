@@ -62,8 +62,14 @@ describe('Accessibility', async () => {
   for (let url of urlsList) {
     it('Test of '+url,async () => {
       app.get(url, (req: any, res: any) => {
-        url = url.replace(':id', '1645882162449409').replace(':appId', '1720536653906339').replace(':qmType', 'SEND_DOCUMENTS').replace(':qmQualifyOption', 'ENFORCEMENT_REQUESTS');
+        url = url
+          .replace(':id', '1645882162449409')
+          .replace(':appId', '1720536653906339')
+          .replace(':qmType', 'SEND_DOCUMENTS')
+          .replace(':qmQualifyOption', 'ENFORCEMENT_REQUESTS')
+          .replace(':queryId', '1');
         const filePath = translateUrlToFilePath(url);
+        console.log('File path: ' + filePath);
         const fileContent = fs.readFileSync(filePath,  'utf8');
         res.send(fileContent);
       });
@@ -87,7 +93,7 @@ function getChunkAtIndex(array: string[], numChunks: number, index: number) {
   }
 
   const chunkSize = Math.floor(array.length / numChunks);
-  const remainder = array.length % numChunks; 
+  const remainder = array.length % numChunks;
 
   const start = index * chunkSize + Math.min(index, remainder);
 

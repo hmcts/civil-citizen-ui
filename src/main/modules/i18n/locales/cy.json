@@ -559,8 +559,9 @@
       },
       "COMMON": {
         "ANYTHING_ELSE": "Unrhyw beth arall",
-        "MESSAGE_TO_THE_COURT": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
-        "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny.",
+        "MESSAGE_TO_THE_COURT_V1": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
+        "MESSAGE_TO_THE_COURT_V2": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
+        "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser.",
         "SEND_A_MESSAGE": "Anfon neges"
       },
       "WHAT_DO_YOU_WANT_TODO_TITLE": "Beth ydych chi eisiau ei wneud?",
@@ -618,7 +619,8 @@
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "Gweld y dogfennau yn fy nghyfrif",
           "CHANGE_THE_HEARING_DATE": "Newid dyddiad y gwrandawiad",
           "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Newid rhywbeth am y gwrandawiad",
-          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Gofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad"
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Gofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad",
+          "GA_OFFLINE": "Sut i wneud cais i’r llys"
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
@@ -677,7 +679,7 @@
         }
       },
       "CAPTIONS": {
-        "CHANGE_CASE": "CAPTION CHANGE_CASE",
+        "CHANGE_CASE": "Gwneud cais i’r llys",
         "GET_UPDATE": "Cael diweddariad ar fy achos",
         "SEND_UPDATE": "Anfon diweddariad ar fy achos",
         "SEND_DOCUMENTS": "Anfon dogfennau",
@@ -906,6 +908,16 @@
           "LINK_1": {
             "TEXT": " Dod o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Er mwyn gofyn am gymorth gyda’ch gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle mae’r gwrandawiad yn cael ei gynnal. Gallwch weld ym mha lys mae eich gwrandawiad yn cael ei wrando yn y gorchymyn cyfarwyddiadau."
+          }
+        },
+        "GA_OFFLINE": {
+          "LINK_1": {
+            "TEXT": "lenwi ffurflen N244 (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Er mwyn gwneud cais i’r llys rhaid i chi ",
+            "TEXT_AFTER": " a dychwelyd y ffurflen wedi’i llenwi i’r llys sy’n delio â’ch hawliad."
+          },
+          "LINK_2": {
+            "TEXT": "Dewch o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)"
           }
         }
       },
@@ -2665,12 +2677,13 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "Mae'r hawliad hwn wedi cael ei ddileu.",
         "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
-        "CASE_STAYED": "Mae’r achos wedi cael ei atal."
+        "CASE_STAYED": "Mae’r achos wedi cael ei atal.",
+        "CASE_DISCONTINUED": "Mae’r hawliad hwn wedi dirwyn i ben."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
         "CONTACT_COURT": "Cysylltu â’r llys i wneud cais am newid i fy achos (gwneud cais)",
-        "CONTACT_APPLY_COURT": "TBD",
+        "CONTACT_APPLY_COURT": "Cysylltu â’r llys neu wneud cais i’r llys",
         "DEBT_RESPITE_SCHEME": "Cynllun Seibiant Dyledion (Lle i Anadlu)CH1 cyfrifoldebau credydwyr i’r llys",
         "FIND_INFO_COURT": "Dod o hyd i wybodaeth am fy llys",
         "FIND_MEDIATION": "Canfod mwy am gyfryngu",
