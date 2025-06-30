@@ -53,6 +53,7 @@ package-lock.json
 **/.terraform
 **/.terraform.lock.hcl
 **/override.tf
+.env.local
 
 ## swc
 /.jest-cache

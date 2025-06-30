@@ -51,12 +51,11 @@ static Map<String, Object> secret(String secretName, String envVariable) {
 
 def copyPrevFailedAndNotExecutedTestFilesJson() {
   def buildFound = false
-  def buildNumber = currentBuild.previousBuild.number
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
   def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
   while (!buildFound && buildNumber > minBuildNumber) {
     try {
       copyArtifacts projectName: env.JOB_NAME, selector: specific("${buildNumber}"), filter: "test-results/functional/testFilesReport.json"
-      sh "mv 'test-results/functional/testFilesReport.json' 'test-results/functional/prevTestFilesReport.json'"
       buildFound = true
     } catch (Exception error) {
       echo "artifact not found: " + error.toString()
@@ -105,7 +104,16 @@ withNightlyPipeline(type, product, component) {
   boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean();
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean();
 
-  enableCrossBrowserTest()
+  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+    enableCrossBrowserTest()
+
+    afterAlways('crossBrowserTest') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+      env.IS_CROSSBROWSER = false
+    }
+  }
+
+  enableFullFunctionalTest(200)
 
   if(!forceGreenBuild) {
     before('fullFunctionalTest') {
@@ -113,18 +121,9 @@ withNightlyPipeline(type, product, component) {
         copyPrevFailedAndNotExecutedTestFilesJson()
       }
     }
-  }
 
-  enableFullFunctionalTest(200)
-
-  if(!forceGreenBuild) {
     afterAlways('fullFunctionalTest') {
       archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    }
-
-    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-      env.IS_CROSSBROWSER = false
     }
   }
 }
