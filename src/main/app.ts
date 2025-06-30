@@ -4,6 +4,7 @@ import express from 'express';
 import * as path from 'path';
 import session from 'express-session';
 import 'express-async-errors';
+import favicon from 'serve-favicon';
 
 import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
@@ -123,6 +124,7 @@ export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
