@@ -110,6 +110,7 @@ import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
 import {contactUsGuard} from 'routes/guards/contactUsGuard';
 import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
+import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -232,6 +233,8 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
 app.use([
   QUERY_MANAGEMENT_CREATE_QUERY,
 ], shareQueryConfirmationGuard);
+
+app.use(clearShareQuerySessionIfLeftJourney);
 
 app.use([
   //GA

@@ -1,5 +1,8 @@
 import {Response, NextFunction} from 'express';
-import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
+import {
+  clearShareQuerySessionIfLeftJourney,
+  shareQueryConfirmationGuard
+} from 'routes/guards/shareQueryConfirmationGuard';
 import {AppRequest} from 'models/AppRequest';
 
 const MOCK_RESPONSE = {redirect: jest.fn()} as unknown as Response;
@@ -37,4 +40,39 @@ describe('Share query confirmation guard', () => {
     expect(MOCK_NEXT).toHaveBeenCalled();
   });
 
+});
+
+describe('Clear share query session if outside journey', () => {
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should clear session if not in journey', () => {
+    const MOCK_REQUEST = {
+      originalUrl: '/some/other/path',
+      session: {
+        qmShareConfirmed: true,
+      },
+    } as unknown as AppRequest;
+
+    clearShareQuerySessionIfLeftJourney(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+    expect(MOCK_REQUEST.session.qmShareConfirmed).toBeUndefined();
+    expect(MOCK_NEXT).toHaveBeenCalled();
+  });
+
+  it('should not clear session if in journey', () => {
+    const MOCK_REQUEST = {
+      originalUrl: '/some/path/create-query',
+      session: {
+        qmShareConfirmed: true,
+      },
+    } as unknown as AppRequest;
+
+    clearShareQuerySessionIfLeftJourney(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+    expect(MOCK_REQUEST.session.qmShareConfirmed).toBe(true);
+    expect(MOCK_NEXT).toHaveBeenCalled();
+  });
 });
