@@ -35,7 +35,8 @@ async function recordNotificationClickForQueryResponse(claim: Claim, claimId: st
   const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
   const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
   if (dashboardNotifications) {
-    const qmNotif = dashboardNotifications.items.filter(item => item.descriptionEn.includes('The court has responded to the message you sent.'));
+    const qmNotif = dashboardNotifications.items.filter(item => item.descriptionEn.includes('The court has responded to the message you sent.')
+      || item.descriptionEn.includes('There has been a message sent on your case.'));
     if (qmNotif.length == 1) {
       const qmNotifId = qmNotif[0].id;
       await civilServiceClient.recordClick(qmNotifId, <AppRequest>req);
