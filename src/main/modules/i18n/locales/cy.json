@@ -2681,7 +2681,8 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "Mae'r hawliad hwn wedi cael ei ddileu.",
         "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
-        "CASE_STAYED": "Mae’r achos wedi cael ei atal."
+        "CASE_STAYED": "Mae’r achos wedi cael ei atal.",
+        "CASE_DISCONTINUED": "Mae’r hawliad hwn wedi dirwyn i ben."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
