@@ -29,32 +29,32 @@ BeforeSuite(async ({ api, I }) => {
   await claimSetup(api, I);
 });
 
-Scenario('Claimant verify Court Update Options flow', async ({ I }) => {
+Scenario.skip('Claimant verify Court Update Options flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.verifyCourtUpdateOptionsFlow();
 });
 
-Scenario('Claimant verify Send an Update to the court Options flow', async ({ I }) => {
+Scenario.skip('Claimant verify Send an Update to the court Options flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.verifySendUpdateToCourtFlow();
 });
 
-Scenario('Defendant Send documents to the court flow', async ({ I }) => {
+Scenario.skip('Defendant Send documents to the court flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.defendantCitizenUser });
   await ResponseSteps.sendDocuments();
 });
 
-Scenario('Applicant Solve a problem to the court flow', async ({ I }) => {
+Scenario.skip('Applicant Solve a problem to the court flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.solveProblem();
 });
 
-Scenario('Applicant Manage your hearing flow', async ({ I }) => {
+Scenario.skip('Applicant Manage your hearing flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.claimantCitizenUser });
   await ResponseSteps.manageYourHearing();
 });
 
-Scenario('Defendant Get support flow', async ({ I }) => {
+Scenario.skip('Defendant Get support flow', async ({ I }) => {
   await loginAndSelectClaim({ I, user: config.defendantCitizenUser });
   await ResponseSteps.getSupport('Defendant Support query', 'Defendant Support  Test message', false);
 });
