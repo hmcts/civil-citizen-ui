@@ -5,16 +5,16 @@ export class CourtOrder {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNumber({ maxDecimalPlaces: 2 }, { message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER' })
   @Min(0, { message: 'ERRORS.VALID_STRICTLY_POSITIVE_NUMBER' })
-  instalmentAmount?: number;
+    instalmentAmount?: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNumber({ maxDecimalPlaces: 2 }, { message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER' })
   @Min(1.00, { message: 'ERRORS.AMOUNT_REQUIRED' })
-  amount?: number;
+    amount?: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({ message: 'ERRORS.VALID_CLAIM_NUMBER' })
-  claimNumber?: string;
+    claimNumber?: string;
 
   constructor(amount?: number, instalmentAmount?: number, claimNumber?: string) {
     this.instalmentAmount = instalmentAmount;
@@ -34,8 +34,8 @@ export class CourtOrder {
     return Object.values(this).every(value =>
       value === undefined ||
       value === '' ||
-      (typeof value === 'string' && value.trim().length === 0)
-    )
+      (typeof value === 'string' && value.trim().length === 0),
+    );
   }
 
   isAtLeastOneFieldPopulated(): boolean {
