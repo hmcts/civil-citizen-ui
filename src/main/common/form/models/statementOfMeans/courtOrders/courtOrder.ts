@@ -31,8 +31,7 @@ export class CourtOrder {
   }
 
   public isEmpty (): boolean {
-    return Object.values(this)
-    .every(value => value === undefined || value === '' || value?.length === 0);
+    return Object.values(this).every(value => value === undefined || value === '' || value?.length === 0);
   }
 
   isAtLeastOneFieldPopulated (): boolean {
