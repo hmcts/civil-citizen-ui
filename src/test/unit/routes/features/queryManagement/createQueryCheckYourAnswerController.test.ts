@@ -51,11 +51,11 @@ describe('create query check your answer controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Dummy subject');
           expect(res.text).toContain('Send a message');
-          expect(res.text).toContain('Enter message details');
+          expect(res.text).toContain('Review message details');
           expect(res.text).toContain('Message subject');
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('Is your message about an upcoming hearing?');
-          expect(res.text).toContain('Upload documents (optional)');
+          expect(res.text).toContain('Attachments');
         });
     });
 
@@ -113,13 +113,13 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
-      const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined);
+      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
 
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(createApplicantCitizenQuery).toHaveBeenCalled();
+          expect(createQuery).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
           expect(saveQueryManagement).toHaveBeenCalled();
         });
@@ -133,13 +133,13 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery('Dummy details');
         return claim;
       });
-      const createApplicantCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createApplicantCitizenQuery').mockResolvedValueOnce(undefined);
+      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
 
       await request(app)
         .post(QM_FOLLOW_UP_CYA)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(createApplicantCitizenQuery).toHaveBeenCalled();
+          expect(createQuery).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
           expect(saveQueryManagement).toHaveBeenCalled();
         });
@@ -154,12 +154,12 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
-      const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined);
+      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(createRespondentCitizenQuery).toHaveBeenCalled();
+          expect(createQuery).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
           expect(saveQueryManagement).toHaveBeenCalled();
         });
@@ -173,12 +173,12 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery('Dummy details');
         return claim;
       });
-      const createRespondentCitizenQuery = jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockResolvedValueOnce(undefined);
+      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
       await request(app)
         .post(QM_FOLLOW_UP_CYA)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(createRespondentCitizenQuery).toHaveBeenCalled();
+          expect(createQuery).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
           expect(saveQueryManagement).toHaveBeenCalled();
         });
@@ -194,7 +194,7 @@ describe('create query check your answer controller', () => {
         return claim;
       });
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
-      jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockRejectedValueOnce(new Error('Error'));
+      jest.spyOn(createCheckYourAnswerService, 'createQuery').mockRejectedValueOnce(new Error('Error'));
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
@@ -211,7 +211,7 @@ describe('create query check your answer controller', () => {
         return claim;
       });
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
-      jest.spyOn(createCheckYourAnswerService, 'createRespondentCitizenQuery').mockRejectedValueOnce(new Error('Error'));
+      jest.spyOn(createCheckYourAnswerService, 'createQuery').mockRejectedValueOnce(new Error('Error'));
       await request(app)
         .post(QM_FOLLOW_UP_CYA)
         .expect((res) => {

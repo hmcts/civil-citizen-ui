@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import * as path from 'path';
+import favicon from 'serve-favicon';
 import session from 'express-session';
 import 'express-async-errors';
 
@@ -60,7 +61,7 @@ import {
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
   GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL, GA_SUBMIT_OFFLINE,
   GA_UNAVAILABILITY_CONFIRMATION_URL,
   GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
@@ -122,6 +123,7 @@ const cookieMaxAge = 90 * (60 * 1000); // 90 minutes
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
+app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
@@ -223,6 +225,8 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   QM_FOLLOW_UP_CYA,
   QM_FOLLOW_UP_MESSAGE,
   QUERY_MANAGEMENT_CREATE_QUERY,
+  APPLICATION_TYPE_URL,
+  GA_SUBMIT_OFFLINE,
 ], trackHistory);
 
 app.use([
