@@ -608,7 +608,7 @@
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
           "SETTLE_CLAIM": "Settle a claim",
           "AMEND_CLAIM_DETAILS": "Amend the claim details",
-          "CLAIM_ENDED": "Tell the court my claim has ended",
+          "CLAIM_ENDED": "Tell the court you do not want to continue your claim",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
@@ -717,30 +717,35 @@
           "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
         },
         "GENERAL_UPDATE" : {
-          "PARAGRAPH_1": "We cannot give updates on emails, forms or applications you have already sent to us.",
-          "PARAGRAPH_2": "You will be sent a response or details of any next steps you need to take once the court work is complete.",
-          "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
+          "PARAGRAPH_1": "Your dashboard has all the most up to date information, you will be sent email notifications when your case is updated or you get a reply to a message.",
+          "PARAGRAPH_2": "We cannot give updates on emails, forms or applications you have already sent to us.",
+          "PARAGRAPH_3": "You will be sent a response or details of any next steps you need to take once the court work is complete.",
+          "PARAGRAPH_4": "We try to process emails, applications and forms in 10 working days, but it can take longer."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
-          "PARAGRAPH_2": "The defendant can decide to&#58",
+          "LINK_1": {
+            "TEXT": "respond to the claim",
+            "TEXT_BEFORE": "The defendant has up to 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended by selecting to "
+          },
+          "TEXT_1": "The defendant has up to 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended by selecting to respond to the claim.",
+          "PARAGRAPH_1": "The defendant can decide to&#58",
           "LI_1": "pay the full amount",
           "LI_2": "offer to pay a different amount (if they think they owe less)",
           "LI_3": "defend the claim (if they do not think they owe any money)",
-          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "PARAGRAPH_2": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
           "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
-          "LINK_1": {
+          "LINK_2": {
             "TEXT": "request a county court judgment (CCJ)",
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
-          "LINK_2": {
+          "LINK_3": {
             "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
         },
         "CLAIM_NOT_PAID_AFTER_JUDGMENT" : {
-          "PARAGRAPH_1": "If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.",
+          "PARAGRAPH_1": "If the claimant applies for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.",
           "PARAGRAPH_2": "The claimant can instruct the court to undertake different enforcement processes. This is called 'enforcing the judgment'. The claimant can ask the court to issue&#58",
           "LI_1": "a warrant of control - for goods owned by the defendant",
           "LI_2": "an attachment of earnings order - for a portion of the defendant’s earnings",
@@ -751,32 +756,34 @@
             "TEXT_BEFORE": "Find more detail about "
           },
           "SUBTITLE_1": "Fees",
+          "PARAGRAPH_3": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select.",
           "LINK_2": {
-            "TEXT": "about civil court fees (opens in a new window)",
-            "TEXT_BEFORE": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select. Find out "
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          },
+          "LINK_3": {
+            "TEXT": "civil court fees (opens in a new window)",
+            "TEXT_BEFORE": "Find out about "
           }
         },
         "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
           "SUBTITLE_1": "If part of the judgment or claim amount has been paid",
-          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court."
+          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court.",
+          "LINK_1": {
+            "TEXT": "about enforcing a partially paid judgment (opens in a new window)",
+            "TEXT_BEFORE": "Find out "
+          }
         },
         "SETTLE_CLAIM" : {
           "SUBTITLE_1": "If the claim is paid or you agree the balance is settled",
-          "TEXT_UPDATE_WITHOUT_LINK": "Update the claim in the online service by selecting tell us you’ve settled the claim.",
-          "LINK_2": {
-            "TEXT": "contactocmc@justice.gov.uk",
-            "TEXT_BEFORE": "You can also email ",
-            "TEXT_AFTER": " to say the claim is settled. You should include:"
-          },
-          "LI_1": "your name",
-          "LI_2": "the claim number",
-          "LI_3": "the date the final payment cleared in your account",
+          "TEXT_UPDATE_WITHOUT_LINK": "If you are a claimant, update the claim in the online service by selecting tell us you’ve settled the claim.",
           "SUBTITLE_2": "Claims settled through a small claims mediator",
-          "TEXT_1": "If a mediator settled your claim, the mediator will update your case record for you.",
+          "TEXT_1": "If your claim was settled at mediation, the mediator will update your case record for you.",
           "NOT_SETTLED": {
             "LINK_1": {
               "TEXT": "tell us you’ve settled the claim",
-              "TEXT_BEFORE": "Update the claim in the online service by selecting"
+              "TEXT_BEFORE": "If you are a claimant, update the claim in the online service by selecting "
             }
           }
         },

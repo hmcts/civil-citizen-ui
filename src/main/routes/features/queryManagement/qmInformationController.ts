@@ -7,7 +7,7 @@ import {
   CCJ_PAID_AMOUNT_URL,
   DATE_PAID_URL,
   QUERY_MANAGEMENT_CREATE_QUERY,
-  UPLOAD_YOUR_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL, BILINGUAL_LANGUAGE_PREFERENCE_URL,
 } from 'routes/urls';
 
 import {
@@ -30,7 +30,7 @@ import {
   findCourtTribunalUrl,
   thirdPartyDebtOrChargingOrderUrl,
   warrantOfControlUrl,
-  whatToDoUrl, applicationNoticeUrl,
+  whatToDoUrl, applicationNoticeUrl, feesHelpUrl, enforceJudgementUrl,
 } from 'common/utils/externalURLs';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
@@ -129,7 +129,8 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         pageSection
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_2`)
-          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`);
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_4`);
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID: {
@@ -137,22 +138,27 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         const isCCJLinkEnabled = claim.isClaimant() &&
           claim.isDeadLinePassed() &&
           claim.isDefendantNotResponded();
+        const isAwaitingDefendantResponse = claim.isDefendant() && claim.isDefendantNotResponded();
+        if (isAwaitingDefendantResponse) {
+          pageSection.addFullStopLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, BILINGUAL_LANGUAGE_PREFERENCE_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`);
+        } else {
+          pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.TEXT_1`);
+        }
         pageSection
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
-          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_1`, {lng: lang})}</li>
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_2`, {lng: lang})}</li>
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_3`, {lng: lang})}</li>
             </ul>`)
-          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
           .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
         if (isCCJLinkEnabled) {
-          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.');
+          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.');
         } else {
           pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED`);
         }
-        pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
+        pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_3.TEXT_BEFORE`, '.', null, true);
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT: {
@@ -168,7 +174,9 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
             </ul>`)
           .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT`, whatToDoUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT_BEFORE`, '.', null, true)
           .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.SUBTITLE_1`)
-          .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT`, checkCivilFees_Ex50Url, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_BEFORE`, '.', null, true);
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_3`)
+          .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT`, feesHelpUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_AFTER`, null, true)
+          .addFullStopLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_3.TEXT`, checkCivilFees_Ex50Url, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_3.TEXT_BEFORE`, null, null, true);
 
         break;
       }
@@ -208,7 +216,8 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
-          .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`);
+          .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`)
+          .addFullStopLink(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.LINK_1.TEXT`, enforceJudgementUrl, `${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.LINK_1.TEXT_BEFORE`, null, '', true);
         break;
       }
       case QualifyingQuestionTypeOption.SETTLE_CLAIM: {
@@ -217,18 +226,12 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
         if (claim.isClaimant() && !claim.isClaimSettled()) {
           pageSection
-            .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
+            .addFullStopLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`)
         } else {
           pageSection
             .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_UPDATE_WITHOUT_LINK`);
         }
         pageSection
-          .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_AFTER`)
-          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
-                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_1`, {lng: lang})}</li>
-                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_2`, {lng: lang})}</li>
-                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_3`, {lng: lang})}</li>
-              </ul>`)
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_2`)
           .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_1`);
         break;
