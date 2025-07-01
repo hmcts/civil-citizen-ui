@@ -552,7 +552,7 @@
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",
-        "CONFIRMATION_TEXT": "Your message has been sent to the court",
+        "CONFIRMATION_TEXT": "Your message has been sent to the court and other parties",
         "CONFIRMATION_TEXT_1": "Our team will read your message and try to respond within 10 working days.",
         "CONFIRMATION_TEXT_2": "You will be notified when the court responds to your message and you will be able to view it from your dashboard.",
         "GO_TO_DASHBOARD": "Go to your dashboard"
@@ -939,6 +939,7 @@
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "HEADING": "Review message details",
         "NO_DOCUMENTS_UPLOADED": "No documents uploaded",
         "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Message subject",
@@ -2666,7 +2667,8 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
         "CASE_DISMISSED": "The case has been closed.",
-        "CASE_STAYED": "The case has been stayed."
+        "CASE_STAYED": "The case has been stayed.",
+        "CASE_DISCONTINUED": "This claim is discontinued."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
