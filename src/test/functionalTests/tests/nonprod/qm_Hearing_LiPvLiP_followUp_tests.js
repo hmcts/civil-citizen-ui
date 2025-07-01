@@ -20,13 +20,13 @@ async function loginAndOpenClaim(I, user, claimNumber) {
   await LoginSteps.EnterCitizenCredentials(user.email, user.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  console.log(`[INFO] Opened claim dashboard for user: ${user.email}`);
+  console.log(`Opened claim dashboard for user: ${user.email}`);
 }
 
 async function raiseAndRespondToQueries(qmSteps, caseId, citizenUser, caseworkerUser, queryType, isHearingRelated) {
   const query = await qmSteps.raiseLipQuery(caseId, citizenUser, queryType, isHearingRelated);
   await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType);
-  console.log(`[INFO] Raised and responded to query of type: ${queryType}`);
+  console.log(`Raised and responded to query of type: ${queryType}`);
 }
 
 async function createLipClaim(api) {
@@ -40,7 +40,7 @@ async function createLipClaim(api) {
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
-  console.log(`🧾 Created LiP claim. Claim number: ${claimNumber}`);
+  console.log(`Created LiP claim. Claim number: ${claimNumber}`);
   return claimRef;
 }
 

@@ -27,7 +27,6 @@ Scenario.skip('Claimant sends non-hearing message to court', async ({ api, I }) 
 
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
-  console.log('🧾 Claim number:', claimNumber);
 
   const subject = 'Claimant query';
   const message = 'Claimant Test message';
