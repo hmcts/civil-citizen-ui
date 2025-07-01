@@ -552,14 +552,15 @@
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",
-        "CONFIRMATION_TEXT": "Your message has been sent to the court",
+        "CONFIRMATION_TEXT": "Your message has been sent to the court and other parties",
         "CONFIRMATION_TEXT_1": "Our team will read your message and try to respond within 10 working days.",
         "CONFIRMATION_TEXT_2": "You will be notified when the court responds to your message and you will be able to view it from your dashboard.",
         "GO_TO_DASHBOARD": "Go to your dashboard"
       },
       "COMMON": {
         "ANYTHING_ELSE": "Anything else",
-        "MESSAGE_TO_THE_COURT": "If you still need an update on your claim, you can send a message to the court.",
+        "MESSAGE_TO_THE_COURT_V1": "If you still need an update on your claim, you can send a message to the court.",
+        "MESSAGE_TO_THE_COURT_V2": "If you still need help with your claim, you can send a message to the court.",
         "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
         "SEND_A_MESSAGE": "Send a message"
       },
@@ -618,7 +619,8 @@
           "VIEW_DOCUMENTS_ON_MY_ACCOUNT": "See the documents on my account",
           "CHANGE_THE_HEARING_DATE": "Change the hearing date",
           "CHANGE_SOMETHING_ABOUT_THE_HEARING": "Change something about the hearing",
-          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing"
+          "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": "Ask for help and support during your hearing",
+          "GA_OFFLINE": "How to make an application to the court"
         },
         "OPTIONS": {
           "GENERAL_UPDATE": {
@@ -677,7 +679,7 @@
         }
       },
       "CAPTIONS": {
-        "CHANGE_CASE": "CAPTION CHANGE_CASE",
+        "CHANGE_CASE": "Make an application to the court",
         "GET_UPDATE": "Get an update on my case",
         "SEND_UPDATE": "Send an update on my case",
         "SEND_DOCUMENTS": "Send documents",
@@ -907,6 +909,16 @@
             "TEXT": "Find the contact details for the court (opens in a new window)",
             "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
           }
+        },
+        "GA_OFFLINE": {
+          "LINK_1": {
+            "TEXT": "fill in form N244 (opens in a new window)",
+            "TEXT_BEFORE": "To make an application to the court you must ",
+            "TEXT_AFTER": " and return the completed form to the court handling your claim."
+          },
+          "LINK_2": {
+            "TEXT": "Find the contact details for the court (opens in a new window)"
+          }
         }
       },
       "HEADINGS": {
@@ -927,6 +939,7 @@
         "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "HEADING": "Review message details",
         "NO_DOCUMENTS_UPLOADED": "No documents uploaded",
         "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Message subject",
@@ -2653,7 +2666,8 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
         "CASE_DISMISSED": "The case has been closed.",
-        "CASE_STAYED": "The case has been stayed."
+        "CASE_STAYED": "The case has been stayed.",
+        "CASE_DISCONTINUED": "This claim is discontinued."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
