@@ -23,7 +23,7 @@ createQueryCheckYourAnswerController.get([QM_CYA, QM_FOLLOW_UP_CYA], (async (req
     const isFollowUpUrl = isFollowUp(req.originalUrl);
     const title = {
       caption: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_CAPTION':'PAGES.QM.HEADINGS.CAPTION',
-      heading: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_HEADING':'PAGES.QM.HEADINGS.HEADING',
+      heading: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_HEADING':'PAGES.QM.SEND_MESSAGE_CYA.HEADING',
     };
     const queryId = req.params.queryId;
     const claim = await getClaimById(req.params.id, req, true);
