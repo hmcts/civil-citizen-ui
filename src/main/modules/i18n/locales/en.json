@@ -3767,6 +3767,7 @@
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
+        "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Translated Application Summary Document",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "GENERAL_ORDER" : "General Order",
         "COURT_DOCUMENT": "Court document",
