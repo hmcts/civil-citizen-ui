@@ -195,11 +195,10 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
+  queries?: CaseQueries;
+  previousCCDState?: string;
   // Index signature to allow dynamic property access
   [key: string]: any;
-  //Query management
-  qmApplicantLipQueries?: CaseQueries;
-  qmDefendantLipQueries?: CaseQueries;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -948,6 +947,10 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
+  isCaseDiscontinued() {
+    return this.ccdState === CaseState.CASE_DISCONTINUED ;
+  }
+
   isDefendantAgreedForMediation() {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
@@ -1112,7 +1115,9 @@ export class Claim {
 
   isAnyPartyBilingual() : boolean {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
-      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+      || this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH'
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'WELSH';
   }
 }
 

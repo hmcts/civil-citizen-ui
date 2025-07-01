@@ -4,10 +4,11 @@ import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
 import {Claim} from 'models/claim';
-import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {deleteQueryManagement, getQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -57,7 +58,7 @@ describe('Send follow query controller', () => {
         });
     });
 
-    it('should pre fill field values when session data is set', async () => {
+    it('should remove Field values url starts with start', async () => {
       const preFilledData = {'messageDetails': 'test body'};
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
@@ -65,10 +66,10 @@ describe('Send follow query controller', () => {
       queryManagementMock.mockResolvedValue(claim.queryManagement);
 
       await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE)
+        .get(QM_FOLLOW_UP_MESSAGE + `?linkFrom=${LinKFromValues.start}`)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('test body');
+          expect(deleteQueryManagement).toHaveBeenCalledTimes(1);
         });
     });
   });
