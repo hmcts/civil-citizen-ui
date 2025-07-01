@@ -51,11 +51,11 @@ describe('create query check your answer controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Dummy subject');
           expect(res.text).toContain('Send a message');
-          expect(res.text).toContain('Review message details');
+          expect(res.text).toContain('Enter message details');
           expect(res.text).toContain('Message subject');
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('Is your message about an upcoming hearing?');
-          expect(res.text).toContain('Attachments');
+          expect(res.text).toContain('Upload documents (optional)');
         });
     });
 

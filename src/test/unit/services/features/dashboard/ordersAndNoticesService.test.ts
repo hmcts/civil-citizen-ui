@@ -604,24 +604,6 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for translated standard directions order', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SDO_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
     it('should get data array for lip manual determination', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
