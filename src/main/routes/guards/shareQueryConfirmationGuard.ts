@@ -18,7 +18,7 @@ export const shareQueryConfirmationGuard = (req: AppRequest, res: Response, next
 };
 
 export const clearShareQuerySessionIfLeftJourney = (req: AppRequest, res: Response, next: NextFunction): void => {
-  const allowedJourneyPaths = ['/share-query', '/create-query', '/create-query-cya', '/back'];
+  const allowedJourneyPaths = ['/share-query', '/create-query', '/create-query-cya', '/back', '/confirmation'];
   const pathOnly = req.originalUrl.split('?')[0];
   const isInJourney = allowedJourneyPaths.some(path => pathOnly.includes(path));
 
