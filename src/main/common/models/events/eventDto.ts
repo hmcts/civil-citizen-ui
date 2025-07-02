@@ -30,6 +30,5 @@ export interface ClaimUpdate {
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
   applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
   applicant1ClaimSettledDate?: Date;
-  qmApplicantCitizenQueries?: CaseQueries;
-  qmRespondentCitizenQueries?: CaseQueries;
+  queries?: CaseQueries;
 }

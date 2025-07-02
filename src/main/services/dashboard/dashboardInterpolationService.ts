@@ -46,7 +46,8 @@ import {
   GA_SUBMIT_OFFLINE,
   VIEW_THE_JUDGMENT_URL,
   QM_VIEW_QUERY_URL,
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
