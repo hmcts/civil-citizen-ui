@@ -18,7 +18,7 @@ async function loginAndOpenClaim(I, user, claimNumber) {
   await I.click(claimNumber);
 }
 
-Scenario.skip('Claimant sends message to court', async ({ api, I }) => {
+Scenario('Claimant sends message to court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
   console.log('LIP vs LIP QM claim created:', claimRef);
 
@@ -43,7 +43,7 @@ Scenario.skip('Claimant sends message to court', async ({ api, I }) => {
   await ResponseSteps.viewYourMessagesInDashboard();
 });
 
-Scenario.skip('Defendant sends message to court', async ({ I }) => {
+Scenario('Defendant sends message to court', async ({ I }) => {
   const subject = 'Defendant Hearing query';
   const message = 'Defendant Hearing Test message';
   const isHearingRelated = true;

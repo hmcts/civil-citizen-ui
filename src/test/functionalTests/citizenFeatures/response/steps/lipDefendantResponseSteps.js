@@ -222,6 +222,10 @@ class ResponseSteps {
     await dashboardPage.clickOnViewMessages();
   }
 
+  async verifyUserQueryInDashboard() {
+    await dashboardPage.verifyUserQuery();
+  }
+
   async SendMessageToCourt(subject, message, isHearingRelated) {
     await dashboardPage.sendAMessage();
     await qmStartPage.verifyAllContactOptionsPresent();
@@ -299,21 +303,21 @@ class ResponseSteps {
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {
-    await I.waitForContent('View your messages to the court', 60);
-    await I.click('View your messages to the court');
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
     await viewQueryPage.verifyMessagesBeforeFollowUp(subject, message, isHearingRelated);
   }
 
   async followUpMessage(subject, message, isHearingRelated) {
-    await I.waitForContent('View your messages to the court', 60);
-    await I.click('View your messages to the court');
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
     await viewQueryPage.verifyFollowUp(subject, message, isHearingRelated);
     await viewQueryPage.sendFollowUpMessage();
   }
 
   async verifyFollowUpMessage(subject) {
-    await I.waitForContent('View your messages to the court', 60);
-    await I.click('View your messages to the court');
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
     await viewQueryPage.verifyMessagesAfterFollowUp(subject);
   }
 
