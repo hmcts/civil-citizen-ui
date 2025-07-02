@@ -49,7 +49,7 @@ export class ViewQueriesService {
     const parent = queries.caseMessages.find(query => query.value.id === queryId);
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
-    let closedQuery = combined.find(message => message.value.isClosed && message.value.isClosed === true);
+    const closedQuery = combined.find(message => message.value.isClosed && message.value.isClosed === true);
     const lastStatus = combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
     const formatted = combined.map(item => {
       const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn } = item.value;
