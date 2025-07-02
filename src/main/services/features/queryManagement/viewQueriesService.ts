@@ -50,7 +50,7 @@ export class ViewQueriesService {
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
     console.log(combined);
-    const closedQuery = combined.some(message => message.value.isClosed && message.value.isClosed.option === 'Yes');
+    const closedQuery = combined.some(message => message.value.isClosed?.option === 'Yes');
     console.log(closedQuery);
     const lastStatus = closedQuery ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
       : combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT' ;
