@@ -72,6 +72,6 @@ export class ViewQueriesService {
         formatDateToFullDate(new Date(hearingDate), lang),
       );
     });
-    return new QueryDetail(parent.value.subject, lastStatus, formatted, closedQuery != null);
+    return new QueryDetail(parent.value.subject, lastStatus, formatted, closedQuery.length !== 0);
   }
 }
