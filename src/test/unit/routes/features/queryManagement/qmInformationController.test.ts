@@ -124,7 +124,7 @@ describe('Query management Information controller', () => {
     [QualifyingQuestionTypeOption.GENERAL_UPDATE, false, 'Get a general update on what is happening with the case', 'We cannot give updates on emails, forms or applications you have already sent to us.'],
     [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, true, 'Understand what happens if the claim is not paid', '<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/ccj/paid-amount>request a county court judgment (CCJ)</a>'],
     [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, false, 'Understand what happens if the claim is not paid', '<p class="govuk-body ">If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ).</p>'],
-    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, false, 'Understand what happens if the judgment is not paid', 'If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, false, 'Understand what happens if the judgment is not paid', 'If the claimant applies for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.'],
   ])('should return GET_UPDATE information for %s with isCcjLinkEnabled %s', async (questionType, isCcjLinkEnabled, title:string, textLink: string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
 
@@ -160,7 +160,7 @@ describe('Query management Information controller', () => {
     [QualifyingQuestionTypeOption.SETTLE_CLAIM, false, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
     [QualifyingQuestionTypeOption.SETTLE_CLAIM, true, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
     [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS, null, 'Amend the claim details', 'If you want to change the details of your claim, including:'],
-    [QualifyingQuestionTypeOption.CLAIM_ENDED, null, 'Tell the court my claim has ended', 'To tell the court your claim has ended, you need to fill in and send a form called a'],
+    [QualifyingQuestionTypeOption.CLAIM_ENDED, null, 'Tell the court you do not want to continue your claim', 'To tell the court you no longer want to continue with your claim, you need to fill in and send a form called a'],
   ])('should return SEND_UPDATE information for %s and isClaimant %s', async (questionType, isClaimant: boolean, title:string, subtitle: string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_UPDATE');
     const isSettleClaimAndIsClaimant = QualifyingQuestionTypeOption.SETTLE_CLAIM && isClaimant;
@@ -184,7 +184,7 @@ describe('Query management Information controller', () => {
           expect(res.text).toContain('<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/paid-in-full/date-paid>tell us you’ve settled the claim</a>');
 
         } else if (questionType === QualifyingQuestionTypeOption.SETTLE_CLAIM) {
-          expect(res.text).toContain('Update the claim in the online service by selecting tell us you’ve settled the claim.');
+          expect(res.text).toContain('If you are a claimant, update the claim in the online service by selecting tell us you’ve settled the claim.');
         }
         expect(res.text).toContain('Anything else');
       });
