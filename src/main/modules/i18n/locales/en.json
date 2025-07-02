@@ -926,7 +926,7 @@
         "HEADING": "Enter message details",
         "CAPTION": "Send a message",
         "FOLLOW_UP_CAPTION": "Send a follow up message",
-        "FOLLOW_UP_HEADING": "Check your answers"
+        "FOLLOW_UP_HEADING": "Review message details"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Message subject",
@@ -963,6 +963,7 @@
         "STATUS_RECEIVED": "Response received"
       },
       "FOLLOW_UP_QUERY": {
+        "WARNING_TEXT": "Follow up messages can be seen by all parties.",
         "BODY_TITLE": "Message details",
         "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
