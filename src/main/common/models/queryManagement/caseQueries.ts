@@ -23,6 +23,7 @@ export interface CaseMessage {
   createdOn: string;
   createdBy: string;
   parentId?: string;
+  isClosed?: boolean;
 }
 
 export interface FormDocument {

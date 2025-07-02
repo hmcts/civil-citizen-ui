@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -99,12 +100,18 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-          {% if not isClaimOffLine and selectedQueryItem.lastStatus == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
+          {% if not isClaimOffLine and selectedQueryItem.lastStatus == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' and not selectedQueryItem.isQueryClosed %}
             {{ govukButton({
               text: t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP'),
               classes: "govuk-button--secondary",
               href: followUpScreen
             }) }}
+          {% endif %}
+          {% if selectedQueryItem.isQueryClosed %}
+          {{ govukWarningText({
+            text: t('PAGES.QM.VIEW_QUERY_DETAILS.THREAD_CLOSED_BY_STAFF'),
+            iconFallbackText: "Warning"
+           }) }}
           {% endif %}
         </div>
       </div>

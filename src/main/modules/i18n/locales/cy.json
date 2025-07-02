@@ -984,7 +984,8 @@
         "SENT_BY_YOU": "Chi",
         "SENT_BY_COURT_STAFF": "Staff y Llys",
         "SENT_ON": "Anfonwyd ar",
-        "SEND_FOLLOW_UP": "Anfon neges ddilynol"
+        "SEND_FOLLOW_UP": "Anfon neges ddilynol",
+        "THREAD_CLOSED_BY_STAFF": "Mae’r neges hon wedi’i chau gan staff y llys ar "
       }
     },
     "SUBJECT_TO_FRC": {
