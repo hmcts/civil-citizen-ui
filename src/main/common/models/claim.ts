@@ -195,12 +195,10 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
+  queries?: CaseQueries;
   previousCCDState?: string;
   // Index signature to allow dynamic property access
   [key: string]: any;
-  //Query management
-  qmApplicantLipQueries?: CaseQueries;
-  qmDefendantLipQueries?: CaseQueries;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
