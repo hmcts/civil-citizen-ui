@@ -960,7 +960,8 @@
         "UPDATED_BY_COURT_STAFF": "Court staff",
         "UPDATED_BY_YOU": "You",
         "STATUS_SENT": "Message sent",
-        "STATUS_RECEIVED": "Response received"
+        "STATUS_RECEIVED": "Response received",
+        "STATUS_CLOSED": "Closed"
       },
       "FOLLOW_UP_QUERY": {
         "WARNING_TEXT": "Follow up messages can be seen by all parties.",
