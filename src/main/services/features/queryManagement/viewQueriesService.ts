@@ -52,7 +52,7 @@ export class ViewQueriesService {
     console.log(combined);
     combined.map(message => {
       console.log(message.value.isClosed);
-      console.log(message.value.isClosed.option);
+      console.log(message.value.isClosed?.option);
     });
     const closedQuery = combined.some(message => message.value.isClosed?.option === 'Yes');
     console.log(closedQuery);
