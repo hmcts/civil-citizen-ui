@@ -156,6 +156,32 @@ describe('Query management Information controller', () => {
   });
 
   it.each([
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, 'Understand what happens if the claim is not paid'],
+  ])('should return GET_UPDATE information for %s', async (questionType, title:string ) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
+
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+    mockGetClaimById.mockImplementation(() => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate()-1);
+      claim.respondent1ResponseDeadline = yesterday;
+      return claim;
+    });
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain('The defendant has up to 28 days to respond once they receive the claim.');
+        expect(res.text).toContain('Get an update on my case');
+        expect(res.text).toContain('Anything else');
+      });
+  });
+
+  it.each([
     [QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT, null, 'Update the court about a partially paid judgment or claim', 'If part of the judgment or claim amount has been paid'],
     [QualifyingQuestionTypeOption.SETTLE_CLAIM, false, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
     [QualifyingQuestionTypeOption.SETTLE_CLAIM, true, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
