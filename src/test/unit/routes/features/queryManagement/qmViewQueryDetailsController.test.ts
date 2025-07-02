@@ -58,6 +58,7 @@ describe('View query controller', () => {
           '13 February 2025, 11:30:10 am',
         ),
         ),
+        false
       ));
     });
     it('should render query details', async () => {
