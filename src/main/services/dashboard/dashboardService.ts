@@ -36,6 +36,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'Mediation', []));
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
+const GA_DASHBOARD_EXCLUSIONS_QM = Array.of(new DashboardTaskList('Applications and messages to the court', 'Applications and messages to the court', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -70,7 +71,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     } else if (queryManagementFlagEnabled) {
       //remove Applications sections
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-
+      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS_QM.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
     else { // prod code
       //exclude Applications sections
