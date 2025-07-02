@@ -50,7 +50,7 @@ export class ViewQueriesService {
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
     console.log(combined);
-    combined.map(message => {
+    combined.forEach(message => {
       console.log(message.value.isClosed);
       console.log(message.value.isClosed?.option);
     });
