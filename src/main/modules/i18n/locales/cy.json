@@ -697,7 +697,7 @@
           "LINK_1": {
             "TEXT": "anfon neges i’r llys.",
             "TEXT_BEFORE": "Os nad yw’n fater brys, gallwch ",
-            "TEXT_AFTER": " Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny."
+            "TEXT_AFTER": " Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser."
           },
           "LINK_2": {
             "TEXT": "fanylion cyswllt y llys (yn agor mewn ffenestr newydd).",
@@ -802,24 +802,30 @@
             "TEXT_BEFORE": "Os ydych yn newid swm yr hawliad, bydd yr achos yn cael ei symud all-lein ac efallai bydd y ffi llys mae’n rhaid i chi ei thalu yn newid. ",
             "TEXT_AFTER": " i wneud yn siŵr eich bod yn talu’r ffi gywir."
           },
-          "SUBTITLE_1": "Os yw cyfeiriad y diffynnydd yn anghywir",
           "LINK_3": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          },
+          "SUBTITLE_1": "Os yw cyfeiriad y diffynnydd yn anghywir",
+          "LINK_4": {
             "TEXT": "ymholiadaucymraeg@justice.gov.uk",
             "TEXT_BEFORE": "Gallwch anfon y ffurflen hawlio ddiwygiedig, gyda’r cyfeiriad cywir wedi’i nodi arni mewn inc coch. Anfonwch y ffurflen ddiwygiedig i "
           },
           "SUBTITLE_2": "I ddiweddaru eich manylion cyswllt",
-          "LINK_4": {
+          "LINK_5": {
             "TEXT": "anfonwch neges i’r llys",
             "TEXT_BEFORE": "I ddiweddaru eich manylion cyswllt, "
           }
         },
         "CLAIM_ENDED" : {
           "LINK_1": {
-            "TEXT": "hysbysiad dirwyn i ben (yn agor mewn ffenestr newydd)",
-            "TEXT_BEFORE": "I ddweud wrth y llys bod eich hawliad wedi dod i ben bydd angen i chi lenwi ac anfon ffurflen o’r enw ",
-            "TEXT_AFTER": " i’r llys ac at y partïon eraill yn yr achos."
+            "TEXT": "rhybudd dirwyn achos i ben (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Er mwyn dweud wrth y llys nad ydych am barhau â’ch hawliad mwyach, mae angen i chi lenwi ac anfon ffurflen o’r enw ",
+            "TEXT_AFTER": " at y llys a’r parti arall yn yr achos."
           },
-          "TEXT_1": "Ni allwch uwchlwytho hysbysiad dirwyn i ben i’r system Hawliadau am Arian.",
+          "TEXT_1": "Os dewiswch ddirwyn yr achos i ben, efallai y bydd yn rhaid i chi dalu rhai o gostau’r parti arall.",
+          "TEXT_2": "Ni allwch uwchlwytho hysbysiad dirwyn i ben i’r system Hawliadau am Arian.",
           "LINK_2": {
             "TEXT": "gysylltu â’r llys (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "I anfon hawliad dirwyn i ben i’r llys, dylech ",
@@ -857,6 +863,11 @@
             "TEXT": "gwiriwch y rhestr ffioedd sifil (yn agor mewn ffenestr newydd) ",
             "TEXT_BEFORE": "Mae yna ffi yn daladwy am bob opsiwn, ",
             "TEXT_AFTER": "i weld y costau ar gyfer yr opsiwn rydych yn ei ddewis. "
+          },
+          "LINK_6": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
           }
         },
         "CLAIM_DOCUMENTS_AND_EVIDENCE": {
@@ -888,7 +899,12 @@
             "TEXT_BEFORE": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad llai na 14 diwrnod cyn y gwrandawiad, yna fe godir ffi arnoch. ",
             "TEXT_AFTER": " i sicrhau eich bod yn talu’r ffi gywir."
           },
-          "PARAGRAPH_4": "Nid oes rhaid i chi dalu am gais i newid dyddiad y gwrandawiad os byddwch yn gwneud y cais mwy na 14 diwrnod cyn dyddiad y gwrandawiad ac mae’r parti arall yn cytuno."
+          "PARAGRAPH_4": "Nid oes rhaid i chi dalu am gais i newid dyddiad y gwrandawiad os byddwch yn gwneud y cais mwy na 14 diwrnod cyn dyddiad y gwrandawiad ac mae’r parti arall yn cytuno.",
+          "LINK_3": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          }
         },
         "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
           "PARAGRAPH_1": "Gallwch wneud cais i newid manylion y gwrandawiad, megis:",
@@ -903,18 +919,22 @@
             "TEXT": "ffioedd mewn achosion sifil (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
-          "PARAGRAPH_2": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad, bydd rhaid i chi dalu ffi. Efallai y cewch dalu ffi ostyngol os ydych chi’n gwneud mwy nag un cais."
+          "PARAGRAPH_2": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad, bydd rhaid i chi dalu ffi. Efallai y cewch dalu ffi ostyngol os ydych chi’n gwneud mwy nag un cais.",
+          "LINK_3": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          }
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "Gallwch ofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad.",
-          "PARAGRAPH_2": "Er enghraifft, gallai hyn fod yn:",
+          "PARAGRAPH_2": "Er enghraifft, gallai hyn fod:",
           "LIST_1": "rampiau neu doiledau hygyrch",
           "LIST_2": "dolen glyw",
-          "LIST_3": "ffurflenni mewn print bras",
-          "LIST_4": "canllawiau ar ffurf ffeil sain neu fformat hawdd ei ddarllen",
+          "LIST_3": "cyfarwyddiadau sain neu mewn fformat hawdd ei ddarllen",
+          "PARAGRAPH_3": "Er mwyn gofyn am gymorth yn eich gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle cynhelir y gwrandawiad. Gallwch weld pa lys sy’n gwrando eich achos yn eich gorchymyn cyfarwyddiadau neu hysbysiad o wrandawiad.",
           "LINK_1": {
-            "TEXT": " Dod o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)",
-            "TEXT_BEFORE": "Er mwyn gofyn am gymorth gyda’ch gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle mae’r gwrandawiad yn cael ei gynnal. Gallwch weld ym mha lys mae eich gwrandawiad yn cael ei wrando yn y gorchymyn cyfarwyddiadau."
+            "TEXT": "Dewch o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)."
           }
         },
         "GA_OFFLINE": {

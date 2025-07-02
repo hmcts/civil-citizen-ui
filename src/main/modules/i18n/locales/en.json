@@ -695,9 +695,9 @@
       "QUALIFY_SECTIONS": {
         "COMMON_SOLVE_PROBLEMS": {
           "LINK_1": {
-            "TEXT": "send a message to the court",
+            "TEXT": "send a message to the court.",
             "TEXT_BEFORE": "If the issue is not urgent, you can ",
-            "TEXT_AFTER": ". We try to answer messages within 10 days, but it could take longer."
+            "TEXT_AFTER": " We try to answer messages within 10 working days, but it could take longer."
           },
           "LINK_2": {
             "TEXT": "contact details for the court (opens in a new window)",
@@ -802,13 +802,18 @@
             "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
             "TEXT_AFTER": " to make sure you pay the correct fee."
           },
-          "SUBTITLE_1": "If the defendant’s address is wrong",
           "LINK_3": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          },
+          "SUBTITLE_1": "If the defendant’s address is wrong",
+          "LINK_4": {
             "TEXT": "contactocmc@justice.gov.uk",
             "TEXT_BEFORE": "You can send an amended claim form, with the correct address written in red ink. Email the amended form to "
           },
           "SUBTITLE_2": "To update your contact details",
-          "LINK_4": {
+          "LINK_5": {
             "TEXT": "send a message to the court",
             "TEXT_BEFORE": "To update your contact details, "
           }
@@ -816,10 +821,11 @@
         "CLAIM_ENDED" : {
           "LINK_1": {
             "TEXT": "notice of discontinuance (opens in a new window)",
-            "TEXT_BEFORE": "To tell the court your claim has ended, you need to fill in and send a form called a ",
-            "TEXT_AFTER": " to the court and the other parties in the case."
+            "TEXT_BEFORE": "To tell the court you no longer want to continue with your claim, you need to fill in and send a form called a ",
+            "TEXT_AFTER": "  to the court and the other party in the case."
           },
-          "TEXT_1": "You cannot upload a notice of discontinuance to the Money claims system.",
+          "TEXT_1": "If you choose to discontinue the case, you may have to pay some of the other party’s costs.",
+          "TEXT_2": "You cannot upload a notice of discontinuance to the Money claims system.",
           "LINK_2": {
             "TEXT": "contact the court (opens in a new window)",
             "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
@@ -857,6 +863,11 @@
             "TEXT": "check the civil fees list (opens in a new window)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
+          },
+          "LINK_6": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           }
         },
         "CLAIM_DOCUMENTS_AND_EVIDENCE": {
@@ -885,10 +896,15 @@
           "PARAGRAPH_3": "You may need to attend a hearing to discuss your application to change the date.",
           "LINK_2": {
             "TEXT": "Check the fees guidance (opens in a new window)",
-            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee",
-            "TEXT_AFTER": "to make sure you pay the correct fee."
+            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee. ",
+            "TEXT_AFTER": " to make sure you pay the correct fee."
           },
-          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees."
+          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees.",
+          "LINK_3": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          }
         },
         "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
           "PARAGRAPH_1": "You can apply to change the details of the hearing, such as:",
@@ -903,18 +919,22 @@
             "TEXT": "fees in civil cases (opens in a new window)",
             "TEXT_BEFORE": "Find out more about"
           },
-          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application."
+          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application.",
+          "LINK_3": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          }
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "You can ask for help and support during your hearing.",
           "PARAGRAPH_2": "For example, this could be:",
           "LIST_1": "ramps or accessible toilets",
           "LIST_2": "a hearing loop",
-          "LIST_3": "forms in large print",
-          "LIST_4": "guidance in audio or easy read formats",
+          "LIST_3": "guidance in audio or easy read formats",
+          "PARAGRAPH_3": "To ask for support at your hearing you have to contact the court where the hearing is being held. You can see which court is hearing your case in your directions order or hearing notice.",
           "LINK_1": {
-            "TEXT": "Find the contact details for the court (opens in a new window)",
-            "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
+            "TEXT": "Find the contact details for the court (opens in a new window)."
           }
         },
         "GA_OFFLINE": {
