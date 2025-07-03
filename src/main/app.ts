@@ -79,7 +79,7 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   INFORM_OTHER_PARTIES_URL,
-  IS_CASE_READY_URL,
+  IS_CASE_READY_URL, MEDIATION_PHONE_CONFIRMATION_URL,
   ORDER_JUDGE_URL,
   PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
@@ -112,6 +112,7 @@ import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
 import {contactUsGuard} from 'routes/guards/contactUsGuard';
 import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
 import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
+import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -302,6 +303,7 @@ app.use([
 
 if(env !== 'test') {
   app.use(contactUsGuard);
+  app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
