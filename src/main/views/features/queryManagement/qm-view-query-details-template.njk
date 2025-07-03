@@ -109,7 +109,7 @@
           {% endif %}
           {% if selectedQueryItem.isQueryClosed %}
           {{ govukWarningText({
-            text: t('PAGES.QM.VIEW_QUERY_DETAILS.THREAD_CLOSED_BY_STAFF'),
+            text: t('PAGES.QM.VIEW_QUERY_DETAILS.THREAD_CLOSED_BY_STAFF', {createdDate: selectedQueryItem.queryClosedDate}),
             iconFallbackText: "Warning"
            }) }}
           {% endif %}

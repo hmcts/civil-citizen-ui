@@ -49,16 +49,10 @@ export class ViewQueriesService {
     const parent = queries.caseMessages.find(query => query.value.id === queryId);
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
-    console.log(combined);
-    combined.forEach(message => {
-      console.log('msgid ' + message.value.id);
-      console.log('isClosed ' + message.value.isClosed);
-    });
-    const closedQuery = combined.some(message => message.value.isClosed === 'Yes');
-    console.log('closedQuery ' + closedQuery);
-    const closedQueryFilter = combined.filter(message => message.value.isClosed === 'Yes').length > 0;
-    console.log('closedQueryFilter ' + closedQueryFilter);
-    const lastStatus = closedQuery ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
+    const isQueryClosed = combined.some(message => message.value.isClosed === 'Yes');
+    let queryClosedDate = isQueryClosed ? combined.filter(message => message.value.isClosed === 'Yes')
+      .map(message => formatDateToFullDate(new Date(message.value.createdOn), lang))?.[0] : '';
+    const lastStatus = isQueryClosed ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
       : combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT' ;
     const formatted = combined.map(item => {
       const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn } = item.value;
@@ -79,6 +73,6 @@ export class ViewQueriesService {
         formatDateToFullDate(new Date(hearingDate), lang),
       );
     });
-    return new QueryDetail(parent.value.subject, lastStatus, formatted, closedQuery);
+    return new QueryDetail(parent.value.subject, lastStatus, formatted, isQueryClosed, queryClosedDate);
   }
 }

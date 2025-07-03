@@ -53,11 +53,13 @@ export class QueryDetail {
   lastStatus: string;
   items: QueryListItem[];
   isQueryClosed: boolean;
+  queryClosedDate: string;
 
-  constructor(title: string, lastStatus: string, items: QueryListItem[], isQueryClosed: boolean) {
+  constructor(title: string, lastStatus: string, items: QueryListItem[], isQueryClosed: boolean, queryClosedDate: string) {
     this.title = title;
     this.lastStatus = lastStatus;
     this.items = items;
     this.isQueryClosed = isQueryClosed;
+    this.queryClosedDate = queryClosedDate;
   }
 }
