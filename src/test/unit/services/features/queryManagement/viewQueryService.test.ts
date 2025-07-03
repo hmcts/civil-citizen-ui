@@ -237,7 +237,7 @@ describe('ViewQueriesService', () => {
         'other',
         'formatted-2025-02-27T12:00:00Z-en',
         'fullDate-Invalid Date-en',
-      )), false,
+      )), false, '',
     );
     expect(result.items.length).toBe(2);
     expect(result).toEqual(expected);
@@ -276,7 +276,7 @@ describe('ViewQueriesService', () => {
         'a71d3791-b58d-4a57-957f-78dc48a12462',
         'formatted-2025-02-20T12:00:00Z-en',
         'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
-      )), false,
+      )), false, '',
     );
     expect(result.items.length).toBe(1);
     expect(result).toEqual(expected);
@@ -316,7 +316,7 @@ describe('ViewQueriesService', () => {
         'a71d3791-b58d-4a57-957f-78dc48a12462',
         'formatted-2025-02-20T12:00:00Z-en',
         'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
-      )), true,
+      )), true, 'fullDate-Thu Feb 20 2025 12:00:00 GMT+0000 (Greenwich Mean Time)-en',
     );
     expect(result.items.length).toBe(1);
     expect(result).toEqual(expected);
