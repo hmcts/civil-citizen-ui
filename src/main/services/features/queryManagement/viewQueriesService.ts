@@ -49,14 +49,15 @@ export class ViewQueriesService {
     const parent = queries.caseMessages.find(query => query.value.id === queryId);
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
-    console.log('combined ' + combined);
+    console.log(combined);
     combined.forEach(message => {
+      console.log('msgid ' + message.value.id);
       console.log('isClosed ' + message.value.isClosed);
       console.log('isClosed option ' + message.value.isClosed?.option);
     });
-    const closedQuery = combined.some(message => message.value.isClosed?.option === 'Yes');
+    const closedQuery = combined.some(message => message.value.isClosed && message.value.isClosed.option === 'Yes');
     console.log('closedQuery ' + closedQuery);
-    const closedQueryFilter = combined.filter(message => message.value.isClosed?.option === 'Yes').length > 0;
+    const closedQueryFilter = combined.filter(message => message.value.isClosed && message.value.isClosed?.option === 'Yes').length > 0;
     console.log('closedQueryFilter ' + closedQueryFilter);
     const lastStatus = closedQuery ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
       : combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT' ;
