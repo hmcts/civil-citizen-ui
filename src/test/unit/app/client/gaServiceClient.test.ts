@@ -41,6 +41,7 @@ appReq.session = {
   fileUpload: undefined,
   issuedAt: 150,
   dashboard: undefined,
+  qmShareConfirmed: false,
 };
 
 describe('GA Service Client', () => {
