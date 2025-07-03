@@ -50,7 +50,7 @@ export class ViewQueriesService {
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
     const isQueryClosed = combined.some(message => message.value.isClosed === 'Yes');
-    let queryClosedDate = isQueryClosed ? combined.filter(message => message.value.isClosed === 'Yes')
+    const queryClosedDate = isQueryClosed ? combined.filter(message => message.value.isClosed === 'Yes')
       .map(message => formatDateToFullDate(new Date(message.value.createdOn), lang))?.[0] : '';
     const lastStatus = isQueryClosed ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
       : combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT' ;
