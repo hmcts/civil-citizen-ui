@@ -349,6 +349,34 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpected);
   });
 
+  it('should replace placeholders when hearing notice not present', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for claimant', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
   function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {
     return {
       'createdBy': 'Civil',
