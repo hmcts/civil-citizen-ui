@@ -367,7 +367,7 @@ describe('dashboardInterpolationService', () => {
         documentSize: 123,
         createdDatetime: undefined,
         documentType: DocumentType.HEARING_FORM,
-      }
+      },
     }];
 
     const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
@@ -424,7 +424,7 @@ describe('dashboardInterpolationService', () => {
         documentSize: 123,
         createdDatetime: undefined,
         documentType: DocumentType.SDO_ORDER,
-      }
+      },
     }];
 
     const textToReplaceUrl = '{VIEW_SDO_DOCUMENT}';
