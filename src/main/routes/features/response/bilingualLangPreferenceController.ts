@@ -14,14 +14,14 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {languagePreferenceGuard} from 'routes/guards/languagePreferenceGuard';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {isGaForWelshEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isWelshEnabledForMainCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const bilingualLangPreferenceViewPath = 'features/response/bilingual-language-preference';
 const bilingualLangPreferenceController = Router();
 
 async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
-  const welshGaEnabled = await isGaForWelshEnabled();
-  res.render(bilingualLangPreferenceViewPath, {form, welshGaEnabled});
+  const welshEnabled = await isWelshEnabledForMainCase();
+  res.render(bilingualLangPreferenceViewPath, {form, welshEnabled});
 }
 
 bilingualLangPreferenceController.get(
@@ -46,7 +46,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async
     if (form.hasErrors()) {
       await renderView(form, res);
     } else {
-      res.cookie('lang', getCookieLanguage(await isGaForWelshEnabled(), form.model.option));
+      res.cookie('lang', getCookieLanguage(await isWelshEnabledForMainCase(), form.model.option));
       await saveBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }

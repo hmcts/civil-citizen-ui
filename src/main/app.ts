@@ -83,7 +83,7 @@ import {
   ORDER_JUDGE_URL,
   PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
-  QM_INFORMATION_URL,
+  QM_INFORMATION_URL, QM_SHARE_QUERY_CONFIRMATION,
   QM_START_URL,
   QM_VIEW_QUERY_URL,
   QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
@@ -110,6 +110,8 @@ import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfig
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
 import {contactUsGuard} from 'routes/guards/contactUsGuard';
+import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
+import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -225,9 +227,16 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   QM_FOLLOW_UP_CYA,
   QM_FOLLOW_UP_MESSAGE,
   QUERY_MANAGEMENT_CREATE_QUERY,
+  QM_SHARE_QUERY_CONFIRMATION,
   APPLICATION_TYPE_URL,
   GA_SUBMIT_OFFLINE,
 ], trackHistory);
+
+app.use([
+  QUERY_MANAGEMENT_CREATE_QUERY,
+], shareQueryConfirmationGuard);
+
+app.use(clearShareQuerySessionIfLeftJourney);
 
 app.use([
   //GA
