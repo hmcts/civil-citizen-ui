@@ -442,6 +442,7 @@ import qmConfirmationController from 'routes/features/queryManagement/qmConfirma
 import sendFollowUpQueryController from 'routes/features/queryManagement/sendFollowUpQueryController';
 import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueriesController';
 import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
+import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
 import shareQueryConfirmationController from 'routes/features/queryManagement/shareQueryConfirmationController';
 
 export default [
@@ -800,5 +801,6 @@ export default [
   qmViewQueriesController,
   sendFollowUpQueryController,
   qmViewQueryDetailsController,
+  claimantTelephoneMediationController,
   shareQueryConfirmationController,
 ];

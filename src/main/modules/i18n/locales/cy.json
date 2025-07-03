@@ -5435,6 +5435,7 @@
     "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
     "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
     "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
+    "ENTER_VALID_PHONE_CLAIMANT": "Rhowch rif ffôn",
     "ENTER_VALID_CONTACT_DEFENDANT": "Enter valid contact for defendant",
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
