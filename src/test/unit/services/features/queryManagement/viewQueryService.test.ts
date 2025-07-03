@@ -283,4 +283,44 @@ describe('ViewQueriesService', () => {
 
   });
 
+  it.each(testCases)('should return closed status for queries for %s', ({ role, property }) => {
+    const claim = new Claim();
+    claim.caseRole = role;
+    claim[property] = {
+      caseMessages: [
+        {
+          value: {
+            id: 'parentQuery1',
+            subject: 'test subject',
+            body: 'body 1',
+            createdOn: '2025-02-20T12:00:00Z',
+            createdBy: 'a71d3791-b58d-4a57-957f-78dc48a12462',
+            parentId: null,
+            isHearingRelated: 'Yes',
+            isClosed: 'Yes',
+            hearingDate: new Date('2025-05-10'),
+          },
+        },
+      ],
+    };
+
+    const result = ViewQueriesService.buildQueryListItemsByQueryId(claim, 'parentQuery1','en');
+
+    const expected: QueryDetail = new QueryDetail(
+      'test subject',
+      'PAGES.QM.VIEW_QUERY.STATUS_CLOSED',
+      Array.of(new QueryListItem(
+        'body 1',
+        YesNoUpperCamelCase.YES,
+        [],
+        'a71d3791-b58d-4a57-957f-78dc48a12462',
+        'formatted-2025-02-20T12:00:00Z-en',
+        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
+      )), true,
+    );
+    expect(result.items.length).toBe(1);
+    expect(result).toEqual(expected);
+
+  });
+
 });

@@ -1,6 +1,5 @@
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Document} from 'models/document/document';
-import {GenericYesNo} from 'form/models/genericYesNo';
 
 export interface CaseQueries {
   caseMessages: QueryMessage[];
@@ -24,7 +23,7 @@ export interface CaseMessage {
   createdOn: string;
   createdBy: string;
   parentId?: string;
-  isClosed?: GenericYesNo;
+  isClosed?: YesNoUpperCamelCase;
 }
 
 export interface FormDocument {

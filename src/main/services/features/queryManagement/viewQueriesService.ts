@@ -53,11 +53,10 @@ export class ViewQueriesService {
     combined.forEach(message => {
       console.log('msgid ' + message.value.id);
       console.log('isClosed ' + message.value.isClosed);
-      console.log('isClosed option ' + message.value.isClosed?.option);
     });
-    const closedQuery = combined.some(message => message.value.isClosed && message.value.isClosed.option === 'Yes');
+    const closedQuery = combined.some(message => message.value.isClosed === 'Yes');
     console.log('closedQuery ' + closedQuery);
-    const closedQueryFilter = combined.filter(message => message.value.isClosed && message.value.isClosed?.option === 'Yes').length > 0;
+    const closedQueryFilter = combined.filter(message => message.value.isClosed === 'Yes').length > 0;
     console.log('closedQueryFilter ' + closedQueryFilter);
     const lastStatus = closedQuery ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
       : combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT' ;
