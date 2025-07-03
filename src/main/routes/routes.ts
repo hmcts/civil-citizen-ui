@@ -443,6 +443,7 @@ import sendFollowUpQueryController from 'routes/features/queryManagement/sendFol
 import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueriesController';
 import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
 import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
+import shareQueryConfirmationController from 'routes/features/queryManagement/shareQueryConfirmationController';
 
 export default [
   homeController,
@@ -801,4 +802,5 @@ export default [
   sendFollowUpQueryController,
   qmViewQueryDetailsController,
   claimantTelephoneMediationController,
+  shareQueryConfirmationController,
 ];
