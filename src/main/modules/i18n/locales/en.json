@@ -987,6 +987,22 @@
         "SENT_ON": "Sent on",
         "SEND_FOLLOW_UP": "Send a follow up message",
         "THREAD_CLOSED_BY_STAFF": "This message has been closed by court staff on {{ createdDate }}"
+      },
+      "SHARE_QUERY_CONFIRMATION": {
+        "PAGE_TITLE": "Send a message",
+        "PAGE_HEADING": "Sharing this message with the other party",
+        "PARAGRAPH_1": "All messages sent using this system are shared with the other party in the case as well as being sent to the court.",
+        "SUB_TITLE": "Asking not to share your message",
+        "PARAGRAPH_2": "You can ask not to share your message with the other party. The reasons for not sharing your message must be valid and the judge may decide that your message should be shared.",
+        "PARAGRAPH_3": "Valid reasons for keeping a message between you and the court include the message being about:",
+        "PRIVATE_QUERY_VALID_REASON_1": "a request for a reasonable adjustment",
+        "PRIVATE_QUERY_VALID_REASON_2": "your health",
+        "PARAGRAPH_4": "If you need to send a message to the court and you do not want the other party to see it, email ",
+        "QUERY_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
+        "PARAGRAPH_5": "Explain why the message should be kept between you and the court and make sure you include your full name and claim number.",
+        "CONFIRMATION_HEADER": "Confirm your message can be shared",
+        "CONFIRMATION_TEXT": "Yes, I agree my message can be shared with the other party",
+        "CONFIRMATION_ERROR": "To continue you must select that your message can be shared. If you do not want to share your message, email the court."
       }
     },
     "SUBJECT_TO_FRC": {
@@ -5323,7 +5339,7 @@
       "TITLE": "Confirm that you've been paid",
       "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
       "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
-      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "CONFIRM": "I confirm that the judgment has been satisfied. Once you've confirmed this, it cannot be changed.",
       "JUDGMENT_LINK": "View the judgment made against the defendant",
       "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
     },
@@ -5420,6 +5436,7 @@
     "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
     "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
     "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
+    "ENTER_VALID_PHONE_CLAIMANT": "Enter telephone number",
     "ENTER_VALID_CONTACT_DEFENDANT": "Enter valid contact for defendant",
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
