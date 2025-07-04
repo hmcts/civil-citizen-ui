@@ -20,6 +20,7 @@
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.MESSAGE_SUBJECT') }}</th>
+            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.SENT_BY') }}</th>
             <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.SENT_ON') }}</th>
             <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_BY') }}</th>
             <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_ON') }}</th>
@@ -31,6 +32,9 @@
             <tr class="govuk-table__row">
               <td class="govuk-table__cell">
                 <a href="/case/{{ claimId }}/qm/view-query/{{ item.id }}/query-details" class="govuk-link">{{ item.subject }}</a>
+              </td>
+              <td class="govuk-table__cell">
+                {{ t(item.createdBy) }}
               </td>
               <td class="govuk-table__cell">
                 {{ item.sentOn }}
