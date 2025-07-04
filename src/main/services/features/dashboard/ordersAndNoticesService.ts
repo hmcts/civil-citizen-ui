@@ -17,6 +17,7 @@ import {
   isCoSCEnabled,
   isGaForLipsEnabled,
   isWelshEnabledForMainCase,
+  isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNoUpperCase} from 'form/models/yesNo';
 
@@ -106,6 +107,8 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCaseworkerEventsEnabled = await isCaseWorkerEventsEnabled();
+  const isJudgmentOnlineEnabled = await isJudgmentOnlineLive();
+
   const courtDocumentsArray: DocumentInformation[] = [];
 
   if (isCaseworkerEventsEnabled) {
@@ -114,7 +117,9 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
 
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
-  courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
+  if (!isJudgmentOnlineEnabled) {
+    courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
+  }
   courtDocumentsArray.push(...getInterlocutoryJudgement(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
