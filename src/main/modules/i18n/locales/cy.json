@@ -3786,6 +3786,7 @@
         "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Cais Drafft",
+        "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Dogfen Crynodeb Cais wedi’i Chyfieithu ",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "COURT_DOCUMENT": "Court document",
@@ -5431,6 +5432,7 @@
       "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
       "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
     },
+    "DOCUMENTS_BEING_TRANSLATED": "Mae’r ddogfen yn cael ei chyfieithu a bydd ar gael i’w gweld gan y ddau barti ar yr achos unwaith y bydd y cyfieithiad wedi’i uwchlwytho.",
     "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
     "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
     "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
