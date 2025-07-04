@@ -23,7 +23,7 @@ export class ViewQueriesService {
   }
 
   public static buildQueryListItems(userId: string, claim: Claim, lang: string): ViewObjects[] {
-    return this.getMessageThreads(claim)
+    const messageThreads = this.getMessageThreads(claim)
       .map(messageThread => {
         const parentMessage = messageThread[0];
         const latestMessage = messageThread[messageThread.length - 1];
@@ -32,6 +32,7 @@ export class ViewQueriesService {
           id: parentMessage.id,
           subject: parentMessage.subject,
           sentOn: dateTimeFormat(parentMessage.createdOn, lang),
+          createdBy: parentMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : parentMessage.name,
           lastUpdatedOn: dateTimeFormat(latestMessage.createdOn, lang),
         } as ViewObjects;
 
@@ -48,6 +49,10 @@ export class ViewQueriesService {
           };
         }
       });
+    messageThreads.sort((a, b) => {
+      return new Date(b.lastUpdatedOn).getTime() - new Date(a.lastUpdatedOn).getTime();
+    });
+    return messageThreads;
   }
 
   public static buildQueryListItemsByQueryId(claim: Claim, userId:string, queryId: string, lang: string): QueryDetail {
