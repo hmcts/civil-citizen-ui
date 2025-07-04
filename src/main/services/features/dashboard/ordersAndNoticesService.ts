@@ -17,7 +17,7 @@ import {
   isCoSCEnabled,
   isGaForLipsEnabled,
   isWelshEnabledForMainCase,
-  isJudgmentOnlineLive
+  isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNoUpperCase} from 'form/models/yesNo';
 
