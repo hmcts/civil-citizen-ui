@@ -25,12 +25,10 @@ import {Claim} from 'common/models/claim';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
-
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-
 const getClaimForFA = (repaymentFrequency: TransactionSchedule, paymentAmount?: number) => {
   const amount = paymentAmount ? paymentAmount : 50;
   const claim = new Claim();

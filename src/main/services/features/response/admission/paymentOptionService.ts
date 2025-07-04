@@ -6,22 +6,32 @@ import {PaymentOptionType}
   from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
+import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
 
 const getPaymentOptionForm = async (claim: Claim, responseType : ResponseType): Promise<PaymentOption> => {
   try {
-    if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]);
-    } else if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]);
-    }
-    return new PaymentOption();
+    const totalClaimAmount = isPartAdmission(responseType) ? claim.partialAdmissionPaymentAmount() : await getTotalAmountWithInterest(claim);
+    const paymentOption = getPaymentOptionType(claim, responseType);
+    return new PaymentOption(paymentOption, totalClaimAmount);
   } catch (error) {
     logger.error(error);
     throw error;
   }
+};
+
+const getPaymentOptionType = (claim: Claim, responseType: ResponseType): PaymentOptionType | undefined => {
+  if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
+    return PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType];
+  }
+
+  if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
+    return PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType];
+  }
+
+  return undefined;
 };
 
 const savePaymentOptionData = async (claimId: string, form: PaymentOption, responseType: ResponseType) => {
