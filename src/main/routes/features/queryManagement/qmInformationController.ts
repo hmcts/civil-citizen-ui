@@ -8,6 +8,7 @@ import {
   DATE_PAID_URL,
   QUERY_MANAGEMENT_CREATE_QUERY,
   UPLOAD_YOUR_DOCUMENTS_URL, BILINGUAL_LANGUAGE_PREFERENCE_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL, QM_SHARE_QUERY_CONFIRMATION,
 } from 'routes/urls';
 
 import {
@@ -52,7 +53,7 @@ let showAnythingElseSection: Version = undefined;
 const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
   const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
   pageSection
-    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
+    .addLink(`${submitResponseClaimCommonInfo}.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION), `${submitResponseClaimCommonInfo}.LINK_1.TEXT_BEFORE`, `${submitResponseClaimCommonInfo}.LINK_1.TEXT_AFTER`)
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
@@ -305,8 +306,8 @@ const titleMap: Partial<Record<QualifyingQuestionTypeOption, string>> = {
 const renderView = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qmType: WhatToDoTypeOption, qualifyingQuestionTypeOption: QualifyingQuestionTypeOption, lang: string, res: Response) => {
   const backLinkUrl = BACK_URL;
   const caption = getCaption(qmType);
-  const title = isFollowUpScreen ? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
-  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
+  const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
+  const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION);
 
   const contents = await getContent(claimId, claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
   res.render(qmStartViewPath, {
