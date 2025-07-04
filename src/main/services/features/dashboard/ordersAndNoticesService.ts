@@ -17,7 +17,8 @@ import {
   isCoSCEnabled,
   isGaForLipsEnabled,
   isGaForWelshEnabled,
-  isJudgmentOnlineLive,
+  isWelshEnabledForMainCase,
+  isJudgmentOnlineLive
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNoUpperCase} from 'form/models/yesNo';
 
@@ -27,7 +28,7 @@ export const getClaimantDocuments = async (
   lang: string,
 ) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
-  const isCUIWelshEnabled = await isGaForWelshEnabled();
+  const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const claimantDocumentsArray: DocumentInformation[] = [];
   if (isCUIWelshEnabled) {
@@ -80,7 +81,7 @@ export const getClaimantDocuments = async (
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCoSCEnabledValue = await isCoSCEnabled();
-  const isCUIWelshEnabled = await isGaForWelshEnabled();
+  const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const defendantDocumentsArray: DocumentInformation[] = [];
   if (isCUIWelshEnabled) {
