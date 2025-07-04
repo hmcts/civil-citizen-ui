@@ -16,7 +16,6 @@ import {
   isCaseWorkerEventsEnabled,
   isCoSCEnabled,
   isGaForLipsEnabled,
-  isGaForWelshEnabled,
   isWelshEnabledForMainCase,
   isJudgmentOnlineLive
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
