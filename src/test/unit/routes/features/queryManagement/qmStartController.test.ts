@@ -4,7 +4,11 @@ import nock from 'nock';
 import config from 'config';
 import {
   APPLICATION_TYPE_URL,
-  QUERY_MANAGEMENT_CREATE_QUERY, QM_FOLLOW_UP_URL, QM_START_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL, GA_SUBMIT_OFFLINE,
+  QM_FOLLOW_UP_URL,
+  QM_START_URL,
+  QM_WHAT_DO_YOU_WANT_TO_DO_URL,
+  QM_SHARE_QUERY_CONFIRMATION,
+  GA_SUBMIT_OFFLINE,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -121,7 +125,7 @@ describe('Query management start Controller', () => {
         .send({option: WhatToDoTypeOption.GET_SUPPORT})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QUERY_MANAGEMENT_CREATE_QUERY);
+          expect(res.header.location).toEqual(QM_SHARE_QUERY_CONFIRMATION);
         });
     });
 
@@ -141,7 +145,7 @@ describe('Query management start Controller', () => {
         .send({option: WhatToDoTypeOption.SOMETHING_ELSE})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QUERY_MANAGEMENT_CREATE_QUERY);
+          expect(res.header.location).toEqual(QM_SHARE_QUERY_CONFIRMATION);
         });
     });
 

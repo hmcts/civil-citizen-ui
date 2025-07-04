@@ -200,6 +200,42 @@ describe('Claim - Check answers', () => {
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
         });
     });
+    it('should return errors when form claimant Phone Number is undefined', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1 = new Party();
+        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+        claim.respondent1.partyPhone = new PartyPhone('07557350546');
+        claim.claimDetails = new ClaimDetails();
+        claim.claimDetails.helpWithFees = new HelpWithFees();
+        claim.totalClaimAmount = 1000;
+        claim.claimDetails.helpWithFees.option = YesNo.NO;
+        return claim;
+      });
+      const data = {
+        type: 'qualified',
+        isFullAmountRejected: 'true',
+        directionsQuestionnaireSigned: 'Test',
+        signerRole: 'Test',
+        signerName: 'Test',
+      };
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
+          expect(res.text).toContain('Enter telephone number');
+        });
+    });
     it('should return submit button when Fee is no', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
