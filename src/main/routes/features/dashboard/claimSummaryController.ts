@@ -77,6 +77,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       });
       const welshEnabled = await isGaForWelshEnabled();
       const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
@@ -92,6 +93,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           lang,
           isQMFlagEnabled,
           showWelshPartyBanner,
+          showErrorAwaitingTranslation,
         },
       );
     } else {
