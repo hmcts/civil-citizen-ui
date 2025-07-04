@@ -5432,6 +5432,7 @@
       "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
       "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
     },
+    "DOCUMENTS_BEING_TRANSLATED": "Mae’r ddogfen yn cael ei chyfieithu a bydd ar gael i’w gweld gan y ddau barti ar yr achos unwaith y bydd y cyfieithiad wedi’i uwchlwytho.",
     "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
     "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
     "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
