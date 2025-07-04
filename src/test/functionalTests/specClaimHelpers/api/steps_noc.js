@@ -51,7 +51,7 @@ const buildNocAnswers = (clientName) => ([
 module.exports = {
   requestNoticeOfChangeForRespondent1Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent1OrganisationPolicy',
-      buildNocAnswers('Test Company Defendant'));
+      buildNocAnswers('Test Inc'));
   },
   requestNoticeOfChangeForRespondent2Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent2OrganisationPolicy',
