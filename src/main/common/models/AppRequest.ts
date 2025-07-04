@@ -32,6 +32,7 @@ export interface AppSession extends Session {
   issuedAt: number;
   dashboard: Dashboard;
   history?: string[];
+  qmShareConfirmed: boolean;
 }
 
 export interface UserDetails {
