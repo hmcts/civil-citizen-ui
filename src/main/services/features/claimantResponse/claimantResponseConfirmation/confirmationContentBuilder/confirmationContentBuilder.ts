@@ -63,7 +63,7 @@ export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable
     return rejectedResponseMultiIntTrackNextSteps;
   }
 
-  if (carmApplicable && claim.hasClaimantNotSettled()) {
+  if (carmApplicable && claim.hasClaimantNotSettled() && claim.isSmallClaimsTrackDQ) {
     return RejectedResponseCarmMediationNextSteps;
   }
 

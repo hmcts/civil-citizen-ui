@@ -27,6 +27,7 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'common/form/models/cl
 import {CourtProposedPlan, CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
 import {RepaymentDecisionType} from 'common/models/claimantResponse/RepaymentDecisionType';
 import {DocumentType} from 'common/models/document/documentType';
+import {claimType} from 'form/models/claimType';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -425,9 +426,10 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[4]).toBeUndefined();
   });
 
-  it('Claimant rejected defendant`s response as full defence states paid and says not settle - carm enabled', () => {
+  it('Claimant rejected defendant`s response as full defence states paid and says not settle - small claim - carm enabled', () => {
 
     // Given
+    claim.responseClaimTrack = claimType.SMALL_CLAIM;
     claim.claimantResponse.mediation = <Mediation>{
       canWeUse: {
         option: YesNo.YES,
@@ -465,6 +467,46 @@ describe('Claimant Response Confirmation service', () => {
     expect(claimantResponseConfirmationContent[4].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_3');
     expect(claimantResponseConfirmationContent[5].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.MEDIATION.WHAT_HAPPENS_NEXT_TEXT_PARA_4');
     expect(claimantResponseConfirmationContent[6]).toBeUndefined();
+  });
+
+  it('Claimant rejected defendant`s response as full defence states paid and says not settle - fast claim - carm enabled', () => {
+
+    // Given
+    claim.responseClaimTrack = claimType.FAST_CLAIM;
+    claim.claimantResponse.mediation = <Mediation>{
+      canWeUse: {
+        option: YesNo.YES,
+      },
+    };
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.claimantResponse.intentionToProceed = {option: 'yes'};
+    claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
+    const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
+      amount: 120,
+      totalClaimAmount: 1000,
+      year: '2022',
+      month: '2',
+      day: '14',
+      text: 'Some text here...',
+    };
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.ALREADY_PAID,
+      new HowMuchHaveYouPaid(howMuchHaveYouPaidParams),
+      new WhyDoYouDisagree(''),
+      new Defence(),
+    );
+
+    // When
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, true, false);
+
+    // Then
+    expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.MESSAGE');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain('000MC009');
+    expect(claimantResponseConfirmationContent[0].data?.html).toContain(formatDateToFullDate(new Date()));
+    expect(claimantResponseConfirmationContent[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    expect(claimantResponseConfirmationContent[2].data?.text).toEqual('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_DEFENDANT_RESPONSE.NO_MEDIATION.WHAT_HAPPENS_NEXT_TEXT');
+    expect(claimantResponseConfirmationContent[3]).toBeUndefined();
   });
 
   it('Claimant rejected defendant`s response as full defence states paid and says not settle - intermediate track enabled', () => {
