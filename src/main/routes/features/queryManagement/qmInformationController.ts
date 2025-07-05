@@ -6,7 +6,10 @@ import {
   QM_VIEW_QUERY_URL,
   CCJ_PAID_AMOUNT_URL,
   DATE_PAID_URL,
-  UPLOAD_YOUR_DOCUMENTS_URL, QM_SHARE_QUERY_CONFIRMATION,
+  QUERY_MANAGEMENT_CREATE_QUERY,
+  UPLOAD_YOUR_DOCUMENTS_URL,
+  BILINGUAL_LANGUAGE_PREFERENCE_URL,
+  QM_SHARE_QUERY_CONFIRMATION,
 } from 'routes/urls';
 
 import {
@@ -29,7 +32,7 @@ import {
   findCourtTribunalUrl,
   thirdPartyDebtOrChargingOrderUrl,
   warrantOfControlUrl,
-  whatToDoUrl, applicationNoticeUrl,
+  whatToDoUrl, applicationNoticeUrl, feesHelpUrl, enforceJudgementUrl,
 } from 'common/utils/externalURLs';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
@@ -81,7 +84,8 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
               <li><a href="${attachmentOfEarningsOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_3.TEXT`, {lng: lang})}</a></li>
               <li><a href="${thirdPartyDebtOrChargingOrderUrl}" class="govuk-link" rel="noopener noreferrer" target="_blank">${t(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_4.TEXT`, {lng: lang})}</a></li>
             </ul>`)
-          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT_BEFORE`, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT_AFTER`, null, true);
+          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT_BEFORE`, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_5.TEXT_AFTER`, null, true)
+          .addLink(`${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT`, feesHelpUrl, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT_BEFORE`, `${qualifySectionInfo}.ENFORCEMENT_REQUESTS.LINK_6.TEXT_AFTER`, null, true);
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE:{
@@ -128,7 +132,8 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         pageSection
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_2`)
-          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`);
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_3`)
+          .addParagraph(`${qualifySectionInfo}.GENERAL_UPDATE.PARAGRAPH_4`);
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID: {
@@ -136,22 +141,27 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         const isCCJLinkEnabled = claim.isClaimant() &&
           claim.isDeadLinePassed() &&
           claim.isDefendantNotResponded();
+        const isAwaitingDefendantResponse = claim.isDefendant() && claim.isDefendantNotResponded();
+        if (isAwaitingDefendantResponse) {
+          pageSection.addFullStopLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, BILINGUAL_LANGUAGE_PREFERENCE_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`);
+        } else {
+          pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.TEXT_1`);
+        }
         pageSection
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_1`)
-          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_1`, {lng: lang})}</li>
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_2`, {lng: lang})}</li>
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_3`, {lng: lang})}</li>
             </ul>`)
-          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_3`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
           .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
         if (isCCJLinkEnabled) {
-          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`, '.');
+          pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.');
         } else {
           pageSection.addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED`);
         }
-        pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.', null, true);
+        pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, countyCourtJudgmentsUri, `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_3.TEXT_BEFORE`, '.', null, true);
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT: {
@@ -167,7 +177,9 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
             </ul>`)
           .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT`, whatToDoUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT_BEFORE`, '.', null, true)
           .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.SUBTITLE_1`)
-          .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT`, checkCivilFees_Ex50Url, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_BEFORE`, '.', null, true);
+          .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_3`)
+          .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT`, feesHelpUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_AFTER`, null, true)
+          .addFullStopLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_3.TEXT`, checkCivilFees_Ex50Url, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_3.TEXT_BEFORE`, null, null, true);
 
         break;
       }
@@ -178,7 +190,8 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
           .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_2`)
           .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_3`)
           .addLink(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_2.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_2.TEXT_AFTER`, '', true)
-          .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_4`);
+          .addParagraph(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.PARAGRAPH_4`)
+          .addLink(`${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_3.TEXT`, feesHelpUrl, `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_3.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_THE_HEARING_DATE.LINK_3.TEXT_AFTER`, '', true);
         break;
       case QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING:
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
@@ -189,25 +202,26 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
             </ul>`)
           .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim)), `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_1.TEXT_AFTER`)
           .addParagraph(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.PARAGRAPH_2`)
-          .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT_BEFORE`, '.', '', true);
+          .addLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_3.TEXT`, feesHelpUrl, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_3.TEXT_BEFORE`, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_3.TEXT_AFTER`, null, true)
+          .addFullStopLink(`${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT`, checkCivilFeesListUrl, `${qualifySectionInfo}.CHANGE_SOMETHING_ABOUT_THE_HEARING.LINK_2.TEXT_BEFORE`, null, '', true);
         break;
       case QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING:
-        showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection.addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_1`)
           .addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_2`)
           .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_1`, {lng: lang})}</li>
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_2`, {lng: lang})}</li>
             <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_3`, {lng: lang})}</li>
-            <li>${t(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LIST_4`, {lng: lang})}</li>
             </ul>`)
-          .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT_BEFORE`, '.', '', true);
+          .addParagraph(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.PARAGRAPH_3`)
+          .addLink(`${qualifySectionInfo}.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING.LINK_1.TEXT`, findCourtTribunalUrl, null, null, null, true);
         break;
       case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT: {
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
           .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
-          .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`);
+          .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`)
+          .addFullStopLink(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.LINK_1.TEXT`, enforceJudgementUrl, `${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.LINK_1.TEXT_BEFORE`, null, '', true);
         break;
       }
       case QualifyingQuestionTypeOption.SETTLE_CLAIM: {
@@ -216,18 +230,12 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
         if (claim.isClaimant() && !claim.isClaimSettled()) {
           pageSection
-            .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`, '.');
+            .addFullStopLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`);
         } else {
           pageSection
             .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_UPDATE_WITHOUT_LINK`);
         }
         pageSection
-          .addLink(`${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.SETTLE_CLAIM.LINK_2.TEXT_AFTER`)
-          .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
-                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_1`, {lng: lang})}</li>
-                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_2`, {lng: lang})}</li>
-                <li>${t(`${qualifySectionInfo}.SETTLE_CLAIM.LI_3`, {lng: lang})}</li>
-              </ul>`)
           .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_2`)
           .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_1`);
         break;
@@ -243,10 +251,11 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
               </ul>`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, null, null, true)), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT`, checkCivilFeesListFullListUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_AFTER`, null, true)
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, feesHelpUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_AFTER`, null, true)
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, '.')
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.')
           .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_2`)
-          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.');
+          .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_5.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_5.TEXT_BEFORE`, '.');
         break;
       }
       case QualifyingQuestionTypeOption.CLAIM_ENDED: {
@@ -254,6 +263,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         pageSection
           .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT`, discontinueClaimUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_1.TEXT_AFTER`, null, true)
           .addParagraph(`${qualifySectionInfo}.CLAIM_ENDED.TEXT_1`)
+          .addParagraph(`${qualifySectionInfo}.CLAIM_ENDED.TEXT_2`)
           .addLink(`${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT`, findCourtTribunalUrl, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_ENDED.LINK_2.TEXT_AFTER`, null, true);
         break;
       }
