@@ -960,7 +960,8 @@
         "UPDATED_BY_COURT_STAFF": "Court staff",
         "UPDATED_BY_YOU": "You",
         "STATUS_SENT": "Message sent",
-        "STATUS_RECEIVED": "Response received"
+        "STATUS_RECEIVED": "Response received",
+        "STATUS_CLOSED": "Closed"
       },
       "FOLLOW_UP_QUERY": {
         "WARNING_TEXT": "Follow up messages can be seen by all parties.",
@@ -984,7 +985,8 @@
         "SENT_BY_YOU": "You",
         "SENT_BY_COURT_STAFF": "Court staff",
         "SENT_ON": "Sent on",
-        "SEND_FOLLOW_UP": "Send a follow up message"
+        "SEND_FOLLOW_UP": "Send a follow up message",
+        "THREAD_CLOSED_BY_STAFF": "This message has been closed by court staff on {{ createdDate }}"
       },
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Send a message",

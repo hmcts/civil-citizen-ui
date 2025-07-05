@@ -28,6 +28,9 @@ export class ViewQueriesService {
           viewObject.lastUpdatedBy = 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU';
           viewObject.status = 'PAGES.QM.VIEW_QUERY.STATUS_SENT';
         }
+        if (queryItem.value.isClosed === 'Yes') {
+          viewObject.status = 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED';
+        }
         viewObject.lastUpdatedOn = dateTimeFormat(queryItem.value.createdOn, lang);
       } else {
         viewObjects.push(new ViewObjects(
@@ -49,7 +52,13 @@ export class ViewQueriesService {
     const parent = queries.caseMessages.find(query => query.value.id === queryId);
     const children = queries.caseMessages.filter(query => query.value.parentId === queryId);
     const combined = [parent, ...children];
-    const lastStatus = combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
+    const isQueryClosed = combined.some(message => message.value.isClosed === 'Yes');
+    const queryClosedDate = isQueryClosed ? combined.filter(message => message.value.isClosed === 'Yes')
+      .map(message => formatDateToFullDate(new Date(message.value.createdOn), lang))?.[0] : '';
+    console.log('isQueryClosed ' + isQueryClosed);
+    const lastStatus = isQueryClosed ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
+      : combined.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT';
+    console.log('lastStatus ' + lastStatus);
     const formatted = combined.map(item => {
       const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn } = item.value;
       const documents = attachments?.map(doc => {
@@ -69,6 +78,6 @@ export class ViewQueriesService {
         formatDateToFullDate(new Date(hearingDate), lang),
       );
     });
-    return new QueryDetail(parent.value.subject, lastStatus, formatted);
+    return new QueryDetail(parent.value.subject, lastStatus, formatted, isQueryClosed, queryClosedDate);
   }
 }
