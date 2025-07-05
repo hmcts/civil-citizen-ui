@@ -93,7 +93,7 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
 }) as RequestHandler);
 
 function getN245(applicationResponse: ApplicationResponse, applicationId: string) {
-  const n245DocIn = applicationResponse?.case_data?.generalAppN245FormUpload;
+  const n245DocIn = applicationResponse?.case_data?.generalAppN245FormUpload; //test
   let n245Doc = formN245Url;
   if(n245DocIn) {
     n245Doc = CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
