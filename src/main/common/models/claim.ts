@@ -17,6 +17,7 @@ import {
   CaseManagementLocation,
   CaseState,
   CCDHelpWithFees,
+  CCJPaymentDetails,
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
@@ -119,6 +120,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   fixedCosts?: FixedCosts;
+  ccjPaymentDetails?: CCJPaymentDetails;
   specClaimTemplateDocumentFiles?: Document;
   caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;

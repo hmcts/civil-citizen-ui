@@ -31,6 +31,10 @@ export interface FixedCosts {
   fixedCostAmount: string;
 }
 
+export interface CCJPaymentDetails {
+  ccjJudgmentFixedCostAmount: string;
+}
+
 export interface CaseManagementLocation {
 region: string;
 baseLocation: string;
