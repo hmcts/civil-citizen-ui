@@ -85,6 +85,7 @@ const FrcBandAgreed = require('../pages/defendantLipResponse/defendantDQ/frcBand
 const AssignComplexityBand = require('../pages/defendantLipResponse/defendantDQ/assignComplexityBand');
 const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendantDQ/reasonForComplexityBand');
 const DashboardPage = require('../pages/defendantLipResponse/queryManagement/dashboard');
+const ShareQuery = require('../pages/defendantLipResponse/queryManagement/shareQuery');
 const CreateQuery = require('../pages/defendantLipResponse/queryManagement/createQuery');
 const QmStart = require('../pages/defendantLipResponse/queryManagement/qmStart');
 const ViewQuery = require('../pages/defendantLipResponse/queryManagement/viewQuery');
@@ -182,6 +183,7 @@ const frcBandAgreed = new FrcBandAgreed();
 const assignComplexityBand = new AssignComplexityBand();
 const reasonForComplexityBand = new ReasonForComplexityBand();
 const dashboardPage = new DashboardPage();
+const shareQueryPage = new ShareQuery();
 const createQueryPage = new CreateQuery();
 const qmStartPage = new QmStart();
 const viewQueryPage = new ViewQuery();
@@ -226,6 +228,7 @@ class ResponseSteps {
     await dashboardPage.sendAMessage();
     await qmStartPage.verifyAllContactOptionsPresent();
     await qmStartPage.selectSomethingElseOption();
+    await shareQueryPage.fillShareQueryConfirmedForm();
     await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
     await confirmationPage.verifyQMMessageConfirmation();
     await I.click('Go to your dashboard');
@@ -294,6 +297,7 @@ class ResponseSteps {
   async getSupport(subject, message, isHearingRelated) {
     await dashboardPage.sendAMessage();
     await qmStartPage.getSupport();
+    await shareQueryPage.fillShareQueryConfirmedForm();
     await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
     await confirmationPage.verifyQMMessageConfirmation();
   }

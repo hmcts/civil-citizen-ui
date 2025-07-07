@@ -21,8 +21,8 @@ class SendUpdateToCourt {
         description: 'To tell the court your claim has ended, you need to fill in and send a form called a notice of discontinuance (opens in a new window) to the court and the other parties in the case.',
       },
       SEND_UPDATE_SOMETHING_ELSE: {
-        heading: 'Enter message details',
-        description: 'The subject should be a summary of your message',
+        heading: 'Send a message',
+        description: 'Sharing this message with the other party',
       },
     };
   }
