@@ -11,10 +11,10 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
-def dmnBranch = "master"
+def camundaBranch = "CIV-17344"
+def dmnBranch = "bug/CIV-17413"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "feat/CIV-17415"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
