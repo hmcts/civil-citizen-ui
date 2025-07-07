@@ -953,7 +953,7 @@ describe('View Application service', () => {
         expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
         expect(result[0].rows[2].value.html).toContain('Name of file');
         expect(result[0].responseButton).toBeUndefined();
-      })
+      });
 
       it('should return Translated sequential written representations request without the response button', async () => {
         //given
