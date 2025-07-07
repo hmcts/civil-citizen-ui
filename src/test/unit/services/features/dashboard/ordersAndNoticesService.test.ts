@@ -17,7 +17,7 @@ import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
-  isGaForLipsEnabled,
+  isGaForLipsEnabled, isJudgmentOnlineLive,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -25,7 +25,7 @@ import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialA
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const isGaForWelshEnabled = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
+const isWelshEnabledForMainCase = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 describe('View Orders And Notices Service', () => {
 
@@ -81,7 +81,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual dq when cuiWelshFlag is on', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -101,7 +101,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant english dq when cuiWelshFlag is on', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'claimant_test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -139,7 +139,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual seal claim', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(false);
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -340,7 +340,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.courtPermissionNeeded = YesNoUpperCase.NO;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
       claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
       //When
@@ -360,7 +360,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
       claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
       //When
@@ -380,7 +380,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
       claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
       //When
@@ -400,7 +400,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.courtPermissionNeeded = YesNoUpperCase.NO;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
       claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
       //When
@@ -436,7 +436,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for defendant stitched response when welsh enabled', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
@@ -456,7 +456,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for defendant lip response', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(false);
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
@@ -496,7 +496,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for defendant lip english response when defendant is bilingual', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
@@ -674,6 +674,19 @@ describe('View Orders And Notices Service', () => {
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
+    });
+
+    it('should not get data array for ccj admission', async () => {
+      //given
+      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(0);
     });
 
     it('should get data array for claimant response receipt', async () => {
