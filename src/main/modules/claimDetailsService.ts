@@ -25,8 +25,13 @@ export const isFullAmountReject = (claim: Claim): boolean => {
 };
 
 export const getFixedCost = async (claim: Claim) => {
+
   if (!claim?.fixedCosts || claim?.fixedCosts?.claimFixedCosts.toLowerCase() === YesNo.NO) {
     return undefined;
+  }
+
+  if (claim?.ccjJudgmentFixedCostAmount && +claim?.ccjJudgmentFixedCostAmount > 0) {
+    return convertToPoundsFilter(claim?.ccjJudgmentFixedCostAmount) || 0;
   }
   return convertToPoundsFilter(claim?.fixedCosts?.fixedCostAmount) || 0;
 };

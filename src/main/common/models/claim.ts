@@ -119,6 +119,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   fixedCosts?: FixedCosts;
+  ccjJudgmentFixedCostAmount?: string;
   specClaimTemplateDocumentFiles?: Document;
   caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;

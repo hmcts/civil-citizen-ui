@@ -127,6 +127,42 @@ describe('Claim Details service', () => {
       expect(fixedCost).toEqual(100);
     });
 
+    it('ccj fix cost is claimed', async () => {
+      const claim = new Claim();
+      claim.isLRClaimant = () => true;
+      claim.fixedCosts = <FixedCosts> {};
+      claim.fixedCosts.fixedCostAmount = '10000';
+      claim.fixedCosts.claimFixedCosts = 'Yes';
+      claim.ccjJudgmentFixedCostAmount = '15000';
+      const fixedCost = await getFixedCost(claim);
+      expect(fixedCost).toBeTruthy();
+      expect(fixedCost).toEqual(150);
+    });
+
+    it('ccj fix cost is undefined', async () => {
+      const claim = new Claim();
+      claim.isLRClaimant = () => true;
+      claim.fixedCosts = <FixedCosts> {};
+      claim.fixedCosts.fixedCostAmount = '10000';
+      claim.fixedCosts.claimFixedCosts = 'Yes';
+      claim.ccjJudgmentFixedCostAmount = undefined;
+      const fixedCost = await getFixedCost(claim);
+      expect(fixedCost).toBeTruthy();
+      expect(fixedCost).toEqual(100);
+    });
+
+    it('ccj fix cost is zero', async () => {
+      const claim = new Claim();
+      claim.isLRClaimant = () => true;
+      claim.fixedCosts = <FixedCosts> {};
+      claim.fixedCosts.fixedCostAmount = '10000';
+      claim.fixedCosts.claimFixedCosts = 'Yes';
+      claim.ccjJudgmentFixedCostAmount = '0';
+      const fixedCost = await getFixedCost(claim);
+      expect(fixedCost).toBeTruthy();
+      expect(fixedCost).toEqual(100);
+    });
+
     it('fixed cost is undefined', async () => {
       const claim = new Claim();
       const fixedCost = await getFixedCost(claim);

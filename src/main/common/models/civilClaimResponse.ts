@@ -289,6 +289,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   claimFee?:CCDClaimFee;
   fixedCosts?:CcdFixedCosts;
+  ccjJudgmentFixedCostAmount?: string;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
