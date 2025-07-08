@@ -37,8 +37,7 @@ agreedResponseDeadlineController
       }
     }) as RequestHandler)
   .post(
-    // AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req, res, next: NextFunction) => {
-    AGREED_TO_MORE_TIME_URL,( async (req, res, next: NextFunction) => {
+    AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req, res, next: NextFunction) => {
       const {year, month, day} = req.body;
       const redisKey = generateRedisKey(<AppRequest>req);
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
