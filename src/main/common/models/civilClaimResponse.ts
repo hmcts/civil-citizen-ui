@@ -92,7 +92,6 @@ import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDe
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
-import {CcdCCJPaymentDetails} from 'models/ccdResponse/ccdCCJPaymentDetails';
 
 export class CivilClaimResponse {
   id: string;
@@ -290,7 +289,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   claimFee?:CCDClaimFee;
   fixedCosts?:CcdFixedCosts;
-  ccjPaymentDetails?: CcdCCJPaymentDetails;
+  ccjJudgmentFixedCostAmount?: string;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
