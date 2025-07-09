@@ -978,9 +978,10 @@
         "SEND_MESSAGE": "Send message"
       },
       "VIEW_QUERY": {
-        "PAGE_TITLE": "Messages",
+        "PAGE_TITLE": "Messages to the court",
         "MESSAGE_SUBJECT": "Message subject",
         "SENT_ON": "Sent on",
+        "SENT_BY": "Sent by",
         "LAST_UPDATED_BY": "Last updated by",
         "LAST_UPDATED_ON": "Last updated on",
         "STATUS": "Status",
@@ -998,20 +999,32 @@
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Message details",
+        "MESSAGE": "Message",
         "YOUR_MESSAGE": "Your message",
-        "COURTS_RESPONSE": "Court's response",
+        "FOLLOW_UP_MESSAGE": "Follow up message",
+        "COURTS_RESPONSE": "Court response",
         "MESSAGE_DETAILS": "Message details",
-        "COURT_MESSAGE_DETAILS": "Response details",
+        "COURT_MESSAGE_DETAILS": "Message details",
         "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
         "MESSAGE_ABOUT_HEARING_YES": "Yes",
         "MESSAGE_ABOUT_HEARING_NO": "No",
         "HEARING_DATE": "What is the date of the hearing?",
-        "UPLOADED_DOCUMENTS": "Uploaded documents (optional)",
+        "UPLOADED_DOCUMENTS": "Attachments",
+        "NO_DOCUMENTS_UPLOADED": "No documents uploaded",
         "SENT_BY": "Sent by",
         "SENT_BY_YOU": "You",
         "SENT_BY_COURT_STAFF": "Court staff",
         "SENT_ON": "Sent on",
-        "SEND_FOLLOW_UP": "Send a follow up message"
+        "SEND_FOLLOW_UP": "Send a follow up message",
+        "SEND_FOLLOW_UP_INFO": {
+          "HEADER": "Send a follow up message",
+          "LINE_1": "Only send follow up messages related to the original query.",
+          "LINE_2": "Sending follow up messages that are not related will delay the court’s response."
+        },
+        "COURT_IS_REVIEWING_INFO": {
+          "HEADER": "The court is reviewing the message",
+          "LINE_1": "Our team will read the message and respond."
+        }
       },
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Send a message",

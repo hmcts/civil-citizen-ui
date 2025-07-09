@@ -978,9 +978,10 @@
         "SEND_MESSAGE": "Anfon neges"
       },
       "VIEW_QUERY": {
-        "PAGE_TITLE": "Negeseuon",
+        "PAGE_TITLE": "Negeseuon i’r llys",
         "MESSAGE_SUBJECT": "Pwnc y neges",
         "SENT_ON": "Anfonwyd ar",
+        "SENT_BY": "Anfonwyd gan",
         "LAST_UPDATED_BY": "Diweddarwyd diwethaf gan",
         "LAST_UPDATED_ON": "Diweddarwyd diwethaf ar",
         "STATUS": "Statws",
@@ -998,20 +999,32 @@
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
+        "MESSAGE": "Neges",
         "YOUR_MESSAGE": "Eich neges",
+        "FOLLOW_UP_MESSAGE": "Neges ddilynol",
         "COURTS_RESPONSE": "Ymateb y llys",
         "MESSAGE_DETAILS": "Manylion y neges",
-        "COURT_MESSAGE_DETAILS": "Manylion yr ymateb",
+        "COURT_MESSAGE_DETAILS": "Manylion y neges",
         "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "MESSAGE_ABOUT_HEARING_YES": "Ydy",
         "MESSAGE_ABOUT_HEARING_NO": "Nac ydy",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
-        "UPLOADED_DOCUMENTS": "Dogfennau wedi’u huwchlwytho (dewisol)",
+        "UPLOADED_DOCUMENTS": "Atodiadau",
+        "NO_DOCUMENTS_UPLOADED": "Dim dogfennau wedi’u llwytho",
         "SENT_BY": "Anfonwyd gan",
         "SENT_BY_YOU": "Chi",
         "SENT_BY_COURT_STAFF": "Staff y Llys",
         "SENT_ON": "Anfonwyd ar",
-        "SEND_FOLLOW_UP": "Anfon neges ddilynol"
+        "SEND_FOLLOW_UP": "Anfon neges ddilynol",
+        "SEND_FOLLOW_UP_INFO": {
+          "HEADER": "Anfon neges ddilynol",
+          "LINE_1": "Dylech ond anfon negeseuon dilynol sy’n ymwneud â’r ymholiad gwreiddiol.",
+          "LINE_2": "Bydd anfon negeseuon dilynol nad ydynt yn ymwneud â’r mater gwreiddiol yn achosi oedi gyda’r ymateb gan y llys."
+        },
+        "COURT_IS_REVIEWING_INFO": {
+          "HEADER": "Mae’r llys yn adolygu’r neges",
+          "LINE_1": "Bydd ein tîm yn darllen y neges ac yn ymateb."
+        }
       },
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Anfon neges",
