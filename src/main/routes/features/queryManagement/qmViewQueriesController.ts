@@ -9,7 +9,6 @@ import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
-import {ViewObjects} from 'form/models/queryManagement/viewQuery';
 import {getNotifications} from 'services/dashboard/dashboardService';
 import {ClaimantOrDefendant} from 'models/partyType';
 
@@ -19,10 +18,8 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const qmViewQueriesController = Router();
 const viewQueriesPath = 'features/queryManagement/qm-view-queries-template';
 
-const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
-
-  const parentQueryItems:ViewObjects[] = ViewQueriesService.buildQueryListItems(claim, lang);
-
+const renderView = async (res: Response, userId: string, claimId: string, claim: Claim, lang: string): Promise<void> => {
+  const parentQueryItems = ViewQueriesService.buildQueryListItems(userId, claim, lang);
   res.render(viewQueriesPath, {
     claimId,
     parentQueryItems,
@@ -44,13 +41,14 @@ async function recordNotificationClickForQueryResponse(claim: Claim, claimId: st
   }
 }
 
-qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: Request, res: Response, next: NextFunction) => {
+qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const userId = req.session?.user?.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await recordNotificationClickForQueryResponse(claim, claimId, req, lang);
-    await renderView(res, claimId, claim, lang);
+    await renderView(res, userId, claimId, claim, lang);
   } catch (error) {
     next(error);
   }
