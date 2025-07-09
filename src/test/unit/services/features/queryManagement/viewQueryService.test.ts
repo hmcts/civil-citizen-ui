@@ -506,7 +506,7 @@ describe('ViewQueriesService', () => {
         'formatted-2025-02-27T12:00:00Z-en',
         false,
         'fullDate-Invalid Date-en',
-      )), true, 'fullDate-Thu Feb 20 2025 12:00:00 GMT+0000 (Coordinated Universal Time)-en',
+      )), true, 'fullDate-Thu Feb 27 2025 12:00:00 GMT+0000 (Coordinated Universal Time)-en',
     );
     expect(result.items.length).toBe(2);
     expect(result).toEqual(expected);
