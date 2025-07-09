@@ -31,7 +31,7 @@ export const getFixedCost = async (claim: Claim) => {
   }
 
   if (claim?.ccjJudgmentFixedCostAmount && +claim?.ccjJudgmentFixedCostAmount > 0) {
-    return convertToPoundsFilter(claim?.ccjJudgmentFixedCostAmount) || 0;
+    return +claim?.ccjJudgmentFixedCostAmount || 0;
   }
   return convertToPoundsFilter(claim?.fixedCosts?.fixedCostAmount) || 0;
 };
