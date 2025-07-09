@@ -3,9 +3,9 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
 import {
   BUNDLES_URL,
-  CASE_DOCUMENT_VIEW_URL,
+  CASE_DOCUMENT_VIEW_URL, DASHBOARD_CLAIMANT_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, QM_VIEW_QUERY_URL, VIEW_ORDERS_AND_NOTICES_URL,
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, DEFENDANT_SUMMARY_URL, QM_VIEW_QUERY_URL, VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
@@ -17,6 +17,7 @@ import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreSe
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -69,6 +70,10 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
           break;
         }
       }
+      if (!claim?.caseProgressionHearing?.hearingDocuments) {
+        redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
+        break;
+      }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
         ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
       break;
@@ -77,6 +82,10 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
       break;
     case 'VIEW_FINAL_ORDER':
+      if (req.params.documentId === 'awaiting-translation') {
+        redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
+        break;
+      }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', req.params.documentId);
       break;
     case 'VIEW_DECISION_RECONSIDERATION':
