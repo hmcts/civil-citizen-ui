@@ -136,7 +136,7 @@ describe('Claim Details service', () => {
       claim.ccjJudgmentFixedCostAmount = '15000';
       const fixedCost = await getFixedCost(claim);
       expect(fixedCost).toBeTruthy();
-      expect(fixedCost).toEqual(150);
+      expect(fixedCost).toEqual(15000);
     });
 
     it('ccj fix cost is undefined', async () => {
