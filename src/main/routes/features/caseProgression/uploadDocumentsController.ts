@@ -56,6 +56,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
     form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
 
     form.validateSync();
+    delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)

@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { isGaForLipsEnabled, isCoSCEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {
+  isGaForLipsEnabled,
+  isCoSCEnabled,
+  isGaForWelshEnabled,
+} from 'app/auth/launchdarkly/launchDarklyClient';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
@@ -17,9 +21,10 @@ export const isGAForLiPEnabled = async (
   const allowAppAccess = claim.generalApplications?.length > 0 ;
   //Allow to create cosc application in both languages
   const gaCoscUrls: string[] = ['/cosc/', '/apply-help', '/view-application', '/summary'];
+  const welshGaEnabled = await isGaForWelshEnabled();
   if(isGAFlagEnable && isCertOfScEnabled && gaCoscUrls.some(url => req.originalUrl.includes(url)) || allowAppAccess) {
     next();
-  } else  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || allowAppAccess) {
+  } else  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || welshGaEnabled || allowAppAccess) {
     next();
   } else {
     res.redirect(await getCancelUrl(req.params.id, claim));

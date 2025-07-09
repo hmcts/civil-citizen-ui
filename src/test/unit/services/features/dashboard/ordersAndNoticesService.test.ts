@@ -9,7 +9,7 @@ import {
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {DocumentType} from 'models/document/documentType';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CaseRole} from 'form/models/caseRoles';
@@ -22,8 +22,10 @@ import {
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const isWelshEnabledForMainCase = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 describe('View Orders And Notices Service', () => {
 
@@ -77,6 +79,46 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for claimant bilingual dq when cuiWelshFlag is on', async () => {
+      //given
+      isWelshEnabledForMainCase.mockResolvedValue(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_DQ',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for claimant english dq when cuiWelshFlag is on', async () => {
+      //given
+      isWelshEnabledForMainCase.mockResolvedValue(true);
+      const documentName = 'claimant_test_000MC001.pdf';
+      const claim = new Claim();
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for claimant seal claim', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -97,6 +139,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual seal claim', async () => {
       //given
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -292,8 +335,128 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for the original doc of notice of discontinuance if courtPermission is not needed ', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.courtPermissionNeeded = YesNoUpperCase.NO;
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
+      claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for the original doc of notice of discontinuance', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
+      claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for the translated doc of notice of discontinuance', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
+      claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE_TRANSLATED',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for the translated doc of notice of discontinuance if courtPermission is not needed ', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.courtPermissionNeeded = YesNoUpperCase.NO;
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
+      claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.NOTICE_OF_DISCONTINUANCE_TRANSLATED',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for defendant stitched response', async () => {
+      //given
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for defendant stitched response when welsh enabled', async () => {
+      //given
+      isWelshEnabledForMainCase.mockResolvedValue(true);
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for defendant lip response', async () => {
       //given
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
@@ -318,6 +481,27 @@ describe('View Orders And Notices Service', () => {
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
       claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for defendant lip english response when defendant is bilingual', async () => {
+      //given
+      isWelshEnabledForMainCase.mockResolvedValue(true);
+      const documentName = 'test_response_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
+      claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
@@ -420,6 +604,24 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for translated standard directions order', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SDO_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for lip manual determination', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -438,79 +640,21 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for Judgment by admission for defendant', async () => {
+    it('should get data array for lip translated manual determination', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
-      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
       const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT);
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = await getDefendantDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.JBA_DEFENDANT',
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array for Judgment by admission for claimant', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getClaimantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.JBA_CLAIMANT',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array for Default Judgment for defendant', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFAULT_JUDGMENT_DEFENDANT1);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getDefendantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.DJ_DEFENDANT',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array for Default Judgment for claimant', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFAULT_JUDGMENT_CLAIMANT1);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getClaimantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.DJ_CLAIMANT',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -532,6 +676,19 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should not get data array for ccj admission', async () => {
+      //given
+      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(0);
+    });
+
     it('should get data array for claimant response receipt', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -543,6 +700,24 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for translated claimant response receipt', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
@@ -579,6 +754,24 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for translated settle agreement', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SETTLEMENT_AGREEMENT_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SETTLEMENT_AGREEMENT',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
@@ -647,6 +840,26 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for translated decision on Reconsideration', async () => {
+
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should not get data array for decision on reconsideration if toggle off', async () => {
       //given
       (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
@@ -695,6 +908,27 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for translated final order', async () => {
+      //given
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.FINAL_ORDER_TRANSLATED_DOCUMENT);
+
+      claim.caseProgression.finalOrderDocumentCollection = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_FINAL_ORDER',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
@@ -778,6 +1012,32 @@ describe('View Orders And Notices Service', () => {
       claim.caseProgression = new CaseProgression();
       const documentName = 'test_000MC001.pdf';
       claim.caseProgression.courtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(0);
+    });
+
+    it('should get translated court officer order when caseworkerEvent toggle on', async () => {
+      //given
+      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      const documentName = 'test_000MC001.pdf';
+      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(1);
+    });
+
+    it('should not get translated court officer order when caseworkerEvent toggle off', async () => {
+      //given
+      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(false);
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      const documentName = 'test_000MC001.pdf';
+      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
       //When
       const result = await getCourtDocuments(claim, claimId, 'en');
       //Then

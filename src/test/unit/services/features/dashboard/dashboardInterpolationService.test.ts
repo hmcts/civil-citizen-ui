@@ -8,6 +8,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {CaseDocument} from 'models/document/caseDocument';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseRole} from 'form/models/caseRoles';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -81,56 +82,6 @@ describe('dashboardInterpolationService', () => {
       },
     }];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS}';
-
-    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
-    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
-
-    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
-  });
-
-  it('should replace placeholders with redirect url for claimant judgment by admission ', async () => {
-    const claim: Claim = new Claim();
-    claim.id = '1710172392502478';
-    claim.systemGeneratedCaseDocuments = [{
-      id: '123', value: {
-        createdBy: 'Civil',
-        documentLink: {
-          document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
-          document_filename: 'Judgment_by_admission_claimant.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
-        },
-        documentName: 'Judgment_by_admission_claimant.pdf',
-        documentSize: 65663,
-        documentType: DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT,
-        createdDatetime: new Date('2024-03-11T10:57:18'),
-      },
-    }];
-    const textToReplaceUrl = '{VIEW_JUDGMENT_BY_ADMISSION_CLAIMANT}';
-
-    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
-    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
-
-    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
-  });
-
-  it('should replace placeholders with redirect url for defendant judgment by admission ', async () => {
-    const claim: Claim = new Claim();
-    claim.id = '1710172392502478';
-    claim.systemGeneratedCaseDocuments = [{
-      id: '123', value: {
-        createdBy: 'Civil',
-        documentLink: {
-          document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
-          document_filename: 'Judgment_by_admission_defendant.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
-        },
-        documentName: 'Judgment_by_admission_defendant.pdf',
-        documentSize: 65663,
-        documentType: DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT,
-        createdDatetime: new Date('2024-03-11T10:57:18'),
-      },
-    }];
-    const textToReplaceUrl = '{VIEW_JUDGMENT_BY_ADMISSION_DEFENDANT}';
 
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
@@ -281,6 +232,21 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
+  it('should replace placeholders for view the judgment', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.orderDocumentId = 'http://dm-store:8080/documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801/binary';
+    const textToReplaceUrl = '{VIEW_JUDGEMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    params.set('judgmentDocument', undefined);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/view-the-judgment';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
   describe('objectToMap', () => {
     it('should convert an object to a map', () => {
       const obj = {
@@ -368,6 +334,135 @@ describe('dashboardInterpolationService', () => {
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  it('should replace placeholders for query management View', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{QM_VIEW_MESSAGES_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/qm/view-query';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice present', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseProgressionHearing = new CaseProgressionHearing();
+    claim.caseProgressionHearing.hearingDocuments = [{
+      id: '123',
+      value: {
+        createdBy: '',
+        documentName: 'name',
+        documentLink: {
+          document_url: '',
+          document_filename: '',
+          document_binary_url: 'http://dm-store:8080/documents/123/binary',
+        },
+        documentSize: 123,
+        createdDatetime: undefined,
+        documentType: DocumentType.HEARING_FORM,
+      },
+    }];
+
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/view-documents/123';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for claimant', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for defendant', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when sdo document present', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123',
+      value: {
+        createdBy: '',
+        documentName: 'name',
+        documentLink: {
+          document_url: '',
+          document_filename: '',
+          document_binary_url: 'http://dm-store:8080/documents/123/binary',
+        },
+        documentSize: 123,
+        createdDatetime: undefined,
+        documentType: DocumentType.SDO_ORDER,
+      },
+    }];
+
+    const textToReplaceUrl = '{VIEW_SDO_DOCUMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/view-documents/123';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for claimant', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    const textToReplaceUrl = '{VIEW_SDO_DOCUMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for defendant', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_SDO_DOCUMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
   });
 
   function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {

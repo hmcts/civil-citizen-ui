@@ -545,7 +545,7 @@ describe('View Application service', () => {
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
       const expectedDraftDocument1 = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_APPLICATION_DRAFT_DOCUMENT',
         '14 November 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413', 'Translated_draft_application_2024-11-15 15:38:26.pdf'),
       );
@@ -630,7 +630,7 @@ describe('View Application service', () => {
         new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
       );
       const expectedDraftDocument1 = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_APPLICATION_DRAFT_DOCUMENT',
         '14 November 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/dee4cf43-0299-4a60-a1e9-26b3e8b09413', 'Translated_draft_application_2024-11-15 15:38:26.pdf'),
       );
@@ -846,7 +846,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when
-      const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
+      const result = await getResponseFromCourtSection(mockedAppRequest, '1', true, 'en');
 
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
@@ -869,7 +869,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.DEFENDANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when'
-      const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
+      const result = await getResponseFromCourtSection(mockedAppRequest, '1', true, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 August 2024');

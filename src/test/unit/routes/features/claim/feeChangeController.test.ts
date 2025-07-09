@@ -6,6 +6,7 @@ import {CLAIM_FEE_CHANGE_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getDraftClaimData} from 'services/dashboard/draftClaimService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/dashboard/draftClaimService.ts');
@@ -27,9 +28,20 @@ describe('Claim Fee Change Controller Controller', () => {
   describe('on GET', () => {
     it('should claim fee page with no draft claim data', async () => {
       //Given
+      const mockClaimFee = {
+        calculatedAmountInPence: 8000,
+        code: '110',
+        version: 1,
+      };
+      jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
+
       nock(civilServiceUrl)
         .get('/fees/claim/110')
         .reply(200, {calculatedAmountInPence : 8000});
+
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .reply(200, '110');
 
       getData.mockResolvedValue({
         claimCreationUrl: 'testOcmcUrl',
@@ -46,9 +58,19 @@ describe('Claim Fee Change Controller Controller', () => {
 
     it('should claim fee page with claim data', async () => {
       //Given
+      const mockClaimFee = {
+        calculatedAmountInPence: 8000,
+        code: '110',
+        version: 1,
+      };
+      jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
       nock(civilServiceUrl)
         .get('/fees/claim/110')
         .reply(200, {calculatedAmountInPence : 8000});
+
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .reply(200, '110');
 
       getData.mockResolvedValue({
         claimCreationUrl: 'testOcmcUrl',

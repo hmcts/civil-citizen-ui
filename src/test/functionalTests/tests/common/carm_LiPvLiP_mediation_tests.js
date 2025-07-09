@@ -22,7 +22,7 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-Feature('LiP - CARM - Mediation Journey @nightly @carm @regression @nightly');
+Feature('LiP - CARM - Mediation Journey').tag('@nightly @carm @regression @nightly');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

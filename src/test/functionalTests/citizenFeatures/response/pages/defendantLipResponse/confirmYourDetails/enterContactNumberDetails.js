@@ -19,7 +19,7 @@ const content = {
 };
 
 class ContactNumberDetailsPage {
-  async enterContactNumber(carmEnabled = false) {
+  async enterContactNumber(carmEnabled = true) {
     const { language } = sharedData;
     if (carmEnabled) { 
       await I.waitForContent(content.headingCarm[language], config.WaitForText);

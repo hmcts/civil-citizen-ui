@@ -1,0 +1,35 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.QM.CONFIRMATION_PAGE.CONFIRMATION_TEXT') }}
+{% endblock %}
+
+{% set panelContent %}
+  {{ t('PAGES.QM.CONFIRMATION_PAGE.CONFIRMATION_TEXT')}}
+{% endset %}
+
+{% block content %}
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ csrfProtection(csrf) }}
+          {{ govukPanel({
+            titleText: t('PAGES.QM.CONFIRMATION_PAGE.TITLE'),
+            html: panelContent
+          }) }}
+          <h2 class="govuk-heading-m"> {{t('COMMON.WHAT_HAPPENS_NEXT')}} </h2>
+          <p class="govuk-body"> {{t('PAGES.QM.CONFIRMATION_PAGE.CONFIRMATION_TEXT_1')}} </p>
+          <p class="govuk-body"> {{t('PAGES.QM.CONFIRMATION_PAGE.CONFIRMATION_TEXT_2')}} </p>
+
+          <p class="govuk-body">
+            <a href={{cancelUrl}} class="govuk-link" rel="noreferrer noopener"> {{t('PAGES.QM.CONFIRMATION_PAGE.GO_TO_DASHBOARD')}} </a>
+          </p>
+
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

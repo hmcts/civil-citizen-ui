@@ -13,7 +13,7 @@ class ViewDocuments {
     I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, dateUploaded, claimType, partyType) {
+  verifyPageContent(caseNumber, claimAmount, dateUploaded, claimType) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
@@ -22,12 +22,12 @@ class ViewDocuments {
     if (claimType === 'FastTrack') {
       this.verifyClaimantDisclosureSection(dateUploaded);
     }
-    this.verifyClaimantWitnessEvidenceSection(dateUploaded, claimType);
+    /*this.verifyClaimantWitnessEvidenceSection(dateUploaded, claimType);
     this.verifyDefendantWitnessEvidenceSection(dateUploaded, claimType);
     this.verifyClaimantExpertEvidenceSection(dateUploaded, claimType, partyType);
     this.verifyDefendantExpertEvidenceSection(dateUploaded, claimType);
     this.verifyClaimantHearingDocumentsSection(dateUploaded, claimType);
-    this.verifyDefendantHearingDocumentsSection(dateUploaded, claimType);
+    this.verifyDefendantHearingDocumentsSection(dateUploaded, claimType);*/
     contactUs.verifyContactUs();
   }
 

@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit and Repayment plan - Small Claims');
+Feature('Response with PartAdmit and Repayment plan - Small Claims').tag('@citizenUI @part-admit @nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -30,7 +30,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nightly', async () => {
+Scenario('Response with PartAdmit and Repayment plan', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -43,7 +43,11 @@ Scenario('Response with PartAdmit and Repayment plan @citizenUI @partAdmit @nigh
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, repaymentPlan);
   await ResponseSteps.EnterRepaymentPlan(claimRef);
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  //await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef); - before carm screens
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-}).tag('@regression-cui-r1');
+});

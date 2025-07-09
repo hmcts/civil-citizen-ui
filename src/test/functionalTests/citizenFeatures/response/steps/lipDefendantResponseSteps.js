@@ -84,6 +84,16 @@ const SubjectToFrc = require('../pages/defendantLipResponse/defendantDQ/subjectT
 const FrcBandAgreed = require('../pages/defendantLipResponse/defendantDQ/frcBandAgreed');
 const AssignComplexityBand = require('../pages/defendantLipResponse/defendantDQ/assignComplexityBand');
 const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendantDQ/reasonForComplexityBand');
+const DashboardPage = require('../pages/defendantLipResponse/queryManagement/dashboard');
+const ShareQuery = require('../pages/defendantLipResponse/queryManagement/shareQuery');
+const CreateQuery = require('../pages/defendantLipResponse/queryManagement/createQuery');
+const QmStart = require('../pages/defendantLipResponse/queryManagement/qmStart');
+const ViewQuery = require('../pages/defendantLipResponse/queryManagement/viewQuery');
+const GetUpdateFromCourt = require('../pages/defendantLipResponse/queryManagement/getUpdateFromCourt');
+const SendUpdateToCourt = require('../pages/defendantLipResponse/queryManagement/sendUpdateToCourt');
+const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagement/sendDocumentsToCourt');
+const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
+const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -172,6 +182,16 @@ const subjectToFrc = new SubjectToFrc();
 const frcBandAgreed = new FrcBandAgreed();
 const assignComplexityBand = new AssignComplexityBand();
 const reasonForComplexityBand = new ReasonForComplexityBand();
+const dashboardPage = new DashboardPage();
+const shareQueryPage = new ShareQuery();
+const createQueryPage = new CreateQuery();
+const qmStartPage = new QmStart();
+const viewQueryPage = new ViewQuery();
+const getUpdateFromCourtPage = new GetUpdateFromCourt();
+const SendUpdateToCourtPage = new SendUpdateToCourt();
+const SendDocumentsToCourtPage = new SendDocumentsToCourt();
+const SolveProblemPage = new SolveProblem();
+const ManageHearingPage = new ManageHearing();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
@@ -191,20 +211,108 @@ class ResponseSteps {
     await defendantLatestUpdate.openSummaryPage(claimRef);
   }
 
-  async EnterPersonalDetails(claimRef, carmEnabled) {
+  async EnterPersonalDetails(claimRef, addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (addPhoneNum) {
+      await contactNumberDetailsPage.enterContactNumber(true);
     }
   }
 
-  async EnterCompDetails(carmEnabled) {
+  async viewYourMessagesInDashboard() {
+    await dashboardPage.clickOnViewMessages();
+  }
+
+  async SendMessageToCourt(subject, message, isHearingRelated) {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.verifyAllContactOptionsPresent();
+    await qmStartPage.selectSomethingElseOption();
+    await shareQueryPage.fillShareQueryConfirmedForm();
+    await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
+    await confirmationPage.verifyQMMessageConfirmation();
+    await I.click('Go to your dashboard');
+    await I.waitForContent('View your messages to the court', 60);
+  }
+
+  async verifyCourtUpdateOptionsFlow() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.verifyAllContactOptionsPresent();
+    await qmStartPage.getUpdateFromCourt();
+    await getUpdateFromCourtPage.selectGetUpdate('GENERAL_UPDATE');
+    await getUpdateFromCourtPage.goBack();
+    await getUpdateFromCourtPage.selectGetUpdate('CLAIM_NOT_PAID');
+    await getUpdateFromCourtPage.goBack();
+    await getUpdateFromCourtPage.selectGetUpdate('CLAIM_NOT_PAID_AFTER_JUDGMENT');
+    await I.click('Close and return to case details');
+  }
+
+  async verifySendUpdateToCourtFlow() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.sendUpdateToTheCourt();
+    await SendUpdateToCourtPage.selectSendUpdate('PAID_OR_PARTIALLY_PAID_JUDGMENT');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('SETTLE_CLAIM');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('AMEND_CLAIM_DETAILS');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('CLAIM_ENDED');
+    await SendUpdateToCourtPage.goBack();
+    await SendUpdateToCourtPage.selectSendUpdate('SEND_UPDATE_SOMETHING_ELSE');
+  }
+
+  async sendDocuments() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.sendDocumentsToTheCourt();
+    await SendDocumentsToCourtPage.selectDocumentOrRequestOption('ENFORCEMENT_REQUESTS');
+    await SendDocumentsToCourtPage.goBack();
+    await SendDocumentsToCourtPage.selectDocumentOrRequestOption('CLAIM_DOCUMENTS_AND_EVIDENCE');
+    await I.click('Close and return to case details');
+  }
+
+  async solveProblem() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.solveProblem();
+    await SolveProblemPage.selectOption('SUBMIT_RESPONSE_CLAIM');
+    await SolveProblemPage.goBack();
+    await SolveProblemPage.selectOption('SEE_THE_CLAIM_ON_MY_ACCOUNT');
+    await SolveProblemPage.goBack();
+    await SolveProblemPage.selectOption('VIEW_DOCUMENTS_ON_MY_ACCOUNT');
+    await SolveProblemPage.goBack();
+    await SolveProblemPage.selectOption('SOLVE_PROBLEM_SOMETHING_ELSE');
+  }
+
+  async manageYourHearing() {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.manageYourHearing();
+    await ManageHearingPage.selectOption('CHANGE_THE_HEARING_DATE');
+    await ManageHearingPage.goBack();
+    await ManageHearingPage.selectOption('CHANGE_SOMETHING_ABOUT_THE_HEARING');
+    await ManageHearingPage.goBack();
+    await ManageHearingPage.selectOption('ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING');
+    await ManageHearingPage.goBack();
+    await ManageHearingPage.selectOption('MANAGE_HEARING_SOMETHING_ELSE');
+  }
+
+  async getSupport(subject, message, isHearingRelated) {
+    await dashboardPage.sendAMessage();
+    await qmStartPage.getSupport();
+    await shareQueryPage.fillShareQueryConfirmedForm();
+    await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
+    await confirmationPage.verifyQMMessageConfirmation();
+  }
+
+  async viewYourMessages(subject, message, isHearingRelated) {
+    await I.waitForContent('View your messages to the court', 60);
+    await I.click('View your messages to the court');
+    await viewQueryPage.verifyMessagesBeforeFollowUp(subject, message, isHearingRelated);
+  }
+
+  async EnterCompDetails(addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    if (!carmEnabled) {
-      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (addPhoneNum) {
+      await contactNumberDetailsPage.enterContactNumber(true);
     }
   }
 
@@ -535,6 +643,10 @@ class ResponseSteps {
     await emailConfirmation.confirmEmail();
   }
 
+  async goToPhoneDetailsScreen() {
+    await phoneConfirmation.goToPhoneDetailsScreen();
+  }
+
   async ConfirmPhoneDetails() {
     await phoneConfirmation.enterPhoneDetails();
   }
@@ -567,7 +679,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -580,10 +692,10 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption(carmEnabled);
+    await this.SelectLanguageOption();
   }
 
-  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true, carmEnabled = false) {
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterClaimantExpertDetails();
@@ -596,7 +708,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption(carmEnabled);
+    await this.SelectLanguageOption();
   }
   async EnterDQForMultiTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
@@ -619,7 +731,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
@@ -647,7 +759,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterClaimantDQForIntTrack(claimRef, isIndividual = true) {
@@ -675,7 +787,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async EnterDQForFastTrack(claimRef, isIndividual = true){
@@ -695,7 +807,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(false);
   }
 
   async SelectHearingRequirements(claimRef) {
@@ -750,8 +862,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(carmEnabled = false) {
-    await welshLanguage.selectLanguageOption(carmEnabled);
+  async SelectLanguageOption(smallClaims = true) {
+    await welshLanguage.selectLanguageOption(smallClaims);
   }
 
   async SelectOptionForTriedToSettle(claimRef){

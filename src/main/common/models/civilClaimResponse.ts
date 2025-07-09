@@ -89,6 +89,8 @@ import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDiscl
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
+import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
+import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export class CivilClaimResponse {
   id: string;
@@ -315,6 +317,7 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
   previewCourtOfficerOrder?: CaseDocument;
+  translatedCourtOfficerOrder?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
@@ -322,6 +325,10 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentSummaryObject?:string;
   joJudgementByAdmissionIssueDate?: Date;
   joDJCreatedDate?: Date;
+  uiStatementOfTruth?: CcdStatementOfTruth;
+  //Query management
+  queries?: CaseQueries;
+  previousCCDState?: string;
 }
 
 export interface ClaimFeeData {

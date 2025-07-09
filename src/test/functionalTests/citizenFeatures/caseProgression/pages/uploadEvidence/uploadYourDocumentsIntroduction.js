@@ -83,15 +83,15 @@ const content = {
 
 class UploadYourDocumentsIntroduction {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[contains(.,'${content.button[language]}')]`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[contains(.,'${content.button[language]}')]`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
+  async verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
@@ -100,12 +100,12 @@ class UploadYourDocumentsIntroduction {
     this.verifyUploadDocumentSectionContent();
     this.verifyDeadlinesForUploadingDocumentsContent();
     this.verifyBeforeYouUploadYourDocumentsContent();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
+  async verifyBreadcrumbs() {
     I.see('Home', 'li');
-    I.see('Upload your documents', 'li');
+    await I.see('Upload your documents', 'li');
   }
 
   verifyHeadingDetails() {

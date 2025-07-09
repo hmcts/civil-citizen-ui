@@ -30,10 +30,11 @@ import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForLipsEnabledAndLocationWhiteListed, isLRQueryManagementEnabled, isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import {GA_SUBMIT_OFFLINE} from 'routes/urls';
+import { GA_SUBMIT_OFFLINE} from 'routes/urls';
+import {GaInformation, isGaOnline} from 'services/commons/generalApplicationHelper';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -41,13 +42,25 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const appReq = <AppRequest>req;
 appReq.params = {id: '123'};
 
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('../../../../../main/modules/i18n');
+jest.mock('services/commons/generalApplicationHelper');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
 
-describe('dashboardService', () => {
+const gaInfo = new GaInformation();
+gaInfo.isSettledOrDiscontinuedWithPreviousCCDState = true;
+gaInfo.isGaOnline = true;
 
+describe('dashboardService', () => {
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   describe('generateNewDashboard', () => {
     describe('as Claimant', () => {
       it('with hearing fee actionable + trial arrangements if hearing fee + fast track type', () => {
@@ -67,6 +80,9 @@ describe('dashboardService', () => {
     });
   });
   describe('as Defendant', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
     describe('Dashboard', () => {
       const mockNotificationInfo = [
         {
@@ -474,7 +490,8 @@ describe('dashboardService', () => {
       });
 
       it('getContactCourtLink when claim is taken offline', async () => {
-        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
         //Given
         const claim = new Claim();
         claim.id = '1234567890';
@@ -491,7 +508,8 @@ describe('dashboardService', () => {
         const result = await getContactCourtLink(claim.id, claim, false, 'en');
 
         //Then
-        expect(result).toBeUndefined();
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toBeUndefined();
       });
 
       it('getContactCourtLink when Gaflag is enable and  whitelisted', async () => {
@@ -558,8 +576,87 @@ describe('dashboardService', () => {
         expect(result.url).toContain(GA_SUBMIT_OFFLINE);
       });
 
+      describe('Query management enabled get court contact link', () => {
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+
+        it('should return updated text with QM enabled', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
+
+          claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
+        });
+
+        it('should not return updated text if QM is disabled', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+          (isLRQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
+          (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+          claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result.text).not.toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT');
+          expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        });
+
+        it('should not return updated text if QM is enabled but state is dismissed', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
+          claim.ccdState = CaseState.CASE_DISMISSED;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result).toBeUndefined();
+        });
+
+        it('should not return updated text if QM is enabled but state is PROCEEDS_IN_HERITAGE_SYSTEM', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+
+          claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result).toBeUndefined();
+        });
+
+        it('should not return updated text if QM is enabled but state is PENDING_CASE_ISSUED', async () => {
+          (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
+
+          claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+
+          const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+          expect(result).toBeUndefined();
+        });
+      });
+
     });
     describe('Hide/Show Application Section', () => {
+      let dashboard: Dashboard;
+      let dashboardExpected: Dashboard;
+
+      beforeEach(() => {
+        jest.resetAllMocks();
+        dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+
+        dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+      });
 
       //Given
       const mockGet = jest.fn().mockResolvedValue({
@@ -576,16 +673,6 @@ describe('dashboardService', () => {
             'test'),
         ),
       });
-      const dashboard = new Dashboard(
-        Array.of(new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('Applications', 'Applications', []),
-        ));
-
-      const dashboardExpected = new Dashboard(
-        Array.of(new DashboardTaskList('test', 'test', [])
-          , new DashboardTaskList('test', 'test', []),
-        ));
 
       it('Application section when GaFlag enabled and location not whitelisted and the case is not assigned to defendant', async () => {
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
@@ -691,12 +778,6 @@ describe('dashboardService', () => {
       });
 
       it('Application section when GaFlag enabled and the case is assigned to defendant', async () => {
-
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
@@ -725,13 +806,7 @@ describe('dashboardService', () => {
       });
 
       it('Application section when GaFlag enabled and ea not whitelisted and the case is assigned to defendant', async () => {
-
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
-        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
@@ -759,6 +834,168 @@ describe('dashboardService', () => {
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
+
+      it('Application section when QM LR is on and QM Lip is off and the task list are inactive and GA is online', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+        (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashBoardWithContactTheCourt = new Dashboard(
+          Array.of(new DashboardTaskList('Applications', 'Applications', [
+            new DashboardTask('1234',
+              'Contact the court to request a change to my case',
+              'test',
+              'Inactive',
+              'test',
+              'test',
+              DashboardTaskStatus.INACTIVE, 'test'),
+          ]),
+          ));
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashBoardWithContactTheCourt);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+
+        const dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('Applications', 'Applications', [
+            new DashboardTask('1234',
+              '<a href=/case/1234567890/general-application/application-type?linkFrom=start rel="noopener noreferrer" class="govuk-link">Contact the court to request a change to my case</a>',
+              '<a href=/case/1234567890/general-application/application-type?linkFrom=start rel="noopener noreferrer" class="govuk-link">Cysylltu â’r llys i wneud cais am newid i fy achos</a>',
+              'Optional',
+              'Dewisol',
+              'test',
+              DashboardTaskStatus.INACTIVE, 'test'),
+          ]),
+          ));
+
+        (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when QM LR is on and QM Lip is off and GA is online and isSettledOrDiscontinuedWithPreviousCCDState is undefined', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+        (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashBoardWithContactTheCourt = new Dashboard(
+          Array.of(new DashboardTaskList('Applications', 'Applications', [
+            new DashboardTask('1234',
+              'Contact the court to request a change to my case',
+              'test',
+              'Inactive',
+              'test',
+              'test',
+              DashboardTaskStatus.INACTIVE, 'test'),
+          ]),
+          ));
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashBoardWithContactTheCourt);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        const gaInfo = new GaInformation();
+        gaInfo.isSettledOrDiscontinuedWithPreviousCCDState = false;
+        gaInfo.isGaOnline = true;
+
+        const dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('Applications', 'Applications', [
+            new DashboardTask('1234',
+              'Contact the court to request a change to my case',
+              'test',
+              'Inactive',
+              'test',
+              'test',
+              DashboardTaskStatus.INACTIVE, 'test'),
+          ]),
+          ));
+
+        (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when QM LR is on and QM Lip is off and the task list are inactive and GA is offline', async () => {
+        (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
+        (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+        (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashBoardWithContactTheCourt = new Dashboard(
+          Array.of(new DashboardTaskList('Applications', 'Applications', [
+            new DashboardTask('1234',
+              'Contact the court to request a change to my case',
+              'test',
+              'Inactive',
+              'test',
+              'test',
+              DashboardTaskStatus.INACTIVE, 'test'),
+          ]),
+          ));
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashBoardWithContactTheCourt);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+        claim.caseManagementLocation ={
+          region: '2',
+          baseLocation: '0909089',
+        };
+        const gaInfo = new GaInformation();
+        gaInfo.isGaOnline = false;
+
+        (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
+
+        //Then
+        expect(claimantDashboard.items.length).toEqual(0);
+      });
+
     });
   });
 
@@ -925,8 +1162,12 @@ describe('dashboardService', () => {
       //Then
       expect(claimantDashboard).toBeDefined();
     });
+
     it('getContactCourtLink when Gaflag is enable and Lr Defendant', async () => {
+
       (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       //Given
       const claim = new Claim();
       claim.id = '1234567890';
@@ -945,6 +1186,93 @@ describe('dashboardService', () => {
 
       //Then
       expect(result).toBeDefined();
+    });
+
+    it('getContactCourtLink when QM LR is on and QM LIP is false and isGaOnline is false', async () => {
+
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isGaOnline as jest.Mock).mockReturnValue(false);
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toBeUndefined();
+    });
+
+    it('getContactCourtLink when QM LR is on and QM LIP is false and Ga is online', async () => {
+
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      const gaInfo = new GaInformation();
+      gaInfo.isGaOnline = true;
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toEqual({
+        text: 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT',
+        url: '/case/1234567890/general-application/application-type?linkFrom=start',
+        removeTargetBlank: true,
+      });
+    });
+
+    it('getContactCourtLink when QM lR is on and QM LIP is false and Ga is offline with welsh', async () => {
+
+      //Given
+      const claim = new Claim();
+      claim.id = '1234567890';
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.totalClaimAmount = 900;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.defendantUserDetails = undefined;
+      claim.respondentSolicitorDetails = {};
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      claim.caseManagementLocation = {
+        region: '2',
+        baseLocation: '0909089',
+      };
+      const gaInfo = new GaInformation();
+      gaInfo.isGaOnline = false;
+      gaInfo.isGAWelsh = true;
+      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+      (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toEqual({
+        text: 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT',
+        url: GA_SUBMIT_OFFLINE,
+      });
     });
   });
 });

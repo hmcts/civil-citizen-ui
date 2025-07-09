@@ -64,7 +64,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     if(canUploadAddlDoc(applicationResponse)) {
       additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     }
-    const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, lang);
+    const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, true, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
     const caseProgressionCaseState =  isGACosc ? null : claim.isCaseProgressionCaseState();
     const uploadDocsTrialUrl = isGACosc ? null : constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);

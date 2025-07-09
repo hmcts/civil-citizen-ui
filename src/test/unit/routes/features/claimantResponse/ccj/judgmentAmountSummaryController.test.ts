@@ -29,6 +29,9 @@ describe('Judgment Amount Summary', () => {
     nock(civilServiceUrl)
       .post('/fees/claim/calculate-interest')
       .reply(200, '0');
+    nock(civilServiceUrl)
+      .post('/fees/claim/interest')
+      .reply(200, '0');
   });
 
   describe('on GET', () => {

@@ -3,14 +3,14 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@nightly');
+Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@part-admit @nightly');
 
 Scenario('Verify the Eligibility Check journey', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
@@ -29,7 +29,6 @@ Scenario('Create Claim by claimant', async ({api}) => {
   await CreateLipvLipClaimSteps.clickPayClaimFee();
   await CreateLipvLipClaimSteps.verifyAndPayClaimFee(1520, 115);
   await api.waitForFinishedBusinessProcess();
-  await api.adjustSubmittedDateForCarm(claimRef);
   let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   let securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
@@ -56,7 +55,10 @@ Scenario('Defendant responds with part admit', async ({api}) => {
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
   await ResponseSteps.EnterDateToPayOn();
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  await ResponseSteps.EnterTelephoneMediationDetails();
+  await ResponseSteps.ConfirmAltPhoneDetails();
+  await ResponseSteps.ConfirmAltEmailDetails();
+  await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   await api.waitForFinishedBusinessProcess();

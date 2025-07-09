@@ -1,0 +1,16 @@
+{% extends "./default-template.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+
+{% block qmContent %}
+
+{{ govukRadios({
+  idPrefix: "option",
+  name: "option",
+  items: form.model.items,
+  errorMessage: {
+    text: t(form.errorFor('option'))
+  } if form.hasErrors()
+}) }}
+
+{% endblock %}

@@ -102,6 +102,7 @@ describe('Interest Utils', () => {
 
     const claim = new Claim();
     claim.totalClaimAmount = 6000;
+    claim.claimInterest = YesNo.YES;
     claim.interest = new Interest();
     claim.interest.interestClaimFrom = InterestClaimFromType.FROM_A_SPECIFIC_DATE;
     claim.interest.interestStartDate = new InterestStartDate('20', '10', '2022', 'my reason');

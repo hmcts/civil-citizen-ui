@@ -433,9 +433,17 @@ import submitApplicationOfflineController from 'routes/features/generalApplicati
 import gaUnavailabilityDatesConfirmationController from './features/generalApplication/unavailableHearingDatesControllerConfirmation';
 import gaUnavailabilityDatesResponseConfirmationController
   from 'routes/features/generalApplication/response/unavailableHearingDatesControllerResponseConfirmation';
-import qmStartController from 'routes/features/qm/qmStartController';
-import qmWhatToDoController from 'routes/features/qm/qmWhatToDoController';
-import qmInformationController from 'routes/features/qm/qmInformationController';
+import qmStartController from 'routes/features/queryManagement/qmStartController';
+import qmWhatToDoController from 'routes/features/queryManagement/qmWhatToDoController';
+import qmInformationController from 'routes/features/queryManagement/qmInformationController';
+import createQueryController from 'routes/features/queryManagement/createQueryController';
+import createQueryCheckYourAnswerController from 'routes/features/queryManagement/createQueryCheckYourAnswerController';
+import qmConfirmationController from 'routes/features/queryManagement/qmConfirmationController';
+import sendFollowUpQueryController from 'routes/features/queryManagement/sendFollowUpQueryController';
+import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueriesController';
+import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
+import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
+import shareQueryConfirmationController from 'routes/features/queryManagement/shareQueryConfirmationController';
 
 export default [
   homeController,
@@ -787,4 +795,12 @@ export default [
   qmStartController,
   qmWhatToDoController,
   qmInformationController,
+  qmConfirmationController,
+  createQueryCheckYourAnswerController,
+  createQueryController,
+  qmViewQueriesController,
+  sendFollowUpQueryController,
+  qmViewQueryDetailsController,
+  claimantTelephoneMediationController,
+  shareQueryConfirmationController,
 ];

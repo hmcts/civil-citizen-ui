@@ -2,7 +2,7 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
@@ -16,10 +16,10 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, instalmentAmount = 100, date = '1 October 2025';
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant').tag('@api @full-admit @nightly');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by instalments - @api', async ({I, api}) => {
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by instalments', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -62,4 +62,4 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by i
     const notification = claimantAskDefendantToSignSettlementCourtPlanDefendant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@nightly');
+});

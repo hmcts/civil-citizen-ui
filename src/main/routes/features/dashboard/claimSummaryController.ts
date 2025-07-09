@@ -4,7 +4,11 @@ import {AppRequest} from 'models/AppRequest';
 import { CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase, isGaForLipsEnabled,
+  isCaseProgressionV1Enable,
+  isDashboardEnabledForCase,
+  isCarmEnabledForCase,
+  isGaForLipsEnabled,
+  isQueryManagementEnabled, isGaForWelshEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -32,6 +36,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
+import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -60,7 +65,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
 
       const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
@@ -70,6 +75,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           req.session.dashboard.taskIdHearingUploadDocuments = task.id;
         }
       });
+      const welshEnabled = await isGaForWelshEnabled();
+      const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
@@ -83,6 +91,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           helpSupportTitle,
           helpSupportLinks,
           lang,
+          isQMFlagEnabled,
+          showWelshPartyBanner,
+          showErrorAwaitingTranslation,
         },
       );
     } else {
@@ -100,17 +111,20 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks : iWantToLinks[] = [];
 
   iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  const viewMessages = await getViewMessagesLink(req, claim, lng);
   if(viewAllApplicationLink) {
     iWantToLinks.push(viewAllApplicationLink);
   }
-
+  if (viewMessages) {
+    iWantToLinks.push(viewMessages);
+  }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 

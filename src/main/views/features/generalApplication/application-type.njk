@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
@@ -18,7 +18,7 @@
       {
         value: ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
         html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM') + '</strong>',
-        checked: form.model.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
+        checked: form.model.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE or isAmendClaim,
         hint: {
           text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM_DESCRIPTION')
         }
@@ -129,7 +129,7 @@
                   {
                     value: ApplicationTypeOption.ADJOURN_HEARING,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
-                    checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                    checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING or isAdjournHearing,
                     hint: {
                       text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
                     }
@@ -203,7 +203,7 @@
                                 {
                                   value: ApplicationTypeOption.ADJOURN_HEARING,
                                   html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
-                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING or isAdjournHearing,
                                   hint: {
                                     text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
                                   }

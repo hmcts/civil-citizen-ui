@@ -221,9 +221,9 @@ export const getRespondentDocuments = (applicationResponse : ApplicationResponse
   return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
 };
 
-export const getResponseFromCourtSection = async (req: AppRequest, applicationId: string, lang?: string): Promise<CourtResponseSummaryList[]> => {
+export const getResponseFromCourtSection = async (req: AppRequest, applicationId: string, showButtons: boolean, lang?: string): Promise<CourtResponseSummaryList[]> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
-  return await buildResponseFromCourtSection(req, applicationResponse, lang);
+  return await buildResponseFromCourtSection(req, applicationResponse, showButtons, lang);
 };
 
 const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: string, createdBy: string) => {
@@ -247,7 +247,9 @@ export const getDraftDocument =  (applicationResponse: ApplicationResponse, lang
     gaDraftDocInfoArray = generalAppDraftDocs.sort((item1,item2) => {
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(gaDraftDocument => {
-      return setUpDocumentLinkObject(gaDraftDocument.value.documentLink, gaDraftDocument.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT', gaDraftDocument.value.documentName);
+      return setUpDocumentLinkObject(gaDraftDocument.value.documentLink, gaDraftDocument.value.createdDatetime, applicationResponse.id, lang, gaDraftDocument.value.documentName.indexOf('Translated') !== -1
+        ? 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_APPLICATION_DRAFT_DOCUMENT'
+        : 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT' , gaDraftDocument.value.documentName);
     });
   }
   return gaDraftDocInfoArray;

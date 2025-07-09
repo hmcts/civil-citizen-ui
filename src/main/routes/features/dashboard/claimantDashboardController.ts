@@ -19,7 +19,13 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isCaseProgressionV1Enable, isCUIReleaseTwoEnabled, isCarmEnabledForCase, isGaForLipsEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {
+  isCaseProgressionV1Enable,
+  isCUIReleaseTwoEnabled,
+  isCarmEnabledForCase,
+  isGaForLipsEnabled,
+  isQueryManagementEnabled, isGaForWelshEnabled,
+} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
@@ -29,6 +35,7 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -75,6 +82,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
         = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
@@ -85,6 +93,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
           req.session.dashboard.taskIdHearingUploadDocuments = task.id;
         }
       });
+      const welshEnabled = await isGaForWelshEnabled();
+      const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
@@ -99,6 +110,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         helpSupportLinks,
         lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
+        isQMFlagEnabled,
+        showWelshPartyBanner,
+        showErrorAwaitingTranslation,
       });
 
     } else {
@@ -109,7 +123,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
@@ -138,10 +152,10 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  const viewMessages = await getViewMessagesLink(req, claim, lng);
   if(viewAllApplicationLink) {
     iWantToLinks.push(viewAllApplicationLink);
   }
-
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
@@ -149,7 +163,9 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     || (isCaseProgressionEnabled && showGetDebtRespiteLinkCaseProgression && claim.isClaimant())) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
-
+  if (viewMessages) {
+    iWantToLinks.push(viewMessages);
+  }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 

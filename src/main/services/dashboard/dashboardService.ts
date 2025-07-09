@@ -20,22 +20,74 @@ import {
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
-import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
+import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_START_URL} from 'routes/urls';
 import {
   isGaForLipsEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
+  isGaForWelshEnabled, isLRQueryManagementEnabled,
+  isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {isGaOnline} from 'services/commons/generalApplicationHelper';
+import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'Mediation', []));
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
+const GA_DASHBOARD_EXCLUSIONS_QM = Array.of(new DashboardTaskList('Applications and messages to the court', 'Applications and messages to the court', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+  const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
+  const isLrQmIsEnabled = await isLRQueryManagementEnabled();
+
+  const welshGaEnabled = await isGaForWelshEnabled();
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
+    if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
+      const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+      const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+
+      if (!isGaOnlineFlag.isGaOnline) {
+        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      } else {
+        if (isGaOnlineFlag.isSettledOrDiscontinuedWithPreviousCCDState){ // in the case that all the application's tasklist are inactive with isSettledOrDiscontinuedWithPreviousCCDState
+          const taskItem = dashboard
+            .items
+            .find(item => item.categoryEn === 'Applications')
+            .tasks.find(task => task
+              .taskNameEn.includes('Contact the court to request a change to my case')
+              && task.statusEn === 'Inactive');
+          if (taskItem) {
+            taskItem.statusEn = 'Optional';
+            taskItem.statusCy = 'Dewisol';
+            taskItem.taskNameEn = '<a href={GENERAL_APPLICATIONS_INITIATION_PAGE_URL} rel="noopener noreferrer" class="govuk-link">Contact the court to request a change to my case</a>'.trim();
+            taskItem.taskNameCy = '<a href={GENERAL_APPLICATIONS_INITIATION_PAGE_URL} rel="noopener noreferrer" class="govuk-link">Cysylltu â’r llys i wneud cais am newid i fy achos</a>'.trim();
+
+          }
+        }
+      }
+    } else if (queryManagementFlagEnabled) {
+      //remove Applications sections
+      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS_QM.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    }
+    else { // prod code
+      //exclude Applications sections
+      if (!isGAFlagEnable
+        || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
+        || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
+        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
+        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+      }
+    }
+
+    //exclude Carm sections
+    if (!isCarmApplicable){
+      dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    }
+
     for (const item of dashboard.items) {
       for (const task of item.tasks) {
         task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
@@ -43,18 +95,6 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
         task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
         task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
       }
-    }
-    //exclude Carm sections
-    if (!isCarmApplicable){
-      dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-    }
-
-    //exclude Applications sections
-    if (!isGAFlagEnable
-      || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
-      || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-      || (claim.isAnyPartyBilingual() && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
-      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
     return dashboard;
@@ -146,30 +186,68 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   return undefined;
 }
 
-export const  getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
-  if ((claim.ccdState && !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-    && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
-    if (claim.isAnyPartyBilingual()) {
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: GA_SUBMIT_OFFLINE,
-      };
-    } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
+export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string): Promise<iWantToLinks> => {
+
+  const isLrQmOn = await isLRQueryManagementEnabled();
+  const isLIPQmOn = await isQueryManagementEnabled(claim.submittedDate);
+
+  if (isLrQmOn && !isLIPQmOn) {
+    const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+    const welshGaEnabled = await isGaForWelshEnabled();
+    const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+    if (isGaOnlineFlag.isGaOnline) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
         removeTargetBlank: true,
       };
-    } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
+    } else { // ga is offline
+      if (isGaOnlineFlag.isGAWelsh) { // the GA is offline and user is bilingual
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+          url: GA_SUBMIT_OFFLINE,
+        };
+      }
+    }
+
+  } else if (isLIPQmOn) {
+    const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
+    if(!isClaimOffLine.includes(claim.ccdState)){
       return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinKFromValues.start}`),
+        removeTargetBlank: true,
       };
     }
-    return {
-      text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }),
-      url: applicationNoticeUrl,
-    };
   }
+  else { // Prod code
+    if ((claim.ccdState &&
+        !claim.isCaseIssuedPending() && !claim.isClaimSettled()
+      && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
+      const welshGaEnabled = await isGaForWelshEnabled();
+      if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+          url: GA_SUBMIT_OFFLINE,
+        };
+      } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+          removeTargetBlank: true,
+        };
+      } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        };
+      }
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: applicationNoticeUrl,
+      };
+    }
+  }
+
 };
 
 export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {

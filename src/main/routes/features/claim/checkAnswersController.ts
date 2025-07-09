@@ -26,6 +26,7 @@ import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
+import {calculateInterestToDate} from 'common/utils/interestUtils';
 const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -79,21 +80,24 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
 
     await form.validate();
-    //TOD
+
     if (claim.applicant1?.emailAddress?.emailAddress) {
       form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
     }
     if (claim.respondent1?.emailAddress?.emailAddress) {
       form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
     }
-    if (claim.applicant1?.partyPhone?.phone) {
-      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.applicant1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_CLAIMANT')), form.errors);
+    // fixing CIV-17259
+    if (claim.applicant1?.partyPhone === undefined) {
+      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
     }
+
     if (claim.respondent1?.partyPhone?.phone) {
       form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
     }
     if (!claim?.claimFee?.calculatedAmountInPence) {
-      const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount, req as AppRequest);
+      const interestToDate = await calculateInterestToDate(claim);
+      const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
       await saveClaimFee(userId, claimFeeData);
     }
     if (form.hasErrors() ) {
