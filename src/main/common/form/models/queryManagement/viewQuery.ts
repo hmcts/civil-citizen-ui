@@ -36,15 +36,19 @@ export class QueryListItem {
   hearingDate?: string;
   documents: FormattedDocument[];
   sentBy: string;
+  sentByName: string;
   sentOn: string;
+  raisedByUser: boolean;
 
-  constructor(messageDetails: string, isHearingRelated: YesNoUpperCamelCase, documents: FormattedDocument[], sentBy: string, sentOn: string, hearingDate?: string ) {
+  constructor(messageDetails: string, isHearingRelated: YesNoUpperCamelCase, documents: FormattedDocument[], sentBy: string, sentByName: string, sentOn: string, raisedByUser: boolean, hearingDate?: string) {
     this.messageDetails = messageDetails;
     this.isHearingRelated = isHearingRelated;
     this.hearingDate = hearingDate;
     this.documents = documents;
     this.sentBy = sentBy;
+    this.sentByName = sentByName;
     this.sentOn = sentOn;
+    this.raisedByUser = raisedByUser;
   }
 }
 
