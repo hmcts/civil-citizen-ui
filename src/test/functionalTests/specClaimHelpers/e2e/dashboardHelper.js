@@ -22,24 +22,25 @@ module.exports = {
       await I.waitForContent(title);
       await I.waitForVisible(selectors.titleClass, 60);
       await I.waitForVisible(selectors.contentClass, 60);
+
+      const pageSource = await I.grabTextFrom('body');
       if (Array.isArray(content)) {
-        for (let i = 0; i < content.length; i++) {
-          await I.see(content[i]);
-          console.log('content to be verified ..', content[i]);
-        }
+        const missingContent = content.filter(text => {
+          console.log('content to be verified ..', text);
+          return !pageSource.includes(text);
+        });
+        if (missingContent.length === 0) { break; }
       } else {
         console.log('content to be verified ..', content);
-        const pageSource = await I.grabTextFrom('body');
-        if (pageSource.includes(content)) {
-          break;
-        }
-        if (tries === maxRetries) {
-          throw new Error('Notification could not be verified');
-        }
-
-        await I.wait(2);
-        await I.refreshPage();
+        if (pageSource.includes(content)) { break; }
       }
+
+      if (tries === maxRetries) {
+        throw new Error('Notification could not be verified');
+      }
+
+      await I.wait(2);
+      await I.refreshPage();
     }
   },
 
