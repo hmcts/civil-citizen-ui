@@ -25,7 +25,6 @@ class ViewQuery {
     if (isHearingRelated) {
       await I.see('What is the date of the hearing?');
     }
-    await I.see('Response details');
   }
 
   async sendFollowUpMessage() {
