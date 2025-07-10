@@ -77,7 +77,7 @@ describe('View query controller', () => {
       buildQueryListItemsByQueryIdMock.mockReturnValue(new QueryDetail(
         'Query 1',
         'PAGES.QM.VIEW_QUERY.STATUS_SENT',
-        Array.of(queryMessage()),
+        Array.of(queryMessage()), false, '',
       ));
 
       nock(civilServiceUrl)
@@ -107,6 +107,7 @@ describe('View query controller', () => {
         'Query 1',
         'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
         Array.of(queryMessage(), responseMessage()),
+        false, '',
       ));
 
       nock(civilServiceUrl)
@@ -141,6 +142,7 @@ describe('View query controller', () => {
         'Query 1',
         'PAGES.QM.VIEW_QUERY.STATUS_SENT',
         Array.of(queryMessage(), responseMessage(), followUpMessage()),
+        false, '',
       ));
 
       nock(civilServiceUrl)
@@ -179,6 +181,7 @@ describe('View query controller', () => {
         'Query 1',
         'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
         Array.of(queryMessage(), responseMessage()),
+        false, '',
       ));
 
       nock(civilServiceUrl)
