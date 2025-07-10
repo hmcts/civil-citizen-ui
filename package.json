@@ -26,7 +26,7 @@
     "test:cui-r1": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 9 --grep @regression-cui-r1 --reporter mocha-multi --verbose",
     "test:ocmc": "MOCHAWESOME_REPORTFILENAME=ocmc codeceptjs run-workers --suites 9 --grep @ocmc --reporter mocha-multi --verbose",
     "test:cui-cp": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 9 --grep @regression-cp --reporter mocha-multi --verbose",
-    "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep @regression-qm --reporter mocha-multi --verbose",
+    "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep @regression --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm codeceptjs run-workers --suites 2 --grep @regression-carm --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:e2e-nightly": "MOCHAWESOME_REPORTFILENAME=e2e-nightly FUNCTIONAL=true codeceptjs run-workers --suites 10 --grep @nightly --reporter mocha-multi --verbose",
