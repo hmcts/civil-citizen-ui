@@ -10,7 +10,7 @@ class SendUpdateToCourt {
       },
       SETTLE_CLAIM: {
         heading: 'Settle a claim',
-        description: 'Update the claim in the online service by selecting tell us you’ve settled the claim',
+        description: 'update the claim in the online service by selecting tell us you’ve settled the claim',
       },
       AMEND_CLAIM_DETAILS: {
         heading: 'Amend the claim details',
@@ -18,7 +18,7 @@ class SendUpdateToCourt {
       },
       CLAIM_ENDED: {
         heading: 'Tell the court my claim has ended',
-        description: 'To tell the court your claim has ended, you need to fill in and send a form called a notice of discontinuance (opens in a new window) to the court and the other parties in the case.',
+        description: 'To tell the court you no longer want to continue with your claim',
       },
       SEND_UPDATE_SOMETHING_ELSE: {
         heading: 'Send a message',

@@ -77,6 +77,7 @@ exports.config = {
     api: `${testPath}/functionalTests/specClaimHelpers/api/steps.js`,
     wa: `${testPath}/functionalTests/specClaimHelpers/api/stepsWA.js`,
     noc: `${testPath}/functionalTests/specClaimHelpers/api/steps_noc.js`,
+    qm: `${testPath}/functionalTests/specClaimHelpers/api/steps_qm.js`,
   },
   plugins: {
     autoDelay: {
