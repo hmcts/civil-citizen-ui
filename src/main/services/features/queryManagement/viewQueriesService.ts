@@ -3,7 +3,7 @@ import {CaseMessage, QueryMessage} from 'models/queryManagement/caseQueries';
 import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {QueryDetail, QueryListItem, ViewObjects} from 'form/models/queryManagement/viewQuery';
-import {YesNoUpperCamelCase} from "form/models/yesNo";
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export class ViewQueriesService {
 
