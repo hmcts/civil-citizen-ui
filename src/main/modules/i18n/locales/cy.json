@@ -3826,6 +3826,7 @@
         "APPLICATION_APPROVE_EDIT": "Cais wedi’i gymeradwyo neu ei olygu",
         "APPLICATION_DETAILS": "Manylion y cais a gyflwynwyd gan y ceisydd.",
         "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
+        "TRANSLATED_DISMISSAL_ORDER_DOCUMENT": "Cais am Orchymyn Diddymu wedi'i Gyfieithu",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Cais Drafft",
         "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Dogfen Crynodeb Cais wedi’i Chyfieithu ",
