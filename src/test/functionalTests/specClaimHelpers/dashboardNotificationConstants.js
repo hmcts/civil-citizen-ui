@@ -64,7 +64,7 @@ module.exports = {
   //Notice.AAA6.ClaimIssue.HWF.FullRemission
   hwfFullRemission: (feeAmount) => {
     return {
-      title: 'Your help with fees application has been reviewed',
+      title: 'Your help with fees application has been approved',
       content: [`The full claim fee of £${feeAmount} will be covered by fee remission.`, 'You do not need to make a payment.'],
     };
   },
