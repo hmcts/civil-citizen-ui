@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -23,9 +24,13 @@
                 <div class="govuk-summary-card__title-wrapper">
                   <h2 class="govuk-summary-card__title">
                     {% if loop.index % 2 == 0 %}
-                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
+                    {% elseif loop.index === 1 and item.raisedByUser === true %}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                    {% elseif loop.index === 1 and item.raisedByUser  === false %}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE') }}
                     {% else %}
-                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.FOLLOW_UP_MESSAGE') }}
                     {% endif %}
                   </h2>
                 </div>
@@ -73,6 +78,8 @@
                           {% for link in item.documents %}
                             <div>{{ link.documentUrl | safe }}</div>
                           {% endfor %}
+                        {% else %}
+                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.NO_DOCUMENTS_UPLOADED') }}
                         {% endif %}
                       </dd>
                     </div>
@@ -81,8 +88,10 @@
                       <dd class="govuk-summary-list__value">
                         {% if loop.index % 2 == 0 %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_COURT_STAFF') }}
-                        {% else %}
+                        {% elseif item.raisedByUser === true %}
                           {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU') }}
+                        {% else %}
+                          {{ item.sentByName }}
                         {% endif %}
                       </dd>
                     </div>
@@ -99,13 +108,26 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+        {% if not selectedQueryItem.isQueryClosed %}
           {% if not isClaimOffLine and selectedQueryItem.lastStatus == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
+            <p class="govuk-body-m govuk-!-font-weight-bold"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.HEADER') }} <p>
+            <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_1') }} <p>
+            <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_2') }} <p>
             {{ govukButton({
               text: t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP'),
               classes: "govuk-button--secondary",
               href: followUpScreen
             }) }}
+          {% else %}
+            <p class="govuk-body-m govuk-!-font-weight-bold"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.HEADER') }} <p>
+            <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.LINE_1') }} <p>
           {% endif %}
+        {% else %}
+          {{ govukWarningText({
+            text: t('PAGES.QM.VIEW_QUERY_DETAILS.THREAD_CLOSED_BY_STAFF', {createdDate: selectedQueryItem.queryClosedDate}),
+            iconFallbackText: "Warning"
+           }) }}
+        {% endif %}
         </div>
       </div>
 
