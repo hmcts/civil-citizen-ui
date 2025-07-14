@@ -3,7 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  QM_INFORMATION_URL, QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
+  QM_INFORMATION_URL, QM_SHARE_QUERY_CONFIRMATION, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -75,7 +75,7 @@ describe('Query management what do do controller', () => {
           .send({option})
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(QUERY_MANAGEMENT_CREATE_QUERY);
+            expect(res.header.location).toEqual(QM_SHARE_QUERY_CONFIRMATION);
           });
       },
     );
