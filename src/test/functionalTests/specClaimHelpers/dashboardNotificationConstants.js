@@ -293,10 +293,11 @@ module.exports = {
   },
 
   //Notice.AAA6.CP.HearingFee.Required.Claimant
+  //Note: the text from the notification includes a double space but is not visible in the browser. Should update the database to remove the additional space.
   payTheHearingFeeClaimant: (amount, deadline) => {
     return {
       title: 'You must pay the hearing fee',
-      content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
+      content: `You must either pay the hearing fee of £${amount} or  apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
       nextSteps: 'pay the hearing fee',
       nextSteps2: 'apply for help with fees',
     };
