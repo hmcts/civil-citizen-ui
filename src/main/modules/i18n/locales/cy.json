@@ -988,7 +988,8 @@
         "UPDATED_BY_COURT_STAFF": "Staff y Llys",
         "UPDATED_BY_YOU": "Chi",
         "STATUS_SENT": "Neges wedi’i hanfon",
-        "STATUS_RECEIVED": "Ymateb wedi cyrraedd"
+        "STATUS_RECEIVED": "Ymateb wedi cyrraedd",
+        "STATUS_CLOSED": "Wedi’i gau"
       },
       "FOLLOW_UP_QUERY": {
         "WARNING_TEXT": "Gall yr holl bartïon weld unrhyw negeseuon dilynol.",
@@ -1024,7 +1025,8 @@
         "COURT_IS_REVIEWING_INFO": {
           "HEADER": "Mae’r llys yn adolygu’r neges",
           "LINE_1": "Bydd ein tîm yn darllen y neges ac yn ymateb."
-        }
+        },
+        "THREAD_CLOSED_BY_STAFF": "Mae’r neges hon wedi’i chau gan staff y llys ar {{ createdDate }}"
       },
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Anfon neges",
