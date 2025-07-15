@@ -26,7 +26,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
     logger.info(`payment status from service for claim id ${req.params.id}: ${JSON.stringify(paymentStatus)}`);
     if(paymentStatus.status === success) {
-      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
+      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH ? 'cy' : 'en';
       await deleteDraftClaimFromStore(redisClaimId);
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
