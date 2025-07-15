@@ -33,6 +33,11 @@ class CitizenDashboardPage {
     await I.see('Status');
     await I.see('Contact us for help');
   }
+
+  async verifyStatusOnDashboard(status, xpath) {
+    if (status)
+      await I.see(status, xpath);
+  }
 }
 
 module.exports = new CitizenDashboardPage();

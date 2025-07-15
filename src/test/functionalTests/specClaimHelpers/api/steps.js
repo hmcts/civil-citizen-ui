@@ -57,6 +57,7 @@ const createLipClaimDefendantSoleTrader = require('../fixtures/events/createLiPC
 const createLipClaimSoleTraderVCompany = require('../fixtures/events/createLiPClaimSoleTraderVCompany.js');
 const createLipClaimIndVOrg = require('../fixtures/events/createLiPClaimIndVOrg.js');
 const makeAnOrderGA = require('../fixtures/events/makeAnOrderGA.js');
+const uploadTranslatedDoc = require("../fixtures/events/uploadTranslatedDoc");
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -412,7 +413,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language) => {
+  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, welshToggle = false) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -475,14 +476,29 @@ module.exports = {
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
+        "claimIssuedPaymentDetails": {
+          "status": "SUCCESS",
+          "reference": "RC-1234-1234-1234-1234"
+        },
         issueDate: currentDate,
-        respondent1ResponseDeadline: currentDate,
+        ...(!welshToggle && {respondent1ResponseDeadline: currentDate})
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForFinishedBusinessProcess(caseId, user);
-    await assignSpecCase(caseId, null);
+    if (!welshToggle) {
+      await assignSpecCase(caseId, null);
+    }
     return caseId;
+  },
+
+  submitUploadTranslatedDoc: async (translationDocType) => {
+    eventName = 'UPLOAD_TRANSLATED_DOCUMENT';
+    await validateUploadTranslatedDoc(translationDocType);
+    await assertSubmittedSpecEvent();
+    if (translationDocType === 'CLAIM_ISSUE') {
+      await assignSpecCase(caseId, null);
+    }
   },
 
   createSpecifiedClaimLRvLR: async (user, multipartyScenario, claimType, carmEnabled = true) => {
@@ -1013,3 +1029,16 @@ const assignSpecCase = async (caseId, type) => {
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   }
 };
+
+
+const validateUploadTranslatedDoc = async (translationDocType) => {
+  //transform the data
+  const document = await uploadDocument();
+  const uploadedDocs = uploadTranslatedDoc(document, translationDocType);
+  await apiRequest.setupTokens(config.welshAdmin);
+  caseData = await apiRequest.startEvent(eventName, caseId);
+  for (let pageId of Object.keys(uploadedDocs.userInput)) {
+    await assertValidDataSpec(uploadedDocs, pageId);
+  }
+};
+
