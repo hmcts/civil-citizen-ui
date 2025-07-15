@@ -15,7 +15,7 @@ class Bundles {
     I.click(nextAction);
   }
 
-  verifyLatestUpdatePageContent() {
+  async verifyLatestUpdatePageContent() {
     this.verifyHeadingDetails();
     this.verifyBundlesTabContent();
     contactUs.verifyContactUs();
@@ -30,16 +30,16 @@ class Bundles {
     I.see('Bundles');
   }
 
-  verifyBundlesTabContent() {
+  async verifyBundlesTabContent() {
     I.see('You can find the bundle below.');
     I.see('As the bundle has now been created, you will have to apply to the court if you want any new documents you upload to be used at your trial or hearing.');
     I.seeElement('//*[@id="bundles"]/div[1]/div/p[2]/a');
     I.see('Any new documents you upload will not be included in the main bundle. They will be listed separately below and under \'Documents\'.');
-    I.see('Trial Bundle','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[1]');
+    I.see('Trial Bundle', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[1]');
     I.see('Trial Bundle', '//*[@id="bundles"]/div[1]/div/div/table/tbody/tr/td[1]');
-    I.see('Created On','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[2]');
-    I.see('Hearing Date','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[3]');
-    I.see('Document URL','//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[4]');
+    I.see('Created On', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[2]');
+    I.see('Hearing Date', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[3]');
+    I.see('Document URL', '//*[@id="bundles"]/div[1]/div/div/table/thead/tr/th[4]');
     I.seeElement('//*[@id="bundles"]/div[1]/div/div/table/tbody/tr/td[4]/a');
   }
 }

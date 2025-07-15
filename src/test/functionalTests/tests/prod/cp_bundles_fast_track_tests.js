@@ -42,6 +42,7 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
       formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
       uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
       notification = bundleReady();
+      I.wait(5);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
       taskListItem = viewTheBundle();
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
