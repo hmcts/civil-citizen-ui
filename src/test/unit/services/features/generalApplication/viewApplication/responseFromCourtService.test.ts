@@ -605,6 +605,61 @@ describe('View Application service', () => {
   });
 
   describe('getHearingNoticeResponses', () => {
+
+    it('should return hearingNotice translated order', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      const fileName = 'Name of file';
+      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecisionMakeOrder: {
+          directionsResponseByDate: new Date('2024-01-01').toString(),
+        },
+        hearingNoticeDocument: [
+          {
+            id: '1',
+            value: {
+              documentLink: {
+                document_url: 'test',
+                document_binary_url: binary_url,
+                document_filename: fileName,
+                category_id: '1',
+              },
+              documentName:'Translated_hearing_notice.pdf',
+              documentType: DocumentType.HEARING_NOTICE,
+              createdDatetime: new Date('2024-01-01'),
+              createdBy:'civils',
+            },
+          },
+        ],
+      };
+      //when
+      const result = getHearingNoticeResponses(applicationResponse, 'en');
+      //then
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_NOTICE_DESC');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('Name of file');
+    });
+
     it('should return hearing notice response', async () => {
       //given
       const applicationResponse = new ApplicationResponse();
@@ -640,6 +695,7 @@ describe('View Application service', () => {
                 document_filename: fileName,
                 category_id: '1',
               },
+              documentName: 'hearingNoticeDoc',
               documentType: DocumentType.HEARING_NOTICE,
               createdDatetime: new Date('2024-01-01'),
               createdBy:'civils',
