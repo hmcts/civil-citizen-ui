@@ -582,7 +582,7 @@ describe('claimant Dashboard Controller', () => {
       .mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-    jest.spyOn(launchDarkly, 'isGaForWelshEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
 
     await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
       expect(res.status).toBe(200);
@@ -600,7 +600,7 @@ describe('claimant Dashboard Controller', () => {
       .mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-    jest.spyOn(launchDarkly, 'isGaForWelshEnabled').mockResolvedValueOnce(false);
+    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(false);
 
     await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
       expect(res.status).toBe(200);
