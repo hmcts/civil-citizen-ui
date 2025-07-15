@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -107,6 +108,7 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+        {% if not selectedQueryItem.isQueryClosed %}
           {% if not isClaimOffLine and selectedQueryItem.lastStatus == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
             <p class="govuk-body-m govuk-!-font-weight-bold"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.HEADER') }} <p>
             <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_1') }} <p>
@@ -120,6 +122,12 @@
             <p class="govuk-body-m govuk-!-font-weight-bold"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.HEADER') }} <p>
             <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.LINE_1') }} <p>
           {% endif %}
+        {% else %}
+          {{ govukWarningText({
+            text: t('PAGES.QM.VIEW_QUERY_DETAILS.THREAD_CLOSED_BY_STAFF', {createdDate: selectedQueryItem.queryClosedDate}),
+            iconFallbackText: "Warning"
+           }) }}
+        {% endif %}
         </div>
       </div>
 

@@ -297,7 +297,7 @@ describe('ViewQueriesService', () => {
         'formatted-2025-02-27T12:00:00Z-en',
         false,
         'fullDate-Invalid Date-en',
-      )),
+      )), false, '',
     );
     expect(result.items.length).toBe(2);
     expect(result).toEqual(expected);
@@ -394,7 +394,7 @@ describe('ViewQueriesService', () => {
         false,
         'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
       ),
-      ),
+      ), false, '',
     );
     expect(result.items.length).toBe(3);
     expect(result).toEqual(expected);
@@ -434,9 +434,82 @@ describe('ViewQueriesService', () => {
         'formatted-2025-02-20T12:00:00Z-en',
         true,
         'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
-      )),
+      )), false, '',
     );
     expect(result.items.length).toBe(1);
     expect(result).toEqual(expected);
+
+  });
+
+  it('should return closed status for queries', () => {
+    const claim = new Claim();
+    claim.queries = {
+      caseMessages: [
+        {
+          value: {
+            id: 'parentQuery1',
+            subject: 'test subject',
+            body: 'body 1',
+            createdOn: '2025-02-20T12:00:00Z',
+            createdBy: claimantUser.id,
+            name: claimantUser.name,
+            parentId: null,
+            isHearingRelated: 'No',
+          },
+        },
+        {
+          value: {
+            id: 'childQuery',
+            subject: 'test subject',
+            createdOn: '2025-02-27T12:00:00Z',
+            createdBy: caseworkerUser.id,
+            name: caseworkerUser.name,
+            body: 'body 2',
+            isHearingRelated: 'No',
+            parentId: 'parentQuery1',
+            isClosed: 'Yes',
+            attachments: [
+              {
+                value: {
+                  document_filename: 'document1.pdf',
+                  document_binary_url: 'binary-url-1',
+                },
+              },
+            ],
+          },
+        },
+      ],
+    } as CaseQueries;
+
+    const result = ViewQueriesService.buildQueryListItemsByQueryId(claim, claimantUser.id,'parentQuery1','en');
+
+    const expected: QueryDetail = new QueryDetail(
+      'test subject',
+      'PAGES.QM.VIEW_QUERY.STATUS_CLOSED',
+      Array.of(new QueryListItem(
+        'body 1',
+        YesNoUpperCamelCase.NO,
+        [],
+        claimantUser.id,
+        claimantUser.name,
+        'formatted-2025-02-20T12:00:00Z-en',
+        true,
+        'fullDate-Invalid Date-en',
+      ),
+
+      new QueryListItem(
+        'body 2',
+        YesNoUpperCamelCase.NO,
+        [{ fileName:'document1.pdf', documentUrl: 'formatted-url'}],
+        caseworkerUser.id,
+        'caseworker',
+        'formatted-2025-02-27T12:00:00Z-en',
+        false,
+        'fullDate-Invalid Date-en',
+      )), true, 'fullDate-Thu Feb 27 2025 12:00:00 GMT+0000 (Coordinated Universal Time)-en',
+    );
+    expect(result.items.length).toBe(2);
+    expect(result).toEqual(expected);
+
   });
 });
