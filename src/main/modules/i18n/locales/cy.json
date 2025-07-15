@@ -552,7 +552,7 @@
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Neges wedi’i hanfon",
-        "CONFIRMATION_TEXT": "Mae eich neges wedi’i hanfon i’r llys",
+        "CONFIRMATION_TEXT": "Mae eich neges wedi’i hanfon i’r llys ac at y partïon eraill",
         "CONFIRMATION_TEXT_1": "Bydd ein tîm yn darllen eich neges ac yn ceisio ymateb o fewn 10 niwrnod gwaith.",
         "CONFIRMATION_TEXT_2": "Byddwch yn cael eich hysbysu pan fydd y llys yn ymateb i’ch neges a byddwch yn gallu gweld yr ymateb yn eich dangosfwrdd.",
         "GO_TO_DASHBOARD": "Mynd i’ch dangosfwrdd"
@@ -608,7 +608,7 @@
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Diweddaru’r llys ar ddyfarniad neu hawliad a dalwyd yn rhannol",
           "SETTLE_CLAIM": "Setlo hawliad",
           "AMEND_CLAIM_DETAILS": "Diwygio manylion yr hawliad",
-          "CLAIM_ENDED": "Dweud wrth y llys bod fy hawliad wedi dod i ben",
+          "CLAIM_ENDED": "Dweud wrth y llys nad ydych am barhau â’ch hawliad",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
@@ -697,7 +697,7 @@
           "LINK_1": {
             "TEXT": "anfon neges i’r llys.",
             "TEXT_BEFORE": "Os nad yw’n fater brys, gallwch ",
-            "TEXT_AFTER": " Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hynny."
+            "TEXT_AFTER": " Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser."
           },
           "LINK_2": {
             "TEXT": "fanylion cyswllt y llys (yn agor mewn ffenestr newydd).",
@@ -717,30 +717,35 @@
           "PARAGRAPH_1": "Os na allwch weld y dogfennau a uwchlwythwyd gennych chi neu’r parti arall yn eich cyfrif, dylech gysylltu â’r llys i gael cymorth."
         },
         "GENERAL_UPDATE" : {
-          "PARAGRAPH_1": "Ni allwn roi diweddariadau ar negeseuon e-bost, ffurflenni neu geisiadau rydych eisoes wedi’u hanfon atom.",
-          "PARAGRAPH_2": "Fe anfonir ymateb atoch neu fanylion unrhyw gamau nesaf y mae angen i chi gymryd unwaith y bydd gwaith y llys wedi’i gwblhau.",
-          "PARAGRAPH_3": "Rydym yn ceisio prosesu negeseuon e-bost, ceisiadau a ffurflenni  mewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hyn."
+          "PARAGRAPH_1": "Mae gan eich dangosfwrdd yr holl wybodaeth ddiweddaraf, anfonir hysbysiadau e-bost atoch pan fydd eich achos yn cael ei ddiweddaru neu pan gewch ateb i neges.",
+          "PARAGRAPH_2": "Ni allwn roi diweddariadau ar negeseuon e-bost, ffurflenni neu geisiadau rydych eisoes wedi’u hanfon atom.",
+          "PARAGRAPH_3": "Fe anfonir ymateb atoch neu fanylion unrhyw gamau nesaf y mae angen i chi gymryd unwaith y bydd gwaith y llys wedi’i gwblhau.",
+          "PARAGRAPH_4": "Rydym yn ceisio prosesu negeseuon e-bost, ceisiadau a ffurflenni  mewn 10 diwrnod gwaith, ond gall gymryd fwy o amser na hyn."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "Mae gan y diffynnydd 28 diwrnod i ymateb unwaith bydd yr hawliad yn dod i law.  Os yw’r diffynnydd angen mwy o amser, gellir ymestyn y cyfnod o 28 diwrnod os yw’r ddau barti yn cytuno i wneud hynny.",
-          "PARAGRAPH_2": "Gall y diffynnydd benderfynu&#58",
+          "LINK_1": {
+            "TEXT": "ymateb i’r hawliad",
+            "TEXT_BEFORE": "Mae gan y diffynnydd hyd at 28 diwrnod i ymateb unwaith bydd yr hawliad yn dod i law. Os oes angen mwy o amser ar y diffynnydd a bod y ddwy ochr yn cytuno, gellir ymestyn y cyfnod o 28 diwrnod trwy ddewis "
+          },
+          "TEXT_1": "Mae gan y diffynnydd hyd at 28 diwrnod i ymateb unwaith bydd yr hawliad yn dod i law. Os oes angen mwy o amser ar y diffynnydd a bod y ddwy ochr yn cytuno, gellir ymestyn y cyfnod o 28 diwrnod trwy ddewis ymateb i’r hawliad.",
+          "PARAGRAPH_1": "Gall y diffynnydd benderfynu&#58",
           "LI_1": "talu’r swm cyfan",
           "LI_2": "cynnig talu swm gwahanol (os yw’n meddwl bod swm llai yn ddyledus ganddynt)",
           "LI_3": "amddiffyn yr hawliad (os yw’n meddwl nad oes arian yn ddyledus ganddynt)",
-          "PARAGRAPH_3": "Os bydd y diffynnydd yn cynnig talu swm gwahanol a bod yr hawlydd yn gwrthod y cynnig hwnnw, efallai y cynhelir gwrandawiad lle bydd rhaid i’r diffynnydd roi mwy o wybodaeth. Fe ofynnir i’r hawlydd fynychu’r gwrandawiad.",
+          "PARAGRAPH_2": "Os bydd y diffynnydd yn cynnig talu swm gwahanol a bod yr hawlydd yn gwrthod y cynnig hwnnw, efallai y cynhelir gwrandawiad lle bydd rhaid i’r diffynnydd roi mwy o wybodaeth. Fe ofynnir i’r hawlydd fynychu’r gwrandawiad.",
           "SUBTITLE_1": "Os na fydd y diffynnydd yn talu’r swm llawn neu’n ymateb mewn pryd",
-          "LINK_1": {
+          "LINK_2": {
             "TEXT": "gwneud cais am ddyfarniad llys sirol (CCJ).",
             "TEXT_BEFORE": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig "
           },
-          "LINK_2": {
+          "LINK_3": {
             "TEXT": "beth fydd yn digwydd pan fydd CCJ yn cael ei wneud yn eich erbyn (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig gwneud cais am ddyfarniad llys sirol (CCJ)."
         },
         "CLAIM_NOT_PAID_AFTER_JUDGMENT" : {
-          "PARAGRAPH_1": "Os bu i’r hawlydd wneud cais am ddyfarniad ac os nad yw’r diffynnydd wedi cadw at y terfynau amser yn y dyfarniad, gall yr hawlydd dal geisio cael ei arian.",
+          "PARAGRAPH_1": "Os yw’r hawlydd yn gwneud cais am ddyfarniad ac nad yw’r diffynnydd wedi bodloni’r dyddiadau cau yn y dyfarniad, gall yr hawlydd geisio cael ei arian o hyd.",
           "PARAGRAPH_2": "Gall yr hawlydd gyfarwyddo’r llys i ymgymryd â phrosesau gorfodi gwahanol. Gelwir hyn yn ‘gorfodi’r dyfarniad’. Gall yr hawlydd ofyn i’r llys wneud&#58",
           "LI_1": "gwarant reolaeth - ar gyfer nwyddau a oedd yn berchen i’r diffynnydd",
           "LI_2": "gorchymyn atafaelu enillion - am gyfran o enillion y diffynnydd",
@@ -751,32 +756,34 @@
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
           "SUBTITLE_1": "Ffioedd",
+          "PARAGRAPH_3": "Bydd yn rhaid i chi dalu ffi pan ofynnwch i’r llys orfodi’r dyfarniad, mae’r swm yn dibynnu ar y dull a ddewiswch.",
           "LINK_2": {
-            "TEXT": "am ffioedd y llys sifil (yn agor mewn ffenestr newydd)",
-            "TEXT_BEFORE": "Bydd rhaid i chi dalu ffi pan fyddwch yn gofyn i’r llys orfodi’r dyfarniad, a bydd y swm yn dibynnu ar y dull y byddwch yn ei ddewis. Darllenwch fwy "
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          },
+          "LINK_3": {
+            "TEXT": "ffioedd llys sifil (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Gwybodaeth am "
           }
         },
         "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
           "SUBTITLE_1": "Os yw rhan o’r dyfarniad neu ran o swm yr hawliad wedi’i dalu",
-          "PARAGRAPH_1": "Mae’r diffynnydd wedi talu rhan o swm yr hawliad, nid oes rhaid i chi ddiweddaru’r llys."
+          "PARAGRAPH_1": "Mae’r diffynnydd wedi talu rhan o swm yr hawliad, nid oes rhaid i chi ddiweddaru’r llys.",
+          "LINK_1": {
+            "TEXT": "orfodi dyfarniad a dalwyd yn rhannol (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Gwybodaeth am "
+          }
         },
         "SETTLE_CLAIM" : {
           "SUBTITLE_1": "Os yw’r hawliad yn cael ei dalu neu os ydych chi’n cytuno bod y balans wedi’i setlo",
-          "TEXT_UPDATE_WITHOUT_LINK": "Diweddarwch yr hawliad yn y gwasanaeth ar-lein drwy ddewis dywedwch wrthym eich bod wedi setlo’r hawliad.",
-          "LINK_2": {
-            "TEXT": "ymholiadaucymraeg@justice.gov.uk",
-            "TEXT_BEFORE": "Gallwch hefyd anfon e-bost i ",
-            "TEXT_AFTER": " i ddweud bod yr hawliad wedi’i setlo.  Dylech gynnwys:"
-          },
-          "LI_1": "eich enw",
-          "LI_2": "rhif yr hawliad",
-          "LI_3": "y dyddiad pan wnaeth y taliad terfynol glirio yn eich cyfrif",
-          "SUBTITLE_2": "Hawliadau a setlwyd drwy gyfryngwr hawliadau bychan",
-          "TEXT_1": "Os bu i gyfryngwr setlo eich hawliad, bydd y cyfryngwr yn diweddaru cofnod eich achos.",
+          "TEXT_UPDATE_WITHOUT_LINK": "Os ydych chi’n hawlydd, diweddarwch yr hawliad ar y gwasanaeth ar-lein trwy ddewis dweud wrthym eich bod wedi setlo’r hawliad.",
+          "SUBTITLE_2": "Hawliadau a setlwyd drwy gyfryngwr hawliadau bach",
+          "TEXT_1": "Os cafodd eich hawliad ei setlo yn ystod y cyfnod cyfryngu, bydd y cyfryngwr yn diweddaru cofnod eich achos i chi.",
           "NOT_SETTLED": {
             "LINK_1": {
-              "TEXT": "dywedwch wrthym eich bod wedi setlo’r hawliad.",
-              "TEXT_BEFORE": "Diweddarwch yr hawliad yn y gwasanaeth ar-lein drwy ddewis"
+              "TEXT": "dweud wrthym eich bod wedi setlo’r hawliad.",
+              "TEXT_BEFORE": "Os ydych chi’n hawlydd, diweddarwch yr hawliad ar y gwasanaeth ar-lein trwy ddewis "
             }
           }
         },
@@ -795,24 +802,30 @@
             "TEXT_BEFORE": "Os ydych yn newid swm yr hawliad, bydd yr achos yn cael ei symud all-lein ac efallai bydd y ffi llys mae’n rhaid i chi ei thalu yn newid. ",
             "TEXT_AFTER": " i wneud yn siŵr eich bod yn talu’r ffi gywir."
           },
-          "SUBTITLE_1": "Os yw cyfeiriad y diffynnydd yn anghywir",
           "LINK_3": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          },
+          "SUBTITLE_1": "Os yw cyfeiriad y diffynnydd yn anghywir",
+          "LINK_4": {
             "TEXT": "ymholiadaucymraeg@justice.gov.uk",
             "TEXT_BEFORE": "Gallwch anfon y ffurflen hawlio ddiwygiedig, gyda’r cyfeiriad cywir wedi’i nodi arni mewn inc coch. Anfonwch y ffurflen ddiwygiedig i "
           },
           "SUBTITLE_2": "I ddiweddaru eich manylion cyswllt",
-          "LINK_4": {
+          "LINK_5": {
             "TEXT": "anfonwch neges i’r llys",
             "TEXT_BEFORE": "I ddiweddaru eich manylion cyswllt, "
           }
         },
         "CLAIM_ENDED" : {
           "LINK_1": {
-            "TEXT": "hysbysiad dirwyn i ben (yn agor mewn ffenestr newydd)",
-            "TEXT_BEFORE": "I ddweud wrth y llys bod eich hawliad wedi dod i ben bydd angen i chi lenwi ac anfon ffurflen o’r enw ",
-            "TEXT_AFTER": " i’r llys ac at y partïon eraill yn yr achos."
+            "TEXT": "rhybudd dirwyn achos i ben (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Er mwyn dweud wrth y llys nad ydych am barhau â’ch hawliad mwyach, mae angen i chi lenwi ac anfon ffurflen o’r enw ",
+            "TEXT_AFTER": " at y llys a’r parti arall yn yr achos."
           },
-          "TEXT_1": "Ni allwch uwchlwytho hysbysiad dirwyn i ben i’r system Hawliadau am Arian.",
+          "TEXT_1": "Os dewiswch ddirwyn yr achos i ben, efallai y bydd yn rhaid i chi dalu rhai o gostau’r parti arall.",
+          "TEXT_2": "Ni allwch uwchlwytho hysbysiad dirwyn i ben i’r system Hawliadau am Arian.",
           "LINK_2": {
             "TEXT": "gysylltu â’r llys (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "I anfon hawliad dirwyn i ben i’r llys, dylech ",
@@ -850,6 +863,11 @@
             "TEXT": "gwiriwch y rhestr ffioedd sifil (yn agor mewn ffenestr newydd) ",
             "TEXT_BEFORE": "Mae yna ffi yn daladwy am bob opsiwn, ",
             "TEXT_AFTER": "i weld y costau ar gyfer yr opsiwn rydych yn ei ddewis. "
+          },
+          "LINK_6": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
           }
         },
         "CLAIM_DOCUMENTS_AND_EVIDENCE": {
@@ -881,7 +899,12 @@
             "TEXT_BEFORE": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad llai na 14 diwrnod cyn y gwrandawiad, yna fe godir ffi arnoch. ",
             "TEXT_AFTER": " i sicrhau eich bod yn talu’r ffi gywir."
           },
-          "PARAGRAPH_4": "Nid oes rhaid i chi dalu am gais i newid dyddiad y gwrandawiad os byddwch yn gwneud y cais mwy na 14 diwrnod cyn dyddiad y gwrandawiad ac mae’r parti arall yn cytuno."
+          "PARAGRAPH_4": "Nid oes rhaid i chi dalu am gais i newid dyddiad y gwrandawiad os byddwch yn gwneud y cais mwy na 14 diwrnod cyn dyddiad y gwrandawiad ac mae’r parti arall yn cytuno.",
+          "LINK_3": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          }
         },
         "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
           "PARAGRAPH_1": "Gallwch wneud cais i newid manylion y gwrandawiad, megis:",
@@ -896,18 +919,22 @@
             "TEXT": "ffioedd mewn achosion sifil (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
-          "PARAGRAPH_2": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad, bydd rhaid i chi dalu ffi. Efallai y cewch dalu ffi ostyngol os ydych chi’n gwneud mwy nag un cais."
+          "PARAGRAPH_2": "Os ydych chi’n gwneud cais i newid dyddiad y gwrandawiad, bydd rhaid i chi dalu ffi. Efallai y cewch dalu ffi ostyngol os ydych chi’n gwneud mwy nag un cais.",
+          "LINK_3": {
+            "TEXT": "help i dalu ffioedd (yn agor mewn ffenestr newydd)",
+            "TEXT_BEFORE": "Efallai y byddwch yn gallu cael ",
+            "TEXT_AFTER": " yn dibynnu p’un a ydych chi yn derbyn rhai budd-daliadau, ag incwm isel, neu fod gennych lai na swm penodol o gynilion."
+          }
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "Gallwch ofyn am gymorth a chefnogaeth yn ystod eich gwrandawiad.",
-          "PARAGRAPH_2": "Er enghraifft, gallai hyn fod yn:",
+          "PARAGRAPH_2": "Er enghraifft, gallai hyn fod:",
           "LIST_1": "rampiau neu doiledau hygyrch",
           "LIST_2": "dolen glyw",
-          "LIST_3": "ffurflenni mewn print bras",
-          "LIST_4": "canllawiau ar ffurf ffeil sain neu fformat hawdd ei ddarllen",
+          "LIST_3": "cyfarwyddiadau sain neu mewn fformat hawdd ei ddarllen",
+          "PARAGRAPH_3": "Er mwyn gofyn am gymorth yn eich gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle cynhelir y gwrandawiad. Gallwch weld pa lys sy’n gwrando eich achos yn eich gorchymyn cyfarwyddiadau neu hysbysiad o wrandawiad.",
           "LINK_1": {
-            "TEXT": " Dod o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)",
-            "TEXT_BEFORE": "Er mwyn gofyn am gymorth gyda’ch gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle mae’r gwrandawiad yn cael ei gynnal. Gallwch weld ym mha lys mae eich gwrandawiad yn cael ei wrando yn y gorchymyn cyfarwyddiadau."
+            "TEXT": "Dewch o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)."
           }
         },
         "GA_OFFLINE": {
@@ -926,7 +953,7 @@
         "HEADING": "Rhowch fanylion y neges",
         "CAPTION": "Anfon neges",
         "FOLLOW_UP_CAPTION": "Anfon neges ddilynol",
-        "FOLLOW_UP_HEADING": "Gwirio eich atebion"
+        "FOLLOW_UP_HEADING": "Adolygu manylion y neges"
       },
       "QUERY_FORM": {
         "SUBJECT_TITLE": "Pwnc y neges",
@@ -936,9 +963,10 @@
         "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
+        "HEADING": "Adolygu manylion y neges",
         "NO_DOCUMENTS_UPLOADED": "Dim dogfennau wedi'u llwytho i fyny",
         "ENTER_MESSAGE": "Enter message details",
         "MESSAGE_SUBJECT": "Pwnc y neges",
@@ -950,39 +978,71 @@
         "SEND_MESSAGE": "Anfon neges"
       },
       "VIEW_QUERY": {
-        "PAGE_TITLE": "Negeseuon",
+        "PAGE_TITLE": "Negeseuon i’r llys",
         "MESSAGE_SUBJECT": "Pwnc y neges",
         "SENT_ON": "Anfonwyd ar",
+        "SENT_BY": "Anfonwyd gan",
         "LAST_UPDATED_BY": "Diweddarwyd diwethaf gan",
         "LAST_UPDATED_ON": "Diweddarwyd diwethaf ar",
         "STATUS": "Statws",
         "UPDATED_BY_COURT_STAFF": "Staff y Llys",
         "UPDATED_BY_YOU": "Chi",
         "STATUS_SENT": "Neges wedi’i hanfon",
-        "STATUS_RECEIVED": "Ymateb wedi cyrraedd"
+        "STATUS_RECEIVED": "Ymateb wedi cyrraedd",
+        "STATUS_CLOSED": "Wedi’i gau"
       },
       "FOLLOW_UP_QUERY": {
+        "WARNING_TEXT": "Gall yr holl bartïon weld unrhyw negeseuon dilynol.",
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
+        "MESSAGE": "Neges",
         "YOUR_MESSAGE": "Eich neges",
+        "FOLLOW_UP_MESSAGE": "Neges ddilynol",
         "COURTS_RESPONSE": "Ymateb y llys",
         "MESSAGE_DETAILS": "Manylion y neges",
-        "COURT_MESSAGE_DETAILS": "Manylion yr ymateb",
+        "COURT_MESSAGE_DETAILS": "Manylion y neges",
         "MESSAGE_ABOUT_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "MESSAGE_ABOUT_HEARING_YES": "Ydy",
         "MESSAGE_ABOUT_HEARING_NO": "Nac ydy",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
-        "UPLOADED_DOCUMENTS": "Dogfennau wedi’u huwchlwytho (dewisol)",
+        "UPLOADED_DOCUMENTS": "Atodiadau",
+        "NO_DOCUMENTS_UPLOADED": "Dim dogfennau wedi’u llwytho",
         "SENT_BY": "Anfonwyd gan",
         "SENT_BY_YOU": "Chi",
         "SENT_BY_COURT_STAFF": "Staff y Llys",
         "SENT_ON": "Anfonwyd ar",
-        "SEND_FOLLOW_UP": "Anfon neges ddilynol"
+        "SEND_FOLLOW_UP": "Anfon neges ddilynol",
+        "SEND_FOLLOW_UP_INFO": {
+          "HEADER": "Anfon neges ddilynol",
+          "LINE_1": "Dylech ond anfon negeseuon dilynol sy’n ymwneud â’r ymholiad gwreiddiol.",
+          "LINE_2": "Bydd anfon negeseuon dilynol nad ydynt yn ymwneud â’r mater gwreiddiol yn achosi oedi gyda’r ymateb gan y llys."
+        },
+        "COURT_IS_REVIEWING_INFO": {
+          "HEADER": "Mae’r llys yn adolygu’r neges",
+          "LINE_1": "Bydd ein tîm yn darllen y neges ac yn ymateb."
+        },
+        "THREAD_CLOSED_BY_STAFF": "Mae’r neges hon wedi’i chau gan staff y llys ar {{ createdDate }}"
+      },
+      "SHARE_QUERY_CONFIRMATION": {
+        "PAGE_TITLE": "Anfon neges",
+        "PAGE_HEADING": "Rhannu’r neges hon gyda’r parti arall",
+        "PARAGRAPH_1": "Mae’r holl negeseuon a ddefnyddir gan y system yn cael eu rhannu gyda’r parti arall yn yr achos, ynghyd â chael eu hanfon i’r llys.",
+        "SUB_TITLE": "Gofyn am beidio â rhannu eich neges",
+        "PARAGRAPH_2": "Gallwch ofyn am beidio â rhannu eich neges gyda’r parti arall. Rhaid i’r rhesymau dros beidio â rhannu eich neges fod yn ddilys, a gall y barnwr benderfynu y dylai eich neges gael ei rhannu.",
+        "PARAGRAPH_3": "Mae rhesymau dilys dros gadw neges rhyngoch chi a’r llys yn cynnwys y neges yn ymwneud â:",
+        "PRIVATE_QUERY_VALID_REASON_1": "cais am addasiad rhesymol",
+        "PRIVATE_QUERY_VALID_REASON_2": "eich iechyd",
+        "PARAGRAPH_4": "Os oes arnoch angen anfon neges i’r llys ac nid ydych eisiau i’r parti arall ei gweld, anfonwch e-bost i ",
+        "QUERY_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
+        "PARAGRAPH_5": "Esboniwch pam y dylai’r neges hon gael ei chadw rhyngoch chi a’r llys a sicrhewch eich bod yn cynnwys eich enw llawn a rhif yr hawliad.",
+        "CONFIRMATION_HEADER": "Cadarnhewch y gall eich neges gael ei rhannu",
+        "CONFIRMATION_TEXT": "Ydw, rwy’n cytuno gall fy neges gael ei rhannu gyda’r parti arall",
+        "CONFIRMATION_ERROR": "I barhau rhaid i chi ddewis y gall eich neges gael ei rhannu. Os nad ydych eisiau rhannu eich neges, anfonwch e-bost i’r llys."
       }
     },
     "SUBJECT_TO_FRC": {
@@ -2523,8 +2583,8 @@
         "ADD_TRIAL": "Add the trial arrangements",
         "CREATED": "Crëwyd ar ",
         "HEARING": "Gwrandawiad",
-        "HEARING_NOTICE": "Hysbysiad o wrandawiad",
-        "TRANSLATED_HEARING_NOTICE": "Hysbysiad o Wrandawiad Wedi’i Gyfieithu",
+        "HEARING_NOTICE": "Cais am Hysbysiad o Wrandawiad â Llaw",
+        "TRANSLATED_HEARING_NOTICE": "Cais am Hysbysiad o Wrandawiad â Llaw wedi’i Gyfieithu",
         "PAY_FEE": "Talu ffi’r gwrandawiad",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Gwrandawiadau",
@@ -2665,7 +2725,8 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "Mae'r hawliad hwn wedi cael ei ddileu.",
         "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
-        "CASE_STAYED": "Mae’r achos wedi cael ei atal."
+        "CASE_STAYED": "Mae’r achos wedi cael ei atal.",
+        "CASE_DISCONTINUED": "Mae’r hawliad hwn wedi dirwyn i ben."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
@@ -3767,6 +3828,7 @@
         "APPLICATION_DISMISSED": "Cais wedi’i wrthod",
         "APPLICATION_DOCUMENTS": "Dogfennau’r cais",
         "APPLICATION_DRAFT_DOCUMENT": "Cais Drafft",
+        "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Dogfen Crynodeb Cais wedi’i Chyfieithu ",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "COURT_DOCUMENT": "Court document",
@@ -5129,11 +5191,11 @@
       "CCJ_REQUEST": "Cais am Ddyfarniad Llys Sirol",
       "CLAIMANT_DQ": "Holiadur Cyfarwyddiadau'r Hawlydd",
       "TRANSLATED_CLAIMANT_DQ": "Holiadur Cyfarwyddiadau Hawlydd a Gyfieithwyd",
-      "CLAIMANT_RESPONSE_RECEIPT": "Derbynneb am ymateb yr hawlydd",
-      "TRANSLATED_CLAIMANT_RESPONSE_RECEIPT": "Derbynneb am ymateb yr hawlydd wedi'i Gyfieithu",
+      "CLAIMANT_RESPONSE_RECEIPT": "Cais am Ddyfarniad yng Nghwrs Achos",
+      "TRANSLATED_CLAIMANT_RESPONSE_RECEIPT": "Cais am Ddyfarniad yng Nghwrs Achos wedi’i Gyfieithu",
       "CLAIMANT_TIMELINE": "Amserlen o ddigwyddiadau'r Hawlydd",
       "COURT_DOCUMENTS": "Dogfennau gan y llys",
-      "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
+      "DECISION_ON_RECONSIDERATION": "Cais am Benderfyniad Ailystyried",
       "DECISION_ON_RECONSIDERATION_TRANSLATED": "Cais am Benderfyniad Ailystyried wedi’i Gyfieithu",
       "DEFENDANT_DQ": "Holiadur Cyfarwyddiadau'r Diffynnydd",
       "TRANSLATED_DEFENDANT_DQ": "Holiadur Cyfarwyddiadau Diffynnydd wedi'i Gyfieithu",
@@ -5143,26 +5205,27 @@
       "NOTICE_OF_DISCONTINUANCE_TRANSLATED": "Translated Notice Of Discontinuance",
       "DEFENDANT_SUPPORT_DOC": "Dogfennau ategol y Diffynnydd",
       "DEFENDANT_TIMELINE": "Amserlen o ddigwyddiadau'r Diffynnydd",
-      "DETERMINATION_REQUEST": "Gofyn i benderfyniad gael ei wneud",
-      "TRANSLATED_DETERMINATION_REQUEST": "Gofyn i benderfyniad gael ei wneud wedi’i gyfieithu",
+      "DETERMINATION_REQUEST": "Cais am Benderfyniad â Llaw",
+      "TRANSLATED_DETERMINATION_REQUEST": "Cais am Benderfyniad â Llaw wedi’i Gyfieithu",
       "DRAFT_CLAIM": "Ffurflen hawlio drafft",
-      "FINAL_ORDER": "Gorchymyn terfynol y barnwr",
-      "TRANSLATED_FINAL_ORDER": "Gorchymyn terfynol y barnwr wedi’i gyfieithu",
+      "FINAL_ORDER": "Cais am Orchymyn Terfynol",
+      "TRANSLATED_FINAL_ORDER": "Cais am Orchymyn Terfynol wedi’i Gyfieithu",
       "PAGE_CAPTION": "Gorchmynion a rhybuddion gan y llys",
       "PAGE_TITLE": "Gweld gorchmynion a rhybuddion",
       "PARTICULARS_CLAIM": "Manylion yr hawliad",
       "RESPOND_TO_DEFENCE": "Respond to defence",
       "SEALED_CLAIM": "Ffurflen Hawlio wedi'i selio",
       "TRANSLATED_SEALED_CLAIM": "Ffurflen Hawliad Wedi'i Selio wedi'i Chyfieithu",
-      "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
-      "TRANSLATED_SETTLEMENT_AGREEMENT": "Cytundeb setlo wedi'i Gyfieithu",
+      "SETTLEMENT_AGREEMENT": "Cais am Gytundeb Setlo",
+      "TRANSLATED_SETTLEMENT_AGREEMENT": "Cais am Gytundeb Setlo wedi’i Gyfieithu",
       "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddiadau Safonol",
+      "TRANSLATED_STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddiadau Safonol wedi’i Gyfieithu",
       "TRANSLATED_ORDER": "Translated order",
       "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio",
       "COSC":"Tystysgrif Diwallu neu Ganslo Dyled y Dyfarniad",
-      "COURT_OFFICER_ORDER": "Gorchymyn Swyddog Llys",
-      "TRANSLATED_COURT_OFFICER_ORDER": "Gorchymyn Swyddog Llys wedi’i Gyfieithu",
+      "COURT_OFFICER_ORDER": "Cais am Orchymyn gan Swyddog Llys",
+      "TRANSLATED_COURT_OFFICER_ORDER": "Cais am Orchymyn gan Swyddog Llys wedi’i Gyfieithu",
       "JBA_DEFENDANT":"Dyfarniad drwy addefiad diffynnydd",
       "JBA_CLAIMANT":"Dyfarniad drwy addefiad hawlydd",
       "DJ_DEFENDANT":"Dyfarniad trwy ddiffyg - diffynnydd",
@@ -5317,7 +5380,7 @@
       "TITLE": "Cadarnhau eich bod wedi cael eich talu",
       "ENTER_THE_DATE": "Nodwch y dyddiad y cawsoch eich talu’r swm llawn a nodwyd ar y dyfarniad",
       "HINT": "Os ydych wedi cael eich talu mewn rhandaliadau, nodwch ddyddiad y taliad olaf a gawsoch. Er enghraifft, 16 04 2021",
-      "CONFIRM": "Rwy’n cadarnhau bod y swm llawn a nodwyd ar y dyfarniad wedi’i dalu i mi. Unwaith y byddwch yn cadarnhau hyn, ni ellir ei newid.",
+      "CONFIRM": "Rwy'n cadarnhau bod y dyfarniad wedi'i fodloni. Unwaith y byddwch wedi cadarnhau hyn, ni ellir ei newid.",
       "JUDGMENT_LINK": "Gweld y dyfarniad a wnaed yn erbyn y diffynnydd",
       "CHECK_ERROR_MESSAGE": "Cadarnhewch fod y swm llawn wedi'i dalu i chi"
     },
@@ -5411,9 +5474,11 @@
       "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
       "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
     },
+    "DOCUMENTS_BEING_TRANSLATED": "Mae’r ddogfen yn cael ei chyfieithu a bydd ar gael i’w gweld gan y ddau barti ar yr achos unwaith y bydd y cyfieithiad wedi’i uwchlwytho.",
     "ENTER_VALID_EMAIL_CLAIMANT": "Enter valid email for claimant",
     "ENTER_VALID_EMAIL_DEFENDANT": "Enter valid email for defendant",
     "ENTER_VALID_CONTACT_CLAIMANT": "Enter valid contact for claimant",
+    "ENTER_VALID_PHONE_CLAIMANT": "Rhowch rif ffôn",
     "ENTER_VALID_CONTACT_DEFENDANT": "Enter valid contact for defendant",
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",

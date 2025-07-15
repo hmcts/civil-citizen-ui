@@ -8,7 +8,7 @@ import {
   isDashboardEnabledForCase,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled, isGaForWelshEnabled,
+  isQueryManagementEnabled, isWelshEnabledForMainCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -75,8 +75,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           req.session.dashboard.taskIdHearingUploadDocuments = task.id;
         }
       });
-      const welshEnabled = await isGaForWelshEnabled();
+      const welshEnabled = await isWelshEnabledForMainCase();
       const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
@@ -92,6 +93,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           lang,
           isQMFlagEnabled,
           showWelshPartyBanner,
+          showErrorAwaitingTranslation,
         },
       );
     } else {
