@@ -44,7 +44,8 @@ const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
-const isGAForWelshEnabledMock = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
+const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
+
 const mockExpectedDashboardInfo=
   [{
     'categoryEn': 'Hearing',
@@ -646,7 +647,7 @@ describe('Claim Summary Controller Defendant', () => {
         .mockResolvedValueOnce(claim);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
-      isGAForWelshEnabledMock.mockResolvedValue(true);
+      isWelshEnabledForMainCaseMock.mockResolvedValue(true);
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
@@ -665,7 +666,7 @@ describe('Claim Summary Controller Defendant', () => {
         .mockResolvedValueOnce(claim);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
-      isGAForWelshEnabledMock.mockResolvedValue(false);
+      isWelshEnabledForMainCaseMock.mockResolvedValue(false);
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
