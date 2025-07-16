@@ -9,6 +9,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -461,6 +462,35 @@ describe('dashboardInterpolationService', () => {
 
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders for GENERAL_APPLICATIONS_INITIATION_PAGE_URL when GA is online', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/general-application/application-type?linkFrom=start';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders for GENERAL_APPLICATIONS_INITIATION_PAGE_URL when GA is welsh', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    const textToReplaceUrl = '{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/submit-application-offline';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
