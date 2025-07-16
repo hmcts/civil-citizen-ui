@@ -6,12 +6,13 @@ const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/te
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
   mediationCARMClaimantDefendant,
-  judgmentRequestedClaimantDisagrees,
+  judgmentRequestedClaimantDisagrees, nocForLip,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const nocSteps = require('../../lrFeatures/noc/steps/nocSteps');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
-let claimRef, claimType, caseData, claimNumber;
+let claimRef, claimType, caseData, claimNumber, defendantName, isDashboardServiceEnabled;
 
 Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
 
@@ -47,20 +48,40 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject'
   }
 }).tag('@regression-cui-r2');
 
-Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', async ({api}) => {
+Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @noc', async ({api, I}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  defendantName = await caseData.respondent1.partyName;
+
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
   await api.waitForFinishedBusinessProcess();
   //Claimant response below here
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', 'fast');
   await api.waitForFinishedBusinessProcess();
+
+  //Perform NoC
+  await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
+  await api.checkUserCaseAccess(config.defendantCitizenUser, false);
+  await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
+
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+
+  if (isDashboardServiceEnabled) {
+    const notification = nocForLip(defendantName);
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    await I.click(notification.nextSteps);
+  }
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({
+// TODO undo when part payment journey is restored
+Scenario.skip('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({
   I,
   api,
 }) => {
@@ -93,7 +114,8 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept'
   }
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept', async ({api}) => {
+// TODO undo when part payment journey is restored
+Scenario.skip('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';

@@ -56,6 +56,23 @@ describe('Query management Information controller', () => {
     });
 
     it.each([
+      [QualifyingQuestionTypeOption.GA_OFFLINE, 'Make an application to the court'],
+    ])('should return CHANGE_CASE information for %s', async (questionType, expectedText) => {
+      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.CHANGE_CASE');
+
+      const claim = new Claim();
+      mockGetClaimById.mockImplementation(() => claim);
+
+      await request(app)
+        .get(getControllerUrl(WhatToDoTypeOption.CHANGE_CASE, questionType))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(expectedText);
+          expect(res.text).toContain('Anything else');
+        });
+    });
+
+    it.each([
       [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
       [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
@@ -107,7 +124,7 @@ describe('Query management Information controller', () => {
     [QualifyingQuestionTypeOption.GENERAL_UPDATE, false, 'Get a general update on what is happening with the case', 'We cannot give updates on emails, forms or applications you have already sent to us.'],
     [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, true, 'Understand what happens if the claim is not paid', '<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/ccj/paid-amount>request a county court judgment (CCJ)</a>'],
     [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, false, 'Understand what happens if the claim is not paid', '<p class="govuk-body ">If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ).</p>'],
-    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, false, 'Understand what happens if the judgment is not paid', 'If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.'],
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID_AFTER_JUDGMENT, false, 'Understand what happens if the judgment is not paid', 'If the claimant applies for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.'],
   ])('should return GET_UPDATE information for %s with isCcjLinkEnabled %s', async (questionType, isCcjLinkEnabled, title:string, textLink: string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
 
@@ -139,11 +156,37 @@ describe('Query management Information controller', () => {
   });
 
   it.each([
+    [QualifyingQuestionTypeOption.CLAIM_NOT_PAID, 'Understand what happens if the claim is not paid'],
+  ])('should return GET_UPDATE information for %s', async (questionType, title:string ) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
+
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+    mockGetClaimById.mockImplementation(() => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate()-1);
+      claim.respondent1ResponseDeadline = yesterday;
+      return claim;
+    });
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(title);
+        expect(res.text).toContain('The defendant has up to 28 days to respond once they receive the claim.');
+        expect(res.text).toContain('Get an update on my case');
+        expect(res.text).toContain('Anything else');
+      });
+  });
+
+  it.each([
     [QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT, null, 'Update the court about a partially paid judgment or claim', 'If part of the judgment or claim amount has been paid'],
     [QualifyingQuestionTypeOption.SETTLE_CLAIM, false, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
     [QualifyingQuestionTypeOption.SETTLE_CLAIM, true, 'Settle a claim', 'If the claim is paid or you agree the balance is settled'],
     [QualifyingQuestionTypeOption.AMEND_CLAIM_DETAILS, null, 'Amend the claim details', 'If you want to change the details of your claim, including:'],
-    [QualifyingQuestionTypeOption.CLAIM_ENDED, null, 'Tell the court my claim has ended', 'To tell the court your claim has ended, you need to fill in and send a form called a'],
+    [QualifyingQuestionTypeOption.CLAIM_ENDED, null, 'Tell the court you do not want to continue your claim', 'To tell the court you no longer want to continue with your claim, you need to fill in and send a form called a'],
   ])('should return SEND_UPDATE information for %s and isClaimant %s', async (questionType, isClaimant: boolean, title:string, subtitle: string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_UPDATE');
     const isSettleClaimAndIsClaimant = QualifyingQuestionTypeOption.SETTLE_CLAIM && isClaimant;
@@ -167,7 +210,7 @@ describe('Query management Information controller', () => {
           expect(res.text).toContain('<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/paid-in-full/date-paid>tell us you’ve settled the claim</a>');
 
         } else if (questionType === QualifyingQuestionTypeOption.SETTLE_CLAIM) {
-          expect(res.text).toContain('Update the claim in the online service by selecting tell us you’ve settled the claim.');
+          expect(res.text).toContain('If you are a claimant, update the claim in the online service by selecting tell us you’ve settled the claim.');
         }
         expect(res.text).toContain('Anything else');
       });

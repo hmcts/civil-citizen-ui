@@ -412,7 +412,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, carmEnabled = true, partyType = 'Individual', language) => {
+  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -454,22 +454,22 @@ module.exports = {
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
 
-    console.log('carmEnabled flag .. ', carmEnabled);
-    /* Not needed this anymore as CARM is live, all FTs should be on live cases
-    if (!carmEnabled) {
+    console.log('qmEnabled flag .. ', qmEnabled);
+
+    if (qmEnabled) {
       await apiRequest.setupTokens(config.systemUpdate);
-      console.log('carm not enabled, updating submitted date to past for legacy cases');
-      const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
+      console.log('QM not enabled, updating submitted date to past for legacy cases');
+      const submittedDate = {'submittedDate':'2025-12-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to before carm date for legacy cases');
+      console.log('submitted date update to after QM date');
     }
-    if (claimType === 'Intermediate' || claimType === 'Multi') {
-      console.log('updating submitted date for minti case');
-      await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
-      await testingSupport.updateCaseData(caseId, submittedDate);
-      console.log('submitted date update to after minti date');
-    }*/
+    // if (claimType === 'Intermediate' || claimType === 'Multi') {
+    //   console.log('updating submitted date for minti case');
+    //   await apiRequest.setupTokens(config.systemUpdate);
+    //   const submittedDate = {'submittedDate':'2025-03-20T15:59:50'};
+    //   await testingSupport.updateCaseData(caseId, submittedDate);
+    //   console.log('submitted date update to after minti date');
+    // }*/
 
     await apiRequest.setupTokens(user);
     let newPayload = {
