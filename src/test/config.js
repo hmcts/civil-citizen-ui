@@ -156,7 +156,7 @@ module.exports = {
   welshAdmin: {
     password: 'Password123',
     email: 'casewrokerwlu@justice.gov.uk',
-    type: 'welsh-admin'
+    type: 'welsh-admin',
   },
   systemUpdate2: {
     password: defaultPassword,
