@@ -57,7 +57,7 @@ const createLipClaimDefendantSoleTrader = require('../fixtures/events/createLiPC
 const createLipClaimSoleTraderVCompany = require('../fixtures/events/createLiPClaimSoleTraderVCompany.js');
 const createLipClaimIndVOrg = require('../fixtures/events/createLiPClaimIndVOrg.js');
 const makeAnOrderGA = require('../fixtures/events/makeAnOrderGA.js');
-const uploadTranslatedDoc = require("../fixtures/events/uploadTranslatedDoc");
+const uploadTranslatedDoc = require('../fixtures/events/uploadTranslatedDoc');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -383,14 +383,14 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
-    const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
-    console.log('Is PBAv3 toggle on?: ' + pbaV3);
+    //const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
+    //console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
-    if (pbaV3) {
+    //if (pbaV3) {
       await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
         claimSpecData.serviceUpdateDto(caseId, 'paid'));
       console.log('Service request update sent to callback URL');
-    }
+    // }
     await waitForFinishedBusinessProcess(caseId);
 
     if (!manualPIP) {
@@ -476,12 +476,12 @@ module.exports = {
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
-        "claimIssuedPaymentDetails": {
-          "status": "SUCCESS",
-          "reference": "RC-1234-1234-1234-1234"
+        'claimIssuedPaymentDetails': {
+          'status': 'SUCCESS',
+          'reference': 'RC-1234-1234-1234-1234',
         },
         issueDate: currentDate,
-        ...(!welshToggle && {respondent1ResponseDeadline: currentDate})
+        ...(!welshToggle && {respondent1ResponseDeadline: currentDate}),
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
@@ -525,11 +525,9 @@ module.exports = {
     const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
     console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
-    if (pbaV3) {
-      await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
-        claimSpecData.serviceUpdateDto(caseId, 'paid'));
-      console.log('Service request update sent to callback URL');
-    }
+    await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
+      claimSpecData.serviceUpdateDto(caseId, 'paid'));
+    console.log('Service request update sent to callback URL');
 
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');
@@ -1029,7 +1027,6 @@ const assignSpecCase = async (caseId, type) => {
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   }
 };
-
 
 const validateUploadTranslatedDoc = async (translationDocType) => {
   //transform the data
