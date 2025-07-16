@@ -37,4 +37,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   await verifyNotificationTitleAndContent(claimNumber, claimantNotification.title, claimantNotification.content);
   await I.click(claimantNotification.nextSteps);
   await I.click('Sign out');
-}).tag('@cui-welsh');
+}).tag('@cui-welsh @regression');
