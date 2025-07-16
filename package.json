@@ -42,7 +42,8 @@
     "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip codeceptjs run --grep @galip --reporter mocha-multi --verbose",
     "test:pact": "jest -c jest.pact.config.js",
     "pact:publish": "ts-node src/test/contract/publish/publish.ts",
-    "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish"
+    "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish",
+    "test": "echo test"
   },
   "dependencies": {
     "@hmcts/cookie-manager": "^1.0.0",
