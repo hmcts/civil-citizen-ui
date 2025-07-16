@@ -383,14 +383,14 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
-    //const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
-    //console.log('Is PBAv3 toggle on?: ' + pbaV3);
+    const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
+    console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
-    //if (pbaV3) {
+    if (pbaV3) {
       await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
         claimSpecData.serviceUpdateDto(caseId, 'paid'));
       console.log('Service request update sent to callback URL');
-    // }
+    }
     await waitForFinishedBusinessProcess(caseId);
 
     if (!manualPIP) {
@@ -525,9 +525,11 @@ module.exports = {
     const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
     console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
-    await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
-      claimSpecData.serviceUpdateDto(caseId, 'paid'));
-    console.log('Service request update sent to callback URL');
+    if (pbaV3) {
+      await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
+        claimSpecData.serviceUpdateDto(caseId, 'paid'));
+      console.log('Service request update sent to callback URL');
+    }
 
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');
@@ -1038,4 +1040,3 @@ const validateUploadTranslatedDoc = async (translationDocType) => {
     await assertValidDataSpec(uploadedDocs, pageId);
   }
 };
-
