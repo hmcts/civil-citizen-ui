@@ -3847,6 +3847,7 @@
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
         "TRANSLATED_HEARING_NOTICE_DESC": "Cais am Hysbysiad o Wrandawiad wedi'i Gyfieithu",
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
+        "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "DISMISSAL_ORDER": "Gorchymyn diddymu",
