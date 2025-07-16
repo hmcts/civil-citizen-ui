@@ -19,7 +19,7 @@ Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediat
 Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, false, 'Individual', 'BOTH', true);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, false, 'Individual', 'BOTH');
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
