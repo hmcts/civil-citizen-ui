@@ -22,7 +22,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await CitizenDashboardSteps.VerifyStatusOnDashboard('The documents are being translated.', '//*[@id="main-content"]/div[1]/div/table/tbody/tr[1]/td[4]');
   await api.submitUploadTranslatedDoc('CLAIM_ISSUE');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

@@ -36,6 +36,7 @@ class CitizenDashboardPage {
 
   async verifyStatusOnDashboard(status, xpath) {
     if (status)
+      await I.waitForContent('Your money claims account', config.WaitForText);
       await I.see(status, xpath);
   }
 }
