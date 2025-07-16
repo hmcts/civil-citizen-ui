@@ -14,18 +14,35 @@ module.exports = {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    console.log('Title to be verified ..', title);
-    await I.waitForContent(title);
-    await I.waitForVisible(selectors.titleClass, 60);
-    await I.waitForVisible(selectors.contentClass, 60);
-    if (Array.isArray(content)) {
-      for (let i = 0; i < content.length; i++) {
-        await I.see(content[i]);
-        console.log('content to be verified ..', content[i]);
+    const maxRetries = 3;
+    for (let tries = 1; tries <= maxRetries; tries++) {
+      console.log('Verifying notification title and content... attempt', tries);
+
+      const pageSource = await I.grabTextFrom('.dashboard-notification');
+      console.log('Title to be verified ..', title);
+      if (pageSource.includes(title)) {
+        if (Array.isArray(content)) {
+          const missingContent = content.filter(text => {
+            console.log('content to be verified ..', text);
+            return !pageSource.includes(text);
+          });
+          if (missingContent.length === 0) {
+            break;
+          }
+        } else {
+          console.log('content to be verified ..', content);
+          if (pageSource.includes(content)) {
+            break;
+          }
+        }
       }
-    } else {
-      await I.waitForText(content);
-      console.log('content to be verified ..', content);
+
+      if (tries === maxRetries) {
+        throw new Error('Notification could not be verified');
+      }
+
+      await I.wait(2);
+      await I.refreshPage();
     }
   },
 
