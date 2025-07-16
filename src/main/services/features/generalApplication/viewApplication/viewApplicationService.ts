@@ -278,7 +278,10 @@ export const getHearingNotice = (applicationResponse: ApplicationResponse, lang:
     hearingOrderDocInfoArray = hearingNoticeDocs.sort((item1,item2) => {
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(hearingNotice => {
-      return setUpDocumentLinkObject(hearingNotice.value.documentLink, hearingNotice.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
+      const documentLabel = hearingNotice.value.documentName.indexOf('Translated') !== -1
+        ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_NOTICE_DESC', {lang})
+        : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE', {lang});
+      return setUpDocumentLinkObject(hearingNotice.value.documentLink, hearingNotice.value.createdDatetime, applicationResponse.id, lang, documentLabel);
     });
   }
   return hearingOrderDocInfoArray;
