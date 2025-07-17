@@ -9,6 +9,7 @@ import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentServic
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
+import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeePaymentConfirmationService');
@@ -26,7 +27,9 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
     logger.info(`payment status from service for claim id ${req.params.id}: ${JSON.stringify(paymentStatus)}`);
     if(paymentStatus.status === success) {
-      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH ? 'cy' : 'en';
+      const isCUIWelshEnabled = await isWelshEnabledForMainCase();
+      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
+      || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
       await deleteDraftClaimFromStore(redisClaimId);
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
