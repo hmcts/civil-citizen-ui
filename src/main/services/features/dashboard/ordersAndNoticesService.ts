@@ -16,7 +16,8 @@ import {
   isCaseWorkerEventsEnabled,
   isCoSCEnabled,
   isGaForLipsEnabled,
-  isGaForWelshEnabled,
+  isWelshEnabledForMainCase,
+  isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNoUpperCase} from 'form/models/yesNo';
 
@@ -26,7 +27,7 @@ export const getClaimantDocuments = async (
   lang: string,
 ) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
-  const isCUIWelshEnabled = await isGaForWelshEnabled();
+  const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const claimantDocumentsArray: DocumentInformation[] = [];
   if (isCUIWelshEnabled) {
@@ -79,7 +80,7 @@ export const getClaimantDocuments = async (
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCoSCEnabledValue = await isCoSCEnabled();
-  const isCUIWelshEnabled = await isGaForWelshEnabled();
+  const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const defendantDocumentsArray: DocumentInformation[] = [];
   if (isCUIWelshEnabled) {
@@ -106,6 +107,8 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCaseworkerEventsEnabled = await isCaseWorkerEventsEnabled();
+  const isJudgmentOnlineEnabled = await isJudgmentOnlineLive();
+
   const courtDocumentsArray: DocumentInformation[] = [];
 
   if (isCaseworkerEventsEnabled) {
@@ -114,7 +117,9 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
 
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
-  courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
+  if (!isJudgmentOnlineEnabled) {
+    courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
+  }
   courtDocumentsArray.push(...getInterlocutoryJudgement(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
@@ -284,19 +289,14 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionsOrders = [
-    ...(claim.getDocumentDetailsList(DocumentType.SDO_ORDER) ?? []),
-    ...(claim.getDocumentDetailsList(DocumentType.SDO_TRANSLATED_DOCUMENT) ?? []),
-  ];
-
-  const caseDocuments: DocumentInformation[] = [];
-  if (standardDirectionsOrders && standardDirectionsOrders.length > 0) {
-    standardDirectionsOrders.forEach((documentElement) => {
-      const document = documentElement.value;
-      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER'));
-    });
-  }
-  return caseDocuments;
+  const standardDirectionOrder = claim.getDocumentDetails(DocumentType.SDO_ORDER);
+  const docLink1 =  standardDirectionOrder ?
+    setUpDocumentLinkObject(standardDirectionOrder.documentLink, standardDirectionOrder.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER') : undefined;
+  const translatedSdo = claim.getDocumentDetails(DocumentType.SDO_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedSdo
+    ? setUpDocumentLinkObject(translatedSdo.documentLink, translatedSdo.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
@@ -377,9 +377,17 @@ const getTranslatedOrders = (claim: Claim, claimId: string, lang: string) => {
 };
 
 const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {
-  const settlementAgreement = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
-  return settlementAgreement ? Array.of(
-    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')) : [];
+
+  const decisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
+  const docLink1 = decisionOnReconsideration
+    ? setUpDocumentLinkObject(decisionOnReconsideration.documentLink, decisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')
+    : undefined;
+  const translatedDecisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+  const docLink2 = translatedDecisionOnReconsideration
+    ? setUpDocumentLinkObject(translatedDecisionOnReconsideration.documentLink, translatedDecisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
+
 };
 
 const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
