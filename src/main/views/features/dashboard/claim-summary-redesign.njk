@@ -1,15 +1,25 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../macro/task-list.njk" import taskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
 {% from "../../macro/notifications.njk" import notifications %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../macro/support-links.njk" import supportLinks %}
 
 {% block nestedContent %}
         {% block warning_message %}
           {% include "../../macro/banner.njk" %}
         {% endblock %}
+        {% block welsh_party_message %}
+          {% include "../../macro/welsh_party_banner.njk" %}
+        {% endblock %}
+        {% if showErrorAwaitingTranslation %}
+          {{ govukWarningText({
+            text: t('ERRORS.DOCUMENTS_BEING_TRANSLATED'),
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
         {% if claimantName and defendantName %}

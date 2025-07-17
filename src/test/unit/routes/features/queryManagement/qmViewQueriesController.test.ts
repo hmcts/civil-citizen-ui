@@ -88,6 +88,7 @@ describe('View query controller', () => {
 
       const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
       expect(res.text).toContain('Message subject');
+      expect(res.text).toContain('Sent by');
       expect(res.text).toContain('Sent on');
       expect(res.text).toContain('Last updated by');
       expect(res.text).toContain('Last updated on');

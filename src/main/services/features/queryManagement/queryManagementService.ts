@@ -64,6 +64,7 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.SEND_DOCUMENTS]: 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS',
   [WhatToDoTypeOption.SOLVE_PROBLEM]: 'PAGES.QM.CAPTIONS.SOLVE_PROBLEM',
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
+  [WhatToDoTypeOption.CHANGE_CASE]: 'PAGES.QM.CAPTIONS.CHANGE_CASE',
 };
 
 export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
@@ -107,7 +108,7 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
 export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
   const queryManagement = claim.queryManagement;
-  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement.createQuery;
+  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement?.createQuery;
 
   if (query) {
     const uploadedFiles = query.uploadedFiles;
