@@ -608,7 +608,7 @@
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": "Update the court about a partially paid judgment or claim",
           "SETTLE_CLAIM": "Settle a claim",
           "AMEND_CLAIM_DETAILS": "Amend the claim details",
-          "CLAIM_ENDED": "Tell the court my claim has ended",
+          "CLAIM_ENDED": "Tell the court you do not want to continue your claim",
           "SOLVE_PROBLEM_SOMETHING_ELSE": "SOLVE_PROBLEM_SOMETHING_ELSE_TITLE",
           "SEND_UPDATE_SOMETHING_ELSE": "SEND_UPDATE_SOMETHING_ELSE_TITLE",
           "MANAGE_HEARING_SOMETHING_ELSE": "MANAGE_HEARING_SOMETHING_ELSE_TITLE",
@@ -695,9 +695,9 @@
       "QUALIFY_SECTIONS": {
         "COMMON_SOLVE_PROBLEMS": {
           "LINK_1": {
-            "TEXT": "send a message to the court",
+            "TEXT": "send a message to the court.",
             "TEXT_BEFORE": "If the issue is not urgent, you can ",
-            "TEXT_AFTER": ". We try to answer messages within 10 days, but it could take longer."
+            "TEXT_AFTER": " We try to answer messages within 10 working days, but it could take longer."
           },
           "LINK_2": {
             "TEXT": "contact details for the court (opens in a new window)",
@@ -717,30 +717,35 @@
           "PARAGRAPH_1": "If you cannot view documents uploaded by you or the other party on your account, you should contact the court for help."
         },
         "GENERAL_UPDATE" : {
-          "PARAGRAPH_1": "We cannot give updates on emails, forms or applications you have already sent to us.",
-          "PARAGRAPH_2": "You will be sent a response or details of any next steps you need to take once the court work is complete.",
-          "PARAGRAPH_3": "We try to process emails, applications and forms in 10 working days, but it can take longer."
+          "PARAGRAPH_1": "Your dashboard has all the most up to date information, you will be sent email notifications when your case is updated or you get a reply to a message.",
+          "PARAGRAPH_2": "We cannot give updates on emails, forms or applications you have already sent to us.",
+          "PARAGRAPH_3": "You will be sent a response or details of any next steps you need to take once the court work is complete.",
+          "PARAGRAPH_4": "We try to process emails, applications and forms in 10 working days, but it can take longer."
         },
         "CLAIM_NOT_PAID" : {
-          "PARAGRAPH_1": "The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.",
-          "PARAGRAPH_2": "The defendant can decide to&#58",
+          "LINK_1": {
+            "TEXT": "respond to the claim",
+            "TEXT_BEFORE": "The defendant has up to 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended by selecting to "
+          },
+          "TEXT_1": "The defendant has up to 28 days to respond once they receive the claim. If the defendant needs more time and both parties agree, the 28 day period can be extended by selecting to respond to the claim.",
+          "PARAGRAPH_1": "The defendant can decide to&#58",
           "LI_1": "pay the full amount",
           "LI_2": "offer to pay a different amount (if they think they owe less)",
           "LI_3": "defend the claim (if they do not think they owe any money)",
-          "PARAGRAPH_3": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
+          "PARAGRAPH_2": "If the defendant offers to pay a different amount and the claimant rejects that offer, there may be a hearing where the defendant will have to give more information. The claimant will be asked to attend the hearing.",
           "SUBTITLE_1": "If the defendant does not pay the full amount or respond in time",
-          "LINK_1": {
+          "LINK_2": {
             "TEXT": "request a county court judgment (CCJ)",
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
-          "LINK_2": {
+          "LINK_3": {
             "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
         },
         "CLAIM_NOT_PAID_AFTER_JUDGMENT" : {
-          "PARAGRAPH_1": "If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.",
+          "PARAGRAPH_1": "If the claimant applies for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.",
           "PARAGRAPH_2": "The claimant can instruct the court to undertake different enforcement processes. This is called 'enforcing the judgment'. The claimant can ask the court to issue&#58",
           "LI_1": "a warrant of control - for goods owned by the defendant",
           "LI_2": "an attachment of earnings order - for a portion of the defendant’s earnings",
@@ -751,32 +756,34 @@
             "TEXT_BEFORE": "Find more detail about "
           },
           "SUBTITLE_1": "Fees",
+          "PARAGRAPH_3": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select.",
           "LINK_2": {
-            "TEXT": "about civil court fees (opens in a new window)",
-            "TEXT_BEFORE": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select. Find out "
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          },
+          "LINK_3": {
+            "TEXT": "civil court fees (opens in a new window)",
+            "TEXT_BEFORE": "Find out about "
           }
         },
         "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
           "SUBTITLE_1": "If part of the judgment or claim amount has been paid",
-          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court."
+          "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court.",
+          "LINK_1": {
+            "TEXT": "about enforcing a partially paid judgment (opens in a new window)",
+            "TEXT_BEFORE": "Find out "
+          }
         },
         "SETTLE_CLAIM" : {
           "SUBTITLE_1": "If the claim is paid or you agree the balance is settled",
-          "TEXT_UPDATE_WITHOUT_LINK": "Update the claim in the online service by selecting tell us you’ve settled the claim.",
-          "LINK_2": {
-            "TEXT": "contactocmc@justice.gov.uk",
-            "TEXT_BEFORE": "You can also email ",
-            "TEXT_AFTER": " to say the claim is settled. You should include:"
-          },
-          "LI_1": "your name",
-          "LI_2": "the claim number",
-          "LI_3": "the date the final payment cleared in your account",
+          "TEXT_UPDATE_WITHOUT_LINK": "If you are a claimant, update the claim in the online service by selecting tell us you’ve settled the claim.",
           "SUBTITLE_2": "Claims settled through a small claims mediator",
-          "TEXT_1": "If a mediator settled your claim, the mediator will update your case record for you.",
+          "TEXT_1": "If your claim was settled at mediation, the mediator will update your case record for you.",
           "NOT_SETTLED": {
             "LINK_1": {
               "TEXT": "tell us you’ve settled the claim",
-              "TEXT_BEFORE": "Update the claim in the online service by selecting"
+              "TEXT_BEFORE": "If you are a claimant, update the claim in the online service by selecting "
             }
           }
         },
@@ -795,13 +802,18 @@
             "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
             "TEXT_AFTER": " to make sure you pay the correct fee."
           },
-          "SUBTITLE_1": "If the defendant’s address is wrong",
           "LINK_3": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          },
+          "SUBTITLE_1": "If the defendant’s address is wrong",
+          "LINK_4": {
             "TEXT": "contactocmc@justice.gov.uk",
             "TEXT_BEFORE": "You can send an amended claim form, with the correct address written in red ink. Email the amended form to "
           },
           "SUBTITLE_2": "To update your contact details",
-          "LINK_4": {
+          "LINK_5": {
             "TEXT": "send a message to the court",
             "TEXT_BEFORE": "To update your contact details, "
           }
@@ -809,10 +821,11 @@
         "CLAIM_ENDED" : {
           "LINK_1": {
             "TEXT": "notice of discontinuance (opens in a new window)",
-            "TEXT_BEFORE": "To tell the court your claim has ended, you need to fill in and send a form called a ",
-            "TEXT_AFTER": " to the court and the other parties in the case."
+            "TEXT_BEFORE": "To tell the court you no longer want to continue with your claim, you need to fill in and send a form called a ",
+            "TEXT_AFTER": "  to the court and the other party in the case."
           },
-          "TEXT_1": "You cannot upload a notice of discontinuance to the Money claims system.",
+          "TEXT_1": "If you choose to discontinue the case, you may have to pay some of the other party’s costs.",
+          "TEXT_2": "You cannot upload a notice of discontinuance to the Money claims system.",
           "LINK_2": {
             "TEXT": "contact the court (opens in a new window)",
             "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
@@ -850,6 +863,11 @@
             "TEXT": "check the civil fees list (opens in a new window)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
+          },
+          "LINK_6": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           }
         },
         "CLAIM_DOCUMENTS_AND_EVIDENCE": {
@@ -878,10 +896,15 @@
           "PARAGRAPH_3": "You may need to attend a hearing to discuss your application to change the date.",
           "LINK_2": {
             "TEXT": "Check the fees guidance (opens in a new window)",
-            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee",
-            "TEXT_AFTER": "to make sure you pay the correct fee."
+            "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee. ",
+            "TEXT_AFTER": " to make sure you pay the correct fee."
           },
-          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees."
+          "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees.",
+          "LINK_3": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          }
         },
         "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
           "PARAGRAPH_1": "You can apply to change the details of the hearing, such as:",
@@ -896,18 +919,22 @@
             "TEXT": "fees in civil cases (opens in a new window)",
             "TEXT_BEFORE": "Find out more about"
           },
-          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application."
+          "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application.",
+          "LINK_3": {
+            "TEXT": "help with fees (opens in a new window)",
+            "TEXT_BEFORE": "You may be able to get ",
+            "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
+          }
         },
         "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
           "PARAGRAPH_1": "You can ask for help and support during your hearing.",
           "PARAGRAPH_2": "For example, this could be:",
           "LIST_1": "ramps or accessible toilets",
           "LIST_2": "a hearing loop",
-          "LIST_3": "forms in large print",
-          "LIST_4": "guidance in audio or easy read formats",
+          "LIST_3": "guidance in audio or easy read formats",
+          "PARAGRAPH_3": "To ask for support at your hearing you have to contact the court where the hearing is being held. You can see which court is hearing your case in your directions order or hearing notice.",
           "LINK_1": {
-            "TEXT": "Find the contact details for the court (opens in a new window)",
-            "TEXT_BEFORE": "To ask for support at your hearing you have to contact the court  where the hearing is being held, you can see which court is hearing your case in your directions order."
+            "TEXT": "Find the contact details for the court (opens in a new window)."
           }
         },
         "GA_OFFLINE": {
@@ -951,16 +978,18 @@
         "SEND_MESSAGE": "Send message"
       },
       "VIEW_QUERY": {
-        "PAGE_TITLE": "Messages",
+        "PAGE_TITLE": "Messages to the court",
         "MESSAGE_SUBJECT": "Message subject",
         "SENT_ON": "Sent on",
+        "SENT_BY": "Sent by",
         "LAST_UPDATED_BY": "Last updated by",
         "LAST_UPDATED_ON": "Last updated on",
         "STATUS": "Status",
         "UPDATED_BY_COURT_STAFF": "Court staff",
         "UPDATED_BY_YOU": "You",
         "STATUS_SENT": "Message sent",
-        "STATUS_RECEIVED": "Response received"
+        "STATUS_RECEIVED": "Response received",
+        "STATUS_CLOSED": "Closed"
       },
       "FOLLOW_UP_QUERY": {
         "WARNING_TEXT": "Follow up messages can be seen by all parties.",
@@ -971,20 +1000,33 @@
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Message details",
+        "MESSAGE": "Message",
         "YOUR_MESSAGE": "Your message",
-        "COURTS_RESPONSE": "Court's response",
+        "FOLLOW_UP_MESSAGE": "Follow up message",
+        "COURTS_RESPONSE": "Court response",
         "MESSAGE_DETAILS": "Message details",
-        "COURT_MESSAGE_DETAILS": "Response details",
+        "COURT_MESSAGE_DETAILS": "Message details",
         "MESSAGE_ABOUT_HEARING": "Is your message about an upcoming hearing?",
         "MESSAGE_ABOUT_HEARING_YES": "Yes",
         "MESSAGE_ABOUT_HEARING_NO": "No",
         "HEARING_DATE": "What is the date of the hearing?",
-        "UPLOADED_DOCUMENTS": "Uploaded documents (optional)",
+        "UPLOADED_DOCUMENTS": "Attachments",
+        "NO_DOCUMENTS_UPLOADED": "No documents uploaded",
         "SENT_BY": "Sent by",
         "SENT_BY_YOU": "You",
         "SENT_BY_COURT_STAFF": "Court staff",
         "SENT_ON": "Sent on",
-        "SEND_FOLLOW_UP": "Send a follow up message"
+        "SEND_FOLLOW_UP": "Send a follow up message",
+        "SEND_FOLLOW_UP_INFO": {
+          "HEADER": "Send a follow up message",
+          "LINE_1": "Only send follow up messages related to the original query.",
+          "LINE_2": "Sending follow up messages that are not related will delay the court’s response."
+        },
+        "COURT_IS_REVIEWING_INFO": {
+          "HEADER": "The court is reviewing the message",
+          "LINE_1": "Our team will read the message and respond."
+        },
+        "THREAD_CLOSED_BY_STAFF": "This message has been closed by court staff on {{ createdDate }}"
       },
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Send a message",
