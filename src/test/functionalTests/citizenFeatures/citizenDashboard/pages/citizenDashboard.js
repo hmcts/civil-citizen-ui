@@ -2,18 +2,17 @@ const config = require('../../../../config');
 const I = actor();
 
 class CitizenDashboardPage {
-  async open () {
+  async open() {
     await I.amOnPage('/dashboard');
   }
 
-  async verifyClaimNumberOnDashboard(claimNumber){
+  async verifyClaimNumberOnDashboard(claimNumber) {
     if (await I.waitForContent('Claim number', config.WaitForText)) {
       await I.see('Claimant name');
       await I.see('Claim amount');
       await I.see('Status');
       await I.see(claimNumber);
-    }
-    else {
+    } else {
       await I.refreshPage();
       await I.waitForContent('Claim number', config.WaitForText);
       await I.see('Claimant name');
@@ -23,7 +22,7 @@ class CitizenDashboardPage {
     }
   }
 
-  async verifyDashboardPageContent () {
+  async verifyDashboardPageContent() {
     await I.waitForContent('Your money claims account', config.WaitForText);
     await I.see('Claims made against you');
     await I.see('To view or progress your claim click on your claim number. Most recently created claims are listed first.');
@@ -35,9 +34,10 @@ class CitizenDashboardPage {
   }
 
   async verifyStatusOnDashboard(status, xpath) {
-    if (status)
+    if (status) {
       await I.waitForContent('Your money claims account', config.WaitForText);
       await I.see(status, xpath);
+    }
   }
 }
 
