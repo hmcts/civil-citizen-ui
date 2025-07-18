@@ -19,7 +19,7 @@
     <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
-    <a target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
+    <a class="govuk-link" target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
     {% endif %}{{ hrefContent }}</a></p>
   {% endif %}
 {% endmacro %}
