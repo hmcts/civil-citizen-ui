@@ -94,7 +94,8 @@ export const buildJudgmentRequestSection = async (claim: Claim, claimId: string,
   }
 
   if (claim.getHasDefendantPaid) {
-    judgmentRequestSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}), '£' + judgmentSummaryDetails.total));
+    const labelKey = claim.isFullAdmission()? t('PAGES.CHECK_YOUR_ANSWER.FA_CCJ_TOTAL_TO_BE_PAID', {lng}): t('PAGES.CHECK_YOUR_ANSWER.PA_CCJ_TOTAL_TO_BE_PAID', {lng});
+    judgmentRequestSection.summaryList.rows.push(summaryRow(labelKey, '£' + judgmentSummaryDetails.total));
   }
   return judgmentRequestSection;
 };

@@ -22,6 +22,7 @@
         {% endif %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
+        {% set hintText = t('COMMON.CLAIMANT_DASHBOARD_HINT_TEXT') if claim.isClaimant() else t('COMMON.DEFENDANT_DASHBOARD_HINT_TEXT')%}
         {% if claimantName and defendantName %}
           <h1 class="govuk-heading-m">{{ claimantName }} v {{ defendantName }}</h1>
         {% endif %}
@@ -32,7 +33,7 @@
           </p>
         {% endif %}
         {% if claimAmountFormatted %}
-          <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
+          <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) + ' (' + hintText+ ')'}}</p>
         {% endif %}
 
         <div class="border-small-top"></div>
