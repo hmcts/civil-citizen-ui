@@ -39,7 +39,7 @@ export class ViewQueriesService {
         if (messageThread.length % 2 == 0) {
           return {...viewObject,
             lastUpdatedBy: 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF',
-            status: latestMessage.isClosed ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED' : 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
+            status: latestMessage.isClosed === 'Yes' ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED' : 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
           };
         }
         else {
