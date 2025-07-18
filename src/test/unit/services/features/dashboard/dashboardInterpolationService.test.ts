@@ -252,10 +252,10 @@ describe('dashboardInterpolationService', () => {
             document_url: '',
             document_binary_url: 'http://dm-store:8080/documents/hidden-doc-id/binary',
             document_filename: '',
-          }
-        }
-      }
-    ]
+          },
+        },
+      },
+    ];
     const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
     const params: Map<string, object> = {
       'orderDocument': 'http://dm-store:8080/documents/order-doc-id/binary',
