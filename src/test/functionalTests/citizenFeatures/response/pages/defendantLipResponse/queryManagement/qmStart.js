@@ -44,7 +44,7 @@ class QmStart {
    * @param {string} optionLabel The exact label of the radio option to select.
    * @param {string} nextPageTitle The expected title after clicking continue (optional).
    */
-  async selectOption(optionLabel, nextPageTitle = null) {
+  async selectOption(optionLabel) {
     await I.waitForContent(this.pageTitle, config.WaitForText);
 
     // Fail early if the option isn't visible
@@ -54,9 +54,6 @@ class QmStart {
 
     await I.checkOption(optionLabel);
     await I.click('Continue');
-    if (nextPageTitle) {
-      await I.waitForContent(nextPageTitle, config.WaitForText);
-    }
   }
 
   async selectSomethingElseOption() {
@@ -85,7 +82,7 @@ class QmStart {
   }
 
   async getSupport() {
-    await this.selectOption(this.optionMap.getSupport, 'Enter message details');
+    await this.selectOption(this.optionMap.getSupport);
   }
 
   async followUpOnExistingMessage() {
