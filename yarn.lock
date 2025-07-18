@@ -3054,12 +3054,12 @@ __metadata:
   linkType: hard
 
 "@types/cookie-session@npm:^2.0.44":
-  version: 2.0.47
-  resolution: "@types/cookie-session@npm:2.0.47"
+  version: 2.0.49
+  resolution: "@types/cookie-session@npm:2.0.49"
   dependencies:
     "@types/express": "*"
     "@types/keygrip": "*"
-  checksum: edaf88c19c03281036ed66f3c2cf4fff970ff14566f832d519416091ee0e3a461cc003198b0ff8a5123b1b68c9a1f5f4c48fa80c23b8dec436109f840b27a616
+  checksum: fbdd5612148da979d1fbb1e3e2eaedd7d262cf60de44e5d0ae5bee189891d8e007455a1c2a11676d4d26d0556114aecabc93bd021416f8bd852bfa88f5b01194
   languageName: node
   linkType: hard
 
@@ -5799,14 +5799,14 @@ __metadata:
   linkType: hard
 
 "cookie-session@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "cookie-session@npm:2.0.0"
+  version: 2.1.1
+  resolution: "cookie-session@npm:2.1.1"
   dependencies:
-    cookies: 0.8.0
+    cookies: 0.9.1
     debug: 3.2.7
-    on-headers: ~1.0.2
+    on-headers: ~1.1.0
     safe-buffer: 5.2.1
-  checksum: 9718099c9de611910a3211783850f5c33cf7f42daad11e71bde81e075f1525787cf2eee4dcf23dc12b01febaf8fdbada971c485a1e294a0cc04fc92213f5e961
+  checksum: 50a9bc83115617306aed410d971339beba49db88f7f66247d1ebac1c73d48f463b416ff56bc1a546c220724eaac8e0953165a2dbe2e7a24c98a64ce4bd4fee7e
   languageName: node
   linkType: hard
 
@@ -5852,13 +5852,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookies@npm:0.8.0":
-  version: 0.8.0
-  resolution: "cookies@npm:0.8.0"
+"cookies@npm:0.9.1":
+  version: 0.9.1
+  resolution: "cookies@npm:0.9.1"
   dependencies:
     depd: ~2.0.0
     keygrip: ~1.1.0
-  checksum: 806055a44f128705265b1bc6a853058da18bf80dea3654ad99be20985b1fa1b14f86c1eef73644aab8071241f8a78acd57202b54c4c5c70769fc694fbb9c4edc
+  checksum: 213e4d14847b582fbd8a003203d3621a4b9fa792a315c37954e89332d38fac5bcc34ba92ef316ad6d5fe28f0187aaa115927fbbe2080744ad1707a93b4313247
   languageName: node
   linkType: hard
 
@@ -11560,6 +11560,13 @@ __metadata:
   version: 1.0.2
   resolution: "on-headers@npm:1.0.2"
   checksum: 2bf13467215d1e540a62a75021e8b318a6cfc5d4fc53af8e8f84ad98dbcea02d506c6d24180cd62e1d769c44721ba542f3154effc1f7579a8288c9f7873ed8e5
+  languageName: node
+  linkType: hard
+
+"on-headers@npm:~1.1.0":
+  version: 1.1.0
+  resolution: "on-headers@npm:1.1.0"
+  checksum: 98aa64629f986fb8cc4517dd8bede73c980e31208cba97f4442c330959f60ced3dc6214b83420491f5111fc7c4f4343abe2ea62c85f505cf041d67850f238776
   languageName: node
   linkType: hard
 
