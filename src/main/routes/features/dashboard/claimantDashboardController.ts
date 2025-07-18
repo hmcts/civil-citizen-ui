@@ -24,7 +24,7 @@ import {
   isCUIReleaseTwoEnabled,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled, isGaForWelshEnabled,
+  isQueryManagementEnabled, isWelshEnabledForMainCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -93,7 +93,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
           req.session.dashboard.taskIdHearingUploadDocuments = task.id;
         }
       });
-      const welshEnabled = await isGaForWelshEnabled();
+      const welshEnabled = await isWelshEnabledForMainCase();
       const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
       const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
 
