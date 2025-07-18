@@ -79,6 +79,10 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
+    if (claim.defendantUserDetails != undefined) { // if the is assigned to the defendant
+      gaInformation.isGaOnline = true;
+      return gaInformation;
+    }
     if ((claim.defendantUserDetails === undefined ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
       gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
