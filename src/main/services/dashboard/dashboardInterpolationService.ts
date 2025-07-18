@@ -263,6 +263,6 @@ function getRequestForReconsiderationDocument (claim: Claim) {
 
 function hiddenDocumentNowVisible(documentUrl: string, claim: Claim) {
   return claim.systemGeneratedCaseDocuments?.some(
-    document => (document.value.documentLink.document_binary_url === documentUrl)
+    document => (document.value.documentLink.document_binary_url === documentUrl),
   ) ?? false;
 }
