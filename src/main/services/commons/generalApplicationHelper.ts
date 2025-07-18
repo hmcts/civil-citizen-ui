@@ -79,7 +79,8 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
-    if (claim.defendantUserDetails != undefined) { // if the is assigned to the defendant
+    if (claim.defendantUserDetails != undefined && !claim.isLRDefendant() && !claim.isAnyPartyBilingual()) {
+      // if the is assigned to the defendant, not LR, not bilingual
       gaInformation.isGaOnline = true;
       return gaInformation;
     }
