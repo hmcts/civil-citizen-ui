@@ -302,7 +302,7 @@ civil-wa:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-6509'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
@@ -327,11 +327,9 @@ civil-general-applications:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
-          - name: appinsights-connection-string
-            alias: appinsights-connection-string
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: gov-notify-live-api-key
+          - name: gov-notify-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
@@ -383,7 +381,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6509'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
@@ -405,13 +403,15 @@ civil-service:
             alias: CIVIL_CROSS_ACCESS_USERNAME
           - name: cross-access-user-password
             alias: CIVIL_CROSS_ACCESS_PASSWORD
+          - name: appinsights-connection-string
+            alias: appinsights-connection-string
           - name: prd-admin-user-username
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: gov-notify-pretends-api-key
+          - name: gov-notify-live-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
