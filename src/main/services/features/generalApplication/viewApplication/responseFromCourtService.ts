@@ -222,9 +222,12 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
         return writtenRepSequentialDocs?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL;
       })
       .map(writtenRepSequentialDocs => {
-        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepSequentialDocs?.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng})}">${writtenRepSequentialDocs.value.documentLink.document_filename}</a>`;
+        const documentLabel = writtenRepSequentialDocs.value.documentName.indexOf('Translated') !== -1
+          ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL', {lng})
+          : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng});
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepSequentialDocs?.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${documentLabel}">${writtenRepSequentialDocs.value.documentLink.document_filename}</a>`;
         const createdDatetime = writtenRepSequentialDocs.value.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
+        const rows = getResponseSummaryRows(documentUrl, documentLabel ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
         return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
@@ -243,9 +246,12 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
         return writtenRepConcurrentDoc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_CONCURRENT;
       })
       .map(writtenRepConcurrentDoc => {
-        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepConcurrentDoc.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng})}">${writtenRepConcurrentDoc.value.documentLink.document_filename}</a>`;
+        const documentLabel = writtenRepConcurrentDoc.value.documentName.indexOf('Translated') !== -1
+          ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT', {lng})
+          : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng});
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepConcurrentDoc.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${documentLabel}">${writtenRepConcurrentDoc.value.documentLink.document_filename}</a>`;
         const createdDatetime = writtenRepConcurrentDoc.value.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
+        const rows = getResponseSummaryRows(documentUrl, documentLabel, createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
         return new CourtResponseSummaryList(rows, createdDatetime, createResponseToRequestButton(applicationResponse, lng, requestWrittenRepresentationsUrl));
       });
