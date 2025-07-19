@@ -349,7 +349,7 @@ describe('redirection url', () => {
     const result = await getGaRedirectionUrl(claim, true, true);
 
     //Then
-    expect('/submit-application-offline').toEqual(result);
+    expect('/case/:id/submit-application-offline').toEqual(result);
   });
 
 });

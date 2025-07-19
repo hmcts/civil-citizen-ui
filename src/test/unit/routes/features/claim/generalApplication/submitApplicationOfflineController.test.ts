@@ -5,14 +5,21 @@ import {t} from 'i18next';
 import config from 'config';
 import nock from 'nock';
 import {isQueryManagementEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as utilityService from 'modules/utilityService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
     next();
   }),
 }));
+
+const mockGetClaim = utilityService.getClaimById as jest.Mock;
 
 describe('General Application - Application costs', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,6 +29,12 @@ describe('General Application - Application costs', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
+    mockGetClaim.mockImplementation(() => {
+      return new Claim();
+    });
   });
 
   describe('on GET', () => {
