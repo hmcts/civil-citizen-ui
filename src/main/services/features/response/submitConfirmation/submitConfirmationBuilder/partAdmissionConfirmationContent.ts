@@ -203,7 +203,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
           <li>${t('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN', {lng: lang})}</li>
           <li>
             <p class="govuk-body govuk-!-margin-bottom-1">
-            <a href="${CITIZEN_CONTACT_THEM_URL.replace(':id', claimId)}">${t('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT', {
+            <a class="govuk-link" href="${CITIZEN_CONTACT_THEM_URL.replace(':id', claimId)}">${t('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT', {
   claimantName,
   lng: lang,
 })}</a>
