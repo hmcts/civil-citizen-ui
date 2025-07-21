@@ -84,9 +84,9 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
-    if (claim.defendantUserDetails != undefined && !claim.isLRDefendant() && !claim.isAnyPartyBilingual()) {
-      // if the is assigned to the defendant, not LR, not bilingual
-      console.log('IS EA COURT, DEFENDANT DEFINED, NO BILGINGUAL');
+    if ((claim.defendantUserDetails === undefined && (claim.isLRDefendant() && claim.respondentSolicitorDetails != undefined))) {
+      // if the claim is yet assigned to the defendant via first contact process, but notice of change has been submitted for defendant
+      console.log('IS EA COURT, DEFENDANT NOT DEFINED, HAS NOC');
       gaInformation.isGaOnline = true;
       return gaInformation;
     }
