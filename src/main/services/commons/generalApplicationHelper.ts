@@ -54,6 +54,11 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
   const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
+  console.log('IS EA COURT {}', isEaCourt);
+  console.log('WELSH ENABLED {}', welshGaEnabled);
+  console.log('GA ONLINE {}', isGAInfo.isGaOnline);
+  console.log('GA GA WELSH  {}', isGAInfo.isGAWelsh);
+  console.log('IS SETTLED/DISCONTINUED {}', isGAInfo.isSettledOrDiscontinuedWithPreviousCCDState);
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {
@@ -81,6 +86,7 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   if (isEaCourt) {
     if (claim.defendantUserDetails != undefined && !claim.isLRDefendant() && !claim.isAnyPartyBilingual()) {
       // if the is assigned to the defendant, not LR, not bilingual
+      console.log('IS EA COURT, DEFENDANT DEFINED, NO BILGINGUAL');
       gaInformation.isGaOnline = true;
       return gaInformation;
     }

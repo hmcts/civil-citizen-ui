@@ -103,6 +103,7 @@ qmStartController.post(QM_START_URL, (async (req, res , next) => {
     }
     await saveQueryManagement(redisKey, form.model, QUERY_MANAGEMENT_PROPERTY_NAME, req);
     const gaUrl = await getGaRedirectionUrl(await getClaimById(claimId, req, true));
+    console.log('GA REDIRECT URL {}', gaUrl);
     const redirectPath = getRedirectPath(option, gaUrl);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectPath.replace(':qmType', option)));
   } catch (error) {
