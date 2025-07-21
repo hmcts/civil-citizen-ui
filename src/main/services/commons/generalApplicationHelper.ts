@@ -84,7 +84,8 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
-    if ((claim.defendantUserDetails === undefined && (claim.isLRDefendant() && claim.respondentSolicitorDetails != undefined))) {
+    if ((claim.defendantUserDetails === undefined &&
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails != undefined))) {
       // if the claim is yet assigned to the defendant via first contact process, but notice of change has been submitted for defendant
       console.log('IS EA COURT, DEFENDANT NOT DEFINED, HAS NOC');
       gaInformation.isGaOnline = true;

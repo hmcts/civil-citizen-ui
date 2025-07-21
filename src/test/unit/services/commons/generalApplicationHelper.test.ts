@@ -213,7 +213,7 @@ describe('General Application helper when Lip is on', () => {
     const claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
     claim.respondent1Represented = YesNoUpperCamelCase.YES;
-    claim.respondentSolicitorDetails = 'test'
+    claim.respondentSolicitorDetails = 'test';
 
     const expected = new GaInformation();
     expected.isGaOnline = true;
