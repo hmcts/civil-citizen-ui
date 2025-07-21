@@ -86,9 +86,12 @@ export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: A
         return directionOrderDocument?.value?.documentType === DocumentType.DIRECTION_ORDER;
       })
       .map(directionOrderDocument => {
-        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})}">${directionOrderDocument.value.documentLink.document_filename}</a>`;
+        const documentLabel = directionOrderDocument.value.documentName.indexOf('Translated') !== -1
+          ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_JUDGE_HAS_MADE_ORDER', {lng})
+          : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng});
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${documentLabel}">${directionOrderDocument.value.documentLink.document_filename}</a>`;
         const createdDatetime = directionOrderDocument?.value?.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng}), createdDatetime, lng);
+        const rows = getResponseSummaryRows(documentUrl, documentLabel, createdDatetime, lng);
         const judgeDirectionOrderButton = showButtons? createResponseToRequestButton(applicationResponse, lng, judgesDirectionsOrderUrl) : null;
         return new CourtResponseSummaryList(rows, createdDatetime, judgeDirectionOrderButton);
       });
