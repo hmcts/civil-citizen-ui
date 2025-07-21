@@ -31,7 +31,6 @@ export interface ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD
   ccjPaymentPaidSomeAmount?: string;
   ccjJudgmentAmountClaimFee?: string;
   ccjJudgmentLipInterest?: string;
-  ccjJudgmentFixedCostAmount?: string;
 }
 
 export const translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD = async (claim: Claim, claimFee: number): Promise<ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD> => {
@@ -72,7 +71,6 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
     totalClaimAmount: claim.totalClaimAmount,
-    ccjJudgmentFixedCostAmount: claim.ccjJudgmentFixedCostAmount,
     ...paymentPlanDetails,
   };
 };
