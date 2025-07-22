@@ -376,6 +376,7 @@ civil-general-applications:
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
 
+
 civil-service:
   enabled: true
   java:
