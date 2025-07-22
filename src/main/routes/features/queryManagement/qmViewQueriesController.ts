@@ -46,6 +46,7 @@ qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: AppRequest, res: Res
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const userId = req.session?.user?.id;
+    console.log(`qmViewQueriesController: userId: ${userId}, claimId: ${claimId}, lang: ${lang}`);
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await recordNotificationClickForQueryResponse(claim, claimId, req, lang);
     await renderView(res, userId, claimId, claim, lang);
