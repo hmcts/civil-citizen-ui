@@ -3865,6 +3865,7 @@
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Ymateb gan y llys",
         "RESPONDENTS_DOCUMENTS": "Dogfennau’r atebydd",
+        "TRANSLATED_REQUEST_MORE_INFO": "Cais am Ragor o Wybodaeth wedi’i Chyfieithu",
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
