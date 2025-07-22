@@ -28,8 +28,7 @@ export class ViewQueriesService {
       .map(messageThread => {
         const parentMessage = messageThread[0];
         const latestMessage = messageThread[messageThread.length - 1];
-        console.log('parentMessage ->' + JSON.stringify(parentMessage));
-        console.log('latestMessage ->' + JSON.stringify(latestMessage));
+
         const viewObject = {
           id: parentMessage.id,
           subject: parentMessage.subject,
