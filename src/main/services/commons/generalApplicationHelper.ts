@@ -54,6 +54,11 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
   const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
+  console.log('IS EA COURT {}', isEaCourt);
+  console.log('WELSH ENABLED {}', welshGaEnabled);
+  console.log('GA ONLINE {}', isGAInfo.isGaOnline);
+  console.log('GA GA WELSH  {}', isGAInfo.isGAWelsh);
+  console.log('IS SETTLED/DISCONTINUED {}', isGAInfo.isSettledOrDiscontinuedWithPreviousCCDState);
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {
@@ -79,12 +84,21 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
+    if ((claim.defendantUserDetails === undefined &&
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails != undefined))) {
+      // if the claim is yet assigned to the defendant via first contact process, but notice of change has been submitted for defendant
+      console.log('IS EA COURT, DEFENDANT NOT DEFINED, HAS NOC');
+      gaInformation.isGaOnline = true;
+      return gaInformation;
+    }
     if ((claim.defendantUserDetails === undefined ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
+      console.log('IS EA COURT, DEFENDANT NOT DEFINED');
       gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
       return gaInformation;
     }
     if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
+      console.log('IS EA COURT, BILGINGUAL, !isWelshGaEnabled');
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
       return gaInformation;
