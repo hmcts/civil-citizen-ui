@@ -46,7 +46,7 @@ export class ViewQueriesService {
         }
         else {
           return {...viewObject,
-            lastUpdatedBy: parentMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : latestMessage.name,
+            lastUpdatedBy: latestMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : latestMessage.name,
             status: 'PAGES.QM.VIEW_QUERY.STATUS_SENT',
           };
         }
