@@ -12,9 +12,9 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "CIV-17478-Upload-Translated-Notice-Of-Discontinuance-WA-task-triggered-before-discontinuance-is-validated"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-17478-Upload-Translated-Notice-Of-Discontinuance-WA-task-triggered-before-discontinuance-is-validated"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
