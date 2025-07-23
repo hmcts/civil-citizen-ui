@@ -126,9 +126,12 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
         return judgeDismissDocument?.value?.documentType === DocumentType.DISMISSAL_ORDER;
       })
       .map(judgeDismissDocument => {
-        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeDismissDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng})}">${judgeDismissDocument.value.documentName}</a>`;
+        const documentLabel = judgeDismissDocument.value.documentName.indexOf('Translated') !== -1
+          ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_DISMISSAL_ORDER_DOCUMENT', {lng})
+          : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng});
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeDismissDocument.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${documentLabel}">${judgeDismissDocument.value.documentName}</a>`;
         const createdDatetime = judgeDismissDocument?.value?.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng}), createdDatetime, lng);
+        const rows = getResponseSummaryRows(documentUrl, documentLabel, createdDatetime, lng);
         return new CourtResponseSummaryList(rows, createdDatetime);
       });
   }
