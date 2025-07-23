@@ -38,7 +38,6 @@ const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'M
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 const GA_DASHBOARD_EXCLUSIONS_QM = Array.of(new DashboardTaskList('Applications and messages to the court', 'Applications and messages to the court', []));
 
-
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isLrQmIsEnabled = await isLRQueryManagementEnabled();
