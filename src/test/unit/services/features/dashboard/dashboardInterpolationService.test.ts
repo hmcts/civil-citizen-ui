@@ -220,6 +220,55 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
+  it('should replace placeholders for view final order', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
+    const params: Map<string, object> = {
+      'orderDocument': 'http://dm-store:8080/documents/order-doc-id/binary',
+      'hiddenOrderDocument': 'http://dm-store:8080/documents/hidden-doc-id/binary',
+    } as any;
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/order-doc-id';
+
+    expect(textReplacedDynamic).toEqual(expected);
+  });
+
+  it('should use hidden doc id for view final order if document no longer hidden', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: 'id',
+        value: {
+          createdBy: '',
+          createdDatetime: new Date(),
+          documentName: '',
+          documentSize: 123,
+          documentType: DocumentType.SDO_ORDER,
+          documentLink: {
+            document_url: '',
+            document_binary_url: 'http://dm-store:8080/documents/hidden-doc-id/binary',
+            document_filename: '',
+          },
+        },
+      },
+    ];
+    const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
+    const params: Map<string, object> = {
+      'orderDocument': 'http://dm-store:8080/documents/order-doc-id/binary',
+      'hiddenOrderDocument': 'http://dm-store:8080/documents/hidden-doc-id/binary',
+    } as any;
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/hidden-doc-id';
+
+    expect(textReplacedDynamic).toEqual(expected);
+  });
+
   it('should replace placeholders for view the evidence upload documents', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
