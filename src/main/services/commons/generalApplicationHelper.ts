@@ -35,7 +35,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
   }
   // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
   if (isEaCourt) {
-    if ((claim.defendantUserDetails === undefined ||
+    if (((!claim.isLRDefendant() && claim.defendantUserDetails === undefined) ||
             (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
         && !isSettledOrDiscontinued) {
       gaInformation.isGaOnline = false;
@@ -79,14 +79,8 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
-    if ((claim.defendantUserDetails === undefined &&
-      (claim.isLRDefendant() && claim.respondentSolicitorDetails != undefined))) {
-      // if the claim is yet assigned to the defendant via first contact process, but notice of change has been submitted for defendant
-      gaInformation.isGaOnline = true;
-      return gaInformation;
-    }
-    if ((claim.defendantUserDetails === undefined ||
-      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
+    if ((!claim.isLRDefendant() && claim.defendantUserDetails === undefined) ||
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) { // if the claim is not yet assigned to the defendant
       gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
       return gaInformation;
     }
