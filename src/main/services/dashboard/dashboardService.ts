@@ -44,6 +44,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
   const welshGaEnabled = await isGaForWelshEnabled();
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
+  console.log('dashboardItens -> ' + JSON.stringify(dashboard.items));
   if (dashboard) {
     if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
