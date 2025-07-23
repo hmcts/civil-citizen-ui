@@ -22,15 +22,18 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
       claim.hasClaimBeenDismissed() ||
       !isEaCourt) { // if the claim is not yet issued
     gaInformation.isGaOnline = false;
+    console.log('is EaCourt isCaseIssuedPending hasClaimTakenOffline hasClaimBeenDismissed:', JSON.stringify(gaInformation));
     return gaInformation;
   }
 
   if (isSettledOrDiscontinued) { // if the claim is settled or discontinued
     if (!claim.previousCCDState) { // if the claim is settled or discontinued and previous CCD state is undefined
       gaInformation.isGaOnline = false;
+      console.log('isSettledOrDiscontinued and !claim.previousCCDState:', JSON.stringify(gaInformation));
       return gaInformation;
     } else {
       gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
+      console.log('isSettledOrDiscontinued true:', JSON.stringify(gaInformation));
     }
   }
   // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
@@ -39,14 +42,17 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
             (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
         && !isSettledOrDiscontinued) {
       gaInformation.isGaOnline = false;
+      console.log('isEaCourt and not assigned :', JSON.stringify(gaInformation));
       return gaInformation;
     }
     if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
+      console.log('GA isAnyPartyBilingual:', JSON.stringify(gaInformation));
       return gaInformation;
     }
   }
+  console.log('GA Information:', JSON.stringify(gaInformation));
   return gaInformation;
 };
 
@@ -54,6 +60,7 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
   const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
+  console.log('GA QM is on :', JSON.stringify(isGAInfo));
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {
@@ -75,18 +82,27 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
       claim.hasClaimBeenDismissed() ||
       !isEaCourt) { // if the claim is not yet issued
     gaInformation.isGaOnline = false;
+    console.log('is not EaCourt isCaseIssuedPending hasClaimTakenOffline hasClaimBeenDismissed:', JSON.stringify(gaInformation));
+
     return gaInformation;
   }
 
+  console.log('respondentSolicitorDetails->', JSON.stringify(claim.respondentSolicitorDetails));
+  console.log('defendantUserDetails->', JSON.stringify(claim.defendantUserDetails));
+  console.log('claim.isLRDefendant()->', JSON.stringify(claim.claim.isLRDefendant()));
   if (isEaCourt) {
     if ((claim.defendantUserDetails === undefined ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
       gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
+      console.log('claim is not yet assigned:', JSON.stringify(gaInformation));
+      console.log('is isSettled:', JSON.stringify(isSettled));
+
       return gaInformation;
     }
     if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
+      console.log('welsh:', JSON.stringify(isSettled));
       return gaInformation;
     }
   }

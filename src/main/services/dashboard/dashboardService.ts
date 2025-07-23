@@ -38,6 +38,7 @@ const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'M
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 const GA_DASHBOARD_EXCLUSIONS_QM = Array.of(new DashboardTaskList('Applications and messages to the court', 'Applications and messages to the court', []));
 
+
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isLrQmIsEnabled = await isLRQueryManagementEnabled();
@@ -48,6 +49,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+      //hide QM Lip section
 
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
