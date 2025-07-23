@@ -88,8 +88,8 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
   }
 
   if (isEaCourt) {
-    if ((!claim.isLRDefendant() && claim.defendantUserDetails === undefined ||
-      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
+    if ((!claim.isLRDefendant() && claim.defendantUserDetails === undefined) ||
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) { // if the claim is not yet assigned to the defendant
       gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
       console.log('respondentSolicitorDetails->', JSON.stringify(claim.respondentSolicitorDetails));
       console.log('specRespondent1Represented->', JSON.stringify(claim.specRespondent1Represented));
