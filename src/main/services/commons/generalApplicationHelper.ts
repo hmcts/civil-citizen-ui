@@ -38,7 +38,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
   }
   // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
   if (isEaCourt) {
-    if ((claim.defendantUserDetails === undefined ||
+    if (((!claim.isLRDefendant() && claim.defendantUserDetails === undefined) ||
             (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
         && !isSettledOrDiscontinued) {
       gaInformation.isGaOnline = false;
