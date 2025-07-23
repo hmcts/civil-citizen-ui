@@ -48,7 +48,6 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
-      //hide QM Lip section
 
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
