@@ -37,8 +37,8 @@ Scenario('MT Defendant responses', async ({api}) => {
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000, partAdmit, caseData.totalAmount);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
@@ -65,7 +65,7 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 15000, rejectAll);
   await ResponseSteps.VerifyPaidLessPage();
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll, caseData.totalAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);
