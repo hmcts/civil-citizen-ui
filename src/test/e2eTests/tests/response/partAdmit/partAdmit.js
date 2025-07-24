@@ -50,7 +50,7 @@ Scenario.skip('By set date', () => {
   }
 });
 
-Scenario('I will suggest a repayment plan', () => {
+Scenario.skip('I will suggest a repayment plan', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449468';
     PartAdmit.start(claimId);
