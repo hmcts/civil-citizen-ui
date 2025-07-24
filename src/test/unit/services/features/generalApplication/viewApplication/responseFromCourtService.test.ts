@@ -139,8 +139,9 @@ describe('View Application service', () => {
       (getClaimById as jest.Mock).mockResolvedValue(claim);
       //when
       const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
-      expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST');
+      expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
     });
+
     it('should not show respond to the request button for awaiting additional information for request more information', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
