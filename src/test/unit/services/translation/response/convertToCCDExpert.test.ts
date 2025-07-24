@@ -7,6 +7,7 @@ import {CCDExpert, CCDExportReportSent} from 'models/ccdResponse/ccdExpert';
 import {YesNo, YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import { convertToPence } from 'services/translation/claim/moneyConversation';
 
 const mockExpertDetail: ExpertDetails = new ExpertDetails('Joe', 'smith', 'jeo.smith@gmail.com', 12345678 , 'help', 'ExpertInField1', 10000);
 
@@ -62,7 +63,7 @@ describe('translate DQ expert details to CCD model', () => {
           emailAddress: mockExpertDetail.emailAddress,
           whyRequired: mockExpertDetail.whyNeedExpert,
           fieldOfExpertise: mockExpertDetail.fieldOfExpertise,
-          estimatedCost: mockExpertDetail.estimatedCost*100,
+          estimatedCost: convertToPence(mockExpertDetail.estimatedCost),
         },
       }],
       expertReportsSent: CCDExportReportSent.NOT_OBTAINED,
