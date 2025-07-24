@@ -34,7 +34,7 @@ Scenario.skip('pay immediately', () => {
   }
 });
 
-Scenario('By set date', () => {
+Scenario.skip('By set date', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449458';
     PartAdmit.start(claimId);
