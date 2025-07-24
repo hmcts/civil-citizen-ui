@@ -210,7 +210,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       if (isGaOnlineFlag.isGAWelsh) { // the GA is offline and user is bilingual
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: GA_SUBMIT_OFFLINE,
+          url: constructResponseUrlWithIdParams(claimId,GA_SUBMIT_OFFLINE),
         };
       }
     }
