@@ -91,9 +91,5 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
     }
   }
 
-  console.log('GA Information:', JSON.stringify(gaInformation));
-
-  console.log('Type:', typeof gaInformation.isGaOnline);
-
   return gaInformation;
 };
