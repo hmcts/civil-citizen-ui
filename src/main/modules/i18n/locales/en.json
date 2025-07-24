@@ -3826,6 +3826,7 @@
         "APPLICATION_APPROVE_EDIT": "Application approved or edited",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "APPLICATION_DISMISSED": "Application dismissed",
+        "TRANSLATED_DISMISSAL_ORDER_DOCUMENT": "Translated Dismissal Order Request",
         "APPLICATION_DOCUMENTS": "Application Documents",
         "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
         "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Translated Application Summary Document",
