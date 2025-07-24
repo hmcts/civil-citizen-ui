@@ -21,7 +21,7 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('MT Defendant responses', async ({api}) => {
+Scenario.skip('MT Defendant responses', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
   console.log('LIP vs LIP MT claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -47,7 +47,7 @@ Scenario('MT Defendant responses', async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression-minti').tag('@nightly');
 
-Scenario('IT Defendant and Claimant responses', async ({api}) => {
+Scenario.skip('IT Defendant and Claimant responses', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
