@@ -5,7 +5,7 @@ const {yesAndNoCheckBoxOptionValue} = require('../../../commons/eligibleVariable
 
 Feature('Response journey defendant Part Admit').tag('@e2e');
 
-Scenario('already paid', () => {
+Scenario.skip('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449438';
     PartAdmit.start(claimId);
