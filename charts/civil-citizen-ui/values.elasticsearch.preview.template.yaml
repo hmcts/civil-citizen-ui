@@ -121,7 +121,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6869'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
@@ -287,3 +287,4 @@ xui-webapp:
   nodejs:
     environment:
       SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
+      SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-civil-service
