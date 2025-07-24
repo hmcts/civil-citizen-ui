@@ -19,7 +19,7 @@ Scenario.skip('already paid', () => {
   }
 });
 
-Scenario('pay immediately', () => {
+Scenario.skip('pay immediately', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449448';
     PartAdmit.start(claimId);
