@@ -1271,7 +1271,7 @@ describe('dashboardService', () => {
       //Then
       expect(result).toEqual({
         text: 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT',
-        url: GA_SUBMIT_OFFLINE,
+        url: '/case/1234567890/submit-application-offline',
       });
     });
   });
