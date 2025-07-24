@@ -3,6 +3,7 @@ import {CaseMessage, QueryMessage} from 'models/queryManagement/caseQueries';
 import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {QueryDetail, QueryListItem, ViewObjects} from 'form/models/queryManagement/viewQuery';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export class ViewQueriesService {
 
@@ -39,7 +40,7 @@ export class ViewQueriesService {
         if (messageThread.length % 2 == 0) {
           return {...viewObject,
             lastUpdatedBy: 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF',
-            status: 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
+            status: latestMessage.isClosed === YesNoUpperCamelCase.YES ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED' : 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
           };
         }
         else {
@@ -58,7 +59,11 @@ export class ViewQueriesService {
   public static buildQueryListItemsByQueryId(claim: Claim, userId:string, queryId: string, lang: string): QueryDetail {
     const messageThread = this.getMessageThread(claim, queryId);
     const parent = messageThread[0];
-    const lastStatus = messageThread.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
+    const isQueryClosed = messageThread.some(message => message.isClosed === 'Yes');
+    const queryClosedDate = isQueryClosed ? messageThread.filter(message => message.isClosed === 'Yes')
+      .map(message => formatDateToFullDate(new Date(message.createdOn), lang))?.[0] : '';
+    const lastStatus = isQueryClosed ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED'
+      : messageThread.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
     const formatted = messageThread.map((item, index) => {
       const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn, name } = item;
       const documents = attachments?.map(doc => {
@@ -80,6 +85,6 @@ export class ViewQueriesService {
         formatDateToFullDate(new Date(hearingDate), lang),
       );
     });
-    return new QueryDetail(parent.subject, lastStatus, formatted);
+    return new QueryDetail(parent.subject, lastStatus, formatted, isQueryClosed, queryClosedDate);
   }
 }

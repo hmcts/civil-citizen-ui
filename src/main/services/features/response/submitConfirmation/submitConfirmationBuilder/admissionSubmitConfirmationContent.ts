@@ -132,7 +132,7 @@ export function getFAPayByDateNextSteps(claimId: string, claim: Claim, lang: str
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD', {lng: lang})}</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.PAY_CLAIMANT_BY_DATE', {claimantName, paymentDate, lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC', {lng: lang})}</li><li><a href=${contactThemUrl}>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM', {lng: lang})}</a>${t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD', {lng: lang})}</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.PAY_CLAIMANT_BY_DATE', {claimantName, paymentDate, lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC', {lng: lang})}</li><li><a class="govuk-link" href=${contactThemUrl}>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM', {lng: lang})}</a>${t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li></ul>`,
       },
     },
   ];
@@ -154,7 +154,7 @@ export function getFAPayByInstallmentsNextSteps(claimId: string, claim: Claim, l
     {
       type: ClaimSummaryType.HTML,
       data: {
-        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD', {lng: lang})}</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN', {lng: lang})}</li><li><a href=${contactThemUrl}>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM', {lng: lang})}</a>${t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li></ul>`,
+        html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD', {lng: lang})}</p><ul class="govuk-list govuk-list--bullet"><li>${t('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN', {lng: lang})}</li><li><a class="govuk-link" href=${contactThemUrl}>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM', {lng: lang})}</a>${t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang})}</li><li>${t('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li></ul>`,
       },
     },
   ];
