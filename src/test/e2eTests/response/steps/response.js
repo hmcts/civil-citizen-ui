@@ -6,10 +6,12 @@ const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequ
 const {seeInTitle} = require('../../commons/seeInTitle');
 const {checkDateFields} = require('../../commons/checkDateFields');
 const {checkResponseTypeFields} = require('../../commons/checkResponseTypeFields');
+const eligibilityCookie = require('../../../functionalTests/specClaimHelpers/fixtures/cookies/eligibilityCookies');
 const I = actor();
 
 class Response {
   start(claimId) {
+    I.setCookie(eligibilityCookie);
     I.amOnPage(`/case/${claimId}/response/task-list`);
   }
 
