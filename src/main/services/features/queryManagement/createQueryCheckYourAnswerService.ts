@@ -139,7 +139,7 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
     'value': {
       'id': uuidV4(),
       'body': claim.queryManagement.createQuery.messageDetails,
-      'name': claim.getClaimantFullName(),
+      'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,
       'createdBy': req.session.user.id,
       createdOn: date.toISOString(),
