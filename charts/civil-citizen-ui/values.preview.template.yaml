@@ -31,6 +31,7 @@ nodejs:
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
     CIVIL_GENERAL_APPLICATIONS_URL: http://${SERVICE_NAME}-general-applications
+    DUMMY_PROPERTY: true
 
 aac-manage-case-assignment:
   enabled: true
@@ -99,6 +100,7 @@ xui-webapp:
       JURISDICTIONS: CIVIL
       LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
       WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
+      SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-civil-service
 
 ccd:
   enabled: true
@@ -381,7 +383,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6869'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
