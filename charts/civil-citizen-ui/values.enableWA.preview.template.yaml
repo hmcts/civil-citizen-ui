@@ -226,6 +226,7 @@ xui-webapp:
       REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
+      SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-civil-service
     keyVaults:
       rpx:
         resourceGroup: rpx
