@@ -378,6 +378,7 @@ civil-general-applications:
 
 civil-service:
   enabled: true
+  replicas: 2
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
