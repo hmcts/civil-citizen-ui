@@ -1,4 +1,10 @@
-import {GaInformation, getGaRedirectionUrl, isGaOnline, isGaOnlineQM} from 'services/commons/generalApplicationHelper';
+import {
+  GaInformation,
+  getGaRedirectionUrl,
+  isGaOnline,
+  isGaOnlineForWelshGAApplication,
+  isGaOnlineQM
+} from 'services/commons/generalApplicationHelper';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -353,3 +359,64 @@ describe('redirection url', () => {
   });
 
 });
+describe('isGaOnlineForWelshGAApplication', () => {
+  let claim: Claim;
+
+  beforeEach(() => {
+    claim = new Claim();
+  });
+
+  it('should return GA offline and Welsh if any party is bilingual and not EA court', () => {
+    claim.isAnyPartyBilingual = jest.fn().mockReturnValue(true);
+    claim.ccdState = CaseState.CASE_ISSUED;
+
+    const result = isGaOnlineForWelshGAApplication(claim, false);
+    expect(result.isGaOnline).toBe(false);
+    expect(result.isGAWelsh).toBe(true);
+  });
+
+  it('should return GA offline if case is pending, taken offline, dismissed or not EA court', () => {
+    claim.isAnyPartyBilingual = jest.fn().mockReturnValue(false);
+    claim.isCaseIssuedPending = jest.fn().mockReturnValue(true);
+    claim.hasClaimTakenOffline = jest.fn().mockReturnValue(false);
+    claim.hasClaimBeenDismissed = jest.fn().mockReturnValue(false);
+
+    const result = isGaOnlineForWelshGAApplication(claim, true);
+    expect(result.isGaOnline).toBe(false);
+    expect(result.isGAWelsh).toBe(false);
+  });
+
+  it('should return GA offline if not EA court', () => {
+    claim.isAnyPartyBilingual = jest.fn().mockReturnValue(false);
+    claim.isCaseIssuedPending = jest.fn().mockReturnValue(false);
+    claim.hasClaimTakenOffline = jest.fn().mockReturnValue(false);
+    claim.hasClaimBeenDismissed = jest.fn().mockReturnValue(false);
+
+    const result = isGaOnlineForWelshGAApplication(claim, false);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should return GA online if claim is settled and defendant details are missing', () => {
+    claim.ccdState = CaseState.CASE_SETTLED;
+    claim.defendantUserDetails = undefined;
+    claim.isLRDefendant = jest.fn().mockReturnValue(false);
+
+    const result = isGaOnlineForWelshGAApplication(claim, true);
+    expect(result.isGaOnline).toBe(true);
+  });
+
+  it('should return default GA information if all conditions are false', () => {
+    claim.ccdState = CaseState.CASE_ISSUED;
+    claim.isAnyPartyBilingual = jest.fn().mockReturnValue(false);
+    claim.isCaseIssuedPending = jest.fn().mockReturnValue(false);
+    claim.hasClaimTakenOffline = jest.fn().mockReturnValue(false);
+    claim.hasClaimBeenDismissed = jest.fn().mockReturnValue(false);
+    claim.defendantUserDetails = {};
+    claim.isLRDefendant = jest.fn().mockReturnValue(false);
+
+    const result = isGaOnlineForWelshGAApplication(claim, true);
+    expect(result.isGaOnline).toBe(true);
+    expect(result.isGAWelsh).toBe(false);
+  });
+});
+

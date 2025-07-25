@@ -53,7 +53,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
 export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false, isAmendClaim = false) => {
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
-  const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
+  const isGAInfo = welshGaEnabled ? isGaOnlineForWelshGAApplication(claim, isEaCourt) : isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {
@@ -70,6 +70,7 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
 export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
+
   if (claim.isCaseIssuedPending() ||
       claim.hasClaimTakenOffline() ||
       claim.hasClaimBeenDismissed() ||
@@ -89,6 +90,32 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled:
       gaInformation.isGAWelsh = true;
       return gaInformation;
     }
+  }
+
+  return gaInformation;
+};
+
+export const isGaOnlineForWelshGAApplication = (claim: Claim, isEaCourt: boolean): GaInformation => {
+  const gaInformation = new GaInformation();
+  const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
+
+  if ((claim.isAnyPartyBilingual() && !isEaCourt)) {
+    gaInformation.isGaOnline = false;
+    gaInformation.isGAWelsh = true;
+    return gaInformation
+  }
+
+  if (claim.isCaseIssuedPending() ||
+    claim.hasClaimTakenOffline() ||
+    claim.hasClaimBeenDismissed() || !isEaCourt) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+    return gaInformation;
+  }
+
+  if ((claim.defendantUserDetails === undefined ||
+    (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
+    gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
+    return gaInformation;
   }
 
   return gaInformation;
