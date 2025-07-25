@@ -3,7 +3,7 @@ import {
   getGaRedirectionUrl,
   isGaOnline,
   isGaOnlineForWelshGAApplication,
-  isGaOnlineQM
+  isGaOnlineQM,
 } from 'services/commons/generalApplicationHelper';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';

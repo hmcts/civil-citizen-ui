@@ -102,7 +102,7 @@ export const isGaOnlineForWelshGAApplication = (claim: Claim, isEaCourt: boolean
   if ((claim.isAnyPartyBilingual() && !isEaCourt)) {
     gaInformation.isGaOnline = false;
     gaInformation.isGAWelsh = true;
-    return gaInformation
+    return gaInformation;
   }
 
   if (claim.isCaseIssuedPending() ||
