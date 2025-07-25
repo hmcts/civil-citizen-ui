@@ -131,8 +131,8 @@ ccd:
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
     ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
-    idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    idamApiUrl: https://idam-api.demo.platform.hmcts.net
+    idamWebUrl: https://idam-api.demo.platform.hmcts.net
     postgresUsername: hmcts
     postgresPassword: ${POSTGRES_PASSWORD}
     postgresSecret: postgres
