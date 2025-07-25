@@ -3867,6 +3867,8 @@
         },
         "RESPOND_TO_REQUEST": "Ymateb i’r cais",
         "REQUEST_WRITTEN_REPRESENTATION": "Cais am sylwadau ysgrifenedig",
+        "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT": "Sylwadau Ysgrifenedig wedi’u Cyfieithu – Cais Cyfamserol",
+        "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL": "Sylwadau Ysgrifenedig wedi’u Cyfieithu – Cais Dilyniannol",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Ymateb gan y llys",
         "RESPONDENTS_DOCUMENTS": "Dogfennau’r atebydd",
