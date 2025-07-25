@@ -21,9 +21,12 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getClaimById} from 'modules/utilityService';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const qmStartController = Router();
 const qmStartViewPath = 'features/queryManagement/qm-questions-template.njk';
 
@@ -102,7 +105,7 @@ qmStartController.post(QM_START_URL, (async (req, res , next) => {
       return renderView(claimId,form, res);
     }
     await saveQueryManagement(redisKey, form.model, QUERY_MANAGEMENT_PROPERTY_NAME, req);
-    const gaUrl = await getGaRedirectionUrl(await getClaimById(claimId, req, true));
+    const gaUrl = await getGaRedirectionUrl(await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req));
     const redirectPath = getRedirectPath(option, gaUrl);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectPath.replace(':qmType', option)));
   } catch (error) {

@@ -17,10 +17,13 @@ import {getQueryManagement, saveQueryManagement} from 'services/features/queryMa
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('services/commons/generalApplicationHelper.ts');
+jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const CONTROLLER_URL = QM_START_URL;
 describe('Query management start Controller', () => {
@@ -84,6 +87,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when CHANGE_CASE when GA is Offline open New guidance scree', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       const getUrlMock = getGaRedirectionUrl as jest.Mock;
       getUrlMock.mockReturnValue('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE');
       await request(app)
@@ -96,6 +102,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when CHANGE_CASE when GA is Welsh', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       const getUrlMock = getGaRedirectionUrl as jest.Mock;
       getUrlMock.mockReturnValue(GA_SUBMIT_OFFLINE);
       await request(app)
@@ -108,6 +117,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when CHANGE_CASE when GA online', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       const getUrlMock = getGaRedirectionUrl as jest.Mock;
       getUrlMock.mockReturnValue(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`);
       await request(app)
@@ -120,6 +132,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when GET_SUPPORT', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: WhatToDoTypeOption.GET_SUPPORT})
@@ -130,6 +145,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when FOLLOW_UP', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: WhatToDoTypeOption.FOLLOW_UP})
@@ -140,6 +158,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when SOMETHING_ELSE', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: WhatToDoTypeOption.SOMETHING_ELSE})
@@ -150,6 +171,9 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect page when MANAGE_HEARING', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(new Claim());
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: WhatToDoTypeOption.MANAGE_HEARING})
