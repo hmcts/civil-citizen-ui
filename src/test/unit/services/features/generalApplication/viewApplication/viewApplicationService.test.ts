@@ -146,6 +146,21 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
       'documentType': DocumentType.HEARING_ORDER,
       'createdDatetime':  new Date('2024-08-01'),
     },
+  },
+  {
+    'id': '06576721-ec3f-4776-95d6-552261c63d49',
+    'value': {
+      'createdBy': 'civilmoneyclaimswlu@gmail.com civilmoneyclaims-WelshLangUnit',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/502ceaf6-ef6e-4338-9b72-5bbf8917fb4f',
+        'document_filename': 'APP_Summ_translated.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/502ceaf6-ef6e-4338-9b72-5bbf8917fb4f/binary',
+      },
+      'documentName': 'Translated_Hearing_order_for_application_2025-07-11 14:01:18.pdf',
+      'documentType': DocumentType.HEARING_ORDER,
+      'createdDatetime': new Date('2024-08-01'),
+    },
   }];
 }
 
@@ -716,7 +731,12 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf871', 'Application_Hearing_order_2024-08-01 12:15:34.pdf'),
       );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      const expectedDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_ORDER',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/502ceaf6-ef6e-4338-9b72-5bbf8917fb4f', 'Translated_Hearing_order_for_application_2025-07-11 14:01:18.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument, expectedDocument1]);
       expect(result).toEqual(expectedResult);
     });
 
