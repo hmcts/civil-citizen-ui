@@ -37,7 +37,7 @@ describe('Payment Section', () => {
     expect(summarySections.sections[1].summaryList.rows[1].value.html).toBe(AMOUNT_ALREADY_PAID);
     expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CCJ_AMOUNT_ALREADY_PAID');
     expect(summarySections.sections[1].summaryList.rows[2].value.html).toBe(AMOUNT_TO_BE_PAID);
-    expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID');
+    expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PA_CCJ_TOTAL_TO_BE_PAID');
     expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('COMMON.PAYMENT_OPTION.BY_SET_DATE');
     expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CCJ_HOW_TO_PAY');
     expect(summarySections.sections[1].summaryList.rows[4].value.html).toBe(DATE);
