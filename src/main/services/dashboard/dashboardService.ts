@@ -28,7 +28,7 @@ import {
   isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
-import {isGaOnline} from 'services/commons/generalApplicationHelper';
+import {isGaOnline, isGaOnlineForWelshGAApplicationForLR} from 'services/commons/generalApplicationHelper';
 import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -52,7 +52,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       //remove QM sections
       dashboard.items = dashboard.items.filter(item => !QMLIP_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-      const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+      const isGaOnlineFlag = welshGaEnabled ? isGaOnlineForWelshGAApplicationForLR(claim, isEACourt) : isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
 
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
@@ -199,7 +199,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
   if (isLrQmOn && !isLIPQmOn) {
     const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
     const welshGaEnabled = await isGaForWelshEnabled();
-    const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+    const isGaOnlineFlag = welshGaEnabled ? isGaOnlineForWelshGAApplicationForLR(claim, isEACourt) : isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
