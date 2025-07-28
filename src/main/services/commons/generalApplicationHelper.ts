@@ -99,12 +99,6 @@ export const isGaOnlineForWelshGAApplication = (claim: Claim, isEaCourt: boolean
   const gaInformation = new GaInformation();
   const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
 
-  if ((claim.isAnyPartyBilingual() && !isEaCourt)) {
-    gaInformation.isGaOnline = false;
-    gaInformation.isGAWelsh = true;
-    return gaInformation;
-  }
-
   if (claim.isCaseIssuedPending() ||
     claim.hasClaimTakenOffline() ||
     claim.hasClaimBeenDismissed() || !isEaCourt) { // if the claim is not yet issued

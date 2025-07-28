@@ -372,7 +372,7 @@ describe('isGaOnlineForWelshGAApplication', () => {
 
     const result = isGaOnlineForWelshGAApplication(claim, false);
     expect(result.isGaOnline).toBe(false);
-    expect(result.isGAWelsh).toBe(true);
+    expect(result.isGAWelsh).toBe(false);
   });
 
   it('should return GA offline if case is pending, taken offline, dismissed or not EA court', () => {
