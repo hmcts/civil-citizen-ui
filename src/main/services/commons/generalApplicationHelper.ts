@@ -17,8 +17,22 @@ export class GaInformation {
 export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  offlineGaApplication(claim, isEaCourt, gaInformation);
-  GaApplicationForSettledOrDiscontinuedForLr(claim, gaInformation);
+  if (claim.isCaseIssuedPending() ||
+    claim.hasClaimTakenOffline() ||
+    claim.hasClaimBeenDismissed() ||
+    !isEaCourt) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+    return gaInformation;
+  }
+
+  if (isSettledOrDiscontinued) { // if the claim is settled or discontinued
+    if (!claim.previousCCDState) { // if the claim is settled or discontinued and previous CCD state is undefined
+      gaInformation.isGaOnline = false;
+      return gaInformation;
+    } else {
+      gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
+    }
+  }
 
   // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
   if (isEaCourt) {
@@ -56,11 +70,20 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
 
 export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean): GaInformation => {
   const gaInformation = new GaInformation();
-
-  offlineGaApplication(claim, isEaCourt, gaInformation);
-
+  const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
+  if (claim.isCaseIssuedPending() ||
+    claim.hasClaimTakenOffline() ||
+    claim.hasClaimBeenDismissed() ||
+    !isEaCourt) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+    return gaInformation;
+  }
   if (isEaCourt) {
-    GaApplicationSettledForLip(claim, gaInformation);
+    if ((claim.defendantUserDetails === undefined ||
+      (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
+      gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
+      return gaInformation;
+    }
     if (claim.isAnyPartyBilingual()) { // if the claim is in EA court and any party is bilingual
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
@@ -73,10 +96,20 @@ export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean): GaInformation =>
 
 export const isGaOnlineForWelshGAApplication = (claim: Claim, isEaCourt: boolean): GaInformation => {
   const gaInformation = new GaInformation();
+  const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
+  if (claim.isCaseIssuedPending() ||
+    claim.hasClaimTakenOffline() ||
+    claim.hasClaimBeenDismissed() ||
+    !isEaCourt) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+    return gaInformation;
+  }
 
-  offlineGaApplication(claim, isEaCourt, gaInformation);
-
-  GaApplicationSettledForLip(claim, gaInformation);
+  if ((claim.defendantUserDetails === undefined ||
+    (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
+    gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
+    return gaInformation;
+  }
 
   return gaInformation;
 };
@@ -84,9 +117,22 @@ export const isGaOnlineForWelshGAApplication = (claim: Claim, isEaCourt: boolean
 export const isGaOnlineForWelshGAApplicationForLR = (claim: Claim, isEaCourt: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  offlineGaApplication(claim, isEaCourt, gaInformation);
+  if (claim.isCaseIssuedPending() ||
+    claim.hasClaimTakenOffline() ||
+    claim.hasClaimBeenDismissed() ||
+    !isEaCourt) { // if the claim is not yet issued
+    gaInformation.isGaOnline = false;
+    return gaInformation;
+  }
 
-  GaApplicationForSettledOrDiscontinuedForLr(claim, gaInformation);
+  if (isSettledOrDiscontinued) { // if the claim is settled or discontinued
+    if (!claim.previousCCDState) { // if the claim is settled or discontinued and previous CCD state is undefined
+      gaInformation.isGaOnline = false;
+      return gaInformation;
+    } else {
+      gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
+    }
+  }
 
   // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
   if ((claim.defendantUserDetails === undefined ||
@@ -98,33 +144,4 @@ export const isGaOnlineForWelshGAApplicationForLR = (claim: Claim, isEaCourt: bo
   return gaInformation;
 };
 
-const offlineGaApplication = (claim: Claim, isEaCourt: boolean, gaInformation: GaInformation) => {
-  if (claim.isCaseIssuedPending() ||
-    claim.hasClaimTakenOffline() ||
-    claim.hasClaimBeenDismissed() ||
-    !isEaCourt) { // if the claim is not yet issued
-    gaInformation.isGaOnline = false;
-    return gaInformation;
-  }
-};
 
-const GaApplicationForSettledOrDiscontinuedForLr = (claim: Claim, gaInformation: GaInformation) => {
-  const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
-  if (isSettledOrDiscontinued) { // if the claim is settled or discontinued
-    if (!claim.previousCCDState) { // if the claim is settled or discontinued and previous CCD state is undefined
-      gaInformation.isGaOnline = false;
-      return gaInformation;
-    } else {
-      gaInformation.isSettledOrDiscontinuedWithPreviousCCDState = true; // in the case that all the application's tasklist are inactive
-    }
-  }
-};
-
-const GaApplicationSettledForLip = (claim: Claim, gaInformation: GaInformation) => {
-  const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
-  if ((claim.defendantUserDetails === undefined ||
-    (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined))) { // if the claim is not yet assigned to the defendant
-    gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
-    return gaInformation;
-  }
-};
