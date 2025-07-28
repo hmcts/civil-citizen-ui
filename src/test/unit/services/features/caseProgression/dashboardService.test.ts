@@ -479,14 +479,13 @@ describe('dashboardService', () => {
 
       it('Application section when QM Lip is off and the task list are inactive and GA is online', async () => {
         const gaInfoWithSettled = new GaInformation();
-        gaInfo.isGaOnline = true;
-        gaInfo.isSettledOrDiscontinuedWithPreviousCCDState = true;
+        gaInfoWithSettled.isGaOnline = true;
+        gaInfoWithSettled.isSettledOrDiscontinuedWithPreviousCCDState = true;
 
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
         (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
 
-        (isGaOnline as jest.Mock).mockReturnValue(gaInfoWithSettled);
         const dashBoardWithContactTheCourt = new Dashboard(
           Array.of(new DashboardTaskList('Applications', 'Applications', [
             new DashboardTask('1234',
@@ -522,7 +521,7 @@ describe('dashboardService', () => {
               DashboardTaskStatus.INACTIVE, 'test'),
           ]),
           ));
-
+        (isGaOnline as jest.Mock).mockReturnValue(gaInfoWithSettled);
         //When
         const claimantDashboard = await getDashboardForm(
           ClaimantOrDefendant.DEFENDANT
