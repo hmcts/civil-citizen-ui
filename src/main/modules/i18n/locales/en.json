@@ -3867,6 +3867,8 @@
         },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
+        "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT": "Translated Written Representations - Concurrent Request",
+        "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL": "Translated Written Representations - Sequential Request",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
