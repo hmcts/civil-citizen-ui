@@ -54,7 +54,7 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   return url.trim();
 };
 
-export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean,): GaInformation => {
+export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean): GaInformation => {
   const gaInformation = new GaInformation();
 
   offlineGaApplication(claim, isEaCourt, gaInformation);
