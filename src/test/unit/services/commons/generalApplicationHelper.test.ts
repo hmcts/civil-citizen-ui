@@ -2,7 +2,7 @@ import {
   GaInformation,
   getGaRedirectionUrl,
   isGaOnline,
-  isGaOnlineForWelshGAApplication,
+  isGaOnlineForWelshGAApplication, isGaOnlineForWelshGAApplicationForLR,
   isGaOnlineQM,
 } from 'services/commons/generalApplicationHelper';
 import {Claim} from 'models/claim';
@@ -420,3 +420,67 @@ describe('isGaOnlineForWelshGAApplication', () => {
   });
 });
 
+describe('isGaOnlineForWelshGAApplicationForLR', () => {
+  let claim: Claim;
+
+  beforeEach(() => {
+    claim = new Claim();
+    claim.ccdState = CaseState.CASE_ISSUED;
+    claim.isLRDefendant = jest.fn(() => false);
+    claim.isCaseIssuedPending = jest.fn(() => false);
+    claim.hasClaimTakenOffline = jest.fn(() => false);
+    claim.hasClaimBeenDismissed = jest.fn(() => false);
+  });
+
+  it('should return isGaOnline false if claim is pending issue', () => {
+    claim.isCaseIssuedPending = jest.fn(() => true);
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should return isGaOnline false if claim taken offline', () => {
+    claim.hasClaimTakenOffline = jest.fn(() => true);
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should return isGaOnline false if claim dismissed', () => {
+    claim.hasClaimBeenDismissed = jest.fn(() => true);
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should return isGaOnline false if not EA court', () => {
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, false);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should return isGaOnline false if claim is settled and no previous CCD state', () => {
+    claim.ccdState = CaseState.CASE_SETTLED;
+    claim.previousCCDState = undefined;
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should set isSettledOrDiscontinuedWithPreviousCCDState true if settled with previous CCD state', () => {
+    claim.ccdState = CaseState.CASE_SETTLED;
+    claim.previousCCDState = CaseState.CASE_ISSUED;
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isSettledOrDiscontinuedWithPreviousCCDState).toBe(true);
+  });
+
+  it('should return isGaOnline false if defendant not assigned and not settled/discontinued', () => {
+    claim.defendantUserDetails = undefined;
+    claim.ccdState = CaseState.CASE_ISSUED;
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isGaOnline).toBe(false);
+  });
+
+  it('should return isGaOnline true for valid EA court and assigned defendant', () => {
+    claim.defendantUserDetails = {};
+    claim.respondentSolicitorDetails = {};
+    claim.isLRDefendant = jest.fn(() => true);
+    const result = isGaOnlineForWelshGAApplicationForLR(claim, true);
+    expect(result.isGaOnline).not.toBe(false);
+  });
+});
