@@ -180,7 +180,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = true;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true);
 
     //Then
     expect(expected).toEqual(result);
@@ -194,7 +194,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true,);
 
     //Then
     expect(expected).toEqual(result);
@@ -208,7 +208,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true,);
 
     //Then
     expect(expected).toEqual(result);
@@ -223,7 +223,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true,);
 
     //Then
     expect(expected).toEqual(result);
@@ -239,7 +239,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true);
 
     //Then
     expect(expected).toEqual(result);
@@ -255,7 +255,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true);
 
     //Then
     expect(expected).toEqual(result);
@@ -270,7 +270,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, false, false);
+    const result = isGaOnlineQM(claim, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -287,7 +287,7 @@ describe('General Application helper when Lip is on', () => {
     expected.isGaOnline = false;
     expected.isGAWelsh = true;
     //When
-    const result = isGaOnlineQM(claim, true, false);
+    const result = isGaOnlineQM(claim, true);
 
     //Then
     expect(expected).toEqual(result);

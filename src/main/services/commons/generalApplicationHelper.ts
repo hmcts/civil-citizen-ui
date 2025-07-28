@@ -40,7 +40,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
 export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false, isAmendClaim = false) => {
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
-  const isGAInfo = welshGaEnabled ? isGaOnlineForWelshGAApplication(claim, isEaCourt) : isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
+  const isGAInfo = welshGaEnabled ? isGaOnlineForWelshGAApplication(claim, isEaCourt) : isGaOnlineQM(claim, isEaCourt);
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {
@@ -54,14 +54,14 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   return url.trim();
 };
 
-export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
+export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean,): GaInformation => {
   const gaInformation = new GaInformation();
 
   offlineGaApplication(claim, isEaCourt, gaInformation);
 
   if (isEaCourt) {
     GaApplicationSettledForLip(claim, gaInformation);
-    if (claim.isAnyPartyBilingual() && !isWelshGaEnabled) { // if the claim is in EA court and any party is bilingual
+    if (claim.isAnyPartyBilingual()) { // if the claim is in EA court and any party is bilingual
       gaInformation.isGaOnline = false;
       gaInformation.isGAWelsh = true;
       return gaInformation;
