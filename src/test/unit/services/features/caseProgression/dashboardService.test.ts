@@ -30,7 +30,7 @@ import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {
   isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed, isLRQueryManagementEnabled, isQueryManagementEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed, isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import { GA_SUBMIT_OFFLINE} from 'routes/urls';
@@ -599,7 +599,6 @@ describe('dashboardService', () => {
 
         it('should not return updated text if QM is disabled', async () => {
           (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(false);
-          (isLRQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
           (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
           claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
 
@@ -837,7 +836,6 @@ describe('dashboardService', () => {
 
       it('Application section when QM LR is on and QM Lip is off and the task list are inactive and GA is online', async () => {
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
-        (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
         (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
 
@@ -893,7 +891,6 @@ describe('dashboardService', () => {
 
       it('Application section when QM LR is on and QM Lip is off and GA is online and isSettledOrDiscontinuedWithPreviousCCDState is undefined', async () => {
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
-        (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
         (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
 
@@ -952,7 +949,6 @@ describe('dashboardService', () => {
 
       it('Application section when QM LR is on and QM Lip is off and the task list are inactive and GA is offline', async () => {
         (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockResolvedValue(true);
-        (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
         (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
         mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
 
@@ -1166,7 +1162,6 @@ describe('dashboardService', () => {
     it('getContactCourtLink when Gaflag is enable and Lr Defendant', async () => {
 
       (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
-      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       //Given
       const claim = new Claim();
@@ -1203,7 +1198,6 @@ describe('dashboardService', () => {
         region: '2',
         baseLocation: '0909089',
       };
-      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       (isGaOnline as jest.Mock).mockReturnValue(false);
       //When
@@ -1230,7 +1224,6 @@ describe('dashboardService', () => {
       };
       const gaInfo = new GaInformation();
       gaInfo.isGaOnline = true;
-      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
       //When
@@ -1262,7 +1255,6 @@ describe('dashboardService', () => {
       const gaInfo = new GaInformation();
       gaInfo.isGaOnline = false;
       gaInfo.isGAWelsh = true;
-      (isLRQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
       //When
