@@ -21,7 +21,8 @@ function renderView(form: GenericForm<HowMuchDoYouOwe>, res: Response) {
 
 howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(generateRedisKey(<AppRequest>req));
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(generateRedisKey(<AppRequest>req), lang);
     renderView(new GenericForm(howMuchDoYouOweForm), res);
   } catch (error) {
     next(error);
@@ -30,8 +31,9 @@ howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPa
 
 howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(<AppRequest>req);
-    const savedValues = await getHowMuchDoYouOweForm(redisKey);
+    const savedValues = await getHowMuchDoYouOweForm(redisKey, lang);
     const howMuchDoYouOwe = new HowMuchDoYouOwe(toNumberOrUndefined(req.body.amount), savedValues.totalAmount);
     const form = new GenericForm(howMuchDoYouOwe);
     await form.validate();
