@@ -194,13 +194,13 @@ export const getRequestMoreInfoResponse = (claimId: string, applicationResponse:
           ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_REQUEST_MORE_INFO', {lng})
           : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng});
         const documentName = requestMoreInfo.value.documentName;
-        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(requestMoreInfo.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})}">${documentName}</a>`;
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(requestMoreInfo.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${documentLabel}">${documentName}</a>`;
         const createdDatetime = requestMoreInfo.value.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, documentLabel ,createdDatetime, lng);
         const respondToRequestHref = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_RESPOND_ADDITIONAL_INFO_URL);
         let respondToRequestButton = null;
         if (showButtons && !documentName.includes('Translated') && applicationResponse.state === ApplicationState.AWAITING_ADDITIONAL_INFORMATION) {
-          respondToRequestButton = new ResponseButton(documentLabel, respondToRequestHref);
+          respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), respondToRequestHref);
         }
         return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);
       });
