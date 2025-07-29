@@ -965,7 +965,7 @@
         "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "HEADING": "Adolygu manylion y neges",
@@ -998,7 +998,7 @@
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
@@ -1033,7 +1033,7 @@
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Anfon neges",
         "PAGE_HEADING": "Rhannu’r neges hon gyda’r parti arall",
-        "PARAGRAPH_1": "Mae’r holl negeseuon a ddefnyddir gan y system yn cael eu rhannu gyda’r parti arall yn yr achos, ynghyd â chael eu hanfon i’r llys.",
+        "PARAGRAPH_1": "Mae’r holl negeseuon a anfonir drwy’r system hon yn cael eu rhannu gyda’r parti arall yn yr achos, ynghyd â chael eu hanfon i’r llys.",
         "SUB_TITLE": "Gofyn am beidio â rhannu eich neges",
         "PARAGRAPH_2": "Gallwch ofyn am beidio â rhannu eich neges gyda’r parti arall. Rhaid i’r rhesymau dros beidio â rhannu eich neges fod yn ddilys, a gall y barnwr benderfynu y dylai eich neges gael ei rhannu.",
         "PARAGRAPH_3": "Mae rhesymau dilys dros gadw neges rhyngoch chi a’r llys yn cynnwys y neges yn ymwneud â:",
@@ -5968,7 +5968,7 @@
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Rhowch fanylion pwnc y neges",
       "MESSAGE_DETAILS": "Rhowch fanylion y neges",
-      "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad",
+      "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad‘sydd ar y gweill",
       "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod",
       "VALID_DAY": "Rhaid i ddyddiad y gwrandawiad gynnwys diwrnod",
       "VALID_MONTH": "Rhaid i ddyddiad y gwrandawiad gynnwys mis",
