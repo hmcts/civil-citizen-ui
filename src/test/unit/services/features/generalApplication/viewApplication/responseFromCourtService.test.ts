@@ -141,6 +141,7 @@ describe('View Application service', () => {
       const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
       expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST');
     });
+
     it('should not show respond to the request button for awaiting additional information for request more information', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
