@@ -84,3 +84,4 @@ echo "Setting up Users with role assignments..."
 
 ./bin/utils/organisational-role-assignment.sh "caseworkerwlutl@justice.gov.uk" "Password123" "PUBLIC" "wlu-team-leader" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"
 ./bin/utils/organisational-role-assignment.sh "caseworkerwlutl@justice.gov.uk" "Password123" "PUBLIC" "wlu-admin" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"
+./bin/utils/organisational-role-assignment.sh "caseworkerwlutl@justice.gov.uk" "Password123" "PUBLIC" "task-supervisor" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"
