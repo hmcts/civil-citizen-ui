@@ -7,7 +7,7 @@ const { PUBLIC_QUERY } = require('../../specClaimHelpers/fixtures/queryTypes');
 let caseData, claimNumber;
 const claimType = 'SmallClaims';
 
-Feature('QM - LIP - Follow up tests @regression-qm');
+Feature('QM - LIP - Follow up tests @local-testing');
 
 Before(async () => {
   await Promise.all([
@@ -27,6 +27,12 @@ async function raiseAndRespondToQueries(qmSteps, caseId, citizenUser, caseworker
   const query = await qmSteps.raiseLipQuery(caseId, citizenUser, queryType, isHearingRelated);
   await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType);
   console.log(`Raised and responded to query of type: ${queryType}`);
+  return query;
+}
+
+async function closeQuery(qmSteps, caseId, caseworkerUser, query, queryType) {
+  await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType, true);
+  console.log('Caseworker closed the query');
 }
 
 async function createLipClaim(api) {
@@ -44,7 +50,7 @@ async function createLipClaim(api) {
   return claimRef;
 }
 
-Scenario('Claimant and Defendant send message to court and follow up', async ({ api, qm, I }) => {
+Scenario('Claimant and Defendant send message to court and follow up and admin closes query', async ({ api, qm, I }) => {
   const caseId = await createLipClaim(api);
 
   await raiseAndRespondToQueries(
@@ -60,7 +66,7 @@ Scenario('Claimant and Defendant send message to court and follow up', async ({ 
   await ResponseSteps.followUpMessage('Claimant Query', 'This query was raised by Claimant.', false);
   await ResponseSteps.verifyFollowUpMessage('Claimant Query');
 
-  await raiseAndRespondToQueries(
+  const initialQuery = await raiseAndRespondToQueries(
     qm,
     caseId,
     config.defendantCitizenUser,
@@ -72,4 +78,6 @@ Scenario('Claimant and Defendant send message to court and follow up', async ({ 
   await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
   await ResponseSteps.followUpMessage('Defendant Query', 'This query was raised by Defendant.', false);
   await ResponseSteps.verifyFollowUpMessage('Defendant Query');
+
+  await closeQuery(qm, caseId, config.ctscAdmin, PUBLIC_QUERY, initialQuery);
 });

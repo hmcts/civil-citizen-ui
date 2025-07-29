@@ -826,6 +826,12 @@ module.exports = {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
+  updateClaimantLanguagePreference: async (caseId, caseworker, languagePreference) => {
+    return updateLanguagePreference(caseId, caseworker, 'CLAIMANT', languagePreference);
+  },
+  updateDefendantLanguagePreference: async (caseId, caseworker, languagePreference) => {
+    return updateLanguagePreference(caseId, caseworker, 'DEFENDANT', languagePreference);
+  },
 };
 
 // Functions
@@ -1012,4 +1018,18 @@ const assignSpecCase = async (caseId, type) => {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   }
+};
+
+const updateLanguagePreference = async (caseId, caseworker, userType, preferredLanguage) => {
+  eventName = 'CHANGE_LANGUAGE_PREFERENCE';
+  await apiRequest.setupTokens(caseworker);
+  caseData = await apiRequest.startEvent(eventName, caseId);
+  caseData = {...caseData, ...{
+    changeLanguagePreference: {
+      userType,
+      preferredLanguage,
+    },
+  }};
+  await apiRequest.submitEvent(eventName, caseData, caseId);
+  await waitForFinishedBusinessProcess(caseId, caseworker);
 };

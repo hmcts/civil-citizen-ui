@@ -148,6 +148,11 @@ module.exports = {
     password: defaultPassword,
     type: 'caseworker',
   },
+  wluAdmin: {
+    email: 'casewrokerwlu@justice.gov.uk',
+    password: 'Password123',
+    type: 'caseworker',
+  },
   systemUpdate: {
     password: defaultPasswordSystemUser,
     email: 'civil-system-update@mailnesia.com',
