@@ -588,6 +588,19 @@ describe('dashboardService', () => {
         'test',
         'test'),
     );
+    const claim = new Claim();
+    claim.id = '1234567890';
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.totalClaimAmount = 900;
+    claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+    claim.defendantUserDetails = undefined;
+    claim.respondentSolicitorDetails = {};
+    claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+    claim.caseManagementLocation = {
+      region: '2',
+      baseLocation: '0909089',
+    };
+
     beforeEach(() => {
       jest.clearAllMocks();
     });
@@ -595,19 +608,6 @@ describe('dashboardService', () => {
     it('Ga is off line', async () => {
 
       //Given
-      const claim = new Claim();
-      claim.id = '1234567890';
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.totalClaimAmount = 900;
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      claim.defendantUserDetails = undefined;
-      claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      claim.caseManagementLocation = {
-        region: '2',
-        baseLocation: '0909089',
-      };
-
       (isGaOnline as jest.Mock).mockReturnValue(false);
       //When
       const result = await getContactCourtLink(claim.id, claim, true, 'en');
@@ -619,18 +619,6 @@ describe('dashboardService', () => {
     it('getContactCourtLink when Ga is online', async () => {
 
       //Given
-      const claim = new Claim();
-      claim.id = '1234567890';
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.totalClaimAmount = 900;
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      claim.defendantUserDetails = undefined;
-      claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      claim.caseManagementLocation = {
-        region: '2',
-        baseLocation: '0909089',
-      };
       const gaInfo = new GaInformation();
       gaInfo.isGaOnline = true;
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
@@ -649,18 +637,6 @@ describe('dashboardService', () => {
     it('getContactCourtLink when Ga is offline with welsh', async () => {
 
       //Given
-      const claim = new Claim();
-      claim.id = '1234567890';
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.totalClaimAmount = 900;
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      claim.defendantUserDetails = undefined;
-      claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      claim.caseManagementLocation = {
-        region: '2',
-        baseLocation: '0909089',
-      };
       const gaInfo = new GaInformation();
       gaInfo.isGaOnline = false;
       gaInfo.isGAWelsh = true;
@@ -679,18 +655,7 @@ describe('dashboardService', () => {
     it('getContactCourtLink when Ga Lip is on', async () => {
 
       //Given
-      const claim = new Claim();
-      claim.id = '1234567890';
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.totalClaimAmount = 900;
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      claim.defendantUserDetails = undefined;
-      claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      claim.caseManagementLocation = {
-        region: '2',
-        baseLocation: '0909089',
-      };
+
       const gaInfo = new GaInformation();
       gaInfo.isGaOnline = false;
       gaInfo.isGAWelsh = true;
@@ -709,49 +674,42 @@ describe('dashboardService', () => {
     it('getContactCourtLink when Ga Lip is on with PENDING_CASE_ISSUED', async () => {
 
       //Given
-      const claim = new Claim();
-      claim.id = '1234567890';
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.totalClaimAmount = 900;
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-      claim.defendantUserDetails = undefined;
-      claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      claim.caseManagementLocation = {
-        region: '2',
-        baseLocation: '0909089',
-      };
 
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
       const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
       //Then
-      expect(result).toEqual(undefined);
+      expect(result).toBeUndefined();
     });
 
     it('getContactCourtLink when Ga Lip is on with CASE_DISMISSED', async () => {
 
       //Given
-      const claim = new Claim();
-      claim.id = '1234567890';
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.totalClaimAmount = 900;
+
       claim.ccdState = CaseState.CASE_DISMISSED;
-      claim.defendantUserDetails = undefined;
-      claim.respondentSolicitorDetails = {};
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      claim.caseManagementLocation = {
-        region: '2',
-        baseLocation: '0909089',
-      };
 
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
       const result = await getContactCourtLink(claim.id, claim, true, 'en');
 
       //Then
-      expect(result).toEqual(undefined);
+      expect(result).toBeUndefined();
+    });
+
+    it('getContactCourtLink when Ga Lip is on with CASE_DISMISSED', async () => {
+
+      //Given
+
+      claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+      //When
+      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+
+      //Then
+      expect(result).toBeUndefined();
     });
 
   });
