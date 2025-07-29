@@ -81,4 +81,7 @@ echo "Setting up Users with role assignments..."
 ./bin/utils/organisational-role-assignment.sh "ga_tribunal_legal_caseworker_national@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "tribunal-caseworker" '{"jurisdiction":"CIVIL","primaryLocation":"283922","workTypes":"routine_work,access_requests"}' "LEGAL_OPERATIONS"
 
 ./bin/utils/organisational-role-assignment.sh "casewrokerWLU@justice.gov.uk" "Password123" "PUBLIC" "wlu-admin" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work,routine_work,query_work"}' "ADMIN"
+
 ./bin/utils/organisational-role-assignment.sh "caseworkerwlutl@justice.gov.uk" "Password123" "PUBLIC" "wlu-team-leader" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"
+./bin/utils/organisational-role-assignment.sh "caseworkerwlutl@justice.gov.uk" "Password123" "PUBLIC" "wlu-admin" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"
+./bin/utils/organisational-role-assignment.sh "caseworkerwlutl@justice.gov.uk" "Password123" "PUBLIC" "task-supervisor" '{"jurisdiction":"CIVIL","primaryLocation":"420219","workTypes":"welsh_translation_work"}' "ADMIN"
