@@ -141,6 +141,7 @@ describe('View Application service', () => {
       const result = await buildResponseFromCourtSection(mockedAppRequest, application, true, 'en');
       expect(result[1].responseButton.title).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST');
     });
+
     it('should not show respond to the request button for awaiting additional information for request more information', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
@@ -419,6 +420,59 @@ describe('View Application service', () => {
       expect(result[0].rows[0].value.html).toEqual('1 January 2024');
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('Name of file');
+    });
+
+    it('should return translated judge dismiss order', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      const fileName = 'Name of file';
+      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecisionMakeOrder: {
+          directionsResponseByDate: new Date('2024-01-01').toString(),
+        },
+        dismissalOrderDocument: [
+          {
+            id: '1',
+            value: {
+              documentLink: {
+                document_url: 'test',
+                document_binary_url: binary_url,
+                document_filename: fileName,
+                category_id: '1',
+              },
+              documentType: DocumentType.DISMISSAL_ORDER,
+              createdDatetime: new Date('2024-01-01'),
+              documentName: 'Translated-' + fileName,
+            },
+          },
+        ],
+      };
+      //when
+      const result = getJudgeDismiss(applicationResponse, 'en');
+      //then
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_DISMISSAL_ORDER_DOCUMENT');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('Name of file');
     });
@@ -823,6 +877,7 @@ describe('View Application service', () => {
                   document_filename: fileName,
                   category_id: '1',
                 },
+                documentName: 'written-reps-sequential.pdf',
                 documentType: DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL,
                 createdDatetime: new Date('2024-01-01'),
                 createdBy: 'test',
@@ -877,6 +932,7 @@ describe('View Application service', () => {
                   document_filename: fileName,
                   category_id: '1',
                 },
+                documentName: 'written-reps-sequential.pdf',
                 documentType: DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL,
                 createdDatetime: new Date('2024-01-01'),
                 createdBy: 'test',
@@ -932,6 +988,7 @@ describe('View Application service', () => {
                   document_filename: fileName,
                   category_id: '1',
                 },
+                documentName: 'written-reps-sequential.pdf',
                 documentType: DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL,
                 createdDatetime: new Date('2024-01-01'),
                 createdBy: 'test',
@@ -947,6 +1004,62 @@ describe('View Application service', () => {
         expect(result[0].rows[0].value.html).toEqual('1 January 2024');
         expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
         expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION');
+        expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+        expect(result[0].rows[2].value.html).toContain('Name of file');
+        expect(result[0].responseButton).toBeUndefined();
+      });
+
+      it('should return Translated sequential written representations request without the response button', async () => {
+        //given
+        const applicationResponse = new ApplicationResponse();
+        const fileName = 'Name of file';
+        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+        applicationResponse.case_data = {
+          applicationFeeAmountInPence: '',
+          applicationTypes: '',
+          gaAddlDoc: [],
+          generalAppAskForCosts: undefined,
+          generalAppDetailsOfOrder: '',
+          generalAppEvidenceDocument: [],
+          generalAppHearingDetails: undefined,
+          generalAppInformOtherParty: undefined,
+          generalAppPBADetails: undefined,
+          generalAppReasonsOfOrder: '',
+          generalAppRespondentAgreement: undefined,
+          generalAppStatementOfTruth: undefined,
+          generalAppType: undefined,
+          judicialDecision: undefined,
+          parentClaimantIsApplicant: undefined,
+          judicialDecisionMakeOrder: {
+            directionsResponseByDate: new Date('2024-01-01').toString(),
+          },
+          writtenRepSequentialDocument: [
+            {
+              id: '1',
+              value: {
+                documentLink: {
+                  document_url: 'test',
+                  document_binary_url: binary_url,
+                  document_filename: fileName,
+                  category_id: '1',
+                },
+                documentName: 'Translated-written-reps-sequential.pdf',
+                documentType: DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL,
+                createdDatetime: new Date('2024-01-01'),
+                createdBy: 'test',
+              },
+            },
+          ],
+        };
+        applicationResponse.state = ApplicationState.ORDER_MADE;
+        //when
+        const result = getWrittenRepSequentialDocument(mockedAppRequest, applicationResponse, 'en');
+        //then
+        expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+        expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+        expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+        expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL');
         expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
         expect(result[0].rows[2].value.html).toContain('Name of file');
         expect(result[0].responseButton).toBeUndefined();
@@ -987,6 +1100,7 @@ describe('View Application service', () => {
                   document_filename: fileName,
                   category_id: '1',
                 },
+                documentName: 'written-reps-concurrent.pdf',
                 documentType: DocumentType.WRITTEN_REPRESENTATION_CONCURRENT,
                 createdDatetime: new Date('2024-01-01'),
                 createdBy: 'test',
@@ -1041,6 +1155,7 @@ describe('View Application service', () => {
                   document_filename: fileName,
                   category_id: '1',
                 },
+                documentName: 'written-reps-concurrent.pdf',
                 documentType: DocumentType.WRITTEN_REPRESENTATION_CONCURRENT,
                 createdDatetime: new Date('2024-01-01'),
                 createdBy: 'test',
@@ -1057,6 +1172,63 @@ describe('View Application service', () => {
         expect(result[0].rows[0].value.html).toEqual('1 January 2024');
         expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
         expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION');
+        expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+        expect(result[0].rows[2].value.html).toContain('Name of file');
+        expect(result[0].responseButton).toBeUndefined();
+      });
+
+      it('should return judge request translated written representations concurrent without the response button', async () => {
+        //given
+        const applicationResponse = new ApplicationResponse();
+        const fileName = 'Name of file';
+        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+        applicationResponse.case_data = {
+          applicationFeeAmountInPence: '',
+          applicationTypes: '',
+          gaAddlDoc: [],
+          generalAppAskForCosts: undefined,
+          generalAppDetailsOfOrder: '',
+          generalAppEvidenceDocument: [],
+          generalAppHearingDetails: undefined,
+          generalAppInformOtherParty: undefined,
+          generalAppPBADetails: undefined,
+          generalAppReasonsOfOrder: '',
+          generalAppRespondentAgreement: undefined,
+          generalAppStatementOfTruth: undefined,
+          generalAppType: undefined,
+          judicialDecision: undefined,
+          parentClaimantIsApplicant: undefined,
+          judicialDecisionMakeOrder: {
+            directionsResponseByDate: new Date('2024-01-01').toString(),
+          },
+          writtenRepConcurrentDocument: [
+            {
+              id: '1',
+              value: {
+                documentLink: {
+                  document_url: 'test',
+                  document_binary_url: binary_url,
+                  document_filename: fileName,
+                  category_id: '1',
+                },
+                documentName: 'Translated-written-reps-concurrent.pdf',
+                documentType: DocumentType.WRITTEN_REPRESENTATION_CONCURRENT,
+                createdDatetime: new Date('2024-01-01'),
+                createdBy: 'test',
+              },
+            },
+          ],
+        };
+        applicationResponse.state = ApplicationState.ADDITIONAL_RESPONSE_TIME_EXPIRED;
+
+        //when
+        const result = getWrittenRepConcurrentDocument(mockedAppRequest, applicationResponse, 'en');
+        //then
+        expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+        expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+        expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+        expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT');
         expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
         expect(result[0].rows[2].value.html).toContain('Name of file');
         expect(result[0].responseButton).toBeUndefined();

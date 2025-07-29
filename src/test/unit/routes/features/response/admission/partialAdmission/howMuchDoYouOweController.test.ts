@@ -7,6 +7,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {ResponseType} from 'common/form/models/responseType';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
 
@@ -19,6 +20,9 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest
+      .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
+      .mockResolvedValueOnce(Promise.resolve(0.02) as any);
   });
 
   describe('on GET', () => {
@@ -69,6 +73,11 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
   });
 
   describe('on POST', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
+        .mockResolvedValueOnce(Promise.resolve(0.02) as any);
+    });
     it('should show errors when no amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -129,11 +138,11 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
         });
     });
-    it('should show errors when provided amount is equal to Claim amount', async () => {
+    it('should show errors when provided amount is equal to Claim amount plus 1', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 110})
+        .send({amount: 111})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
