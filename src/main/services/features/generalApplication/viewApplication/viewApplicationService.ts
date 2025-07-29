@@ -263,8 +263,8 @@ export const getHearingOrder = (applicationResponse: ApplicationResponse, lang: 
       return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
     }).map(hearingOrder => {
       const documentLabel = hearingOrder.value.documentName.indexOf('Translated') !== -1
-        ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_ORDER', {lang})
-        : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER', {lang});
+        ? 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_ORDER'
+        : 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER';
       return setUpDocumentLinkObject(hearingOrder.value?.documentLink, hearingOrder.value?.createdDatetime, applicationResponse?.id, lang, documentLabel, hearingOrder.value.documentName);
     });
   }
