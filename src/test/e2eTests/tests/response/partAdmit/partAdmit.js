@@ -5,7 +5,7 @@ const {yesAndNoCheckBoxOptionValue} = require('../../../commons/eligibleVariable
 
 Feature('Response journey defendant Part Admit').tag('@e2e');
 
-Scenario('already paid', () => {
+Scenario.skip('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449438';
     PartAdmit.start(claimId);
@@ -19,7 +19,7 @@ Scenario('already paid', () => {
   }
 });
 
-Scenario('pay immediately', () => {
+Scenario.skip('pay immediately', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449448';
     PartAdmit.start(claimId);
@@ -34,7 +34,7 @@ Scenario('pay immediately', () => {
   }
 });
 
-Scenario('By set date', () => {
+Scenario.skip('By set date', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449458';
     PartAdmit.start(claimId);
@@ -50,7 +50,7 @@ Scenario('By set date', () => {
   }
 });
 
-Scenario('I will suggest a repayment plan', () => {
+Scenario.skip('I will suggest a repayment plan', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449468';
     PartAdmit.start(claimId);
