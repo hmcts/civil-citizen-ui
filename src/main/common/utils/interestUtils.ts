@@ -71,7 +71,7 @@ export const getInterestEndDate = (claim: Claim): Date => {
 };
 
 export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
-  if(!claim.hasInterest()) {
+  if(!claim.hasInterest() || claim.interest?.sameRateInterestSelection === undefined) {
     return 0;
   }
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
