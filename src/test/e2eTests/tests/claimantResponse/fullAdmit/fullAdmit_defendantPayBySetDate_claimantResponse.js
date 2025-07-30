@@ -9,7 +9,7 @@ Scenario('claimant accepts full admit and formalises with CCJ', async () => {
     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId, 'bySetDate');
     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId, 'Yes');
     ClaimantResponseSteps.formaliseRepayment(caseId, 'Request a CCJ');
-    ClaimantResponseSteps.requestCCJ(caseId);
+    ClaimantResponseSteps.requestCCJ(caseId, true);
     ClaimantResponseSteps.verifyCheckYourAnswersForFullAdmitCCJ(caseId);
     ClaimantResponseSteps.checkAndSubmit(caseId);
     ClaimantResponseSteps.fullAdmitClaimantRequestsCCJConfirmation(caseId);

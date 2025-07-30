@@ -208,6 +208,22 @@ describe('General Application helper when Lip is on', () => {
     expect(expected).toEqual(result);
   });
 
+  it('should be, GA is online when defendantUserDetails is undefined and NOC on defendant', async () => {
+    //Given
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.respondent1Represented = YesNoUpperCamelCase.YES;
+    claim.respondentSolicitorDetails = 'test';
+
+    const expected = new GaInformation();
+    expected.isGaOnline = true;
+    //When
+    const result = isGaOnlineQM(claim, true, false);
+
+    //Then
+    expect(expected).toEqual(result);
+  });
+
   it('should GA is offline when isLRDefendant is undefined and is not setted', async () => {
     //Given
     const claim = new Claim();
@@ -349,7 +365,7 @@ describe('redirection url', () => {
     const result = await getGaRedirectionUrl(claim, true, true);
 
     //Then
-    expect('/submit-application-offline').toEqual(result);
+    expect('/case/:id/submit-application-offline').toEqual(result);
   });
 
 });
