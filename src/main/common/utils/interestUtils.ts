@@ -69,9 +69,15 @@ export const getInterestEndDate = (claim: Claim): Date => {
   }
   return interestEndDate;
 };
+export const correctInterestSelected = async (claim: Claim): boolean => {
+  if (claim.isInterestClaimOptionsSameRate() && claim.interest?.sameRateInterestSelection?.differentRate === undefined) {
+    return false;
+  }
+  return !(claim.isInterestClaimOptionsBreakDownInterest() && claim.interest?.breakDownInterestTotal === undefined);
 
+};
 export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
-  if(!claim.hasInterest() || claim.interest?.sameRateInterestSelection === undefined) {
+  if(!claim.hasInterest() || correctInterestSelected(claim) === false) {
     return 0;
   }
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
