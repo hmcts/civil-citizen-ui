@@ -71,8 +71,7 @@ export const getInterestEndDate = (claim: Claim): Date => {
   return interestEndDate;
 };
 export const correctInterestSelected = (claim: Claim): boolean => {
-  return !(claim.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST && claim.interest?.sameRateInterestSelection?.differentRate === undefined);
-
+  return !(claim.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST && claim.interest?.sameRateInterestSelection?.sameRateInterestType === undefined);
 };
 export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
   if(!claim.hasInterest() || correctInterestSelected(claim) === false) {
