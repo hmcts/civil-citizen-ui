@@ -47,7 +47,7 @@ Scenario('Testing error messages @nightly', async () => {
   //How much money do you admit you owe? error screen
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOweError(claimRef, 500);
+  await ResponseSteps.EnterHowMuchMoneyYouOweError(claimRef, caseData.totalClaimAmount);
   await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalClaimAmount);
   //Why do you disagree with the amount claimed? error screen
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmountError(claimRef, partAdmit);
