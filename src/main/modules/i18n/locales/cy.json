@@ -5969,7 +5969,7 @@
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Rhowch fanylion pwnc y neges",
       "MESSAGE_DETAILS": "Rhowch fanylion y neges",
-      "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad‘sydd ar y gweill",
+      "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill",
       "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod",
       "VALID_DAY": "Rhaid i ddyddiad y gwrandawiad gynnwys diwrnod",
       "VALID_MONTH": "Rhaid i ddyddiad y gwrandawiad gynnwys mis",
