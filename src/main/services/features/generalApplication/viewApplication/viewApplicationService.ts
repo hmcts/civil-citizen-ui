@@ -197,11 +197,12 @@ export const getApplicationSections = async (req: AppRequest, applicationRespons
 };
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
+  const lng = getLng(lang);
   const courtDocumentsArray: DocumentInformation[] = [];
-  courtDocumentsArray.push(...getHearingNotice(applicationResponse, lang));
-  courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
-  courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lang));
-  courtDocumentsArray.push(...getDismissalOrder(applicationResponse, lang));
+  courtDocumentsArray.push(...getHearingNotice(applicationResponse, lng));
+  courtDocumentsArray.push(...getHearingOrder(applicationResponse, lng));
+  courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lng));
+  courtDocumentsArray.push(...getDismissalOrder(applicationResponse, lng));
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
 
