@@ -143,8 +143,6 @@
       "REPAYMENT_AMOUNT_HINT": "Only include the amount you're paying to clear previously missed regular"
     },
     "CONTACT_US_FOR_HELP": {
-      "QM_INFORMATION_MESSAGES_DOCUMENTS": "You can send messages and documents to the court by selecting ‘contact or apply to the court’ on your",
-      "QM_INFORMATION_LINK": "Money Claims dashboard",
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
       "COURT_STAFF_DISCLOSURE": "Court staff can help with your application. They cannot give you legal advice.",
       "EMAIL": "Email",
@@ -398,7 +396,10 @@
       "APPLICATIONS_TASK": "View all applications to the court",
       "VIEW_MESSAGES_TASK": "View your messages to the court"
     },
-    "WHAT_HAPPENS_NEXT" : "What happens next"
+    "WHAT_HAPPENS_NEXT" : "What happens next",
+    "QM_INFORMATION_DOCUMENTS": "You can send documents to the court by selecting ‘contact or apply to the court’ on your",
+    "QM_INFORMATION_MESSAGES_DOCUMENTS": "You can send messages and documents to the court by selecting ‘contact or apply to the court’ on your",
+    "QM_INFORMATION_LINK": "Money Claims dashboard"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {

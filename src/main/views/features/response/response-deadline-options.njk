@@ -22,7 +22,15 @@
      {% endif %}
      {{ formLink | safe}}.
   </p>
-  <p class="govuk-body govuk-!-margin-top-6">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.EMAIL_FORM') }}</p>
+  {% if isQMFlagEnabled === true %}
+      <p class="govuk-body govuk-!-margin-top-6">{{ t('COMMON.QM_INFORMATION_DOCUMENTS') }}
+        <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+          {{ t('PAGES.COMMON.QM_INFORMATION_LINK') }}
+        </a>.
+      </p>
+  {% else %}
+    <p class="govuk-body govuk-!-margin-top-6">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.EMAIL_FORM') }}</p>
+  {% endif %}
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.POST') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.BUILDING') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.PO_BOX') }}</p>
