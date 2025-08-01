@@ -12,9 +12,9 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "test/civ-17465"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-1745-added-wlu-admin-profile-to-wlu-team-lead"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
