@@ -7,7 +7,7 @@ import {
 } from 'common/utils/externalURLs';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
-export const getBSGuidanceContent = (lng: string, qmContactLink: string, isQMLipEnabled = true) => {
+export const getBSGuidanceContent = (lng: string, qmContactLink: string, isQMLipEnabled = false) => {
   const howToContactSection = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA3', { lng });
   const bsGuidanceScheme = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA2', {lng});
   const linkForContactYourLocalCourt = `<a href="${findCourtTribunalUrl}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.CONTACT_LOCAL_COURT_LINK', { lng })}</a>`;
