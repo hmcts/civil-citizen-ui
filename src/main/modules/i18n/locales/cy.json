@@ -397,9 +397,9 @@
       "VIEW_MESSAGES_TASK": "Gweld eich negeseuon i'r llys"
     },
     "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
-    "QM_INFORMATION_DOCUMENTS": "You can send documents to the court by selecting ‘contact or apply to the court’ on your",
-    "QM_INFORMATION_MESSAGES_DOCUMENTS": "You can send messages and documents to the court by selecting ‘contact or apply to the court’ on your",
-    "QM_INFORMATION_LINK": "Money Claims dashboard"
+    "QM_INFORMATION_DOCUMENTS": "Gallwch anfon dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
+    "QM_INFORMATION_MESSAGES_DOCUMENTS": "Gallwch anfon negeseuon a dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
+    "QM_INFORMATION_LINK": "dangosfwrdd Hawliadau am Arian"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
@@ -1613,7 +1613,7 @@
       "AMOUNT_PAID_INSET": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen ",
       "AMOUNT_PAID_INSET_2": " neu ",
       "AMOUNT_PAID_INSET_3": "lle gallwch gyfrifo’r llog cywir, a’i hanfon at ",
-      "QM_AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send documents to the court by selecting ‘contact or apply to the court’ on your",
+      "QM_AMOUNT_PAID_INSET_3": "Gallwch gyfrif y llog cywir ac anfon dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
       "N225_LINK": "https://assets.publishing.service.gov.uk/media/5aa6b740e5274a3e391e3b38/n225-bil.pdf",
       "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
