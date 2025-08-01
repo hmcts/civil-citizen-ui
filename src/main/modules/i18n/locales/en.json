@@ -3836,6 +3836,7 @@
         "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Translated Application Summary Document",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "GENERAL_ORDER" : "General Order",
+        "TRANSLATED_GENERAL_ORDER": "Translated General Order Request",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
