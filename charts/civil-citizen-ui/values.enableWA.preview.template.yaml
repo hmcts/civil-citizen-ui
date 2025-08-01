@@ -66,6 +66,7 @@ wa:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
   wa-task-management-api:
     java:
+      ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
