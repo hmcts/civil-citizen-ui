@@ -53,6 +53,10 @@ module.exports = {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent1OrganisationPolicy',
       buildNocAnswers('Test Inc'));
   },
+  requestNoticeOfChangeForRespondent1SolicitorCompany: async (claimRef, newSolicitor) => {
+    await requestNoticeOfChange(claimRef, newSolicitor, 'respondent1OrganisationPolicy',
+      buildNocAnswers('Test Company Defendant'));
+  },
   requestNoticeOfChangeForRespondent2Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent2OrganisationPolicy',
       buildNocAnswers('Dr Foo bar'),

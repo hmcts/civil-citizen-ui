@@ -20,7 +20,7 @@ class DashboardPage {
     try {
       await I.waitForContent('Messages to the court', config.WaitForText);
       await I.click('View all messages to the court');
-      await I.waitForContent('Messages', config.WaitForText);
+      await I.waitForContent('Messages to the court', config.WaitForText);
 
       await I.see('Claimant Query');
       await I.see('Defendant Query');
@@ -32,7 +32,7 @@ class DashboardPage {
       await I.see('Caseworker response to query.');
       await I.see('follow up to caseworker response.');
       await I.click('Back');
-      await I.waitForContent('Messages', config.WaitForText);
+      await I.waitForContent('Messages to the court', config.WaitForText);
 
       console.log('Checking Defendant Query...');
       await I.click('Defendant Query');
