@@ -94,6 +94,7 @@ const SendUpdateToCourt = require('../pages/defendantLipResponse/queryManagement
 const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagement/sendDocumentsToCourt');
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
+const config = require('../../../../config');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -329,6 +330,20 @@ class ResponseSteps {
     await I.waitForContent('View all messages to the court', 60);
     await I.click('View all messages to the court');
     await viewQueryPage.verifyClosedQuery(subject);
+  }
+
+  async clickOnViewMessages() {
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
+  }
+
+  async clickBackLink() {
+    await I.click('Back');
+    await I.waitForContent('Messages to the court', config.WaitForText);
+  }
+
+  async verifyQueryStatus(subject, sentBy, status) {
+    await viewQueryPage.verifyQueryStatus(subject, sentBy, status);
   }
 
   async EnterCompDetails(addPhoneNum = true) {
