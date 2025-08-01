@@ -3851,6 +3851,7 @@
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "There is a hearing notice",
         "HEARING_ORDER" : "Hearing Order",
+        "TRANSLATED_HEARING_ORDER": "Translated Hearing Order Request",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "GENERAL_ORDER" : "General Order",
         "DISMISSAL_ORDER": "Dismissal order",
