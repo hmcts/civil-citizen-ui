@@ -271,14 +271,17 @@ export const getHearingOrder = (applicationResponse: ApplicationResponse, lng: s
   return hearingOrderDocInfoArray;
 };
 
-export const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getHearingNotice = (applicationResponse: ApplicationResponse, lng: string) => {
   const hearingNoticeDocs = applicationResponse?.case_data?.hearingNoticeDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingNoticeDocs) {
     hearingOrderDocInfoArray = hearingNoticeDocs.sort((item1,item2) => {
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(hearingNotice => {
-      return setUpDocumentLinkObject(hearingNotice.value.documentLink, hearingNotice.value.createdDatetime, applicationResponse.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
+      const documentLabel = hearingNotice.value.documentName.indexOf('Translated') !== -1
+        ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_NOTICE_DESC', {lng})
+        : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE', {lng});
+      return setUpDocumentLinkObject(hearingNotice.value.documentLink, hearingNotice.value.createdDatetime, applicationResponse.id, lng, documentLabel);
     });
   }
   return hearingOrderDocInfoArray;
@@ -290,8 +293,11 @@ export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: 
   if(generalOrderDocs) {
     generalOrderDocInfoArray = generalOrderDocs.sort((item1,item2) => {
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
-    }).map(hearingOrder => {
-      return setUpDocumentLinkObject(hearingOrder.value?.documentLink, hearingOrder.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER');
+    }).map(generalOrder => {
+      const documentLabel = generalOrder.value.documentName.indexOf('Translated') !== -1
+        ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_GENERAL_ORDER', {lang})
+        : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER', {lang});
+      return setUpDocumentLinkObject(generalOrder.value?.documentLink, generalOrder.value?.createdDatetime, applicationResponse?.id, lang, documentLabel);
     });
   }
   return generalOrderDocInfoArray;
