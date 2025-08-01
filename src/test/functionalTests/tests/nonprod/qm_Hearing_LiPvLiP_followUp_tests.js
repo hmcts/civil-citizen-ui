@@ -80,4 +80,6 @@ Scenario('Claimant and Defendant send message to court and follow up and admin c
   await ResponseSteps.verifyFollowUpMessage('Defendant Query');
 
   await closeQuery(qm, caseId, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
+  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await ResponseSteps.verifyClosedQuery('Defendant Query');
 });

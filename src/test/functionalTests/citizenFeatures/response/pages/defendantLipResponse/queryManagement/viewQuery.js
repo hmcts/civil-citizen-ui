@@ -46,6 +46,16 @@ class ViewQuery {
     await I.waitForContent(subject, config.WaitForText);
     await I.see('Follow up message');
   }
+
+  async verifyClosedQuery(subject) {
+    await I.waitForContent('Messages to the court', config.WaitForText);
+    await I.see('Closed');
+    await I.see(subject);
+    await I.click(subject);
+    await I.waitForContent(subject, config.WaitForText);
+    await I.see('Caseworker closing query');
+    await I.see('This message has been closed by court staff');
+  }
 }
 
 module.exports = ViewQuery;

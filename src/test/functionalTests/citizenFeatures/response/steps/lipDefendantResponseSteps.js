@@ -325,6 +325,12 @@ class ResponseSteps {
     await viewQueryPage.verifyMessagesAfterFollowUp(subject);
   }
 
+  async verifyClosedQuery(subject) {
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
+    await viewQueryPage.verifyClosedQuery(subject);
+  }
+
   async EnterCompDetails(addPhoneNum = true) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
