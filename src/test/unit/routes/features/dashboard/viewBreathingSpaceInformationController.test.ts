@@ -11,7 +11,7 @@ import {
 import { Claim } from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {BREATHING_SPACE_INFO_URL} from 'routes/urls';
-import * as launchDarkly from "../../../../../main/app/auth/launchdarkly/launchDarklyClient";
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
