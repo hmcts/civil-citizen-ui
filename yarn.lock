@@ -1951,10 +1951,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ioredis/commands@npm:^1.1.1, @ioredis/commands@npm:^1.2.0":
+"@ioredis/commands@npm:^1.2.0":
   version: 1.2.0
   resolution: "@ioredis/commands@npm:1.2.0"
   checksum: 9b20225ba36ef3e5caf69b3c0720597c3016cc9b1e157f519ea388f621dd9037177f84cfe7e25c4c32dad7dd90c70ff9123cd411f747e053cf292193c9c461e2
+  languageName: node
+  linkType: hard
+
+"@ioredis/commands@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@ioredis/commands@npm:1.3.0"
+  checksum: 2e1446ada871059753e0883edfdd992a81d34fa10313978c83450246d1543962acfe852d30dbc942259ecda3ed1e84a281914bbdeb2dfcfe9e78b7cab3902127
   languageName: node
   linkType: hard
 
@@ -8771,10 +8778,10 @@ __metadata:
   linkType: hard
 
 "ioredis@npm:^5.3.2":
-  version: 5.3.2
-  resolution: "ioredis@npm:5.3.2"
+  version: 5.7.0
+  resolution: "ioredis@npm:5.7.0"
   dependencies:
-    "@ioredis/commands": ^1.1.1
+    "@ioredis/commands": ^1.3.0
     cluster-key-slot: ^1.1.0
     debug: ^4.3.4
     denque: ^2.1.0
@@ -8783,7 +8790,7 @@ __metadata:
     redis-errors: ^1.2.0
     redis-parser: ^3.0.0
     standard-as-callback: ^2.1.0
-  checksum: 9a23559133e862a768778301efb68ae8c2af3c33562174b54a4c2d6574b976e85c75a4c34857991af733e35c48faf4c356e7daa8fb0a3543d85ff1768c8754bc
+  checksum: fc351fc4458f5cc8371faccd5c4d49a9cdb333163a018553124e0dde5b64e683cf360c974afa278a3eff08e56bc5e6a5903f8b2906893a2cae8f801b8e8eedff
   languageName: node
   linkType: hard
 
