@@ -9,6 +9,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
+import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -69,9 +70,14 @@ export const getInterestEndDate = (claim: Claim): Date => {
   }
   return interestEndDate;
 };
+export const correctInterestSelected = (claim: Claim): boolean => {
+  return !(claim.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST && (claim.interest?.sameRateInterestSelection?.sameRateInterestType === undefined
+    || claim.interest?.interestClaimFrom === undefined
+    || claim.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE && claim.interest?.interestStartDate?.date === undefined));
 
+};
 export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
-  if(!claim.hasInterest()) {
+  if(!claim.hasInterest() || correctInterestSelected(claim) === false) {
     return 0;
   }
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
