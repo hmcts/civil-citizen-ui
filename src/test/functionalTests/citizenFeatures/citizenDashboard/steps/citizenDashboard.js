@@ -10,6 +10,10 @@ class CitizenCitizenDashboardSteps {
   async VerifyClaimOnDashboard(claimNumber)  {
     await CitizenDashboardPage.verifyClaimNumberOnDashboard(claimNumber);
   }
+
+  async VerifyStatusOnDashboard(status, xpath) {
+    await CitizenDashboardPage.verifyStatusOnDashboard(status, xpath);
+  }
 }
 
 module.exports = new CitizenCitizenDashboardSteps();
