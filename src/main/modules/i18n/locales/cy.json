@@ -635,7 +635,7 @@
             "TEXT": "Deall beth fydd yn digwydd os na thelir yr hawliad ar ôl cael dyfarniad"
           },
           "PAID_OR_PARTIALLY_PAID_JUDGMENT": {
-            "TEXT": "Diweddaru’r llys am ddyfarniad neu hawliad sydd wedi’u talu’n rhannol neu’n gyfangwbl"
+            "TEXT": "Diweddaru’r llys am ddyfarniad neu hawliad sydd wedi’i dalu’n rhannol neu’n gyfangwbl"
           },
           "SETTLE_CLAIM": {
             "TEXT": "Setlo hawliad"
@@ -673,7 +673,7 @@
           },
           "CHANGE_SOMETHING_ABOUT_THE_HEARING": {
             "TEXT": "Newid rhywbeth am y gwrandawiad",
-            "HINT": "Er enghraifft, lleoliad gwrandawiad neu sut rydych chi'n mynychu'r gwrandawiad"
+            "HINT": "Er enghraifft, lleoliad y gwrandawiad neu sut rydych chi'n mynychu'r gwrandawiad"
           },
           "ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING": {
             "TEXT": "Gofyn am help a chefnogaeth yn ystod fy ngwrandawiad"
@@ -715,7 +715,7 @@
           "PARAGRAPH_1": "Os yw’r hawliad wedi cychwyn ac ni allwch ei weld ar y system Hawliadau am Arian, dylech gysylltu â’r llys i gael cymorth."
         },
         "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
-          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn fy nghyfrif",
+          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn eich nghyfrif",
           "PARAGRAPH_1": "Os na allwch weld y dogfennau a uwchlwythwyd gennych chi neu’r parti arall yn eich cyfrif, dylech gysylltu â’r llys i gael cymorth."
         },
         "GENERAL_UPDATE" : {
@@ -737,14 +737,14 @@
           "PARAGRAPH_2": "Os bydd y diffynnydd yn cynnig talu swm gwahanol a bod yr hawlydd yn gwrthod y cynnig hwnnw, efallai y cynhelir gwrandawiad lle bydd rhaid i’r diffynnydd roi mwy o wybodaeth. Fe ofynnir i’r hawlydd fynychu’r gwrandawiad.",
           "SUBTITLE_1": "Os na fydd y diffynnydd yn talu’r swm llawn neu’n ymateb mewn pryd",
           "LINK_2": {
-            "TEXT": "gwneud cais am ddyfarniad llys sirol (CCJ).",
+            "TEXT": "wneud cais am ddyfarniad llys sirol (CCJ)",
             "TEXT_BEFORE": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig "
           },
           "LINK_3": {
             "TEXT": "beth fydd yn digwydd pan fydd CCJ yn cael ei wneud yn eich erbyn (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Darllenwch fwy am "
           },
-          "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig gwneud cais am ddyfarniad llys sirol (CCJ)."
+          "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "Os na fydd y diffynnydd yn talu neu’n ymateb erbyn y terfyn amser a roddwyd gan y llys, bydd yr hawlydd yn cael cynnig wneud cais am ddyfarniad llys sirol (CCJ)."
         },
         "CLAIM_NOT_PAID_AFTER_JUDGMENT" : {
           "PARAGRAPH_1": "Os yw’r hawlydd yn gwneud cais am ddyfarniad ac nad yw’r diffynnydd wedi bodloni’r dyddiadau cau yn y dyfarniad, gall yr hawlydd geisio cael ei arian o hyd.",
@@ -771,7 +771,7 @@
         },
         "PAID_OR_PARTIALLY_PAID_JUDGMENT" : {
           "SUBTITLE_1": "Os yw rhan o’r dyfarniad neu ran o swm yr hawliad wedi’i dalu",
-          "PARAGRAPH_1": "Mae’r diffynnydd wedi talu rhan o swm yr hawliad, nid oes rhaid i chi ddiweddaru’r llys.",
+          "PARAGRAPH_1": "Os yw’r diffynnydd wedi talu rhan o swm yr hawliad, nid oes rhaid i chi ddiweddaru’r llys.",
           "LINK_1": {
             "TEXT": "orfodi dyfarniad a dalwyd yn rhannol (yn agor mewn ffenestr newydd)",
             "TEXT_BEFORE": "Gwybodaeth am "
@@ -780,7 +780,7 @@
         "SETTLE_CLAIM" : {
           "SUBTITLE_1": "Os yw’r hawliad yn cael ei dalu neu os ydych chi’n cytuno bod y balans wedi’i setlo",
           "TEXT_UPDATE_WITHOUT_LINK": "Os ydych chi’n hawlydd, diweddarwch yr hawliad ar y gwasanaeth ar-lein trwy ddewis dweud wrthym eich bod wedi setlo’r hawliad.",
-          "SUBTITLE_2": "Hawliadau a setlwyd drwy gyfryngwr hawliadau bach",
+          "SUBTITLE_2": "Hawliadau a setlwyd drwy gyfryngwr hawliadau bychain",
           "TEXT_1": "Os cafodd eich hawliad ei setlo yn ystod y cyfnod cyfryngu, bydd y cyfryngwr yn diweddaru cofnod eich achos i chi.",
           "NOT_SETTLED": {
             "LINK_1": {
@@ -796,7 +796,7 @@
           "LI_3": "yr unigolyn rydych chi’n gwneud hawliad yn ei erbyn",
           "LINK_1": {
             "TEXT": "wneud cais",
-            "TEXT_BEFORE": "Mae’n rhaid i chi wneud cais i amrywio manylion yr hawliad. Gwnewch hyn drwy ",
+            "TEXT_BEFORE": "Mae’n rhaid i chi wneud cais i ddiwygio manylion yr hawliad. Gwnewch hyn drwy ",
             "TEXT_AFTER": ", a bydd rhaid i chi dalu ffi."
           },
           "LINK_2": {
@@ -830,7 +830,7 @@
           "TEXT_2": "Ni allwch uwchlwytho hysbysiad dirwyn i ben i’r system Hawliadau am Arian.",
           "LINK_2": {
             "TEXT": "gysylltu â’r llys (yn agor mewn ffenestr newydd)",
-            "TEXT_BEFORE": "I anfon hawliad dirwyn i ben i’r llys, dylech ",
+            "TEXT_BEFORE": "I anfon rhybudd dirwyn i ben i’r llys, dylech ",
             "TEXT_AFTER": " sy’n delio â’ch achos."
           }
         },
@@ -934,7 +934,7 @@
           "LIST_1": "rampiau neu doiledau hygyrch",
           "LIST_2": "dolen glyw",
           "LIST_3": "cyfarwyddiadau sain neu mewn fformat hawdd ei ddarllen",
-          "PARAGRAPH_3": "Er mwyn gofyn am gymorth yn eich gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle cynhelir y gwrandawiad. Gallwch weld pa lys sy’n gwrando eich achos yn eich gorchymyn cyfarwyddiadau neu hysbysiad o wrandawiad.",
+          "PARAGRAPH_3": "Er mwyn gofyn am gymorth yn eich gwrandawiad mae’n rhaid i chi gysylltu â’r llys lle cynhelir y gwrandawiad. Gallwch weld pa lys sy’n gwrando eich achos yn eich gorchymyn cyfarwyddiadau neu’r hysbysiad o wrandawiad.",
           "LINK_1": {
             "TEXT": "Dewch o hyd i fanylion cyswllt y llys (yn agor mewn ffenestr newydd)."
           }
@@ -965,7 +965,7 @@
         "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "HEADING": "Adolygu manylion y neges",
@@ -998,7 +998,7 @@
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
@@ -1033,7 +1033,7 @@
       "SHARE_QUERY_CONFIRMATION": {
         "PAGE_TITLE": "Anfon neges",
         "PAGE_HEADING": "Rhannu’r neges hon gyda’r parti arall",
-        "PARAGRAPH_1": "Mae’r holl negeseuon a ddefnyddir gan y system yn cael eu rhannu gyda’r parti arall yn yr achos, ynghyd â chael eu hanfon i’r llys.",
+        "PARAGRAPH_1": "Mae’r holl negeseuon a anfonir drwy’r system hon yn cael eu rhannu gyda’r parti arall yn yr achos, ynghyd â chael eu hanfon i’r llys.",
         "SUB_TITLE": "Gofyn am beidio â rhannu eich neges",
         "PARAGRAPH_2": "Gallwch ofyn am beidio â rhannu eich neges gyda’r parti arall. Rhaid i’r rhesymau dros beidio â rhannu eich neges fod yn ddilys, a gall y barnwr benderfynu y dylai eich neges gael ei rhannu.",
         "PARAGRAPH_3": "Mae rhesymau dilys dros gadw neges rhyngoch chi a’r llys yn cynnwys y neges yn ymwneud â:",
@@ -3836,6 +3836,7 @@
         "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Dogfen Crynodeb Cais wedi’i Chyfieithu ",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
+        "TRANSLATED_GENERAL_ORDER": "Cais am Orchymyn Cyffredinol wedi'i Gyfieithu",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
@@ -3849,6 +3850,7 @@
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
+        "TRANSLATED_HEARING_NOTICE_DESC": "Cais am Hysbysiad o Wrandawiad wedi'i Gyfieithu",
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
@@ -5442,7 +5444,7 @@
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Mae’n rhaid i chi ddewis pa ddiweddariad yr hoffech roi i’r llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
-    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei gael gyda’r system Hawliadau am Arian.",
+    "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei chael gyda’r system Hawliadau am Arian.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "Mae’n rhaid i chi ddewis sut rydych eisiau rheoli eich gwrandawiad.",
     "UNABLE_TO_PROVIDE_EVIDENCE": "Ychwanegwch fanylion dros pam nad ydych yn gallu darparu tystiolaeth",
     "SELECT_EVIDENCE_DEBT_PAYMENT": "Dewiswch sut yr hoffech ddarparu tystiolaeth o'r taliad dyled",
@@ -5969,7 +5971,7 @@
     "QUERY_MANAGEMENT": {
       "MESSAGE_SUBJECT": "Rhowch fanylion pwnc y neges",
       "MESSAGE_DETAILS": "Rhowch fanylion y neges",
-      "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad",
+      "HEARING_RELATED": "Dewiswch ‘Ydy’ os yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill",
       "MORE_THAN_200": "Rhaid i bwnc y neges beidio â bod yn hwy na 200 nod",
       "VALID_DAY": "Rhaid i ddyddiad y gwrandawiad gynnwys diwrnod",
       "VALID_MONTH": "Rhaid i ddyddiad y gwrandawiad gynnwys mis",
