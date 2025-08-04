@@ -49,8 +49,8 @@ Scenario('Defendant responds with part admit', async ({api}) => {
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
   const caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalAmount);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalAmount);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalClaimAmount);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
