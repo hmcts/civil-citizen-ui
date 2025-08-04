@@ -150,7 +150,7 @@ module.exports = {
   },
   wluAdmin: {
     email: 'casewrokerwlu@justice.gov.uk',
-    password: 'Password123',
+    password: 'defaultPassword',
     type: 'caseworker',
   },
   systemUpdate: {
