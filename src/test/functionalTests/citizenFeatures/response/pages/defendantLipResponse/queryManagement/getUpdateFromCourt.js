@@ -16,12 +16,12 @@ class GetUpdateFromCourt {
 
       case 'CLAIM_NOT_PAID':
         await I.waitForContent('Understand what happens if the claim is not paid', config.WaitForText);
-        await I.see('The defendant has 28 days to respond once they receive the claim. If the defendant needs more time, the 28 days can be extended if both parties agree.');
+        await I.see('The defendant has up to 28 days to respond once they receive the claim.');
         break;
 
       case 'CLAIM_NOT_PAID_AFTER_JUDGMENT':
         await I.waitForContent('Understand what happens if the judgment is not paid', config.WaitForText);
-        await I.see('If the claimant applied for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.');
+        await I.see('If the claimant applies for a judgment and the defendant has not met the deadlines in the judgment, the claimant can still try and get their money.');
         break;
 
       default:
