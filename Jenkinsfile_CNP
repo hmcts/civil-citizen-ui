@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "test/civ-17465"
 def waStandaloneBranch = "master"
-def ccdBranch = "CIV-1745-added-wlu-admin-profile-to-wlu-team-lead"
+def ccdBranch = "master"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
