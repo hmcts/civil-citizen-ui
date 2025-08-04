@@ -21,7 +21,7 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario.skip('MT Defendant responses', async ({api}) => {
+Scenario('MT Defendant responses', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
   console.log('LIP vs LIP MT claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -37,8 +37,8 @@ Scenario.skip('MT Defendant responses', async ({api}) => {
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000, partAdmit, caseData.totalAmount);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalAmount);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000, partAdmit, caseData.totalClaimAmount);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
@@ -47,7 +47,7 @@ Scenario.skip('MT Defendant responses', async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression-minti').tag('@nightly');
 
-Scenario.skip('IT Defendant and Claimant responses', async ({api}) => {
+Scenario('IT Defendant and Claimant responses', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -65,7 +65,7 @@ Scenario.skip('IT Defendant and Claimant responses', async ({api}) => {
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 15000, rejectAll);
   await ResponseSteps.VerifyPaidLessPage();
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll, caseData.totalAmount);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);

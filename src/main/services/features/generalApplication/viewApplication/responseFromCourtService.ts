@@ -174,9 +174,12 @@ export const getHearingNoticeResponses = (applicationResponse: ApplicationRespon
         return directionOrderDocument?.value?.documentType === DocumentType.HEARING_NOTICE;
       })
       .map(hearingNotice => {
-        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(hearingNotice.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC', {lng})}">${hearingNotice.value.documentLink.document_filename}</a>`;
+        const documentLabel = hearingNotice.value.documentName.indexOf('Translated') !== -1
+          ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_NOTICE_DESC', {lng})
+          : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC', {lng});
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(hearingNotice.value.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link" aria-label="${documentLabel}">${hearingNotice.value.documentLink.document_filename}</a>`;
         const createdDatetime = hearingNotice.value.createdDatetime;
-        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC', {lng}), createdDatetime, lng);
+        const rows = getResponseSummaryRows(documentUrl, documentLabel, createdDatetime, lng);
         return new CourtResponseSummaryList(rows,createdDatetime);
       });
   }
