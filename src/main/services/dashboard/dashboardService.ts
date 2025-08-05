@@ -55,8 +55,9 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       //remove QM sections
       dashboard.items = dashboard.items.filter(item => !QMLIP_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+      console.log('isEACourt ->' + isEACourt);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
-
+      console.log('isGaOnlineFlag ->' + JSON.stringify(isGaOnlineFlag));
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       } else {
