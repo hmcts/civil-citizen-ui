@@ -38,7 +38,8 @@ export const buildPaymentDetailsSection = async (claim: Claim, claimId: string, 
 
   if(claim.getHasDefendantPaid()) {
     const amountToBePaid = judgmentSummaryDetails.total;
-    paymentDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_TOTAL_TO_BE_PAID', {lng}),
+    const labelKey = claim.isFullAdmission()? t('PAGES.CHECK_YOUR_ANSWER.FA_CCJ_TOTAL_TO_BE_PAID', {lng}): t('PAGES.CHECK_YOUR_ANSWER.PA_CCJ_TOTAL_TO_BE_PAID', {lng});
+    paymentDetailsSection.summaryList.rows.push(summaryRow(labelKey,
       amountToBePaid));
   }
 
