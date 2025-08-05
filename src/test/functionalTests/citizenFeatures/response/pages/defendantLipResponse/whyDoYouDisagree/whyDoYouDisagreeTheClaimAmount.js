@@ -53,8 +53,7 @@ class WhyDoYouDisagreeTheClaimAmount {
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/why-do-you-disagree');
     }
     await I.waitForContent('Why do you disagree with the claim amount?', config.WaitForText);
-    await I.see('The total amount claimed is £');
-    await I.see('This includes the claim fee and any interest.');
+    await I.see('The total amount, including any interest claimed to date, is £');
     await I.click(buttons.saveAndContinue);
     await I.see('There was a problem');
     await I.see('Enter text explaining why do you disagree');
