@@ -20,6 +20,7 @@ import {
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
+  FixedCosts,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
@@ -117,6 +118,8 @@ export class Claim {
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
+  fixedCosts?: FixedCosts;
+  ccjJudgmentFixedCostAmount?: string;
   specClaimTemplateDocumentFiles?: Document;
   caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;
