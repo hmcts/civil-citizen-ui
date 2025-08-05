@@ -14,7 +14,7 @@ class ConfirmationPage {
         break;
       }
       case 'PartAdmitAndPayImmediately': {
-        I.see('You\'ve said you owe £500.00 and offered to pay Miss Jane Doe immediately.');
+        I.see('You\'ve said you owe £500.00 plus the claim fee and any fixed costs claimed and offered to pay Miss Jane Doe immediately.');
         break;
       }
     }
