@@ -34,7 +34,7 @@ Scenario('Response with RejectAll and AlreadyPaid', async ({api}) => {
   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterTelephoneMediationDetails();
