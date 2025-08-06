@@ -4513,7 +4513,7 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "Mae ffi’r hawliad ac unrhyw gostau sefydlog a hawlwyd yn daladwy yn ogystal â’r swm a addefir.",
-      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
+      "YOU_MUST_CONTACT": "Os bydd yr hawlydd yn derbyn, rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi’u clirio ac wedi’u talu i mewn i’w cyfrif."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "A ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr?",
