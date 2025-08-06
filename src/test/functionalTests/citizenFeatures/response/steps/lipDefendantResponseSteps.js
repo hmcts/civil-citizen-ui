@@ -632,7 +632,7 @@ class ResponseSteps {
   }
 
   async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType, totalAmount) {
-    await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType,totalAmount);
+    await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType, totalAmount);
   }
 
   async EnterWhyYouDisagreeTheClaimAmountError(claimRef, responseType) {
