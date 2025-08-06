@@ -46,6 +46,36 @@ class ViewQuery {
     await I.waitForContent(subject, config.WaitForText);
     await I.see('Follow up message');
   }
+
+  async verifyClosedQuery(subject) {
+    await I.waitForContent('Messages to the court', config.WaitForText);
+    await I.see('Closed');
+    await I.see(subject);
+    await I.click(subject);
+    await I.waitForContent(subject, config.WaitForText);
+    await I.see('Caseworker closing query');
+    await I.see('This message has been closed by court staff');
+  }
+
+  async verifyQueryStatus(subject, sentBy, status) {
+    await I.waitForContent('Messages to the court', config.WaitForText);
+    I.see(subject);
+    await I.waitForElement('tr.govuk-table__row', config.WaitForText);
+    const rowLocator = locate('tr.govuk-table__row').withDescendant(locate('a').withText(subject));
+    within(rowLocator, () => {
+      I.see(sentBy);
+      I.see(status);
+      I.see('Court staff');
+    });
+
+    await I.click(subject);
+    await I.waitForContent(subject, config.WaitForText);
+
+    if (status === 'Closed') {
+      await I.see('Caseworker closing query');
+      await I.see('This message has been closed by court staff');
+    }
+  }
 }
 
 module.exports = ViewQuery;
