@@ -23,6 +23,8 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const isWelshEnabledForMainCase = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
@@ -1005,6 +1007,32 @@ describe('View Orders And Notices Service', () => {
       expect(result.documents.length).toEqual(1);
     });
 
+    it('should get court officer order from collection when caseworkerEvent toggle on', async () => {
+      //given
+      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.courtOfficersOrders =
+        [new FinalOrderDocumentCollection(setUpCourtOfficersOrder().id, setUpCourtOfficersOrder().value),
+          new FinalOrderDocumentCollection(setUpTranslatedCourtOfficersOrder().id, setUpTranslatedCourtOfficersOrder().value)];
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      const expectedDocument1 = new DocumentInformation(
+        undefined,
+        '26 April 2023',
+        new DocumentLinkInformation('/case/test3/view-documents/33c8ba72-6193-48ca-88cd-b57741c558c4', '2025-08-04_hearing-centre-admin-01@example.com Admin.pdf'),
+      );
+      const expectedDocument2 = new DocumentInformation(
+        undefined,
+        '26 April 2023',
+        new DocumentLinkInformation('/case/test3/view-documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432', 'translated_court_off_order.pdf'),
+      );
+      //Then
+      expect(result.documents.length).toEqual(2);
+      expect(result.documents[0]).toEqual(expectedDocument1);
+      expect(result.documents[1]).toEqual(expectedDocument2);
+    });
+
     it('should not get court officer order when caseworkerEvent toggle off', async () => {
       //given
       (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(false);
@@ -1016,19 +1044,6 @@ describe('View Orders And Notices Service', () => {
       const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       expect(result.documents.length).toEqual(0);
-    });
-
-    it('should get translated court officer order when caseworkerEvent toggle on', async () => {
-      //given
-      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(true);
-      const claim = new Claim();
-      claim.caseProgression = new CaseProgression();
-      const documentName = 'test_000MC001.pdf';
-      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      expect(result.documents.length).toEqual(1);
     });
 
     it('should not get translated court officer order when caseworkerEvent toggle off', async () => {
@@ -1075,6 +1090,44 @@ describe('View Orders And Notices Service', () => {
       'documentSize': 45794,
       'documentType': documentType,
       'createdDatetime': new Date('2022-06-21T14:15:19'),
+    };
+  }
+
+  function setUpCourtOfficersOrder() {
+    return {
+      id: 'c38cf5d3-69a5-4643-a5f7-06c0e3343e82',
+      'value': {
+        'createdBy': 'Civil',
+        'documentLink': {
+          'category_id': 'caseManagementOrders',
+          'document_url': 'http://dm-store:8080/documents/33c8ba72-6193-48ca-88cd-b57741c558c4',
+          'document_filename': '2025-08-04_hearing-centre-admin-01@example.com Admin.pdf',
+          'document_binary_url': 'http://dm-store:8080/documents/33c8ba72-6193-48ca-88cd-b57741c558c4/binary',
+        },
+        'documentName': 'Order_2025-08-04.pdf',
+        'documentSize': 20222,
+        'documentType': DocumentType.COURT_OFFICER_ORDER,
+        'createdDatetime': FIXED_DATE,
+      },
+    };
+  }
+
+  function setUpTranslatedCourtOfficersOrder() {
+    return {
+      'id': '3dd8b32b-4510-4345-879f-e94a4503b692',
+      'value': {
+        'createdBy': 'Civil',
+        'documentLink': {
+          'category_id': 'caseManagementOrders',
+          'document_url': 'http://dm-store:8080/documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432',
+          'document_filename': 'translated_court_off_order.pdf',
+          'document_binary_url': 'http://dm-store:8080/documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432/binary',
+        },
+        'documentName': 'translated_court_off_order.pdf',
+        'documentSize': 0,
+        'documentType': DocumentType.COURT_OFFICER_ORDER_TRANSLATED_DOCUMENT,
+        'createdDatetime': FIXED_DATE,
+      },
     };
   }
 
