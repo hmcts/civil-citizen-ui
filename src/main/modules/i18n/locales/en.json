@@ -4513,7 +4513,8 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "The claim fee and any fixed costs claimed are payable in addition to the claim amount admitted.",
-      "YOU_MUST_CONTACT": "If the claimant accepts, you must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
+      "YOU_MUST_CONTACT_FA": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.",
+      "YOU_MUST_CONTACT_PA": "If the claimant accepts, you must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
