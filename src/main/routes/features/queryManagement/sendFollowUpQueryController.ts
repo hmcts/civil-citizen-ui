@@ -102,7 +102,7 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
 
       if (action?.includes('[deleteFile]')) {
         const index = action.split(/[[\]]/).filter((word: string) => word !== '')[0];
-        await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery );
+        await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery, true);
         return res.redirect(`${currentUrl}`);
       }
       sendFollowUpQuery.parentId = queryId;
