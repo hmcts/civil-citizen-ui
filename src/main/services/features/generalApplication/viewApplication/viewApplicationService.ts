@@ -227,7 +227,10 @@ export const getResponseFromCourtSection = async (req: AppRequest, applicationId
 };
 
 const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: string, createdBy: string) => {
-  const gaAddlDocuments = applicationResponse?.case_data?.gaAddlDoc;
+  const addlDoc = applicationResponse?.case_data?.gaAddlDoc;
+  const preTranslationDocs = createdBy === 'Applicant' ? applicationResponse?.case_data?.preTranslationGaDocsApplicant : applicationResponse?.case_data?.preTranslationGaDocsRespondent;
+  const gaAddlDocuments = [...(addlDoc ?? []), ...(preTranslationDocs ?? [])];
+
   let addlnDocInfoArray : DocumentInformation[] = [];
   if(gaAddlDocuments) {
     addlnDocInfoArray = gaAddlDocuments.filter(gaAddlDocument => gaAddlDocument.value.createdBy === createdBy)
