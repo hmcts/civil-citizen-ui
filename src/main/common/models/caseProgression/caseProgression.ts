@@ -30,4 +30,6 @@ export class CaseProgression{
   requestForReconsiderationDocumentRes?: CaseDocument;
   courtOfficerOrder?: CaseDocument;
   translatedCourtOfficerOrder?: CaseDocument;
+  courtOfficersOrders?: FinalOrderDocumentCollection[];
+
 }
