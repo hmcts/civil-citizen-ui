@@ -76,7 +76,7 @@ xui-webapp:
   nodejs:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
-    image: hmctspublic.azurecr.io/xui/webapp:latest
+    image: hmctspublic.azurecr.io/xui/webapp:pr-4526
     ingressHost: xui-${SERVICE_FQDN}
     devcpuRequests: 500m
     devmemoryRequests: 1Gi
@@ -381,7 +381,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6704'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
