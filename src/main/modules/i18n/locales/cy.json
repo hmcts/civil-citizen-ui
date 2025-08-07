@@ -3854,7 +3854,6 @@
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
-        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "DISMISSAL_ORDER": "Gorchymyn diddymu",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
@@ -5987,6 +5986,9 @@
     },
     "WELSH_PARTY" : {
       "MESSAGE" : "Mae parti yn yr achos hwn wedi nodi Cymraeg fel dewis iaith. Gallai oedi cyn gweld dogfennau ddigwydd yn ystod prosesau cyfieithu."
+    },
+    "CUI_LIP_V_LR" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
     }
   }
 }
