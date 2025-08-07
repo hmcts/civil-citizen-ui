@@ -19,6 +19,11 @@ async function claimSetup(api) {
   claimNumber = caseData.legacyCaseReference;
 }
 
+async function closeQuery(qmSteps, caseId, caseworkerUser, query, queryType) {
+  await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType, true);
+  console.log('Caseworker closed the query');
+}
+
 async function loginAndSelectClaim({I, user}) {
   await LoginSteps.EnterCitizenCredentials(user.email, user.password);
   await I.amOnPage('/dashboard');
@@ -26,37 +31,46 @@ async function loginAndSelectClaim({I, user}) {
 }
 
 async function handleSolicitorQueries(qmSteps, caseId, solicitorUser, caseworkerUser, queryType, isHearingRelated) {
-  const query = await qmSteps.raiseLRQuery(caseId, solicitorUser, queryType, isHearingRelated);
+  let query = await qmSteps.raiseLRQuery(caseId, solicitorUser, queryType, isHearingRelated);
   await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType);
   await qmSteps.followUpOnLRQuery(caseId, solicitorUser, query, queryType);
+  return  query;
 }
 
 async function handleLipQueries(qmSteps, caseId, citizenUser, caseworkerUser, queryType, isHearingRelated) {
-  const query = await qmSteps.raiseLipQuery(caseId, citizenUser, queryType, isHearingRelated);
+  let query = await qmSteps.raiseLipQuery(caseId, citizenUser, queryType, isHearingRelated);
   await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType);
   await qmSteps.followUpOnLipQuery(caseId, citizenUser, query, queryType);
+  return query;
 }
 
 Before(async ({api}) => {
   await claimSetup(api);
 });
 
-Scenario('LR v LIP NOC Claimant and Defendant send message to court and follow up', async ({noc, qm, I}) => {
+Scenario('LR v LIP NOC Claimant and Defendant send message to court, follow up and admin closes query', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForApplicant1Solicitor(claimRef, config.applicantSolicitorUser);
   await handleSolicitorQueries(qm, claimRef, config.applicantSolicitorUser, config.ctscAdmin, PUBLIC_QUERY, false);
 
-  await handleLipQueries(qm, claimRef, config.defendantCitizenUser, config.ctscAdmin, PUBLIC_QUERY, true);
+  const latestQuery = await handleLipQueries(qm, claimRef, config.defendantCitizenUser, config.ctscAdmin, PUBLIC_QUERY, true);
 
   await loginAndSelectClaim({I, user: config.defendantCitizenUser});
   await ResponseSteps.verifyUserQueryInDashboard();
+
+  await closeQuery(qm, claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
+  await loginAndSelectClaim({I, user: config.defendantCitizenUser});
+  await ResponseSteps.verifyClosedQuery('Defendant Query');
 });
 
-Scenario('LIP v LR NOC Claimant and Defendant send message to court and follow up', async ({noc, qm, I}) => {
+Scenario('LIP v LR NOC Claimant and Defendant send message to court, follow up and admin closes query', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForRespondent1Solicitor(claimRef, config.defendantSolicitorUser);
   await handleLipQueries(qm, claimRef, config.claimantCitizenUser, config.ctscAdmin, PUBLIC_QUERY, false);
 
-  await handleSolicitorQueries(qm, claimRef, config.defendantSolicitorUser, config.ctscAdmin, PUBLIC_QUERY, true);
-
+  const latestQuery = await handleSolicitorQueries(qm, claimRef, config.defendantSolicitorUser, config.ctscAdmin, PUBLIC_QUERY, true);
   await loginAndSelectClaim({I, user: config.claimantCitizenUser});
   await ResponseSteps.verifyUserQueryInDashboard();
+
+  await closeQuery(qm, claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
+  await loginAndSelectClaim({I, user: config.claimantCitizenUser});
+  await ResponseSteps.verifyClosedQuery('Defendant Query');
 });
