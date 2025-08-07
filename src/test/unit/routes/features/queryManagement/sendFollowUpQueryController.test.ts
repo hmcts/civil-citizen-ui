@@ -9,7 +9,7 @@ import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
-import * as QueryManagementService from "services/features/queryManagement/queryManagementService";
+import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
