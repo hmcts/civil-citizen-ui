@@ -14,11 +14,11 @@ class SolveProblem {
       },
       VIEW_DOCUMENTS_ON_MY_ACCOUNT: {
         heading: 'See the documents on my account',
-        description: 'Get support to view the documents on your account\n',
+        description: 'Get support to view the documents on your account',
       },
       SOLVE_PROBLEM_SOMETHING_ELSE: {
-        heading: 'Enter message details',
-        description: 'Message subject',
+        heading: 'Send a message',
+        description: 'Sharing this message with the other party',
       },
     };
   }
