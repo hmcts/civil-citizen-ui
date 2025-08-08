@@ -39,8 +39,8 @@ import { t } from 'i18next';
 import {Claim} from 'models/claim';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import {AppRequest} from 'models/AppRequest';
-import config from "config";
-import {CivilServiceClient} from "client/civilServiceClient";
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
