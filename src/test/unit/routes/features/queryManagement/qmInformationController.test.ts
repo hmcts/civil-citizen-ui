@@ -11,14 +11,12 @@ import {getCancelUrl, getCaption} from 'services/features/queryManagement/queryM
 import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
-import * as utilityService from 'modules/utilityService';
 import {CaseRole} from 'form/models/caseRoles';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-
-jest.mock('modules/utilityService');
 
 const CONTROLLER_URL = QM_INFORMATION_URL;
 const FOLLOW_UP_URL = QM_FOLLOW_UP_URL;
@@ -29,7 +27,6 @@ function getControllerUrl(qmType: WhatToDoTypeOption, qmQualifyOption: Qualifyin
 
 const mockGetCaption = getCaption as jest.Mock;
 const mockGetCancelUrl = getCancelUrl as jest.Mock;
-const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
 describe('Query management Information controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -44,6 +41,7 @@ describe('Query management Information controller', () => {
   describe('on GET', () => {
     beforeEach(() => {
       jest.resetAllMocks();
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(new Claim());
     });
 
     it('should return follow up page ', async () => {
@@ -59,10 +57,6 @@ describe('Query management Information controller', () => {
       [QualifyingQuestionTypeOption.GA_OFFLINE, 'Make an application to the court'],
     ])('should return CHANGE_CASE information for %s', async (questionType, expectedText) => {
       mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.CHANGE_CASE');
-
-      const claim = new Claim();
-      mockGetClaimById.mockImplementation(() => claim);
-
       await request(app)
         .get(getControllerUrl(WhatToDoTypeOption.CHANGE_CASE, questionType))
         .expect((res) => {
@@ -84,9 +78,10 @@ describe('Query management Information controller', () => {
 
       const claim = new Claim();
       if (isCaseProgression) {
-        claim.ccdState = CaseState.CASE_PROGRESSION;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       }
-      mockGetClaimById.mockImplementation(() => claim);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
 
       await request(app)
         .get(getControllerUrl(WhatToDoTypeOption.SEND_DOCUMENTS, questionType))
@@ -104,9 +99,6 @@ describe('Query management Information controller', () => {
     [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT, 'See the documents on my account', 'Get support to view the documents on your account'],
   ])('should return SOLVE_PROBLEM information for %s', async (questionType, title:string, subtitle: string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
-
-    const claim = new Claim();
-    mockGetClaimById.mockImplementation(() => claim);
 
     await request(app)
       .get(getControllerUrl(WhatToDoTypeOption.SOLVE_PROBLEM, questionType))
@@ -130,24 +122,21 @@ describe('Query management Information controller', () => {
 
     const claim = new Claim();
     claim.caseRole = CaseRole.DEFENDANT;
-    mockGetClaimById.mockImplementation(() => {
-      if (isCcjLinkEnabled) {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate()-1);
+    if (isCcjLinkEnabled) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate()-1);
 
-        claim.caseRole = CaseRole.CLAIMANT;
-        claim.respondent1ResponseDeadline = yesterday;
-        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      }
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.respondent1ResponseDeadline = yesterday;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+    }
 
-      return claim;
-    });
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
 
     await request(app)
       .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, questionType))
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(title);
         expect(res.text).toContain(title);
         expect(res.text).toContain(textLink);
         expect(res.text).toContain('Get an update on my case');
@@ -160,15 +149,16 @@ describe('Query management Information controller', () => {
   ])('should return GET_UPDATE information for %s', async (questionType, title:string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
 
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+
     const claim = new Claim();
     claim.caseRole = CaseRole.DEFENDANT;
     claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-    mockGetClaimById.mockImplementation(() => {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate()-1);
-      claim.respondent1ResponseDeadline = yesterday;
-      return claim;
-    });
+
+    claim.respondent1ResponseDeadline = yesterday;
+
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
 
     await request(app)
       .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, questionType))
@@ -191,13 +181,12 @@ describe('Query management Information controller', () => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_UPDATE');
     const isSettleClaimAndIsClaimant = QualifyingQuestionTypeOption.SETTLE_CLAIM && isClaimant;
     const claim = new Claim();
-    mockGetClaimById.mockImplementation(() => {
-      if (isSettleClaimAndIsClaimant) {
-        claim.caseRole = CaseRole.CLAIMANT;
-        claim.ccdState = CaseState.CASE_PROGRESSION;
-      }
-      return claim;
-    });
+    if (isSettleClaimAndIsClaimant) {
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.CASE_PROGRESSION;
+    }
+
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
 
     await request(app)
       .get(getControllerUrl(WhatToDoTypeOption.SOLVE_PROBLEM, questionType))
