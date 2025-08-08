@@ -419,7 +419,7 @@ const getCourtOfficerOrder = (claim: Claim, claimId: string, lng: string) => {
         : t('PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER', {lng});
       caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lng, documentLabel));
     });
-  } else if (document) {
+  } else {
     caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lng, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
   }
   return caseDocuments;
