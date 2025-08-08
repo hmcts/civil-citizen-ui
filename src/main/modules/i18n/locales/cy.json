@@ -3836,6 +3836,7 @@
         "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Dogfen Crynodeb Cais wedi’i Chyfieithu ",
 		    "APPROVE_EDIT_DOCUMENT": "Cymeradwyo neu olygu gorchymyn",
         "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
+        "TRANSLATED_GENERAL_ORDER": "Cais am Orchymyn Cyffredinol wedi'i Gyfieithu",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Ymateb y llys i’r cais",
         "DATE_RESPONSE": "Dyddiad yr ymateb",
@@ -3849,6 +3850,7 @@
         "EITHER_PARTIES": "Gall ceisiadau ac ymatebion gael eu gwneud gan y naill barti neu’r llall mewn achos",
         "HEARING_NOTICE" : "Hysbysiad o Wrandawiad",
         "HEARING_NOTICE_DESC" : "Mae yna hysbysiad o wrandawiad",
+        "TRANSLATED_HEARING_NOTICE_DESC": "Cais am Hysbysiad o Wrandawiad wedi'i Gyfieithu",
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
@@ -5985,6 +5987,9 @@
     },
     "WELSH_PARTY" : {
       "MESSAGE" : "Mae parti yn yr achos hwn wedi nodi Cymraeg fel dewis iaith. Gallai oedi cyn gweld dogfennau ddigwydd yn ystod prosesau cyfieithu."
+    },
+    "CUI_LIP_V_LR" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
     }
   }
 }

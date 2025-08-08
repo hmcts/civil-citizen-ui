@@ -3836,6 +3836,7 @@
         "TRANSLATED_APPLICATION_DRAFT_DOCUMENT": "Translated Application Summary Document",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "GENERAL_ORDER" : "General Order",
+        "TRANSLATED_GENERAL_ORDER": "Translated General Order Request",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
@@ -3849,6 +3850,7 @@
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_NOTICE_DESC" : "There is a hearing notice",
+        "TRANSLATED_HEARING_NOTICE_DESC": "Translated Hearing Notice Request",
         "HEARING_ORDER" : "Hearing Order",
         "TRANSLATED_HEARING_ORDER": "Translated Hearing Order Request",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
@@ -5985,6 +5987,9 @@
     },
     "WELSH_PARTY" : {
       "MESSAGE" : "A party in this case has expressed a Welsh language preference. Delays to visibility of documents could be caused during translation processes."
+    },
+    "CUI_LIP_V_LR" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 11th August 2025 and 03:45 on 12th August 2025."
     }
   }
 }
