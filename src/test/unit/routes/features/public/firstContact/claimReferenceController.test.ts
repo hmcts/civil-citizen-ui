@@ -16,7 +16,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Respond to Claim - Claim Reference Controller', () => {
-  const validClaimNumberV1 = '123MC123';
+  const validClaimNumberV1 = '123mc123';
   const validClaimNumberV2 = '123DC123';
   const civilServiceUrl = config.get<string>('services.civilService.url');
 
