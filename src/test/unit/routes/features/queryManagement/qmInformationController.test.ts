@@ -66,31 +66,32 @@ describe('Query management Information controller', () => {
         });
     });
 
-    it.each([
-      [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
-      [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
-      [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
-      [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, false, 'You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.'],
-      [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, false, 'You can apply to change the details of the hearing, such as:'],
-      [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, false, 'You can ask for help and support during your hearing.'],
-    ])('should return SEND_DOCUMENTS information for %s', async (questionType, isCaseProgression, expectedText) => {
-      mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
+  });
 
-      const claim = new Claim();
-      if (isCaseProgression) {
-        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      }
+  it.each([
+    [QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS, false, 'Enforcement requests cannot be uploaded using the Money claims system.'],
+    [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, true, 'To upload evidence to your case'],
+    [QualifyingQuestionTypeOption.CLAIM_DOCUMENTS_AND_EVIDENCE, false, 'You cannot upload claim evidence yet'],
+    [QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE, false, 'You will need to say why you need the hearing date changed and supply evidence of the need to change the date, for example, evidence of a hospital appointment or holiday booking.'],
+    [QualifyingQuestionTypeOption.CHANGE_SOMETHING_ABOUT_THE_HEARING, false, 'You can apply to change the details of the hearing, such as:'],
+    [QualifyingQuestionTypeOption.ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING, false, 'You can ask for help and support during your hearing.'],
+  ])('should return SEND_DOCUMENTS information for %s', async (questionType, isCaseProgression, expectedText) => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+    const claim = new Claim();
+    if (isCaseProgression) {
+      claim.ccdState = CaseState.CASE_PROGRESSION;
+    }
 
-      await request(app)
-        .get(getControllerUrl(WhatToDoTypeOption.SEND_DOCUMENTS, questionType))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(expectedText);
-          expect(res.text).toContain('Anything else');
-        });
-    });
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.SEND_DOCUMENTS, questionType))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(expectedText);
+        expect(res.text).toContain('Anything else');
+      });
   });
 
   it.each([
@@ -99,7 +100,7 @@ describe('Query management Information controller', () => {
     [QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT, 'See the documents on my account', 'Get support to view the documents on your account'],
   ])('should return SOLVE_PROBLEM information for %s', async (questionType, title:string, subtitle: string ) => {
     mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS');
-
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(new Claim());
     await request(app)
       .get(getControllerUrl(WhatToDoTypeOption.SOLVE_PROBLEM, questionType))
       .expect((res) => {
