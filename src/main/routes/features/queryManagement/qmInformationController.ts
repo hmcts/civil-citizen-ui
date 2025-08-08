@@ -37,9 +37,13 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
 import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
+import {AppRequest} from 'models/AppRequest';
+import config from "config";
+import {CivilServiceClient} from "client/civilServiceClient";
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const qmInformationController = Router();
 
 const qmStartViewPath = 'features/queryManagement/qm-information-template.njk';
@@ -92,9 +96,9 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         if(claim.isCaseProgressionCaseState()) {
           pageSection
-            .addLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,UPLOAD_YOUR_DOCUMENTS_URL), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_1.TEXT_BEFORE`, '.')
+            .addFullStopLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId,UPLOAD_YOUR_DOCUMENTS_URL), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_1.TEXT_BEFORE`)
             .addParagraph(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.PARAGRAPH_1`)
-            .addLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, true)), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT_BEFORE`, '.');
+            .addFullStopLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, true)), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT_BEFORE`);
         } else {
           pageSection
             .addSubTitle(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.SUBTITLE_1`)
@@ -326,7 +330,7 @@ qmInformationController.get([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req,
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimId = req.params.id;
   const qmType = req.params.qmType as WhatToDoTypeOption;
-  const claim:Claim = await getClaimById(claimId, req,true);
+  const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;
   const isFollowUpScreen = req.path === QM_FOLLOW_UP_URL.replace(':id', claimId);
   await renderView(claimId,claim, isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
