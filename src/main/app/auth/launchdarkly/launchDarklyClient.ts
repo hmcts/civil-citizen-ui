@@ -171,14 +171,11 @@ export async function isCaseWorkerEventsEnabled(): Promise<boolean> {
 }
 
 export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
-  const { DateTime } = require('luxon');
-  const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  return await getFlagValue(QUERY_MANAGEMENT, epoch) as boolean;
+  return false;
 }
 
 export async function isGaForWelshEnabled(): Promise<boolean> {
-  return await getFlagValue(GA_FOR_WELSH) as boolean;
+  return false;
 }
 
 export async function isWelshEnabledForMainCase(): Promise<boolean> {
@@ -193,5 +190,5 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
 }
 
 export async function isLRQueryManagementEnabled(): Promise<boolean> {
-  return await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+  return false;
 }
