@@ -33,31 +33,19 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn build
-      - name: Generate tsconfig.strict.json for changed files
+      - name: Run TypeScript strict checks on changed files
         run: |
           git fetch origin master
           CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
-          echo "Changed files: $CHANGED_FILES"
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "Running strict checks on changed files..."
+            for file in $CHANGED_FILES; do
+              yarn tsc --strict --noEmit "$file"
+            done
+          else
+            echo "No TypeScript files changed."
+          fi
 
-          echo '{' > tsconfig.strict.json
-          echo '  "extends": "./tsconfig.json",' >> tsconfig.strict.json
-          echo '  "compilerOptions": {' >> tsconfig.strict.json
-          echo '    "strict": true,' >> tsconfig.strict.json
-          echo '    "noEmit": true' >> tsconfig.strict.json
-          echo '  },' >> tsconfig.strict.json
-          echo '  "include": [' >> tsconfig.strict.json
-
-          for file in $CHANGED_FILES; do
-            echo "    \"$file\"," >> tsconfig.strict.json
-          done
-
-          # Remove trailing comma and close array/object
-          sed -i '$ s/,$//' tsconfig.strict.json
-          echo '  ]' >> tsconfig.strict.json
-          echo '}' >> tsconfig.strict.json
-
-      - name: Run TypeScript strict checks
-        run: yarn tsc --project tsconfig.strict.json
 
 
   build:
