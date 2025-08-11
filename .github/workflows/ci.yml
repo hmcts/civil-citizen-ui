@@ -42,7 +42,7 @@ jobs:
           cat changed-files.txt
       - name: Run TypeScript with strictNullChecks
         run: |
-          yarn tsc --noEmit --strictNullChecks 2> all-errors.txt || true
+          yarn tsc --noEmit --strictNullChecks > /dev/null 2> all-errors.txt || true
       - name: Filter errors to changed files
         run: |
           echo "Filtering errors to changed files..."
