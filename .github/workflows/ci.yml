@@ -38,16 +38,15 @@ jobs:
         run: |
           git fetch origin master
           git diff --name-only origin/master -- '*.ts' '*.tsx' > changed-files.txt
+          echo "Changed files:"
           cat changed-files.txt
-
       - name: Run TypeScript with strictNullChecks
         run: |
-          yarn tsc --noEmit --strictNullChecks 2> tsc-errors.txt || true
-
+          yarn tsc --noEmit --strictNullChecks 2> all-errors.txt || true
       - name: Filter errors to changed files
         run: |
-          echo "Checking for errors in changed files..."
-          grep -Ff changed-files.txt tsc-errors.txt > filtered-errors.txt || true
+          echo "Filtering errors to changed files..."
+          grep -Ff changed-files.txt all-errors.txt > filtered-errors.txt || true
           cat filtered-errors.txt
           if [ -s filtered-errors.txt ]; then
             echo "TypeScript errors found in changed files"
@@ -55,6 +54,7 @@ jobs:
           else
             echo "No TypeScript errors in changed files"
           fi
+
 
 
 
