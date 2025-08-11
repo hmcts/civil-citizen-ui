@@ -33,19 +33,29 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn build
-      - name: Run TypeScript strict checks on changed files
+      - name: Get changed TypeScript files
+        id: changed
         run: |
           git fetch origin master
-          CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
-          echo "Changed files: $CHANGED_FILES"
-          if [ -n "$CHANGED_FILES" ]; then
-            echo "Running strict checks on changed files..."
-            for file in $CHANGED_FILES; do
-              yarn tsc "$file" --noEmit --strictNullChecks --moduleResolution node --esModuleInterop --skipLibCheck
-            done
+          git diff --name-only origin/master -- '*.ts' '*.tsx' > changed-files.txt
+          cat changed-files.txt
+
+      - name: Run TypeScript with strictNullChecks
+        run: |
+          yarn tsc --noEmit --strictNullChecks 2> tsc-errors.txt || true
+
+      - name: Filter errors to changed files
+        run: |
+          echo "Checking for errors in changed files..."
+          grep -Ff changed-files.txt tsc-errors.txt > filtered-errors.txt || true
+          cat filtered-errors.txt
+          if [ -s filtered-errors.txt ]; then
+            echo "TypeScript errors found in changed files"
+            exit 1
           else
-            echo "No TypeScript files changed."
+            echo "No TypeScript errors in changed files"
           fi
+
 
 
 
