@@ -21,49 +21,6 @@ env:
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK: test
 
-jobs:
-  strict-ts-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 21.6.1
-      - name: Install dependencies
-        run: yarn install
-      - name: Build
-        run: yarn build
-      - name: Get changed TypeScript files
-        id: changed
-        run: |
-          git fetch origin master
-          git diff --name-only origin/master -- '*.ts' '*.tsx' > changed-files.txt
-          echo "Changed files:"
-          cat changed-files.txt
-      - name: Run TypeScript with strictNullChecks
-        run: |
-          yarn tsc --noEmit --strictNullChecks 2> all-errors.txt || true
-      - name: Filter errors to changed files
-        run: |
-          echo "Filtering errors to changed files..."
-          # Extract just the filenames from changed files
-          awk -F/ '{print $NF}' changed-files.txt > changed-filenames.txt
-          # Match errors that mention any of the changed filenames
-          grep -Ff changed-filenames.txt all-errors.txt > filtered-errors.txt || true
-
-          cat filtered-errors.txt
-          if [ -s filtered-errors.txt ]; then
-            echo "TypeScript errors found in changed files"
-            exit 1
-          else
-            echo "No TypeScript errors in changed files"
-          fi
-
-
-
-
-
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -73,6 +30,45 @@ jobs:
           node-version: 21.6.1
       - name: Install
         run: yarn install && yarn playwright install
+     -  name: TypeScript strictNullChecks on changed files
+        if: github.event_name == 'pull_request'
+        uses: tj-actions/changed-files@v42
+        id: changed
+        with:
+          files: |
+            **/*.ts
+          files_ignore: |
+            **/*.d.ts
+            src/test/**
+      - name: Run tsc with strictNullChecks for changed files
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Changed TS files:\n${{ steps.changed.outputs.all_changed_files }}"
+          if [ -z "${{ steps.changed.outputs.all_changed_files }}" ]; then
+            echo "No TypeScript file changes detected. Skipping strict null checks."
+            exit 0
+          fi
+
+          # Build JSON array of changed TS files
+          FILES=( ${{ steps.changed.outputs.all_changed_files }} )
+          INCLUDES=$(printf '"%s", ' "${FILES[@]}")
+          INCLUDES="[${INCLUDES%, }]"
+
+          # Create a temporary tsconfig that extends the project's config
+          cat > tsconfig.strict-changed.json <<EOF
+          {
+            "extends": "./tsconfig.json",
+            "compilerOptions": {
+              "noEmit": true,
+              "strictNullChecks": true,
+              "skipLibCheck": true
+            },
+            "include": ${INCLUDES}
+          }
+          EOF
+
+          # Run TypeScript compiler against only changed files with strictNullChecks
+          ./node_modules/.bin/tsc -p tsconfig.strict-changed.json --pretty false
       - name: Build
         run: yarn build
       - name: Starting WireMock , starting ui , wait and run e2e test
