@@ -27,7 +27,8 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('No response submitted, date agreed upon request time', async () => {
+//Skipped dependant on the release DTSCCI-2558
+Scenario.skip('No response submitted, date agreed upon request time', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, iHaveAlreadyAgreedMoretime);
   await ResponseSteps.DefendantSummaryPage(claimRef);

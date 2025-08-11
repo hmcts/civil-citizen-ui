@@ -165,7 +165,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDateClaimant: (amount) => {
     return {
       title: 'Response to the claim',
-      content: ['Sir John Doe has offered to pay', `£${amount} by`],
+      content: ['Sir John Doe has offered to pay', `£${amount} plus the claim fee by`],
       nextSteps: 'View and respond',
     };
   },

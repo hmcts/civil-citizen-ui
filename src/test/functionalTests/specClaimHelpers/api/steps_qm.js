@@ -87,11 +87,11 @@ module.exports = {
     const newMessage = (await initialQueryMessage(partyName, apiRequest.getTokens().userId, isHearingRelated));
     return triggerCaseworkerQueryEvent(caseId, RAISE_QUERY_EVENT, queryType, newMessage);
   },
-  respondToQuery: async (caseId, user, initialQueryMessage, queryType) => {
+  respondToQuery: async (caseId, user, initialQueryMessage, queryType, closeQuery = false) => {
     console.log(`Responding to query as: ${user.email}`);
     await apiRequest.setupTokens(user);
-    const newMessage = await queryResponseMessage(initialQueryMessage, apiRequest.getTokens().userId);
-    await triggerCaseworkerQueryEvent(caseId, RESPOND_QUERY_EVENT, queryType, newMessage);
+    const newMessage = await queryResponseMessage(initialQueryMessage, apiRequest.getTokens().userId, closeQuery);
+    return await triggerCaseworkerQueryEvent(caseId, RESPOND_QUERY_EVENT, queryType, newMessage);
   },
   followUpOnLRQuery: async (caseId, user, initialQueryMessage, queryType) => {
     console.log(`Following up on query as: ${user.email}`);

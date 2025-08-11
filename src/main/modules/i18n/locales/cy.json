@@ -5987,6 +5987,9 @@
     },
     "WELSH_PARTY" : {
       "MESSAGE" : "Mae parti yn yr achos hwn wedi nodi Cymraeg fel dewis iaith. Gallai oedi cyn gweld dogfennau ddigwydd yn ystod prosesau cyfieithu."
+    },
+    "CUI_LIP_V_LR" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
     }
   }
 }
