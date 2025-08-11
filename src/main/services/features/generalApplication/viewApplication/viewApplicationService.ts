@@ -243,13 +243,13 @@ const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: strin
       .sort((item1,item2) => {
         return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
       }).map(gaAddlDoc => {
-        return setUpDocumentLinkObject(gaAddlDoc?.value?.documentLink, gaAddlDoc?.value?.createdDatetime, applicationResponse?.id, lang,  getDocumentLabel(gaAddlDoc));
+        return setUpDocumentLinkObject(gaAddlDoc?.value?.documentLink, gaAddlDoc?.value?.createdDatetime, applicationResponse?.id, lang,  getAddlDocumentLabel(gaAddlDoc));
       });
   }
   return addlnDocInfoArray;
 };
 
-const getDocumentLabel = (additionalDocument: CcdGeneralApplicationAddlDocument): string => {
+const getAddlDocumentLabel = (additionalDocument: CcdGeneralApplicationAddlDocument): string => {
   switch (additionalDocument?.value?.documentType) {
     case DocumentType.WRITTEN_REPRESENTATION_APPLICANT_TRANSLATED:
       return 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_APPLICANT';
