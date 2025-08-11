@@ -45,27 +45,39 @@ jobs:
           yarn tsc --noEmit --strictNullChecks > /dev/null 2> all-errors.txt || true
       - name: Filter errors to changed files
         run: |
-          echo "Filtering errors to changed files..."
-          # Create a regex pattern from changed file paths
+          echo "Reading changed files:"
+          cat changed-files.txt
+
+          echo "Reading all TypeScript errors:"
+          cat all-errors.txt
+
+          echo "Starting error filtering..."
           CHANGED_FILES=$(cat changed-files.txt)
           MATCHED_ERRORS=""
-          while IFS= read -r line; do
+          MATCH_COUNT=0
+
+          while IFS= read -r error_line; do
+            echo "Checking error line: $error_line"
             for file in $CHANGED_FILES; do
-              if echo "$line" | grep -q "^$file"; then
-                MATCHED_ERRORS="$MATCHED_ERRORS\n$line"
+              if echo "$error_line" | grep -q "^$file"; then
+                echo "Matched error for file: $file"
+                MATCHED_ERRORS="$MATCHED_ERRORS\n$error_line"
+                MATCH_COUNT=$((MATCH_COUNT + 1))
                 break
               fi
             done
           done < all-errors.txt
 
-          if [ -n "$MATCHED_ERRORS" ]; then
+          echo "Total matched errors: $MATCH_COUNT"
+          if [ "$MATCH_COUNT" -gt 0 ]; then
             echo -e "$MATCHED_ERRORS" > filtered-errors.txt
+            echo "TypeScript errors found in changed files:"
             cat filtered-errors.txt
-            echo "TypeScript errors found in changed files"
             exit 1
           else
-            echo "No TypeScript errors in changed files"
+            echo "No TypeScript errors in changed files."
           fi
+
 
   build:
     runs-on: ubuntu-latest
