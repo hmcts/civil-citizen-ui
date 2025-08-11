@@ -46,7 +46,11 @@ jobs:
       - name: Filter errors to changed files
         run: |
           echo "Filtering errors to changed files..."
-          grep -Ff changed-files.txt all-errors.txt > filtered-errors.txt || true
+          # Extract just the filenames from changed files
+          awk -F/ '{print $NF}' changed-files.txt > changed-filenames.txt
+          # Match errors that mention any of the changed filenames
+          grep -Ff changed-filenames.txt all-errors.txt > filtered-errors.txt || true
+
           cat filtered-errors.txt
           if [ -s filtered-errors.txt ]; then
             echo "TypeScript errors found in changed files"
@@ -54,6 +58,7 @@ jobs:
           else
             echo "No TypeScript errors in changed files"
           fi
+
 
 
 
