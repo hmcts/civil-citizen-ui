@@ -43,10 +43,10 @@ jobs:
         run: |
           if [ -s changed-files.txt ]; then
             echo "Running strict checks on changed files..."
-            yarn tsc --noEmit --project tsconfig.strict.json $CHANGED_FILES
+            yarn tsc --noEmit --strict $(cat changed-files.txt)
           else
             echo "No TypeScript files changed."
-          fi  
+          fi
   build:
     runs-on: ubuntu-latest
     steps:
