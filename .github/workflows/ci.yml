@@ -33,7 +33,6 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn build
-      
       - name: Run and filter TypeScript errors for changed files
         run: |
           echo "Fetching changed TypeScript files..."
@@ -49,10 +48,16 @@ jobs:
           MATCHED_ERRORS=""
           MATCH_COUNT=0
 
+          # Convert changed files to array
+          IFS=$'\n' read -rd '' -a FILE_ARRAY <<<"$CHANGED_FILES"
+
+          # Loop through each line of TSC output
           while IFS= read -r error_line; do
             echo "Checking error line: $error_line"
-            for file in $CHANGED_FILES; do
-              if echo "$error_line" | grep -q "^$file"; then
+            for file in "${FILE_ARRAY[@]}"; do
+              # Match if error line contains the file path or just the filename
+              filename=$(basename "$file")
+              if echo "$error_line" | grep -q "$file" || echo "$error_line" | grep -q "$filename"; then
                 echo "Matched error for file: $file"
                 MATCHED_ERRORS="$MATCHED_ERRORS\n$error_line"
                 MATCH_COUNT=$((MATCH_COUNT + 1))
@@ -68,6 +73,7 @@ jobs:
           else
             echo "No TypeScript errors in changed files."
           fi
+
 
 
 
