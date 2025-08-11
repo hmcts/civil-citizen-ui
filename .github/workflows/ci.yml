@@ -22,6 +22,51 @@ env:
   LAUNCH_DARKLY_SDK: test
 
 jobs:
+  strict-ts-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.6.1
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Get changed TypeScript files
+        id: changed
+        run: |
+          git fetch origin master
+          git diff --name-only origin/master -- '*.ts' '*.tsx' > changed-files.txt
+          echo "Changed files:"
+          cat changed-files.txt
+      - name: Run TypeScript with strictNullChecks
+        run: |
+          yarn tsc --noEmit --strictNullChecks 2> all-errors.txt || true
+      - name: Filter errors to changed files
+        run: |
+          echo "Filtering errors to changed files..."
+          # Create a regex pattern from changed file paths
+          CHANGED_FILES=$(cat changed-files.txt)
+          MATCHED_ERRORS=""
+          while IFS= read -r line; do
+            for file in $CHANGED_FILES; do
+              if echo "$line" | grep -q "^$file"; then
+                MATCHED_ERRORS="$MATCHED_ERRORS\n$line"
+                break
+              fi
+            done
+          done < all-errors.txt
+
+          if [ -n "$MATCHED_ERRORS" ]; then
+            echo -e "$MATCHED_ERRORS" > filtered-errors.txt
+            cat filtered-errors.txt
+            echo "TypeScript errors found in changed files"
+            exit 1
+          else
+            echo "No TypeScript errors in changed files"
+          fi
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -31,106 +76,6 @@ jobs:
           node-version: 21.6.1
       - name: Install
         run: yarn install && yarn playwright install
-      - name: TypeScript strictNullChecks on changed files
-        if: ${{ github.event_name == 'pull_request' }}
-        id: changed
-        uses: tj-actions/changed-files@v42
-        with:
-          files: |
-            **/*.ts
-          files_ignore: |
-            **/*.d.ts
-            src/test/**
-      - name: Run tsc with strictNullChecks for changed files
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "Changed TS files:\n${{ steps.changed.outputs.all_changed_files }}"
-          if [ -z "${{ steps.changed.outputs.all_changed_files }}" ]; then
-            echo "No TypeScript file changes detected. Skipping strict null checks."
-            exit 0
-          fi
-
-          # Build JSON array of changed TS files
-          FILES=( ${{ steps.changed.outputs.all_changed_files }} )
-          INCLUDES=$(printf '"%s", ' "${FILES[@]}")
-          INCLUDES="[${INCLUDES%, }]"
-
-          # Persist changed files to a list for filtering diagnostics later
-          printf '%s\n' "${FILES[@]}" > .changed-ts-files.txt
-
-          # Create a temporary tsconfig that extends the project's config
-          cat > tsconfig.strict-changed.json <<EOF
-          {
-            "extends": "./tsconfig.json",
-            "compilerOptions": {
-              "noEmit": true,
-              "strict": false,
-              "strictNullChecks": true,
-              "noImplicitAny": false,
-              "noUnusedLocals": false,
-              "skipLibCheck": true
-            },
-            "include": ${INCLUDES}
-          }
-          EOF
-
-          # Run TypeScript compiler and capture all diagnostics
-          set +e
-          ./node_modules/.bin/tsc -p tsconfig.strict-changed.json --pretty false 2>&1 | tee .tsc-output.txt
-          TSC_EXIT=${PIPESTATUS[0]}
-          set -e
-
-          # Create a robust Node.js filter to include only diagnostics for changed files
-          mkdir -p scripts
-          cat > scripts/filter-tsc.js <<'EOS'
-          const fs = require('fs');
-          const path = require('path');
-
-          const changedList = fs.readFileSync('.changed-ts-files.txt', 'utf8')
-            .split(/\r?\n/)
-            .filter(Boolean)
-            .map(p => path.resolve(p));
-
-          const outLines = fs.readFileSync('.tsc-output.txt', 'utf8').split(/\r?\n/);
-
-          const fileHeader = /^(.+\.ts)\((\d+),(\d+)\):\s+error\s+TS\d+:/;
-          let currentBlock = [];
-          let currentFile = null;
-          const kept = [];
-
-          const flush = () => {
-            if (!currentBlock.length || !currentFile) { currentBlock = []; currentFile = null; return; }
-            const abs = path.resolve(currentFile);
-            // match if the diagnostic file is exactly one of the changed files
-            if (changedList.includes(abs)) {
-              kept.push(...currentBlock);
-            }
-            currentBlock = [];
-            currentFile = null;
-          };
-
-          for (const line of outLines) {
-            const m = line.match(fileHeader);
-            if (m) {
-              // New block begins; flush previous
-              flush();
-              currentFile = m[1];
-              currentBlock = [line];
-            } else {
-              if (currentBlock.length) currentBlock.push(line);
-            }
-          }
-          flush();
-
-          if (kept.length) {
-            console.log(kept.join('\n'));
-            process.exit(1);
-          } else {
-            process.exit(0);
-          }
-          EOS
-
-          node scripts/filter-tsc.js || exit 1
       - name: Build
         run: yarn build
       - name: Starting WireMock , starting ui , wait and run e2e test
