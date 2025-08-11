@@ -21,6 +21,7 @@ env:
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK: test
 
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
