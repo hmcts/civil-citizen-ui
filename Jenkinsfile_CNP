@@ -12,9 +12,9 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "CIV-17538-request-for-consideration"
+def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-17562-grant-wlu-access"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
