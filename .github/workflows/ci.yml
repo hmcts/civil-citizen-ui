@@ -37,8 +37,8 @@ jobs:
       - name: Run and filter TypeScript errors for changed files
         run: |
           echo "Fetching changed TypeScript files..."
-          git fetch origin main
-          CHANGED_FILES=$(git diff --name-only origin/main -- '*.ts' '*.tsx')
+          git fetch origin master
+          CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
           echo "Changed files:"
           echo "$CHANGED_FILES"
 
