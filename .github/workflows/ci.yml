@@ -31,7 +31,7 @@ jobs:
           node-version: 21.6.1
       - name: Install
         run: yarn install && yarn playwright install
-     -  name: TypeScript strictNullChecks on changed files
+      - name: TypeScript strictNullChecks on changed files
         if: github.event_name == 'pull_request'
         uses: tj-actions/changed-files@v42
         id: changed
