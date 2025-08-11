@@ -38,20 +38,27 @@ jobs:
           git fetch origin master
           CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
           echo "Changed files: $CHANGED_FILES"
-          echo '{
-            "extends": "./tsconfig.json",
-            "compilerOptions": {
-              "strict": true,
-              "noEmit": true
-            },
-            "include": [' > tsconfig.strict.json
+
+          echo '{' > tsconfig.strict.json
+          echo '  "extends": "./tsconfig.json",' >> tsconfig.strict.json
+          echo '  "compilerOptions": {' >> tsconfig.strict.json
+          echo '    "strict": true,' >> tsconfig.strict.json
+          echo '    "noEmit": true' >> tsconfig.strict.json
+          echo '  },' >> tsconfig.strict.json
+          echo '  "include": [' >> tsconfig.strict.json
+
           for file in $CHANGED_FILES; do
-            echo "  \"$file\"," >> tsconfig.strict.json
+            echo "    \"$file\"," >> tsconfig.strict.json
           done
-          echo "]}" >> tsconfig.strict.json
+
+          # Remove trailing comma and close array/object
+          sed -i '$ s/,$//' tsconfig.strict.json
+          echo '  ]' >> tsconfig.strict.json
+          echo '}' >> tsconfig.strict.json
 
       - name: Run TypeScript strict checks
         run: yarn tsc --project tsconfig.strict.json
+
 
   build:
     runs-on: ubuntu-latest
