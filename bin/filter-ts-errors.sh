@@ -2,9 +2,21 @@
 
 set -e
 
-echo "Fetching origin and master branch..."
+echo "Ensuring full git history is available..."
 git remote set-url origin "$(git config --get remote.origin.url)"
+git fetch --unshallow || true
 git fetch origin master
+
+# Check if origin/master exists
+if ! git rev-parse --verify origin/master >/dev/null 2>&1; then
+  echo "origin/master not found. Trying to fetch all..."
+  git fetch origin
+fi
+
+if ! git rev-parse --verify origin/master >/dev/null 2>&1; then
+  echo "Still can't find origin/master. Exiting."
+  exit 1
+fi
 
 echo "Getting changed TypeScript files..."
 CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
