@@ -15,6 +15,10 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'semi': ['error', 'always'],
     'no-multiple-empty-lines': ['error', {'max': 1}],
+    'no-undef': 'error',
+    'no-unused-vars': 'warn',
+    'no-redeclare': 'error',
+    'no-unreachable': 'warn',
   },
   'overrides': [
     {
