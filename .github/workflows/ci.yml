@@ -36,8 +36,8 @@ jobs:
       - name: Get changed TypeScript files
         id: changed-files
         run: |
-          git fetch origin main
-          git diff --name-only origin/main -- '*.ts' '*.tsx' > changed-files.txt
+          git fetch origin master
+          git diff --name-only origin/master -- '*.ts' '*.tsx' > changed-files.txt
           echo "CHANGED_FILES=$(cat changed-files.txt | tr '\n' ' ')" >> $GITHUB_ENV
       - name: Run TypeScript strict checks
         run: |
