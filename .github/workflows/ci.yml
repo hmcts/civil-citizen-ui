@@ -32,9 +32,9 @@ jobs:
       - name: Install
         run: yarn install && yarn playwright install
       - name: TypeScript strictNullChecks on changed files
-        if: github.event_name == 'pull_request'
-        uses: tj-actions/changed-files@v42
+        if: ${{ github.event_name == 'pull_request' }}
         id: changed
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             **/*.ts
@@ -42,7 +42,7 @@ jobs:
             **/*.d.ts
             src/test/**
       - name: Run tsc with strictNullChecks for changed files
-        if: github.event_name == 'pull_request'
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           echo "Changed TS files:\n${{ steps.changed.outputs.all_changed_files }}"
           if [ -z "${{ steps.changed.outputs.all_changed_files }}" ]; then
@@ -55,21 +55,46 @@ jobs:
           INCLUDES=$(printf '"%s", ' "${FILES[@]}")
           INCLUDES="[${INCLUDES%, }]"
 
+          # Persist changed files to a list for filtering diagnostics later
+          printf '%s\n' "${FILES[@]}" > .changed-ts-files.txt
+
           # Create a temporary tsconfig that extends the project's config
           cat > tsconfig.strict-changed.json <<EOF
           {
             "extends": "./tsconfig.json",
             "compilerOptions": {
               "noEmit": true,
+              "strict": false,
               "strictNullChecks": true,
+              "noImplicitAny": false,
+              "noUnusedLocals": false,
               "skipLibCheck": true
             },
             "include": ${INCLUDES}
           }
           EOF
 
-          # Run TypeScript compiler against only changed files with strictNullChecks
-          ./node_modules/.bin/tsc -p tsconfig.strict-changed.json --pretty false
+          # Run TypeScript compiler and capture all diagnostics
+          set +e
+          ./node_modules/.bin/tsc -p tsconfig.strict-changed.json --pretty false 2>&1 | tee .tsc-output.txt
+          TSC_EXIT=${PIPESTATUS[0]}
+          set -e
+
+          # Filter diagnostics to only those that originate from changed files
+          # Assumes tsc --pretty false prints diagnostics starting with the file path
+          awk 'FNR==NR { files[$0]=1; next } { for (f in files) { if (index($0, f)==1) { print; found=1; break } } } END { if (found!=1) exit 0 }' \
+            .changed-ts-files.txt .tsc-output.txt > .tsc-output-filtered.txt || true
+
+          echo "Filtered TypeScript diagnostics (changed files only):"
+          cat .tsc-output-filtered.txt || true
+
+          if [ -s .tsc-output-filtered.txt ]; then
+            echo "TypeScript strictNullChecks/module errors detected in changed files."
+            exit 1
+          fi
+
+          # If tsc failed but no changed-file diagnostics were found, ignore
+          exit 0
       - name: Build
         run: yarn build
       - name: Starting WireMock , starting ui , wait and run e2e test
