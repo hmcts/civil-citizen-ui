@@ -43,7 +43,7 @@ jobs:
           echo "$CHANGED_FILES"
 
           echo "Running TypeScript with strictNullChecks..."
-          TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 || true)
+          TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 >/dev/null || true)
 
           echo "Filtering errors to changed files..."
           MATCHED_ERRORS=""
@@ -68,6 +68,7 @@ jobs:
           else
             echo "No TypeScript errors in changed files."
           fi
+
 
 
 
