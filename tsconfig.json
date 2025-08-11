@@ -4,6 +4,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
     "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
