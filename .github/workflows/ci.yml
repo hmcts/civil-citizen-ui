@@ -25,14 +25,14 @@ jobs:
   strict-ts-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 21.6.1
       - name: Install dependencies
-        run: npm ci
+        run: yarn install
+      - name: Build
+        run: yarn build
       - name: Get changed TypeScript files
         id: changed-files
         run: |
@@ -43,7 +43,7 @@ jobs:
         run: |
           if [ -s changed-files.txt ]; then
             echo "Running strict checks on changed files..."
-            npx tsc --noEmit --project tsconfig.strict.json $CHANGED_FILES
+            yarn tsc --noEmit --project tsconfig.strict.json $CHANGED_FILES
           else
             echo "No TypeScript files changed."
           fi  
