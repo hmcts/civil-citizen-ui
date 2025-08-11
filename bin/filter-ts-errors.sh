@@ -2,24 +2,24 @@
 
 set -e
 
-echo "Fetching changed TypeScript files..."
+echo "Fetching origin and master branch..."
+git remote set-url origin "$(git config --get remote.origin.url)"
 git fetch origin master
+
+echo "Getting changed TypeScript files..."
 CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
 echo "Changed files:"
 echo "$CHANGED_FILES"
 
 echo "Running TypeScript with strictNullChecks..."
-# Capture errors but suppress normal output
 TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 >/dev/null || true)
 
 echo "Filtering errors to changed files..."
 MATCHED_ERRORS=""
 MATCH_COUNT=0
 
-# Convert changed files to array
 IFS=$'\n' read -rd '' -a FILE_ARRAY <<<"$CHANGED_FILES"
 
-# Loop through each line of TSC output
 while IFS= read -r error_line; do
   for file in "${FILE_ARRAY[@]}"; do
     filename=$(basename "$file")
