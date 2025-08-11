@@ -80,21 +80,57 @@ jobs:
           TSC_EXIT=${PIPESTATUS[0]}
           set -e
 
-          # Filter diagnostics to only those that originate from changed files
-          # Assumes tsc --pretty false prints diagnostics starting with the file path
-          awk 'FNR==NR { files[$0]=1; next } { for (f in files) { if (index($0, f)==1) { print; found=1; break } } } END { if (found!=1) exit 0 }' \
-            .changed-ts-files.txt .tsc-output.txt > .tsc-output-filtered.txt || true
+          # Create a robust Node.js filter to include only diagnostics for changed files
+          mkdir -p scripts
+          cat > scripts/filter-tsc.js <<'EOS'
+          const fs = require('fs');
+          const path = require('path');
 
-          echo "Filtered TypeScript diagnostics (changed files only):"
-          cat .tsc-output-filtered.txt || true
+          const changedList = fs.readFileSync('.changed-ts-files.txt', 'utf8')
+            .split(/\r?\n/)
+            .filter(Boolean)
+            .map(p => path.resolve(p));
 
-          if [ -s .tsc-output-filtered.txt ]; then
-            echo "TypeScript strictNullChecks/module errors detected in changed files."
-            exit 1
-          fi
+          const outLines = fs.readFileSync('.tsc-output.txt', 'utf8').split(/\r?\n/);
 
-          # If tsc failed but no changed-file diagnostics were found, ignore
-          exit 0
+          const fileHeader = /^(.+\.ts)\((\d+),(\d+)\):\s+error\s+TS\d+:/;
+          let currentBlock = [];
+          let currentFile = null;
+          const kept = [];
+
+          const flush = () => {
+            if (!currentBlock.length || !currentFile) { currentBlock = []; currentFile = null; return; }
+            const abs = path.resolve(currentFile);
+            // match if the diagnostic file is exactly one of the changed files
+            if (changedList.includes(abs)) {
+              kept.push(...currentBlock);
+            }
+            currentBlock = [];
+            currentFile = null;
+          };
+
+          for (const line of outLines) {
+            const m = line.match(fileHeader);
+            if (m) {
+              // New block begins; flush previous
+              flush();
+              currentFile = m[1];
+              currentBlock = [line];
+            } else {
+              if (currentBlock.length) currentBlock.push(line);
+            }
+          }
+          flush();
+
+          if (kept.length) {
+            console.log(kept.join('\n'));
+            process.exit(1);
+          } else {
+            process.exit(0);
+          }
+          EOS
+
+          node scripts/filter-tsc.js || exit 1
       - name: Build
         run: yarn build
       - name: Starting WireMock , starting ui , wait and run e2e test
