@@ -33,26 +33,19 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn build
-      - name: Get changed TypeScript files
-        id: changed
+      
+      - name: Run and filter TypeScript errors for changed files
         run: |
-          git fetch origin master
-          git diff --name-only origin/master -- '*.ts' '*.tsx' > changed-files.txt
+          echo "Fetching changed TypeScript files..."
+          git fetch origin main
+          CHANGED_FILES=$(git diff --name-only origin/main -- '*.ts' '*.tsx')
           echo "Changed files:"
-          cat changed-files.txt
-      - name: Run TypeScript with strictNullChecks
-        run: |
-          yarn tsc --noEmit --strictNullChecks > /dev/null 2> all-errors.txt || true
-      - name: Filter errors to changed files
-        run: |
-          echo "Reading changed files:"
-          cat changed-files.txt
+          echo "$CHANGED_FILES"
 
-          echo "Reading all TypeScript errors:"
-          cat all-errors.txt
+          echo "Running TypeScript with strictNullChecks..."
+          TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 || true)
 
-          echo "Starting error filtering..."
-          CHANGED_FILES=$(cat changed-files.txt)
+          echo "Filtering errors to changed files..."
           MATCHED_ERRORS=""
           MATCH_COUNT=0
 
@@ -66,17 +59,16 @@ jobs:
                 break
               fi
             done
-          done < all-errors.txt
+          done <<< "$TSC_ERRORS"
 
           echo "Total matched errors: $MATCH_COUNT"
           if [ "$MATCH_COUNT" -gt 0 ]; then
-            echo -e "$MATCHED_ERRORS" > filtered-errors.txt
-            echo "TypeScript errors found in changed files:"
-            cat filtered-errors.txt
+            echo -e "$MATCHED_ERRORS"
             exit 1
           else
             echo "No TypeScript errors in changed files."
           fi
+
 
 
   build:
