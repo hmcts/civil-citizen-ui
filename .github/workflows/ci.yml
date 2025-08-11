@@ -48,3 +48,43 @@ jobs:
           path: |
             test-results/functional
             src/test/functionalTests/test-results
+
+name: TypeScript Strict Check on Changed Files
+
+on:
+  pull_request:
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+
+jobs:
+  strict-ts-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get changed TypeScript files
+        id: changed-files
+        run: |
+          git fetch origin main
+          git diff --name-only origin/main -- '*.ts' '*.tsx' > changed-files.txt
+          echo "CHANGED_FILES=$(cat changed-files.txt | tr '\n' ' ')" >> $GITHUB_ENV
+
+      - name: Run TypeScript strict checks
+        run: |
+          if [ -s changed-files.txt ]; then
+            echo "Running strict checks on changed files..."
+            npx tsc --noEmit --project tsconfig.strict.json $CHANGED_FILES
+          else
+            echo "No TypeScript files changed."
+          fi
