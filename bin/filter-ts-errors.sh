@@ -2,26 +2,17 @@
 
 set -e
 
-echo "Ensuring full git history is available..."
-git remote set-url origin "$(git config --get remote.origin.url)"
-git fetch --unshallow || true
-git fetch origin master
+echo "Fetching full history..."
+git fetch --all
 
-# Check if origin/master exists
-if ! git rev-parse --verify origin/master >/dev/null 2>&1; then
-  echo "origin/master not found. Trying to fetch all..."
-  git fetch origin
-fi
-
-if ! git rev-parse --verify origin/master >/dev/null 2>&1; then
-  echo "Still can't find origin/master. Exiting."
-  exit 1
-fi
+echo "Finding base commit with master..."
+BASE_COMMIT=$(git merge-base HEAD origin/master)
 
 echo "Getting changed TypeScript files..."
-CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
+CHANGED_FILES=$(git diff --name-only "$BASE_COMMIT" -- '*.ts' '*.tsx')
 echo "Changed files:"
 echo "$CHANGED_FILES"
+
 
 echo "Running TypeScript with strictNullChecks..."
 TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 >/dev/null || true)
