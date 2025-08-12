@@ -6,7 +6,9 @@ echo "Fetching full history..."
 git fetch --all
 
 echo "Finding base commit with master..."
-BASE_COMMIT=$(git merge-base HEAD origin/master)
+
+BASE_COMMIT=$(git merge-base HEAD master)
+
 
 echo "Getting changed TypeScript files..."
 CHANGED_FILES=$(git diff --name-only "$BASE_COMMIT" -- '*.ts' '*.tsx')
