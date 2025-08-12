@@ -17,7 +17,9 @@ echo "$CHANGED_FILES"
 
 
 echo "Running TypeScript with strictNullChecks..."
-TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 >/dev/null || true)
+
+TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 || true)
+
 
 
 # Debug: show raw TSC errors
