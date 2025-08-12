@@ -175,7 +175,7 @@ export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
 }
 
 export async function isGaForWelshEnabled(): Promise<boolean> {
-  return false;
+  return true;
 }
 
 export async function isWelshEnabledForMainCase(): Promise<boolean> {
