@@ -381,7 +381,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6891'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
@@ -484,6 +484,7 @@ civil-service:
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       ASSIGN_ROLES_ON_STARTUP: true
       COURT_LOCATION_WA_DMN_ENABLED: true
+      TASK_MANAGE_ENABLED: false
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
