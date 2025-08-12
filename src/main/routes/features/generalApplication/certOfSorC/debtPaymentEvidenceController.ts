@@ -5,7 +5,7 @@ import {
 } from 'routes/urls';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 import {
@@ -13,6 +13,7 @@ import {
   saveCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {queryParamNumber} from 'common/utils/requestUtils';
 
 const debtPaymentEvidenceController = Router();
 const debtPaymentEvidenceViewPath = 'features/generalApplication/certOfSorC/debt-payment-evidence';
@@ -49,6 +50,7 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
       let nextPageUrl = '';
       const claimId = req.params.id;
       const cancelUrl = await getCancelUrl(claimId, null);
+      const index  = queryParamNumber(req, 'index');
       const form = new GenericForm(new DebtPaymentEvidence(req.body.debtPaymentOption, req.body.provideDetails));
       form.validateSync();
       if (form.hasErrors()) {
@@ -66,7 +68,7 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
             nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_COSC_URL);
             break;
         }
-        res.redirect(nextPageUrl);
+        res.redirect(constructUrlWithIndex(nextPageUrl, index));
       }
     } catch (error) {
       next(error);
