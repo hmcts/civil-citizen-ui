@@ -3,7 +3,8 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {
-  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, GA_UPLOAD_DOCUMENTS_COSC_URL,
 
 } from 'routes/urls';
 import {Claim} from 'models/claim';
@@ -98,7 +99,7 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
         .send({debtPaymentOption: debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual('/case/id/general-application/cosc/upload-documents?index=undefined');
+          expect(res.header.location).toEqual(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', claim.id));
         });
     });
 
@@ -109,7 +110,7 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
         .send({debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT, provideDetails: 'some evidence'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual('/case/id/general-application/cosc/check-your-answers?index=undefined');
+          expect(res.header.location).toEqual(GA_CHECK_YOUR_ANSWERS_COSC_URL.replace(':id', claim.id));
         });
     });
   });
