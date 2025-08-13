@@ -5,9 +5,17 @@
 {% set contactEmail = t('contactocmc@justice.gov.uk') %}
 
 {% macro contactUs(t) %}
-  <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.EMAIL') }}</h3>
-  <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{contactEmail}}>{{contactEmail}}</a>
-  <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') }}</p>
+  {% if isQMFlagEnabled === true %}
+  <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
+    <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+      {{ t('COMMON.QM_INFORMATION_LINK') }}
+    </a>.
+  </p>
+  {% else %}
+    <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.EMAIL') }}</h3>
+    <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{contactEmail}}>{{contactEmail}}</a>
+    <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') }}</p>
+  {% endif %}
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ phone }}</p>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}
