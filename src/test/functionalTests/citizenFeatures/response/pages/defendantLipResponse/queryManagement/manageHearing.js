@@ -14,11 +14,11 @@ class ManageHearingOptions {
       },
       ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING: {
         heading: 'Ask for help and support during your hearing',
-        description: 'To ask for support at your hearing you have to contact the court where the hearing is being held, you can see which court is hearing your case in your directions order.',
+        description: 'To ask for support at your hearing you have to contact the court where the hearing is being held. ',
       },
       MANAGE_HEARING_SOMETHING_ELSE: {
-        heading: 'Enter message details',
-        description: 'Message details',
+        heading: 'Send a message',
+        description: 'Sharing this message with the other party',
       },
     };
   }

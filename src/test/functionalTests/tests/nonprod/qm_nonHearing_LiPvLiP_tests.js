@@ -18,7 +18,7 @@ async function loginAndOpenClaim(I, user, claimNumber) {
   await I.click(claimNumber);
 }
 
-Scenario.skip('Claimant sends non-hearing message to court', async ({ api, I }) => {
+Scenario('Claimant sends non-hearing message to court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
   console.log('Non-hearing QM claim created:', claimRef);
 
@@ -27,7 +27,6 @@ Scenario.skip('Claimant sends non-hearing message to court', async ({ api, I }) 
 
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
-  console.log('🧾 Claim number:', claimNumber);
 
   const subject = 'Claimant query';
   const message = 'Claimant Test message';
@@ -40,7 +39,7 @@ Scenario.skip('Claimant sends non-hearing message to court', async ({ api, I }) 
   await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
 });
 
-Scenario.skip('Defendant sends non-hearing message to court', async ({ I }) => {
+Scenario('Defendant sends non-hearing message to court', async ({ I }) => {
   const subject = 'Defendant query';
   const message = 'Defendant Test message';
   const isHearingRelated = false;

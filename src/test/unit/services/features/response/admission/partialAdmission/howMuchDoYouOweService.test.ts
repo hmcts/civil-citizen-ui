@@ -7,22 +7,30 @@ import {Claim} from '../../../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../../../main/common/models/partialAdmission';
 import {HowMuchDoYouOwe} from '../../../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import * as interestUtils from 'common/utils/interestUtils';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('common/utils/interestUtils');
 
 const AMOUNT = 12.9;
 const TOTAL_AMOUNT = 110;
 describe('Partial Admit - How much money do you admit you owe? Service ', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   describe('getHowMuchDoYouOweForm', () => {
+    beforeEach(()=>{
+      const mockGetInterestData = interestUtils.getInterestData as jest.Mock;
+      mockGetInterestData.mockImplementation(async () => {
+        return undefined;
+      });
+    });
     it('should get empty form when partial Admission does not exist', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
       //When
-      const form = await getHowMuchDoYouOweForm('129');
+      const form = await getHowMuchDoYouOweForm('129', 'en');
       //Then
       expect(form.amount).toBe(undefined);
       expect(form.totalAmount).toBeUndefined();
@@ -35,7 +43,7 @@ describe('Partial Admit - How much money do you admit you owe? Service ', () => 
         return claim;
       });
       //When
-      const form = await getHowMuchDoYouOweForm('129');
+      const form = await getHowMuchDoYouOweForm('129', 'en');
       //Then
       expect(form.amount).toBe(undefined);
       expect(form.totalAmount).toBeUndefined();
@@ -50,7 +58,7 @@ describe('Partial Admit - How much money do you admit you owe? Service ', () => 
         return claim;
       });
       //When
-      const form = await getHowMuchDoYouOweForm('123');
+      const form = await getHowMuchDoYouOweForm('123', 'en');
       //Then
       expect(form.amount).toBeTruthy();
       expect(form.amount).toBe(AMOUNT);
@@ -62,7 +70,7 @@ describe('Partial Admit - How much money do you admit you owe? Service ', () => 
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getHowMuchDoYouOweForm('129')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getHowMuchDoYouOweForm('129', 'en')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('saveHowMuchDoYouOweData', () => {
