@@ -519,11 +519,7 @@ civil-service:
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
         postgresPassword: ${POSTGRES_PASSWORD}
-charts/civil-citizen-ui/values:
-  elasticsearch:
-    preview:
-      template:
-        yaml:
+
 camunda-bpm:
   enabled: true
   java:
