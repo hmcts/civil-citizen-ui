@@ -35,6 +35,8 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       const form = new GenericForm(getStatementOfTruth(claim));
+      console.log(`ccjCheckAnswersController - claim data `, claim);
+      console.log(`ccjCheckAnswersController - claim data  ccd state`, claim.ccdState);
       await renderView(req, res, form, claim);
     } catch (error) {
       next(error);
