@@ -20,10 +20,18 @@
         <div class="govuk-grid-column-two-thirds">
           <p
             class="govuk-body">{{ t('PAGES.UNDER_18.CONTENT') }}</p>
-          <h3 class='govuk-heading-m'>{{ t('COMMON.CONTACT_US_FOR_HELP.EMAIL') }} </h3>
-          <p class="govuk-body">
-            <a class="govuk-link" href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>
-          </p>
+          {% if isQMFlagEnabled === true %}
+            <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
+              <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+                {{ t('COMMON.QM_INFORMATION_LINK') }}
+              </a>.
+            </p>
+          {% else %}
+            <h3 class='govuk-heading-m'>{{ t('COMMON.CONTACT_US_FOR_HELP.EMAIL') }} </h3>
+            <p class="govuk-body">
+              <a class="govuk-link" href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>
+            </p>
+          {% endif %}
           <h3 class='govuk-heading-m'>{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
           <p class="govuk-body">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}<br/>
             {{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}<br/>
