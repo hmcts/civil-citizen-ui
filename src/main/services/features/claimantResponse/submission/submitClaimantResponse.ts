@@ -23,8 +23,8 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     setRespondentDateOfBirth(claim);
 
-    console.log(`submitClaimantResponse - claim data `, claim);
-    console.log(`submitClaimantResponse - claim data  ccd state`, claim.ccdState);
+    console.log('submitClaimantResponse - claim data', claim);
+    console.log('submitClaimantResponse - claim data ccd state', claim.ccdState);
 
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
