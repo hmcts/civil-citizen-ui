@@ -37,13 +37,13 @@
                 {{ t(item.createdBy) }}
               </td>
               <td class="govuk-table__cell">
-                {{ item.sentOn }}
+                {{ item.sentOn | datetime }}
               </td>
               <td class="govuk-table__cell">
                 {{ t(item.lastUpdatedBy) }}
               </td>
               <td class="govuk-table__cell">
-                {{ item.lastUpdatedOn }}
+                {{ item.lastUpdatedOn | datetime }}
               </td>
               <td class="govuk-table__cell">
                 {{ t(item.status) }}
