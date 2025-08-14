@@ -2,7 +2,7 @@ import {isQueryManagementEnabled} from '../../app/auth/launchdarkly/launchDarkly
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
-import {QM_START_URL} from 'routes/urls';
+import {QM_START_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {CaseState} from 'form/models/claimDetails';
 import config from 'config';
@@ -38,9 +38,11 @@ export const contactUsGuard = async (
         res.locals.isQMFlagEnabled = true;
         res.locals.disableSendMessage = true;
         res.locals.qmStartUrl = constructResponseUrlWithIdParams(requestId, QM_START_URL)+'?linkFrom=start';
+        res.locals.qmContactLink = caseData.isClaimant() ?
+          constructResponseUrlWithIdParams(requestId, DASHBOARD_CLAIMANT_URL) :
+          constructResponseUrlWithIdParams(requestId, DEFENDANT_SUMMARY_URL);
       }
     }
   }
   next();
 };
-
