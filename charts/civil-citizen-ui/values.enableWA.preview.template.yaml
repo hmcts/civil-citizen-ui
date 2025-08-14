@@ -82,7 +82,6 @@ wa:
         SPRING_PROFILES_ACTIVE: "preview"
         DB_READER_USERNAME: postgres
         WA_S2S_AUTHORIZED_SERVICES: ccd,ccd_data,ccd_gw,ccd_ps,iac,wa_task_management_api,xui_webapp,wa_task_monitor,camunda_bpm,wa_workflow_api,wa_case,civil_service
-        LOGGING_LEVEL_ROOT: TRACE
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
