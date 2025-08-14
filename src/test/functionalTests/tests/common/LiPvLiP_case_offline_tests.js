@@ -53,7 +53,7 @@ Scenario.skip('Case is taken offline after SDO for non early adopters', async ({
     notification = caseOfflineAfterSDO();
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION', '', false);
     await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
