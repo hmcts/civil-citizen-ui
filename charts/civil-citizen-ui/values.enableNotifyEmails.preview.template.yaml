@@ -1,4 +1,4 @@
-544civil-service:
+civil-service:
   enabled: true
   java:
     applicationPort: 4000
