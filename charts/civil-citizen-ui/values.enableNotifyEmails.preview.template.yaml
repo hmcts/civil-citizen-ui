@@ -1,4 +1,4 @@
-civil-service:
+544civil-service:
   enabled: true
   java:
     applicationPort: 4000
@@ -94,7 +94,7 @@ civil-service:
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
-      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       CMC_DB_HOST: "{{ .Values.postgresql.releaseNameOverride}}"
       CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       CMC_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
@@ -209,7 +209,7 @@ civil-general-applications:
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-general-applications.preview.platform.hmcts.net/service-request-update
       TESTING_SUPPORT_ENABLED: true
       POLLING_EVENT_EMITTER_ENABLED: false
-      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       DOCUMENT_MANAGEMENT_SECURED: true
       RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
