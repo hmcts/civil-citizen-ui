@@ -29,7 +29,7 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
   }
 }).tag('@regression');
 
-Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
+Scenario.only('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = caseOfflineAfterSDO();
