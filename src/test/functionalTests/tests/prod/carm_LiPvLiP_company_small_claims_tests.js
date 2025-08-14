@@ -44,7 +44,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, rejectAll);
   await ResponseSteps.VerifyPaidLessPage();
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterTelephoneMediationDetails();
