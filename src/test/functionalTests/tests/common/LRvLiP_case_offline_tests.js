@@ -3,7 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { createAccount } = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { caseOffline, caseOfflineAfterSDO } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {caseOffline, orderMadeLA} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
@@ -29,10 +29,10 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
   }
 }).tag('@regression');
 
-Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
+Scenario('Case is taken online after SDO for non early adopters for nro', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
-    notification = caseOfflineAfterSDO();
+    notification = orderMadeLA();
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM', false);
     await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
