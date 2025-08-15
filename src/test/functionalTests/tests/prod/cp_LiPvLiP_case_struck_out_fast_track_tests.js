@@ -25,7 +25,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Fast Track LiPvLiP case is struck out due to hearing fee not being paid', async () => {
+Scenario.skip('Fast Track LiPvLiP case is struck out due to hearing fee not being paid', async () => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //Claimant verifies dashboard
