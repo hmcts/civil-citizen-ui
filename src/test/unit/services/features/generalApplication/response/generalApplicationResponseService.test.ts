@@ -43,7 +43,7 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-describe.skip('General Application Response service', () => {
+describe('General Application Response service', () => {
   beforeEach(() => {
     jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
   });
