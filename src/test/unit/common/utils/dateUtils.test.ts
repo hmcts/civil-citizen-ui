@@ -9,6 +9,37 @@ import {
   isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
+describe('dateTimeFormat', () => {
+
+  test('should correctly format a UTC date in GMT to English full date and time', () => {
+    const utcDateString = '2024-01-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString);
+
+    expect(formattedDate).toBe('1 January 2024, 12:00:00 pm');
+  });
+
+  test('should correctly format a UTC date in BST to English full date and time', () => {
+    const utcDateString = '2024-07-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString);
+
+    expect(formattedDate).toBe('1 July 2024, 1:00:00 pm');
+  });
+
+  test('should correctly format a UTC date in GMT to Welsh full date and time', () => {
+    const utcDateString = '2024-01-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString, 'cy');
+
+    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 yh');
+  });
+
+  test('should correctly format a UTC date in BST to Welsh full date and time', () => {
+    const utcDateString = '2024-07-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString, 'cy');
+
+    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 yh');
+  });
+});
+
 describe('addDaysBefore4pm', () => {
   it('should add 5 days to date if hour is before 4pm', () => {
     //Given

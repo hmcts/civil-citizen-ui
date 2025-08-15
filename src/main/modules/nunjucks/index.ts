@@ -44,7 +44,6 @@ import {ApplicationTypeOption} from 'common/models/generalApplication/applicatio
 import {HearingTypeOptions} from 'common/models/generalApplication/hearingArrangement';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {getLanguage} from 'modules/i18n/languageService';
-import {dateTimeFilter} from 'modules/nunjucks/filters/dateTimeFilter';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -123,7 +122,6 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
-    nunjucksEnv.addFilter('datetime', dateTimeFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
     nunjucksEnv.addFilter('replaceSpaces', replaceSpace);
     nunjucksEnv.addGlobal('t', t);

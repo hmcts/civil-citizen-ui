@@ -54,7 +54,7 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
 
 export function dateTimeFormat(value: string, lang?: string): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
-  const date = DateTime.fromJSDate(new Date(value));
+  const date = DateTime.fromJSDate(new Date(value), { zone: 'Europe/London'});
   return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
 }
 
