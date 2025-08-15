@@ -5994,6 +5994,9 @@
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 11th August 2025 and 03:45 on 12th August 2025."
+    },
+    "CUI_JO" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 18th August 2025 and 02:00 on 19th August 2025."
     }
   }
 }
