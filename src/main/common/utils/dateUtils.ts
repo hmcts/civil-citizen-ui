@@ -52,9 +52,9 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
-export function dateTimeFormat(value: string, lang?: string): string {
+export function dateTimeFormat(value: string, lang?: string,  isUTC = false): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
-  const date = DateTime.fromJSDate(new Date(value));
+  const date = isUTC ?  DateTime.fromJSDate(new Date(value), { zone: 'Europe/London' }) : DateTime.fromJSDate(new Date(value));
   return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
 }
 
