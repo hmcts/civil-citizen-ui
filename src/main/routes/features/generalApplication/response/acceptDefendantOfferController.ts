@@ -44,6 +44,7 @@ const renderView = async (claimId: string, claim: Claim, form: GenericForm<Accep
 
 acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    //
     const claimId = req.params.id;
     const applicationId = req.params.appId ? String(req.params.appId) : null;
     const lang = req.query.lang || req.cookies.lang;
