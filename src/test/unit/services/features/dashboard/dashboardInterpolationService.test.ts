@@ -539,7 +539,7 @@ describe('dashboardInterpolationService', () => {
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
-    const textExpected = '/case/123/submit-application-offline';
+    const textExpected = '/case/123/general-application/application-type?linkFrom=start';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
