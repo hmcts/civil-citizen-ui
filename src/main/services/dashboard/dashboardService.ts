@@ -233,7 +233,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: GA_SUBMIT_OFFLINE,
+          url: constructResponseUrlWithIdParams(claimId,GA_SUBMIT_OFFLINE),
         };
       } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
         return {
