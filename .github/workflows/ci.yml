@@ -22,6 +22,62 @@ env:
   LAUNCH_DARKLY_SDK: test
 
 jobs:
+  strict-ts-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.6.1
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Run and filter TypeScript errors for changed files
+        run: |
+          echo "Fetching changed TypeScript files..."
+          git fetch origin master
+          CHANGED_FILES=$(git diff --name-only origin/master -- '*.ts' '*.tsx')
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          echo "Running TypeScript with strictNullChecks..."
+          TSC_ERRORS=$(yarn tsc --noEmit --strictNullChecks 2>&1 >/dev/null || true)
+
+          echo "Filtering errors to changed files..."
+          MATCHED_ERRORS=""
+          MATCH_COUNT=0
+
+          # Convert changed files to array
+          IFS=$'\n' read -rd '' -a FILE_ARRAY <<<"$CHANGED_FILES"
+
+          # Loop through each line of TSC output
+          while IFS= read -r error_line; do
+            echo "Checking error line: $error_line"
+            for file in "${FILE_ARRAY[@]}"; do
+              # Match if error line contains the file path or just the filename
+              filename=$(basename "$file")
+              if echo "$error_line" | grep -q "$file" || echo "$error_line" | grep -q "$filename"; then
+                echo "Matched error for file: $file"
+                MATCHED_ERRORS="$MATCHED_ERRORS\n$error_line"
+                MATCH_COUNT=$((MATCH_COUNT + 1))
+                break
+              fi
+            done
+          done <<< "$TSC_ERRORS"
+
+          echo "Total matched errors: $MATCH_COUNT"
+          if [ "$MATCH_COUNT" -gt 0 ]; then
+            echo -e "$MATCHED_ERRORS"
+            exit 1
+          else
+            echo "No TypeScript errors in changed files."
+          fi
+
+
+
+
+
   build:
     runs-on: ubuntu-latest
     steps:

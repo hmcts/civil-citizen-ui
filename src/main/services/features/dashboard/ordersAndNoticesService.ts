@@ -20,6 +20,7 @@ import {
   isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNoUpperCase} from 'form/models/yesNo';
+import {t} from 'i18next';
 
 export const getClaimantDocuments = async (
   claim: Claim,
@@ -405,15 +406,21 @@ const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
   return caseDocuments;
 };
 
-const getCourtOfficerOrder = (claim: Claim, claimId: string, lang: string) => {
+const getCourtOfficerOrder = (claim: Claim, claimId: string, lng: string) => {
   const document = claim.caseProgression?.courtOfficerOrder;
-  const translatedDocument = claim.caseProgression?.translatedCourtOfficerOrder;
+  const courtOfficerOrder = claim.caseProgression?.courtOfficersOrders;
   const caseDocuments: DocumentInformation[] = [];
-  if (document) {
-    caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
-  }
-  if (translatedDocument) {
-    caseDocuments.push(setUpDocumentLinkObject(translatedDocument.documentLink, translatedDocument.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_COURT_OFFICER_ORDER'));
+
+  if (!document && (courtOfficerOrder && courtOfficerOrder.length > 0)) {
+    courtOfficerOrder.forEach((documentElement) => {
+      const document = documentElement.value;
+      const documentLabel = document.documentType === DocumentType.COURT_OFFICER_ORDER_TRANSLATED_DOCUMENT
+        ? t('PAGES.ORDERS_AND_NOTICES.TRANSLATED_COURT_OFFICER_ORDER', {lng})
+        : t('PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER', {lng});
+      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lng, documentLabel));
+    });
+  } else {
+    caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lng, 'PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER'));
   }
   return caseDocuments;
 };
