@@ -153,10 +153,14 @@
                   <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-weight-bold"> {{ row.key.text }}</p>
                 </dt>
                 <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="{{ row.actions.items[0].href }}">
-                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}<span class="govuk-visually-hidden">
-                                    {{ row.key.text }}</span>
-                  </a>
+                  <button type="submit"
+                          class="link-button"
+                          id="deleteFile"
+                          name="action"
+                          value="[{{ row.value.html }}][deleteFile]">
+                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}
+                    <span class="govuk-visually-hidden">{{ row.key.text }}</span>
+                  </button>
                 </dd>
               </div>
           </dl>
