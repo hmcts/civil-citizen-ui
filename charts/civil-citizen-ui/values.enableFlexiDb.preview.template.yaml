@@ -108,6 +108,7 @@ civil-service:
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+      TASK_MANAGEMENT_ENABLED: false
     postgresql:
       enabled: false
 
