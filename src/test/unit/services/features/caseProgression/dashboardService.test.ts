@@ -33,7 +33,6 @@ import {
   isGaForLipsEnabledAndLocationWhiteListed, isLRQueryManagementEnabled, isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import { GA_SUBMIT_OFFLINE} from 'routes/urls';
 import {GaInformation, isGaOnline} from 'services/commons/generalApplicationHelper';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -573,7 +572,7 @@ describe('dashboardService', () => {
 
         //Then
         expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
-        expect(result.url).toContain(GA_SUBMIT_OFFLINE);
+        expect(result.url).toContain('/case/1234567890/submit-application-offline');
       });
 
       describe('Query management enabled get court contact link', () => {
