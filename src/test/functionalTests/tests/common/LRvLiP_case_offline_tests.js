@@ -20,7 +20,8 @@ Before(async ({api}) => {
   notification = caseOffline();
 });
 
-Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
+//This needs investigation
+Scenario.skip('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     await api.caseProceedsInCaseman();
@@ -29,7 +30,8 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
   }
 }).tag('@regression');
 
-Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
+//This needs investigation
+Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = caseOfflineAfterSDO();

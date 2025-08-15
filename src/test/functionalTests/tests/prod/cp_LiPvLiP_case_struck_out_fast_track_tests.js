@@ -19,9 +19,9 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
-  await api.performCaseHearingFeeUnpaid(config.hearingCenterAdminWithRegionId1, claimRef);
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef);
+  await api.performCaseHearingFeeUnpaid(config.hearingCenterAdminWithRegionId2, claimRef);
   await api.waitForFinishedBusinessProcess();
 });
 

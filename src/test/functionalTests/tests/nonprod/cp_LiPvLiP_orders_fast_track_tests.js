@@ -19,7 +19,7 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-  await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
+  await api.performAnAssistedOrder(config.judgeUserWithRegionId2, claimRef);
   await api.waitForFinishedBusinessProcess();
 });
 
