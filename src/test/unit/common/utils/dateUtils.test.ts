@@ -189,7 +189,7 @@ describe('dateTimeFormat', () => {
   test('should correctly format a UTC date in GMT to English full date and time', () => {
     jest.setSystemTime(new Date('2024-01-01T12:00:00.000Z'));
     const utcDateString = '2024-01-01T12:00:00.000Z';
-    const formattedDate = dateTimeFormat(utcDateString, true);
+    const formattedDate = dateTimeFormat(utcDateString, 'en',true);
 
     expect(formattedDate).toBe('1 January 2024, 12:00:00 pm');
   });
@@ -197,7 +197,7 @@ describe('dateTimeFormat', () => {
   test('should correctly format a UTC date in BST to English full date and time', () => {
     jest.setSystemTime(new Date('2024-07-01T12:00:00.000Z'));
     const utcDateString = '2024-07-01T12:00:00.000Z';
-    const formattedDate = dateTimeFormat(utcDateString, true);
+    const formattedDate = dateTimeFormat(utcDateString, 'en',true);
 
     expect(formattedDate).toBe('1 July 2024, 1:00:00 pm');
   });
