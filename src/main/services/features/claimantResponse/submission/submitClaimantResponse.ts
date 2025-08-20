@@ -21,6 +21,8 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+    console.log('----------------------------------------claim-----submitClaimantResponse');
+    console.log(claim);
     setRespondentDateOfBirth(claim);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
