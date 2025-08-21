@@ -713,6 +713,5 @@ describe('dashboardService', () => {
     });
 
   });
-
 });
 
