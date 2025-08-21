@@ -396,7 +396,10 @@
       "APPLICATIONS_TASK": "Gweld pob cais i’r llys",
       "VIEW_MESSAGES_TASK": "Gweld eich negeseuon i'r llys"
     },
-    "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
+    "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+    "QM_INFORMATION_DOCUMENTS": "Gallwch anfon dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
+    "QM_INFORMATION_MESSAGES_DOCUMENTS": "Gallwch anfon negeseuon a dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
+    "QM_INFORMATION_LINK": "dangosfwrdd Hawliadau am Arian"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
@@ -1610,6 +1613,7 @@
       "AMOUNT_PAID_INSET": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen ",
       "AMOUNT_PAID_INSET_2": " neu ",
       "AMOUNT_PAID_INSET_3": "lle gallwch gyfrifo’r llog cywir, a’i hanfon at ",
+      "QM_AMOUNT_PAID_INSET_3": "Gallwch gyfrif y llog cywir ac anfon dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
       "N225_LINK": "https://assets.publishing.service.gov.uk/media/5aa6b740e5274a3e391e3b38/n225-bil.pdf",
       "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
@@ -3854,7 +3858,6 @@
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
-        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "DISMISSAL_ORDER": "Gorchymyn diddymu",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
@@ -4792,7 +4795,7 @@
         "POST_CODE": "CM20 9RA"
       },
       "STEP_1": "Cam 1: Lawrlwytho a llenwi ffurflen N9B",
-      "STEP_2": "Cam 2: E-bostio neu bostio'r ffurflen N9B",
+      "STEP_2": "Cam 2: Anfon neu bostio ffurflen N9B",
       "STEP_3": "Cam 3: Talu'r ffi llys",
       "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
       "NON_SIGN_POST_ADDRESS": {
@@ -5990,6 +5993,9 @@
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
+    },
+    "CUI_JO" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddiwr Citizen ar gael rhwng 19:00 ar 18 Awst 2025 a 03:00 ar 19 Awst 2025"
     }
   }
 }
