@@ -9,7 +9,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
 
@@ -24,6 +24,10 @@ function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
 
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
   try {
+    const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest), true);
+    console.log('--------DraftStore-------start-----------------------------ccjPaymentOptionController');
+    console.log(claim);
+    console.log('-------------DraftStore--------end------------------------ccjPaymentOptionController');
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(new CcjPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.type)), res);
   } catch (error) {
