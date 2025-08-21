@@ -94,6 +94,7 @@ const SendUpdateToCourt = require('../pages/defendantLipResponse/queryManagement
 const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagement/sendDocumentsToCourt');
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
+const config = require('../../../../config');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -224,6 +225,10 @@ class ResponseSteps {
     await dashboardPage.clickOnViewMessages();
   }
 
+  async verifyUserQueryInDashboard() {
+    await dashboardPage.verifyUserQuery();
+  }
+
   async SendMessageToCourt(subject, message, isHearingRelated) {
     await dashboardPage.sendAMessage();
     await qmStartPage.verifyAllContactOptionsPresent();
@@ -303,9 +308,42 @@ class ResponseSteps {
   }
 
   async viewYourMessages(subject, message, isHearingRelated) {
-    await I.waitForContent('View your messages to the court', 60);
-    await I.click('View your messages to the court');
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
     await viewQueryPage.verifyMessagesBeforeFollowUp(subject, message, isHearingRelated);
+  }
+
+  async followUpMessage(subject, message, isHearingRelated) {
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
+    await viewQueryPage.verifyFollowUp(subject, message, isHearingRelated);
+    await viewQueryPage.sendFollowUpMessage();
+  }
+
+  async verifyFollowUpMessage(subject) {
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
+    await viewQueryPage.verifyMessagesAfterFollowUp(subject);
+  }
+
+  async verifyClosedQuery(subject) {
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
+    await viewQueryPage.verifyClosedQuery(subject);
+  }
+
+  async clickOnViewMessages() {
+    await I.waitForContent('View all messages to the court', 60);
+    await I.click('View all messages to the court');
+  }
+
+  async clickBackLink() {
+    await I.click('Back');
+    await I.waitForContent('Messages to the court', config.WaitForText);
+  }
+
+  async verifyQueryStatus(subject, sentBy, status) {
+    await viewQueryPage.verifyQueryStatus(subject, sentBy, status);
   }
 
   async EnterCompDetails(addPhoneNum = true) {
@@ -545,12 +583,12 @@ class ResponseSteps {
     await howMuchYouHavePaid.enterPaymentDetailsError(claimRef, amount, responseType);
   }
 
-  async EnterHowMuchMoneyYouOwe(claimRef, amount) {
-    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount);
+  async EnterHowMuchMoneyYouOwe(claimRef, amount, partAdmit, totalAmount) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOwe(claimRef, amount, partAdmit, totalAmount);
   }
 
-  async EnterHowMuchMoneyYouOweError(claimRef) {
-    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef);
+  async EnterHowMuchMoneyYouOweError(claimRef, amount) {
+    await howMuchDoYouOwe.enterHowMuchMoneyDoYouOweError(claimRef, amount);
   }
 
   async EnterEmployerDetails() {
@@ -614,8 +652,8 @@ class ResponseSteps {
     await rejectAllOfClaim.selectRejectAllReason(reason);
   }
 
-  async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType) {
-    await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType);
+  async EnterWhyYouDisagreeTheClaimAmount(claimRef, responseType, totalAmount) {
+    await whyDoYouDisagreeTheClaimAmount.enterReason(claimRef, responseType, totalAmount);
   }
 
   async EnterWhyYouDisagreeTheClaimAmountError(claimRef, responseType) {
