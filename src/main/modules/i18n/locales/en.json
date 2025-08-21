@@ -396,7 +396,10 @@
       "APPLICATIONS_TASK": "View all applications to the court",
       "VIEW_MESSAGES_TASK": "View your messages to the court"
     },
-    "WHAT_HAPPENS_NEXT" : "What happens next"
+    "WHAT_HAPPENS_NEXT" : "What happens next",
+    "QM_INFORMATION_DOCUMENTS": "You can send documents to the court by selecting ‘contact or apply to the court’ on your",
+    "QM_INFORMATION_MESSAGES_DOCUMENTS": "You can send messages and documents to the court by selecting ‘contact or apply to the court’ on your",
+    "QM_INFORMATION_LINK": "Money Claims dashboard"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
@@ -1610,6 +1613,7 @@
       "AMOUNT_PAID_INSET": "The system only allows interest to be calculated on the full claim amount. If you have received any part payment, please use form ",
       "AMOUNT_PAID_INSET_2": ". If you have received any part payment and you are requesting a Judgment on a Part Admission response, please use form ",
       "AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send to ",
+      "QM_AMOUNT_PAID_INSET_3": "You can calculate the correct interest, and send documents to the court by selecting ‘contact or apply to the court’ on your",
       "N225_LINK": "https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount",
       "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
@@ -4793,7 +4797,7 @@
         "POST_CODE": "CM20 9RA"
       },
       "STEP_1": "Step 1: Download and complete form N9B",
-      "STEP_2": "Step 2: Email or post form N9B",
+      "STEP_2": "Step 2: Send or post form N9B",
       "STEP_3": "Step 3: Pay the court fee",
       "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
       "NON_SIGN_POST_ADDRESS": {
@@ -5988,6 +5992,12 @@
     },
     "WELSH_PARTY" : {
       "MESSAGE" : "A party in this case has expressed a Welsh language preference. Delays to visibility of documents could be caused during translation processes."
+    },
+    "CUI_LIP_V_LR" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 11th August 2025 and 03:45 on 12th August 2025."
+    },
+    "CUI_JO" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 18th August 2025 and 02:00 on 19th August 2025."
     }
   }
 }
