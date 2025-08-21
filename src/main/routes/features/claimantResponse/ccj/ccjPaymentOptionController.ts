@@ -11,6 +11,7 @@ import {getClaimantResponse, saveClaimantResponse} from 'services/features/claim
 import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOption';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
+import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
 
 const ccjPaymentOptionController = Router();
 const ccjPaymentOptionViewPath = 'features/claimantResponse/ccj/ccj-payment-options';
@@ -21,7 +22,7 @@ function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
   res.render(ccjPaymentOptionViewPath, {form, pageTitle: 'PAGES.CCJ_PAYMENT_TYPE.PAGE_TITLE'});
 }
 
-ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: NextFunction) => {
+ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm(new CcjPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.type)), res);
