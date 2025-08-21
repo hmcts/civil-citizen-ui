@@ -10,7 +10,7 @@ import {toCCDExpert} from '../response/convertToCCDExpert';
 import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantResponse';
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
-import {toCCDClaimantPayBySetDate, toCCDPayBySetDate} from '../response/convertToCCDPayBySetDate';
+import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
 import {
   toCCDClaimantSuggestedFirstRepaymentDate,
   toCCDClaimantSuggestedPayByDate,
@@ -34,8 +34,7 @@ import {
   formatAmountTwoDecimalPlaces,
 } from 'services/translation/claim/moneyConversation';
 import {toCCDParty} from 'services/translation/response/convertToCCDParty';
-import {ResponseType} from 'form/models/responseType';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CCDPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -47,9 +46,8 @@ function isClaimantWantToSettleTheClaim(claim: Claim) {
   }
 }
 
-export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
-  const paymentIntention = claim.getPaymentIntention();
-  const partAdminPayImmediate = claim.respondent1 !== undefined && claim.respondent1?.responseType === ResponseType.PART_ADMISSION && paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY && claim.claimantResponse?.isClaimantAcceptedPaymentPlan;
+export const translateClaimantResponseToCCD = (claim: Claim, respondToClaimAdmitPartLRspec?: CCDPayBySetDate): CCDClaimantResponse => {
+
   const response = {
     applicant1: toCCDParty(claim.applicant1),
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
@@ -81,9 +79,8 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     specApplicant1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
     specApplicant1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
     applicant1DQDefendantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.claimantResponse?.directionQuestionnaire?.hearing),
+    respondToClaimAdmitPartLRspec: respondToClaimAdmitPartLRspec,
   };
-  if (!partAdminPayImmediate) {
-    return  { ...response, respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate, paymentIntention?.paymentOption, claim.respondentPaymentDeadline)};
-  }
   return response;
 };
+
