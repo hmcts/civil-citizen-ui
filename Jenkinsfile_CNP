@@ -11,11 +11,11 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "CIV-17599-staff-access-to-the-application"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
-def generalappCCDBranch = "master"
+def ccdBranch = "CIV-17599-staff-access-to-the-application"
+def generalappCCDBranch = "CIV-17599-staff-accesss-to-the-application"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
