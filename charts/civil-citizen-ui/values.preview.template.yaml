@@ -29,7 +29,7 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
-    LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+    LAUNCH_DARKLY_ENV: service-staging
     CIVIL_GENERAL_APPLICATIONS_URL: http://${SERVICE_NAME}-general-applications
 
 aac-manage-case-assignment:
@@ -302,7 +302,7 @@ civil-wa:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1806'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
@@ -337,7 +337,7 @@ civil-general-applications:
             alias: robotics.notification.sender
           - name: robotics-notification-recipient
             alias: robotics.notification.recipient
-          - name: launch-darkly-sdk-key-non-prod
+          - name: launch-darkly-sdk-key
             alias: LAUNCH_DARKLY_SDK_KEY
           - name: robotics-notification-multipartyrecipient
             alias: robotics.notification.multipartyrecipient
@@ -358,7 +358,7 @@ civil-general-applications:
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+      LAUNCH_DARKLY_ENV: service-staging
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-general-applications.preview.platform.hmcts.net/service-request-update
       TESTING_SUPPORT_ENABLED: true
@@ -381,7 +381,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-6940'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
@@ -417,7 +417,7 @@ civil-service:
             alias: robotics.notification.sender
           - name: robotics-notification-recipient
             alias: robotics.notification.recipient
-          - name: launch-darkly-sdk-key-non-prod
+          - name: launch-darkly-sdk-key
             alias: LAUNCH_DARKLY_SDK_KEY
           - name: robotics-notification-multipartyrecipient
             alias: robotics.notification.multipartyrecipient
@@ -464,7 +464,7 @@ civil-service:
       SPRING_CLOUD_BOOTSTRAP_ENABLED: true
       RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+      LAUNCH_DARKLY_ENV: service-staging
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       CMC_DB_HOST: "{{ .Values.postgresql.releaseNameOverride}}"

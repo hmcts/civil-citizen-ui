@@ -14,8 +14,8 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
-def generalappCCDBranch = "master"
+def ccdBranch = "feat/civ-17623"
+def generalappCCDBranch = "feat/civ-17623"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -171,8 +171,8 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
-          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
+          ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
+          ./bin/import-ga-ccd-definition.sh "-e *-nonprod.json" ${generalappCCDBranch}
           ./bin/add-org-roles-to-users.sh
         """
   }
