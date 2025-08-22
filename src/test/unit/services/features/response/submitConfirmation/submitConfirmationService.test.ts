@@ -21,6 +21,8 @@ import {PartyDetails} from 'common/form/models/partyDetails';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {YesNo} from 'common/form/models/yesNo';
 import {Mediation} from 'common/models/mediation/mediation';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimWithExtendedPaymentDeadline} from 'services/features/claimantResponse/submitClaimantResponse';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -554,5 +556,39 @@ describe('Submit Confirmation service', () => {
         expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
       });
     });
+  });
+
+  describe('getClaimWithExtendedPaymentDeadline', () => {
+    it('should return deadline for Full Admit Pay Immediately',
+      async () => {
+        jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
+        {
+          return new Date(Date.now());
+        });
+        const claim = new Claim();
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+        const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
+        expect(claimWithExtendedPaymentDeadline).not.toBeUndefined();
+      });
+
+    it('should not return deadline for Part Admit Pay Immediately',
+      async () => {
+        jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
+        {
+          return new Date(Date.now());
+        });
+        const claim = new Claim();
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+        const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
+        expect(claimWithExtendedPaymentDeadline).toBeUndefined();
+      });
   });
 });
