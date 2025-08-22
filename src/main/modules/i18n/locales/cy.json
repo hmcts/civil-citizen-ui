@@ -3749,6 +3749,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Math o gais a disgrifiad ohono",
+        "WELSH_MESSAGE": "Mae parti yn yr achos hwn wedi nodi ei bod yn well ganddi gynnal ei hachos yn Gymraeg, ac mae dogfen y cais yn cael ei chyfieithu. Bydd yr holl ddogfennau ar gael i'w gweld yn fuan a byddwch yn gallu ymateb iddi ar ôl i chi dderbyn y cyfieithiad.",
         "SUMMERY_MESSAGE1" : "Dyma’r cais y mae’r partïon eraill wedi’i wneud.",
         "SUMMERY_MESSAGE2" : "Bydd eu hymatebion i ‘Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?’ a ‘Pam ydych chi’n gwneud cais am y gorchymyn hwn?’ yn esbonio’r newid maen nhw wedi gwneud cais amdano a pham. Bydd dolen i adolygu unrhyw ddogfennau maen nhw wedi uwchlwytho.",
         "SUMMERY_MESSAGE3" : "Unwaith y byddwch wedi adolygu eu cais, cliciwch ar ‘ymateb i gais’ isod. Fe ofynnir i chi p’un a ydych yn cytuno â’u cais neu beidio."
