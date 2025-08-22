@@ -5996,6 +5996,9 @@
     },
     "CUI_JO" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddiwr Citizen ar gael rhwng 19:00 ar 18 Awst 2025 a 03:00 ar 19 Awst 2025"
+    },
+    "CUI_COSC" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
     }
   }
 }
