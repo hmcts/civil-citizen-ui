@@ -4,10 +4,12 @@ import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';
 import {Claim} from 'models/claim';
-import {getQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {deleteQueryManagement, getQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
+import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -46,18 +48,7 @@ describe('Send follow query controller', () => {
         });
     });
 
-    it('should call through to removeSelectedDocument when the query param is passed', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
-      const removeDocSpy = jest.spyOn(queryManagementService, 'removeSelectedDocument');
-      await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE + '?id=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(removeDocSpy).toHaveBeenCalledTimes(1);
-        });
-    });
-
-    it('should pre fill field values when session data is set', async () => {
+    it('should remove Field values url starts with start', async () => {
       const preFilledData = {'messageDetails': 'test body'};
       const claim = new Claim();
       claim.queryManagement = new QueryManagement();
@@ -65,10 +56,10 @@ describe('Send follow query controller', () => {
       queryManagementMock.mockResolvedValue(claim.queryManagement);
 
       await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE)
+        .get(QM_FOLLOW_UP_MESSAGE + `?linkFrom=${LinKFromValues.start}`)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('test body');
+          expect(deleteQueryManagement).toHaveBeenCalledTimes(1);
         });
     });
   });
@@ -107,10 +98,26 @@ describe('Send follow query controller', () => {
     it('should trigger redirect on successful file upload', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
       const uploadSelectedFile = jest.spyOn(queryManagementService, 'uploadSelectedFile');
-      await request(app).post(QM_FOLLOW_UP_MESSAGE).send({action: 'uploadButton'})
+      await request(app).post(QM_FOLLOW_UP_MESSAGE).send({
+        action: 'uploadButton',
+        messageDetails: 'test body',
+      })
         .expect(res => {
           expect(res.status).toBe(302);
           expect(uploadSelectedFile).toHaveBeenCalled();
+        });
+    });
+
+    it('should trigger redirect on successful file exclusion', async () => {
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const spyRemoveSelectedDocument = jest.spyOn(QueryManagementService, 'removeSelectedDocument');
+      await request(app).post(QM_FOLLOW_UP_MESSAGE).send({
+        action: '[1][deleteFile]',
+        messageDetails: 'test body',
+      })
+        .expect(res => {
+          expect(res.status).toBe(302);
+          expect(spyRemoveSelectedDocument).toHaveBeenCalled();
         });
     });
   });

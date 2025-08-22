@@ -5,7 +5,7 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
 
 {% block pageTitle %}
@@ -28,6 +28,12 @@
             <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DEFENDANT_OFFERED_TO_PAY', {defendantName: defendantName, proposedSetDate: proposedSetDate})}}</p>
           {% else %}
             {{ repaymentPlanSummary(repaymentPlan, t) }}
+            {% if responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
+              <p class="govuk-body">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.INTEREST_HINT_TEXT') }}</p>
+            {% endif %}
+            {% if responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+              <p class="govuk-body">{{  t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_ADMISSION_PAY_BY_INSTALLMENTS.INTEREST_HINT_TEXT') }}</p>
+            {% endif %}
           {% endif %}
           <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.ACCEPT_REPAYMENT_PLAN.DO_YOU_ACCEPT') }}</p>
           <form method="post" novalidate>

@@ -91,6 +91,7 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
 
 export class CivilClaimResponse {
   id: string;
@@ -287,6 +288,8 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   claimFee?:CCDClaimFee;
+  fixedCosts?:CcdFixedCosts;
+  ccjJudgmentFixedCostAmount?: string;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
@@ -317,7 +320,6 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
   previewCourtOfficerOrder?: CaseDocument;
-  translatedCourtOfficerOrder?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
   joIsLiveJudgmentExists?: YesNoUpperCamelCase;
@@ -327,8 +329,9 @@ export interface CCDClaim extends ClaimUpdate {
   joDJCreatedDate?: Date;
   uiStatementOfTruth?: CcdStatementOfTruth;
   //Query management
-  qmApplicantCitizenQueries?: CaseQueries;
-  qmRespondentCitizenQueries?: CaseQueries;
+  queries?: CaseQueries;
+  previousCCDState?: string;
+  courtOfficersOrders?: FinalOrderDocumentCollection[];
 }
 
 export interface ClaimFeeData {

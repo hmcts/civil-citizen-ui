@@ -24,7 +24,7 @@ import {
   isCUIReleaseTwoEnabled,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled,
+  isQueryManagementEnabled, isWelshEnabledForMainCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -93,6 +93,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
           req.session.dashboard.taskIdHearingUploadDocuments = task.id;
         }
       });
+      const welshEnabled = await isWelshEnabledForMainCase();
+      const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
@@ -108,6 +111,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
         isQMFlagEnabled,
+        showWelshPartyBanner,
+        showErrorAwaitingTranslation,
       });
 
     } else {
@@ -118,7 +123,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||

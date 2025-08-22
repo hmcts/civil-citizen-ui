@@ -5,7 +5,7 @@ const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/D
 const StringUtilsComponent = require('../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
-const {orderMade, uploadDocuments} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {orderMadeLA, uploadDocuments} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {uploadHearingDocuments, viewDocuments} = require('../../specClaimHelpers/dashboardTasklistConstants');
 
@@ -24,7 +24,7 @@ Before(async ({api}) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'smallClaimsTrack');
   await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
   await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -34,7 +34,7 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
   if (isDashboardServiceEnabled) {
     // claimant checks notifications for orders and upload docs
-    notification = orderMade();
+    notification = orderMadeLA();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     taskListItem = uploadHearingDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);

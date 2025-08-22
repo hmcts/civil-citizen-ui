@@ -19,7 +19,7 @@
     <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
-    <a target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
+    <a class="govuk-link" target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
     {% endif %}{{ hrefContent }}</a></p>
   {% endif %}
 {% endmacro %}
@@ -66,7 +66,7 @@
   {% if disableSendMessage %}
   {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
   {% else %}
-  {% set qmContent = _widgetRedesign(disclosure, callChargesWidget) %}
+  {% set qmContent = _widgetRedesign(emailWidget, callChargesWidget) %}
   {% endif %}
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
@@ -74,7 +74,15 @@
   {% set content = content + emailWidget + callChargesWidget %}
   {% if open %}
     <div class="govuk-details">
-      {{ emailWidget}}
+      {% if isQMFlagEnabled === true %}
+          <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
+            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+              {{ t('COMMON.QM_INFORMATION_LINK') }}
+            </a>.
+          </p>
+      {% else %}
+        {{ emailWidget}}
+      {% endif %}
       {{ callChargesWidget }}
     </div>
   {% else %}

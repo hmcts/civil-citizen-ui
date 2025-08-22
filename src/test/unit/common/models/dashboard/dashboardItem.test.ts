@@ -136,6 +136,16 @@ describe('Dashboard Items', ()=> {
       // Then
       expect(result).toBe(expectedTranslation);
     });
+
+    it('should return translated status for claim discontinued', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status ='CASE_DISCONTINUED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_DISCONTINUED');
+    });
   });
 
   describe('Dashboard claimant item', ()=>{

@@ -6,6 +6,7 @@
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "../../macro/button.njk" import addButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageHeaders.pageTitle) }}
@@ -15,6 +16,10 @@
 
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
 
+    {{ govukWarningText({
+      text: t('PAGES.QM.FOLLOW_UP_QUERY.WARNING_TEXT'),
+      iconFallbackText: "Warning"
+    }) }}
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
       {{ csrfProtection(csrf) }}
       {{ govukTextarea({
@@ -22,8 +27,9 @@
         name: 'messageDetails',
         value: form.model.messageDetails,
         label: {
-          text: t('PAGES.QM.FOLLOW_UP_QUERY.BODY_TITLE')
-        },
+          text: t('PAGES.QM.FOLLOW_UP_QUERY.BODY_TITLE'),
+          classes: 'govuk-heading-s govuk-!-font-weight-bold'
+      },
         hint: {
           text: t('PAGES.QM.FOLLOW_UP_QUERY.BODY_HINT')
         },
@@ -64,10 +70,14 @@
                   <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-weight-bold"> {{ row.key.text }}</p>
                 </dt>
                 <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="{{ row.actions.items[0].href }}">
-                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}<span class="govuk-visually-hidden">
-                                    {{ row.key.text }}</span>
-                  </a>
+                  <button type="submit"
+                          class="link-button"
+                          id="deleteFile"
+                          name="action"
+                          value="[{{ row.value.html }}][deleteFile]">
+                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}
+                    <span class="govuk-visually-hidden">{{ row.key.text }}</span>
+                  </button>
                 </dd>
               </div>
           </dl>

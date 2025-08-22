@@ -17,15 +17,17 @@ import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
-  isGaForLipsEnabled,
+  isGaForLipsEnabled, isJudgmentOnlineLive,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {FIXED_DATE} from '../../../../utils/dateUtils';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const isGaForWelshEnabled = launchDarklyClient.isGaForWelshEnabled as jest.Mock;
+const isWelshEnabledForMainCase = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 describe('View Orders And Notices Service', () => {
 
@@ -81,7 +83,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual dq when cuiWelshFlag is on', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -101,7 +103,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant english dq when cuiWelshFlag is on', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'claimant_test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -139,7 +141,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for claimant bilingual seal claim', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(false);
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
@@ -340,7 +342,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.courtPermissionNeeded = YesNoUpperCase.NO;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
       claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
       //When
@@ -360,7 +362,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT);
       claim.respondent1NoticeOfDiscontinueAllPartyViewDoc = document.value;
       //When
@@ -380,7 +382,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.confirmOrderGivesPermission = YesNoUpperCase.YES;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
       claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
       //When
@@ -400,7 +402,7 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.courtPermissionNeeded = YesNoUpperCase.NO;
-      (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockReturnValueOnce(true);
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT);
       claim.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc = document.value;
       //When
@@ -436,7 +438,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for defendant stitched response when welsh enabled', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
@@ -456,7 +458,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for defendant lip response', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(false);
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
@@ -496,7 +498,7 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for defendant lip english response when defendant is bilingual', async () => {
       //given
-      isGaForWelshEnabled.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
@@ -604,6 +606,24 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for translated standard directions order', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SDO_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for lip manual determination', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -656,6 +676,19 @@ describe('View Orders And Notices Service', () => {
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
+    });
+
+    it('should not get data array for ccj admission', async () => {
+      //given
+      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(0);
     });
 
     it('should get data array for claimant response receipt', async () => {
@@ -809,6 +842,26 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for translated decision on Reconsideration', async () => {
+
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should not get data array for decision on reconsideration if toggle off', async () => {
       //given
       (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
@@ -954,6 +1007,32 @@ describe('View Orders And Notices Service', () => {
       expect(result.documents.length).toEqual(1);
     });
 
+    it('should get court officer order from collection when caseworkerEvent toggle on', async () => {
+      //given
+      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.courtOfficersOrders =
+        [new FinalOrderDocumentCollection(setUpCourtOfficersOrder().id, setUpCourtOfficersOrder().value),
+          new FinalOrderDocumentCollection(setUpTranslatedCourtOfficersOrder().id, setUpTranslatedCourtOfficersOrder().value)];
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      const expectedDocument1 = new DocumentInformation(
+        undefined,
+        '26 April 2023',
+        new DocumentLinkInformation('/case/test3/view-documents/33c8ba72-6193-48ca-88cd-b57741c558c4', '2025-08-04_hearing-centre-admin-01@example.com Admin.pdf'),
+      );
+      const expectedDocument2 = new DocumentInformation(
+        undefined,
+        '26 April 2023',
+        new DocumentLinkInformation('/case/test3/view-documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432', 'translated_court_off_order.pdf'),
+      );
+      //Then
+      expect(result.documents.length).toEqual(2);
+      expect(result.documents[0]).toEqual(expectedDocument1);
+      expect(result.documents[1]).toEqual(expectedDocument2);
+    });
+
     it('should not get court officer order when caseworkerEvent toggle off', async () => {
       //given
       (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(false);
@@ -961,32 +1040,6 @@ describe('View Orders And Notices Service', () => {
       claim.caseProgression = new CaseProgression();
       const documentName = 'test_000MC001.pdf';
       claim.caseProgression.courtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      expect(result.documents.length).toEqual(0);
-    });
-
-    it('should get translated court officer order when caseworkerEvent toggle on', async () => {
-      //given
-      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(true);
-      const claim = new Claim();
-      claim.caseProgression = new CaseProgression();
-      const documentName = 'test_000MC001.pdf';
-      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      expect(result.documents.length).toEqual(1);
-    });
-
-    it('should not get translated court officer order when caseworkerEvent toggle off', async () => {
-      //given
-      (isCaseWorkerEventsEnabled as jest.Mock).mockReturnValueOnce(false);
-      const claim = new Claim();
-      claim.caseProgression = new CaseProgression();
-      const documentName = 'test_000MC001.pdf';
-      claim.caseProgression.translatedCourtOfficerOrder = setUpCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
       //When
       const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
@@ -1024,6 +1077,44 @@ describe('View Orders And Notices Service', () => {
       'documentSize': 45794,
       'documentType': documentType,
       'createdDatetime': new Date('2022-06-21T14:15:19'),
+    };
+  }
+
+  function setUpCourtOfficersOrder() {
+    return {
+      id: 'c38cf5d3-69a5-4643-a5f7-06c0e3343e82',
+      'value': {
+        'createdBy': 'Civil',
+        'documentLink': {
+          'category_id': 'caseManagementOrders',
+          'document_url': 'http://dm-store:8080/documents/33c8ba72-6193-48ca-88cd-b57741c558c4',
+          'document_filename': '2025-08-04_hearing-centre-admin-01@example.com Admin.pdf',
+          'document_binary_url': 'http://dm-store:8080/documents/33c8ba72-6193-48ca-88cd-b57741c558c4/binary',
+        },
+        'documentName': 'Order_2025-08-04.pdf',
+        'documentSize': 20222,
+        'documentType': DocumentType.COURT_OFFICER_ORDER,
+        'createdDatetime': FIXED_DATE,
+      },
+    };
+  }
+
+  function setUpTranslatedCourtOfficersOrder() {
+    return {
+      'id': '3dd8b32b-4510-4345-879f-e94a4503b692',
+      'value': {
+        'createdBy': 'Civil',
+        'documentLink': {
+          'category_id': 'caseManagementOrders',
+          'document_url': 'http://dm-store:8080/documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432',
+          'document_filename': 'translated_court_off_order.pdf',
+          'document_binary_url': 'http://dm-store:8080/documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432/binary',
+        },
+        'documentName': 'translated_court_off_order.pdf',
+        'documentSize': 0,
+        'documentType': DocumentType.COURT_OFFICER_ORDER_TRANSLATED_DOCUMENT,
+        'createdDatetime': FIXED_DATE,
+      },
     };
   }
 

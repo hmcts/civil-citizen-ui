@@ -1,7 +1,8 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
@@ -11,9 +12,11 @@
 {% set pageTitle = pageTitleForClaimant if isClaimantResponse else pageTitleForDefendant %}
 
 {% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE')  %}
-{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2)}) if amount else t('PAGES.PAYMENT_OPTION.TITLE')%}
+{% set totalAmount = form.model.totalClaimAmount.toFixed(2) if form.model.totalClaimAmount else 0 %}
+{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2) if amount else totalAmount })%}
 {% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
 
+{% set totalAmountClaimedText =  t('PAGES.PAYMENT_OPTION.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
 
 {% block pageTitle %}
@@ -42,6 +45,21 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
+             {% if isClaimantResponse %}
+               {% if responseType === ResponseType.FULL_ADMISSION %}
+                <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+               {% endif %}
+             {% else %}
+                {% if responseType === ResponseType.PART_ADMISSION %}
+                  <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
+                {% else %}
+                   <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                   <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+                {% endif %}
+              {% endif %}
+
             {{ govukRadios({
               idPrefix: "paymentType",
               name: "paymentType",

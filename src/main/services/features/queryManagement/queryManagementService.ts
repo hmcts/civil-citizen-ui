@@ -6,14 +6,13 @@ import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/q
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {
-  CANCEL_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY,
+  CANCEL_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {GenericForm} from 'form/models/genericForm';
 import {summaryRow} from 'models/summaryList/summaryList';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -64,6 +63,7 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
   [WhatToDoTypeOption.SEND_DOCUMENTS]: 'PAGES.QM.CAPTIONS.SEND_DOCUMENTS',
   [WhatToDoTypeOption.SOLVE_PROBLEM]: 'PAGES.QM.CAPTIONS.SOLVE_PROBLEM',
   [WhatToDoTypeOption.MANAGE_HEARING]: 'PAGES.QM.CAPTIONS.MANAGE_HEARING',
+  [WhatToDoTypeOption.CHANGE_CASE]: 'PAGES.QM.CAPTIONS.CHANGE_CASE',
 };
 
 export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
@@ -107,32 +107,25 @@ const saveDocumentToUploaded = async (req: AppRequest, file: UploadQMAdditionalF
 export const getSummaryList = async (formattedSummary: SummarySection, req: AppRequest, isFollowUp = false): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
   const queryManagement = claim.queryManagement;
-  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement.createQuery;
+  const query = isFollowUp ? queryManagement?.sendFollowUpQuery : queryManagement?.createQuery;
 
   if (query) {
     const uploadedFiles = query.uploadedFiles;
-    const claimId = req.params.id;
-    const queryId = req.params.queryId;
     let index = 0;
     uploadedFiles.forEach((file: UploadQMAdditionalFile) => {
       index++;
       formattedSummary.summaryList.rows.push(
         summaryRow(
           file.caseDocument.documentName,
-          '',
-          constructResponseUrlWithIdParams(claimId, (isFollowUp ? QM_FOLLOW_UP_MESSAGE.replace(':queryId',queryId) : QUERY_MANAGEMENT_CREATE_QUERY) + '?id=' + index),
-          'Remove document',
+          String(index),
         ),
       );
     });
   }
 };
 
-export const removeSelectedDocument = async (req: AppRequest, index: number, isFollowUp = false): Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, index: number, query: CreateQuery | SendFollowUpQuery,  isFollowUp = false): Promise<void> => {
   try {
-    const claim = await getClaimById(req.params.id, req, true);
-    const queryManagement = claim.queryManagement;
-    const query = isFollowUp ? queryManagement.sendFollowUpQuery : queryManagement.createQuery;
     query.uploadedFiles.splice(index, 1);
     await saveQueryManagement(req.params.id, query, isFollowUp ? 'sendFollowUpQuery' : 'createQuery', req);
 

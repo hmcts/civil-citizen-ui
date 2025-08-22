@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
@@ -39,7 +39,7 @@
            {{t('PAGES.FINANCIAL_DETAILS.REJECT_COURT_MAKE_NEW_PLAN_BASED')}}
         </p>
         <p class="govuk-body">
-          <a href="{{claimantDetailsUrl}}">{{t('PAGES.FINANCIAL_DETAILS.GET_APPLICANT_CONTACT_DETAILS', { applicant1Details: applicant1Details })}}</a>
+          <a class="govuk-link" href="{{claimantDetailsUrl}}">{{t('PAGES.FINANCIAL_DETAILS.GET_APPLICANT_CONTACT_DETAILS', { applicant1Details: applicant1Details })}}</a>
         </p>
       {% endif %}
       <form method="post" novalidate>
