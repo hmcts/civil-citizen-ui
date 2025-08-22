@@ -27,8 +27,9 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediately %}
-        <div
-          class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
+         <div class='govuk-hint'>
+           {{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT_PA') if amount else t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT_FA') }}
+         </div>
       {% endset -%}
 
       {% set hintPayLater %}
