@@ -45,6 +45,7 @@ import {
   isApplicationFullyVisibleToRespondent,
   isApplicationFullyVisibleToRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
+import {isGaForWelshEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const viewApplicationToRespondentController = Router();
 const viewPathPreResponse = 'features/generalApplication/response/view-application';
