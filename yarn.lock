@@ -1870,9 +1870,9 @@ __metadata:
   linkType: hard
 
 "@hmcts/cookie-manager@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@hmcts/cookie-manager@npm:1.0.0"
-  checksum: 7b9aacd5510f296fad664cbce2ad3bde1dfbe6276f79e05ecd7f3a437fd6b5415b95a202354a4ad2d2bb41ad4ddda436202e757eca8d106ddf1d28d801169657
+  version: 1.1.0
+  resolution: "@hmcts/cookie-manager@npm:1.1.0"
+  checksum: 209ecaa7286a43f1306e86557e73f45839798cf7d9ee79dc9e573e871dd3ef19abb2a3a4f152d0800393101054e72921d5a61f6c48b861519c1b68e5d8beeca3
   languageName: node
   linkType: hard
 
