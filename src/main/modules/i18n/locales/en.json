@@ -3860,6 +3860,7 @@
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "DISMISSAL_ORDER": "Dismissal order",
         "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+        "TRANSLATED_JUDGE_HAS_MADE_ORDER": "Translated Judge’s directions order Request",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",

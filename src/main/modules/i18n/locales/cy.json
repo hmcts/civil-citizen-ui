@@ -3860,6 +3860,7 @@
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
         "DISMISSAL_ORDER": "Gorchymyn diddymu",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
+        "TRANSLATED_JUDGE_HAS_MADE_ORDER": "Cais am Orchymyn Cyfarwyddiadau’r Barnwr wedi’i Gyfieithu",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Darllen yr ymateb",
