@@ -6,6 +6,7 @@ const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequ
 const {seeInTitle} = require('../../commons/seeInTitle');
 const {checkDateFields} = require('../../commons/checkDateFields');
 const {checkResponseTypeFields} = require('../../commons/checkResponseTypeFields');
+require('../../../functionalTests/specClaimHelpers/fixtures/cookies/eligibilityCookies');
 const I = actor();
 
 class Response {
@@ -453,7 +454,9 @@ class Response {
       I.fillField('#paymentAmount', '250');
       futureDate.setMonth(futureDate.getMonth() + 1);
     } else {
-      I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
+      I.see('The total amount claimed is £1000.1.', 'p.govuk-body-m');
+      I.see('This amount includes interest if it has been claimed which may continue to accrue to the date of Judgment, settlement agreement or earlier payment.', 'p.govuk-body-m');
+      I.see('The amount does not include the claim fee and any fixed costs which are payable in addition.', 'p.govuk-body-m');
       I.fillField('#paymentAmount', '500');
     }
 
