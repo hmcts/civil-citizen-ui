@@ -559,7 +559,7 @@ describe('Submit Confirmation service', () => {
   });
 
   describe('getClaimWithExtendedPaymentDeadline', () => {
-    it('should return deadline for Full Admit Pay Immediately',
+    it('should not calculate deadline for Full Admit Pay Immediately',
       async () => {
         jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
         {
@@ -572,10 +572,10 @@ describe('Submit Confirmation service', () => {
         claim.fullAdmission.paymentIntention = new PaymentIntention();
         claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
-        expect(claimWithExtendedPaymentDeadline).not.toBeUndefined();
+        expect(claimWithExtendedPaymentDeadline).toBeUndefined();
       });
 
-    it('should not return deadline for Part Admit Pay Immediately',
+    it('should calculate deadline for Part Admit Pay Immediately',
       async () => {
         jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
         {
@@ -584,11 +584,11 @@ describe('Submit Confirmation service', () => {
         const claim = new Claim();
         claim.respondent1 = new Party();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-        claim.fullAdmission = new FullAdmission();
-        claim.fullAdmission.paymentIntention = new PaymentIntention();
-        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+        claim.partialAdmission = new PartialAdmission();
+        claim.partialAdmission.paymentIntention = new PaymentIntention();
+        claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
         const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
-        expect(claimWithExtendedPaymentDeadline).toBeUndefined();
+        expect(claimWithExtendedPaymentDeadline).not.toBeUndefined();
       });
   });
 });
