@@ -47,8 +47,7 @@ function isClaimantWantToSettleTheClaim(claim: Claim) {
 }
 
 export const translateClaimantResponseToCCD = (claim: Claim, respondToClaimAdmitPartLRspec?: CCDPayBySetDate): CCDClaimantResponse => {
-
-  const response = {
+  return {
     applicant1: toCCDParty(claim.applicant1),
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
     applicant1ClaimMediationSpecRequiredLip: toCCDClaimantMediation(claim.claimantResponse?.mediation),
@@ -81,6 +80,5 @@ export const translateClaimantResponseToCCD = (claim: Claim, respondToClaimAdmit
     applicant1DQDefendantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.claimantResponse?.directionQuestionnaire?.hearing),
     respondToClaimAdmitPartLRspec: respondToClaimAdmitPartLRspec,
   };
-  return response;
 };
 

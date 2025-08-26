@@ -51,7 +51,7 @@ function hasRespondTypeWithCCJRequest(claim: Claim): boolean {
 
 export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppRequest): Promise<Date> => {
   try {
-    if (claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) {
+    if (claim.isPartialAdmission() && claim.isPAPaymentOptionPayImmediately()) {
       return await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, req);
     }
     return undefined;
