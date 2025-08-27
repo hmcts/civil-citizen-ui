@@ -14,20 +14,21 @@ const initialQueryMessage = async (userName, userId, isHearingRelated) => elemen
   ...(isHearingRelated ? {  hearingDate: '2026-01-01' } : {}),
 });
 
-const queryResponseMessage = async ({id, subject, isHearingRelated, hearingDate}, userId) => element({
+const queryResponseMessage = async ({id, subject, isHearingRelated, hearingDate, parentId}, userId, isClosed) => element({
   id: uuid.v1(),
-  body: 'Caseworker response to query.',
+  body: isClosed ? 'Caseworker closing query' : 'Caseworker response to query.',
   name: 'Caseworker',
   subject,
-  parentId: id,
+  parentId: parentId ? parentId : id,
   createdBy: userId,
   createdOn: new Date().toISOString(),
   attachments: [element({...(await uploadDocument()), filename: 'response-attachment.pdf'})],
   hearingDate,
   isHearingRelated,
+  isClosed: isClosed ? 'Yes' : 'No',
 });
 
-const followUpQueryMessage = async ({id, subject, isHearingRelated, hearingDate, name}, userId) => element({
+const followUpQueryMessage = async ({id, subject, isHearingRelated, hearingDate, name, isClosed}, userId) => element({
   name,
   subject,
   id: uuid.v1(),
@@ -38,6 +39,7 @@ const followUpQueryMessage = async ({id, subject, isHearingRelated, hearingDate,
   attachments: [element({...(await uploadDocument()), filename: 'follow-up-attachment.pdf'})],
   hearingDate,
   isHearingRelated,
+  isClosed,
 });
 
 module.exports = {initialQueryMessage, queryResponseMessage, followUpQueryMessage};

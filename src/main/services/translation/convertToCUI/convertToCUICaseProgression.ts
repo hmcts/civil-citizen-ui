@@ -51,6 +51,7 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     }
 
     caseProgression.finalOrderDocumentCollection = finalOrderDocuments(ccdClaim);
+    caseProgression.courtOfficersOrders = courtOfficerOrders(ccdClaim);
 
     if(ccdClaim.hearingHelpFeesReferenceNumber) {
       caseProgression.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, ccdClaim.hearingHelpFeesReferenceNumber);
@@ -60,7 +61,6 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.requestForReconsiderationDocument = ccdClaim.requestForReconsiderationDocument;
     caseProgression.requestForReconsiderationDocumentRes = ccdClaim.requestForReconsiderationDocumentRes;
     caseProgression.courtOfficerOrder = ccdClaim.previewCourtOfficerOrder;
-    caseProgression.translatedCourtOfficerOrder = ccdClaim.translatedCourtOfficerOrder;
 
     return caseProgression;
   }
@@ -163,6 +163,20 @@ const finalOrderDocuments =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[
     finalOrderDocumentCollection = undefined;
   }
   return finalOrderDocumentCollection;
+};
+
+const courtOfficerOrders =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[] => {
+  let courtOfficerOrderDocumentCollection = [] as FinalOrderDocumentCollection[];
+  const courtOfficerOrderList = ccdClaim.courtOfficersOrders;
+  if (courtOfficerOrderList != null) {
+    for (const ccdElement of courtOfficerOrderList) {
+      courtOfficerOrderDocumentCollection.push(ccdElement);
+    }
+  }
+  if (courtOfficerOrderDocumentCollection.length == 0) {
+    courtOfficerOrderDocumentCollection = undefined;
+  }
+  return courtOfficerOrderDocumentCollection;
 };
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
