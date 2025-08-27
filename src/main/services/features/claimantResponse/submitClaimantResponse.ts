@@ -25,7 +25,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     let respondToClaimAdmitPartLRspec = undefined;
     if (!partAdminPayImmediate) {
       respondToClaimAdmitPartLRspec = {
-        whenWillThisAmountBePaid: await getClaimWithExtendedPaymentDeadline(claim, respondToClaimAdmitPartLRspec),
+        whenWillThisAmountBePaid: await getClaimWithExtendedPaymentDeadline(claim, req),
       };
     }
 
