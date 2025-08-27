@@ -281,7 +281,7 @@ describe('Uploading files', () => {
         fileUpload: undefined,
       },
     } as unknown as AppRequest;
-    await removeSelectedDocument(appRequest, 0);
+    await removeSelectedDocument(appRequest, 0, claim.queryManagement.createQuery);
     expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);
     expect(saveSpy).toBeCalledWith('1234', claim);
   });
@@ -324,13 +324,7 @@ describe('getSummaryList', () => {
                     text: 'Full name',
                   },
                   value: {
-                    text: 'PARTY_NAME',
-                  },
-                  actions: {
-                    items: [{
-                      href: '',
-                      text: 'Change',
-                    }],
+                    html: '1',
                   },
                 },
               ],
@@ -350,13 +344,7 @@ describe('getSummaryList', () => {
                       text: 'Full name',
                     },
                     value: {
-                      text: 'PARTY_NAME',
-                    },
-                    actions: {
-                      items: [{
-                        href: '',
-                        text: 'Change',
-                      }],
+                      html: '1',
                     },
                   },
                   {
@@ -364,14 +352,7 @@ describe('getSummaryList', () => {
                       text: 'name',
                     },
                     value: {
-                      html: '',
-                    },
-                    actions: {
-                      items: [{
-                        href: '/case/1/qm/create-query?id=1',
-                        text: 'Remove document',
-                        visuallyHiddenText: 'name',
-                      }],
+                      html: '1',
                     },
                   },
                 ],
@@ -412,13 +393,7 @@ describe('getSummaryList', () => {
                     text: 'Full name',
                   },
                   value: {
-                    text: 'PARTY_NAME',
-                  },
-                  actions: {
-                    items: [{
-                      href: '',
-                      text: 'Change',
-                    }],
+                    html: '1',
                   },
                 },
               ],
@@ -438,13 +413,7 @@ describe('getSummaryList', () => {
                       text: 'Full name',
                     },
                     value: {
-                      text: 'PARTY_NAME',
-                    },
-                    actions: {
-                      items: [{
-                        href: '',
-                        text: 'Change',
-                      }],
+                      html: '1',
                     },
                   },
                   {
@@ -452,14 +421,7 @@ describe('getSummaryList', () => {
                       text: 'name',
                     },
                     value: {
-                      html: '',
-                    },
-                    actions: {
-                      items: [{
-                        href: '/case/1/qm/1/follow-up-message?id=1',
-                        text: 'Remove document',
-                        visuallyHiddenText: 'name',
-                      }],
+                      html: '1',
                     },
                   },
                 ],
@@ -506,6 +468,12 @@ describe('removeSelectedDocument', () => {
   });
 
   it('should remove Selected Document not follow up', async () => {
+    const claim = new Claim();
+    claim.queryManagement = new QueryManagement();
+    claim.queryManagement.createQuery = new CreateQuery();
+    claim.queryManagement.createQuery.uploadedFiles= [
+      new UploadQMAdditionalFile(file, returnedFile),
+    ] as unknown as UploadQMAdditionalFile[];
 
     const appRequest: AppRequest = {
       params: { id: '1', appId: '89' },
@@ -514,24 +482,26 @@ describe('removeSelectedDocument', () => {
       },
     } as unknown as AppRequest;
     mockGetClaimById.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.queryManagement = new QueryManagement();
-      claim.queryManagement.createQuery = new CreateQuery();
-      claim.queryManagement.createQuery.uploadedFiles= [
-        new UploadQMAdditionalFile(file, returnedFile),
-      ] as unknown as UploadQMAdditionalFile[];
+
       return claim;
     });
 
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
     const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-    await removeSelectedDocument(appRequest, 1 ,false);
+    await removeSelectedDocument(appRequest, 0 , claim.queryManagement.createQuery, false);
     expect(spySave).toBeCalledTimes(1);
+    expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);
 
   });
 
   it('should removeSelectedDocument is follow up', async () => {
+    const claim = new Claim();
+    claim.queryManagement = new QueryManagement();
+    claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
+    claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
+      new UploadQMAdditionalFile(file, returnedFile),
+    ] as unknown as UploadQMAdditionalFile[];
 
     const appRequest: AppRequest = {
       params: { id: '1', appId: '89' },
@@ -540,21 +510,16 @@ describe('removeSelectedDocument', () => {
       },
     } as unknown as AppRequest;
     mockGetClaimById.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
-      claim.queryManagement.sendFollowUpQuery.uploadedFiles= [
-        new UploadQMAdditionalFile(file, returnedFile),
-      ] as unknown as UploadQMAdditionalFile[];
+
       return claim;
     });
 
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
     const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-    await removeSelectedDocument(appRequest, 1 ,true);
+    await removeSelectedDocument(appRequest, 0 ,claim.queryManagement.sendFollowUpQuery,true);
     expect(spySave).toBeCalledTimes(1);
-
+    expect(claim.queryManagement.sendFollowUpQuery.uploadedFiles.length).toBe(0);
   });
 
 });

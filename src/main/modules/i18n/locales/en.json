@@ -3858,9 +3858,9 @@
         "HEARING_ORDER" : "Hearing Order",
         "TRANSLATED_HEARING_ORDER": "Translated Hearing Order Request",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
-        "GENERAL_ORDER" : "General Order",
         "DISMISSAL_ORDER": "Dismissal order",
         "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+        "TRANSLATED_JUDGE_HAS_MADE_ORDER": "Translated Judge’s directions order Request",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
@@ -5254,7 +5254,7 @@
       "UNSEALED_CLAIM":"Unsealed Claim form",
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
       "COURT_OFFICER_ORDER": "Court Officer Order Request",
-      "TRANSLATED_COURT_OFFICER_ORDER": "Translated Court officer order Requestr",
+      "TRANSLATED_COURT_OFFICER_ORDER": "Translated Court officer order Request",
       "JBA_DEFENDANT":"Judgment by admission defendant",
       "JBA_CLAIMANT":"Judgment by admission claimant",
       "DJ_DEFENDANT":"Default Judgment defendant",
@@ -5997,6 +5997,9 @@
     },
     "CUI_JO" : {
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 18th August 2025 and 02:00 on 19th August 2025."
+    },
+    "CUI_COSC" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 26th August 2025 and 04:00 on 27th August 2025"
     }
   }
 }
