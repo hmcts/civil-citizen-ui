@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 const partyType = 'LiPvLiP';
 let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims').tag('@case-progression');
+Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims')
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

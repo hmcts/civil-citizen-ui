@@ -15,7 +15,7 @@ const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Fast Track').tag('@case-progression');
+Feature('Case progression journey - Verify Bundle Page - Fast Track')
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {

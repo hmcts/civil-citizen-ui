@@ -12,7 +12,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit - FastTrack').tag('@part-admit @nightly');
+Feature('Response with PartAdmit - FastTrack').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

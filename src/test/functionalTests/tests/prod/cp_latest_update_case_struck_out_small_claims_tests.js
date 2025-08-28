@@ -10,7 +10,7 @@ const { uploadHearingDocuments } = require('../../specClaimHelpers/dashboardTask
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Case Struck Out journey - Small Claims').tag('@case-progression');
+Feature('Case progression - Case Struck Out journey - Small Claims')
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@part-admit');
+Feature('Welsh Response with PartAdmit - Small Claims').tag('@nightly');
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

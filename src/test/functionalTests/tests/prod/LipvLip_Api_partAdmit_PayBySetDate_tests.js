@@ -10,7 +10,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, claimNumber;
 
-Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track').tag('@part-admit @nightly');
+Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track').tag('@nightly');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
 Scenario.skip('Response with PartAdmit-PayBySetDate Small claims', async ({api}) => {
