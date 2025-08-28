@@ -37,11 +37,11 @@ Scenario('Create Claim', async ({api}) => {
     console.log('The value of the Claim Number :' + claimNumber);
     console.log('The value of the Security Code :' + securityCode);
   }
-}).retry(1).tag('@regression').tag('@crossbrowser');
+}).retry(1).tag('@crossbrowser');
 
 Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);
-}).tag('@regression');
+});
 
 Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

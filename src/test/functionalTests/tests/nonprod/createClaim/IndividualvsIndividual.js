@@ -19,7 +19,7 @@ let caseData, legacyCaseReference, caseRef, claimNumber, claimInterestFlag, Stan
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Individual vs Individual').tag('@create-claim @regression');
+Feature('Create Lip v Lip claim - Individual vs Individual').tag('@create-claim');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -158,4 +158,4 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     const notification = await waitForDefendantToRespond();
     await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
   }
-});
+}).tag('@regression');

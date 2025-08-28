@@ -46,7 +46,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject'
     const notification = mediationCARMClaimantDefendant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @noc', async ({api, I}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

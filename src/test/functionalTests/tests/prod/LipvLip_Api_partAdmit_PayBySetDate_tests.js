@@ -77,4 +77,4 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Small claims Reject repaymen
     //const notification = judgmentRequestedCourtAgrees();
     //await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression');
+});

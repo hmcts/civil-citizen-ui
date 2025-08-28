@@ -3,7 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
-const { defendantResponseFullAdmitPayBySetDateClaimant, mediationCARMClaimantDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { claimantNotificationFullAdmitPayImmediately, mediationCARMClaimantDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
   verifyTasklistLinkAndState,
@@ -56,7 +56,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
 
 Scenario('LiP Claimant response with Part admit', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, defendantResponseFullAdmitPayBySetDateClaimant(500));
+  await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationFullAdmitPayImmediately(500));
   await ClaimantResponseSteps.verifyDefendantResponse();
   await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
   await ResponseSteps.EnterTelephoneMediationDetails();
