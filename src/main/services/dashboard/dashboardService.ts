@@ -22,6 +22,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_START_URL} from 'routes/urls';
 import {
+  isCuiGaNroEnabled,
   isGaForLipsEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
   isGaForWelshEnabled, isLRQueryManagementEnabled,
@@ -44,7 +45,7 @@ const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isLrQmIsEnabled = await isLRQueryManagementEnabled();
-
+  const isNroForGaLip = await isCuiGaNroEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
@@ -52,7 +53,8 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       //remove QM sections
       dashboard.items = dashboard.items.filter(item => !QMLIP_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-      const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+
+      const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled, isNroForGaLip); // check if ga is online or offline
 
       if (!isGaOnlineFlag.isGaOnline) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
@@ -81,9 +83,9 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     else { // prod code
       //exclude Applications sections
       if (!isGAFlagEnable
-        || (claim.defendantUserDetails === undefined && !claim.isLRDefendant())
-        || !await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation)
-        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails)) {
+        || (claim.defendantUserDetails === undefined && !claim.isLRDefendant() && !isNroForGaLip)
+        || (!await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) && !(isNroForGaLip))
+        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || (claim.defendantUserDetails === undefined && !claim.isLRDefendant() && isNroForGaLip && claim.ccdState !== CaseState.CASE_SETTLED)) {
         dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }
     }
@@ -195,11 +197,11 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
 
   const isLrQmOn = await isLRQueryManagementEnabled();
   const isLIPQmOn = await isQueryManagementEnabled(claim.submittedDate);
-
+  const isNroForGaLip = await isCuiGaNroEnabled();
   if (isLrQmOn && !isLIPQmOn) {
     const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
     const welshGaEnabled = await isGaForWelshEnabled();
-    const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
+    const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled, isNroForGaLip); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
@@ -228,7 +230,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
   else { // Prod code
     if ((claim.ccdState &&
         !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-      && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation))) {
+      && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && (await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) || isNroForGaLip)) || (claim.defendantUserDetails === undefined && !claim.isLRDefendant() && isNroForGaLip && claim.ccdState === CaseState.CASE_SETTLED)) {
       const welshGaEnabled = await isGaForWelshEnabled();
       if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
         return {
