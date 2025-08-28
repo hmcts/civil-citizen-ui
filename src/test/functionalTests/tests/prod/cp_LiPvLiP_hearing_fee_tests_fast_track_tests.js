@@ -61,7 +61,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
   }
-})
+});
 
 Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -78,4 +78,4 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
-})
+});

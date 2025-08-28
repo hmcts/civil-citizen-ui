@@ -37,5 +37,5 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', as
   } else {
     CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
-})
+});
 

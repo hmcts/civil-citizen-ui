@@ -50,4 +50,4 @@ Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upl
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
-})
+});

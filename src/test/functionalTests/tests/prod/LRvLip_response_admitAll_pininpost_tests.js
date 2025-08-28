@@ -43,4 +43,4 @@ Scenario('Response with AdmitAll and Immediate payment', async ({api}) => {
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayImmediate);
-})
+});

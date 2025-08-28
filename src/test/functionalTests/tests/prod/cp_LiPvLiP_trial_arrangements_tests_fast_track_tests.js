@@ -57,4 +57,4 @@ Scenario('Both parties complete their trial arrangements - Fast Track', async ({
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
   }
-})
+});

@@ -38,5 +38,5 @@ Scenario('Fast Track case is struck out due to hearing fee not being paid', asyn
   } else {
     CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
-})
+});
 

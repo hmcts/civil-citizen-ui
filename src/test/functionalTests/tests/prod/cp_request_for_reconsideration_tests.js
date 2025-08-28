@@ -50,7 +50,7 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
   }
-})
+});
 
 Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -73,4 +73,4 @@ Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
-})
+});

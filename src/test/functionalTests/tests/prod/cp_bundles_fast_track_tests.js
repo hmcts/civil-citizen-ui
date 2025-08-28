@@ -51,4 +51,4 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-})
+});

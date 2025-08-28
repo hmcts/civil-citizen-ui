@@ -27,7 +27,7 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant s
   // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-})
+});
 
 Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant proceeds', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
