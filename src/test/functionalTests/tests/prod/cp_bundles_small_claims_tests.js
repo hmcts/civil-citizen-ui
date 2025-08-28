@@ -52,4 +52,4 @@ Scenario('Case progression journey - Small Claims - Verify Bundles Page', async 
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@nightly-regression-cp');
+}).tag('@nightly');

@@ -11,7 +11,7 @@ let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant').tag('@reject-all');
 
-Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
+Scenario('Verify the Eligibility Check journey R2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
@@ -37,11 +37,11 @@ Scenario('Create Claim', async ({api}) => {
     console.log('The value of the Claim Number :' + claimNumber);
     console.log('The value of the Security Code :' + securityCode);
   }
-}).retry(1).tag('@regression-cui-r2').tag('@crossbrowser');
+}).retry(1).tag('@regression').tag('@crossbrowser');
 
 Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);
-}).tag('@regression-cui-r2');
+}).tag('@regression');
 
 Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

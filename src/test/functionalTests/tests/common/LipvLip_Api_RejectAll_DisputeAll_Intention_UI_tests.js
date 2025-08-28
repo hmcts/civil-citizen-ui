@@ -9,7 +9,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track').tag('@citizenUI @reject-all @nightly @api');
+Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track').tag('@reject-all @nightly');
 
 Scenario('Response with RejectAll-DisputeAll Small claims', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -23,7 +23,7 @@ Scenario('Response with RejectAll-DisputeAll Small claims', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@nightly');
+})
 
 Scenario('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -37,4 +37,4 @@ Scenario('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAll(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@nightly');
+})

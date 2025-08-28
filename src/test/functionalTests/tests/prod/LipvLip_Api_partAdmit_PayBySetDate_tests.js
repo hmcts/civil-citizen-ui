@@ -10,7 +10,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, claimNumber;
 
-Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
+Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track').tag('@part-admit @nightly');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
 Scenario.skip('Response with PartAdmit-PayBySetDate Small claims', async ({api}) => {
@@ -77,4 +77,4 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Small claims Reject repaymen
     //const notification = judgmentRequestedCourtAgrees();
     //await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression');

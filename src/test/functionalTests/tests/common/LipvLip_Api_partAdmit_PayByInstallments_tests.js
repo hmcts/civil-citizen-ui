@@ -14,7 +14,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber, defendantName, isDashboardServiceEnabled;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@part-admit @nightly');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,

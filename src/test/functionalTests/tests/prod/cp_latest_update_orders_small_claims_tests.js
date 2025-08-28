@@ -43,4 +43,4 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
   } else {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@skip-regression-cp');
+}).tag('@skip-regression');

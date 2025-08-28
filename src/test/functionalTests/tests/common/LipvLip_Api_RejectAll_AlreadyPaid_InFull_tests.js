@@ -12,7 +12,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber, defendantName, isDashboardServiceEnabled;
 
-Feature('Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track').tag('@citizenUI @reject-all');
+Feature('Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track').tag('@reject-all @nightly');
 
 Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant settle', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -27,7 +27,7 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant s
   // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@nightly');
+})
 
 Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant proceeds', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -57,4 +57,4 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant pro
       await I.click(notification.nextSteps);
     }
   }
-}).tag('@nightly');
+});

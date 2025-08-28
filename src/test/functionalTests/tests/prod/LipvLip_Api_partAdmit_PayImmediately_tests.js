@@ -9,7 +9,7 @@ let claimRef, claimType;
 
 Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track').tag('@part-admit');
 
-Scenario('Response with PartAdmit-PayImmediately Small claims @citizenUI @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-PayImmediately Small claims @nightly', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -20,9 +20,9 @@ Scenario('Response with PartAdmit-PayImmediately Small claims @citizenUI @nightl
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+}).tag('@regression');
 
-Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-PayImmediately Fast Track @nightly', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
