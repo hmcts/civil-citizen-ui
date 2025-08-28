@@ -148,9 +148,9 @@ describe('test buildExportReportSection', ()=>{
     expect(summaryRows[3].value.html).toEqual('something');
     expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');
     expect(summaryRows[4].value.html).toBeUndefined();
-    expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL');
+    expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME');
     expect(summaryRows[5].value.html).toEqual('John');
-    expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL');
+    expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME');
     expect(summaryRows[6].value.html).toEqual('Smith');
     expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL');
     expect(summaryRows[7].value.html).toEqual('email');
