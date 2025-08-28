@@ -12,7 +12,7 @@ const {
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent, expectedState;
 
-Feature('Lip v LR e2e Tests').tag('@api @noc @regression');
+Feature('Lip v LR e2e Tests').tag('@noc @regression');
 
 Before(async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
