@@ -115,6 +115,21 @@ describe('General Application helper when LR is on', () => {
     expect(expected).toEqual(result);
   });
 
+  it('should GA is online when is not in EaCourt', async () => {
+    //Given
+    const claim = new Claim();
+    claim.defendantUserDetails = 'test';
+    claim.ccdState = CaseState.JUDICIAL_REFERRAL;
+
+    const expected = new GaInformation();
+    expected.isGaOnline = true;
+    //When
+    const result = isGaOnline(claim, false, false, true);
+
+    //Then
+    expect(expected).toEqual(result);
+  });
+
   it('should GA is offline when is welsh ga enabled is false', async () => {
     //Given
     const claim = new Claim();
@@ -175,6 +190,21 @@ describe('General Application helper when Lip is on', () => {
     expected.isGaOnline = true;
     //When
     const result = isGaOnlineQM(claim, true, false, false);
+
+    //Then
+    expect(expected).toEqual(result);
+  });
+
+  it('should GA is online for non EA court', async () => {
+    //Given
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.defendantUserDetails = 'test';
+
+    const expected = new GaInformation();
+    expected.isGaOnline = true;
+    //When
+    const result = isGaOnlineQM(claim, false, false, true);
 
     //Then
     expect(expected).toEqual(result);
