@@ -37,6 +37,9 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'Mediation', []));
 const GA_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Applications', 'Applications', []));
 const GA_DASHBOARD_EXCLUSIONS_QM = Array.of(new DashboardTaskList('Applications and messages to the court', 'Applications and messages to the court', []));
+const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
+  new DashboardTaskList('Applications to the court', '', []),
+  new DashboardTaskList('Messages to the court', '', []));
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -46,6 +49,8 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
+      //remove QM sections
+      dashboard.items = dashboard.items.filter(item => !QMLIP_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled); // check if ga is online or offline
 
@@ -205,7 +210,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       if (isGaOnlineFlag.isGAWelsh) { // the GA is offline and user is bilingual
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: GA_SUBMIT_OFFLINE,
+          url: constructResponseUrlWithIdParams(claimId,GA_SUBMIT_OFFLINE),
         };
       }
     }
@@ -228,7 +233,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: GA_SUBMIT_OFFLINE,
+          url: constructResponseUrlWithIdParams(claimId,GA_SUBMIT_OFFLINE),
         };
       } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
         return {

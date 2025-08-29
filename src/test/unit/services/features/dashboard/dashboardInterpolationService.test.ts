@@ -9,6 +9,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -218,6 +219,55 @@ describe('dashboardInterpolationService', () => {
     const sizeExpected = '/case/123/view-orders-and-notices';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  it('should replace placeholders for view final order', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
+    const params: Map<string, object> = {
+      'orderDocument': 'http://dm-store:8080/documents/order-doc-id/binary',
+      'hiddenOrderDocument': 'http://dm-store:8080/documents/hidden-doc-id/binary',
+    } as any;
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/order-doc-id';
+
+    expect(textReplacedDynamic).toEqual(expected);
+  });
+
+  it('should use hidden doc id for view final order if document no longer hidden', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: 'id',
+        value: {
+          createdBy: '',
+          createdDatetime: new Date(),
+          documentName: '',
+          documentSize: 123,
+          documentType: DocumentType.SDO_ORDER,
+          documentLink: {
+            document_url: '',
+            document_binary_url: 'http://dm-store:8080/documents/hidden-doc-id/binary',
+            document_filename: '',
+          },
+        },
+      },
+    ];
+    const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
+    const params: Map<string, object> = {
+      'orderDocument': 'http://dm-store:8080/documents/order-doc-id/binary',
+      'hiddenOrderDocument': 'http://dm-store:8080/documents/hidden-doc-id/binary',
+    } as any;
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/hidden-doc-id';
+
+    expect(textReplacedDynamic).toEqual(expected);
   });
 
   it('should replace placeholders for view the evidence upload documents', async () => {
@@ -461,6 +511,35 @@ describe('dashboardInterpolationService', () => {
 
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders for GENERAL_APPLICATIONS_INITIATION_PAGE_URL when GA is online', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/general-application/application-type?linkFrom=start';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders for GENERAL_APPLICATIONS_INITIATION_PAGE_URL when GA is welsh', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    const textToReplaceUrl = '{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/submit-application-offline';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });

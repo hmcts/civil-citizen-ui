@@ -3,6 +3,7 @@ import {CaseMessage, QueryMessage} from 'models/queryManagement/caseQueries';
 import {dateTimeFormat, formatDateToFullDate} from 'common/utils/dateUtils';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {QueryDetail, QueryListItem, ViewObjects} from 'form/models/queryManagement/viewQuery';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export class ViewQueriesService {
 
@@ -31,20 +32,20 @@ export class ViewQueriesService {
         const viewObject = {
           id: parentMessage.id,
           subject: parentMessage.subject,
-          sentOn: dateTimeFormat(parentMessage.createdOn, lang),
+          sentOn: dateTimeFormat(parentMessage.createdOn, lang, true),
           createdBy: parentMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : parentMessage.name,
-          lastUpdatedOn: dateTimeFormat(latestMessage.createdOn, lang),
+          lastUpdatedOn: dateTimeFormat(latestMessage.createdOn, lang, true),
         } as ViewObjects;
 
         if (messageThread.length % 2 == 0) {
           return {...viewObject,
             lastUpdatedBy: 'PAGES.QM.VIEW_QUERY.UPDATED_BY_COURT_STAFF',
-            status: latestMessage.isClosed ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED' : 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
+            status: latestMessage.isClosed === YesNoUpperCamelCase.YES ? 'PAGES.QM.VIEW_QUERY.STATUS_CLOSED' : 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED',
           };
         }
         else {
           return {...viewObject,
-            lastUpdatedBy: parentMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : latestMessage.name,
+            lastUpdatedBy: latestMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : latestMessage.name,
             status: 'PAGES.QM.VIEW_QUERY.STATUS_SENT',
           };
         }
@@ -79,7 +80,7 @@ export class ViewQueriesService {
         documents,
         createdBy,
         name,
-        dateTimeFormat(createdOn, lang),
+        dateTimeFormat(createdOn, lang, true),
         item.createdBy === userId,
         formatDateToFullDate(new Date(hearingDate), lang),
       );
