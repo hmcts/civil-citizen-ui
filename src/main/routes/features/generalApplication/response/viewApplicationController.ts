@@ -19,7 +19,7 @@ import {
   getResponseSummaryCardSections,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import { ApplicationResponse, TranslationDocumentType } from 'models/generalApplication/applicationResponse';
 import {
   getApplicationFromGAService,
   getApplicationIndex,
@@ -76,7 +76,9 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const viewPath = hasRespondentResponded(applicationResponse) ? viewPathPostResponse : viewPathPreResponse;
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
     const gaWelshEnabled = await isGaForWelshEnabled();
-    const showWelshPartyBanner = gaWelshEnabled && applicationResponse.case_data.preTranslationDocumentType === 'APPLICATION_SUMMARY_DOC';
+    const showWelshPartyBanner = gaWelshEnabled
+      ? applicationResponse.case_data?.preTranslationGaDocumentType === TranslationDocumentType.APPLICATION_SUMMARY_DOC
+      : false;
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
     let additionalDocUrl : string = null;
     if(canUploadAddlDoc(applicationResponse)) {
