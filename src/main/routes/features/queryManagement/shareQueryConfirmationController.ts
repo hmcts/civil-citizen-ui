@@ -39,7 +39,7 @@ const pageHeaders = {
 export const getPageContent = (lang:string) => {
   return new PageSectionBuilder()
     .addParagraph('PAGES.QM.SHARE_QUERY_CONFIRMATION.PARAGRAPH_1')
-    .addSubTitle('PAGES.QM.SHARE_QUERY_CONFIRMATION.SUB_TITLE',null, 'govuk-!-font-size-24')
+    .addTitle('PAGES.QM.SHARE_QUERY_CONFIRMATION.SUB_TITLE',null, 'govuk-!-font-size-24')
     .addParagraph('PAGES.QM.SHARE_QUERY_CONFIRMATION.PARAGRAPH_2')
     .addParagraph('PAGES.QM.SHARE_QUERY_CONFIRMATION.PARAGRAPH_3')
     .addRawHtml(
@@ -49,7 +49,7 @@ export const getPageContent = (lang:string) => {
             </ul>`)
     .addFullStopLink('PAGES.QM.SHARE_QUERY_CONFIRMATION.QUERY_EMAIL_ADDRESS', 'mailto:contactocmc@justice.gov.uk', 'PAGES.QM.SHARE_QUERY_CONFIRMATION.PARAGRAPH_4', null, null, true)
     .addParagraph('PAGES.QM.SHARE_QUERY_CONFIRMATION.PARAGRAPH_5')
-    .addParagraph('PAGES.QM.SHARE_QUERY_CONFIRMATION.CONFIRMATION_HEADER',null, 'govuk-!-font-weight-bold')
+    .addSubTitle('PAGES.QM.SHARE_QUERY_CONFIRMATION.CONFIRMATION_HEADER',null)
     .build();
 };
 
