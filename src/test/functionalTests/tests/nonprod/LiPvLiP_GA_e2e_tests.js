@@ -83,7 +83,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   I,
   api,
 }) => {

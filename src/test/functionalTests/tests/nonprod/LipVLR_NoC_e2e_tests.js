@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @noc', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   I,
   api,
 }) => {
@@ -68,7 +68,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @noc', async ({
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @noc', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   I,
   api,
 }) => {
@@ -93,7 +93,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @noc', async ({
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @citizenUI - @noc @nightly', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @nightly', async ({
   I,
   api,
 }) => {
@@ -118,7 +118,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @citizenUI - @noc @n
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim @citizenUI - @noc @nightly', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim - @nightly', async ({
   I,
   api,
 }) => {
