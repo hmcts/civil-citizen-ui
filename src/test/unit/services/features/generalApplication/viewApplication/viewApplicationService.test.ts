@@ -146,6 +146,54 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
       'documentType': DocumentType.HEARING_ORDER,
       'createdDatetime':  new Date('2024-08-01'),
     },
+  },
+  {
+    'id': '06576721-ec3f-4776-95d6-552261c63d49',
+    'value': {
+      'createdBy': 'civilmoneyclaimswlu@gmail.com civilmoneyclaims-WelshLangUnit',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/502ceaf6-ef6e-4338-9b72-5bbf8917fb4f',
+        'document_filename': 'APP_Summ_translated.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/502ceaf6-ef6e-4338-9b72-5bbf8917fb4f/binary',
+      },
+      'documentName': 'Translated_Hearing_order_for_application_2025-07-11 14:01:18.pdf',
+      'documentType': DocumentType.HEARING_ORDER,
+      'createdDatetime': new Date('2024-08-01'),
+    },
+  }];
+}
+
+function setMockTranslatedGeneralOrderDocuments(): CcdGeneralOrderDocument[] {
+  return [{
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cd4',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf861',
+        'document_filename': 'Translated_General_order_for_application_2024-08-01 11:59:58.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf861/binary',
+      },
+      'documentName': 'Translated_General_order_for_application_2024-08-01 11:59:58.pdf',
+      'documentType': DocumentType.GENERAL_ORDER,
+      'createdDatetime': new Date('2024-08-01'),
+    },
+  },
+  {
+    'id': 'b4b50368-84dc-4c05-b9e7-7d01bd6a9119',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119',
+        'document_filename': 'Translated_General_order_for_application_2024-08-02 11:59:58.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119/binary',
+      },
+      'documentName': 'Translated_General_order_for_application_2024-08-02 11:59:58.pdf',
+      'documentType': DocumentType.GENERAL_ORDER,
+      'createdDatetime':  new Date('2024-08-02'),
+    },
   }];
 }
 
@@ -669,6 +717,31 @@ describe('View Application service', () => {
       expect(result.documents[1]).toEqual(expectedDocument1);
     });
 
+    it('should get data array if there is translated general order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.generalOrderDocument= setMockTranslatedGeneralOrderDocuments();
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_GENERAL_ORDER',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf861', 'Translated_General_order_for_application_2024-08-01 11:59:58.pdf'),
+      );
+
+      const expectedDocument2 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_GENERAL_ORDER',
+        '2 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'Translated_General_order_for_application_2024-08-02 11:59:58.pdf'),
+      );
+      expect(result.documents[0]).toEqual(expectedDocument2);
+      expect(result.documents[1]).toEqual(expectedDocument1);
+    });
+
     it('should get empty data array if there is no general order documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
@@ -716,7 +789,12 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf871', 'Application_Hearing_order_2024-08-01 12:15:34.pdf'),
       );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      const expectedDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_HEARING_ORDER',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/502ceaf6-ef6e-4338-9b72-5bbf8917fb4f', 'Translated_Hearing_order_for_application_2025-07-11 14:01:18.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument, expectedDocument1]);
       expect(result).toEqual(expectedResult);
     });
 
