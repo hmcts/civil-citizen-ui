@@ -154,7 +154,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDateDefendant: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: [`You have offered to pay £${amount}`, `by ${deadline}.` ,'We will contact you when the claimant responds to your offer.'],
+      content: [`You have offered to pay £${amount}`, `by ${deadline}.`, 'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
