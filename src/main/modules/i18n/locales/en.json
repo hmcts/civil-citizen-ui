@@ -840,7 +840,7 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {
-            "TEXT": "Applications and messages to the court",
+            "TEXT": "Messages to the court",
             "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
             "TEXT_AFTER": " section."
           },
