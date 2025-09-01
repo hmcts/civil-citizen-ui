@@ -45,11 +45,13 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
   const welshGaEnabled = await isGaForWelshEnabled();
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
+
   if (dashboard) {
+    //remove application and messages to the court sections
+    dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS_QM.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     if (queryManagementFlagEnabled) {
       //remove Applications sections
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS_QM.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
     else { // prod code
       //remove QM sections
