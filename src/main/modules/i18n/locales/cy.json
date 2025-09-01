@@ -718,7 +718,7 @@
           "PARAGRAPH_1": "Os yw’r hawliad wedi cychwyn ac ni allwch ei weld ar y system Hawliadau am Arian, dylech gysylltu â’r llys i gael cymorth."
         },
         "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
-          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn eich nghyfrif",
+          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn eich cyfrif",
           "PARAGRAPH_1": "Os na allwch weld y dogfennau a uwchlwythwyd gennych chi neu’r parti arall yn eich cyfrif, dylech gysylltu â’r llys i gael cymorth."
         },
         "GENERAL_UPDATE" : {
@@ -3749,6 +3749,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Math o gais a disgrifiad ohono",
+        "WELSH_MESSAGE": "Mae parti yn yr achos hwn wedi nodi ei bod yn well ganddi gynnal ei hachos yn Gymraeg, ac mae dogfen y cais yn cael ei chyfieithu. Bydd yr holl ddogfennau ar gael i'w gweld yn fuan a byddwch yn gallu ymateb iddi ar ôl i chi dderbyn y cyfieithiad.",
         "SUMMERY_MESSAGE1" : "Dyma’r cais y mae’r partïon eraill wedi’i wneud.",
         "SUMMERY_MESSAGE2" : "Bydd eu hymatebion i ‘Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?’ a ‘Pam ydych chi’n gwneud cais am y gorchymyn hwn?’ yn esbonio’r newid maen nhw wedi gwneud cais amdano a pham. Bydd dolen i adolygu unrhyw ddogfennau maen nhw wedi uwchlwytho.",
         "SUMMERY_MESSAGE3" : "Unwaith y byddwch wedi adolygu eu cais, cliciwch ar ‘ymateb i gais’ isod. Fe ofynnir i chi p’un a ydych yn cytuno â’u cais neu beidio."
@@ -3858,9 +3859,9 @@
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
-        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "DISMISSAL_ORDER": "Gorchymyn diddymu",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
+        "TRANSLATED_JUDGE_HAS_MADE_ORDER": "Cais am Orchymyn Cyfarwyddiadau’r Barnwr wedi’i Gyfieithu",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Darllen yr ymateb",
@@ -5998,6 +5999,9 @@
     },
     "CUI_JO" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddiwr Citizen ar gael rhwng 19:00 ar 18 Awst 2025 a 03:00 ar 19 Awst 2025"
+    },
+    "CUI_COSC" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
     }
   }
 }
