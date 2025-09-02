@@ -7,7 +7,7 @@ const { PUBLIC_QUERY } = require('../../specClaimHelpers/fixtures/queryTypes');
 let caseData, claimNumber;
 const claimType = 'SmallClaims';
 
-Feature('QM - LIP - Follow up tests @regression-qm');
+Feature('QM - LIP - Follow up tests @regression @qm');
 
 Before(async () => {
   await Promise.all([
