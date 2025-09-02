@@ -8,6 +8,13 @@
 {% set pageTitle = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') %}
 
 {% block nestedContent %}
+{% set witnessSummaryHintHtml %}
+{% if isGaNroEnabled === true %}
+
+{% else %}
+t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT') + "<a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice'  target='_blank'>" + t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_URL') + "</a>"
+{% endif %}
+{% endset -%}
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
            {% for content in typeOfDocumentsContents %}
