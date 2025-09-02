@@ -17,7 +17,7 @@ const {
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
-Feature('Lip v Lip GA e2e Tests').tag('@citizenUI @nightly @api @ga');
+Feature('Lip v Lip GA e2e Tests').tag('@nightly @ga');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -83,7 +83,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
   }
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order @citizenUI', async ({
+Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   I,
   api,
 }) => {
