@@ -10,7 +10,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Negative Scenarios for Defendant Response');
+Feature('Negative Scenarios for Defendant Response').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -26,7 +26,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Company personal detail error screen @nightly', async () => {
+Scenario('Company personal detail error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterCompanyDetailError(claimRef);
 });

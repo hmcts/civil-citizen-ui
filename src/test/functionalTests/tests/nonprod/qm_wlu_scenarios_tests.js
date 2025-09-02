@@ -6,7 +6,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 
 let caseData, claimNumber;
 
-Feature('Query management - WLU Scenarios @regression-qm');
+Feature('Query management - WLU Scenarios @regression @qm');
 
 const claimType = 'SmallClaims';
 
