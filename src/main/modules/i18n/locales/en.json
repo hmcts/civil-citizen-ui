@@ -3749,6 +3749,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Application type and description",
+        "WELSH_MESSAGE": "A party in this case has indicated a preference to conduct their case in Welsh, and the application document is being translated. All documents will be available to view shortly and you will be able to respond to it after you have received the translation.",
         "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
         "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
