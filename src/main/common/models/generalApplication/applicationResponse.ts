@@ -94,6 +94,11 @@ export interface CCDApplication extends ApplicationUpdate {
   certOfSC?: CcdGeneralApplicationCertOfSC;
   generalAppN245FormUpload?: CcdDocument;
   applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
+  preTranslationGaDocumentType?: TranslationDocumentType;
+}
+
+export enum TranslationDocumentType {
+  APPLICATION_SUMMARY_DOC = 'APPLICATION_SUMMARY_DOC',
 }
 
 export interface JudicialRequestMoreInfo {
