@@ -5447,7 +5447,7 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Mae’n rhaid i chi ddewis pa ddiweddariad yr hoffech roi i’r llys.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei chael gyda’r system Hawliadau am Arian.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "Mae’n rhaid i chi ddewis sut rydych eisiau rheoli eich gwrandawiad.",
