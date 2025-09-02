@@ -66,6 +66,7 @@ wa:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
   wa-task-management-api:
     java:
+      ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
@@ -80,6 +81,7 @@ wa:
         REPLICATION_PASSWORD: ${POSTGRES_PASSWORD}
         SPRING_PROFILES_ACTIVE: "preview"
         DB_READER_USERNAME: postgres
+        WA_S2S_AUTHORIZED_SERVICES: ccd,ccd_data,ccd_gw,ccd_ps,iac,wa_task_management_api,xui_webapp,wa_task_monitor,camunda_bpm,wa_workflow_api,wa_case,civil_service
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
@@ -196,6 +198,12 @@ am-org-role-mapping-service:
       JUDICIAL_REF_APP_V2_ACTIVE: true
       JUDICIAL_REF_APP_V2_FILTER_AUTHS_BY_APP_ID: true
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+
+civil-service:
+  java:
+    environment:
+      TASK_MANAGEMENT_ENABLED: true
+      TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
 
 xui-webapp:
   nodejs:
