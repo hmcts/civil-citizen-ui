@@ -21,8 +21,12 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, false, 'Individual', 'BOTH');
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
+
+  const statusCell = `xpath=//table[contains(@class,"govuk-table")]
+                    //tr[.//td[.//a[normalize-space()='${claimNumber}']]]/td[4]`;
+
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyStatusOnDashboard('The documents are being translated.', '//*[@id="main-content"]/div[1]/div/table/tbody/tr[1]/td[4]');
+  await CitizenDashboardSteps.VerifyStatusOnDashboard('The documents are being translated.', statusCell);
   await api.submitUploadTranslatedDoc('CLAIM_ISSUE');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
