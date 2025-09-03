@@ -9,7 +9,6 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {t} from 'i18next';
 import {
-  applicationNoticeUrl,
   feesHelpUrl,
   findCourtTribunalUrl,
   findLegalAdviceUrl,
@@ -25,7 +24,7 @@ import {
   isCuiGaNroEnabled,
   isGaForLipsEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
-  isGaForWelshEnabled, isLRQueryManagementEnabled,
+  isGaForWelshEnabled,
   isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
@@ -48,8 +47,15 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   const isNroForGaLip = await isCuiGaNroEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
+
   if (dashboard) {
-    if (isLrQmIsEnabled && !queryManagementFlagEnabled) { // logic with LR query management
+    //remove application and messages to the court sections
+    dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS_QM.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    if (queryManagementFlagEnabled) {
+      //remove Applications sections
+      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    }
+    else { // prod code
       //remove QM sections
       dashboard.items = dashboard.items.filter(item => !QMLIP_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
@@ -74,19 +80,6 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
           }
         }
-      }
-    } else if (queryManagementFlagEnabled) {
-      //remove Applications sections
-      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-      dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS_QM.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-    }
-    else { // prod code
-      //exclude Applications sections
-      if (!isGAFlagEnable
-        || (claim.defendantUserDetails === undefined && !claim.isLRDefendant() && !isNroForGaLip)
-        || (!await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) && !(isNroForGaLip))
-        || (claim.isAnyPartyBilingual() && !welshGaEnabled && claim.generalApplications.length === 0) || (claim.isLRDefendant() && !claim.respondentSolicitorDetails) || (claim.defendantUserDetails === undefined && !claim.isLRDefendant() && isNroForGaLip && claim.ccdState !== CaseState.CASE_SETTLED)) {
-        dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
       }
     }
 
@@ -195,10 +188,19 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 
 export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string): Promise<iWantToLinks> => {
 
-  const isLrQmOn = await isLRQueryManagementEnabled();
   const isLIPQmOn = await isQueryManagementEnabled(claim.submittedDate);
   const isNroForGaLip = await isCuiGaNroEnabled();
-  if (isLrQmOn && !isLIPQmOn) {
+
+  if (isLIPQmOn) {
+    const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
+    if(!isClaimOffLine.includes(claim.ccdState)){
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinKFromValues.start}`),
+        removeTargetBlank: true,
+      };
+    }
+  } else { // Prod code
     const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
     const welshGaEnabled = await isGaForWelshEnabled();
     const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled, isNroForGaLip); // check if ga is online or offline
@@ -212,49 +214,11 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       if (isGaOnlineFlag.isGAWelsh) { // the GA is offline and user is bilingual
         return {
           text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: constructResponseUrlWithIdParams(claimId,GA_SUBMIT_OFFLINE),
+          url: constructResponseUrlWithIdParams(claimId, GA_SUBMIT_OFFLINE),
         };
       }
     }
-
-  } else if (isLIPQmOn) {
-    const isClaimOffLine = [CaseState.PENDING_CASE_ISSUED, CaseState.CASE_DISMISSED, CaseState.PROCEEDS_IN_HERITAGE_SYSTEM];
-    if(!isClaimOffLine.includes(claim.ccdState)){
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinKFromValues.start}`),
-        removeTargetBlank: true,
-      };
-    }
   }
-  else { // Prod code
-    if ((claim.ccdState &&
-        !claim.isCaseIssuedPending() && !claim.isClaimSettled()
-      && (claim.defendantUserDetails !== undefined || (claim.isLRDefendant() && !!claim.respondentSolicitorDetails)) && (await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation) || isNroForGaLip)) || (claim.defendantUserDetails === undefined && !claim.isLRDefendant() && isNroForGaLip && claim.ccdState === CaseState.CASE_SETTLED)) {
-      const welshGaEnabled = await isGaForWelshEnabled();
-      if (claim.isAnyPartyBilingual() && !welshGaEnabled) {
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: constructResponseUrlWithIdParams(claimId,GA_SUBMIT_OFFLINE),
-        };
-      } else if (!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
-          removeTargetBlank: true,
-        };
-      } else if (claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        };
-      }
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: applicationNoticeUrl,
-      };
-    }
-  }
-
 };
 
 export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {

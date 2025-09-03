@@ -840,7 +840,7 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Mae eich negeseuon wedi’u rhestru ar eich dangosfwrdd.",
           "LINK": {
-            "TEXT": "Ceisiadau a negeseuon i'r llys.",
+            "TEXT": "Negeseuon i'r llys.",
             "TEXT_BEFORE": "Gallwch fynd ar drywydd neges drwy ddewis yr un yr ydych am ei weld o’r adran ",
             "TEXT_AFTER": ""
           },
@@ -1356,7 +1356,7 @@
       "P_2": "Drwy ddefnyddio’r gwasanaeth hwn, rydych yn cytuno i’r telerau defnydd canlynol. Mae hyn yn cynnwys ",
       "P_4": "Drwy greu cyfrif, rydych yn cytuno i dderbyn dogfennau gan y llys yn electronig.",
       "P_5": "Pwy ydym ni?",
-      "P_6": "Mae’r gwasanaeth hwn yn cael ei reoli gan Wasanaeth Llysoedd a Thribiwnlysoedd Ei Fawrhydi.",
+      "P_6": "Mae’r gwasanaeth hwn yn cael ei reoli gan GLlTEF.",
       "P_7": "Dylech wirio’r telerau ac amodau hyn yn rheolaidd. Efallai y byddwn yn eu diweddaru ar unrhyw adeg heb rybudd. Os byddwch yn parhau i ddefnyddio'r gwasanaeth hwn ar ôl i'r telerau ac amodau gael eu newid, ystyrir eich bod wedi cytuno i'r newidiadau.",
       "P_8": "Gwybodaeth a ddarperir gan y gwasanaeth hwn",
       "P_9": "Mae’r gwasanaeth hwn yn darparu gwybodaeth i gefnogi eich hawliad neu'ch cais. Ni allwn roi cyngor cyfreithiol ar achosion unigol.",
@@ -3749,6 +3749,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Math o gais a disgrifiad ohono",
+        "WELSH_MESSAGE": "Mae parti yn yr achos hwn wedi nodi ei bod yn well ganddi gynnal ei hachos yn Gymraeg, ac mae dogfen y cais yn cael ei chyfieithu. Bydd yr holl ddogfennau ar gael i'w gweld yn fuan a byddwch yn gallu ymateb iddi ar ôl i chi dderbyn y cyfieithiad.",
         "SUMMERY_MESSAGE1" : "Dyma’r cais y mae’r partïon eraill wedi’i wneud.",
         "SUMMERY_MESSAGE2" : "Bydd eu hymatebion i ‘Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?’ a ‘Pam ydych chi’n gwneud cais am y gorchymyn hwn?’ yn esbonio’r newid maen nhw wedi gwneud cais amdano a pham. Bydd dolen i adolygu unrhyw ddogfennau maen nhw wedi uwchlwytho.",
         "SUMMERY_MESSAGE3" : "Unwaith y byddwch wedi adolygu eu cais, cliciwch ar ‘ymateb i gais’ isod. Fe ofynnir i chi p’un a ydych yn cytuno â’u cais neu beidio."
@@ -4513,7 +4514,8 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "Mae ffi’r hawliad ac unrhyw gostau sefydlog a hawlwyd yn daladwy yn ogystal â’r swm a addefir.",
-      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
+      "YOU_MUST_CONTACT_FA": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif.",
+      "YOU_MUST_CONTACT_PA": "Os bydd yr hawlydd yn derbyn, rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi’u clirio ac wedi’u talu i mewn i’w cyfrif."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "A ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr?",

@@ -10,7 +10,7 @@ const { uploadHearingDocuments } = require('../../specClaimHelpers/dashboardTask
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Case Struck Out journey - Small Claims').tag('@case-progression');
+Feature('Case progression - Case Struck Out journey - Small Claims').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -37,5 +37,5 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', as
   } else {
     CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
-}).tag('@nightly-regression-cp');
+});
 

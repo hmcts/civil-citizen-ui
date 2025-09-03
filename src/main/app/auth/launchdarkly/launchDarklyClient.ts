@@ -47,6 +47,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(LR_QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
+      
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
