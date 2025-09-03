@@ -96,6 +96,11 @@ export interface CCDApplication extends ApplicationUpdate {
   applicantBilingualLanguagePreference?: YesNoUpperCamelCase;
   preTranslationGaDocsApplicant?: CcdGeneralApplicationAddlDocument[];
   preTranslationGaDocsRespondent?: CcdGeneralApplicationAddlDocument[];
+  preTranslationGaDocumentType?: TranslationDocumentType;
+}
+
+export enum TranslationDocumentType {
+  APPLICATION_SUMMARY_DOC = 'APPLICATION_SUMMARY_DOC',
 }
 
 export interface JudicialRequestMoreInfo {

@@ -44,7 +44,7 @@ Scenario.skip('Case is offline after solicitor performs notice of change on beha
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     // await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
-}).tag('@noc @regression');
+}).tag('@noc');
 
 //This needs investigation
 Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
@@ -60,4 +60,4 @@ Scenario.skip('Case is taken offline after SDO for non early adopters', async ({
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@case-progression @regression');
+}).tag('@case-progression');

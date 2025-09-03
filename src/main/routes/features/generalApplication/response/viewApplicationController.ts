@@ -19,7 +19,7 @@ import {
   getResponseSummaryCardSections,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import { ApplicationResponse, TranslationDocumentType } from 'models/generalApplication/applicationResponse';
 import {
   getApplicationFromGAService,
   getApplicationIndex,
@@ -45,6 +45,7 @@ import {
   isApplicationFullyVisibleToRespondent,
   isApplicationFullyVisibleToRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
+import {isGaForWelshEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const viewApplicationToRespondentController = Router();
 const viewPathPreResponse = 'features/generalApplication/response/view-application';
@@ -74,6 +75,10 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
     const viewPath = hasRespondentResponded(applicationResponse) ? viewPathPostResponse : viewPathPreResponse;
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
+    const gaWelshEnabled = await isGaForWelshEnabled();
+    const showWelshPartyBanner = gaWelshEnabled
+      ? applicationResponse.case_data?.preTranslationGaDocumentType === TranslationDocumentType.APPLICATION_SUMMARY_DOC
+      : false;
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
     let additionalDocUrl : string = null;
     if(canUploadAddlDoc(applicationResponse)) {
@@ -100,6 +105,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
       caseProgressionCaseState,
       uploadDocsTrialUrl,
       applicationFullyVisible,
+      showWelshPartyBanner,
     });
   } catch (error) {
     next(error);

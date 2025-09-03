@@ -840,7 +840,7 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {
-            "TEXT": "Applications and messages to the court",
+            "TEXT": "Messages to the court",
             "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
             "TEXT_AFTER": " section."
           },
@@ -1356,7 +1356,7 @@
       "P_2": "By using this service you’re agreeing to the following terms of use.This includes the ",
       "P_4": "By creating an account, you agree to accept documents from the court electronically.",
       "P_5": "Who we are",
-      "P_6": "This service is managed by Her Majesty’s Courts and Tribunals Service.",
+      "P_6": "This service is managed by HMCTS.",
       "P_7": "You should check these terms and conditions regularly. We may update them at any time without notice. If you continue to use this service after the terms and conditions have changed, you are deemed to have agreed to the changes.",
       "P_8": "Information provided by this service",
       "P_9": "This service provides information to support your claim or application. We cannot give legal advice on individual cases.",
@@ -3749,6 +3749,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Application type and description",
+        "WELSH_MESSAGE": "A party in this case has indicated a preference to conduct their case in Welsh, and the application document is being translated. All documents will be available to view shortly and you will be able to respond to it after you have received the translation.",
         "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
         "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
@@ -4517,7 +4518,8 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "The claim fee and any fixed costs claimed are payable in addition to the claim amount admitted.",
-      "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
+      "YOU_MUST_CONTACT_FA": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.",
+      "YOU_MUST_CONTACT_PA": "If the claimant accepts, you must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
