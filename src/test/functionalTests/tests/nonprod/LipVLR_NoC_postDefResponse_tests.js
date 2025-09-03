@@ -45,7 +45,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online @citizenUI @noc', async ({
+Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online @noc', async ({
   I,
   api,
 }) => {
@@ -77,7 +77,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   }
 });
 
-Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline @citizenUI @noc', async ({
+Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline @noc', async ({
   I,
   api,
 }) => {
@@ -102,7 +102,7 @@ Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline 
   }
 });
 
-Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline @citizenUI @noc', async ({
+Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline @noc', async ({
   I,
   api,
 }) => {
