@@ -16,7 +16,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Negative Scenarios for Defendant Response');
+Feature('Negative Scenarios for Defendant Response').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -30,7 +30,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Testing error messages @nightly', async () => {
+Scenario('Testing error messages', async () => {
   //Respond To Claim in english or welsh error screen
   await ResponseSteps.RespondToClaimError(claimRef);
   await ResponseSteps.RespondToClaim(claimRef);
@@ -47,8 +47,8 @@ Scenario('Testing error messages @nightly', async () => {
   //How much money do you admit you owe? error screen
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOweError(claimRef, partAdmit);
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+  await ResponseSteps.EnterHowMuchMoneyYouOweError(claimRef, caseData.totalClaimAmount);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalClaimAmount);
   //Why do you disagree with the amount claimed? error screen
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmountError(claimRef, partAdmit);
   //Decide how you'll pay error screen
@@ -66,11 +66,11 @@ Scenario('Testing error messages @nightly', async () => {
   await ResponseSteps.EnterHowMuchYouHavePaidError(claimRef, 500, partAdmit);
 });
 
-Scenario('Personal detail error screen @nightly', async () => {
+Scenario('Personal detail error screen', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetailsError(claimRef);
 });
 
 //todo:financial screens
-Scenario('Share your financial details screens @nightly', async () => {
+Scenario('Share your financial details screens', async () => {
 });

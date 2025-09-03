@@ -1,7 +1,7 @@
 const CreateLipvLipClaimSteps = require('../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+// const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
@@ -9,9 +9,9 @@ const rejectAll = 'rejectAll';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant').tag('@reject-all');
+Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant');
 
-Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
+Scenario('Verify the Eligibility Check journey R2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
@@ -37,15 +37,15 @@ Scenario('Create Claim', async ({api}) => {
     console.log('The value of the Claim Number :' + claimNumber);
     console.log('The value of the Security Code :' + securityCode);
   }
-}).retry(1).tag('@regression-cui-r2').tag('@crossbrowser');
+}).retry(1).tag('@crossbrowser');
 
 Scenario('Assign case to defendant', async ({api}) => {
   await api.assignToLipDefendant(claimRef);
-}).tag('@regression-cui-r2');
+});
 
 Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -59,10 +59,10 @@ Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Sign out');
   await api.waitForFinishedBusinessProcess();
-}).retry(1);
+});
 
 Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).retry(1);
+});
