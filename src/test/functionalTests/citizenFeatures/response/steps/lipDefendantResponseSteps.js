@@ -95,6 +95,7 @@ const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagem
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
 const config = require('../../../../config');
+const sharedData = require("../../../sharedData");
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -717,7 +718,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true, languageOption = 'en') {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -730,6 +731,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
+    sharedData.language = ['en', 'cy', 'both'].includes(languageOption) ? languageOption : 'en';
     await this.SelectLanguageOption();
   }
 

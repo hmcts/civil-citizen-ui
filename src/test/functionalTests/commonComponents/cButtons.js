@@ -2,6 +2,7 @@ const cButtons = {
   saveAndContinue: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau',
+    both: 'Save and continue'
   },
   continue: {
     en: 'Continue',
@@ -12,5 +13,4 @@ const cButtons = {
     cy: 'Cyflwyno\'r ymateb',
   },
 };
-  
 module.exports = cButtons;

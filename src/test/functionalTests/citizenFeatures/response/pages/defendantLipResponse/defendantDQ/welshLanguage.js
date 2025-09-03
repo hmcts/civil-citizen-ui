@@ -12,27 +12,43 @@ const content = {
   heading: {
     en: 'Welsh language',
     cy: 'Yr iaith Gymraeg',
+    both: 'Welsh language',
   },
   descriptionText: {
     en: 'Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.',
     cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio’r Gymraeg mewn gwrandawiad llys. Ni fydd gofyn am gael siarad Cymraeg yn eich gwrandawiad yn achosi oedi wrth ei drefnu neu’n cael unrhyw effaith ar yr achos neu ganlyniad yr achos.',
+    both: 'Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.',
   },
   descriptionTextMediation: {
     en: 'Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.',
     cy: 'Mae’r Gymraeg yn iaith swyddogol yng Nghymru. Gallwch ddefnyddio\'r Gymraeg mewn gwrandawiadau llys ac wrth gyfryngu. Ni fydd gofyn am gael siarad Cymraeg yn oedi\'r gwrandawiad neu\'r apwyntiad cyfryngu nac yn cael unrhyw effaith ar yr achos neu ganlyniad yr achos.',
+    both: 'Welsh is an official language of Wales. You can use Welsh in court hearings and at mediation. Asking to speak in Welsh will not delay the hearing or mediation appointment or have any effect on proceedings or the outcome of a case.',
   },
   hintTextMediation: {
     en: 'This includes the language that you or your representative will speak at mediation.',
     cy: 'Mae hyn yn cynnwys yr iaith y byddwch chi neu\'ch cynrychiolydd yn ei siarad yn y cyfryngu.',
+    both: 'This includes the language that you or your representative will speak at mediation.',
   },
   speakLanguageQuestion: {
     en: 'What languages will you, your experts and your witnesses speak at the hearing?',
     cy: 'Pa ieithoedd fyddwch chi, eich arbenigwyr a’ch tystion yn siarad yn y gwrandawiad?',
+    both: 'What languages will you, your experts and your witnesses speak at the hearing?',
   },
   documentsLanguageQuestion: {
     en: 'What languages will the documents be provided in?',
     cy: 'Ym mha iaith y darperir y dogfennau?',
+    both: 'What languages will the documents be provided in?',
   },
+  speakingLanguageOption: {
+    en: 'input[id="speakLanguage"]',
+    cy: 'input[id="speakLanguage-2"]',
+    both: 'input[id="speakLanguage-3"]',
+  },
+  documentLanguageOption: {
+    en: 'input[id="documentsLanguage"]',
+    cy: 'input[id="documentsLanguage-2"]',
+    both: 'input[id="documentsLanguage-3"]'
+  }
 };
 
 class WelshLanguage {
@@ -47,9 +63,9 @@ class WelshLanguage {
       await I.see(content.descriptionText[language]);
     }
     await I.see(content.speakLanguageQuestion[language]);
-    await I.click(fields.speakLanguage);
+    !language ? await I.click(fields.speakLanguage) : await I.click(content.speakingLanguageOption[language]);
     await I.see(content.documentsLanguageQuestion[language]);
-    await I.click(fields.documentLanguage);
+    !language ? await I.click(fields.documentLanguage) : await I.click(content.documentLanguageOption[language]);
     await I.click(cButtons.saveAndContinue[language]);
   }
 }
