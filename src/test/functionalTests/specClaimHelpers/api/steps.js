@@ -30,7 +30,7 @@ let chai, expect, assert;
 });
 
 const {
-  waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
+  waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -383,7 +383,7 @@ module.exports = {
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
 
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
-    claimSpecData.serviceUpdateDto(caseId, 'paid'));
+      claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
     await waitForFinishedBusinessProcess(caseId);
 
@@ -501,9 +501,9 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
-    
+
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
-    claimSpecData.serviceUpdateDto(caseId, 'paid'));
+      claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
 
     if (claimType !== 'pinInPost') {
