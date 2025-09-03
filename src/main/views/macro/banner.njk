@@ -1,5 +1,8 @@
-{% set startDate = "2025-09-17" | addDays(0) %}
-{% set endDate = "2025-09-18T02:00+01:00" | addDays(0)  %}
+
+{% macro addButton(startDate, endDate) %}
+
+{% set startDate = startDate | addDays(0) %}
+{% set endDate = endDate | addDays(0)  %}
 {% set currentDate = "now" | addDays(0) %}
 
 {% if currentDate >= startDate and currentDate < endDate %}
