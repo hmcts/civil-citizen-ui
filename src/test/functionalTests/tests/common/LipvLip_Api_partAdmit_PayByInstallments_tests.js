@@ -14,7 +14,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber, defendantName, isDashboardServiceEnabled;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@part-admit @nightly');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,
@@ -46,7 +46,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject'
     const notification = mediationCARMClaimantDefendant();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+}).tag('@regression');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @noc', async ({api, I}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

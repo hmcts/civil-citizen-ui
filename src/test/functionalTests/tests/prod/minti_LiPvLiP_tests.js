@@ -14,7 +14,7 @@ let claimRef, caseData, claimNumber, securityCode, paidDate;
 const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
-Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@nightly @minti');
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@nightly @regression');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -45,7 +45,7 @@ Scenario('MT Defendant responses', async ({api}) => {
   await ResponseSteps.EnterDQForMultiTrackClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-minti').tag('@nightly');
+});
 
 Scenario('IT Defendant and Claimant responses', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
@@ -81,4 +81,4 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
   await ClaimantResponseSteps.settleTheClaim('No', 15000);
   await ResponseSteps.EnterClaimantDQForIntTrack(claimRef, false);
   await ClaimantResponseSteps.submitYourResponse();
-}).tag('@regression-minti').tag('@nightly');
+});

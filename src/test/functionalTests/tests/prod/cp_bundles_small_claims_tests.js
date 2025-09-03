@@ -15,7 +15,7 @@ const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@case-progression');
+Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@nightly');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
@@ -52,4 +52,4 @@ Scenario('Case progression journey - Small Claims - Verify Bundles Page', async 
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@nightly-regression-cp');
+});
