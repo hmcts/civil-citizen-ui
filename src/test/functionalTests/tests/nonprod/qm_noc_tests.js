@@ -6,7 +6,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 
 let caseData, claimNumber, claimRef;
 
-Feature('QM - NOC - Claimant and Defendant Journey @regression-qm');
+Feature('QM - NOC - Claimant and Defendant Journey @regression @qm');
 
 async function claimSetup(api) {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

@@ -54,8 +54,8 @@ const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string, di
     const row = index + 1;
     const title = `${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', {lng: lang})} ${row}`;
     expertDetailsSummaryRows.push(summaryRow(title));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL', {lng: lang}), expert.firstName, hrefExpertDetails, hrefLabel, title));
-    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL', {lng: lang}), expert.lastName, hrefExpertDetails, hrefLabel, title));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIRST_NAME', {lng: lang}), expert.firstName, hrefExpertDetails, hrefLabel, title));
+    expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.LAST_NAME', {lng: lang}), expert.lastName, hrefExpertDetails, hrefLabel, title));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', {lng: lang}), expert.emailAddress, hrefExpertDetails, hrefLabel, title));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', {lng: lang}), expert.phoneNumber?.toString(), hrefExpertDetails, hrefLabel, title));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', {lng: lang}), expert.fieldOfExpertise, hrefExpertDetails, hrefLabel, title));
