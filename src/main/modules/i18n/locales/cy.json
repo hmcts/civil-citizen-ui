@@ -6001,6 +6001,9 @@
     },
     "CUI_COSC" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
+    },
+    "CUI_QM_LIP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr ar gael rhwng 19:00 ar 17 Medi 2025 a 02:00 ar 18 Medi 2025."
     }
   }
 }
