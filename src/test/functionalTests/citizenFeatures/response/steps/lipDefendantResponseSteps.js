@@ -95,7 +95,7 @@ const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagem
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
 const config = require('../../../../config');
-const sharedData = require("../../../sharedData");
+const sharedData = require('../../../sharedData');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
