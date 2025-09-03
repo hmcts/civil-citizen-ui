@@ -7,7 +7,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 jest.mock('common/utils/dateUtils', () => ({
   dateTimeFormat: jest.fn((date, lang) => `formatted-${date}-${lang}`),
-  formatDateToFullDate: jest.fn((date, lang) => `fullDate-${date}-${lang}`),
+  formatDateToFullDate: jest.fn(() => '01 Jan 2025'),
 }));
 
 jest.mock('common/utils/formatDocumentURL', () => ({
@@ -284,8 +284,9 @@ describe('ViewQueriesService', () => {
         claimantUser.id,
         claimantUser.name,
         'formatted-2025-02-20T12:00:00Z-en',
+        '01 Jan 2025',
         true,
-        'fullDate-Invalid Date-en',
+        '01 Jan 2025',
       ),
 
       new QueryListItem(
@@ -295,8 +296,9 @@ describe('ViewQueriesService', () => {
         caseworkerUser.id,
         'caseworker',
         'formatted-2025-02-27T12:00:00Z-en',
+        '01 Jan 2025',
         false,
-        'fullDate-Invalid Date-en',
+        '01 Jan 2025',
       )), false, '',
     );
     expect(result.items.length).toBe(2);
@@ -369,8 +371,9 @@ describe('ViewQueriesService', () => {
         defendantUser.id,
         defendantUser.name,
         'formatted-2025-02-20T12:00:00Z-en',
+        '01 Jan 2025',
         false,
-        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
+        '01 Jan 2025',
       ),
 
       new QueryListItem(
@@ -380,8 +383,9 @@ describe('ViewQueriesService', () => {
         caseworkerUser.id,
         'caseworker',
         'formatted-2025-02-27T12:00:00Z-en',
+        '01 Jan 2025',
         false,
-        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
+        '01 Jan 2025',
       ),
 
       new QueryListItem(
@@ -391,8 +395,9 @@ describe('ViewQueriesService', () => {
         defendantUser.id,
         defendantUser.name,
         'formatted-2025-02-28T12:00:00Z-en',
+        '01 Jan 2025',
         false,
-        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
+        '01 Jan 2025',
       ),
       ), false, '',
     );
@@ -432,8 +437,9 @@ describe('ViewQueriesService', () => {
         claimantUser.id,
         claimantUser.name,
         'formatted-2025-02-20T12:00:00Z-en',
+        '01 Jan 2025',
         true,
-        'fullDate-Sat May 10 2025 00:00:00 GMT+0000 (Coordinated Universal Time)-en',
+        '01 Jan 2025',
       )), false, '',
     );
     expect(result.items.length).toBe(1);
@@ -493,8 +499,9 @@ describe('ViewQueriesService', () => {
         claimantUser.id,
         claimantUser.name,
         'formatted-2025-02-20T12:00:00Z-en',
+        '01 Jan 2025',
         true,
-        'fullDate-Invalid Date-en',
+        '01 Jan 2025',
       ),
 
       new QueryListItem(
@@ -504,9 +511,10 @@ describe('ViewQueriesService', () => {
         caseworkerUser.id,
         'caseworker',
         'formatted-2025-02-27T12:00:00Z-en',
+        '01 Jan 2025',
         false,
-        'fullDate-Invalid Date-en',
-      )), true, 'fullDate-Thu Feb 27 2025 12:00:00 GMT+0000 (Coordinated Universal Time)-en',
+        '01 Jan 2025',
+      )), true, '01 Jan 2025',
     );
     expect(result.items.length).toBe(2);
     expect(result).toEqual(expected);
