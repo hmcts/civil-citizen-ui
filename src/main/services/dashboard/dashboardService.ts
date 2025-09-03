@@ -43,7 +43,6 @@ const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
-  const isLrQmIsEnabled = await isLRQueryManagementEnabled();
   const isNroForGaLip = await isCuiGaNroEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
