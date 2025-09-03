@@ -2,7 +2,7 @@ const I = actor();
 const ResponseToDefence = require('../../createClaim/pages/responseToDefence');
 const responseToDefence = new ResponseToDefence();
 const mediationSteps = require('./lipDefendantResponseSteps');
-const ResponseSteps = require("./lipDefendantResponseSteps");
+const ResponseSteps = require('./lipDefendantResponseSteps');
 
 const paths = {
   links: {
@@ -485,7 +485,7 @@ class ResponseToDefenceLipVLipSteps {
     await ResponseSteps.ConfirmAltPhoneDetails();
     await ResponseSteps.ConfirmAltEmailDetails();
     await ResponseSteps.EnterUnavailableDates(claimRef);
-    await ResponseSteps.EnterDQForSmallClaims(claimRef, true, languageOption)
+    await ResponseSteps.EnterDQForSmallClaims(claimRef, true, languageOption);
     I.click(paths.links.check_and_submit_your_response);
     I.click('Submit Response');
     await responseToDefence.verifyConfirmationScreenForRejection(claimNumber);

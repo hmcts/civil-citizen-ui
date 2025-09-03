@@ -5,10 +5,10 @@ const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/st
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
-const sharedData = require("../../sharedData");
-const ResponseToDefenceLipVsLipSteps = require("../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps");
-const {createAccount} = require("../../specClaimHelpers/api/idamHelper");
-let claimNumber, claimType, claimRef;
+const sharedData = require('../../sharedData');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+let claimNumber, claimType, claimRef, caseData;
 
 Feature('Create Lip v Lip claim - Rejected All By defendant document welsh').tag('@reject-all');
 
@@ -40,20 +40,20 @@ Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh', as
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true, 'both');
-  sharedData.language = 'en'
+  sharedData.language = 'en';
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Go to your account');
   await I.wait(5);
-  await I.refreshPage()
+  await I.refreshPage();
   await CitizenDashboardSteps.VerifyStatusOnDashboard('The documents are being translated.', statusCell);
   await I.click('Sign out');
   await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await ResponseToDefenceLipVsLipSteps.RejectAllClaimantToProceedResponse(claimRef, claimNumber, 'en')
+  await ResponseToDefenceLipVsLipSteps.RejectAllClaimantToProceedResponse(claimRef, claimNumber, 'en');
   await I.click('Go to your account');
   await CitizenDashboardSteps.VerifyStatusOnDashboard('The documents are being translated.', statusCell);
   await I.click('Sign out');
   await api.submitUploadTranslatedDoc('CLAIMANT_INTENTION');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await CitizenDashboardSteps.VerifyStatusOnDashboard('Your mediation appointment will be arranged within', statusCell);
-}).tag('@cui-welsh @regression')
+}).tag('@cui-welsh @regression');

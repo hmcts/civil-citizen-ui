@@ -2,7 +2,7 @@ const cButtons = {
   saveAndContinue: {
     en: 'Save and continue',
     cy: 'Cadw a Pharhau',
-    both: 'Save and continue'
+    both: 'Save and continue',
   },
   continue: {
     en: 'Continue',

@@ -47,8 +47,8 @@ const content = {
   documentLanguageOption: {
     en: 'input[id="documentsLanguage"]',
     cy: 'input[id="documentsLanguage-2"]',
-    both: 'input[id="documentsLanguage-3"]'
-  }
+    both: 'input[id="documentsLanguage-3"]',
+  },
 };
 
 class WelshLanguage {
