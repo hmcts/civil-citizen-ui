@@ -3,7 +3,7 @@ const ClaimantResponseSteps = require('../../../claimantResponse/steps/claimantR
 Feature('Full admit defendant pay immediately - @claimantResponse').tag('@e2e');
 
 // TODO undo when part payment journey is restored
-Scenario.skip('Claimant accepts - judgement by admission - pay immediately', async () => {
+Scenario('Claimant accepts - judgement by admission - pay immediately', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777741;
     ClaimantResponseSteps.judgementByAdmission(caseId);
