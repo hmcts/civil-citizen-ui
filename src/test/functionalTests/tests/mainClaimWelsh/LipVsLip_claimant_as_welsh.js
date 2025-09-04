@@ -15,15 +15,14 @@ let caseData, claimNumber, claimRef, claimAmount = 1500, claimFee = 80, deadline
 let claimTotalAmount = claimAmount + claimFee;
 let welshEnabled;
 
-BeforeSuite(async function () {
-  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
-});
+
 Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@api @full-admit');
 
-(welshEnabled ? Scenario : Scenario.skip)('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({
-                                                                                                                                   I,
-                                                                                                                                   api
-                                                                                                                                 }) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
+  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
+  if (!welshEnabled) {
+    return;
+  }
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, false, 'Individual', 'BOTH');

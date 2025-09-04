@@ -11,14 +11,13 @@ const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport'
 let claimNumber, claimType, claimRef, caseData;
 
 let welshEnabled;
-
-BeforeSuite(async function () {
-  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
-});
-
 Feature('Create Lip v Lip claim - Rejected All By claimant document welsh').tag('@reject-all');
 
-(welshEnabled ? Scenario : Scenario.skip)('Create Lip v Lip claim - Rejected All By claimant document welsh', async ({api}) => {
+Scenario('Create Lip v Lip claim - Rejected All By claimant document welsh', async ({api}) => {
+  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
+  if (!welshEnabled) {
+    return;
+  }
   claimType = 'SmallClaims';
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
