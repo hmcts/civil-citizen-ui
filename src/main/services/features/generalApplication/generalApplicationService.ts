@@ -362,7 +362,7 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
       target: new GenericYesNo(body.optionOther, ''),
       value: body.option,
       constraints: {
-        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
+        ccjApplicationError: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
       },
       property: 'option',
     });
@@ -371,9 +371,7 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
 };
 
 export const getListOfNotAllowedAdditionalAppType = () => {
-  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
-    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,
-    ApplicationTypeOption.SETTLE_BY_CONSENT];
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,ApplicationTypeOption.SETTLE_BY_CONSENT];
 };
 
 export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
@@ -551,7 +549,7 @@ export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim
     return true;
   }
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
-      || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+    || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
 export const hasRespondentResponded = (application: ApplicationResponse) : boolean => {
@@ -583,15 +581,15 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
 };
 
 export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, lng: string) : Promise<iWantToLinks> => {
-    let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
-    applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
-    const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
-    if(applications && applications.length > 0) {
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
-        url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
-      };
-    }
+  let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
+  applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
+  const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
+  if(applications && applications.length > 0) {
+    return {
+      text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+      url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
+    };
+  }
 };
 
 export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {

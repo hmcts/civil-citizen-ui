@@ -951,7 +951,6 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-
     it('should get general application doc', async () => {
       //given
       const claim = new Claim();

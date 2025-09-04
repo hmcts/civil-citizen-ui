@@ -1,9 +1,10 @@
-import express, {Application} from 'express';
-const {Logger} = require('@hmcts/nodejs-logging');
+import express, { Application } from 'express';
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('errorHandler');
-import {HTTPError} from '../../HttpError';
+import { HTTPError } from '../../HttpError';
 
 const env = process.env.NODE_ENV || 'development';
+
 export class ErrorHandler {
   public enableFor(app: Application): void {
     // returning "not found" page for requests with paths not resolved by the router
@@ -21,7 +22,8 @@ export class ErrorHandler {
       res.locals.message = errorMessage;
       res.locals.error = env === 'development' ? err : {};
       res.status((err as HTTPError)?.status || 500);
-      res.render('error', {error: res.locals.error});
-    });
+      res.render('error', { error: res.locals.error });
+    },
+    );
   }
 }
