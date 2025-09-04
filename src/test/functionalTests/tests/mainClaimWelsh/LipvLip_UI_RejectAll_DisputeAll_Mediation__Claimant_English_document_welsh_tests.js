@@ -7,11 +7,18 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 let claimNumber, claimType, claimRef, caseData;
+
+let welshEnabled;
+
+BeforeSuite(async function () {
+  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
+});
 
 Feature('Create Lip v Lip claim - Rejected All By claimant document welsh').tag('@reject-all');
 
-Scenario('Create Lip v Lip claim - Rejected All By claimant document welsh', async ({api}) => {
+(welshEnabled ? Scenario : Scenario.skip)('Create Lip v Lip claim - Rejected All By claimant document welsh', async ({api}) => {
   claimType = 'SmallClaims';
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

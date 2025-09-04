@@ -8,11 +8,16 @@ const rejectAll = 'rejectAll';
 const sharedData = require('../../sharedData');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 let claimNumber, claimType, claimRef, caseData;
+let welshEnabled;
 
+BeforeSuite(async function () {
+  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
+});
 Feature('Create Lip v Lip claim - Rejected All By Defendant welsh').tag('@reject-all');
 
-Scenario('Create Lip v Lip claim - Rejected All By Defendant welsh', async ({api}) => {
+(welshEnabled ? Scenario : Scenario.skip)('Create Lip v Lip claim - Rejected All By Defendant welsh', async ({api}) => {
   claimType = 'SmallClaims';
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

@@ -7,15 +7,23 @@ const {
   respondToClaim,
   defendantResponseFullAdmitPayImmediately,
 } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmount = 1500, claimFee = 80, deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
+let welshEnabled;
 
+BeforeSuite(async function () {
+  welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
+});
 Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@api @full-admit');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
+(welshEnabled ? Scenario : Scenario.skip)('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({
+                                                                                                                                   I,
+                                                                                                                                   api
+                                                                                                                                 }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, false, 'Individual', 'BOTH');
