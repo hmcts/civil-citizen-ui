@@ -1,7 +1,6 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
@@ -32,7 +31,6 @@ describe('General Application - upload n245 form', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

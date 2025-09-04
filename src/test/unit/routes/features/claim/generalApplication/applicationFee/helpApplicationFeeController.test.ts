@@ -56,7 +56,6 @@ describe('General Application - Do you want to apply for help with fees Page', (
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   describe('on GET', () => {

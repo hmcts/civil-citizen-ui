@@ -36,7 +36,6 @@ describe('Pay GA Application Fee Confirmation Screen Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   it('should return pay application fee confirmation page when HWF reference exists', async () => {

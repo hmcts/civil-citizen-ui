@@ -52,7 +52,6 @@ describe('General Application - Do you want to continue to apply for Help with F
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   describe('on GET', () => {

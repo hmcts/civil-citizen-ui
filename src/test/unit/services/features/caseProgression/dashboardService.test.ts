@@ -21,8 +21,7 @@ import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CaseState} from 'common/form/models/claimDetails';
 import {
-  isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
+  isLocationWhiteListed,
   isQueryManagementEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaInformation, isGaOnline} from 'services/commons/generalApplicationHelper';
@@ -421,8 +420,7 @@ describe('dashboardService', () => {
 
     it('Notifications', async () => {
       //Given
-      (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
-      (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+      (isLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
       const notificationList: DashboardNotification[] = mockNotificationInfo;
       const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
       const applicantNotificationItems = plainToInstance(DashboardNotification, notificationList);
@@ -610,7 +608,7 @@ describe('dashboardService', () => {
       //Given
       (isGaOnline as jest.Mock).mockReturnValue(false);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toBeUndefined();
@@ -624,7 +622,7 @@ describe('dashboardService', () => {
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toEqual({
@@ -643,7 +641,7 @@ describe('dashboardService', () => {
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
       (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toEqual({
@@ -661,7 +659,7 @@ describe('dashboardService', () => {
       gaInfo.isGAWelsh = true;
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toEqual({
@@ -678,7 +676,7 @@ describe('dashboardService', () => {
 
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toBeUndefined();
@@ -692,7 +690,7 @@ describe('dashboardService', () => {
 
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toBeUndefined();
@@ -706,7 +704,7 @@ describe('dashboardService', () => {
 
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
+      const result = await getContactCourtLink(claim.id, claim, 'en');
 
       //Then
       expect(result).toBeUndefined();

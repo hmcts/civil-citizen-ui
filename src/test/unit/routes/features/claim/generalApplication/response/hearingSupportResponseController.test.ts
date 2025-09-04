@@ -6,7 +6,6 @@ import {GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {SupportType} from 'models/generalApplication/hearingSupport';
-import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
@@ -34,7 +33,6 @@ describe('General Application Response- Hearing support', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
   beforeEach(() => {
     const claim = new Claim();

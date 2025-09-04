@@ -4,7 +4,6 @@ import nock from 'nock';
 import config from 'config';
 import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_COSC_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
 import { Claim } from 'common/models/claim';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
@@ -39,7 +38,6 @@ describe('Claim fee payment confirmation', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

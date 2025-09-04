@@ -43,7 +43,6 @@ const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
-const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
 const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
@@ -551,7 +550,6 @@ describe('Claim Summary Controller Defendant', () => {
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
-      isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
 
@@ -584,7 +582,6 @@ describe('Claim Summary Controller Defendant', () => {
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
-      isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
 
@@ -608,7 +605,6 @@ describe('Claim Summary Controller Defendant', () => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
         jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
         isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
-        isGAForLiPEnabledMock.mockResolvedValue(true);
         isDashboardEnabledForCase.mockResolvedValue(true);
         const claim = new Claim();
         claim.caseRole = testCase.caseRole;
@@ -635,44 +631,6 @@ describe('Claim Summary Controller Defendant', () => {
             expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE'));
           });
       });
-    });
-
-    it('should show welsh party banner', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
-      isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(true);
-
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-        });
-    });
-
-    it('should not show welsh party banner if Welsh feature disabled', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
-      isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(false);
-
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-        });
     });
   });
 });

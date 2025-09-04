@@ -5,7 +5,6 @@ import request from 'supertest';
 import {GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../../../utils/dateUtils';
 import {getUnavailableDatesForHearingForm} from 'services/features/generalApplication/unavailableHearingDatesService';
@@ -42,7 +41,6 @@ describe('General Application Response- Unavailable hearing dates', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

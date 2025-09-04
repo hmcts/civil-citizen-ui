@@ -16,8 +16,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
-  isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
-  isGaForLipsEnabled, isJudgmentOnlineLive,
+  isCaseProgressionV1Enable, isCaseWorkerEventsEnabled, isJudgmentOnlineLive,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -952,23 +951,9 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should not get general application doc', async () => {
-      //given
-      (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(false);
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      const documentName = 'test_000MC001.pdf';
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
-      claim.generalOrderDocClaimant = new Array(document);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      expect(result.documents.length).toEqual(0);
-    });
 
     it('should get general application doc', async () => {
       //given
-      (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       const documentName = 'test_000MC001.pdf';
@@ -982,7 +967,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get general application doc from def', async () => {
       //given
-      (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
       const documentName = 'test_000MC001.pdf';

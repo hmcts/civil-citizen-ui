@@ -10,7 +10,6 @@ Scenario('Claimant creates GA Application with application amend a statement wit
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    toggleFlag('GaForLips', true);
     const claimID = 1732788917671276;
     const appId = 1732790247094419;
     createGAApplication.start(claimID);
@@ -42,6 +41,5 @@ Scenario('Claimant creates GA Application with application amend a statement wit
     requestMoreInformation.verifySucessfullPage();
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
-    toggleFlag('GaForLips', false);
   }
 });

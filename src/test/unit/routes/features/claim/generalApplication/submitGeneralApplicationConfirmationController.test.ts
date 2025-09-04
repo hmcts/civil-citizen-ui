@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -31,7 +30,6 @@ describe('GA submission confirmation controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   describe('on GET', () => {
