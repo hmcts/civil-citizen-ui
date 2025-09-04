@@ -110,6 +110,14 @@
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
+  {% if showWelshPartyBanner %}
+      <div class="hmcts-banner govuk-!-margin-bottom-4">
+          <div class="govuk-!-padding-top-2 govuk-!-padding-right-2 govuk-!-padding-bottom-2 govuk-!-padding-left-2">
+            <span class="hmcts-banner-assistive">information</span>
+            <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.WELSH_MESSAGE') }}</p>
+          </div>
+        </div>
+      {% endif %}
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE1') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE2') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE3') }}</p>

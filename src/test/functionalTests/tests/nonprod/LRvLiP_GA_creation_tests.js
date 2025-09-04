@@ -6,7 +6,7 @@ const createGASteps = require('../../citizenFeatures/GA/steps/createGASteps');
 
 let claimRef, caseData, claimNumber;
 
-Feature('LR v Lip GA Creation Tests').tag('@citizenUI @nightly @api @ga');
+Feature('LR v Lip GA Creation Tests').tag('@nightly @ga');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

@@ -14,7 +14,7 @@ const claimAmount = '£15,000';
 const partyType = 'LiPvLiP';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, trialArrangementsDueDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Trial Arrangements journey - Fast Track').tag('@case-progression');
+Feature('Case progression - Lip v Lip - Trial Arrangements journey - Fast Track').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -27,8 +27,8 @@ Before(async ({api}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
   await api.triggerTrialArrangementsNotifications(config.defendantCitizenUser, claimRef);
   await api.performTrialArrangementsCitizen(config.defendantCitizenUser, claimRef);
   await api.waitForFinishedBusinessProcess();
@@ -57,4 +57,4 @@ Scenario('Both parties complete their trial arrangements - Fast Track', async ({
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
   }
-}).tag('@nightly-regression-cp');
+});
