@@ -45,6 +45,9 @@ async function createLipClaim(api, claimantLanguage = 'ENGLISH'){
 
 Scenario('Welsh LIP v English LIP Query Management', async ({ I, api, qm }) => {
   const caseId = await createLipClaim(api, 'WELSH');
+  if (await checkToggleEnabled('enableWelshForMainCase')) {
+    await api.submitUploadTranslatedDoc('CLAIM_ISSUE');
+  }
   await api.setCaseId(caseId);
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, caseId);
