@@ -6,7 +6,6 @@ import {t} from 'i18next';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicantDocuments, getResponseFromCourtSection, getApplicationSections, getCourtDocuments, getRespondentDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../../utils/mocks/applicationMock.json';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';

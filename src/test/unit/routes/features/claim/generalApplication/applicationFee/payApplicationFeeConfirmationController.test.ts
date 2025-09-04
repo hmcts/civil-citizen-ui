@@ -4,7 +4,6 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {YesNo} from 'form/models/yesNo';

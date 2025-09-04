@@ -31,7 +31,6 @@ import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -43,7 +42,6 @@ const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
-const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
   [{
