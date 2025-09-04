@@ -145,8 +145,7 @@ describe('dashboardService', () => {
         , claim
         , '1234567890'
         , appReq
-        , false
-        , true);
+        , false);
 
       //Then
       expect(claimantDashboard).toEqual(dashboardExpected);
@@ -199,8 +198,7 @@ describe('dashboardService', () => {
         , claim
         , '1234567890'
         , appReq
-        , false
-        , true);
+        , false);
 
       //Then
       expect(claimantDashboard).toEqual(dashboardExpected);
@@ -244,8 +242,7 @@ describe('dashboardService', () => {
         , claim
         , '1234567890'
         , appReq
-        , false
-        , true);
+        , false);
 
       //Then
       expect(claimantDashboard.items.length).toEqual(0);
@@ -296,8 +293,7 @@ describe('dashboardService', () => {
         , claim
         , '1234567890'
         , appReq
-        , false
-        , true);
+        , false);
 
       //Then
       expect(claimantDashboard.items.length).toEqual(0);
@@ -339,8 +335,7 @@ describe('dashboardService', () => {
         , claim
         , '1234567890'
         , appReq
-        , false
-        , true);
+        , false);
 
       //Then
       expect(claimantDashboard.items.length).toEqual(1);

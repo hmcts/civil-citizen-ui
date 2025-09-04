@@ -22,14 +22,12 @@ import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchD
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import {ApplicationResponse, CCDApplication} from 'common/models/generalApplication/applicationResponse';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
