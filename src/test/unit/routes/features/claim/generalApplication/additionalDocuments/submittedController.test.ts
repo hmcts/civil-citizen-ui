@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import { app } from '../../../../../../../main/app';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { getClaimById } from 'modules/utilityService';
 import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
@@ -27,7 +26,6 @@ describe('General Application - additional docs submitted controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
   beforeEach(() => {
     jest.clearAllMocks();

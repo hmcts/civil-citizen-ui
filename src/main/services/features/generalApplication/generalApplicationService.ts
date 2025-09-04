@@ -582,8 +582,7 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
   }
 };
 
-export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
-  if(isGAFlagEnable) {
+export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, lng: string) : Promise<iWantToLinks> => {
     let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
     applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
@@ -593,7 +592,6 @@ export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, i
         url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
       };
     }
-  }
 };
 
 export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {

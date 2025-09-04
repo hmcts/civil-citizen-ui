@@ -11,7 +11,6 @@ Scenario('Claimant GA Application and respond to response with relief from sanct
 
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    toggleFlag('GaForLips', true);
     const claimID = 1732551952128739;
     const appId = 1732553590764925;
     createGAApplication.start(claimID);
@@ -46,6 +45,5 @@ Scenario('Claimant GA Application and respond to response with relief from sanct
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Order made');
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
-    toggleFlag('GaForLips', false);
   }
 });

@@ -21,9 +21,8 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_START_URL} from 'routes/urls';
 import {
+  isLocationWhiteListed,
   isCuiGaNroEnabled,
-  isGaForLipsEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
   isGaForWelshEnabled,
   isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
@@ -41,7 +40,7 @@ const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
   new DashboardTaskList('Applications to the court', '', []),
   new DashboardTaskList('Messages to the court', '', []));
 
-export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isNroForGaLip = await isCuiGaNroEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
@@ -57,8 +56,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     else { // prod code
       //remove QM sections
       dashboard.items = dashboard.items.filter(item => !QMLIP_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
-      const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
-
+      const isEACourt = await isLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
       const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled, isNroForGaLip); // check if ga is online or offline
 
       if (!isGaOnlineFlag.isGaOnline) {
@@ -108,20 +106,17 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   dashboardNotifications.items?.forEach(notification => mainClaimNotificationIds.push(notification.id));
   // Add notifications for all GAs
   const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
-  const isGaEnabled = await isGaForLipsEnabled();
-  if (isGaEnabled) {
-    for (const generalApplication of (claim.generalApplications ?? [])) {
-      const gaReference = generalApplication.value?.caseLink?.CaseReference;
-      const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
-      if (gaReference && claimantIsApplicant) {
-        let gaRole: ApplicantOrRespondent;
-        if (claimantIsApplicant === YesNo.YES) {
-          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
-        } else {
-          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
-        }
-        genAppsByRole.get(gaRole).push(gaReference);
+  for (const generalApplication of (claim.generalApplications ?? [])) {
+    const gaReference = generalApplication.value?.caseLink?.CaseReference;
+    const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
+    if (gaReference && claimantIsApplicant) {
+      let gaRole: ApplicantOrRespondent;
+      if (claimantIsApplicant === YesNo.YES) {
+        gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
+      } else {
+        gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
       }
+      genAppsByRole.get(gaRole).push(gaReference);
     }
   }
   const applicantNotifications = genAppsByRole.get(ApplicantOrRespondent.APPLICANT).length > 0
@@ -185,7 +180,7 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   return undefined;
 }
 
-export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFlagEnable: boolean, lng: string): Promise<iWantToLinks> => {
+export const getContactCourtLink = async (claimId: string, claim: Claim, lng: string): Promise<iWantToLinks> => {
 
   const isLIPQmOn = await isQueryManagementEnabled(claim.submittedDate);
   const isNroForGaLip = await isCuiGaNroEnabled();
@@ -200,7 +195,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       };
     }
   } else { // Prod code
-    const isEACourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+    const isEACourt = await isLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
     const welshGaEnabled = await isGaForWelshEnabled();
     const isGaOnlineFlag = isGaOnline(claim, isEACourt, welshGaEnabled, isNroForGaLip); // check if ga is online or offline
     if (isGaOnlineFlag.isGaOnline) {

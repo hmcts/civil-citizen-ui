@@ -11,7 +11,6 @@ Scenario('Claimant GA Application and respond to response for strike out without
 
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    toggleFlag('GaForLips', true);
     const claimID = 1732192997720139;
     const appId = 1732194111758649;
     createGAApplication.start(claimID);
@@ -50,7 +49,6 @@ Scenario('Claimant GA Application and respond to response for strike out without
     RespondentResponse.confirmationPage(claimID, appId);
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
-    toggleFlag('GaForLips', false);
   }
 });
 AfterSuite(async () => {

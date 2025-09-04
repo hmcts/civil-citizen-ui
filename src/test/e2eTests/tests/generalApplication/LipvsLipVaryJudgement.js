@@ -10,7 +10,6 @@ Scenario('Defendant creates GA Application vary judgement with consent @varyjudg
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    toggleFlag('GaForLips', true);
     const claimID = 1732877831207299;
     const appId = 1732878113661799;
     createGAApplication.start(claimID);
@@ -41,6 +40,5 @@ Scenario('Defendant creates GA Application vary judgement with consent @varyjudg
     responseApplicationSummary.viewApplicantApplicationSummary(claimID, appId, 'Application submitted - Awaiting Judicial decision');
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
-    toggleFlag('GaForLips', false);
   }
 });

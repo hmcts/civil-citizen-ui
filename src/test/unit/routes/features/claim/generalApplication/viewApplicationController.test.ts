@@ -5,7 +5,6 @@ import request from 'supertest';
 import {GA_VIEW_APPLICATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
@@ -57,7 +56,6 @@ describe('General Application - View application', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(application);
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   beforeEach(() => {

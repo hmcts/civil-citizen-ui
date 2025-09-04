@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
-import {isGaForLipsEnabled, isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
@@ -36,7 +36,6 @@ describe('General Application - Application type', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
     isQueryManagementEnabledMock.mockImplementation(() => false) ;
   });
 

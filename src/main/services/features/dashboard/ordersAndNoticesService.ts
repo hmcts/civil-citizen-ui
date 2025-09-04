@@ -15,7 +15,6 @@ import {
   isCaseProgressionV1Enable,
   isCaseWorkerEventsEnabled,
   isCoSCEnabled,
-  isGaForLipsEnabled,
   isWelshEnabledForMainCase,
   isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
@@ -131,9 +130,7 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
     courtDocumentsArray.push(...getFinalOrders(claim, claimId, lang));
   }
 
-  if (await isGaForLipsEnabled()) {
-    courtDocumentsArray.push(...getGeneralApplicationOrders(claim, claimId, lang));
-  }
+  courtDocumentsArray.push(...getGeneralApplicationOrders(claim, claimId, lang));
 
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };

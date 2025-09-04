@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import { app } from '../../../../../../../main/app';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { buildSummarySectionForAdditionalDoc, getClaimDetailsById, prepareCCDData } from 'services/features/generalApplication/additionalDocumentService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL } from 'routes/urls';
@@ -35,7 +34,6 @@ describe('General Application - additional docs check answer controller ', () =>
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

@@ -11,7 +11,6 @@ import * as gaStoreResponseService
   from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
@@ -41,7 +40,6 @@ describe('General Application - Respondent want to upload document ', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
   beforeEach(() => {
     const mockGaResponse = new GaResponse();

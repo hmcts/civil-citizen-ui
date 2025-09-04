@@ -6,7 +6,6 @@ import { GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL } from 
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { t } from 'i18next';
 import { Claim } from 'models/claim';
-import { isGaForLipsEnabled } from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { decode } from 'punycode';
@@ -33,7 +32,6 @@ describe('General Application - Application response summary', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   describe('on GET', () => {

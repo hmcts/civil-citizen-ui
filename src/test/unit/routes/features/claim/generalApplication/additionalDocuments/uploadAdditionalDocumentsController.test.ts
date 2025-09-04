@@ -16,7 +16,6 @@ import {
 } from 'routes/urls';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import { FileUpload } from 'common/models/caseProgression/uploadDocumentsUserForm';
@@ -55,7 +54,6 @@ describe('uploadAdditionalDocumentsController', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {
