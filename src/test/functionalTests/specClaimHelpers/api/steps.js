@@ -471,7 +471,7 @@ module.exports = {
     //   await testingSupport.updateCaseData(caseId, submittedDate);
     //   console.log('submitted date update to after minti date');
     // }*/
-    const welshToggle = language === 'BOTH' || language === 'WELSH';
+    const welshToggle = await checkToggleEnabled('enableWelshForMainCase') && (language === 'BOTH' || language === 'WELSH');
     await apiRequest.setupTokens(user);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
