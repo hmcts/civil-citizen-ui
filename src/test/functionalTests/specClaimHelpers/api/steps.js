@@ -413,7 +413,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language) => {
+  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, mainClaimWelshEnabled = false) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -471,7 +471,6 @@ module.exports = {
     //   await testingSupport.updateCaseData(caseId, submittedDate);
     //   console.log('submitted date update to after minti date');
     // }*/
-    const welshToggle = await checkToggleEnabled('enableWelshForMainCase') && (language === 'BOTH' || language === 'WELSH');
     await apiRequest.setupTokens(user);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
@@ -481,12 +480,12 @@ module.exports = {
           'reference': 'RC-1234-1234-1234-1234',
         },
         issueDate: currentDate,
-        ...(!welshToggle && {respondent1ResponseDeadline: currentDate}),
+        ...(!mainClaimWelshEnabled && {respondent1ResponseDeadline: currentDate}),
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForFinishedBusinessProcess(caseId, user);
-    if (!welshToggle) {
+    if (!mainClaimWelshEnabled) {
       await assignSpecCase(caseId, null);
     }
     return caseId;

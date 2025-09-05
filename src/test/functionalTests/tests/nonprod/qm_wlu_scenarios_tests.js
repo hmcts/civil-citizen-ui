@@ -50,9 +50,6 @@ Scenario('Welsh LIP v English LIP Query Management', async ({ I, api, qm }) => {
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, caseId);
   claimNumber = caseData.legacyCaseReference;
-  if (await checkToggleEnabled('enableWelshForMainCase')) {
-    await api.submitUploadTranslatedDoc('CLAIM_ISSUE');
-  }
   console.log(`Created LiP claim. Claim number: ${claimNumber}`);
   await api.performCitizenResponse(config.defendantCitizenUser, caseId, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantCompany');
   const latestQueryClaimant = await raiseRespondAndFollowUpToLipQueriesScenario(qm, caseId,
@@ -108,9 +105,6 @@ Scenario('Welsh LIP v LR Query Management', async ({ api, noc, qm, I}) => {
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, caseId);
   claimNumber = caseData.legacyCaseReference;
-  if (await checkToggleEnabled('enableWelshForMainCase')) {
-    await api.submitUploadTranslatedDoc('CLAIM_ISSUE');
-  }
   console.log(`Created LiP claim. Claim number: ${claimNumber}`);
   await api.performCitizenResponse(config.defendantCitizenUser, caseId, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantCompany');
   await noc.requestNoticeOfChangeForRespondent1SolicitorCompany(caseId, config.defendantSolicitorUser);
