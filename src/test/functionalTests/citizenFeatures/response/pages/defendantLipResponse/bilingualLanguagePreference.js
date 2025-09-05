@@ -6,16 +6,19 @@ const cButtons = require('../../../../commonComponents/cButtons');
 const  fields = {
   en: 'input[id="option"]',
   cy: 'input[id="option-2"]',
+  both: 'input[id="option-3"]',
 };
 
 const content = {
   heading: {
     en: 'Language',
     cy: 'Iaith',
+    both: 'Language',
   },
   descriptionText: {
     en: 'You must choose which language to use to respond to this claim',
     cy: 'Mae\'n rhaid ichi ddewis pa iaith yr hoffech ei defnyddio i ymateb i\'r hawliad hwn.',
+    both: 'In which language do you want to respond to this claim?',
   },
 };
 

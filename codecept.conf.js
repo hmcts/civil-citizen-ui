@@ -23,6 +23,7 @@ const getTests = () => {
 
   return [ `${testPath}/functionalTests/tests/nonprod/**/*.js`,
     `${testPath}/functionalTests/tests/common/**/*.js`,
+    `${testPath}/functionalTests/tests/mainClaimWelsh/**/*.js`,
     `${testPath}/e2eTests/tests/**/*.js`];
 };
 
