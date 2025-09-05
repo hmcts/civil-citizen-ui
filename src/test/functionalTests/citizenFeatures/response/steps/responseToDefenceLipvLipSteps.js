@@ -2,6 +2,7 @@ const I = actor();
 const ResponseToDefence = require('../../createClaim/pages/responseToDefence');
 const responseToDefence = new ResponseToDefence();
 const mediationSteps = require('./lipDefendantResponseSteps');
+const ResponseSteps = require('./lipDefendantResponseSteps');
 
 const paths = {
   links: {
@@ -469,6 +470,25 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyDoYouOrExpertsNeedToAttendHearing();
     await responseToDefence.verifyHearingAtSpecificCourt();
     await responseToDefence.verifyWelshLanguageForFT();
+  }
+
+  async RejectAllClaimantToProceedResponse(claimRef, claimNumber, languageOption = 'en') {
+    await responseToDefence.open(claimRef);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForRejection();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.decide_whether_to_proceed);
+    await responseToDefence.inputProceedWithTheClaim();
+    await this.verifyDashboardLoaded();
+    await ResponseSteps.EnterTelephoneMediationDetails();
+    await ResponseSteps.ConfirmAltPhoneDetails();
+    await ResponseSteps.ConfirmAltEmailDetails();
+    await ResponseSteps.EnterUnavailableDates(claimRef);
+    await ResponseSteps.EnterDQForSmallClaims(claimRef, true, languageOption);
+    I.click(paths.links.check_and_submit_your_response);
+    I.click('Submit Response');
+    await responseToDefence.verifyConfirmationScreenForRejection(claimNumber);
   }
 
 }

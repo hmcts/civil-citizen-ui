@@ -3,7 +3,7 @@ class SharedData {
   #testFilePath = './specClaimHelpers/fixtures/examplePDF.pdf';
 
   set language(language) {
-    if(['en', 'cy'].includes(language) === false) {
+    if(['en', 'cy','both'].includes(language) === false) {
       throw new Error('Language chosen must either be \'en\' or \'cy\'');
     }
     this.#language = language;
