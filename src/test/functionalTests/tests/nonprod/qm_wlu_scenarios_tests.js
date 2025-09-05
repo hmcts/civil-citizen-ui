@@ -3,7 +3,6 @@ const { createAccount } = require('../../specClaimHelpers/api/idamHelper');
 const {PUBLIC_QUERY} = require('../../specClaimHelpers/fixtures/queryTypes');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 
 let caseData, claimNumber;
 
