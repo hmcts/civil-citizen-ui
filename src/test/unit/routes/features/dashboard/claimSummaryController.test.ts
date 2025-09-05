@@ -1,35 +1,36 @@
-import {app} from '../../../../../main/app';
+import { app } from '../../../../../main/app';
 import config from 'config';
 import Module from 'module';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
+import { CIVIL_SERVICE_CASES_URL } from 'client/civilServiceUrls';
 import {
   isCaseProgressionV1Enable,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {CaseState} from 'form/models/claimDetails';
+import { CaseState } from 'form/models/claimDetails';
 
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
-import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
-import {TabId, TabLabel} from 'routes/tabs';
-import {t} from 'i18next';
-import {Bundle} from 'models/caseProgression/bundles/bundle';
-import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
-import {CaseRole} from 'form/models/caseRoles';
-import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
+import { TestMessages } from '../../../../utils/errorMessageTestConstants';
+import { ClaimSummaryContent, ClaimSummaryType } from 'form/models/claimSummarySection';
+import { getLatestUpdateContent } from 'services/features/dashboard/claimSummary/latestUpdateService';
+import { getCaseProgressionHearingMock } from '../../../../utils/caseProgression/mockCaseProgressionHearing';
+import { TabId, TabLabel } from 'routes/tabs';
+import { t } from 'i18next';
+import { Bundle } from 'models/caseProgression/bundles/bundle';
+import { CCDBundle } from 'models/caseProgression/bundles/ccdBundle';
+import { CaseRole } from 'form/models/caseRoles';
+import { isCarmApplicableAndSmallClaim } from 'common/utils/carmToggleUtils';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {Dashboard} from 'models/dashboard/dashboard';
+import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
+import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
+import { Dashboard } from 'models/dashboard/dashboard';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/urls';
+import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL } from 'routes/urls';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
+import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const nock = require('nock');
@@ -43,7 +44,7 @@ const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 
-const mockExpectedDashboardInfo=
+const mockExpectedDashboardInfo =
   [{
     'categoryEn': 'Hearing',
     'categoryCy': 'Hearing Welsh',
@@ -85,7 +86,7 @@ const mockExpectedDashboardInfo=
   {
     'categoryEn': 'Claim',
     'categoryCy': 'Claim Welsh',
-    tasks:[{
+    tasks: [{
       'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
       'statusEn': 'ACTION_NEEDED',
       'statusCy': 'ACTION_NEEDED',
@@ -132,11 +133,15 @@ jest.mock('common/utils/carmToggleUtils.ts');
 
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(()=>dashboard),
+  getDashboardForm: jest.fn(() => dashboard),
   getHelpSupportTitle: jest.fn(),
   getHelpSupportLinks: jest.fn(),
-  extractOrderDocumentIdFromNotification : jest.fn(),
-  getContactCourtLink: jest.fn(()=> ({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT')})),
+  extractOrderDocumentIdFromNotification: jest.fn(),
+  getContactCourtLink: jest.fn(() => ({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT') })),
+}));
+
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getViewAllApplicationLink: jest.fn(),
 }));
 
 export const USER_DETAILS = {
@@ -156,7 +161,7 @@ describe('Claim Summary Controller Defendant', () => {
   beforeAll((done) => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
     testSession
       .get('/oauth2/callback')
       .query('code=ABC')
@@ -201,7 +206,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -240,7 +245,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithoutSDO);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -262,7 +267,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -285,7 +290,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -319,7 +324,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -340,7 +345,7 @@ describe('Claim Summary Controller Defendant', () => {
       const caseProgressionHearing = getCaseProgressionHearingMock();
 
       const bundles = [] as CCDBundle[];
-      bundles.push(new CCDBundle('1234', new Bundle('document', {document_url: 'url',document_filename: 'name', document_binary_url: 'binaryurl'}, new Date('01-01-2023'), new Date('01-01-2023'))));
+      bundles.push(new CCDBundle('1234', new Bundle('document', { document_url: 'url', document_filename: 'name', document_binary_url: 'binaryurl' }, new Date('01-01-2023'), new Date('01-01-2023'))));
 
       const claimWithHearingAndBundleDocs = {
         ...claim,
@@ -363,7 +368,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHearingAndBundleDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -403,7 +408,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -498,7 +503,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
         .reply(200, [CaseRole.DEFENDANT]);
       //then
       await testSession
@@ -540,7 +545,7 @@ describe('Claim Summary Controller Defendant', () => {
         state: undefined,
       };
 
-      const applicationResponses : ApplicationResponse[] = [applicationResponse];
+      const applicationResponses: ApplicationResponse[] = [applicationResponse];
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
@@ -551,12 +556,16 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
 
+      const getViewAllApplicationLinkMock = getViewAllApplicationLink as jest.Mock;
+      getViewAllApplicationLinkMock.mockResolvedValueOnce({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'),
+        url: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL),
+      });
+
       const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
-      getContactCourtLinkMock.mockImplementation(() => {
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
-          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
-        };
+      getContactCourtLinkMock.mockResolvedValueOnce({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
       });
       await testSession.get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
@@ -572,7 +581,7 @@ describe('Claim Summary Controller Defendant', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponses : ApplicationResponse[] = [];
+      const applicationResponses: ApplicationResponse[] = [];
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
@@ -614,9 +623,9 @@ describe('Claim Summary Controller Defendant', () => {
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
         app.locals = {
-          showCreateQuery : true,
-          isQMFlagEnabled : true,
-          disableSendMessage : true,
+          showCreateQuery: true,
+          isQMFlagEnabled: true,
+          disableSendMessage: true,
         };
 
         await testSession

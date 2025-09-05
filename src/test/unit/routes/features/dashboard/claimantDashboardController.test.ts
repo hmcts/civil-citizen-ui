@@ -1,39 +1,40 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {APPLICATION_TYPE_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {PartyType} from 'common/models/partyType';
-import {PartyDetails} from 'common/form/models/partyDetails';
-import {Party} from 'common/models/party';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {Claim} from 'common/models/claim';
-import {CaseRole} from 'form/models/caseRoles';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
-import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
-import {CaseProgression} from 'models/caseProgression/caseProgression';
-import {CaseState} from 'common/form/models/claimDetails';
-import {t} from 'i18next';
+import { app } from '../../../../../main/app';
+import { civilClaimResponseMock } from '../../../../utils/mockDraftStore';
+import { APPLICATION_TYPE_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
+import { TestMessages } from '../../../../utils/errorMessageTestConstants';
+import { PartyType } from 'common/models/partyType';
+import { PartyDetails } from 'common/form/models/partyDetails';
+import { Party } from 'common/models/party';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { Claim } from 'common/models/claim';
+import { CaseRole } from 'form/models/caseRoles';
+import { YesNoUpperCamelCase } from 'form/models/yesNo';
+import { PaymentDetails, PaymentStatus } from 'models/PaymentDetails';
+import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
+import { CaseProgression } from 'models/caseProgression/caseProgression';
+import { CaseState } from 'common/form/models/claimDetails';
+import { t } from 'i18next';
 import * as UtilityService from 'modules/utilityService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {Dashboard} from 'models/dashboard/dashboard';
+import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
+import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
+import { Dashboard } from 'models/dashboard/dashboard';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
-import {ApplicationResponse, CCDApplication} from 'common/models/generalApplication/applicationResponse';
+import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
-import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
+import { ApplicationState } from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const isCarmEnabledForCaseMock = launchDarkly.isCarmEnabledForCase as jest.Mock;
 
-const mockExpectedDashboardInfo=
+const mockExpectedDashboardInfo =
   [{
     'categoryEn': 'Hearing',
     'categoryCy': 'Hearing Welsh',
@@ -75,7 +76,7 @@ const mockExpectedDashboardInfo=
   {
     'categoryEn': 'Claim',
     'categoryCy': 'Claim Welsh',
-    tasks:[{
+    tasks: [{
       'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
       'statusEn': 'ACTION_NEEDED',
       'statusCy': 'ACTION_NEEDED',
@@ -114,13 +115,17 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(()=>dashboard),
-  getHelpSupportTitle: jest.fn(()=>t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT')),
-  getHelpSupportLinks: jest.fn(()=>HELP_SUPPORT_LINKS),
+  getDashboardForm: jest.fn(() => dashboard),
+  getHelpSupportTitle: jest.fn(() => t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT')),
+  getHelpSupportLinks: jest.fn(() => HELP_SUPPORT_LINKS),
   extractOrderDocumentIdFromNotification: jest.fn(),
-  getContactCourtLink: jest.fn(()=> ({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT')})),
+  getContactCourtLink: jest.fn(() => ({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT') })),
 }));
 jest.mock('common/utils/carmToggleUtils');
+
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getViewAllApplicationLink: jest.fn(),
+}));
 
 const HELP_SUPPORT_LINKS = [
   { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'), url: 'test' },
@@ -146,7 +151,7 @@ describe('claimant Dashboard Controller', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
@@ -176,14 +181,14 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.totalClaimAmount=12000;
+      claim.totalClaimAmount = 12000;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.applicant1Represented = YesNoUpperCamelCase.NO;
-      claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
+      claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS));
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
@@ -203,11 +208,11 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.totalClaimAmount=500;
+      claim.totalClaimAmount = 500;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
@@ -228,11 +233,11 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.totalClaimAmount=500;
+      claim.totalClaimAmount = 500;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
@@ -255,11 +260,11 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.totalClaimAmount=500;
+      claim.totalClaimAmount = 500;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
@@ -278,11 +283,11 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.totalClaimAmount=12000;
+      claim.totalClaimAmount = 12000;
       claim.caseRole = CaseRole.DEFENDANT;
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
       claim.caseProgression = new CaseProgression();
@@ -304,11 +309,11 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.totalClaimAmount=500;
+      claim.totalClaimAmount = 500;
       claim.caseRole = CaseRole.DEFENDANT;
       claim.caseProgression = new CaseProgression();
 
@@ -329,17 +334,17 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
       claim.specRespondentCorrespondenceAddressRequired = YesNoUpperCamelCase.YES;
-      claim.specRespondentCorrespondenceAddressdetails= {
+      claim.specRespondentCorrespondenceAddressdetails = {
         'PostCode': 'NN3 9SS',
         'PostTown': 'NORTHAMPTON',
         'AddressLine1': '29, SEATON DRIVE',
       };
-      claim.totalClaimAmount=500;
+      claim.totalClaimAmount = 500;
       claim.caseRole = CaseRole.DEFENDANT;
       claim.caseProgression = new CaseProgression();
 
@@ -360,11 +365,11 @@ describe('claimant Dashboard Controller', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
       claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
+        individualTitle: 'Mr',
+        individualFirstName: 'Jon',
+        individualLastName: 'Doe',
       });
-      claim.respondentSolicitorDetails= {
+      claim.respondentSolicitorDetails = {
         'address': {
           'PostCode': 'NN3 9SS',
           'PostTown': 'NORTHAMPTON',
@@ -372,7 +377,7 @@ describe('claimant Dashboard Controller', () => {
         },
       };
       claim.respondentSolicitor1EmailAddress = 'abc@gmail.com';
-      claim.totalClaimAmount=500;
+      claim.totalClaimAmount = 500;
       claim.caseRole = CaseRole.DEFENDANT;
       claim.caseProgression = new CaseProgression();
 
@@ -454,12 +459,16 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(applicationResponses);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      const getViewAllApplicationLinkMock = getViewAllApplicationLink as jest.Mock;
+      getViewAllApplicationLinkMock.mockResolvedValueOnce({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'),
+        url: constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL),
+      });
+
       const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
-      getContactCourtLinkMock.mockImplementation(() => {
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
-          url: constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL),
-        };
+      getContactCourtLinkMock.mockResolvedValueOnce({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
+        url: constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL),
       });
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
@@ -475,7 +484,7 @@ describe('claimant Dashboard Controller', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponses : ApplicationResponse[] = [];
+      const applicationResponses: ApplicationResponse[] = [];
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
@@ -518,8 +527,8 @@ describe('claimant Dashboard Controller', () => {
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
         app.locals = {
-          showCreateQuery : true,
-          isQMFlagEnabled : true,
+          showCreateQuery: true,
+          isQMFlagEnabled: true,
           disableSendMessage: true,
         };
 
