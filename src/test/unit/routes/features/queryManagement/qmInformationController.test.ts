@@ -28,6 +28,8 @@ function getControllerUrl(qmType: WhatToDoTypeOption, qmQualifyOption: Qualifyin
 const mockGetCaption = getCaption as jest.Mock;
 const mockGetCancelUrl = getCancelUrl as jest.Mock;
 
+const ANY_THING_ELSE_LABEL = 'If you need help with anything else';
+
 describe('Query management Information controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -62,7 +64,7 @@ describe('Query management Information controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(expectedText);
-          expect(res.text).toContain('Anything else');
+          expect(res.text).toContain(ANY_THING_ELSE_LABEL);
         });
     });
 
@@ -90,7 +92,7 @@ describe('Query management Information controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(expectedText);
-        expect(res.text).toContain('Anything else');
+        expect(res.text).toContain(ANY_THING_ELSE_LABEL);
       });
   });
 
@@ -109,7 +111,7 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain(subtitle);
         expect(res.text).toContain('If the issue is not urgent');
         expect(res.text).toContain('If the issue is urgent');
-        expect(res.text).not.toContain('Anything else');
+        expect(res.text).not.toContain(ANY_THING_ELSE_LABEL);
       });
   });
 
@@ -141,7 +143,7 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain(title);
         expect(res.text).toContain(textLink);
         expect(res.text).toContain('Get an update on my case');
-        expect(res.text).toContain('Anything else');
+        expect(res.text).toContain(ANY_THING_ELSE_LABEL);
       });
   });
 
@@ -168,7 +170,7 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain(title);
         expect(res.text).toContain('The defendant has up to 28 days to respond once they receive the claim.');
         expect(res.text).toContain('Get an update on my case');
-        expect(res.text).toContain('Anything else');
+        expect(res.text).toContain(ANY_THING_ELSE_LABEL);
       });
   });
 
@@ -202,7 +204,7 @@ describe('Query management Information controller', () => {
         } else if (questionType === QualifyingQuestionTypeOption.SETTLE_CLAIM) {
           expect(res.text).toContain('If you are a claimant, update the claim in the online service by selecting tell us you’ve settled the claim.');
         }
-        expect(res.text).toContain('Anything else');
+        expect(res.text).toContain(ANY_THING_ELSE_LABEL);
       });
   });
 
