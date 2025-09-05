@@ -9,7 +9,6 @@ import { t } from 'i18next';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
@@ -36,7 +35,6 @@ describe('General Application - inform other parties', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

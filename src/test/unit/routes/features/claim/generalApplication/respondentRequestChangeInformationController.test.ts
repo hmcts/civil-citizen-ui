@@ -10,7 +10,6 @@ import * as utilityService from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {decode} from 'punycode';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -33,7 +32,6 @@ describe('General Application - Respondent Agree to order', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

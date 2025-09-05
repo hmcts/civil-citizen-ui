@@ -9,7 +9,6 @@ Scenario('Extending time with consent and change hearing date with out notice', 
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    toggleFlag('GaForLips', true);
     const claimID = 1732014426677369;
     let appId = 1732106154804395;
     createGAApplication.start(claimID);
@@ -42,9 +41,7 @@ Scenario('Extending time with consent and change hearing date with out notice', 
     RespondentResponse.confirmationPage(claimID, appId);
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Order made');
     toggleFlag('cuiReleaseTwoEnabled', false);
-    toggleFlag('GaForLips', false);
     toggleFlag('cuiReleaseTwoEnabled', true);
-    toggleFlag('GaForLips', true);
     appId = 1732018301268558;
     createGAApplication.start(claimID);
     createGAApplication.selectApplicationType('Ask to change a hearing date');
@@ -68,7 +65,6 @@ Scenario('Extending time with consent and change hearing date with out notice', 
     createGAApplication.verifyPaymentSuccessfullPage();
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
-    toggleFlag('GaForLips', false);
   }
 });
 

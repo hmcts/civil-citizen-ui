@@ -9,7 +9,6 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {GaServiceClient} from 'client/gaServiceClient';
@@ -60,7 +59,6 @@ describe('General Application - Pay additional fee Page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
   beforeEach(()=> {
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);

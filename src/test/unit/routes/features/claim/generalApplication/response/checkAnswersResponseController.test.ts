@@ -54,7 +54,6 @@ describe('General application - response - check your answers', () => {
       .post('/o/token')
       .reply(200, {id_token: config.get('citizenRoleToken')});
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
     mockSubmitApplicationResponse.mockResolvedValue(undefined);
     const claim = new Claim();
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;

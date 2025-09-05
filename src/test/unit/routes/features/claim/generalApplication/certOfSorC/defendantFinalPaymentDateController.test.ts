@@ -27,7 +27,6 @@ describe('CoSorS - defendant Payment date', () => {
 
   beforeAll(() => {
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
