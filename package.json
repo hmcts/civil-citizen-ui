@@ -31,6 +31,7 @@
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",
     "test:debug": "codeceptjs run --grep @debug",
+
     "cichecks": "yarn && yarn build && yarn lint && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "wiremock:start": "wiremock --root-dir ./wiremock --port 1111",
