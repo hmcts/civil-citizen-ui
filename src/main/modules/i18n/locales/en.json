@@ -4883,7 +4883,7 @@
         "RECEIPT_FOR_PAYMENTS": "you get the receipt for any payments”",
         "THEY_GET_MONEY_BY": "they receive the money within 5 days from when they accept your offer - they can request a County Court Judgment against you if not.",
         "YOU_HAVE_SAID_YOU_OWW": "You've said you owe £{{ partialAmount }} plus the claim fee and any fixed costs claimed and offered to pay {{ claimantName }} immediately.",
-        "YOU_NEED_PAY_IMMEDIATELY": "You need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed."
+        "YOU_NEED_PAY_IMMEDIATELY": "You will need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "make sure any cheques or bank transfers are clear in their account by the deadline",
