@@ -159,6 +159,11 @@ module.exports = {
     email: 'civil-system-update@mailnesia.com',
     type: 'systemupdate',
   },
+  welshAdmin: {
+    password: 'Password123',
+    email: 'casewrokerwlu@justice.gov.uk',
+    type: 'welsh-admin',
+  },
   systemUpdate2: {
     password: defaultPassword,
     email: 'hmcts.civil+organisation.1.superuser@gmail.com',
