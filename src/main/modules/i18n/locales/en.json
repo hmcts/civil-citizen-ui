@@ -4880,7 +4880,7 @@
         "CLAIM_SETTLED": "The claim will be settled.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }} plus the claim fee and any fixed costs claimed",
         "MAKE_SURE_THAT": "Make sure that:",
-        "RECEIPT_FOR_PAYMENTS": "you get the receipt for any payments”",
+        "RECEIPT_FOR_PAYMENTS": "you get the receipt for any payments",
         "THEY_GET_MONEY_BY": "they receive the money within 5 days from when they accept your offer - they can request a County Court Judgment against you if not.",
         "YOU_HAVE_SAID_YOU_OWW": "You've said you owe £{{ partialAmount }} plus the claim fee and any fixed costs claimed and offered to pay {{ claimantName }} immediately.",
         "YOU_NEED_PAY_IMMEDIATELY": "You will need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed."

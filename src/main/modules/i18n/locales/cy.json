@@ -4880,7 +4880,7 @@
         "CLAIM_SETTLED": "Bydd yr hawliad yn cael ei setlo.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "Os yw {{ claimantName }}  yn derbyn eich cynnig o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir",
         "MAKE_SURE_THAT": "Gwnewch yn siŵr:",
-        "RECEIPT_FOR_PAYMENTS": "eich bod yn cael derbynneb am unrhyw daliadau”",
+        "RECEIPT_FOR_PAYMENTS": "eich bod yn cael derbynneb am unrhyw daliadau",
         "THEY_GET_MONEY_BY": "eu bod yn derbyn yr arian o fewn 5 diwrnod o’r adeg bu iddynt dderbyn eich cynnig - gallant wneud cais am Ddyfarniad Llys Sirol yn eich erbyn os na fyddwch yn gwneud hynny.",
         "YOU_HAVE_SAID_YOU_OWW": "Rydych wedi dweud bod gennych ddyled o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ac wedi cynnig talu  {{ claimantName }} yn syth.",
         "YOU_NEED_PAY_IMMEDIATELY": "Bydd arnoch angen talu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir."
