@@ -606,6 +606,35 @@ describe('View Application service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get correct label for addl documents applicant', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.gaAddlDoc= setMockAdditionalDocuments();
+      caseData.gaDraftDocument = [];
+
+      caseData.gaAddlDoc[0].value.documentType = DocumentType.WRITTEN_REPRESENTATION_APPLICANT_TRANSLATED;
+      caseData.gaAddlDoc[1].value.documentType = DocumentType.REQUEST_MORE_INFORMATION_APPLICANT_TRANSLATED;
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getApplicantDocuments(application, 'en');
+      //Then
+      const expectedDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_APPLICANT',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
+      );
+      const expectedDocument2 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_MORE_INFO_RESPONSE_APPLICANT',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
+      );
+
+      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDocument1, expectedDocument2]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array if there is applicant documents with no draft', async () => {
       //given
 
@@ -689,6 +718,35 @@ describe('View Application service', () => {
       );
 
       const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument1, expectedDraftDocument2, expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get correct label for addl documents respondent', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.gaAddlDoc= setMockAdditionalDocuments();
+      caseData.gaDraftDocument = [];
+
+      caseData.gaAddlDoc[0].value.documentType = DocumentType.WRITTEN_REPRESENTATION_RESPONDENT_TRANSLATED;
+      caseData.gaAddlDoc[1].value.documentType = DocumentType.REQUEST_MORE_INFORMATION_RESPONDENT_TRANSLATED;
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getRespondentDocuments(application, 'en');
+      //Then
+      const expectedDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_RESPONDENT',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
+      );
+      const expectedDocument2 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_MORE_INFO_RESPONSE_RESPONDENT',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
+      );
+
+      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDocument1, expectedDocument2]);
       expect(result).toEqual(expectedResult);
     });
 
