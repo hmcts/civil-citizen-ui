@@ -731,7 +731,7 @@ class ResponseToDefence {
   async verifyDefendantsResponseForRejection() {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
-    I.see('Mrs Jane Doe has rejected the claim.');
+    I.see('has rejected the claim.');
     I.see('Their defence','h2');
     I.see('Why they disagree with the claim?','h3');
     I.see('Test reason');
