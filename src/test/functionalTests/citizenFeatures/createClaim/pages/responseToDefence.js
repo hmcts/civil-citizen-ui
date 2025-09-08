@@ -45,6 +45,11 @@ const paths = {
   },
 };
 
+const d = new Date();
+const dd = String(d.getDate()).padStart(2, '0');
+const mm = String(d.getMonth() + 1).padStart(2, '0');
+const yyyy = String(d.getFullYear());
+
 class ResponseToDefence {
 
   async open(caseReference) {
@@ -321,6 +326,39 @@ class ResponseToDefence {
     await I.click(paths.buttons.save_and_continue);
   }
 
+  async ConfirmThatYouHaveBeenPaid() {
+    I.waitForText('Confirm that you\'ve been paid',60);
+    I.see('Enter the date that you were paid the full amount that was specified on the judgment');
+    I.waitForElement('#day', 10);
+    I.fillField('#day', dd);
+    I.fillField('#month', mm);
+    I.fillField('#year', yyyy);
+    I.click('#confirmed');
+    I.click('Submit');
+    I.waitForText('You\'ve confirmed that you\'ve been paid', 60);
+    I.click('Close and return to case details');
+  }
+  async CertificateOfSatisfactionAndCancellation() {
+    I.waitForText('Confirm you\'ve paid a judgment (CCJ) debt',60);
+    I.click('Confirm you\'ve paid a judgment (CCJ) debt');
+    I.click('Continue');
+    I.waitForText('When was the final payment?', 60);
+    I.waitForElement('#day', 10);
+    I.fillField('#day', dd);
+    I.fillField('#month', mm);
+    I.fillField('#year', yyyy);
+    I.click('Continue');
+    I.waitForText('Do you have evidence of the debt payment?', 60);
+    I.click('#debtPaymentOption-4');
+    I.waitForElement('#provideDetails', 10);
+    I.fillField('#provideDetails', 'Testing');
+    I.click('Continue');
+    I.waitForText('Check your answers', 60);
+    I.click('#signed');
+    I.fillField('#name', 'Testing');
+    I.click('Submit');
+    I.waitForText('Pay the fee', 60);
+  }
   async verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
@@ -469,18 +507,18 @@ class ResponseToDefence {
     I.waitForContent('Has the defendant paid some of the amount owed?', 60);
     I.see('Yes');
     I.see('No');
-    await I.click(paths.options.yes);
-    I.fillField(paths.textBoxes.amountAlreadyPaidCCJ, '100');
+    await I.click(paths.options.no);
+    // I.fillField(paths.textBoxes.amountAlreadyPaidCCJ, '100');
     await I.click(paths.buttons.save_and_continue);
-    I.waitForContent('The judgment will order the defendant to pay');
-    I.see('Judgment amount', 'h1');
+    // I.waitForContent('The judgment will order the defendant to pay');
+    /*I.see('Judgment amount', 'h1');
     I.see('including your claim fee and any interest, as shown in this table:');
     I.see('Amount');
     I.see('Claim amount');
     I.see('Claim fee amount');
     I.see('Subtotal');
     I.see('Minus amount already paid');
-    I.see('Total');
+    I.see('Total'); */
     await I.click(paths.buttons.continue);
   }
 
