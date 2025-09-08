@@ -19,6 +19,7 @@
     "CASE_NUMBER_PARAM_CARM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
+    "APPLY_TO_THE_COURT": "apply to the court",
     "ANNUAL_TURNOVER": "Annual Turnover",
     "AMOUNT": "Amount",
     "BALANCE": "Balance",
@@ -4262,6 +4263,8 @@
       "WITNESS_STATEMENT": "Witness statement",
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
       "WITNESS_SUMMARY": "Witness summary",
+      "WITNESS_SUMMARY_HINT_NRO_P1": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must",
+      "WITNESS_SUMMARY_HINT_NRO_P2": "to use a witness summary at the hearing. You must do this before the deadline.",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
       "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice' (opens in a new tab)",
       "YOUR_STATEMENT": "Your statement",
@@ -4655,6 +4658,8 @@
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
       "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "TITLE": "Request more time to respond",
+      "YOU_NEED_TO": "You need to",
+      "YOU_NEED_P2": "to request more time. You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "UP_TO_28_DAYS": "Up to 28 days"
     },
     "RESIDENCE": {
@@ -4680,7 +4685,10 @@
       "PAGE_TITLE": "Response deadline",
       "POST": "Or, you can post the completed form to:",
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
-      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
+      "REQUEST_REFUSED_NRO_P1": "If your request to the other party or their legal representative for more time has been refused, you need to",
+      "REQUEST_REFUSED_NRO_P2": "make an application",
+      "REQUEST_REFUSED_NRO_P3": "to the court to consider your request."
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "How many are aged 11 to 15?",
