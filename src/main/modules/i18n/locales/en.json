@@ -840,7 +840,7 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {
-            "TEXT": "Applications and messages to the court",
+            "TEXT": "Messages to the court",
             "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
             "TEXT_AFTER": " section."
           },
@@ -3878,10 +3878,14 @@
         "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT": "Translated Written Representations - Concurrent Request",
         "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL": "Translated Written Representations - Sequential Request",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
+        "TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_APPLICANT": "Translated Response to Written Representations – applicant Request",
+        "TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_RESPONDENT": "Translated Response to Written Representations – respondent Request",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "TRANSLATED_REQUEST_MORE_INFO": "Translated Request for More information",
         "REQUEST_MORE_INFO": "Request for more information",
+        "TRANSLATED_MORE_INFO_RESPONSE_APPLICANT": "Translated Response for More information- applicant Request",
+        "TRANSLATED_MORE_INFO_RESPONSE_RESPONDENT": "Translated Response for More information – respondent Request",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -4514,7 +4518,8 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "The claim fee and any fixed costs claimed are payable in addition to the claim amount admitted.",
-      "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
+      "YOU_MUST_CONTACT_FA": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.",
+      "YOU_MUST_CONTACT_PA": "If the claimant accepts, you must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
