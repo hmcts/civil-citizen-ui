@@ -61,7 +61,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   if (isDashboardServiceEnabled) {
     const notification = defendantResponseConfirmYouHavePaidAJudgmentCCJDebt();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    await I.click(notification.nextSteps);
   }
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
 
