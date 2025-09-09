@@ -46,6 +46,7 @@ import {
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {DocumentType} from 'models/document/documentType';
+import {isGaForWelshEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 export type ViewApplicationSummaries = {
   summaryRows: SummaryRow[];
@@ -216,10 +217,14 @@ export const getApplicantDocuments = (applicationResponse : ApplicationResponse,
   return new DocumentsViewComponent('ApplicantDocuments', applicantDocumentsArray);
 };
 
-export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
+export const getRespondentDocuments = async (applicationResponse: ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
+  const gaWelshEnabled = await isGaForWelshEnabled();
+  const checkIfAppPausedForResponse = gaWelshEnabled
+    ? applicationResponse.case_data?.preTranslationGaDocumentType === TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC
+    : false;
   if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0
-  && applicationResponse.case_data?.preTranslationGaDocumentType != TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC) {
+    && !checkIfAppPausedForResponse) {
     respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
