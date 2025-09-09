@@ -218,9 +218,8 @@ export const getApplicantDocuments = (applicationResponse : ApplicationResponse,
 
 export const getRespondentDocuments = (applicationResponse: ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
-  const checkIfAppPausedForResponse = applicationResponse.case_data?.preTranslationGaDocumentType === TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC;
   if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0
-    && !checkIfAppPausedForResponse) {
+    && applicationResponse.case_data?.preTranslationGaDocumentType !== TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC) {
     respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
