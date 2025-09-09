@@ -5448,7 +5448,8 @@
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
     "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
     "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau",
-    "TESTING_SUPPORT": "Testing Support"
+    "TESTING_SUPPORT": "Testing Support",
+    "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
