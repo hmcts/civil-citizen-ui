@@ -6,10 +6,11 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/banner.njk" import addBanner %}
 
 {% block nestedContent %}
         {% block warning_message %}
-          {% include "../../macro/banner.njk" %}
+          {{ addBanner("2025-09-09T01:00+01:00", "2025-09-11T07:00+01:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
         {% endblock %}
         {% block welsh_party_message %}
           {% include "../../macro/welsh_party_banner.njk" %}
