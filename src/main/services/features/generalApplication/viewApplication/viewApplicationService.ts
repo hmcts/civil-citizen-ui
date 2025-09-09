@@ -218,9 +218,12 @@ export const getApplicantDocuments = (applicationResponse : ApplicationResponse,
 
 export const getRespondentDocuments = (applicationResponse: ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
-  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0
-    && applicationResponse.case_data?.preTranslationGaDocumentType !== TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC) {
-    respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
+  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0) {
+    if (applicationResponse.case_data?.preTranslationGaDocumentType === undefined
+      || (applicationResponse.case_data?.preTranslationGaDocumentType != null &&
+      applicationResponse.case_data?.preTranslationGaDocumentType !== TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC)) {
+      respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
+    }
   }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
   return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
