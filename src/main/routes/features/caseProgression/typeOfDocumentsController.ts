@@ -45,7 +45,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, form:
     backLinkUrl,
     isGaNroEnabled,
     applyGaApplication,
-  })
+  });
 }
 
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,

@@ -4,7 +4,7 @@ import {
   MAKE_APPLICATION_TO_COURT,
   DEFENDANT_SUMMARY_URL,
   DASHBOARD_CLAIMANT_URL,
-  APPLICATION_TYPE_URL
+  APPLICATION_TYPE_URL,
 } from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
