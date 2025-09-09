@@ -15,7 +15,7 @@ import {
   addApplicationTypeRow,
 } from './addViewApplicationRows';
 import {SummaryCard, SummaryRow, summaryRow} from 'models/summaryList/summaryList';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, TranslationDocumentType} from 'models/generalApplication/applicationResponse';
 import { AppRequest } from 'models/AppRequest';
 import {
   getApplicationFromGAService, hasRespondentResponded,
@@ -218,7 +218,8 @@ export const getApplicantDocuments = (applicationResponse : ApplicationResponse,
 
 export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
-  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0) {
+  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0
+  && applicationResponse.case_data?.preTranslationGaDocumentType != TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC) {
     respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
