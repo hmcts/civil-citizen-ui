@@ -5456,7 +5456,8 @@
     "HELP_USING_GOV_URL": "Help using GOV.UK",
     "PRIVACY_POLICY_URL": "Privacy Policy",
     "TERMS_AND_CONDITIONS_URL": "Terms and Conditions",
-    "TESTING_SUPPORT": "Testing Support"
+    "TESTING_SUPPORT": "Testing Support",
+    "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
