@@ -140,7 +140,7 @@ export const saveRespondentStatementOfTruth = async (redisKey: string, statement
 
 export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean => {
   return isApplicationFullyVisibleToRespondent(application)
-    || (!!application.case_data?.judicialDecision);
+    || ((!!application.case_data?.judicialDecision) && (application.state !== ApplicationState.APPLICATION_ADD_PAYMENT));
 };
 
 export const isApplicationFullyVisibleToRespondent = (application: ApplicationResponse): boolean => {
