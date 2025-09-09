@@ -563,7 +563,7 @@
         "GO_TO_DASHBOARD": "Go to your dashboard"
       },
       "COMMON": {
-        "ANYTHING_ELSE": "Anything else",
+        "ANYTHING_ELSE": "If you need help with anything else",
         "MESSAGE_TO_THE_COURT_V1": "If you still need an update on your claim, you can send a message to the court.",
         "MESSAGE_TO_THE_COURT_V2": "If you still need help with your claim, you can send a message to the court.",
         "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
@@ -5453,7 +5453,7 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to get from the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "You must select how you want to manage your hearing.",
