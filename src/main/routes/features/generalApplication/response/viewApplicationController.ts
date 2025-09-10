@@ -77,7 +77,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const caseProgressionCaseState = claim.isCaseProgressionCaseState();
     const gaWelshEnabled = await isGaForWelshEnabled();
     const showWelshPartyBanner = gaWelshEnabled
-      ? applicationResponse.case_data?.preTranslationGaDocumentType === TranslationDocumentType.APPLICATION_SUMMARY_DOC
+      ? applicationResponse.case_data?.preTranslationGaDocumentType != null && applicationResponse.case_data?.preTranslationGaDocumentType === TranslationDocumentType.APPLICATION_SUMMARY_DOC
       : false;
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
     let additionalDocUrl : string = null;
