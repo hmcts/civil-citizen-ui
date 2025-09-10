@@ -220,8 +220,8 @@ export const getRespondentDocuments = (applicationResponse: ApplicationResponse,
   const respondentDocumentsArray: DocumentInformation[] = [];
   if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0) {
     if (applicationResponse.case_data?.preTranslationGaDocumentType === undefined
-      || (applicationResponse.case_data?.preTranslationGaDocumentType != null &&
-      applicationResponse.case_data?.preTranslationGaDocumentType !== TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC)) {
+      || applicationResponse.case_data?.preTranslationGaDocumentType === null
+      || (applicationResponse.case_data?.preTranslationGaDocumentType !== TranslationDocumentType.RESPOND_TO_APPLICATION_SUMMARY_DOC)) {
       respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
     }
   }
