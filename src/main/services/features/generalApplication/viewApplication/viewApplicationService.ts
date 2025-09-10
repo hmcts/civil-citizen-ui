@@ -15,7 +15,7 @@ import {
   addApplicationTypeRow,
 } from './addViewApplicationRows';
 import {SummaryCard, SummaryRow, summaryRow} from 'models/summaryList/summaryList';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, TranslationDocumentType} from 'models/generalApplication/applicationResponse';
 import { AppRequest } from 'models/AppRequest';
 import {
   getApplicationFromGAService, hasRespondentResponded,
