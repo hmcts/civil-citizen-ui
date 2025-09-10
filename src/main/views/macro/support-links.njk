@@ -3,11 +3,12 @@
 
 {% macro supportLinks(t, title, links) %}
 
-  <h1 class="govuk-heading-m govuk-!-margin-bottom-2">{{ title }}</h1>
-  {% for link in links %}
-    <p class="govuk-body govuk-!-margin-bottom-1">
-      {{ externalLink(t, link.text, link.url, false, link.translated, link.newWindowHidden, link.removeTargetBlank) }}
-    </p>
-  {% endfor %}
-
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ title }}</h2>
+  <ul class="govuk-list">
+    {% for link in links %}
+      <li>
+        {{ externalLink(t, link.text, link.url, false, link.translated, link.newWindowHidden, link.removeTargetBlank) }}
+      </li>
+    {% endfor %}
+  </ul>
 {% endmacro %}
