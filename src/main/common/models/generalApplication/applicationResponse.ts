@@ -101,6 +101,7 @@ export interface CCDApplication extends ApplicationUpdate {
 
 export enum TranslationDocumentType {
   APPLICATION_SUMMARY_DOC = 'APPLICATION_SUMMARY_DOC',
+  RESPOND_TO_APPLICATION_SUMMARY_DOC = 'RESPOND_TO_APPLICATION_SUMMARY_DOC',
 }
 
 export interface JudicialRequestMoreInfo {
