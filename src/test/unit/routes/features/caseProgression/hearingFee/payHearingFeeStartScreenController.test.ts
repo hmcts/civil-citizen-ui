@@ -68,8 +68,7 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     nock(civilServiceUrl)
       .get(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(404, null);
-
+      .reply(500, null);
     //When
     await testSession.get(PAY_HEARING_FEE_URL.replace(':id', '1111'))
       //Then
