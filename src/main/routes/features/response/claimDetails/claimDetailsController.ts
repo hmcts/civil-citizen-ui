@@ -39,8 +39,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
     const claimFormUrl =  CASE_DOCUMENT_VIEW_URL;
     const showErrorAwaitingTranslation = welshEnabled && claim.ccdState === CaseState.PENDING_CASE_ISSUED && claim.preTranslationDocuments?.length > 0;
-    const sealedClaimPdfUrl = showErrorAwaitingTranslation
-      ? constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL) : getTheClaimFormUrl(req.params.id, claim, claimFormUrl);
+    const sealedClaimPdfUrl = showErrorAwaitingTranslation ? constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL) : getTheClaimFormUrl(req.params.id, claim, claimFormUrl);
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
     const claimDetailsViewPath = claimDetailsViewPathNew;
     if (claim.hasInterest()) {
