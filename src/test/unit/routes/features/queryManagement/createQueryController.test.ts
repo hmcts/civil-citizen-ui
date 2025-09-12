@@ -10,9 +10,14 @@ import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery} from 'models/queryManagement/createQuery';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/utilityService');
+jest.mock('routes/guards/shareQueryConfirmationGuard', () => ({
+  shareQueryConfirmationGuard: (req: any, res: any, next: any) => next(),
+  clearShareQuerySessionIfLeftJourney: (req: any, res: any, next: any) => next(),
+}));
 
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
@@ -44,35 +49,24 @@ describe('create query conroller', () => {
           expect(res.text).toContain('The subject should be a summary of your message');
           expect(res.text).toContain('Message details');
           expect(res.text).toContain('Include as many details as possible so case workers can respond to your message');
-          expect(res.text).toContain('Is your message about a hearing?');
+          expect(res.text).toContain('Is your message about an upcoming hearing?');
           expect(res.text).toContain('Upload documents (optional)');
         });
     });
 
-    it('should call through to removeSelectedDocument when the query param is passed', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        return new Claim();
-      });
-      const removeDocSpy = jest.spyOn(QueryManagementService, 'removeSelectedDocument');
-      await request(app)
-        .get(QUERY_MANAGEMENT_CREATE_QUERY + '?id=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(removeDocSpy).toHaveBeenCalled();
-        });
-    });
-
     it('should pre fill field values when session data is set', async () => {
-      const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes'};
+      const date = new Date();
+      const preFilledData = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes',
+        'year': (date.getFullYear() + 1).toString(), 'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.queryManagement = new QueryManagement();
-        claim.queryManagement.createQuery = preFilledData as CreateQuery;
+        claim.queryManagement.createQuery = preFilledData as unknown as CreateQuery;
         return claim;
       });
 
       await request(app)
-        .get(QUERY_MANAGEMENT_CREATE_QUERY + '?id=1')
+        .get(QUERY_MANAGEMENT_CREATE_QUERY)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('test sub');
@@ -93,7 +87,9 @@ describe('create query conroller', () => {
         return new Claim();
       });
       const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
-      const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes'};
+      const date = new Date();
+      const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes', 'year': (date.getFullYear() + 1).toString(),
+        'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send(data);
       expect(res.status).toBe(302);
       expect(saveQueryManagement).toHaveBeenCalled();
@@ -108,17 +104,42 @@ describe('create query conroller', () => {
       expect(res.text).toContain('There was a problem');
       expect(res.text).toContain('Enter message subject');
       expect(res.text).toContain('Enter message details');
-      expect(res.text).toContain('Select yes if your message is about a hearing');
+      expect(res.text).toContain('Is your message about an upcoming hearing?');
     });
 
     it('should trigger redirect on successful file upload', async () => {
       mockGetClaimById.mockImplementation(async () => {
         return new Claim();
       });
-      jest.spyOn(QueryManagementService, 'uploadSelectedFile');
-      await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send({action: 'uploadButton'})
+
+      const uploadSelectedFile = jest.spyOn(QueryManagementService, 'uploadSelectedFile');
+      await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send({
+        action: 'uploadButton',
+        messageSubject: 'test sub',
+        messageDetails: 'test body',
+        isHearingRelated: 'no',
+      })
         .expect(res => {
           expect(res.status).toBe(302);
+          expect(uploadSelectedFile).toHaveBeenCalled();
+        });
+    });
+
+    it('should trigger redirect on successful file exclusion', async () => {
+      mockGetClaimById.mockImplementation(async () => {
+        return new Claim();
+      });
+
+      const spyRemoveSelectedDocument = jest.spyOn(QueryManagementService, 'removeSelectedDocument');
+      await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send({
+        action: '[1][deleteFile]',
+        messageSubject: 'test sub',
+        messageDetails: 'test body',
+        isHearingRelated: 'no',
+      })
+        .expect(res => {
+          expect(res.status).toBe(302);
+          expect(spyRemoveSelectedDocument).toHaveBeenCalled();
         });
     });
   });

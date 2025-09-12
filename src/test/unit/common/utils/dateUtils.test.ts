@@ -1,8 +1,7 @@
 import {
   addDaysBefore4pm,
   addMonths,
-  checkEvidenceUploadTime,
-  dateTimeFormat,
+  checkEvidenceUploadTime, dateTimeFormat,
   formatStringDateDMY,
   formatStringTimeHMS,
   getDOBforAgeFromCurrentTime,
@@ -35,22 +34,27 @@ describe('addDaysBefore4pm', () => {
 });
 
 describe('getDOBforAgeFromCurrentTime', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
   it('should return the maximim date for age', () => {
     //Given
     const mockDate = new Date('2022-03-01');
-    const spy = jest
-      .spyOn(global, 'Date')
-      .mockImplementation(() => mockDate);
+    jest.setSystemTime(mockDate);
     //When
     const result = getDOBforAgeFromCurrentTime(18);
     //Then
     expect(result).not.toBeNull();
-    expect(spy).toBeCalled();
+
     expect(result.toISOString()).toContain('2004-03-01');
   });
   it('should add month to date provided', () => {
     //Given
-    const mockDate = new Date('2023-02-05T00:00:00.000Z');
+    const mockDate = new Date('2023-03-05T00:00:00.000Z');
     //When
     const result = addMonths(mockDate,1);
     //Then
@@ -174,14 +178,75 @@ describe('isDateOnOrAfterSpecificDate', () => {
 });
 
 describe('dateTimeFormat', () => {
-  it('should return date formatted in en', () => {
-    const date = '2024-05-29T14:39:28.483971';
-    const result = dateTimeFormat(date, 'en');
-    expect(result).toBe('29 May 2024, 2:39:28 pm');
+  beforeEach(() => {
+    jest.useFakeTimers();
   });
-  it('should return date formatted in cy', () => {
-    const date = '2024-05-29T14:39:28.483971';
-    const result = dateTimeFormat(date, 'cy');
-    expect(result).toBe('29 Mai 2024, 2:39:28 yh');
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  test('should correctly format a UTC date in GMT to English full date and time', () => {
+    jest.setSystemTime(new Date('2024-01-01T12:00:00.000Z'));
+    const utcDateString = '2024-01-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString, 'en',true);
+
+    expect(formattedDate).toBe('1 January 2024, 12:00:00 pm');
+  });
+
+  test('should correctly format a UTC date in BST to English full date and time', () => {
+    jest.setSystemTime(new Date('2024-07-01T12:00:00.000Z'));
+    const utcDateString = '2024-07-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString, 'en',true);
+
+    expect(formattedDate).toBe('1 July 2024, 1:00:00 pm');
+  });
+
+  test('should correctly format a GMT date in GMT to English full date and time', () => {
+    jest.setSystemTime(new Date('2024-01-01T12:00:00.000Z'));
+    const utcDateString = '2024-01-01T12:00:00.483971';
+    const formattedDate = dateTimeFormat(utcDateString);
+
+    expect(formattedDate).toBe('1 January 2024, 12:00:00 pm');
+  });
+
+  test('should correctly format a BST date in BST to English full date and time', () => {
+    jest.setSystemTime(new Date('2024-07-03T12:00:00.000Z'));
+    const dateString = '2024-07-01T13:00:00.483971';
+    const formattedDate = dateTimeFormat(dateString);
+
+    expect(formattedDate).toBe('1 July 2024, 1:00:00 pm');
+  });
+
+  test('should correctly format a UTC date in GMT to Welsh full date and time', () => {
+    jest.setSystemTime(new Date('2024-01-01T12:00:00.000Z'));
+    const utcDateString = '2024-01-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString, 'cy', true);
+
+    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 yh');
+  });
+
+  test('should correctly format a UTC date in BST to Welsh full date and time', () => {
+    jest.setSystemTime(new Date('2024-07-01T12:00:00.000Z'));
+    const utcDateString = '2024-07-01T12:00:00.000Z';
+    const formattedDate = dateTimeFormat(utcDateString, 'cy', true);
+
+    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 yh');
+  });
+
+  test('should correctly format a GMT date in GMT to Welsh full date and time', () => {
+    jest.setSystemTime(new Date('2024-01-01T12:00:00.000Z'));
+    const dateString = '2024-01-01T12:00:00.483971';
+    const formattedDate = dateTimeFormat(dateString, 'cy');
+
+    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 yh');
+  });
+
+  test('should correctly format a BST date in BST to Welsh full date and time', () => {
+    jest.setSystemTime(new Date('2024-07-01T12:00:00.000Z'));
+    const dateString = '2024-07-01T13:00:00.483971';
+    const formattedDate = dateTimeFormat(dateString, 'cy');
+
+    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 yh');
   });
 });

@@ -16,7 +16,7 @@ const claimAmount = '£15,000.00';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Fast Track').tag('@case-progression');
+Feature('Case progression journey - Verify Bundle - Fast Track').tag('@nightly');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
@@ -28,10 +28,10 @@ Before(async ({api}) => {
     claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'fastTrack');
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'fastTrack');
+    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
     await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
-    await api.performBundleGeneration(config.hearingCenterAdminWithRegionId1, claimRef);
+    await api.performBundleGeneration(config.hearingCenterAdminWithRegionId2, claimRef);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   }
@@ -63,4 +63,4 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
       CaseProgressionSteps.verifyBundle(claimRef, claimType);
     }
   }
-}).tag('@nightly-regression-cp');
+});

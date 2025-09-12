@@ -12,7 +12,7 @@ const {
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, isDashboardServiceEnabled, camundaEvent, expectedState;
 
-Feature('Lip v LR e2e Tests').tag('@api @noc @regression');
+Feature('Lip v LR e2e Tests').tag('@noc @regression');
 
 Before(async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -43,7 +43,7 @@ Before(async ({I, api}) => {
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   I,
   api,
 }) => {
@@ -68,7 +68,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll @citizenUI', async 
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   I,
   api,
 }) => {
@@ -93,7 +93,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll @citizenUI', async ({
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @citizenUI - @api @noc @nightly', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @nightly', async ({
   I,
   api,
 }) => {
@@ -118,7 +118,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit @citizenUI - @api @n
   }
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim @citizenUI - @api @noc @nightly', async ({
+Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim - @nightly', async ({
   I,
   api,
 }) => {

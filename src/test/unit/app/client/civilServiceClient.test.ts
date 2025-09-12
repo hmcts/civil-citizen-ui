@@ -67,6 +67,7 @@ appReq.session = {
   fileUpload: undefined,
   issuedAt: 150,
   dashboard: undefined,
+  qmShareConfirmed: false,
 };
 const ccdClaim : CCDClaim = {
   legacyCaseReference : '000MC003',
@@ -885,6 +886,31 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
       await expect(civilServiceClient.calculateClaimInterest({})).rejects.toThrow('error');
+    });
+  });
+
+  describe('calculateClaimTotalAmount', () => {
+    it('should get calculate claim total', async () => {
+      //Given
+      const mockData = 100;
+      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //When
+      const claimTotal = await civilServiceClient.calculateClaimTotalAmount({});
+      //Then
+      expect(claimTotal).toEqual(mockData);
+    });
+
+    it('should throw error on calculate claim total', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({ post: mockGet } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.calculateClaimTotalAmount({})).rejects.toThrow('error');
     });
   });
 

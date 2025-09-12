@@ -2,7 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
-{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
@@ -13,7 +13,7 @@
   {% if form.isPinEmpty %}
   <p class="govuk-body">
     {{ t('PAGES.PIN.CHECK_SECURITY_CODE') }}
-    <a href='/contact-us'>{{ t('PAGES.PIN.CONTACT_US') }}</a>
+    <a class="govuk-link" href='/contact-us'>{{ t('PAGES.PIN.CONTACT_US') }}</a>
     {{ t('PAGES.PIN.FOR_A_NEW_SECURITY_CODE') }}
   </p>
   {% endif %}

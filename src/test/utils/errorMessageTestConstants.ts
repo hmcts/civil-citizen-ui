@@ -187,7 +187,7 @@ export const enum TestMessages {
   CONFIRM_YOU_HAVE_BEEN_PAID_PAGE_TITLE = 'Confirm that you&#39;ve been paid',
   CONFIRM_YOU_HAVE_BEEN_PAID_ENTER_THE_DATE = 'Enter the date that you were paid the full amount that was specified on the judgment',
   CONFIRM_YOU_HAVE_BEEN_PAID_HINT = 'If you&#39;ve been paid in installments, enter the date of the final payment you received. For example, 16 4 2021',
-  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM = 'I confirm that I\'ve been paid the full amount that was specified on the judgment. Once you\'ve confirmed this, it cannot be changed.',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM = 'I confirm that the judgment has been satisfied. Once you\'ve confirmed this, it cannot be changed.',
   CONFIRM_YOU_HAVE_BEEN_PAID_JUDGMENT_LINK = 'View the judgment made against the defendant',
   CONFIRM_YOU_HAVE_BEEN_PAID_CHECK_ERROR_MESSAGE = 'Please confirm you&#39;ve been paid the full amount',
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_PAGE_TITLE = 'Confirm that you&#39;ve been paid - Confirmation',
@@ -206,5 +206,6 @@ export const enum TestMessages {
   VALID_PAID_IN_FULL_DATE = 'Paid in full date must be on or after the date of the judgment',
   UNABLE_TO_PROVIDE_EVIDENCE = 'Add details of why you&#39;re not able to provide evidence',
   QUERY_MANAGEMENT_YOU_MUST_SELECT = 'You must select what you want to do before you can continue.',
+  FEATURE_UNAVAILABLE_GUIDANCE_BELOW = 'This feature is currently not available, please see guidance below',
 
 }

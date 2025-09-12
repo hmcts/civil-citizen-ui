@@ -13,7 +13,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@citizenUI @part-admit @nightly @api');
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@nightly');
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim', async ({
   I,
@@ -58,7 +58,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+});
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -72,4 +72,4 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-cui-r2');
+}).tag('@regression');

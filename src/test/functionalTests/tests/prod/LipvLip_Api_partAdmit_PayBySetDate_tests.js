@@ -10,7 +10,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, claimNumber;
 
-Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ').tag('@part-admit @nightly @api @citizenUI');
+Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track').tag('@nightly');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
 Scenario.skip('Response with PartAdmit-PayBySetDate Small claims', async ({api}) => {
@@ -49,7 +49,8 @@ Scenario.skip('Response with PartAdmit-PayBySetDate Fast Track', async ({api}) =
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ', async ({
+// TODO undo when part payment journey is restored
+Scenario.skip('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ', async ({
   I,
   api,
 }) => {
@@ -76,4 +77,4 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
     //const notification = judgmentRequestedCourtAgrees();
     //await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   }
-}).tag('@regression-cui-r2');
+});

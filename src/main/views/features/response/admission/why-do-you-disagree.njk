@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
@@ -14,7 +14,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set header = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE') %}
-      {% set subTitle = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.SUBTITLE', { claimAmount: claimAmount }) %}
+      {% set subTitle = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.SUBTITLE', { claimAmount: claimAmount.toFixed(2) }) %}
       {% set errors = form.getAllErrors()%}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}

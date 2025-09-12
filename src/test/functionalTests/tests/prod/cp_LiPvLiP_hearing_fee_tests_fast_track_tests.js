@@ -12,10 +12,10 @@ const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashb
 
 const claimType = 'FastTrack';
 const claimAmount = '£15,000';
-const feeAmount = '545';
+const feeAmount = '619';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track').tag('@case-progression');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track').tag('@nightly');
 
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
@@ -28,8 +28,8 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
   await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
@@ -61,7 +61,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
   }
-}).tag('@nightly-regression-cp');
+});
 
 Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
@@ -78,4 +78,4 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     taskListItem = payTheHearingFee(hearingFeeDueDate);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
   }
-}).tag('@nightly-regression-cp');
+});

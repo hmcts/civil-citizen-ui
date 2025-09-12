@@ -42,7 +42,12 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_RESPONDENT_INFORMATION_URL,
   MAKE_APPLICATION_TO_COURT,
-  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_SUBMIT_OFFLINE, VIEW_THE_JUDGMENT_URL,
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
+  GA_SUBMIT_OFFLINE,
+  VIEW_THE_JUDGMENT_URL,
+  QM_VIEW_QUERY_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -57,6 +62,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 export const replaceDashboardPlaceholders = async (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<string> => {
 
@@ -94,7 +100,9 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', VIEW_THE_JUDGMENT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
+  valuesMap.set('{VIEW_HEARING_NOTICE}', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)
+    ? CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM))
+    : constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation');
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
@@ -128,8 +136,10 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}', EVIDENCE_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', REQUEST_FOR_RECONSIDERATION_COMMENTS_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_SDO_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)));
-  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', (claim.isAnyPartyBilingual() && !welshGaEnabled) ? GA_SUBMIT_OFFLINE : APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
+  valuesMap.set('{VIEW_SDO_DOCUMENT}', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)
+    ? CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER))
+    : constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation');
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', (claim.isAnyPartyBilingual() && !welshGaEnabled) ? GA_SUBMIT_OFFLINE.replace(':id', claimId) : APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocument(claim))));
@@ -143,6 +153,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{MAKE_APPLICATION_TO_COURT_URL}', MAKE_APPLICATION_TO_COURT);
   valuesMap.set('{COMFIRM_YOU_PAID_JUDGMENT_DEBT}', GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL.replace(':id', claimId));
   valuesMap.set('{NOTICE_OF_DISCONTINUANCE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.respondent1NoticeOfDiscontinueAllPartyViewDoc?.documentLink?.document_binary_url)));
+  valuesMap.set('{QM_VIEW_MESSAGES_URL}', QM_VIEW_QUERY_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
@@ -170,15 +181,27 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
       .replace(':locationName', 'PAY_HEARING_FEE_URL')
       .replace(':notificationId', notificationId));
     const documentId = getDocumentIdFromParams(notification);
+    const hiddenDocumentId = getHiddenDocumentIdFromParams(notification);
+    let extractedDocumentId: string;
+    if (hiddenDocumentId?.length > 0 && hiddenDocumentNowVisible(hiddenDocumentId, claim)) {
+      extractedDocumentId = documentIdExtractor(hiddenDocumentId);
+    } else {
+      extractedDocumentId = documentId?.length > 0 ? documentIdExtractor(documentId) : 'awaiting-translation';
+    }
     valuesMap.set('{VIEW_FINAL_ORDER}', DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_FINAL_ORDER')
       .replace(':notificationId', notificationId)
-      .replace(':documentId', documentIdExtractor(documentId)));
+      .replace(':documentId', extractedDocumentId));
 
     valuesMap.set('{VIEW_DECISION_RECONSIDERATION}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_DECISION_RECONSIDERATION')
+      .replace(':notificationId', notificationId));
+
+    valuesMap.set('{QM_VIEW_MESSAGES_URL_CLICK}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'QM_VIEW_MESSAGES_URL_CLICK')
       .replace(':notificationId', notificationId));
   }
 
@@ -201,10 +224,18 @@ function getSendFinancialDetailsAddress(lng: string) : string {
 }
 
 function getDocumentIdFromParams (notification: DashboardNotification): string {
+  return getValueFromParams('orderDocument', notification);
+}
+
+function getHiddenDocumentIdFromParams (notification: DashboardNotification): string {
+  return getValueFromParams('hiddenOrderDocument', notification);
+}
+
+function getValueFromParams (key: string, notification: DashboardNotification): string {
   if (notification?.params) {
     const paramMap: Map<string, object> = objectToMap(notification.params);
-    if (paramMap.get('orderDocument')) {
-      return paramMap.get('orderDocument').toString();
+    if (paramMap.get(key)) {
+      return paramMap.get(key).toString();
     }
   }
   return '';
@@ -228,4 +259,10 @@ function getRequestForReconsiderationDocument (claim: Claim) {
   } else {
     return claim?.caseProgression?.requestForReconsiderationDocument?.documentLink.document_binary_url;
   }
+}
+
+function hiddenDocumentNowVisible(documentUrl: string, claim: Claim) {
+  return claim.systemGeneratedCaseDocuments?.some(
+    document => (document.value.documentLink.document_binary_url === documentUrl),
+  ) ?? false;
 }

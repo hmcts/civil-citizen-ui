@@ -64,20 +64,25 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
     req.session.fileUpload = undefined;
   }
 
-  if (req.query?.id) {
-    const index = req.query.id;
-    await removeSelectedDocument(req, Number(index) - 1);
-  }
   await getSummaryList(formattedSummary, req);
   await renderView(form, claim, claimId, res, formattedSummary, req);
 }));
 
-createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-file-upload'),(async (req:AppRequest, res: Response, next: NextFunction) => {
+createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], upload.single('query-file-upload'),(async (req:AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.id;
+  const action = req.body.action;
   const claim = await getClaimById(claimId, req, true);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
   const existingQuery = claim.queryManagement?.createQuery;
-  const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated']);
+  let year;
+  let month;
+  let day;
+  if(req.body['isHearingRelated'] === 'yes'){
+    year = req.body['year'] ;
+    month = req.body['month'];
+    day = req.body['day'];
+  }
+  const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated'], year, month, day);
   if (existingQuery) {
     createQuery.uploadedFiles = existingQuery.uploadedFiles;
   }
@@ -89,16 +94,24 @@ createQueryController.post(QUERY_MANAGEMENT_CREATE_QUERY, upload.single('query-f
       summaryRows: [],
     });
 
-  if (req.body.action === 'uploadButton') {
-    await uploadSelectedFile(req, createQuery);
-    return res.redirect(`${currentUrl}`);
-  }
-
   form.validateSync();
+
   if (form.hasErrors()) {
     await getSummaryList(formattedSummary, req);
     return await renderView(form, claim, claimId, res, formattedSummary, req);
   } else {
+
+    if (action === 'uploadButton') {
+      await uploadSelectedFile(req, createQuery);
+      return res.redirect(`${currentUrl}`);
+    }
+
+    if (action?.includes('[deleteFile]')) {
+      const index = action.split(/[[\]]/).filter((word: string) => word !== '')[0];
+      await removeSelectedDocument(req,  Number(index) - 1, createQuery );
+      return res.redirect(`${currentUrl}`);
+    }
+
     await saveQueryManagement(claimId, createQuery, 'createQuery', req);
     res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
   }

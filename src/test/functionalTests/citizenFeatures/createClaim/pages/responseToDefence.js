@@ -100,7 +100,7 @@ class ResponseToDefence {
   async verifyDefResponseForPartAdmitInstallmentPayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('The defendant suggested this repayment plan:');
-    I.see(`They’ve offered to pay you £${claimAmount} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee in instalments. This is the total amount you’ll be paid.`);
     await I.click(paths.buttons.continue);
   }
 
@@ -116,7 +116,7 @@ class ResponseToDefence {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('Contracts and agreements');
     I.see(`Sir John Doe admits they owe you £${claimAmount}`);
-    I.see(`They’ve offered to pay you £${claimAmount} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee immediately. This is the total amount you’ll be paid.`);
     await I.click(paths.buttons.continue);
   }
 
@@ -132,6 +132,7 @@ class ResponseToDefence {
   }
 
   async acceptOrRejectTheAmountCYA(acceptOrReject) {
+    I.waitForClickable(paths.buttons.submit_response);
     I.waitForContent('Do you accept or reject the defendant\'s admission?');
     if (acceptOrReject == 'accept') {
       await I.see('I accept this amount');
@@ -143,6 +144,7 @@ class ResponseToDefence {
   }
 
   async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
+    I.waitForClickable(paths.buttons.save_and_continue);
     I.waitForContent('How they want to pay?');
     if (acceptOrReject == 'accept') {
       await I.see('Yes');
@@ -170,7 +172,7 @@ class ResponseToDefence {
     I.waitForContent('What happens next');
     if (acceptOrReject == 'accept') {
       await I.see('You\'ve accepted their response');
-      await I.see(`The defendant said they'll pay you £${admittedAmount} immediately.`);
+      await I.see(`The defendant said they'll pay you £${admittedAmount} plus the claim fee immediately.`);
       await I.see('They must make sure you have the money by');
       await I.see('Any cheques or transfers should be clear in your account.');
       await I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
@@ -691,7 +693,7 @@ class ResponseToDefence {
   async verifyDefendantsResponseForRejection() {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
-    I.see('Mrs Jane Doe has rejected the claim.');
+    I.see('has rejected the claim.');
     I.see('Their defence','h2');
     I.see('Why they disagree with the claim?','h3');
     I.see('Test reason');
@@ -940,7 +942,7 @@ class ResponseToDefence {
     I.waitForContent('The court will consider both parties\' circumstances when deciding where to hold the hearing.',60);
     I.see('You can ask for the hearing to be held at a specific court,');
     I.see('Select a court');
-    I.selectOption('select[name="courtLocation"]', 'Barnet Civil And Family Courts Centre - St Mary\'s Court, Regents Park Road - N3 1BQ');
+    I.selectOption('select[name="courtLocation"]', 'Barnsley Law Courts - The Court House, Westgate - S70 2DW');
     I.see('Tell us why you want the hearing to be held at this court');
     I.fillField('#reason', 'nearest location');
     await I.click(paths.buttons.save_and_continue);

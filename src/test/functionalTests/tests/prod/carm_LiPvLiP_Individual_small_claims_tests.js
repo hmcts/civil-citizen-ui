@@ -3,7 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
-const { defendantResponseFullAdmitPayBySetDateClaimant, mediationCARMClaimantDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { claimantNotificationFullAdmitPayImmediately, mediationCARMClaimantDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
   verifyTasklistLinkAndState,
@@ -17,7 +17,7 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual').tag('@nightly @carm');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual').tag('@nightly');
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -40,8 +40,8 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit, caseData.totalClaimAmount);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
@@ -56,7 +56,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
 
 Scenario('LiP Claimant response with Part admit', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, defendantResponseFullAdmitPayBySetDateClaimant(500));
+  await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationFullAdmitPayImmediately(500));
   await ClaimantResponseSteps.verifyDefendantResponse();
   await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
   await ResponseSteps.EnterTelephoneMediationDetails();

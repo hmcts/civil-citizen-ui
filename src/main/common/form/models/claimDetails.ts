@@ -26,6 +26,11 @@ export interface ClaimFee {
   version: number;
 }
 
+export interface FixedCosts {
+  claimFixedCosts: string;
+  fixedCostAmount: string;
+}
+
 export interface CaseManagementLocation {
 region: string;
 baseLocation: string;
@@ -58,6 +63,7 @@ export enum CaseState {
   PREPARE_FOR_HEARING_CONDUCT_HEARING = 'PREPARE_FOR_HEARING_CONDUCT_HEARING',
   DECISION_OUTCOME = 'DECISION_OUTCOME',
   CLOSED = 'CLOSED',
+  CASE_DISCONTINUED = 'CASE_DISCONTINUED',
 }
 
 export interface ClaimantMediationLip {
