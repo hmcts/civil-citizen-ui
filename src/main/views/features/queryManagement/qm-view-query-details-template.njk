@@ -1,3 +1,5 @@
+import {dateFilter} from "modules/nunjucks/filters/dateFilter";
+
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -24,13 +26,13 @@
                 <div class="govuk-summary-card__title-wrapper">
                   <h2 class="govuk-summary-card__title">
                     {% if loop.index % 2 == 0 %}
-                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') }} ({{ item.sentOnFormatted}})
                     {% elseif loop.index === 1 and item.raisedByUser === true %}
-                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') }} ({{ item.sentOnFormatted}})
                     {% elseif loop.index === 1 and item.raisedByUser  === false %}
-                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE') }}
+                       {{ t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE') }} ({{ item.sentOnFormatted}})
                     {% else %}
-                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.FOLLOW_UP_MESSAGE') }}
+                      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.FOLLOW_UP_MESSAGE') }} ({{ item.sentOnFormatted}})
                     {% endif %}
                   </h2>
                 </div>

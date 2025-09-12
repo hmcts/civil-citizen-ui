@@ -101,7 +101,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
             .addFullStopLink(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, true)), `${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.CP_STATE.LINK_2.TEXT_BEFORE`);
         } else {
           pageSection
-            .addSubTitle(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.SUBTITLE_1`)
+            .addTitle(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.SUBTITLE_1`)
             .addParagraph(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.PARAGRAPH_1`)
             .addParagraph(`${qualifySectionInfo}.CLAIM_DOCUMENTS_AND_EVIDENCE.PARAGRAPH_2`);
         }
@@ -110,7 +110,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
       case QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM:{
         showAnythingElseSection = undefined;
         pageSection
-          .addSubTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
+          .addTitle(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SUBMIT_RESPONSE_CLAIM.PARAGRAPH_1`);
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
@@ -118,7 +118,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
       case QualifyingQuestionTypeOption.SEE_THE_CLAIM_ON_MY_ACCOUNT:{
         showAnythingElseSection = undefined;
         pageSection
-          .addSubTitle(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.SUBTITLE_1`)
+          .addTitle(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.SEE_THE_CLAIM_ON_MY_ACCOUNT.PARAGRAPH_1`);
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
@@ -126,7 +126,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
       case QualifyingQuestionTypeOption.VIEW_DOCUMENTS_ON_MY_ACCOUNT:{
         showAnythingElseSection = undefined;
         pageSection
-          .addSubTitle(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.SUBTITLE_1`)
+          .addTitle(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.VIEW_DOCUMENTS_ON_MY_ACCOUNT.PARAGRAPH_1`);
         getCommonInformationSolveProblems(pageSection, claimId);
         break;
@@ -159,7 +159,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID.LI_3`, {lng: lang})}</li>
             </ul>`)
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID.PARAGRAPH_2`)
-          .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
+          .addTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID.SUBTITLE_1`);
         if (isCCJLinkEnabled) {
           pageSection.addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT`, constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_2.TEXT_BEFORE`, '.');
         } else {
@@ -180,7 +180,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
               <li>${t(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LI_4`, {lng: lang})}</li>
             </ul>`)
           .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT`, whatToDoUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_1.TEXT_BEFORE`, '.', null, true)
-          .addSubTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.SUBTITLE_1`)
+          .addTitle(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.PARAGRAPH_3`)
           .addLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT`, feesHelpUrl, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_2.TEXT_AFTER`, null, true)
           .addFullStopLink(`${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_3.TEXT`, checkCivilFees_Ex50Url, `${qualifySectionInfo}.CLAIM_NOT_PAID_AFTER_JUDGMENT.LINK_3.TEXT_BEFORE`, null, null, true);
@@ -223,7 +223,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
       case QualifyingQuestionTypeOption.PAID_OR_PARTIALLY_PAID_JUDGMENT: {
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
-          .addSubTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
+          .addTitle(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.SUBTITLE_1`)
           .addParagraph(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.PARAGRAPH_1`)
           .addFullStopLink(`${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.LINK_1.TEXT`, enforceJudgementUrl, `${qualifySectionInfo}.PAID_OR_PARTIALLY_PAID_JUDGMENT.LINK_1.TEXT_BEFORE`, null, '', true);
         break;
@@ -231,7 +231,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
       case QualifyingQuestionTypeOption.SETTLE_CLAIM: {
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         pageSection
-          .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
+          .addTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_1`);
         if (claim.isClaimant() && !claim.isClaimSettled()) {
           pageSection
             .addFullStopLink(`${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, DATE_PAID_URL), `${qualifySectionInfo}.SETTLE_CLAIM.NOT_SETTLED.LINK_1.TEXT_BEFORE`);
@@ -240,7 +240,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
             .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_UPDATE_WITHOUT_LINK`);
         }
         pageSection
-          .addSubTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_2`)
+          .addTitle(`${qualifySectionInfo}.SETTLE_CLAIM.SUBTITLE_2`)
           .addParagraph(`${qualifySectionInfo}.SETTLE_CLAIM.TEXT_1`);
         break;
       }
@@ -256,9 +256,9 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, await getGaRedirectionUrl(claim, null, null, true)), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_1.TEXT_AFTER`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT`, checkCivilFeesListFullListUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_2.TEXT_AFTER`, null, true)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT`, feesHelpUrl, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_BEFORE`, `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_3.TEXT_AFTER`, null, true)
-          .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
+          .addTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_1`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT`, 'mailto:contactocmc@justice.gov.uk', `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_4.TEXT_BEFORE`, '.')
-          .addSubTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_2`)
+          .addTitle(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.SUBTITLE_2`)
           .addLink(`${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_5.TEXT`, constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), `${qualifySectionInfo}.AMEND_CLAIM_DETAILS.LINK_5.TEXT_BEFORE`, '.');
         break;
       }

@@ -31,6 +31,7 @@ const content = {
   confirmYourDetailsLink: {
     en: 'Confirm your details',
     cy: 'Cadarnhau eich manylion',
+    both: 'Confirm your details',
   },
 };
 class NameAndAddressDetailsPage {
