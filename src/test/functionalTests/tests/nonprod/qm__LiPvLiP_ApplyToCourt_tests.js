@@ -23,7 +23,7 @@ async function loginAndSelectClaim({ I, user }) {
   await I.click(claimNumber);
 }
 
-Feature('QM - LIP - Apply to Court scenarios @regression-qm');
+Feature('QM - LIP - Apply to Court scenarios @regression @qm');
 
 BeforeSuite(async ({ api, I }) => {
   await claimSetup(api, I);

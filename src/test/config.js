@@ -159,6 +159,11 @@ module.exports = {
     email: 'civil-system-update@mailnesia.com',
     type: 'systemupdate',
   },
+  welshAdmin: {
+    password: 'Password123',
+    email: 'casewrokerwlu@justice.gov.uk',
+    type: 'welsh-admin',
+  },
   systemUpdate2: {
     password: defaultPassword,
     email: 'hmcts.civil+organisation.1.superuser@gmail.com',
@@ -175,7 +180,7 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
-  eaCourt:'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+  eaCourt: 'Derby Combined Court Centre - The Morledge - DE1 2XE',
   nonEaCourt:'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
   gaCourtToBeSelected:'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS',
   localMediationTests: false,

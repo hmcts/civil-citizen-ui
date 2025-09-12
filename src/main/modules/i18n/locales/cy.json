@@ -396,7 +396,10 @@
       "APPLICATIONS_TASK": "Gweld pob cais i’r llys",
       "VIEW_MESSAGES_TASK": "Gweld eich negeseuon i'r llys"
     },
-    "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
+    "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+    "QM_INFORMATION_DOCUMENTS": "Gallwch anfon dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
+    "QM_INFORMATION_MESSAGES_DOCUMENTS": "Gallwch anfon negeseuon a dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
+    "QM_INFORMATION_LINK": "dangosfwrdd Hawliadau am Arian"
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
     "CHOOSE_WHAT_TODO_NEXT": {
@@ -560,7 +563,7 @@
         "GO_TO_DASHBOARD": "Mynd i’ch dangosfwrdd"
       },
       "COMMON": {
-        "ANYTHING_ELSE": "Unrhyw beth arall",
+        "ANYTHING_ELSE": "Os ydych angen cymorth gydag unrhyw beth arall",
         "MESSAGE_TO_THE_COURT_V1": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
         "MESSAGE_TO_THE_COURT_V2": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
         "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser.",
@@ -715,7 +718,7 @@
           "PARAGRAPH_1": "Os yw’r hawliad wedi cychwyn ac ni allwch ei weld ar y system Hawliadau am Arian, dylech gysylltu â’r llys i gael cymorth."
         },
         "VIEW_DOCUMENTS_ON_MY_ACCOUNT" : {
-          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn eich nghyfrif",
+          "SUBTITLE_1": "Cael cymorth i weld y dogfennau yn eich cyfrif",
           "PARAGRAPH_1": "Os na allwch weld y dogfennau a uwchlwythwyd gennych chi neu’r parti arall yn eich cyfrif, dylech gysylltu â’r llys i gael cymorth."
         },
         "GENERAL_UPDATE" : {
@@ -837,7 +840,7 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Mae eich negeseuon wedi’u rhestru ar eich dangosfwrdd.",
           "LINK": {
-            "TEXT": "Ceisiadau a negeseuon i'r llys.",
+            "TEXT": "Negeseuon i'r llys.",
             "TEXT_BEFORE": "Gallwch fynd ar drywydd neges drwy ddewis yr un yr ydych am ei weld o’r adran ",
             "TEXT_AFTER": ""
           },
@@ -1353,7 +1356,7 @@
       "P_2": "Drwy ddefnyddio’r gwasanaeth hwn, rydych yn cytuno i’r telerau defnydd canlynol. Mae hyn yn cynnwys ",
       "P_4": "Drwy greu cyfrif, rydych yn cytuno i dderbyn dogfennau gan y llys yn electronig.",
       "P_5": "Pwy ydym ni?",
-      "P_6": "Mae’r gwasanaeth hwn yn cael ei reoli gan Wasanaeth Llysoedd a Thribiwnlysoedd Ei Fawrhydi.",
+      "P_6": "Mae’r gwasanaeth hwn yn cael ei reoli gan GLlTEF.",
       "P_7": "Dylech wirio’r telerau ac amodau hyn yn rheolaidd. Efallai y byddwn yn eu diweddaru ar unrhyw adeg heb rybudd. Os byddwch yn parhau i ddefnyddio'r gwasanaeth hwn ar ôl i'r telerau ac amodau gael eu newid, ystyrir eich bod wedi cytuno i'r newidiadau.",
       "P_8": "Gwybodaeth a ddarperir gan y gwasanaeth hwn",
       "P_9": "Mae’r gwasanaeth hwn yn darparu gwybodaeth i gefnogi eich hawliad neu'ch cais. Ni allwn roi cyngor cyfreithiol ar achosion unigol.",
@@ -1610,6 +1613,7 @@
       "AMOUNT_PAID_INSET": "Dim ond ar swm llawn yr hawliad y mae’r system yn caniatáu cyfrifo llog. Os ydych wedi derbyn unrhyw daliad rhannol, defnyddiwch ffurflen ",
       "AMOUNT_PAID_INSET_2": " neu ",
       "AMOUNT_PAID_INSET_3": "lle gallwch gyfrifo’r llog cywir, a’i hanfon at ",
+      "QM_AMOUNT_PAID_INSET_3": "Gallwch gyfrif y llog cywir ac anfon dogfennau i’r llys drwy ddewis ‘Cysylltu â’r llys neu wneud cais iddo’ ar eich",
       "N225_LINK": "https://assets.publishing.service.gov.uk/media/5aa6b740e5274a3e391e3b38/n225-bil.pdf",
       "N225A_LINK": "https://assets.publishing.service.gov.uk/media/63f49b03e90e077bb3d7af45/n225a-eng-04-13_save.pdf"
     },
@@ -3745,6 +3749,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Math o gais a disgrifiad ohono",
+        "WELSH_MESSAGE": "Mae parti yn yr achos hwn wedi nodi ei bod yn well ganddi gynnal ei hachos yn Gymraeg, ac mae dogfen y cais yn cael ei chyfieithu. Bydd yr holl ddogfennau ar gael i'w gweld yn fuan a byddwch yn gallu ymateb iddi ar ôl i chi dderbyn y cyfieithiad.",
         "SUMMERY_MESSAGE1" : "Dyma’r cais y mae’r partïon eraill wedi’i wneud.",
         "SUMMERY_MESSAGE2" : "Bydd eu hymatebion i ‘Pa orchymyn ydych chi eisiau i’r barnwr ei wneud?’ a ‘Pam ydych chi’n gwneud cais am y gorchymyn hwn?’ yn esbonio’r newid maen nhw wedi gwneud cais amdano a pham. Bydd dolen i adolygu unrhyw ddogfennau maen nhw wedi uwchlwytho.",
         "SUMMERY_MESSAGE3" : "Unwaith y byddwch wedi adolygu eu cais, cliciwch ar ‘ymateb i gais’ isod. Fe ofynnir i chi p’un a ydych yn cytuno â’u cais neu beidio."
@@ -3854,9 +3859,9 @@
         "HEARING_ORDER" : "Gorchymyn Gwrandawiad",
         "TRANSLATED_HEARING_ORDER": "Cais am Orchymyn Gwrandawiad wedi’i Gyfieithu",
         "HEARING_ORDER_DESC" : "Mae’r barnwr wedi gorchymyn gwrandawiad",
-        "GENERAL_ORDER" : "Gorchymyn Cyffredinol",
         "DISMISSAL_ORDER": "Gorchymyn diddymu",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
+        "TRANSLATED_JUDGE_HAS_MADE_ORDER": "Cais am Orchymyn Cyfarwyddiadau’r Barnwr wedi’i Gyfieithu",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Darllen yr ymateb",
@@ -3873,10 +3878,14 @@
         "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT": "Sylwadau Ysgrifenedig wedi’u Cyfieithu – Cais Cyfamserol",
         "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL": "Sylwadau Ysgrifenedig wedi’u Cyfieithu – Cais Dilyniannol",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
+        "TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_APPLICANT": "Ymateb i Sylwadau Ysgrifenedig wedi’i Gyfieithu – Cais y Ceisydd",
+        "TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_RESPONDENT": "Ymateb i Sylwadau Ysgrifenedig wedi’i Gyfieithu – Cais yr Atebydd",
         "RESPONSE_COURT": "Ymateb gan y llys",
         "RESPONDENTS_DOCUMENTS": "Dogfennau’r atebydd",
         "TRANSLATED_REQUEST_MORE_INFO": "Cais am Ragor o Wybodaeth wedi’i Chyfieithu",
         "REQUEST_MORE_INFO": "Cais am fwy o wybodaeth",
+        "TRANSLATED_MORE_INFO_RESPONSE_APPLICANT": "Ymateb am Ragor o Wybodaeth wedi’i Gyfieithu – Cais y Ceisydd",
+        "TRANSLATED_MORE_INFO_RESPONSE_RESPONDENT": "Ymateb am Ragor o Wybodaeth wedi’i Gyfieithu – Cais yr Atebydd",
         "REVIEW": "Adolygu’r cais ynghyd ag unrhyw ymateb a gafwyd.",
         "STATUS": {
           "AWAITING_RESPONSE": "Yn aros am ymateb gan y partïon eraill",
@@ -4509,7 +4518,8 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "Nid yw'r swm yn cynnwys ffi’r hawliad ac unrhyw gostau sefydlog sy'n daladwy yn ychwanegol.",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "Mae ffi’r hawliad ac unrhyw gostau sefydlog a hawlwyd yn daladwy yn ogystal â’r swm a addefir.",
-      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
+      "YOU_MUST_CONTACT_FA": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif.",
+      "YOU_MUST_CONTACT_PA": "Os bydd yr hawlydd yn derbyn, rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi’u clirio ac wedi’u talu i mewn i’w cyfrif."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "A ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr?",
@@ -4792,7 +4802,7 @@
         "POST_CODE": "CM20 9RA"
       },
       "STEP_1": "Cam 1: Lawrlwytho a llenwi ffurflen N9B",
-      "STEP_2": "Cam 2: E-bostio neu bostio'r ffurflen N9B",
+      "STEP_2": "Cam 2: Anfon neu bostio ffurflen N9B",
       "STEP_3": "Cam 3: Talu'r ffi llys",
       "SUPPORT_EMAIL_ADDRESS": "contactocmc@justice.gov.uk",
       "NON_SIGN_POST_ADDRESS": {
@@ -5438,11 +5448,12 @@
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
     "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
     "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau",
-    "TESTING_SUPPORT": "Testing Support"
+    "TESTING_SUPPORT": "Testing Support",
+    "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Mae’n rhaid i chi ddewis pa ddiweddariad yr hoffech roi i’r llys.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei chael gyda’r system Hawliadau am Arian.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "Mae’n rhaid i chi ddewis sut rydych eisiau rheoli eich gwrandawiad.",
@@ -5990,6 +6001,18 @@
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
+    },
+    "CUI_JO" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddiwr Citizen ar gael rhwng 19:00 ar 18 Awst 2025 a 03:00 ar 19 Awst 2025"
+    },
+    "CUI_COSC" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
+    },
+    "CUI_MAIN_WELSH_LIP": {
+      "MESSAGE": "Ni fydd y Gwasanaeth Hawliadau am Arian yn y Llys Sifil na’r Gwasanaeth Iawndal ar gael rhwng 19:00 ar 15 Medi 2025 a 04:00 ar 16 Medi 2025."
+    },
+    "CUI_QM_LIP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr ar gael rhwng 19:00 ar 17 Medi 2025 a 02:00 ar 18 Medi 2025."
     }
   }
 }

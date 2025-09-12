@@ -32,9 +32,9 @@ export class ViewQueriesService {
         const viewObject = {
           id: parentMessage.id,
           subject: parentMessage.subject,
-          sentOn: dateTimeFormat(parentMessage.createdOn, lang),
+          sentOn: dateTimeFormat(parentMessage.createdOn, lang, true),
           createdBy: parentMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : parentMessage.name,
-          lastUpdatedOn: dateTimeFormat(latestMessage.createdOn, lang),
+          lastUpdatedOn: dateTimeFormat(latestMessage.createdOn, lang, true),
         } as ViewObjects;
 
         if (messageThread.length % 2 == 0) {
@@ -80,7 +80,8 @@ export class ViewQueriesService {
         documents,
         createdBy,
         name,
-        dateTimeFormat(createdOn, lang),
+        dateTimeFormat(createdOn, lang, true),
+        formatDateToFullDate(new Date(createdOn), lang),
         item.createdBy === userId,
         formatDateToFullDate(new Date(hearingDate), lang),
       );

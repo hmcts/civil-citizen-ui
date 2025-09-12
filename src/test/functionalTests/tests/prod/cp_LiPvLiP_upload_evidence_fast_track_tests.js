@@ -13,7 +13,7 @@ const claimType = 'FastTrack';
 const partyType = 'LiPvLiP';
 let claimRef,caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track').tag('@case-progression');
+Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -23,7 +23,7 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
   await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
   await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -48,5 +48,5 @@ Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
     taskListItem = viewDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   }
-}).tag('@nightly-regression-cp');
+});
 

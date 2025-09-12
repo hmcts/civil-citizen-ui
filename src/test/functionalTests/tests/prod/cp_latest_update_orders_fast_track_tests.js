@@ -11,7 +11,7 @@ const { ordersAndNotices } = require('../../specClaimHelpers/dashboardTasklistCo
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Fast Track').tag('@case-progression');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Fast Track');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -21,8 +21,8 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-  await api.performAnAssistedOrder(config.judgeUserWithRegionId1, claimRef);
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
+  await api.performAnAssistedOrder(config.judgeUserWithRegionId2, claimRef);
   await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
@@ -42,5 +42,5 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
   } else {
     CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@skip-regression-cp');
+}).tag('@skip-regression');
 

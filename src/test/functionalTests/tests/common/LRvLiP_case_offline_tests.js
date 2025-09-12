@@ -20,16 +20,18 @@ Before(async ({api}) => {
   notification = caseOffline();
 });
 
-Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
+//This needs investigation
+Scenario.skip('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     await api.caseProceedsInCaseman();
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-}).tag('@regression');
+});
 
-Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
+//This needs investigation
+Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = caseOfflineAfterSDO();

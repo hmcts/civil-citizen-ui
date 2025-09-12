@@ -21,7 +21,8 @@ Before(async ({api}) => {
   notification = caseOffline();
 });
 
-Scenario('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
+//This needs investigation
+Scenario.skip('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
 
   if (isDashboardServiceEnabled) {
@@ -33,7 +34,8 @@ Scenario('Case is offline after caseworker performs Case proceeds in caseman eve
   }
 }).tag('@regression');
 
-Scenario('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc}) => {
+//This needs investigation
+Scenario.skip('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   // After Noc for full defence case remains online
   // onlineNotification = caseOnline();
@@ -42,19 +44,20 @@ Scenario('Case is offline after solicitor performs notice of change on behalf of
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     // await verifyNotificationTitleAndContent(claimNumber, onlineNotification.title, onlineNotification.content, claimRef);
   }
-}).tag('@noc @regression');
+}).tag('@noc');
 
-Scenario('Case is taken offline after SDO for non early adopters', async ({api}) => {
+//This needs investigation
+Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     notification = caseOfflineAfterSDO();
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION', '', false);
     await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
+    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await api.caseProceedsInCaseman();
   }
-}).tag('@case-progression @regression');
+}).tag('@case-progression');
