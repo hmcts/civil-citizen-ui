@@ -44,7 +44,6 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
   const hearingDocumentsWelsh: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocumentsWelsh;
   if(claim.caseProgressionHearing?.hearingDocuments) {
     for(const hearingDocument of hearingDocuments){
-
       if(hearingDocument?.value) {
         const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocument.value?.documentName, claim.id, hearingDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
         const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocument.value?.createdDatetime,lang);

@@ -1,4 +1,4 @@
-import {Claim} from 'models/claim';
+import {Claim, PreTranslationDocumentType} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {
   APPLY_HELP_WITH_FEES_START,
@@ -86,13 +86,14 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
   const welshGaEnabled = await isGaForWelshEnabled();
-
   valuesMap.set('{VIEW_CLAIM_URL}', CLAIM_DETAILS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', VIEW_CLAIMANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', VIEW_RESPONSE_TO_CLAIM.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', VIEW_DEFENDANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_HEARINGS}',VIEW_THE_HEARING_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_THE_HEARING_URL}', VIEW_THE_HEARING_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_THE_HEARING_URL}',  claim?.PreTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
+    ? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation'
+    : VIEW_THE_HEARING_URL.replace(':id', claimId));
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId));
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
