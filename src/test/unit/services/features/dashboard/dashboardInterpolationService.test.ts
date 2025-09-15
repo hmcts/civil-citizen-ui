@@ -617,4 +617,18 @@ describe('dashboardInterpolationService', () => {
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
+
+  it('should not replace placeholders when preTranslationType is not Hearing notice', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_THE_HEARING_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/view-the-hearing';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
 });
