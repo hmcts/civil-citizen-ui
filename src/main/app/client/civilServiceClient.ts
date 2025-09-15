@@ -395,7 +395,9 @@ export class CivilServiceClient {
 
   async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
     try {
+      logger.info('calculateClaimInterest');
       const response = await this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
+      logger.info(`calculateClaimInterest response: ${response.data}` );
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating interest');
@@ -446,7 +448,7 @@ export class CivilServiceClient {
     await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
-        logger.error('Error when assigning defendant to claim');
+        logger.error('Error when assigning defendant to claim ' + claimId);
         throw err;
       }); // nosonar
   }
@@ -458,7 +460,7 @@ export class CivilServiceClient {
       if(response.data)
         return new Date(response.data.toString());
     } catch (err: unknown) {
-      logger.error('Error when getting agreed deadline response date');
+      logger.error(`Error when getting agreed deadline response date for claimId: ${claimId}`);
       throw err;
     }
   }
