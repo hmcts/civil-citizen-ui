@@ -91,7 +91,7 @@ const setDashboardValues = async (claim: Claim, claimId: string, notification?: 
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', VIEW_RESPONSE_TO_CLAIM.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', VIEW_DEFENDANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_HEARINGS}',VIEW_THE_HEARING_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_THE_HEARING_URL}',  claim?.PreTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
+  valuesMap.set('{VIEW_THE_HEARING_URL}',  claim?.preTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
     ? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation'
     : VIEW_THE_HEARING_URL.replace(':id', claimId));
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId));
