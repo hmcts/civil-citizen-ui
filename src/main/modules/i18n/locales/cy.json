@@ -563,7 +563,7 @@
         "GO_TO_DASHBOARD": "Mynd i’ch dangosfwrdd"
       },
       "COMMON": {
-        "ANYTHING_ELSE": "Unrhyw beth arall",
+        "ANYTHING_ELSE": "Os ydych angen cymorth gydag unrhyw beth arall",
         "MESSAGE_TO_THE_COURT_V1": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
         "MESSAGE_TO_THE_COURT_V2": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
         "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser.",
@@ -5448,11 +5448,12 @@
     "HELP_USING_GOV_URL": "Help i ddefnyddio GOV.UK",
     "PRIVACY_POLICY_URL": "Polisi Preifatrwydd ",
     "TERMS_AND_CONDITIONS_URL": "Telerau ac amodau",
-    "TESTING_SUPPORT": "Testing Support"
+    "TESTING_SUPPORT": "Testing Support",
+    "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Mae’n rhaid i chi ddewis pa ddiweddariad yr hoffech roi i’r llys.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei chael gyda’r system Hawliadau am Arian.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "Mae’n rhaid i chi ddewis sut rydych eisiau rheoli eich gwrandawiad.",
@@ -6006,6 +6007,12 @@
     },
     "CUI_COSC" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
+    },
+    "CUI_MAIN_WELSH_LIP": {
+      "MESSAGE": "Ni fydd y Gwasanaeth Hawliadau am Arian yn y Llys Sifil na’r Gwasanaeth Iawndal ar gael rhwng 19:00 ar 15 Medi 2025 a 04:00 ar 16 Medi 2025."
+    },
+    "CUI_QM_LIP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr ar gael rhwng 19:00 ar 17 Medi 2025 a 02:00 ar 18 Medi 2025."
     }
   }
 }
