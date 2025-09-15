@@ -559,7 +559,6 @@ describe('dashboardInterpolationService', () => {
     };
   }
 
-
   it('should replace placeholders when sdo document present', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';

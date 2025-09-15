@@ -42,7 +42,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
   const hearingRows = [] as SummaryRow[];
   const hearingDocuments: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocuments;
   const hearingDocumentsWelsh: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocumentsWelsh;
-  if(claim.caseProgressionHearing?.hearingDocuments) {
+  if(hearingDocuments) {
     for(const hearingDocument of hearingDocuments){
       if(hearingDocument?.value) {
         const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocument.value?.documentName, claim.id, hearingDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
