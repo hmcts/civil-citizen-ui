@@ -41,7 +41,6 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
 
   const hearingRows = [] as SummaryRow[];
   const hearingDocuments: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocuments;
-  const hearingDocumentsWelsh: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocumentsWelsh;
   if(hearingDocuments) {
     for(const hearingDocument of hearingDocuments){
       if(hearingDocument?.value) {
@@ -53,7 +52,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
       }
     }
   }
-
+  const hearingDocumentsWelsh: CaseProgressionHearingDocuments[] = claim.caseProgressionHearing?.hearingDocumentsWelsh;
   if(claim.caseProgressionHearing?.hearingDocumentsWelsh) {
     for(const hearingDocumentWelsh of hearingDocumentsWelsh) {
       if (checkWelshHearingNotice(claim)) {
