@@ -16,7 +16,7 @@ const {
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount = 1600,
   claimFee = 115;
 
-Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@create-claim @nightly-regression-r2');
+Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@create-claim');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({I, api}) => {
   selectedHWF = false;
@@ -103,7 +103,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
   }
   await steps.verifyAndPayClaimFee(claimAmount, claimFee, standardInterestAmount);
   await api.waitForFinishedBusinessProcess();
-});
+}).tag('@regression');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable interest - with hwf', async ({api}) => {
   selectedHWF = true;

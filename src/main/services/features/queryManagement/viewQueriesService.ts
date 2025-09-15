@@ -81,6 +81,7 @@ export class ViewQueriesService {
         createdBy,
         name,
         dateTimeFormat(createdOn, lang, true),
+        formatDateToFullDate(new Date(createdOn), lang),
         item.createdBy === userId,
         formatDateToFullDate(new Date(hearingDate), lang),
       );
