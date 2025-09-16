@@ -28,7 +28,7 @@ Scenario.skip('Case is offline after caseworker performs Case proceeds in casema
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   }
-}).tag('@regression');
+});
 
 //This needs investigation
 Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
