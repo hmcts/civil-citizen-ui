@@ -31,6 +31,7 @@ describe('View query controller', () => {
     'claimant-user-id',
     'Claimant',
     '01 Jan 2025',
+    '01 Jan 2025',
     true,
   );
 
@@ -40,6 +41,7 @@ describe('View query controller', () => {
     Array.of(new FormattedDocument('fileName', 'documentUrl')),
     'caseworker-user-id',
     'Caseworker',
+    '01 Jan 2025',
     '01 Jan 2025',
     true,
     '13 February 2025, 11:30:10 am',
@@ -51,6 +53,7 @@ describe('View query controller', () => {
     Array.of(new FormattedDocument('fileName', 'documentUrl')),
     'claimant-user-id',
     'Claimant',
+    '01 Jan 2025',
     '01 Jan 2025',
     true,
     '13 February 2025, 11:30:10 am',
