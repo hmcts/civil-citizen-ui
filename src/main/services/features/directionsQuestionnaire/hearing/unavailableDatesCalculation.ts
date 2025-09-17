@@ -21,6 +21,9 @@ const getDatesBetween = (startDate: Date, endDate: Date, lng: string): Set<strin
 
 export const getListOfUnavailableDate = (unavailableDates: UnavailableDates, lng?: string): Set<string> => {
   const unavailableDateSet = new Set<string>();
+    if (!unavailableDates?.items?.length) {
+    return unavailableDateSet;
+  }
   unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
       unavailableDateSet.add(formatDateToFullDate(new Date(item.from), lng));
