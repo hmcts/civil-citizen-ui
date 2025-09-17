@@ -135,7 +135,6 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-
     it('should get data array for claimant unseal claim', async () => {
       //given
       const documentName = 'test_000MC001.pdf';

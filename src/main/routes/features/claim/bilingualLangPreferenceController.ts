@@ -29,7 +29,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
   res.render(bilingualLangPreferenceViewPath, {
     form,
-    pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE'
+    pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE',
   });
 }
 

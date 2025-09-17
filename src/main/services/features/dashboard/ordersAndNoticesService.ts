@@ -28,16 +28,16 @@ export const getClaimantDocuments = async (
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
 
   const claimantDocumentsArray: DocumentInformation[] = [];
-    claimantDocumentsArray.push(...getClaimantDQ(claim, claimId, lang));
-    claimantDocumentsArray.push(
-      ...getClaimantTranslatedDQ(claim, claimId, lang),
-    );
-    claimantDocumentsArray.push(
-      ...getClaimantSealedClaimForm(claim, claimId, lang),
-    );
-    claimantDocumentsArray.push(
-      ...getClaimantTranslatedSealedClaimForm(claim, claimId, lang),
-    );
+  claimantDocumentsArray.push(...getClaimantDQ(claim, claimId, lang));
+  claimantDocumentsArray.push(
+    ...getClaimantTranslatedDQ(claim, claimId, lang),
+  );
+  claimantDocumentsArray.push(
+    ...getClaimantSealedClaimForm(claim, claimId, lang),
+  );
+  claimantDocumentsArray.push(
+    ...getClaimantTranslatedSealedClaimForm(claim, claimId, lang),
+  );
 
   claimantDocumentsArray.push(
     ...getClaimantRequestForReconsideration(claim, claimId, lang),
