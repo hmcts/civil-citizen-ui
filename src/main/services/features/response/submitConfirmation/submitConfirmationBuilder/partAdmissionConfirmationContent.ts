@@ -297,7 +297,6 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
-  const paymentDate = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
@@ -317,7 +316,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
       data: {
         html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT', {lng: lang})}</p>
         <ul class="govuk-list govuk-list--bullet">
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY', {paymentDate, lng: lang})}</li>
+          <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY', {lng: lang})}</li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CHEQUES_OR_BANK_TRANSFERS', {lng: lang})}</li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li>
         </ul>`,

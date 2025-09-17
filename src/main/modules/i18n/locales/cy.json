@@ -4876,14 +4876,14 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad."
       },
       "PA_PAY_IMMEDIATELY": {
-        "CHEQUES_OR_BANK_TRANSFERS": "unrhyw sieciau neu drosglwyddiadau banc yn glir yn y cyfrif erbyn y dyddiad terfyn",
+        "CHEQUES_OR_BANK_TRANSFERS": "bod unrhyw sieciau neu drosglwyddiadau banc wedi clirio yn eu cyfrif erbyn y dyddiad cau",
         "CLAIM_SETTLED": "Bydd yr hawliad yn cael ei setlo.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "Os yw {{ claimantName }}  yn derbyn eich cynnig o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir",
         "MAKE_SURE_THAT": "Gwnewch yn siŵr:",
         "RECEIPT_FOR_PAYMENTS": "eich bod yn cael derbynneb am unrhyw daliadau",
-        "THEY_GET_MONEY_BY": "ei fod yn cael yr arian erbyn {{ paymentDate }} - gall ofyn am Ddyfarniad Llys Sirol yn eich erbyn fel arall",
+        "THEY_GET_MONEY_BY": "eu bod yn derbyn yr arian o fewn 5 diwrnod o’r adeg bu iddynt dderbyn eich cynnig - gallant wneud cais am Ddyfarniad Llys Sirol yn eich erbyn os na fyddwch yn gwneud hynny.",
         "YOU_HAVE_SAID_YOU_OWW": "Rydych wedi dweud bod gennych ddyled o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ac wedi cynnig talu  {{ claimantName }} yn syth.",
-        "YOU_NEED_PAY_IMMEDIATELY": "Mae angen i chi dalu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ar unwaith."
+        "YOU_NEED_PAY_IMMEDIATELY": "Bydd arnoch angen talu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "sicrhau bod unrhyw sieciau neu drosglwyddiadau banc yn glir yn ei gyfrif erbyn y dyddiad terfyn",
