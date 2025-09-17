@@ -177,7 +177,7 @@ app.use((req, res, next) => {
       SessionID=${req.sessionID}, Path=${req.originalUrl}`);
   }
   const hasCookie = req.headers.cookie?.includes('citizen-ui-session=');
-  if (!hasCookie) {
+  if (!hasCookie && !req.originalUrl.startsWith('/health')) {
     console.warn(`[SESSION] No citizen-ui-session cookie on request at ${new Date().toISOString()}.
       Path=${req.originalUrl}`);
   }
