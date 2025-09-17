@@ -6009,7 +6009,10 @@
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 26th August 2025 and 04:00 on 27th August 2025"
     },
     "CUI_MAIN_WELSH_LIP": {
-      "MESSAGE": "The Citizen User Service will be unavailable between 19:00 on 10th September 2025 and 01:00 on 11th September 2025"
+      "MESSAGE": "The Citizen User Service will be unavailable between 19:00 on 15th September 2025 and 04:00 on 16th September 2025."
+    },
+    "CUI_QM_LIP" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 17th September 2025 and 02:00 on 18th September 2025."
     }
   }
 }

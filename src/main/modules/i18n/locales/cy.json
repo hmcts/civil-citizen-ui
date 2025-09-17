@@ -6009,7 +6009,10 @@
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
     },
     "CUI_MAIN_WELSH_LIP": {
-      "MESSAGE": "Ni fydd y Gwasanaeth Defnyddwyr Citizen ar gael rhwng 19:00 ar y 10fed o Fedi 2025 a 01:00 ar yr 11eg o Fedi 2025."
+      "MESSAGE": "Ni fydd y Gwasanaeth Hawliadau am Arian yn y Llys Sifil na’r Gwasanaeth Iawndal ar gael rhwng 19:00 ar 15 Medi 2025 a 04:00 ar 16 Medi 2025."
+    },
+    "CUI_QM_LIP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr ar gael rhwng 19:00 ar 17 Medi 2025 a 02:00 ar 18 Medi 2025."
     }
   }
 }
