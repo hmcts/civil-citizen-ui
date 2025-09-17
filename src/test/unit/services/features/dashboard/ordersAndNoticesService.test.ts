@@ -60,25 +60,6 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for claimant bilingual dq', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getClaimantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
     it('should get data array for claimant bilingual dq when cuiWelshFlag is on', async () => {
       //given
       const documentName = 'test_000MC001.pdf';
@@ -414,26 +395,6 @@ describe('View Orders And Notices Service', () => {
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getDefendantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array for defendant lip bilingual response', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
-      claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
