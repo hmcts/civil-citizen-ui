@@ -143,7 +143,7 @@
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.1",
     "mocha-multi": "1.1.7",
-    "mochawesome": "7.1.3",
+    "mochawesome": "7.1.4",
     "nock": "^13.2.9",
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.22",
