@@ -19,7 +19,6 @@ import {claimLanguagePreferenceGuard} from 'routes/guards/claimLanguagePreferenc
 import {Claim} from 'models/claim';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {isWelshEnabledForMainCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const bilingualLangPreferenceViewPath = 'features/claim/claim-bilingual-language-preference';
 const claimBilingualLangPreferenceController = Router();
@@ -28,8 +27,10 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
-  const welshEnabled = await isWelshEnabledForMainCase();
-  res.render(bilingualLangPreferenceViewPath, {form, pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE', welshEnabled});
+  res.render(bilingualLangPreferenceViewPath, {
+    form,
+    pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE'
+  });
 }
 
 claimBilingualLangPreferenceController.get(
@@ -61,7 +62,7 @@ claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_
     if (form.hasErrors()) {
       await renderView(form, res);
     } else {
-      res.cookie('lang', getCookieLanguage(await isWelshEnabledForMainCase(), form.model.option));
+      res.cookie('lang', getCookieLanguage(form.model.option));
       await saveClaimantBilingualLangPreference(userId, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_TASK_LIST_URL));
     }
