@@ -147,7 +147,7 @@ export const isApplicationFullyVisibleToRespondent = (application: ApplicationRe
   const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
-    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
     || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
     || ((application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO
         || application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES)
@@ -166,7 +166,7 @@ export const isApplicationFullyVisibleToRespondentForClaimant = (application: Ap
   const parentClaimantIsApplicant = application.case_data.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
-    || (parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
     || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
     || ((application.case_data?.applicationIsCloaked === YesNoUpperCamelCase.NO
         || application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES)
