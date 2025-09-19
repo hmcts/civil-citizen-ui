@@ -66,25 +66,8 @@ describe('OtherTransaction.buildPopulatedForm', () => {
 
       // Then
       expect(result.declared).toBe(true);
-      expect(result.transactionSources).toHaveLength(2);
-      expect(result.transactionSources[0]).toEqual(
-        expect.objectContaining({
-          name: 'InvalidTransaction',
-          amount: undefined,
-          schedule: undefined,
-          isIncome: true,
-          nameRequired: true,
-        }),
-      );
-      expect(result.transactionSources[1]).toEqual(
-        expect.objectContaining({
-          name: null,
-          amount: 150,
-          schedule: 'TWO_WEEKS',
-          isIncome: true,
-          nameRequired: true,
-        }),
-      );
+      expect(result.transactionSources).toHaveLength(0);
+      expect(result.transactionSources[0]).toBeUndefined();
     });
   });
 });
