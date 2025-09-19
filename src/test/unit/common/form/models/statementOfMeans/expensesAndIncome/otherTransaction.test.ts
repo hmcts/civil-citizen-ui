@@ -1,6 +1,6 @@
 import {
   OtherTransaction,
-  OtherTransactionRequestParams
+  OtherTransactionRequestParams,
 } from 'form/models/statementOfMeans/expensesAndIncome/otherTransaction';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 

@@ -4,7 +4,7 @@ import {RegularIncome} from '../../form/models/statementOfMeans/expensesAndIncom
 import {Transaction} from '../../form/models/statementOfMeans/expensesAndIncome/transaction';
 import {
   OtherTransaction,
-  OtherTransactionRequestParams
+  OtherTransactionRequestParams,
 } from '../../form/models/statementOfMeans/expensesAndIncome/otherTransaction';
 
 function toRegularExpenseForm(req: Request): RegularExpenses {
