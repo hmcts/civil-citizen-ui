@@ -378,8 +378,8 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
+    await I.waitForContent('View all applications to the court', 60);
+    await I.click('View all applications to the court');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask to change a hearing date');
