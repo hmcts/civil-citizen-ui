@@ -24,17 +24,15 @@ export class OtherTransaction {
     return new OtherTransaction(false, [new TransactionSource({isIncome: isIncome})]);
   }
 
-  static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[], income: boolean): OtherTransaction {
-    const otherTransactionSources: TransactionSource[] = [];
-    if (otherTransactions?.length) {
-      otherTransactions.forEach(transaction => otherTransactionSources.push(new TransactionSource({
-        name: transaction.name,
-        amount: toNumberOrUndefined(transaction.amount),
-        schedule: transaction.schedule,
+  static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[] = [], income: boolean): OtherTransaction {
+
+    const otherTransactionSources: TransactionSource[] = Object.values(otherTransactions)
+      .filter(value=> value.name.length > 0)
+      .map(value=> new TransactionSource({ name: value.name,
+        amount: toNumberOrUndefined(value.amount),
+        schedule: value.schedule,
         isIncome: income,
-        nameRequired: true,
-      })));
-    }
+        nameRequired: true}));
 
     return new OtherTransaction(true, otherTransactionSources);
   }
