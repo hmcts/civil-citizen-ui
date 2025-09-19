@@ -92,10 +92,13 @@ describe('regular income converter', () => {
               amount: '10',
               schedule: 'WEEK',
             },
-            NaN: {
+            NaN: [{
               name: '',
               amount: '',
-            },
+            }, {
+              name: '',
+              amount: '',
+            }],
           },
         },
       },
