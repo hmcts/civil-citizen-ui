@@ -29,6 +29,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
   console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
@@ -55,6 +56,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
@@ -69,6 +71,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
