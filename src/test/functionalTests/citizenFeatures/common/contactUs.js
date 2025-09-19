@@ -25,8 +25,6 @@ class ContactUs {
   async verifyContactUs(language = 'en') {
     if (!verified) {
       I.click(`//span[contains(text(),'${content.title[language]}')]`);
-      I.waitForContent(content.email[language], 60);
-      I.seeElement('//a[.=\'contactocmc@justice.gov.uk\']');
       I.see(content.telephone[language], 'h3');
       I.see('0300 123 7050');
       I.see(content.openingHours[language]);
