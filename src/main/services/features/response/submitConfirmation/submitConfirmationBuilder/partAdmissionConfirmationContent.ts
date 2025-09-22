@@ -302,6 +302,16 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
 
   const content: ClaimSummarySection[] = [
     {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: `${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF', {
+          claimantName,
+          partialAmount,
+          lng: lang,
+        })}`,
+      },
+    },
+    {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_NEED_PAY_IMMEDIATELY', {
@@ -328,16 +338,6 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
         text: `${t('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT', {claimantName, lng: lang})}`,
         textAfter: t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang}),
         href: CITIZEN_CONTACT_THEM_URL.replace(':id', claimId),
-      },
-    },
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: `${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF', {
-          claimantName,
-          partialAmount,
-          lng: lang,
-        })}`,
       },
     },
     {
