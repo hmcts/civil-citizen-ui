@@ -969,7 +969,7 @@
         "IS_HEARING": "Is your message about an upcoming hearing?",
         "HEARING_DATE": "What is the date of the hearing?",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
-        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message. After choosing the file, click 'save file'.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "HEADING": "Review message details",
@@ -5110,6 +5110,7 @@
       "DATE_EXAMPLE": "For example, 27 9 2022",
       "DAY": "Day",
       "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "FORMAT_WITH_SAVE_FILE": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF. After choosing the file, click 'save file'",
       "NAME": "Your name",
       "MONTH": "Month",
       "NO_UPLOAD": "No files uploaded",
@@ -5966,7 +5967,7 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
-      "UPLOAD_FILE_MESSAGE_V2": "You need to choose a file before clicking 'Upload file'",
+      "UPLOAD_FILE_MESSAGE_V2": "You need to choose a file before clicking 'Save file'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
