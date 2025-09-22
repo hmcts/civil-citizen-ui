@@ -2,7 +2,6 @@ import {IsArray, ValidateIf, ValidateNested} from 'class-validator';
 import {TransactionSource}  from './transactionSource';
 import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
-import {Type} from 'class-transformer';
 
 export interface OtherTransactionRequestParams {
   name?: string;
@@ -15,7 +14,6 @@ export class OtherTransaction {
   @ValidateIf((o: OtherTransaction) => o.declared === true)
   @ValidateNested({each: true})
   @IsArray()
-  @Type(() => TransactionSource)
     transactionSources: TransactionSource[];
 
   constructor(declared?: boolean, transactionSources?: TransactionSource[]) {
