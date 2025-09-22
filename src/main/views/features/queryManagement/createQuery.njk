@@ -20,7 +20,9 @@
   {% set  idValue = "selectedFile" %}
   {% if form.hasErrors() %}
     {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-    {% set idValue = errors.fieldName %}
+    {% if errors.fieldName != 'messageSubject' and errors.fieldName != 'messageDetails' and errors.fieldName != 'isHearingRelated' %}
+      {% set idValue = errors.fieldName %}
+    {% endif %}
   {% endif %}
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
@@ -138,8 +140,8 @@
             html: t('PAGES.QM.QUERY_FORM.DOCUMENTS_HINT')
           },
           errorMessage: {
-            text: t(errors.text)
-          } if errors
+            text: t(form.errorFor(idValue))
+          } if form.errorFor(idValue)
         }) }}
 
         {{ govukButton({

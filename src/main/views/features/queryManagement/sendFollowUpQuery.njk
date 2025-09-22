@@ -17,7 +17,9 @@
   {% set  idValue = "selectedFile" %}
   {% if form.hasErrors() %}
     {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-    {% set idValue = errors.fieldName %}
+    {% if errors.fieldName != 'messageDetails' %}
+      {% set idValue = errors.fieldName %}
+    {% endif %}
   {% endif %}
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
 
@@ -55,8 +57,8 @@
             html: t('PAGES.QM.FOLLOW_UP_QUERY.DOCUMENTS_HINT')
           },
           errorMessage: {
-          text: t(errors.text)
-        } if errors
+            text: t(form.errorFor(idValue))
+          } if form.errorFor(idValue)
         }) }}
 
         {{ govukButton({
