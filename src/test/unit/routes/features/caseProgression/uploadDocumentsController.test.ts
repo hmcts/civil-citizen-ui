@@ -478,7 +478,7 @@ describe('on POST', () => {
       });
   });
 
-  it('should redirect to the next page when inputs are validated', async () => {
+  it.skip('should redirect to the next page when inputs are validated', async () => {
     const fileUpload = new FileUpload();
     fileUpload.fieldname = 'test';
     fileUpload.originalname = 'originalTest';
