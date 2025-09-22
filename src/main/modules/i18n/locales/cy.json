@@ -4,6 +4,7 @@
     "HOME_CARM": "Tudalen gartref",
     "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Uwchlwytho ffeil",
+    "SAVE_FILE": "Save file",
     "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DATE_UPLOADED": "Dyddiad uwchlwytho [{{ uploadedDate }}]",
@@ -1475,7 +1476,8 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Cyn ichi lwytho eich dogfennau",
         "BEFORE YOU UPLOAD": "Cyn i chi lwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft “Datganiad cyfryngu di-bresenoldeb gan Jane Smith”/",
-        "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "EACH_DOCUMENT_MUST_WITH_SAVE_FILE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF. After choosing the file, click 'save file'."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
