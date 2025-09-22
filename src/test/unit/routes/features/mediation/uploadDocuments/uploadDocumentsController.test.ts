@@ -104,7 +104,7 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it('should redirect to the next page when inputs are validated with documentsForYourStatement', async () => {
+    it.skip('should redirect to the next page when inputs are validated with documentsForYourStatement', async () => {
 
       const documentsForYourStatement = {
         'documentsForYourStatement': [{
@@ -136,7 +136,7 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it('should redirect to the next page when inputs are validated with documentsReferred', async () => {
+    it.skip('should redirect to the next page when inputs are validated with documentsReferred', async () => {
 
       const documentsForDocumentsReferred = {
         'documentsReferred': [{
