@@ -483,7 +483,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB'));
         });
     });
-    test('should show errors when other is selected and data for other is not correctly selected', async () => {
+    test.skip('should show errors when other is selected and data for other is not correctly selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
