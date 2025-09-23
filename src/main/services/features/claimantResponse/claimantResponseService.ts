@@ -96,6 +96,7 @@ function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, p
     delete claim.claimantResponse.mediation;
     delete claim.claimantResponse.directionQuestionnaire;
   }
+  delete claim.claimantResponse.mediationCarm;
   return claim;
 }
 
