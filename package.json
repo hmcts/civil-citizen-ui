@@ -25,7 +25,7 @@
     "test:local-tests": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 1 --grep @local-testing --reporter mocha-multi --verbose",
     "test:ocmc": "MOCHAWESOME_REPORTFILENAME=ocmc codeceptjs run-workers --suites 9 --grep @ocmc --reporter mocha-multi --verbose",
     "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep @regression --reporter mocha-multi --verbose",
-    "test:functional": "echo src/test/functionalTests/run-functional-tests.sh",
+    "test:functional": "echo  src/test/functionalTests/run-functional-tests.sh",
     "test:e2e-nightly": "MOCHAWESOME_REPORTFILENAME=e2e-nightly FUNCTIONAL=true codeceptjs run-workers --suites 10 --grep @nightly --reporter mocha-multi --verbose",
     "test:fullfunctional": "./src/test/functionalTests/run-full-functional-tests.sh",
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
