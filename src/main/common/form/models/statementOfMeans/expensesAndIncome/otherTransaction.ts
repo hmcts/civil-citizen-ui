@@ -1,7 +1,8 @@
-import {IsArray, ValidateIf, ValidateNested} from 'class-validator';
+import {Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {TransactionSource}  from './transactionSource';
 import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
+import {OtherExpenditureValidator} from 'form/validators/OtherExpenditureValidator';
 
 export interface OtherTransactionRequestParams {
   name?: string;
@@ -12,8 +13,8 @@ export interface OtherTransactionRequestParams {
 export class OtherTransaction {
   declared: boolean;
   @ValidateIf((o: OtherTransaction) => o.declared === true)
+  @Validate(OtherExpenditureValidator, {message: 'ERRORS.VALID_OTHER_EXPENDITURE'})
   @ValidateNested({each: true})
-  @IsArray()
     transactionSources: TransactionSource[];
 
   constructor(declared?: boolean, transactionSources?: TransactionSource[]) {
