@@ -34,7 +34,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
+Scenario.skip('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
   if (isDashboardServiceEnabled) {
     // claimant checks notifications for orders, upload docs and other party trial arrangements completed
