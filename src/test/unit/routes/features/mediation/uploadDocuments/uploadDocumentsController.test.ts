@@ -104,7 +104,7 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it.skip('should redirect to the next page when inputs are validated with documentsForYourStatement', async () => {
+    it('should redirect to the next page when inputs are validated with documentsForYourStatement', async () => {
 
       const documentsForYourStatement = {
         'documentsForYourStatement': [{
