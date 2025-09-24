@@ -185,7 +185,6 @@ ccd:
 
   ccd-data-store-api:
     java:
-      image: hmctspublic.azurecr.io/ccd/data-store-api:pr-2545
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 1000m
@@ -383,7 +382,6 @@ civil-service:
     image: hmctspublic.azurecr.io/civil/service:pr-5520
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
