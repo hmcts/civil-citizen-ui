@@ -379,9 +379,9 @@ civil-general-applications:
 civil-service:
   enabled: true
   java:
-    image: hmctspublic.azurecr.io/civil/service:pr-5520
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
+    image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
