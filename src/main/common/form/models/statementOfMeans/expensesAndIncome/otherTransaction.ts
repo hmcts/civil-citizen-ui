@@ -1,5 +1,5 @@
 import {ValidateIf, ValidateNested} from 'class-validator';
-import {TransactionSource}  from './transactionSource';
+import {TransactionSource} from './transactionSource';
 import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
@@ -25,14 +25,16 @@ export class OtherTransaction {
   }
 
   static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[], income: boolean): OtherTransaction {
-
-    const otherTransactionSources: TransactionSource[] = Object.values(otherTransactions)
-      .filter(value => value?.name?.length !== undefined && value.schedule !== undefined && value.name?.length > 0 && value.amount!== undefined && !Array.isArray(value.amount))
-      .map(value=> new TransactionSource({ name: value.name,
-        amount: toNumberOrUndefined(value.amount),
-        schedule: value.schedule,
+    const otherTransactionSources: TransactionSource[] = [];
+    if (otherTransactions?.length) {
+      otherTransactions.forEach(transaction => otherTransactionSources.push(new TransactionSource({
+        name: transaction.name,
+        amount: toNumberOrUndefined(transaction.amount),
+        schedule: transaction.schedule,
         isIncome: income,
-        nameRequired: true}));
+        nameRequired: true,
+      })));
+    }
 
     return new OtherTransaction(true, otherTransactionSources);
   }
