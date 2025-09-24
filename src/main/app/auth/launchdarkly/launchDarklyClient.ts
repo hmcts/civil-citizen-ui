@@ -21,6 +21,7 @@ const QUERY_MANAGEMENT = 'cui-query-management';
 const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
 const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
+const LR_QUERY_MANAGEMENT = 'query-management';
 const CUI_GA_NRO = 'cui-ga-nro';
 
 async function getClient(): Promise<void> {
@@ -44,8 +45,9 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(IS_COSC_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(LR_QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
-      
+
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
@@ -191,6 +193,10 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
   return await getFlagValue(IS_DEFENDANT_NOC_ONLINE_FOR_CASE, epoch) as boolean;
+}
+
+export async function isLRQueryManagementEnabled(): Promise<boolean> {
+  return await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
 }
 
 export async function isCuiGaNroEnabled(): Promise<boolean> {
