@@ -320,7 +320,7 @@ describe('Regular Expenses Controller', () => {
         });
     });
 
-    it.skip('should show errors other is selected but no amount or schedule selected', async () => {
+    it('should show errors other is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -398,7 +398,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.MORTGAGE'));
         });
     });
-    it.skip('should show errors when other is selected and data for other is not correctly selected', async () => {
+    it('should show errors when other is selected and data for other is not correctly selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({

@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-import { Type } from 'class-transformer';
 import {ValidateIf, ValidateNested} from 'class-validator';
 import {TransactionSource}  from './transactionSource';
 import {TransactionSchedule} from './transactionSchedule';
@@ -15,7 +13,6 @@ export class OtherTransaction {
   declared: boolean;
   @ValidateIf((o: OtherTransaction) => o.declared === true)
   @ValidateNested({each: true})
-  @Type(() => TransactionSource)
     transactionSources: TransactionSource[];
 
   constructor(declared?: boolean, transactionSources?: TransactionSource[]) {
