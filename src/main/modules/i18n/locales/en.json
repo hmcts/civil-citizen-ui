@@ -1002,7 +1002,7 @@
         "BODY_TITLE": "Message details",
         "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
-        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message. After choosing the file, click 'save file'.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Message details",
@@ -3657,6 +3657,7 @@
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF. After choosing the file, click 'save file'.",
         "LIST_TITLE": "Uploaded files",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",

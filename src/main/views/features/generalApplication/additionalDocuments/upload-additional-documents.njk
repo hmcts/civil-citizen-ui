@@ -23,7 +23,7 @@
     {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.ADDITIONAL_DOCUMENTS_CAPTION', 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOAD_DOCUMENTS_TITLE') }}
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.ADDITIONAL_DOCUMENTS_ROW1') }}</p>
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.ADDITIONAL_DOCUMENTS_ROW2') }}</p>
-    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE') }}</p>
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-inset-text">
