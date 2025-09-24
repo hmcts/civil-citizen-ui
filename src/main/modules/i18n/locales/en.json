@@ -4879,14 +4879,14 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
-        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
+        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are cleared in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }} plus the claim fee and any fixed costs claimed",
         "MAKE_SURE_THAT": "Make sure that:",
-        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
-        "THEY_GET_MONEY_BY": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "RECEIPT_FOR_PAYMENTS": "you get the receipt for any payments",
+        "THEY_GET_MONEY_BY": "they receive the money within 5 days from when they accept your offer - they can request a County Court Judgment against you if not.",
         "YOU_HAVE_SAID_YOU_OWW": "You've said you owe £{{ partialAmount }} plus the claim fee and any fixed costs claimed and offered to pay {{ claimantName }} immediately.",
-        "YOU_NEED_PAY_IMMEDIATELY": "You need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed immediately."
+        "YOU_NEED_PAY_IMMEDIATELY": "You will need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "make sure any cheques or bank transfers are clear in their account by the deadline",
@@ -6001,7 +6001,7 @@
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 13th May 2025 and 02:00 on 14th May 2025"
     },
     "WELSH_PARTY" : {
-      "MESSAGE" : "A party in this case has expressed a Welsh language preference. Delays to visibility of documents could be caused during translation processes."
+      "MESSAGE" : "A party in this case has expressed a Welsh language preference. All documents and responses will be available to view shortly."
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 11th August 2025 and 03:45 on 12th August 2025."
