@@ -66,8 +66,8 @@ describe('OtherTransaction.buildPopulatedForm', () => {
 
       // Then
       expect(result.declared).toBe(true);
-      expect(result.transactionSources).toHaveLength(0);
-      expect(result.transactionSources[0]).toBeUndefined();
+      expect(result.transactionSources).toHaveLength(2);
+      expect(result.transactionSources[0]).toEqual(expect.objectContaining({"amount": undefined, "isIncome": true, "name": "InvalidTransaction", "nameRequired": true, "schedule": undefined}));
     });
   });
 });
