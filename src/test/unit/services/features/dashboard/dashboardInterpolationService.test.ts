@@ -1,5 +1,5 @@
 import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
-import {Claim} from 'models/claim';
+import {Claim, PreTranslationDocumentType} from 'models/claim';
 import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
@@ -558,4 +558,77 @@ describe('dashboardInterpolationService', () => {
       'createdDatetime': new Date('2022-06-21T14:15:19'),
     };
   }
+
+  it('should replace placeholders when sdo document present', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123',
+      value: {
+        createdBy: '',
+        documentName: 'name',
+        documentLink: {
+          document_url: '',
+          document_filename: '',
+          document_binary_url: 'http://dm-store:8080/documents/123/binary',
+        },
+        documentSize: 123,
+        createdDatetime: undefined,
+        documentType: DocumentType.SDO_ORDER,
+      },
+    }];
+
+    const textToReplaceUrl = '{VIEW_SDO_DOCUMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/view-documents/123';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for claimant and is in translation', async () => {
+    const claim: Claim = new Claim();
+    claim.preTranslationDocumentType = PreTranslationDocumentType.HEARING_NOTICE;
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    const textToReplaceUrl = '{VIEW_THE_HEARING_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace placeholders when hearing notice not present for defendant when it is in translation', async () => {
+    const claim: Claim = new Claim();
+    claim.preTranslationDocumentType = PreTranslationDocumentType.HEARING_NOTICE;
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_THE_HEARING_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should not replace placeholders when preTranslationType is not Hearing notice', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_THE_HEARING_URL}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/view-the-hearing';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
 });
