@@ -1,9 +1,8 @@
 import {Transaction} from './transaction';
-import {Validate, ValidateNested} from 'class-validator';
+import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import {OtherTransaction} from './otherTransaction';
-import {OtherExpenditureValidator} from 'form/validators/OtherExpenditureValidator';
 
 export interface ExpenseParams {
   mortgage?: Transaction;
@@ -63,7 +62,6 @@ export class RegularExpenses {
     maintenance?: Transaction;
 
   @ValidateNested()
-  @Validate(OtherExpenditureValidator)
     other?: OtherTransaction;
 
   [key: string]: Transaction | OtherTransaction;
