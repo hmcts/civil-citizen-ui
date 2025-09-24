@@ -74,7 +74,7 @@ describe('OtherTransaction.buildPopulatedForm', () => {
             'isIncome': true,
             'name': 'InvalidTransaction',
             'nameRequired': true,
-            'schedule': undefined
+            'schedule': undefined,
           }));
     });
   });
