@@ -563,7 +563,7 @@
         "GO_TO_DASHBOARD": "Mynd i’ch dangosfwrdd"
       },
       "COMMON": {
-        "ANYTHING_ELSE": "Unrhyw beth arall",
+        "ANYTHING_ELSE": "Os ydych angen cymorth gydag unrhyw beth arall",
         "MESSAGE_TO_THE_COURT_V1": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
         "MESSAGE_TO_THE_COURT_V2": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
         "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser.",
@@ -4876,14 +4876,14 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad."
       },
       "PA_PAY_IMMEDIATELY": {
-        "CHEQUES_OR_BANK_TRANSFERS": "unrhyw sieciau neu drosglwyddiadau banc yn glir yn y cyfrif erbyn y dyddiad terfyn",
+        "CHEQUES_OR_BANK_TRANSFERS": "bod unrhyw sieciau neu drosglwyddiadau banc wedi clirio yn eu cyfrif erbyn y dyddiad cau",
         "CLAIM_SETTLED": "Bydd yr hawliad yn cael ei setlo.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "Os yw {{ claimantName }}  yn derbyn eich cynnig o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir",
         "MAKE_SURE_THAT": "Gwnewch yn siŵr:",
         "RECEIPT_FOR_PAYMENTS": "eich bod yn cael derbynneb am unrhyw daliadau",
-        "THEY_GET_MONEY_BY": "ei fod yn cael yr arian erbyn {{ paymentDate }} - gall ofyn am Ddyfarniad Llys Sirol yn eich erbyn fel arall",
+        "THEY_GET_MONEY_BY": "eu bod yn derbyn yr arian o fewn 5 diwrnod o’r adeg bu iddynt dderbyn eich cynnig - gallant wneud cais am Ddyfarniad Llys Sirol yn eich erbyn os na fyddwch yn gwneud hynny.",
         "YOU_HAVE_SAID_YOU_OWW": "Rydych wedi dweud bod gennych ddyled o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ac wedi cynnig talu  {{ claimantName }} yn syth.",
-        "YOU_NEED_PAY_IMMEDIATELY": "Mae angen i chi dalu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ar unwaith."
+        "YOU_NEED_PAY_IMMEDIATELY": "Bydd arnoch angen talu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "sicrhau bod unrhyw sieciau neu drosglwyddiadau banc yn glir yn ei gyfrif erbyn y dyddiad terfyn",
@@ -5453,7 +5453,7 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Mae’n rhaid i chi ddewis pa ddiweddariad yr hoffech roi i’r llys.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei chael gyda’r system Hawliadau am Arian.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "Mae’n rhaid i chi ddewis sut rydych eisiau rheoli eich gwrandawiad.",
@@ -5997,7 +5997,7 @@
       "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr Citizen ar gael rhwng 19:00 ar y 13eg o Fai a 02:00 ar y 14eg  o Fai 2025"
     },
     "WELSH_PARTY" : {
-      "MESSAGE" : "Mae parti yn yr achos hwn wedi nodi Cymraeg fel dewis iaith. Gallai oedi cyn gweld dogfennau ddigwydd yn ystod prosesau cyfieithu."
+      "MESSAGE" : "Mae parti yn yr achos hwn wedi mynegi dymuniad i ddefnyddio’r iaith Gymraeg. Bydd yr holl ddogfennau ac ymatebion ar gael yn fuan."
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
@@ -6007,6 +6007,12 @@
     },
     "CUI_COSC" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
+    },
+    "CUI_MAIN_WELSH_LIP": {
+      "MESSAGE": "Ni fydd y Gwasanaeth Hawliadau am Arian yn y Llys Sifil na’r Gwasanaeth Iawndal ar gael rhwng 19:00 ar 15 Medi 2025 a 04:00 ar 16 Medi 2025."
+    },
+    "CUI_QM_LIP" : {
+      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr ar gael rhwng 19:00 ar 17 Medi 2025 a 02:00 ar 18 Medi 2025."
     }
   }
 }
