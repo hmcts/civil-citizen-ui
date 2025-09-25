@@ -136,7 +136,7 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
-    it.skip('should redirect to the next page when inputs are validated with documentsReferred', async () => {
+    it('should redirect to the next page when inputs are validated with documentsReferred', async () => {
 
       const documentsForDocumentsReferred = {
         'documentsReferred': [{
