@@ -63,7 +63,7 @@ const content = {
       cy: 'Crynodeb tyst',
     },
     witnessSummaryHint: {
-      en: 'If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ',
+      en: 'If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing.',
       cy: 'Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o’r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae\'n rhaid i chi wneud cais i\'r llys i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid i chi wneud hyn cyn y dyddiad cau. Defnyddiwch',
     },
     noticeOfIntention: {
