@@ -17,7 +17,7 @@ let welshEnabled;
 
 Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@api @full-admit');
 
-Scenario.skip('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
   welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
   if (!welshEnabled) {
     return;

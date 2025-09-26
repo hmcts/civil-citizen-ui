@@ -12,7 +12,7 @@ const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport'
 let claimNumber, claimType, claimRef, caseData;
 let welshEnabled;
 Feature('Create Lip v Lip claim - Rejected All By defendant document welsh').tag('@reject-all');
-Scenario.skip('Create Lip v Lip claim - Rejected All By defendant document welsh', async ({api}) => {
+Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh', async ({api}) => {
   welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
   if (!welshEnabled) {
     return;
