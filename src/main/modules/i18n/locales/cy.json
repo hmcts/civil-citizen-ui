@@ -20,6 +20,7 @@
     "CASE_NUMBER_PARAM_CARM": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
+    "APPLY_TO_THE_COURT": "wneud cais i’r llys",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
     "AMOUNT": "Swm",
     "BALANCE": "Balans",
@@ -4265,6 +4266,8 @@
       "WITNESS_STATEMENT": "Datganiad tyst",
       "WITNESS_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn y mae eich tyst am ei ddweud wrth y llys",
       "WITNESS_SUMMARY": "Crynodeb tyst",
+      "WITNESS_SUMMARY_HINT_NRO_P1": "Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o'r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae’n rhaid i chi",
+      "WITNESS_SUMMARY_HINT_NRO_P2": " i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid i chi wneud hyn cyn y dyddiad cau.",
       "WITNESS_SUMMARY_HINT": "Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o'r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae'n rhaid i chi wneud cais i'r llys i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid gwneud hyn cyn y dyddiad cau. Defnyddiwch ",
       "WITNESS_SUMMARY_HINT_URL": "ffurflen N244 ‘rhybudd cyflwyno cais' (yn agor mewn tab newydd)",
       "YOUR_STATEMENT": "Eich datganiad chi",
@@ -4658,6 +4661,8 @@
       "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
       "TELL_OTHER_PARTY_R2": "Bydd angen i chi hefyd roi gwybod i’r parti arall neu eu cynrychiolydd cyfreithiol eich bod yn gwneud cais i’r llys.",
       "TITLE": "Gwneud cais am ragor o amser i ymateb",
+      "YOU_NEED_TO": "Mae angen i chi",
+      "YOU_NEED_P2": "am ragor o amser. Bydd angen i chi hefyd ddweud wrth y parti arall neu eu cynrychiolydd cyfreithiol eich bod wedi gwneud cais i’r llys.",
       "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
     "RESIDENCE": {
@@ -4683,7 +4688,10 @@
       "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho",
-      "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho "
+      "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho ",
+      "REQUEST_REFUSED_NRO_P1": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi’i wrthod, mae angen i chi",
+      "REQUEST_REFUSED_NRO_P2": "wneud cais",
+      "REQUEST_REFUSED_NRO_P3": "i’r llys i ystyried eich cais."
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "Faint sy’n 11 i 15 oed?",
@@ -6014,9 +6022,6 @@
     },
     "CUI_MAIN_WELSH_LIP": {
       "MESSAGE": "Ni fydd y Gwasanaeth Hawliadau am Arian yn y Llys Sifil na’r Gwasanaeth Iawndal ar gael rhwng 19:00 ar 15 Medi 2025 a 04:00 ar 16 Medi 2025."
-    },
-    "CUI_QM_LIP" : {
-      "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr ar gael rhwng 19:00 ar 17 Medi 2025 a 02:00 ar 18 Medi 2025."
     }
   }
 }

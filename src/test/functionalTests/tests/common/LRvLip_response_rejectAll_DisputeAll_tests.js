@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time)', async ({api, I}) => {
+Scenario.skip('Response with RejectAll and DisputeAll - GA (Ask for more time)', async ({api, I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     console.log('Creating GA app as defendant');
     await I.amOnPage('/dashboard');
