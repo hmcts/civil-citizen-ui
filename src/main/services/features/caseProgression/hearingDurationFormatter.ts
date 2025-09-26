@@ -145,9 +145,9 @@ export class HearingDurationFormatter {
    * @returns The parsed number
    */
   private static stringToNumber(value: string): number {
-    const parsedValue = parseFloat(value);
+    const parsedValue = Number.parseFloat(value);
 
-    if (isNaN(parsedValue)) {
+    if (Number.isNaN(parsedValue)) {
       throw new Error(`Cannot parse "${value}" as a valid number.`);
     }
 
