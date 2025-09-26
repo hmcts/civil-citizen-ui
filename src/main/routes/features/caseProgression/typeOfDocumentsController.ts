@@ -1,7 +1,11 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CP_UPLOAD_DOCUMENTS_URL,
-  TYPES_OF_DOCUMENTS_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, UPLOAD_YOUR_DOCUMENTS_URL,
+  TYPES_OF_DOCUMENTS_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
+  APPLICATION_TYPE_URL,
 } from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -15,6 +19,7 @@ import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getTypeOfDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
+import {isCuiGaNroEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
@@ -22,16 +27,24 @@ const dqPropertyName = 'defendantUploadDocuments';
 const dqPropertyNameClaimant = 'claimantUploadDocuments';
 
 async function renderView(res: Response, req: AppRequest, claimId: string, form: GenericForm<UploadDocuments>, backLinkUrl: string) {
-
+  const isGaNroEnabled = await isCuiGaNroEnabled();
   const claim = await getClaimById(claimId, req,true);
   const typeOfDocumentsContents = getTypeOfDocumentsContents(claimId, claim);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
   const isFastTrack = claim.isFastTrackClaim;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
+  const applyGaApplication = constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL);
   claimId = caseNumberPrettify(claimId);
 
   res.render(typeOfDocumentsViewPath, {form,
-    claimId, typeOfDocumentsContents, cancelUrl, isFastTrack, isSmallClaims, backLinkUrl,
+    claimId,
+    typeOfDocumentsContents,
+    cancelUrl,
+    isFastTrack,
+    isSmallClaims,
+    backLinkUrl,
+    isGaNroEnabled,
+    applyGaApplication,
   });
 }
 

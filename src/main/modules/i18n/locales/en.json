@@ -19,6 +19,7 @@
     "CASE_NUMBER_PARAM_CARM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
+    "APPLY_TO_THE_COURT": "apply to the court",
     "ANNUAL_TURNOVER": "Annual Turnover",
     "AMOUNT": "Amount",
     "BALANCE": "Balance",
@@ -4264,6 +4265,8 @@
       "WITNESS_STATEMENT": "Witness statement",
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
       "WITNESS_SUMMARY": "Witness summary",
+      "WITNESS_SUMMARY_HINT_NRO_P1": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must",
+      "WITNESS_SUMMARY_HINT_NRO_P2": "to use a witness summary at the hearing. You must do this before the deadline.",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
       "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice' (opens in a new tab)",
       "YOUR_STATEMENT": "Your statement",
@@ -4657,6 +4660,8 @@
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
       "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "TITLE": "Request more time to respond",
+      "YOU_NEED_TO": "You need to",
+      "YOU_NEED_P2": "to request more time. You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "UP_TO_28_DAYS": "Up to 28 days"
     },
     "RESIDENCE": {
@@ -4682,7 +4687,10 @@
       "PAGE_TITLE": "Response deadline",
       "POST": "Or, you can post the completed form to:",
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
-      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
+      "REQUEST_REFUSED_NRO_P1": "If your request to the other party or their legal representative for more time has been refused, you need to",
+      "REQUEST_REFUSED_NRO_P2": "make an application",
+      "REQUEST_REFUSED_NRO_P3": "to the court to consider your request."
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "How many are aged 11 to 15?",
@@ -4878,14 +4886,14 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
-        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
+        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are cleared in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }} plus the claim fee and any fixed costs claimed",
         "MAKE_SURE_THAT": "Make sure that:",
-        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
-        "THEY_GET_MONEY_BY": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "RECEIPT_FOR_PAYMENTS": "you get the receipt for any payments",
+        "THEY_GET_MONEY_BY": "they receive the money within 5 days from when they accept your offer - they can request a County Court Judgment against you if not.",
         "YOU_HAVE_SAID_YOU_OWW": "You've said you owe £{{ partialAmount }} plus the claim fee and any fixed costs claimed and offered to pay {{ claimantName }} immediately.",
-        "YOU_NEED_PAY_IMMEDIATELY": "You need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed immediately."
+        "YOU_NEED_PAY_IMMEDIATELY": "You will need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "make sure any cheques or bank transfers are clear in their account by the deadline",
@@ -6012,9 +6020,6 @@
     },
     "CUI_MAIN_WELSH_LIP": {
       "MESSAGE": "The Citizen User Service will be unavailable between 19:00 on 15th September 2025 and 04:00 on 16th September 2025."
-    },
-    "CUI_QM_LIP" : {
-      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 17th September 2025 and 02:00 on 18th September 2025."
     }
   }
 }
