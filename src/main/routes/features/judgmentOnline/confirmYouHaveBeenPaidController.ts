@@ -60,7 +60,7 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
     if (isClaimant) {
       renderView(form, res, lang, cancelUrl, claimId);
     } else {
-      res.render(t('ERRORS.SOMETHING_WENT_WRONG'));
+      throw new Error(t('ERRORS.SOMETHING_WENT_WRONG'));
     }
   } catch (error) {
     next(error);
@@ -94,7 +94,7 @@ confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (re
         res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
       }
     } else {
-      res.render(t('ERRORS.SOMETHING_WENT_WRONG'));
+      throw new Error(t('ERRORS.SOMETHING_WENT_WRONG'));
     }
   } catch (error) {
     next(error);
