@@ -8,11 +8,16 @@ import {
 import { Claim } from 'models/claim';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getAddress } from 'services/features/response/contactThem/contactThemService';
-import { getClaimById } from 'modules/utilityService';
 import { caseNumberPrettify } from 'common/utils/stringUtils';
+import {AppRequest} from 'models/AppRequest';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const viewClaimantInformation = 'features/dashboard/contact-them-new';
 const viewClaimantInformationController = Router();
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 async function renderView(res: Response, claim: Claim, claimId: string) {
 
@@ -36,7 +41,7 @@ viewClaimantInformationController.get(
   VIEW_CLAIMANT_INFO, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const claim: Claim = await getClaimById(claimId, req, true);
+      const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       renderView(res, claim, claimId);
     } catch (error) {
       next(error);
