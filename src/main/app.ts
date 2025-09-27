@@ -150,6 +150,12 @@ if(e2eTestMode){
 logger.info('Adding configuration for session store');
 const sessionStore = e2eTestMode? getRedisStoreForSessione2e() : getRedisStoreForSession();
 
+app.use((req, _res, next) => {
+  // before session: see if cookie is present
+  logger.info('cookie present?', Boolean(req.headers.cookie?.includes('citizen-ui-session=')));
+  next();
+});
+
 app.use(session({
   name: 'citizen-ui-session',
   store: sessionStore,
@@ -162,6 +168,21 @@ app.use(session({
     sameSite: 'lax',
   },
 }));
+
+app.use((req, res, next) => {
+  // force cast so TS stops complaining
+  const sess: any = req.session;
+  if (sess?.isNew) {
+    logger.warn(`[SESSION] New session created at ${new Date().toISOString()}.
+      SessionID=${req.sessionID}, Path=${req.originalUrl}`);
+  }
+  const hasCookie = req.headers.cookie?.includes('citizen-ui-session=');
+  if (!hasCookie && !req.originalUrl.startsWith('/health')) {
+    logger.warn(`[SESSION] No citizen-ui-session cookie on request at ${new Date().toISOString()}.
+      Path=${req.originalUrl}`);
+  }
+  next();
+});
 
 app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
