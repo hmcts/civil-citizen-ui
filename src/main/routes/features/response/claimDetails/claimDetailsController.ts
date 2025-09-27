@@ -14,7 +14,6 @@ import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
-import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {CaseState} from 'form/models/claimDetails';
@@ -29,7 +28,6 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const welshEnabled = await isWelshEnabledForMainCase();
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -37,7 +35,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
-    const showErrorAwaitingTranslation = welshEnabled && claim.ccdState === CaseState.PENDING_CASE_ISSUED && claim.preTranslationDocuments?.length > 0;
+    const showErrorAwaitingTranslation = claim.ccdState === CaseState.PENDING_CASE_ISSUED && claim.preTranslationDocuments?.length > 0;
     const sealedClaimPdfUrl = showErrorAwaitingTranslation ? constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL) : getTheClaimFormUrl(req.params.id, claim, CASE_DOCUMENT_VIEW_URL);
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
     if (claim.hasInterest()) {
