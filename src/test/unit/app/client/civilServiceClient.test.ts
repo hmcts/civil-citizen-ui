@@ -415,7 +415,7 @@ describe('Civil Service Client', () => {
       });
     });
     it('should throw error when there is an error calling civil service to assign logged in user to a claim', async () => {
-      const mockPost = jest.fn().mockImplementation(() => {
+      const mockPost = jest.fn().mockRejectedValueOnce(() => {
         throw new Error('error');
       });
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
