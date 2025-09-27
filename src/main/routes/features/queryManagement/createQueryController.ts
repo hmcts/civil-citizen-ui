@@ -68,7 +68,7 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
   await renderView(form, claim, claimId, res, formattedSummary, req);
 }));
 
-createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], upload.single('query-file-upload'),(async (req:AppRequest, res: Response, next: NextFunction) => {
+createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], upload.single('selectedFile'),(async (req:AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.id;
   const action = req.body.action;
   const claim = await getClaimById(claimId, req, true);
