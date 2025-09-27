@@ -10,7 +10,6 @@ import * as utilityService from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {decode} from 'punycode';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
@@ -39,7 +38,6 @@ describe('General Application - Respondent Agree to order', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

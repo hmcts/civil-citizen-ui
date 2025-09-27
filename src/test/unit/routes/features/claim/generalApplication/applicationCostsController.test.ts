@@ -11,7 +11,6 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import * as utilityService from 'modules/utilityService';
 import config from 'config';
 import nock from 'nock';
-import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -36,7 +35,6 @@ describe('General Application - Application costs', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

@@ -4,7 +4,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {
-  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled,
+  isLocationWhiteListed, isGaForWelshEnabled,
 } from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -339,7 +339,7 @@ describe('redirection url', () => {
   it('should GA is online', async () => {
     //Given
     (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
-    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+    (isLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
 
     const claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
@@ -354,7 +354,7 @@ describe('redirection url', () => {
   it('should GA is online without variables', async () => {
     //Given
     (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
-    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+    (isLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
 
     const claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
@@ -369,7 +369,7 @@ describe('redirection url', () => {
   it('should GA is Offline', async () => {
     //Given
     (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(false);
-    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
+    (isLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
 
     const claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
@@ -384,7 +384,7 @@ describe('redirection url', () => {
   it('should GA is welsh', async () => {
     //Given
     (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(false);
-    (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
+    (isLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
 
     const claim = new Claim();
     claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;

@@ -10,7 +10,6 @@ const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
 const CUI_RELEASE_TWO_ENABLED = 'cuiReleaseTwoEnabled';
-const GA_FOR_LIPS = 'GaForLips';
 const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
@@ -35,12 +34,10 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_COSC_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
@@ -111,10 +108,9 @@ export async function getEaFlagValueForGaLips(
     return await ldClient.variation(key, await getUserLocation(location), false);
 }
 
-export async function isGaForLipsEnabledAndLocationWhiteListed(location: string): Promise<boolean> {
-  const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
+export async function isLocationWhiteListed(location: string): Promise<boolean> {
   const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
-  return gaLipsFlag && eaFlagForGaLips;
+  return eaFlagForGaLips;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
@@ -131,10 +127,6 @@ export async function isPcqShutterOn(): Promise<boolean> {
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
-}
-
-export async function isGaForLipsEnabled(): Promise<boolean> {
-  return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
 
 export async function isCoSCEnabled(): Promise<boolean> {

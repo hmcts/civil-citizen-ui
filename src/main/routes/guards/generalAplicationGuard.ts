@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import {
-  isGaForLipsEnabled,
   isCoSCEnabled,
   isGaForWelshEnabled,
 } from 'app/auth/launchdarkly/launchDarklyClient';
@@ -13,7 +12,6 @@ export const isGAForLiPEnabled = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const isGAFlagEnable = await isGaForLipsEnabled();
   const isCertOfScEnabled = await isCoSCEnabled();
   const claim = await getClaimById(req.params.id, <AppRequest>req);
   //If the application was originally created in English and the respondent replied in Welsh,
@@ -22,9 +20,9 @@ export const isGAForLiPEnabled = async (
   //Allow to create cosc application in both languages
   const gaCoscUrls: string[] = ['/cosc/', '/apply-help', '/view-application', '/summary'];
   const welshGaEnabled = await isGaForWelshEnabled();
-  if(isGAFlagEnable && isCertOfScEnabled && gaCoscUrls.some(url => req.originalUrl.includes(url)) || allowAppAccess) {
+  if(isCertOfScEnabled && gaCoscUrls.some(url => req.originalUrl.includes(url)) || allowAppAccess) {
     next();
-  } else  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || welshGaEnabled || allowAppAccess) {
+  } else  if (!claim.isAnyPartyBilingual() || welshGaEnabled || allowAppAccess) {
     next();
   } else {
     res.redirect(await getCancelUrl(req.params.id, claim));

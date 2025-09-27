@@ -8,7 +8,6 @@ Scenario('Claimant creates GA Application with application other without notice 
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
-    toggleFlag('GaForLips', true);
     const claimID = 1732807433479616;
     const appId = 1732808403908337;
     createGAApplication.start(claimID);
@@ -34,6 +33,5 @@ Scenario('Claimant creates GA Application with application other without notice 
     responseApplicationSummary.viewApplicantApplicationSummary(claimID, appId, 'Listing for a hearing');
     toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
-    toggleFlag('GaForLips', false);
   }
 });

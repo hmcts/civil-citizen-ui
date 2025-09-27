@@ -5,7 +5,6 @@ import request from 'supertest';
 import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES, GA_APPLY_HELP_WITH_FEES_START} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
@@ -52,7 +51,6 @@ describe('General Application - Do you want to continue to apply for Help with F
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   describe('on GET', () => {

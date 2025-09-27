@@ -7,7 +7,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -30,7 +29,6 @@ describe('General Application - Application type', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
     mockGaApplicationFeeDetails.mockResolvedValueOnce({calculatedAmountInPence: 123});
   });
 

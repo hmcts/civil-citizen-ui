@@ -3,7 +3,6 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {GA_APPLY_HELP_WITH_FEES_START} from 'routes/urls';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
@@ -19,7 +18,6 @@ describe('General Application - Apply for help with fees', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   describe('on GET', () => {
