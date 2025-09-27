@@ -1,4 +1,4 @@
-import {isCoSCEnabled, isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { Request, Response } from 'express';
 import * as utilityService from 'modules/utilityService';
@@ -78,7 +78,6 @@ describe('GAFlagGuard', () => {
   });
   it('should call next if defendant response language is welsh to create a COSC application', async () => {
     (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
-    (isCoSCEnabled as jest.Mock).mockReturnValueOnce(true);
     const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
     claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH };
     claim.generalApplications = [
