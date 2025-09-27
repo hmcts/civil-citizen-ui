@@ -20,7 +20,7 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isCoSCEnabled, isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
 
 const applicationTypeController = Router();
@@ -46,7 +46,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
-    const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
+    const showCCJ  = claim.isDefendant();
     const isQMEnabled = await isQueryManagementEnabled(claim.submittedDate);
     res.render(viewPath, {
       form,
@@ -86,7 +86,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const cancelUrl = await getCancelUrl( req.params.id, claim);
     const backLinkUrl = BACK_URL;
 
-    const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
+    const showCCJ  = claim.isDefendant();
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ});
     } else {

@@ -4,15 +4,13 @@ import {t} from 'i18next';
 import {getCancelUrl, isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION} from 'routes/urls';
-import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getGeneralApplicationConfirmationContent = (async (claimId: string, genAppId: string, claim: Claim, lng: string, applicationFee: number) => {
   const dashboardUrl = await getCancelUrl(claimId, claim);
   let payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION);
   payApplicationFeeUrl = genAppId ? payApplicationFeeUrl + `?id=${genAppId}` : payApplicationFeeUrl;
   payApplicationFeeUrl = payApplicationFeeUrl + '&appFee=' + applicationFee;
-  const isCertOfScEnabled = await isCoSCEnabled();
-  const isCoScGeneralApplication = isConfirmYouPaidCcjDebtGA(isCertOfScEnabled, claim);
+  const isCoScGeneralApplication = isConfirmYouPaidCcjDebtGA(claim);
   if (isCoScGeneralApplication) {
     return new PageSectionBuilder()
       .addTitle('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.COSC_PAY_FEE')
@@ -53,6 +51,6 @@ export const getCoScGeneralApplicationConfirmationContent = (async (claimId: str
     .build();
 });
 
-function isConfirmYouPaidCcjDebtGA(isCertOfSOrCEnabled: boolean, claim: Claim): boolean {
-  return isCertOfSOrCEnabled && isConfirmYouPaidCCJAppType(claim);
+function isConfirmYouPaidCcjDebtGA(claim: Claim): boolean {
+  return isConfirmYouPaidCCJAppType(claim);
 }
