@@ -14,6 +14,9 @@ const requestMoreTimeController = Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
 const responseDeadlineService = new ResponseDeadlineService();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('requestMoreTimeController');
+
 async function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string, claimId: string): Promise<void> {
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   const isGaNroEnabled = await isCuiGaNroEnabled();
@@ -35,6 +38,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, req.params.id);
     } catch (error) {
+      logger.error(`Error when getting request more time -  ${error}`);
       next(error);
     }
   }) as RequestHandler);
@@ -56,6 +60,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       }
     } catch (error) {
+      logger.error(`Error when posting request more time -  ${error}`);
       next(error);
     }
   }) as RequestHandler);

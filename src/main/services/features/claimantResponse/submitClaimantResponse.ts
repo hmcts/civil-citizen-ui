@@ -39,7 +39,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     logger.info('Submitting claimant intention...');
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
-    logger.error(err);
+    logger.error(`Error when submitClaimantResponse - req.params.id  ${err}`);
     throw err;
   }
 };
@@ -54,9 +54,10 @@ export const getClaimWithExtendedPaymentDeadline = async (claim:Claim, req: AppR
     if (claim.isPartialAdmission() && claim.isPAPaymentOptionPayImmediately()) {
       return await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, req);
     }
+    logger.info(`returning undefined when getting claim with extended payment deadline - claim.id  ${claim.id}`);
     return undefined;
   } catch (error) {
-    logger.error(error);
+    logger.error(`Error when getting claim with extended payment deadline - ${error}`);
     throw error;
   }
 };
