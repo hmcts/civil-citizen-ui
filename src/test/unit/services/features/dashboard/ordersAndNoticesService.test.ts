@@ -17,7 +17,7 @@ import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
-  isGaForLipsEnabled, isJudgmentOnlineLive,
+  isGaForLipsEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -660,27 +660,8 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for ccj admission', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
     it('should not get data array for ccj admission', async () => {
       //given
-      (isJudgmentOnlineLive as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);

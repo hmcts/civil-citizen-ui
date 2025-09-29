@@ -785,8 +785,8 @@ export class Claim {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
   }
 
-  isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
-    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
+  isCCJCompleteForJo() {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
   }
 
   getHowTheInterestCalculatedReason(): string {

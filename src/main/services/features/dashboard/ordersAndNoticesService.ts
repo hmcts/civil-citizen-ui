@@ -17,7 +17,6 @@ import {
   isCoSCEnabled,
   isGaForLipsEnabled,
   isWelshEnabledForMainCase,
-  isJudgmentOnlineLive,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNoUpperCase} from 'form/models/yesNo';
 import {t} from 'i18next';
@@ -108,7 +107,6 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCaseworkerEventsEnabled = await isCaseWorkerEventsEnabled();
-  const isJudgmentOnlineEnabled = await isJudgmentOnlineLive();
 
   const courtDocumentsArray: DocumentInformation[] = [];
 
@@ -118,9 +116,6 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
 
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
-  if (!isJudgmentOnlineEnabled) {
-    courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
-  }
   courtDocumentsArray.push(...getInterlocutoryJudgement(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
@@ -309,12 +304,6 @@ const getManualDetermination = (claim: Claim, claimId: string, lang: string) => 
     ? setUpDocumentLinkObject(translatedManualDetermination.documentLink, translatedManualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST')
     : undefined;
   return [docLink1, docLink2].filter(item => !!item);
-};
-
-const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => {
-  const ccjRequestAdmission = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_ADMISSION);
-  return ccjRequestAdmission ? Array.of(
-    setUpDocumentLinkObject(ccjRequestAdmission.documentLink, ccjRequestAdmission.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST')) : [];
 };
 
 const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) => {
