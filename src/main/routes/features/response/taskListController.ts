@@ -39,7 +39,7 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const responseDeadline = caseData.formattedResponseDeadline(lang);
     res.render(taskListViewPath, {taskLists, title, description, claim: caseData, claimDetailsUrl, responseDetailsUrl, responseDeadline});
   } catch (error) {
-    logger.error(`Error when getting task lists,  req.session.claimId  ${ req.session.claimId } -  ${error}`);
+    logger.error(`Error when getting task lists,  req.session.claimId  ${ req.session.claimId } -  ${error.message}`);
     next(error);
   }
 });

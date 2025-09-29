@@ -27,7 +27,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     logger.info('Successfully translated the defendant response to ccd');
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
-    logger.error(`Error when submitting response -  ${err}`);
+    logger.error(`Error when submitting response -  ${err.message}`);
     throw err;
   }
 };

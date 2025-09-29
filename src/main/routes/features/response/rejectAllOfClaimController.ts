@@ -27,7 +27,7 @@ rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Reques
       claimantName: claim.getClaimantFullName(),
     });
   } catch (error) {
-    logger.error(`Error when getting rejecting all claims -  ${error}`);
+    logger.error(`Error when getting rejecting all claims -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -61,7 +61,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Reque
       }
     }
   } catch (error) {
-    logger.error(`Error when posting rejecting all claims -  ${error}`);
+    logger.error(`Error when posting rejecting all claims -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

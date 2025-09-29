@@ -47,7 +47,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
       const form = new GenericForm(getStatementOfTruth(claim));
       renderView(req, res, form, claim, carmApplicable, mintiApplicable);
     } catch (error) {
-      logger.error(`Error when getting check your answers -  ${error}`);
+      logger.error(`Error when getting check your answers -  ${error.message}`);
       next(error);
     }
   }) as RequestHandler);
@@ -76,7 +76,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
-    logger.error(`Error when posting check your answers -  ${error}`);
+    logger.error(`Error when posting check your answers -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

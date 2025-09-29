@@ -30,7 +30,7 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, (asy
       res.render('features/response/submit-confirmation', {claimNumber, confirmationContent, responseSubmitDate});
     }
   } catch (error) {
-    logger.error(`Error when getting submitting confirmation, req.params.id - ${req.params.id}, error -  ${error}`);
+    logger.error(`Error when getting submitting confirmation, req.params.id - ${req.params.id}, error -  ${error.message}`);
     next(error);
   }
 })as RequestHandler);

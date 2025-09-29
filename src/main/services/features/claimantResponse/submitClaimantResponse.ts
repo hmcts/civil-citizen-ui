@@ -39,7 +39,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     logger.info('Submitting claimant intention...');
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
-    logger.error(`Error when submitClaimantResponse - req.params.id  ${err}`);
+    logger.error(`Error when submitting claimant response -  ${err.message}`);
     throw err;
   }
 };

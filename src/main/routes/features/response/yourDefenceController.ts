@@ -44,7 +44,7 @@ yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, (async (req: Request, res:
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
-    logger.error(`Error when getting your defence, req.params.claimId  ${ req.params.claimId } -  ${error}`);
+    logger.error(`Error when getting your defence, req.params.claimId  ${ req.params.claimId } -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

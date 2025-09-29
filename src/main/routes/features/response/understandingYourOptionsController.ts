@@ -21,7 +21,7 @@ understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadL
         isReleaseTwoEnabled,
       });
     } catch (error) {
-      logger.error(`Error when getting understanding your opinions, req.params.claimId  ${ req.params.claimId } -  ${error}`);
+      logger.error(`Error when getting understanding your opinions, req.params.claimId  ${ req.params.claimId } -  ${error.message}`);
       next(error);
     }
   }) as RequestHandler);

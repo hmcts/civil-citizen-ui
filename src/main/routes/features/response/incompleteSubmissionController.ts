@@ -25,7 +25,7 @@ incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, (async (r
       pageTitle: 'PAGES.INCOMPLETE_SUBMISSION.TITLE',
     });
   } catch (error) {
-    logger.error(`Error when getting incomplete submission -  ${error}`);
+    logger.error(`Error when getting incomplete submission -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
