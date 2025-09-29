@@ -24,7 +24,6 @@ const viewPath = 'features/directionsQuestionnaire/experts/expert-report-details
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('expertReportDetailsController');
 
-
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(viewPath, {form, today: new Date(), pageTitle: 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE'});
 }
