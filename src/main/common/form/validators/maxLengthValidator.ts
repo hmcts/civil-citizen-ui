@@ -1,5 +1,5 @@
 import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {ADDRESS_LINE_MAX_LENGTH, ADDRESS_LINE_MAX_LENGTH_JO} from 'form/validators/validationConstraints';
+import {ADDRESS_LINE_MAX_LENGTH_JO} from 'form/validators/validationConstraints';
 
 /**
  * Validates the address and city fields inputs max length
