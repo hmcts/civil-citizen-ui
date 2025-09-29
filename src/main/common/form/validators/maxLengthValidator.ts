@@ -16,12 +16,11 @@ export class MaxLengthValidator implements ValidatorConstraintInterface {
     const textLength = text.trim().length;
     this.ADDRESS_LINE_MAX_LENGTH_ACTUAL = ADDRESS_LINE_MAX_LENGTH_JO;
 
-    if (validationArguments.property == 'addressLine1'
-      && textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
-      this.errorMessage.push('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-      return false;
-    } else if ((validationArguments.property == 'addressLine2' || validationArguments.property == 'addressLine3')
-      && textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
+    if ((validationArguments.property === 'addressLine1' ||
+        validationArguments.property === 'addressLine2' ||
+        validationArguments.property === 'addressLine3') &&
+      textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL
+    ) {
       this.errorMessage.push('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
       return false;
     } else if (validationArguments.property == 'city' && textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
