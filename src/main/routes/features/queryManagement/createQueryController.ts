@@ -107,7 +107,7 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], upload.single('query
     }
 
     if (action?.includes('[deleteFile]')) {
-      const index = action.split(/[[\]]/).filter((word: string) => word !== '')[0];
+      const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
       await removeSelectedDocument(req,  Number(index) - 1, createQuery );
       return res.redirect(`${currentUrl}`);
     }
