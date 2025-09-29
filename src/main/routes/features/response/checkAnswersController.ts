@@ -66,7 +66,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
     if (form.hasErrors()) {
-      logger.info(`form has error -  ${form.errors.length}`);
+      logger.info(`form has error -  ${req.params.id}`);
       renderView(req, res, form, claim);
     } else {
       logger.info('form has no error');

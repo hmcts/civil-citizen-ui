@@ -21,6 +21,9 @@ const otherWitnessesViewPath = 'features/directionsQuestionnaire/witnesses/other
 const dqPropertyName = 'otherWitnesses';
 const dqParentName = 'witnesses';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('otherWitnessesController');
+
 function renderView(form: GenericForm<OtherWitnesses>, res: Response): void {
   res.render(otherWitnessesViewPath, {form, pageTitle: 'PAGES.OTHER_WITNESSES.TITLE'});
 }
@@ -31,6 +34,7 @@ otherWitnessesController.get(DQ_DEFENDANT_WITNESSES_URL, async (req: AppRequest,
     const form = new GenericForm(await getOtherWitnesses(req));
     res.render(otherWitnessesViewPath, {form, isDefendant: claim.isDefendantNotResponded(), pageTitle: 'PAGES.OTHER_WITNESSES.TITLE'});
   } catch (error) {
+    logger.error(`Error when GET :  other witness  - ${error.message}`);
     next(error);
   }
 });
@@ -47,6 +51,7 @@ otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL));
       }
     } catch (error) {
+      logger.error(`Error when POST : other witness  - ${error.message}`);
       next(error);
     }
   });
