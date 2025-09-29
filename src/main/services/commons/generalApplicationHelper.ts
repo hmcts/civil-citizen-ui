@@ -1,6 +1,7 @@
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {
+  isCuiGaNroEnabled,
   isGaForLipsEnabledAndLocationWhiteListed,
   isGaForWelshEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
@@ -14,13 +15,13 @@ export class GaInformation {
   isSettledOrDiscontinuedWithPreviousCCDState = false;
 }
 
-export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
+export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean, isNroForGaLip: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettledOrDiscontinued = claim.ccdState === CaseState.CASE_SETTLED || claim.ccdState === CaseState.CASE_DISCONTINUED;
   if (claim.isCaseIssuedPending() ||
       claim.hasClaimTakenOffline() ||
       claim.hasClaimBeenDismissed() ||
-      !isEaCourt) { // if the claim is not yet issued
+    (!isEaCourt && !isNroForGaLip)) { // if the claim is not yet issued
     gaInformation.isGaOnline = false;
     return gaInformation;
   }
@@ -34,7 +35,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
     }
   }
   // if the claim is in EA court and not yet assigned to the defendant or not settled or discontinued
-  if (isEaCourt) {
+  if (isEaCourt || isNroForGaLip) {
     if (((!claim.isLRDefendant() && claim.defendantUserDetails === undefined) ||
             (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) // if the claim is not yet assigned to the defendant and not settled or discontinued
         && !isSettledOrDiscontinued) {
@@ -53,7 +54,8 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
 export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false, isAmendClaim = false) => {
   const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
-  const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled);
+  const isNroForGaLip = await isCuiGaNroEnabled();
+  const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled, isNroForGaLip);
   if (isGAInfo.isGAWelsh) {
     return GA_SUBMIT_OFFLINE;
   } else if (!isGAInfo.isGaOnline) {
@@ -67,18 +69,18 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   return url.trim();
 };
 
-export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean): GaInformation => {
+export const isGaOnlineQM = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: boolean, isNroForGaLip: boolean): GaInformation => {
   const gaInformation = new GaInformation();
   const isSettled = claim.ccdState === CaseState.CASE_SETTLED;
   if (claim.isCaseIssuedPending() ||
       claim.hasClaimTakenOffline() ||
       claim.hasClaimBeenDismissed() ||
-      !isEaCourt) { // if the claim is not yet issued
+    (!isEaCourt && !isNroForGaLip)) { // if the claim is not yet issued
     gaInformation.isGaOnline = false;
     return gaInformation;
   }
 
-  if (isEaCourt) {
+  if (isEaCourt || isNroForGaLip) {
     if ((!claim.isLRDefendant() && claim.defendantUserDetails === undefined) ||
       (claim.isLRDefendant() && claim.respondentSolicitorDetails === undefined)) { // if the claim is not yet assigned to the defendant
       gaInformation.isGaOnline = isSettled; // if the claim is settled, then GA is online
