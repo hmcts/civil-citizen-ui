@@ -1,8 +1,8 @@
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {
+  isLocationWhiteListed,
   isCuiGaNroEnabled,
-  isGaForLipsEnabledAndLocationWhiteListed,
   isGaForWelshEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_INFORMATION_URL} from 'routes/urls';
@@ -52,7 +52,7 @@ export const isGaOnline = (claim: Claim, isEaCourt: boolean, isWelshGaEnabled: b
 };
 
 export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, isAdjournHearing = false, isAmendClaim = false) => {
-  const isEaCourt = await isGaForLipsEnabledAndLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
+  const isEaCourt = await isLocationWhiteListed(claim?.caseManagementLocation?.baseLocation);
   const welshGaEnabled = await isGaForWelshEnabled();
   const isNroForGaLip = await isCuiGaNroEnabled();
   const isGAInfo = isGaOnlineQM(claim, isEaCourt, welshGaEnabled, isNroForGaLip);

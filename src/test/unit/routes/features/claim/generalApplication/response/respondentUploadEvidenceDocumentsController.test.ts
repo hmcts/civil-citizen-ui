@@ -9,7 +9,6 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -57,7 +56,6 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {

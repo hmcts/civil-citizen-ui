@@ -1,4 +1,4 @@
-import {isCoSCEnabled, isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCoSCEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { Request, Response } from 'express';
 import * as utilityService from 'modules/utilityService';
@@ -36,28 +36,18 @@ describe('GAFlagGuard', () => {
   });
 
   it('should call next if isGAFlag enabled returns true', async () => {
-    (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
     jest.spyOn(utilityService , 'getClaimById').mockResolvedValueOnce({ isAnyPartyBilingual: () => false } as Claim);
     await isGAForLiPEnabled(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
     expect(res.redirect).not.toHaveBeenCalled();
   });
-  it('should call redirect if isGAFlag returns false', async () => {
-    (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(false);
-    jest.spyOn(utilityService , 'getClaimById').mockResolvedValueOnce({ isAnyPartyBilingual: () => true } as Claim);
-    await isGAForLiPEnabled(req as Request, res as Response, next);
-    expect(next).not.toHaveBeenCalled();
-    expect(res.redirect).toHaveBeenCalled();
-  });
   it('should call redirect if anyParty is bilingual returns false', async () => {
-    (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
     jest.spyOn(utilityService , 'getClaimById').mockResolvedValueOnce({ isAnyPartyBilingual: () => true } as Claim);
     await isGAForLiPEnabled(req as Request, res as Response, next);
     expect(next).not.toHaveBeenCalled();
     expect(res.redirect).toHaveBeenCalled();
   });
   it('should call next if anyParty is bilingual but GA created before respondent response returns true', async () => {
-    (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
     const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
     claim.generalApplications = [
@@ -77,7 +67,6 @@ describe('GAFlagGuard', () => {
     expect(res.redirect).not.toHaveBeenCalled();
   });
   it('should call next if defendant response language is welsh to create a COSC application', async () => {
-    (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
     (isCoSCEnabled as jest.Mock).mockReturnValueOnce(true);
     const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
     claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH };

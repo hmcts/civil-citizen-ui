@@ -4,7 +4,6 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {YesNo} from 'form/models/yesNo';
@@ -36,7 +35,6 @@ describe('Pay GA Application Fee Confirmation Screen Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   it('should return pay application fee confirmation page when HWF reference exists', async () => {

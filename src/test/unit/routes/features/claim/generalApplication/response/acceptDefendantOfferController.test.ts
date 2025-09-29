@@ -9,7 +9,6 @@ import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { YesNo } from 'common/form/models/yesNo';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
@@ -77,7 +76,6 @@ describe('General Application - Accept defendant offer', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {
