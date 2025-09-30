@@ -66,11 +66,11 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsForm>) {
   const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).filter(file =>
+  const inputFile = (req.files as Express.Multer.File[]).find(file =>
     file.fieldname === target,
   );
-  if (inputFile[0]){
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
+  if (inputFile){
+    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
     form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
     form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
     form.validateSync();
