@@ -3,8 +3,13 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+
+{% block pageTitle %}
+    {{ setPageTitle(t, title.heading) }}
+{% endblock %}
+
 {% block nestedContent %}
-{{ headingWithCaption(t, 'PAGES.QM.HEADINGS.CAPTION','PAGES.QM.HEADINGS.HEADING') }}
+{{ headingWithCaption(t, title.caption, title.heading) }}
   {% if summaryRows %}
       <div class="govuk-!-margin-bottom-9 govuk-border-colour-border-top-1">
         <div class="govuk-form-group">

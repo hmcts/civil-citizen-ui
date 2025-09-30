@@ -5,6 +5,8 @@
 {% from "../../../macro/timeline-summary.njk" import timelineSummary %}
 {% from "../../../macro/page-information.njk" import pageInformation %}
 {% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
 {% set claimHasBeenMadeHtml %}
     <p class="govuk-body">{{ t('PAGES.CLAIM_DETAILS.CLAIM_HAS_BEEN_MADE_TEXT') }} <a id="order-and-notice-link" href="{{ ordersAndNoticesUrl }}" rel="noreferrer noopener" class="govuk-link">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
 {% endset -%}
@@ -12,12 +14,19 @@
 
 {% block nestedContent %}
 
+    {% if showErrorAwaitingTranslation %}
+              {{ govukWarningText({
+                text: t('ERRORS.DOCUMENTS_BEING_TRANSLATED'),
+                iconFallbackText: "Warning"
+              }) }}
+    {% endif %}
+
     {{ pageInformation(t,pageCaption, pageTitle, claimId, totalAmount)}}
 
     <br>
     {{ govukDetails({
             summaryText: t('PAGES.CLAIM_DETAILS.VIEW_AMOUNT_BREAKDOWN'),
-            html: amountBreakdownTable(claim, interestData, totalAmount, t)
+            html: amountBreakdownTable(t, claim, interestData, totalAmount, fixedCost)
      }) }}
      <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.REASON_FOR_CLAIM')+' :' }}</h2>
      <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>

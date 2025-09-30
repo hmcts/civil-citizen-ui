@@ -2,14 +2,18 @@ import {app} from '../../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as claimDetailsService from 'modules/claimDetailsService';
 
 jest.mock('../../../../../../../../main/modules/oidc');
+jest.mock('common/utils/repaymentUtils');
+jest.mock('modules/claimDetailsService');
+const mockGetTotalAmountWithInterest = claimDetailsService.getTotalAmountWithInterest as jest.Mock;
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,6 +27,7 @@ describe('Repayment Plan', () => {
   });
 
   describe('on Get', () => {
+    mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve({})));
     it('should return on your repayment plan page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -44,6 +49,7 @@ describe('Repayment Plan', () => {
 
   describe('on Post', () => {
     const mockFutureYear = getNextYearValue();
+    mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve({})));
 
     beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -152,6 +158,7 @@ describe('Repayment Plan', () => {
     });
 
     it('should return errors when payment amount is not less equal than the total amount cliam', async () => {
+      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(1000)));
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
         .send({paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})

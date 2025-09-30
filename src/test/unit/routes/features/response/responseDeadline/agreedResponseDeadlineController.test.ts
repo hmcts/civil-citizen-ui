@@ -149,7 +149,7 @@ describe('Agreed response date', () => {
     it('should accept the 28th day after the original response deadline as input and redirect to next page', async () => {
       await request(app)
         .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=2025')
+        .send('year=2050')
         .send('month=6')
         .send('day=12')
         .expect((res) => {
@@ -161,7 +161,7 @@ describe('Agreed response date', () => {
     it('should accept the input date when it is less then 28 after original response deadline and redirect to next page', async () => {
       await request(app)
         .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=2025')
+        .send('year=2050')
         .send('month=6')
         .send('day=11')
         .expect((res) => {

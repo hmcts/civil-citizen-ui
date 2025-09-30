@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import * as path from 'path';
+import favicon from 'serve-favicon';
 import session from 'express-session';
 import 'express-async-errors';
 
@@ -24,7 +25,7 @@ import {
   BASE_CLAIM_URL,
   BASE_CLAIMANT_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_RESPONSE_URL,
-  BASE_GENERAL_APPLICATION_URL,
+  BASE_GENERAL_APPLICATION_URL, BREATHING_SPACE_INFO_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, COSC_FINAL_PAYMENT_DATE_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
@@ -60,7 +61,7 @@ import {
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
   GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL, GA_SUBMIT_OFFLINE,
   GA_UNAVAILABILITY_CONFIRMATION_URL,
   GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
@@ -78,21 +79,21 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   INFORM_OTHER_PARTIES_URL,
-  IS_CASE_READY_URL,
+  IS_CASE_READY_URL, MEDIATION_PHONE_CONFIRMATION_URL,
   ORDER_JUDGE_URL,
-  PAYING_FOR_APPLICATION_URL, QM_CYA,
+  PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
-  QM_INFORMATION_URL,
+  QM_INFORMATION_URL, QM_SHARE_QUERY_CONFIRMATION,
   QM_START_URL,
   QM_VIEW_QUERY_URL,
   QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
-  REASON_FOR_FRC_BAND_URL,
-  RESPONSE_CHECK_ANSWERS_URL,
+  REASON_FOR_FRC_BAND_URL, REQUEST_MORE_TIME_URL,
+  RESPONSE_CHECK_ANSWERS_URL, RESPONSE_DEADLINE_OPTIONS_URL,
   SIGN_OUT_URL,
   STATEMENT_OF_MEANS_URL,
   SUBJECT_TO_FRC_URL,
   TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
-  TRIAL_ARRANGEMENTS_HEARING_DURATION,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION, TYPES_OF_DOCUMENTS_URL, UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
@@ -108,6 +109,10 @@ import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
+import {contactUsGuard} from 'routes/guards/contactUsGuard';
+import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
+import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
+import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -121,6 +126,7 @@ const cookieMaxAge = 90 * (60 * 1000); // 90 minutes
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
+app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
@@ -219,8 +225,20 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   QM_INFORMATION_URL,
   QM_VIEW_QUERY_URL,
   QM_CYA,
+  QM_FOLLOW_UP_CYA,
+  QM_FOLLOW_UP_MESSAGE,
   QUERY_MANAGEMENT_CREATE_QUERY,
+  QM_SHARE_QUERY_CONFIRMATION,
+  APPLICATION_TYPE_URL,
+  GA_SUBMIT_OFFLINE,
+  BREATHING_SPACE_INFO_URL,
 ], trackHistory);
+
+app.use([
+  QUERY_MANAGEMENT_CREATE_QUERY,
+], shareQueryConfirmationGuard);
+
+app.use(clearShareQuerySessionIfLeftJourney);
 
 app.use([
   //GA
@@ -252,6 +270,10 @@ app.use([
   GA_UPLOAD_DOCUMENTS_COSC_URL,
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
+  REQUEST_MORE_TIME_URL,
+  RESPONSE_DEADLINE_OPTIONS_URL,
+  TYPES_OF_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 ], GaTrackHistory);
 
 app.use([
@@ -284,6 +306,10 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
 
+if(env !== 'test') {
+  app.use(contactUsGuard);
+  app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
+}
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 

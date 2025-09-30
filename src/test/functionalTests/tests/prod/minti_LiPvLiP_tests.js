@@ -14,7 +14,7 @@ let claimRef, caseData, claimNumber, securityCode, paidDate;
 const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
-Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@nightly @minti');
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@nightly @regression');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -37,15 +37,15 @@ Scenario('MT Defendant responses', async ({api}) => {
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
   await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
   await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000, partAdmit, caseData.totalClaimAmount);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
   await ResponseSteps.EnterDQForMultiTrackClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression-minti').tag('@nightly');
+});
 
 Scenario('IT Defendant and Claimant responses', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
@@ -65,7 +65,7 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
   await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
   await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 15000, rejectAll);
   await ResponseSteps.VerifyPaidLessPage();
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll, caseData.totalClaimAmount);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);
@@ -81,4 +81,4 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
   await ClaimantResponseSteps.settleTheClaim('No', 15000);
   await ResponseSteps.EnterClaimantDQForIntTrack(claimRef, false);
   await ClaimantResponseSteps.submitYourResponse();
-}).tag('@regression-minti').tag('@nightly');
+});

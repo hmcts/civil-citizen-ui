@@ -8,9 +8,10 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let claimRef;
 
-Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@full-admit');
+Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@nightly');
 
-Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {
+// TODO undo when part payment journey is restored
+Scenario.skip('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -20,4 +21,4 @@ Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediat
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.verifyJudgmentByAdmission(claimRef);
   await api.waitForFinishedBusinessProcess();
-}).tag('@nightly');
+});

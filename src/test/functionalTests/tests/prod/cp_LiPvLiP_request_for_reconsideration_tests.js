@@ -15,7 +15,7 @@ const claimType = 'SmallClaimsThousand';
 const claimAmount = '£1,000';
 let caseData, claimNumber, claimRef, taskListItem, notification, deadline, todayDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@case-progression');
+Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@nightly');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -38,7 +38,7 @@ Scenario('Claimant performs Request for reconsideration and Defendant adds a com
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //claimant performs request for reconsideration
-    notification = orderMadeLA(deadline);
+    notification = orderMadeLA();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await I.click(notification.nextSteps);
     await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Sir John Doe', deadline);
@@ -64,14 +64,14 @@ Scenario('Claimant performs Request for reconsideration and Defendant adds a com
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
-}).tag('@reconsideration-regression');
+}).tag('@regression');
 
 Scenario('Defendant performs Request for reconsideration and Claimant adds a comment', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   if (isDashboardServiceEnabled) {
     //defendant performs request for reconsideration
-    notification = orderMadeLA(deadline);
+    notification = orderMadeLA();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     await I.click(notification.nextSteps);
     await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Miss Jane Doe', deadline);
@@ -97,4 +97,4 @@ Scenario('Defendant performs Request for reconsideration and Claimant adds a com
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
     await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
   }
-}).tag('@reconsideration-regression');
+});

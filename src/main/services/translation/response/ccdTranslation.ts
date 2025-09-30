@@ -50,14 +50,17 @@ import {
 } from 'services/translation/response/convertToCCDDisclosureOfDocuments';
 import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
+import {convertToDefendantCCDStatementOfTruth} from 'services/translation/response/convertToCCDStatementOfTruth';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
+  const partAdminPayImmediate = claim.respondent1 !== undefined && claim.respondent1?.responseType === ResponseType.PART_ADMISSION && paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
   return {
     respondent1ClaimResponseTypeForSpec: claim.respondent1?.responseType,
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(paymentIntention?.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(paymentIntention?.repaymentPlan),
-    respondToClaimAdmitPartLRspec: toCCDPayBySetDate(paymentIntention?.paymentDate ,paymentIntention?.paymentOption, claim.respondentPaymentDeadline),
+    respondToClaimAdmitPartLRspec: !partAdminPayImmediate? toCCDPayBySetDate(paymentIntention?.paymentDate ,paymentIntention?.paymentOption, claim.respondentPaymentDeadline) : undefined,
     responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation),
     specAoSApplicantCorrespondenceAddressRequired: addressHasChange ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
     totalClaimAmount: claim.totalClaimAmount,
@@ -111,6 +114,6 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     specRespondent1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.directionQuestionnaire?.hearing),
     respondent1DQClaimantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing),
     respondentResponsePcqId: claim.respondentResponsePcqId,
+    respondent1LiPStatementOfTruth: convertToDefendantCCDStatementOfTruth(claim.defendantStatementOfTruth),
   };
 };
-

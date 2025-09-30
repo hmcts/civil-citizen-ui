@@ -100,7 +100,7 @@ class ResponseToDefence {
   async verifyDefResponseForPartAdmitInstallmentPayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('The defendant suggested this repayment plan:');
-    I.see(`They’ve offered to pay you £${claimAmount} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee in instalments. This is the total amount you’ll be paid.`);
     await I.click(paths.buttons.continue);
   }
 
@@ -116,7 +116,7 @@ class ResponseToDefence {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('Contracts and agreements');
     I.see(`Sir John Doe admits they owe you £${claimAmount}`);
-    I.see(`They’ve offered to pay you £${claimAmount} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee immediately. This is the total amount you’ll be paid.`);
     await I.click(paths.buttons.continue);
   }
 
@@ -172,7 +172,7 @@ class ResponseToDefence {
     I.waitForContent('What happens next');
     if (acceptOrReject == 'accept') {
       await I.see('You\'ve accepted their response');
-      await I.see(`The defendant said they'll pay you £${admittedAmount} immediately.`);
+      await I.see(`The defendant said they'll pay you £${admittedAmount} plus the claim fee immediately.`);
       await I.see('They must make sure you have the money by');
       await I.see('Any cheques or transfers should be clear in your account.');
       await I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
@@ -572,7 +572,7 @@ class ResponseToDefence {
     I.see('If Sir John Doe signs the settlement agreement but breaks the terms');
     I.see('you can request a County Court Judgment (CCJ) by signing in to your account.');
     I.see('After you\'ve requested a CCJ you can ask the court to enforce payment.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -588,7 +588,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -599,7 +599,7 @@ class ResponseToDefence {
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against the defendant.');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -693,7 +693,7 @@ class ResponseToDefence {
   async verifyDefendantsResponseForRejection() {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
-    I.see('Mrs Jane Doe has rejected the claim.');
+    I.see('has rejected the claim.');
     I.see('Their defence','h2');
     I.see('Why they disagree with the claim?','h3');
     I.see('Test reason');
@@ -942,7 +942,7 @@ class ResponseToDefence {
     I.waitForContent('The court will consider both parties\' circumstances when deciding where to hold the hearing.',60);
     I.see('You can ask for the hearing to be held at a specific court,');
     I.see('Select a court');
-    I.selectOption('select[name="courtLocation"]', 'Barnet Civil And Family Courts Centre - St Mary\'s Court, Regents Park Road - N3 1BQ');
+    I.selectOption('select[name="courtLocation"]', 'Barnsley Law Courts - The Court House, Westgate - S70 2DW');
     I.see('Tell us why you want the hearing to be held at this court');
     I.fillField('#reason', 'nearest location');
     await I.click(paths.buttons.save_and_continue);
@@ -1099,7 +1099,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim has now ended. We\'ve emailed Sir John Doe to tell them.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1108,7 +1108,7 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1118,7 +1118,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1128,7 +1128,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1139,7 +1139,7 @@ class ResponseToDefence {
     I.see('What happens next');
     I.see('A mediation appointment will now be arranged by the Small Claims Mediation Service.');
     I.see('within the next 28 days.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 

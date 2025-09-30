@@ -29,4 +29,6 @@ export class CaseProgression{
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
   courtOfficerOrder?: CaseDocument;
+  courtOfficersOrders?: FinalOrderDocumentCollection[];
+
 }

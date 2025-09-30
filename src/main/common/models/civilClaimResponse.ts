@@ -89,7 +89,9 @@ import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDiscl
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
+import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
 
 export class CivilClaimResponse {
   id: string;
@@ -286,6 +288,8 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
   claimFee?:CCDClaimFee;
+  fixedCosts?:CcdFixedCosts;
+  ccjJudgmentFixedCostAmount?: string;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
@@ -323,9 +327,11 @@ export interface CCDClaim extends ClaimUpdate {
   repaymentSummaryObject?:string;
   joJudgementByAdmissionIssueDate?: Date;
   joDJCreatedDate?: Date;
+  uiStatementOfTruth?: CcdStatementOfTruth;
   //Query management
-  qmApplicantCitizenQueries?: CaseQueries;
-  qmRespondentCitizenQueries?: CaseQueries;
+  queries?: CaseQueries;
+  previousCCDState?: string;
+  courtOfficersOrders?: FinalOrderDocumentCollection[];
 }
 
 export interface ClaimFeeData {

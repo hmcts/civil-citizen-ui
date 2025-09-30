@@ -438,6 +438,11 @@ import qmInformationController from 'routes/features/queryManagement/qmInformati
 import createQueryController from 'routes/features/queryManagement/createQueryController';
 import createQueryCheckYourAnswerController from 'routes/features/queryManagement/createQueryCheckYourAnswerController';
 import qmConfirmationController from 'routes/features/queryManagement/qmConfirmationController';
+import sendFollowUpQueryController from 'routes/features/queryManagement/sendFollowUpQueryController';
+import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueriesController';
+import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
+import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
+import shareQueryConfirmationController from 'routes/features/queryManagement/shareQueryConfirmationController';
 
 export default [
   homeController,
@@ -791,4 +796,9 @@ export default [
   qmConfirmationController,
   createQueryCheckYourAnswerController,
   createQueryController,
+  qmViewQueriesController,
+  sendFollowUpQueryController,
+  qmViewQueryDetailsController,
+  claimantTelephoneMediationController,
+  shareQueryConfirmationController,
 ];

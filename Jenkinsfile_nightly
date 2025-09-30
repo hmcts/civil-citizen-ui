@@ -3,27 +3,42 @@
 properties([
     // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
     pipelineTriggers([cron('H 12 * * 1-5')]),
+    copyArtifactPermission('/HMCTS_a_to_c_Nightly/civil-citizen-ui/*'),
     parameters([
-        string(name: 'ENVIRONMENT', defaultValue: 'aat', description: 'Environment to test'),
-        string(name: 'TEST_URL', defaultValue: 'https://civil-citizen-ui.aat.platform.hmcts.net', description: 'The URL you want to run tests against'),
-        string(name: 'EXUI_URL', defaultValue: 'https://manage-case.aat.platform.hmcts.net',
-          description: 'The URL you want to run the full functional tests against'),
-        string(name: 'IDAM_API_URL', defaultValue: 'https://idam-api.aat.platform.hmcts.net',
-          description: 'The URL of idam api'),
-        string(name: 'IDAM_WEB_URL', defaultValue: 'https://idam-web-public.aat.platform.hmcts.net',
-          description: 'The URL of idam web'),
-        string(name: 'DM_STORE_URL', defaultValue: 'http://dm-store-aat.service.core-compute-aat.internal',
-          description: 'The URL of dm store'),
-        string(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', defaultValue: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-          description: 'The URL of service auth provider'),
-        string(name: 'CCD_DATA_STORE_URL', defaultValue: 'http://ccd-data-store-api-aat.service.core-compute-aat.internal',
-          description: 'The URL of ccd data store'),
-        string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-aat.service.core-compute-aat.internal',
-          description: 'The URL of civil service'),
-        string(name: 'CIVIL_GENERAL_APPLICATIONS_URL', defaultValue: 'http://civil-general-applications-aat.service.core-compute-aat.internal',
-          description: 'The URL of general applications'),
-        string(name: 'AAC_API_URL', defaultValue: 'http://aac-manage-case-assignment-aat.service.core-compute-aat.internal',
-          description: 'The URL of AAC service'),
+      choice(name: 'FORCE_GREEN_BUILD', choices: ['false', 'true'], 
+        description: 'Should force pipeline to go green by not running any functional tests'),
+      choice(name: 'RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES', choices: ['false', 'true'], 
+        description: 'Runs the failed test files and test files that were not executed, contained within the \'testFilesReport.json\', from the latest previous pipeline run'),
+      choice(name: 'ENVIRONMENT', choices: ['aat', 'demo', 'preview'],
+        description: 'Environment to test'), 
+      choice(name: 'TEST_URL', choices: ['https://civil-citizen-ui.aat.platform.hmcts.net', 'https://moneyclaims.demo.platform.hmcts.net'], 
+        description: 'The URL you want to run tests against'),
+      choice(name: 'EXUI_URL', 
+        choices: [
+                    'https://manage-case.aat.platform.hmcts.net', 
+                    'https://manage-case.demo.platform.hmcts.net', 
+                    'https://manage-case-int1.demo.platform.hmcts.net', 
+                    'https://manage-case-int2.demo.platform.hmcts.net',
+                    'https://manage-case-wa-int.demo.platform.hmcts.net',
+                    'https://manage-case-caa-assigned-case-view.demo.platform.hmcts.net'
+                  ],
+        description: 'The URL you want to run the full functional tests against'),
+      choice(name: 'IDAM_API_URL', choices: ['https://idam-api.aat.platform.hmcts.net', 'https://idam-api.demo.platform.hmcts.net'], 
+        description: 'The URL of idam api'),
+      choice(name: 'IDAM_WEB_URL', choices: ['https://idam-web-public.aat.platform.hmcts.net', 'https://idam-web-public.demo.platform.hmcts.net'],
+        description: 'The URL of idam web'),
+      choice(name: 'DM_STORE_URL', choices: ['http://dm-store-aat.service.core-compute-aat.internal', 'http://dm-store-demo.service.core-compute-demo.internal'], 
+        description: 'The URL of dm store'),
+      choice(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', choices: ['http://rpe-service-auth-provider-aat.service.core-compute-aat.internal', 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal'], 
+        description: 'The URL of service auth provider'),
+      choice(name: 'CCD_DATA_STORE_URL', choices: ['http://ccd-data-store-api-aat.service.core-compute-aat.internal', 'http://ccd-data-store-api-demo.service.core-compute-demo.internal'], 
+        description: 'The URL of ccd data store'),
+      choice(name: 'CIVIL_SERVICE_URL', choices: ['http://civil-service-aat.service.core-compute-aat.internal', 'http://civil-service-demo.service.core-compute-demo.internal'],
+        description: 'The URL of civil service'),
+      choice(name: 'CIVIL_GENERAL_APPLICATIONS_URL', choices: ['http://civil-general-applications-aat.service.core-compute-aat.internal', 'http://civil-general-applications-demo.service.core-compute-demo.internal'],
+        description: 'The URL of GA service'),
+      choice(name: 'AAC_API_URL', choices: ['http://aac-manage-case-assignment-aat.service.core-compute-aat.internal', 'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal'],
+        description: 'The URL of case assignment service'),
     ])
 ])
 
@@ -46,6 +61,21 @@ static Map<String, Object> secret(String secretName, String envVariable) {
   ]
 }
 
+def copyPrevFailedAndNotExecutedTestFilesJson() {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts projectName: env.JOB_NAME, selector: specific("${buildNumber}"), filter: "test-results/functional/testFilesReport.json"
+      buildFound = true
+    } catch (Exception error) {
+      echo "artifact not found: " + error.toString()
+      buildNumber--
+    }
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
@@ -66,6 +96,8 @@ def secrets = [
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withNightlyPipeline(type, product, component) {
+  env.FORCE_GREEN_BUILD=params.FORCE_GREEN_BUILD
+  env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES=params.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES
   env.TEST_URL = params.TEST_URL
   env.URL = params.EXUI_URL
   env.DM_STORE_URL=params.DM_STORE_URL
@@ -81,17 +113,29 @@ withNightlyPipeline(type, product, component) {
   ])
   loadVaultSecrets(secrets)
 
-  enableCrossBrowserTest()
+  boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean();
+  boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean();
+
+  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+    enableCrossBrowserTest()
+
+    afterAlways('crossBrowserTest') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+      env.IS_CROSSBROWSER = false
+    }
+  }
 
   enableFullFunctionalTest(200)
 
-  afterAlways('fullFunctionalTest') {
-    archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/functionalTests/test-results/functional/**/*'
-  }
+  if(!forceGreenBuild) {
+    before('fullFunctionalTest') {
+      if(runPrevFailedAndNotExecutedTestFiles) {
+        copyPrevFailedAndNotExecutedTestFilesJson()
+      }
+    }
 
-  afterAlways('crossBrowserTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-    env.IS_CROSSBROWSER = false
+    afterAlways('fullFunctionalTest') {
+      archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+    }
   }
 }

@@ -20,6 +20,7 @@ import {
   ClaimAmountBreakup,
   ClaimantMediationLip,
   ClaimFee,
+  FixedCosts,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
@@ -117,6 +118,8 @@ export class Claim {
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
+  fixedCosts?: FixedCosts;
+  ccjJudgmentFixedCostAmount?: string;
   specClaimTemplateDocumentFiles?: Document;
   caseManagementLocation?: CaseManagementLocation;
   specParticularsOfClaimDocumentFiles?: Document;
@@ -195,11 +198,12 @@ export class Claim {
   respondent1NoticeOfDiscontinueAllPartyViewDoc?: CaseDocument;
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
+  queries?: CaseQueries;
+  previousCCDState?: string;
+  preTranslationDocumentType?: PreTranslationDocumentType;
+
   // Index signature to allow dynamic property access
   [key: string]: any;
-  //Query management
-  qmApplicantLipQueries?: CaseQueries;
-  qmDefendantLipQueries?: CaseQueries;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -506,7 +510,12 @@ export class Claim {
       });
       return djDoc.value;
     }
-
+    if (documentType === DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT) {
+      return this.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc;
+    }
+    if (documentType === DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT) {
+      return this.respondent1NoticeOfDiscontinueAllPartyViewDoc;
+    }
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
@@ -943,6 +952,10 @@ export class Claim {
     return this.ccdState === CaseState.CASE_SETTLED;
   }
 
+  isCaseDiscontinued() {
+    return this.ccdState === CaseState.CASE_DISCONTINUED ;
+  }
+
   isDefendantAgreedForMediation() {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
@@ -1107,11 +1120,17 @@ export class Claim {
 
   isAnyPartyBilingual() : boolean {
     return this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH
-      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH';
+      || this.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'BOTH'
+      || this.respondent1LiPResponse?.respondent1ResponseLanguage === 'WELSH';
   }
 }
 
 export interface StatementOfTruth {
   name?: string;
   role?: string;
+}
+
+export enum PreTranslationDocumentType {
+  HEARING_NOTICE = 'HEARING_NOTICE',
 }

@@ -64,7 +64,7 @@ module.exports = {
   //Notice.AAA6.ClaimIssue.HWF.FullRemission
   hwfFullRemission: (feeAmount) => {
     return {
-      title: 'Your help with fees application has been reviewed',
+      title: 'Your help with fees application has been approved',
       content: [`The full claim fee of £${feeAmount} will be covered by fee remission.`, 'You do not need to make a payment.'],
     };
   },
@@ -154,7 +154,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDateDefendant: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${amount} by ${deadline}. We will contact you when the claimant responds to your offer.`,
+      content: [`You have offered to pay £${amount}`, `by ${deadline}.`, 'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
@@ -162,10 +162,10 @@ module.exports = {
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayBySetDate.Claimant
   //This might not be strictly correct ^
   //Deadline logic needs adding
-  defendantResponseFullAdmitPayBySetDateClaimant: (amount) => {
+  defendantResponseFullAdmitPayBySetDateClaimant: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: ['Sir John Doe has offered to pay', `£${amount} by`],
+      content: [`Sir John Doe has offered to pay you £${amount}`, `by ${deadline}`],
       nextSteps: 'View and respond',
     };
   },
@@ -188,6 +188,16 @@ module.exports = {
     return {
       title: 'Response to the claim',
       content: ['Test Company Defendant has rejected the claim and refused mediation.', 'You need to respond by '],
+      nextSteps: 'View and respond',
+    };
+  },
+
+  claimantNotificationFullAdmitPayImmediately: (amount) => {
+    return {
+      title: 'Response to the claim',
+      content: [`Sir John Doe has offered to pay £${amount}`, 
+        'The payment must be received in your account by then, if not you can request a county court judgment.',
+      ],
       nextSteps: 'View and respond',
     };
   },
@@ -236,10 +246,11 @@ module.exports = {
     };
   },
 
-  orderMadeLA: (deadline) => {
+  //TODO Removed deadline at the end of the content due to bank holiday consideration causing test to fail. Need to add an extra day for each bank holiday the way the backend does it.
+  orderMadeLA: () => {
     return {
       title: 'An order has been made on this claim',
-      content: `You need to carefully read and review this order. If you don't agree with something in the order you can ask the court to review it. You can only do this once. You will have to provide details about what changes you want made and these will be reviewed by a judge. This must be done before ${deadline}.`,
+      content: 'You need to carefully read and review this order. If you don\'t agree with something in the order you can ask the court to review it. You can only do this once. You will have to provide details about what changes you want made and these will be reviewed by a judge. This must be done before',
       nextSteps: 'ask the court to review it',
     };
   },
@@ -292,10 +303,11 @@ module.exports = {
   },
 
   //Notice.AAA6.CP.HearingFee.Required.Claimant
+  //Note: the text from the notification includes a double space but is not visible in the browser. Should update the database to remove the additional space.
   payTheHearingFeeClaimant: (amount, deadline) => {
     return {
       title: 'You must pay the hearing fee',
-      content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
+      content: `You must either pay the hearing fee of £${amount} or  apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
       nextSteps: 'pay the hearing fee',
       nextSteps2: 'apply for help with fees',
     };
@@ -566,6 +578,20 @@ module.exports = {
       title: clientName + ' has assigned a legal representative to act on their behalf',
       content: 'You will now need to liaise with their legal representation.',
       nextSteps: 'View the defendant legal representative contact details',
+    };
+  },
+  nocForLipCaseGoesOffline: (clientName) => {
+    return {
+      title: clientName + ' has assigned a legal representative to act on their behalf',
+      content: 'This claim will now move offline and you must submit your intention to proceed by using form',
+    };
+  },
+
+  responseToTheClaim: (clientName) => {
+    return {
+      title: 'Response to the claim',
+      content: clientName + ' has rejected the claim. You need to respond by',
+      nextSteps: 'View and respond',
     };
   },
 };

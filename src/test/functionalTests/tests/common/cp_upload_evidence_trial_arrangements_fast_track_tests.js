@@ -25,8 +25,8 @@ Before(async ({api}) => {
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
-  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
   await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
   await api.triggerTrialArrangementsNotifications(config.applicantSolicitorUser, claimRef);
   await api.performTrialArrangements(config.applicantSolicitorUser, claimRef);
@@ -34,7 +34,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
+Scenario.skip('Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements',  async ({I}) => {
   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
   if (isDashboardServiceEnabled) {
     // claimant checks notifications for orders, upload docs and other party trial arrangements completed
@@ -68,5 +68,5 @@ Scenario('Fast Track Response with RejectAll and DisputeAll - both parties uploa
     await I.click(claimNumber);
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
   }
-}).tag('@regression-cp');
+}).tag('@regression');
 

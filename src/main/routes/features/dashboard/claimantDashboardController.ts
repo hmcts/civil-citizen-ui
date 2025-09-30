@@ -22,7 +22,7 @@ import {
   isCaseProgressionV1Enable,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled,
+  isQueryManagementEnabled, isWelshEnabledForMainCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -79,7 +79,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
-    const disableSendMessage = !claim.hasClaimTakenOffline() && !claim.hasClaimBeenDismissed();  
     const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
       = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
@@ -90,29 +89,69 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         req.session.dashboard.taskIdHearingUploadDocuments = task.id;
       }
     });
+      if(claimId === 'draft') {
+        caseRole = ClaimantOrDefendant.CLAIMANT;
+        claim = await getClaimById(userId, req, true);
+        dashboardId = userId;
+      } else {
+        claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+        caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
+        dashboardId = claimId;
+        claimIdPrettified = caseNumberPrettify(claimId);
+        claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
+        if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+        } else if(claim?.respondentSolicitorDetails) {
+          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
+        }
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
+      }
+      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+      const caseProgressionEnabled = await isCaseProgressionV1Enable();
+      const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
+      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
+      claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
+      const isGAFlagEnable = await isGaForLipsEnabled();
+      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
+      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
+        = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
+      const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
+      hearing.forEach((task) => {
+        if (task.taskNameEn.search(HearingUploadDocuments)>0){
+          req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+          req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+        }
+      });
+      const welshEnabled = await isWelshEnabledForMainCase();
+      const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
 
-    res.render(claimantDashboardViewPath, {
-      claim: claim,
-      claimId,
-      claimIdPrettified,
-      claimAmountFormatted,
-      dashboardTaskList: dashboard,
-      dashboardNotifications,
-      iWantToTitle,
-      iWantToLinks,
-      helpSupportTitle,
-      helpSupportLinks,
-      disableSendMessage,
-      lang: lng,
-      pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
-      isQMFlagEnabled,
-    });
+      res.render(claimantDashboardViewPath, {
+        claim: claim,
+        claimId,
+        claimIdPrettified,
+        claimAmountFormatted,
+        dashboardTaskList: dashboard,
+        dashboardNotifications,
+        iWantToTitle,
+        iWantToLinks,
+        helpSupportTitle,
+        helpSupportLinks,
+        lang: lng,
+        pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
+        isQMFlagEnabled,
+        showWelshPartyBanner,
+        showErrorAwaitingTranslation,
+      });
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||

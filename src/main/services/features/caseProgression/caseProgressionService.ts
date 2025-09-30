@@ -224,7 +224,7 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
-  formObj.typeOfDocument = request['typeOfDocument'].trim();
+  formObj.typeOfDocument = typeof request['typeOfDocument'] === 'string' ? request['typeOfDocument'].trim() : '';
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }

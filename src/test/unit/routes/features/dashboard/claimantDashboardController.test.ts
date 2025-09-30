@@ -29,6 +29,7 @@ import { GaServiceClient } from 'client/gaServiceClient';
 import {ApplicationResponse, CCDApplication} from 'common/models/generalApplication/applicationResponse';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -528,6 +529,11 @@ describe('claimant Dashboard Controller', () => {
         jest
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
+        app.locals = {
+          showCreateQuery : true,
+          isQMFlagEnabled : true,
+          disableSendMessage: true,
+        };
 
         await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -538,6 +544,42 @@ describe('claimant Dashboard Controller', () => {
           expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE'));
         });
       });
+    });
+  });
+
+  it('should show welsh party banner', async () => {
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.ccdState = CaseState.CASE_ISSUED;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
+    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
+
+    await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+    });
+  });
+
+  it('should not show welsh party banner if Welsh feature disabled', async () => {
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.ccdState = CaseState.CASE_ISSUED;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
+    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(false);
+
+    await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
     });
   });
 

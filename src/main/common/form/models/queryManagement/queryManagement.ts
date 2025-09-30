@@ -2,6 +2,7 @@ import {IsDefined} from 'class-validator';
 import {ValidationArgs} from 'form/models/genericForm';
 import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
 import {CreateQuery} from 'models/queryManagement/createQuery';
+import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 
 export class Hint {
   text: string;
@@ -93,10 +94,12 @@ export enum QualifyingQuestionTypeOption {
   CHANGE_THE_HEARING_DATE='CHANGE_THE_HEARING_DATE',
   CHANGE_SOMETHING_ABOUT_THE_HEARING='CHANGE_SOMETHING_ABOUT_THE_HEARING',
   ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING='ASK_FOR_HELP_AND_SUPPORT_DURING_MY_HEARING',
+  GA_OFFLINE='GA_OFFLINE',
 }
 
 export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
   qualifyingQuestion : QualifyingQuestion;
   createQuery: CreateQuery;
+  sendFollowUpQuery: SendFollowUpQuery;
 }
