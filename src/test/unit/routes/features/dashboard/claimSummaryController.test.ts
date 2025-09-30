@@ -639,7 +639,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
       isWelshEnabledForMainCaseMock.mockResolvedValue(true);
 
@@ -658,7 +657,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
       isWelshEnabledForMainCaseMock.mockResolvedValue(false);
 

@@ -555,7 +555,6 @@ describe('claimant Dashboard Controller', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(claim);
-    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
     jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
 
@@ -573,7 +572,6 @@ describe('claimant Dashboard Controller', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(claim);
-    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
     jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(false);
 
