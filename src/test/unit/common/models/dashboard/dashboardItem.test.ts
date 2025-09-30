@@ -42,7 +42,7 @@ describe('Dashboard Items', ()=> {
       //When
       const href = ccdClaimantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimant');
+      expect(href).toEqual( '/dashboard/1/claimantNewDesign');
     });
 
     it('should translate claim to dashboard item when claim is not empty', () => {
@@ -50,7 +50,7 @@ describe('Dashboard Items', ()=> {
       const claim = new Claim();
       claim.draftClaimCreatedAt= new Date();
       //When
-      const item = toDraftClaimDashboardItem(claim, true);
+      const item = toDraftClaimDashboardItem(claim);
       //Then
       expect(item).not.toBeUndefined();
     });
@@ -59,14 +59,14 @@ describe('Dashboard Items', ()=> {
       //Given
       const claim = new Claim();
       //When
-      const item = await toDraftClaimDashboardItem(claim, true);
+      const item = await toDraftClaimDashboardItem(claim);
       //Then
       expect(item).toBeUndefined();
     });
 
     it('should return undefined when claim is undefined', async () => {
       //When
-      const item = await toDraftClaimDashboardItem(undefined, true);
+      const item = await toDraftClaimDashboardItem(undefined);
       //Then
       expect(item).toBeUndefined();
     });
@@ -149,26 +149,15 @@ describe('Dashboard Items', ()=> {
   });
 
   describe('Dashboard claimant item', ()=>{
-    const ocmcDefendantClaim = new DashboardClaimantItem();
-    ocmcDefendantClaim.claimId = '1';
-    ocmcDefendantClaim.ocmc = true;
-
     const ccdDefendantClaim = new DashboardClaimantItem();
     ccdDefendantClaim.claimId = '1';
     ccdDefendantClaim.ocmc = false;
-
-    it('should return correct url for ocmc claim', ()=> {
-      //When
-      const href = ocmcDefendantClaim.getHref();
-      //Then
-      expect(href).toEqual(ocmcBaseUrl + '/dashboard/1/claimant');
-    });
 
     it('should return correct url for ccd claims', ()=> {
       //When
       const href = ccdDefendantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimant');
+      expect(href).toEqual( '/dashboard/1/claimantNewDesign');
     });
 
     it('should return translated status for claim', () => {

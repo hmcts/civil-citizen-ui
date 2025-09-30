@@ -17,11 +17,7 @@
 }) %}
 
 {% set SUB_TITLE %}
-    {% if isReleaseTwoEnabled %}
-        {{ t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE_R2') }}
-    {% else %}
-        {{ t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE', {  claimantName : claimantName}) | safe }}
-    {% endif %}
+  {{ t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE_R2') }}
 {% endset %}
 
 {% block content %}

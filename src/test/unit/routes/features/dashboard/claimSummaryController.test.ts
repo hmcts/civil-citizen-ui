@@ -41,7 +41,6 @@ const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
-const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
 const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
@@ -426,7 +425,6 @@ describe('Claim Summary Controller Defendant', () => {
           ...claim.case_data,
         },
       };
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
@@ -455,7 +453,6 @@ describe('Claim Summary Controller Defendant', () => {
           ...claim.case_data,
         },
       };
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
@@ -550,7 +547,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
@@ -583,7 +579,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
@@ -607,7 +602,6 @@ describe('Claim Summary Controller Defendant', () => {
     describe.each(testCases)('Query management dashboard links', (testCase) => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
         jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
-        isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
         isGAForLiPEnabledMock.mockResolvedValue(true);
         isDashboardEnabledForCase.mockResolvedValue(true);
         const claim = new Claim();
@@ -645,7 +639,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
       isWelshEnabledForMainCaseMock.mockResolvedValue(true);
 
@@ -664,7 +657,6 @@ describe('Claim Summary Controller Defendant', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
       isWelshEnabledForMainCaseMock.mockResolvedValue(false);
 

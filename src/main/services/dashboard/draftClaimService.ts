@@ -1,10 +1,8 @@
-import {isCUIReleaseTwoEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
-import config from 'config';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
-import {getOcmcDraftClaims} from 'client/legacyDraftStoreClient';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-
-const ocmcBaseUrl = config.get<string>('services.cmc.url');
+import {
+  BASE_ELIGIBILITY_URL,
+} from 'routes/urls';
 
 export interface DraftClaimData {
    claimCreationUrl: string;
@@ -12,27 +10,15 @@ export interface DraftClaimData {
 }
 
 export const getDraftClaimData = async (userToken: string, userId:string):Promise<DraftClaimData> => {
-  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  const draftUrl = createDraftClaimUrl(isReleaseTwoEnabled);
-  const draftClaim = await getDraftClaim(userToken, userId, isReleaseTwoEnabled);
+  const draftUrl = BASE_ELIGIBILITY_URL;
+  const draftClaim = await getDraftClaim(userToken, userId);
   return {
     claimCreationUrl: draftUrl,
     draftClaim: draftClaim,
   };
 };
 
-const createDraftClaimUrl =  (isReleaseTwoEnabled : boolean):string => {
-  const eligibility = '/eligibility';
-  if(isReleaseTwoEnabled) {
-    return eligibility;
-  }
-  return `${ocmcBaseUrl}/eligibility`;
-};
-
-const getDraftClaim = async (userToken: string, userId: string, isReleaseTwoEnabled : boolean): Promise<DashboardClaimantItem> => {
-  if(isReleaseTwoEnabled) {
-    const claim = await getCaseDataFromStore(userId, true);
-    return toDraftClaimDashboardItem(claim, isReleaseTwoEnabled);
-  }
-  return await getOcmcDraftClaims(userToken);
+const getDraftClaim = async (userToken: string, userId: string): Promise<DashboardClaimantItem> => {
+  const claim = await getCaseDataFromStore(userId, true);
+  return toDraftClaimDashboardItem(claim);
 };
