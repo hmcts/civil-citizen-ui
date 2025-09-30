@@ -35,9 +35,6 @@ describe('GA submission confirmation controller', () => {
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isCoSCEnabled').mockResolvedValue(true);
-    });
     it('should return cosc ga submit confirmation page', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
