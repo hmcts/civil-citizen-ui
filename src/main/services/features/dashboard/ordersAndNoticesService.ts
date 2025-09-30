@@ -14,7 +14,6 @@ import { documentIdExtractor } from 'common/utils/stringUtils';
 import {
   isCaseProgressionV1Enable,
   isCaseWorkerEventsEnabled,
-  isCoSCEnabled,
   isGaForLipsEnabled,
   isWelshEnabledForMainCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
@@ -79,7 +78,6 @@ export const getClaimantDocuments = async (
 
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
-  const isCoSCEnabledValue = await isCoSCEnabled();
   const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const defendantDocumentsArray: DocumentInformation[] = [];
@@ -98,9 +96,7 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
   }
   // Documents for LR only
   defendantDocumentsArray.push(...getDefendantSupportDocument(claim, claimId, lang));
-  if(isCoSCEnabledValue) {
-    defendantDocumentsArray.push(...getCoSCDocument(claim, claimId, lang));
-  }
+  defendantDocumentsArray.push(...getCoSCDocument(claim, claimId, lang));
   return new DocumentsViewComponent('Defendant', defendantDocumentsArray);
 };
 
