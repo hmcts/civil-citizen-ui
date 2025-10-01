@@ -122,10 +122,6 @@ def setUrls(suffix){
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo', 'perftest', 'ithc']
 
-def checkForFullDeployLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
-}
-
 def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
 }
@@ -238,13 +234,5 @@ withPipeline(type, product, component) {
   afterSuccess('functionalTest:aat') {
     //createGithubRelease()
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-  }
-
-  before('akschartsinstall') {
-    onPR() {
-      if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
-        error("Build failed because there is no label full deploy.")
-      }
-    }
   }
 }
