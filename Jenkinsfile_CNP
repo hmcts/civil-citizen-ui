@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "revert-4878-DTSCCI-938"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
