@@ -1,5 +1,4 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 /**
  * Validates that the input value is in correct post code format
@@ -12,10 +11,6 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
 
   lengthError: boolean;
 
-  async getJudgmentOnlineFlag() {
-    return await isJudgmentOnlineLive();
-  }
-
   async validate(value: string) {
     const ukPostCodePattern = this.UK_POSTCODE_REGEX;
     const normalised = value?.toString().replace(/\s/g, '').toUpperCase();
@@ -23,11 +18,9 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       return true;
     }
 
-    if (await this.getJudgmentOnlineFlag()) { // Validate length only if isJudgmentOnlineLive flag is on
-      if (value.trim().length > 8) {
-        this.lengthError = true;
-        return false;
-      }
+    if (value.trim().length > 8) {
+      this.lengthError = true;
+      return false;
     }
     this.lengthError = false;
 
