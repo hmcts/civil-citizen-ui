@@ -45,9 +45,6 @@ import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumb
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {FlightDetails} from 'common/models/flightDetails';
-import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
-import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
-import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -2377,64 +2374,5 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(false);
     });
-  });
-});
-
-describe('isCcjComplete', () => {
-  const claim = new Claim();
-  it('should return no when ccj not completed and state is correct', () => {
-    //Given
-    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-    //When
-    const result = claim.isCCJComplete();
-    //Then
-    expect(result).toBe(false);
-  });
-  it('should return yes when ccj completed and state is correct', () => {
-    //Given
-    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.ccjRequest = new CCJRequest();
-    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-    //When
-    const result = claim.isCCJComplete();
-    //Then
-    expect(result).toBe(true);
-  });
-});
-
-describe('isCcjCompleteForJo', () => {
-  const claim = new Claim();
-  claim.claimantResponse = new ClaimantResponse();
-  claim.claimantResponse.ccjRequest = new CCJRequest();
-  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
-  it('should return true when ccj completed, state is correct and flag is on', async() => {
-    //Given
-    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    //When
-    const result = claim.isCCJCompleteForJo(true);
-    //Then
-    expect(result).toBe(true);
-  });
-  it('should return false when ccj completed, state is correct and flag is off', async() => {
-    //Given
-    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-    //When
-    const result = claim.isCCJCompleteForJo(false);
-    //Then
-    expect(result).toBe(false);
-  });
-  it('should return false when ccj completed, state is incorrect and flag is on', async() => {
-    //Given
-    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    //When
-    const result = claim.isCCJCompleteForJo(true);
-    //Then
-    expect(result).toBe(false);
   });
 });
