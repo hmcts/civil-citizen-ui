@@ -582,30 +582,10 @@ describe('claimant Dashboard Controller', () => {
       .mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
 
     await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
     });
   });
-
-  it('should not show welsh party banner if Welsh feature disabled', async () => {
-    const claim = new Claim();
-    claim.caseRole = CaseRole.CLAIMANT;
-    claim.ccdState = CaseState.CASE_ISSUED;
-    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-    jest
-      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-      .mockResolvedValueOnce(claim);
-    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(false);
-
-    await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-    });
-  });
-
 });

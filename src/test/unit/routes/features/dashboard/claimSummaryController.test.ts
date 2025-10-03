@@ -44,7 +44,6 @@ const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
-const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
   [{
@@ -647,31 +646,11 @@ describe('Claim Summary Controller Defendant', () => {
         .mockResolvedValueOnce(claim);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(true);
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-        });
-    });
-
-    it('should not show welsh party banner if Welsh feature disabled', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
-      isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(false);
-
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
         });
     });
   });
