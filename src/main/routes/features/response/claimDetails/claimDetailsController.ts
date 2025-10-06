@@ -27,6 +27,9 @@ const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-ne
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimDetailsController');
+
 claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const welshEnabled = await isWelshEnabledForMainCase();
@@ -56,6 +59,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
       showErrorAwaitingTranslation,
     });
   } catch (error) {
+    logger.error(`Error when GET : claim details - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

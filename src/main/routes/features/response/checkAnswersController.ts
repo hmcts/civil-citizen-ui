@@ -24,6 +24,9 @@ const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
 const checkAnswersController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersController');
+
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false, mintiApplicable = false) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang, carmApplicable, mintiApplicable);
@@ -44,6 +47,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
       const form = new GenericForm(getStatementOfTruth(claim));
       renderView(req, res, form, claim, carmApplicable, mintiApplicable);
     } catch (error) {
+      logger.error(`Error when getting check your answers -  ${error.message}`);
       next(error);
     }
   }) as RequestHandler);
@@ -62,15 +66,17 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
     if (form.hasErrors()) {
-
+      logger.info(`form has error -  ${req.params.id}`);
       renderView(req, res, form, claim);
     } else {
+      logger.info('form has no error');
       await saveStatementOfTruth(redisKey, form.model);
       await submitResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
+    logger.error(`Error when posting check your answers -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
