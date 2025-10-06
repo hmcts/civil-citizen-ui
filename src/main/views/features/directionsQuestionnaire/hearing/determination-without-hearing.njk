@@ -21,16 +21,12 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE') }}</h1>
-          <p class="govuk-body">
-            <span class="govuk-!-font-weight-bold">
-              {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING') }}
-            </span>
-            {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.IE') }}
-          </p>
-
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+
+            {% set description %}
+              {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING') }} {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.IE') }}
+            {% endset %}
 
             {% set noHtml %}
               {{ govukTextarea({
@@ -46,7 +42,7 @@
               }) }}
             {% endset %}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {noHtml: noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE'), form, description | trim, {noHtml: noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({
