@@ -657,7 +657,7 @@ module.exports = {
         },
         respondent1DQHearing: {
           unavailableDatesRequired: 'No',
-        }
+        },
       },
       VulnerabilityQuestions: {
         respondent1DQVulnerabilityQuestions: {

@@ -60,7 +60,7 @@ module.exports = {
             supportRequirementsAdditional: 'Additional support reasons',
           },respondent1DQHearing: {
             unavailableDatesRequired: 'No',
-          }
+          },
         },
         VulnerabilityQuestions: {
           respondent1DQVulnerabilityQuestions: {
