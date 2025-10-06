@@ -58,7 +58,9 @@ module.exports = {
           respondent1DQHearingSupport: {
             supportRequirements: 'Yes',
             supportRequirementsAdditional: 'Additional support reasons',
-          },
+          },respondent1DQHearing: {
+            unavailableDatesRequired: 'No',
+          }
         },
         VulnerabilityQuestions: {
           respondent1DQVulnerabilityQuestions: {
@@ -73,11 +75,6 @@ module.exports = {
         },
       },
       midEventData: {
-        StatementOfTruth: {
-          respondent1DQHearing: {
-            unavailableDatesRequired: 'No',
-          },
-        },
       },
     };
 
