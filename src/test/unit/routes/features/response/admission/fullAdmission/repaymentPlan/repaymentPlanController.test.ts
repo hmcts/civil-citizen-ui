@@ -2,7 +2,7 @@ import {app} from '../../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';

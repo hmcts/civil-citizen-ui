@@ -17,6 +17,9 @@ const phoneOrVideoHearingViewPath = 'features/directionsQuestionnaire/hearing/ph
 const dqPropertyName = 'phoneOrVideoHearing';
 const dqParentName = 'hearing';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('phoneOrVideoHearingController');
+
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(phoneOrVideoHearingViewPath, {form, pageTitle: 'PAGES.PHONE_OR_VIDEO_HEARING.PAGE_TITLE'});
 }
@@ -26,6 +29,7 @@ phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, (async (req, re
     const phoneOrVideoHearing = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
+    logger.error(`Error when GET : phone or video hearing - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -38,12 +42,14 @@ phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, (async (req: R
     phoneOrVideoHearing.validateSync();
 
     if (phoneOrVideoHearing.hasErrors()) {
+      logger.info('Phone or Video Hearing has error found');
       renderView(phoneOrVideoHearing, res);
     } else {
       await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), phoneOrVideoHearing.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL));
     }
   } catch (error) {
+    logger.error(`Error when POST : phone or video hearing - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

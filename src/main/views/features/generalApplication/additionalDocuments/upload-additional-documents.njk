@@ -23,7 +23,7 @@
     {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.ADDITIONAL_DOCUMENTS_CAPTION', 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOAD_DOCUMENTS_TITLE') }}
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.ADDITIONAL_DOCUMENTS_ROW1') }}</p>
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.ADDITIONAL_DOCUMENTS_ROW2') }}</p>
-    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE') }}</p>
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-inset-text">
@@ -45,7 +45,7 @@
                 id: idValue,
                 name: "selectedFile",
                 label: {
-                  html: '<strong>' + t('COMMON.UPLOAD_FILE_LABEL') +'</strong>'
+                  html: '<strong>' + t('COMMON.SAVE_FILE') +'</strong>'
                 },
                 errorMessage: { text: t(uploadErrorMsg) } if uploadErrorMsg else ''
              }) }}
@@ -53,7 +53,7 @@
               id: 'uploadFileButton',
               name: 'action',
               value: 'uploadButton',
-              text: t('COMMON.UPLOAD_FILE'),
+              text: t('COMMON.SAVE_FILE'),
               classes: "govuk-button--secondary govuk-!-margin-bottom-0"
             }) }}
         </div>

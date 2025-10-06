@@ -20,6 +20,9 @@ const cantAttendHearingInNext12MonthsController = Router();
 const dqPropertyName = 'cantAttendHearingInNext12Months';
 const dqParentName = 'hearing';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('cantAttendHearingInNext12MonthsController');
+
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/hearing/cant-attend-hearing-in-next-12-months', {form, pageTitle: 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE'});
 }
@@ -28,6 +31,7 @@ cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_U
   try {
     renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
   } catch (error) {
+    logger.error(`Error when GET : can attend hearing next 12 months - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -39,6 +43,7 @@ cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_
     form.validateSync();
 
     if (form.hasErrors()) {
+      logger.info(`Form has errors: ${form.hasErrors()}`);
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
@@ -46,6 +51,7 @@ cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
   } catch (error) {
+    logger.error(`Error when POST : can attend hearing next 12 months - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

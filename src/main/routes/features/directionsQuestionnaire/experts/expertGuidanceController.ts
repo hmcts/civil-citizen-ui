@@ -7,11 +7,15 @@ import {AppRequest} from 'common/models/AppRequest';
 
 const expertGuidanceController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('expertGuidanceController');
+
 expertGuidanceController.get(EXPERT_GUIDANCE_URL, (async (req, res, next) => {
   try {
     await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     res.render('features/directionsQuestionnaire/experts/expert-guidance', {pageTitle: 'PAGES.EXPERT_GUIDANCE.PAGE_TITLE'});
   } catch (error) {
+    logger.error(`Error when GET : expert guidance - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

@@ -3,7 +3,7 @@ import {
   UnavailableDates,
   UnavailableDateType,
 } from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
-import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
+import { getNumberOfUnavailableDays, getListOfUnavailableDate } from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 
 const singleDateMock: UnavailableDatePeriod = {
   from: new Date('2024-01-01T00:00:00.000Z'),
@@ -61,6 +61,10 @@ describe('unavailable dates calculation service test', () => {
       const result = getNumberOfUnavailableDays(unavailableDates);
       //Then
       expect(result).toBe(16);
+    });
+    it('should return empty set when unavailableDates is undefined', () => {
+      const result = getListOfUnavailableDate(undefined as any);
+      expect(result.size).toBe(0);
     });
   });
 });

@@ -20,6 +20,7 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
@@ -35,6 +36,7 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Se
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();

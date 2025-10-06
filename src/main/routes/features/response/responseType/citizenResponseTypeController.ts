@@ -19,6 +19,9 @@ import {AppRequest} from 'common/models/AppRequest';
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('citizenResponseTypeController');
+
 function renderView(form: GenericForm<CitizenResponseType>, res: Response, componentDetailItemsList?: ComponentDetailItems[]): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
@@ -34,6 +37,7 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, (async (req, res, n
     const componentDetailItemsList = getDetailItemsList(claim, lang);
     renderView(citizenResponseType, res, componentDetailItemsList);
   } catch (error) {
+    logger.error(`Error when GET : citizen response type - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -62,6 +66,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         }
       }
     } catch (error) {
+      logger.error(`Error when POST : citizen response type - ${error.message}`);
       next(error);
     }
   }) as RequestHandler);

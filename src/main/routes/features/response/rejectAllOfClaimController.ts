@@ -13,6 +13,9 @@ import {AppRequest} from 'common/models/AppRequest';
 const rejectAllOfClaimViewPath = 'features/response/reject-all-of-claim';
 const rejectAllOfClaimController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('rejectAllOfClaimController');
+
 rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = generateRedisKey(<AppRequest>req);
@@ -24,6 +27,7 @@ rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Reques
       claimantName: claim.getClaimantFullName(),
     });
   } catch (error) {
+    logger.error(`Error when getting rejecting all claims -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -37,12 +41,14 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Reque
     const form = new GenericForm(rejectAllOfClaim);
     form.validateSync();
     if (form.hasErrors()) {
+      logger.info(`form has error , claimId - ${claimId}`);
       res.render(rejectAllOfClaimViewPath, {
         form,
         rejectAllOfClaimType: RejectAllOfClaimType,
         claimantName: claim.getClaimantFullName(),
       });
     } else {
+      logger.info(`form has no error , claimId - ${claimId}`);
       if (req.body.option === RejectAllOfClaimType.DISPUTE) {
         rejectAllOfClaim.whyDoYouDisagree = new WhyDoYouDisagree();
         rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
@@ -55,6 +61,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Reque
       }
     }
   } catch (error) {
+    logger.error(`Error when posting rejecting all claims -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

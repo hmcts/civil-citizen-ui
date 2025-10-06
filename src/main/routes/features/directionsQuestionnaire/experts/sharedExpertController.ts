@@ -15,6 +15,9 @@ const sharedExpertController = Router();
 const dqPropertyName = 'sharedExpert';
 const dqParentName = 'experts';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('sharedExpertController');
+
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render('features/directionsQuestionnaire/experts/shared-expert', {form, pageTitle: 'PAGES.SHARED_EXPERT.TITLE'});
 }
@@ -23,6 +26,7 @@ sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {
   try {
     renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
   } catch (error) {
+    logger.error(`Error when GET : shared expert - ${error.message}`);
     next(error);
   }
 })as RequestHandler);
@@ -40,6 +44,7 @@ sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
     }
   } catch (error) {
+    logger.error(`Error when POST : shared expert - ${error.message}`);
     next(error);
   }
 })as RequestHandler);

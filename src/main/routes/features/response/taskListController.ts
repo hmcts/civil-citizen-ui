@@ -16,6 +16,9 @@ import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/lau
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('taskListController');
+
 taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next) => {
   try {
     const currentClaimId = req.params.id;
@@ -36,6 +39,7 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
     const responseDeadline = caseData.formattedResponseDeadline(lang);
     res.render(taskListViewPath, {taskLists, title, description, claim: caseData, claimDetailsUrl, responseDetailsUrl, responseDeadline});
   } catch (error) {
+    logger.error(`Error when getting task lists,  req.session.claimId  ${ req.session.claimId } -  ${error.message}`);
     next(error);
   }
 });

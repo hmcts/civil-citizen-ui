@@ -13,7 +13,14 @@
 {% endblock %}
 
 {% block nestedContent %}
-
+  {% set errors = "" %}
+  {% set  idValue = "selectedFile" %}
+  {% if form.hasErrors() %}
+    {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
+    {% if errors.fieldName != 'messageDetails' %}
+      {% set idValue = errors.fieldName %}
+    {% endif %}
+  {% endif %}
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
 
     {{ govukWarningText({
@@ -40,22 +47,25 @@
 
       <div class="govuk-inset-text">
         {{ govukFileUpload({
-          id: 'query-file-upload',
-          name: 'query-file-upload',
+          id: idValue,
+          name: "selectedFile",
           label: {
             text: t('PAGES.QM.FOLLOW_UP_QUERY.DOCUMENTS_TITLE'),
             classes: 'govuk-heading-s govuk-!-font-weight-bold'
           },
           hint: {
             html: t('PAGES.QM.FOLLOW_UP_QUERY.DOCUMENTS_HINT')
-          }
+          },
+          errorMessage: {
+            text: t(form.errorFor(idValue))
+          } if form.errorFor(idValue)
         }) }}
 
         {{ govukButton({
           id: 'fileUpload',
           name: 'action',
           value: 'uploadButton',
-          text: t('COMMON.UPLOAD_FILE'),
+          text: t('COMMON.SAVE_FILE'),
           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
         }) }}
       </div>

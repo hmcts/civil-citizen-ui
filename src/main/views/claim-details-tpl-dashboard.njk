@@ -5,7 +5,6 @@
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 {% from "./macro/newDashboarBack.njk" import back %}
-{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "./macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "./macro/error-summary.njk" import errorSummary %}
 
@@ -59,26 +58,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% if backLinkUrl %}
   {{ back(backLinkUrl, t, false, false) }}
 {% elseif dashboardUrl %}
-  {{ govukBreadcrumbs({
-    items: [
-      {
-        text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME'),
-        href: dashboardUrl
-      },
-      {
-        text: t(pageTitle)
-      }
-    ]
-  }) }}
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+      <ol class="govuk-breadcrumbs__list">
+        <li class="govuk-breadcrumbs__list-item">
+          <a class="govuk-breadcrumbs__link" href="{{dashboardUrl}}">{{t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')}}</a>
+        </li>
+        <li class="govuk-breadcrumbs__list-item">
+          {{t(pageTitle)}}
+        </li>
+      </ol>
+    </nav>
 {% elseif noCrumbs %}
 {% else %}
-    {{ govukBreadcrumbs({
-      items: [
-        {
-          text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')
-        }
-      ]
-    }) }}
+    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
+      <ol class="govuk-breadcrumbs__list">
+        <li class="govuk-breadcrumbs__list-item">
+          {{t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')}}
+        </li>
+      </ol>
+    </nav>
 {% endif %}
 {% endblock %}
 

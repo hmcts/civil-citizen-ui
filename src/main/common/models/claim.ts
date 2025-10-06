@@ -200,6 +200,8 @@ export class Claim {
   queryManagement?: QueryManagement;
   queries?: CaseQueries;
   previousCCDState?: string;
+  preTranslationDocumentType?: PreTranslationDocumentType;
+
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -1127,4 +1129,8 @@ export class Claim {
 export interface StatementOfTruth {
   name?: string;
   role?: string;
+}
+
+export enum PreTranslationDocumentType {
+  HEARING_NOTICE = 'HEARING_NOTICE',
 }

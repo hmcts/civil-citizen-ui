@@ -34,6 +34,7 @@ import {
   formatAmountTwoDecimalPlaces,
 } from 'services/translation/claim/moneyConversation';
 import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {CCDPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -45,7 +46,7 @@ function isClaimantWantToSettleTheClaim(claim: Claim) {
   }
 }
 
-export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantResponse => {
+export const translateClaimantResponseToCCD = (claim: Claim, respondToClaimAdmitPartLRspec?: CCDPayBySetDate): CCDClaimantResponse => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     applicant1AcceptAdmitAmountPaidSpec: toCCDYesNo(claim.claimantResponse?.hasPartAdmittedBeenAccepted?.option),
@@ -66,8 +67,8 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1PartAdmitIntentionToSettleClaimSpec: isClaimantWantToSettleTheClaim(claim),
     applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(claim.claimantResponse?.suggestedPaymentIntention?.paymentOption),
     applicant1FullDefenceConfirmAmountPaidSpec: (claim.isFullDefence()) ? toCCDYesNo(claim.claimantResponse?.hasDefendantPaidYou?.option) : undefined,
-    applicant1ProceedWithClaim : toCCDYesNo(claim.getIntentionToProceed()),
-    applicant1SettleClaim : toCCDYesNo(claim.hasClaimantNotSettled() ? YesNo.NO : YesNo.YES), // if method is true, claimant has NOT settled
+    applicant1ProceedWithClaim: toCCDYesNo(claim.getIntentionToProceed()),
+    applicant1SettleClaim: toCCDYesNo(claim.hasClaimantNotSettled() ? YesNo.NO : YesNo.YES), // if method is true, claimant has NOT settled
     applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: convertToPenceFromString(formatAmountTwoDecimalPlaces(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.paymentAmount)),
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),
@@ -77,5 +78,7 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     specApplicant1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
     specApplicant1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
     applicant1DQDefendantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.claimantResponse?.directionQuestionnaire?.hearing),
+    respondToClaimAdmitPartLRspec: respondToClaimAdmitPartLRspec,
   };
 };
+

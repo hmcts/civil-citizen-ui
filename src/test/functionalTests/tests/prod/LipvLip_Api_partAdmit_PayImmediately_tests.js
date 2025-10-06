@@ -16,6 +16,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims', async ({api}) =>
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   //Claimant Response - accept the part admit - settle the claim
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
@@ -29,6 +30,7 @@ Scenario('Response with PartAdmit-PayImmediately Fast Track @nightly', async ({a
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual);
   await api.waitForFinishedBusinessProcess();
+  await api.submitUploadTranslatedDoc('DEFENDANT_RESPONSE');
   //Claimant Response - reject the part admit - move case to judicial referral
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitImmediatePayment(claimRef, '569');

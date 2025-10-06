@@ -1,22 +1,17 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import RedisStore from 'connect-redis';
-import Redis from 'ioredis';
 import {app} from '../../../../../main/app';
-import {getClaimById, getRedisStoreForSession} from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {VIEW_DEFENDANT_INFO} from 'routes/urls';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
+jest.mock('../../../../../main/app/client/civilServiceClient');
 
 describe('View Defendant Information', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,14 +20,14 @@ describe('View Defendant Information', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (getRedisStoreForSession as jest.Mock).mockReturnValueOnce(new RedisStore({
-      client: new Redis(),
-    }));
+
   });
   it('should return contact defendant details from claim ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     jest.spyOn(launchDarkly, 'isDefendantNoCOnlineForCase').mockResolvedValue(false);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(caseData);
+
     await request(app)
       .get(VIEW_DEFENDANT_INFO)
       .expect((res) => {
@@ -59,7 +54,8 @@ describe('View Defendant Information', () => {
       },
       'orgName': 'Civil - Organisation 3',
     };
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(caseData);
     await request(app)
       .get(VIEW_DEFENDANT_INFO)
       .expect((res) => {
@@ -90,7 +86,8 @@ describe('View Defendant Information', () => {
       'PostTown': 'ABC',
       'AddressLine1': '26, SEATON DRIVE',
     };
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(caseData);
     await request(app)
       .get(VIEW_DEFENDANT_INFO)
       .expect((res) => {

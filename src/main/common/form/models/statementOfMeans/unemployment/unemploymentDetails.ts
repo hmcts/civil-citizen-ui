@@ -21,7 +21,7 @@ export class UnemploymentDetails {
     months: number;
 
   constructor(years?: string, months?: string) {
-    this.years = parseInt(years);
-    this.months = parseInt(months);
+    this.years = Number.parseInt(years);
+    this.months = Number.parseInt(months);
   }
 }

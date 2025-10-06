@@ -21,6 +21,9 @@ const permissionForExpertViewPath = 'features/directionsQuestionnaire/experts/pe
 const dqPropertyName = 'permissionForExpert';
 const dqParentName = 'experts';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('permissionForExpertController');
+
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(permissionForExpertViewPath, {form, pageTitle: 'PAGES.PERMISSION_FOR_EXPERT.TITLE'});
 }
@@ -30,6 +33,7 @@ permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, (async (req, res, n
     const permissionForExpert = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
     renderView(new GenericForm(permissionForExpert), res);
   } catch (error) {
+    logger.error(`Error when GET : permission for experts - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -49,6 +53,7 @@ permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, (async (req, res, 
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     }
   } catch (error) {
+    logger.error(`Error when POST : permission for experts - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

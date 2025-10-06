@@ -11,6 +11,14 @@
 {% endblock %}
 
 {% set refusalHtml %}
+{% if isGaNroEnabled %}
+  <p class="govuk-body"> {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED_NRO_P1') }}
+    <a class="govuk-link" href={{ applyGaApplication }} rel="noopener noreferrer">
+      {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED_NRO_P2') }}
+    </a>
+    {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED_NRO_P3') }}
+  </p>
+{% else %}
   {% set formLink = '<a href="https://www.gov.uk/government/publications/form-n244-application-notice"
   class="govuk-link" target="_blank" rel="noopener noreferrer">FORM_NAME</a>'
     | replace('FORM_NAME', t('PAGES.RESPONSE_DEADLINE_OPTIONS.FORM'))%}
@@ -37,6 +45,7 @@
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.CITY') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.POSTCODE') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}</p>
+  {% endif %}
 {% endset -%}
 
 {% set OPTION_AGREED %}

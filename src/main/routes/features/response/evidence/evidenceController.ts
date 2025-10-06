@@ -17,6 +17,9 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('evidenceController');
+
 function renderView(form: GenericForm<Evidence>, res: Response): void {
   res.render(evidenceViewPath, {form});
 }
@@ -30,6 +33,7 @@ evidenceController.get(CITIZEN_EVIDENCE_URL, (async (req, res, next: NextFunctio
     }
     renderView(new GenericForm<Evidence>(form), res);
   } catch (error) {
+    logger.error(`Error when GET : evidence - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -40,6 +44,7 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, (async (req: Request, res: Respons
     form = new GenericForm(new Evidence(req.body.comment, utilEvidence.transformToEvidences(req.body)));
     form.validateSync();
     if (form.hasErrors()) {
+      logger.info(`form has error - ${form.hasErrors()}`);
       renderView(form, res);
     } else {
       form = new GenericForm(new Evidence(req.body.comment, utilEvidence.removeEmptyValueToEvidences(req.body)));
@@ -47,6 +52,7 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, (async (req: Request, res: Respons
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
+    logger.error(`Error when POST : evidence - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

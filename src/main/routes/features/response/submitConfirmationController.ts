@@ -13,6 +13,9 @@ const submitConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('submitConfirmationController');
+
 submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
@@ -27,6 +30,7 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, (asy
       res.render('features/response/submit-confirmation', {claimNumber, confirmationContent, responseSubmitDate});
     }
   } catch (error) {
+    logger.error(`Error when getting submitting confirmation, req.params.id - ${req.params.id}, error -  ${error.message}`);
     next(error);
   }
 })as RequestHandler);

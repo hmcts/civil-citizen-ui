@@ -21,7 +21,7 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
       const property = validationArguments.constraints[0];
       const strictComparison = validationArguments.constraints[1];
       const propertyValue = (validationArguments.object as any)[property];
-      if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
+      if (propertyValue === undefined || isNaN(propertyValue) || !value || Number.isNaN(value)) {
         return true;
       }
       if (strictComparison){
