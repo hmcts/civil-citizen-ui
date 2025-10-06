@@ -9,6 +9,7 @@
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -17,12 +18,25 @@
           {{ errorSummary(form.getErrors(), t) }}
         {% endif %}
       </div>
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.TITLE')}}</h1>
+          <h1 class="govuk-heading-l">
+            {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.TITLE') }}
+          </h1>
+
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+
+            <div class="govuk-form-group{% if form.hasErrors('option') %} govuk-form-group--error{% endif %}">
+              <fieldset class="govuk-fieldset" aria-describedby="option-hint">
+                <legend class="govuk-fieldset__legend govuk-visually-hidden">
+                  {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.QUESTION') }}
+                </legend>
+                {{ yesNoRadioButton(t, 'option', 'option', '', form, '', { classes: 'govuk-radios--inline' }) }}
+              </fieldset>
+            </div>
+
             <div class="govuk-form-group">
               {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
               {{ contactUsForHelp(t) }}
