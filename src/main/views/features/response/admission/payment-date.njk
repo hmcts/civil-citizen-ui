@@ -34,13 +34,6 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {% call govukFieldset({
-             legend: {
-                text: t(title),
-                classes: "govuk-fieldset__legend--l",
-                isPageHeading: true
-             }
-          }) %}
           {% if insetText %}
             {{ govukInsetText({
               text: t(insetText)
@@ -58,6 +51,13 @@
                 type: "number",
                 inputmode: "numeric",
                 name: "date",
+                fieldset: {
+                  legend: {
+                    text: t(title),
+                    classes: "govuk-fieldset__legend--l",
+                    isPageHeading: true
+                  }
+                },
                 hint: {
                   text: hint
                 },
@@ -95,7 +95,6 @@
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
-            {% endcall %}
           </form>
         </div>
       </div>
