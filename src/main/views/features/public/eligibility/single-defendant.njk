@@ -19,16 +19,18 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{t('PAGES.ELIGIBILITY_SINGLE_DEFENDANT.TITLE')}}</h1>
+          <h1 class="govuk-heading-l">
+            {{ t('PAGES.ELIGIBILITY_SINGLE_DEFENDANT.TITLE') }}
+          </h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-             <fieldset class="govuk-fieldset" role="group">
-               <legend class="govuk-visually-hidden">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
                 {{ t('PAGES.ELIGIBILITY_SINGLE_DEFENDANT.QUESTION') }}
-                </legend>
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', classes: 'govuk-radios--inline'}) }}
+              </legend>
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', classes: 'govuk-radios--inline'}) }}
+            </fieldset>
             <div class="govuk-form-group">
-             </fieldset>
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
