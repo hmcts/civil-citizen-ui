@@ -29,7 +29,8 @@
 
             <div class="govuk-form-group">
               <fieldset class="govuk-fieldset" role="group" aria-describedby="known-amount-hint">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                {# Legend is visually hidden but accessible to screen readers #}
+                <legend class="govuk-visually-hidden">
                   {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.QUESTION') }}
                 </legend>
 
@@ -42,11 +43,12 @@
                     '',
                     { classes: 'govuk-radios--inline' }
                 ) }}
+
+                {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
               </fieldset>
             </div>
 
             <div class="govuk-form-group">
-              {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
               {{ contactUsForHelp(t) }}
             </div>
           </form>
