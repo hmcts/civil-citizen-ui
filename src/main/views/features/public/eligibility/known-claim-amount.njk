@@ -20,29 +20,31 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-        <fieldset class="govuk-fieldset" role="group" aria-describedby="known-amount-hint">
           <h1 class="govuk-heading-l">
             {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.TITLE') }}
           </h1>
+
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+
+            <fieldset class="govuk-fieldset" role="group">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.QUESTION') }}
+              </legend>
+
+              {{ yesNoRadioButton(
+                  t,
+                  'option',
+                  'option',
+                  '',
+                  form,
+                  '',
+                  { classes: 'govuk-radios--inline' }
+              ) }}
+            </fieldset>
+
             <div class="govuk-form-group">
-                <legend class="govuk-visually-hidden">
-                  {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.QUESTION') }}
-                </legend>
-                {{ yesNoRadioButton(
-                    t,
-                    'option',
-                    'option',
-                    '',
-                    form,
-                    '',
-                    { classes: 'govuk-radios--inline' }
-                ) }}
-                {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
-            </div>
-         </fieldset>
-            <div class="govuk-form-group">
+              {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
               {{ contactUsForHelp(t) }}
             </div>
           </form>
