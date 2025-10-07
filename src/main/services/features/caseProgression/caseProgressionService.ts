@@ -222,41 +222,32 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
-const CASE_DOCUMENT = 'caseDocument';
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
-  const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
-  formObj.typeOfDocument = typeof request['typeOfDocument'] === 'string' ? request['typeOfDocument'].trim() : '';
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
-  }
+  const formObj = createSectionWithDate(TypeOfDocumentSection, request);
+  formObj.typeOfDocument = toNonEmptyTrimmedString(request?.typeOfDocument);
+  assignCaseDocumentIfPresent(formObj, request);
   return formObj;
 };
 
 const bindRequestToReferredToInTheStatementSectionObj = (request: any): ReferredToInTheStatementSection => {
-  const formObj: ReferredToInTheStatementSection = new ReferredToInTheStatementSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
-  formObj.typeOfDocument = request['typeOfDocument'].trim();
-  formObj.witnessName = request['witnessName'] != null ? request['witnessName'].trim() : null;
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
-  }
+  const formObj = createSectionWithDate(ReferredToInTheStatementSection, request);
+  formObj.typeOfDocument = toNonEmptyTrimmedString(request?.typeOfDocument);
+  formObj.witnessName = toNonEmptyTrimmedString(request?.witnessName);
+  assignCaseDocumentIfPresent(formObj, request);
   return formObj;
 };
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
-  const formObj: WitnessSection = new WitnessSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
-  formObj.witnessName = request['witnessName'].trim();
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
-  }
+  const formObj = createSectionWithDate(WitnessSection, request);
+  formObj.witnessName = toNonEmptyTrimmedString(request?.witnessName);
+  assignCaseDocumentIfPresent(formObj, request);
   return formObj;
 };
 
 const bindRequestToWitnessSummarySectionObj = (request: any): WitnessSummarySection => {
-  const formObj: WitnessSummarySection = new WitnessSummarySection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
-  formObj.witnessName = request['witnessName'].trim();
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
-  }
+  const formObj = createSectionWithDate(WitnessSummarySection, request);
+  formObj.witnessName = toNonEmptyTrimmedString(request?.witnessName);
+  assignCaseDocumentIfPresent(formObj, request);
   return formObj;
 };
 
@@ -276,9 +267,7 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
 
 const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
-  }
+  assignCaseDocumentIfPresent(formObj, request);
   return formObj;
 };
 
@@ -292,3 +281,54 @@ export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim)
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
+
+function toNonEmptyTrimmedString(v: unknown): string {
+  return typeof v === 'string' ? v.trim() : '';
+}
+
+const parseCaseDocument = (request: any): CaseDocument | undefined => {
+  const CASE_DOCUMENT = 'caseDocument';
+  const rawCaseDoc = request?.[CASE_DOCUMENT];
+  if (rawCaseDoc === undefined || rawCaseDoc === null || rawCaseDoc === '') {
+    logger.error('Case document is missing');
+    return undefined;
+  }
+  if (typeof rawCaseDoc === 'string') {
+    try {
+      return JSON.parse(rawCaseDoc) as CaseDocument;
+    } catch {
+      logger.error('Error parsing case document');
+      return undefined;
+    }
+  }
+  return rawCaseDoc as CaseDocument;
+};
+
+type DateCtor<T> = new (day?: string, month?: string, year?: string) => T;
+
+interface DateParts {
+  day?: string;
+  month?: string;
+  year?: string;
+}
+
+const readDateParts = (request: unknown): DateParts => {
+  const dateFields = (request as any)?.dateInputFields ?? {};
+  const day = dateFields?.dateDay !== undefined ? String(dateFields.dateDay) : undefined;
+  const month = dateFields?.dateMonth !== undefined ? String(dateFields.dateMonth) : undefined;
+  const year = dateFields?.dateYear !== undefined ? String(dateFields.dateYear) : undefined;
+  return { day, month, year };
+};
+
+const createSectionWithDate = <T>(Ctor: DateCtor<T>, request: unknown): T => {
+  const { day, month, year } = readDateParts(request);
+  return new Ctor(day, month, year);
+};
+
+const assignCaseDocumentIfPresent = <T extends { caseDocument?: CaseDocument }>(target: T, request: unknown): void => {
+  const parsed = parseCaseDocument(request as any);
+  if (parsed) {
+    target.caseDocument = parsed;
+  }
+};
+
