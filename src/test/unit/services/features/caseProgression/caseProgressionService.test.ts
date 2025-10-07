@@ -15,7 +15,8 @@ import {
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
-
+import {getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
+import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -255,6 +256,92 @@ describe('case Progression service', () => {
 
       await expect(caseProgressionService.saveCaseProgression(MOCK_REQUEST, mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(REDIS_FAILURE);
+    });
+  });
+
+  describe('getUploadDocumentsForm', () => {
+    it('should correctly map sections from request body to UploadDocumentsUserForm object', () => {
+      const mockRequest = {
+        body: {
+          documentsForDisclosure: [{name: 'doc1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          disclosureList: [{file: 'file1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          witnessStatement: [{witnessName: 'statement1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          trialCaseSummary: [{file: 'caseSummary1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+
+        },
+      } as any;
+
+      const result = getUploadDocumentsForm(mockRequest);
+
+      expect(result).toBeInstanceOf(UploadDocumentsUserForm);
+      expect(result.documentsForDisclosure).toEqual([{
+        'dateInputFields': {
+          'date': new Date('2003-02-01T00:00:00.000Z'),
+          'dateDay': '1',
+          'dateMonth': '2',
+          'dateYear': '2003',
+        },
+        'typeOfDocument': '',
+      }]);
+      expect(result.disclosureList).toEqual([{}]);
+      expect(result.witnessStatement).toEqual([{
+        'dateInputFields': {
+          'date': new Date('2003-02-01T00:00:00.000Z'),
+          'dateDay': '1',
+          'dateMonth': '2',
+          'dateYear': '2003',
+        },
+        'witnessName': 'statement1',
+      }]);
+      expect(result.trialCaseSummary).toEqual([{}]);
+    });
+
+    it('should return an empty UploadDocumentsUserForm object when request body is empty', () => {
+      const mockRequest = {body: {}} as any;
+
+      const result = getUploadDocumentsForm(mockRequest);
+
+      expect(result).toBeInstanceOf(UploadDocumentsUserForm);
+      expect(result.documentsForDisclosure).toBeDefined();
+      expect(result.disclosureList).toBeDefined();
+      expect(result.witnessStatement).toBeDefined();
+      expect(result.witnessSummary).toBeDefined();
+      expect(result.trialCaseSummary).toBeDefined();
+    });
+
+    it('should handle undefined sections gracefully in the request body', () => {
+      const mockRequest = {
+        body: {
+          witnessSummary: undefined,
+          expertReport: [{report: 'report1'}],
+        },
+      } as any;
+
+      const result = getUploadDocumentsForm(mockRequest);
+
+      expect(result).toBeInstanceOf(UploadDocumentsUserForm);
+      expect(result.witnessSummary).toBeDefined();
+      expect(result.expertReport).toEqual([{
+        'dateInputFields': {},
+        'expertName': null,
+        'fieldOfExpertise': null,
+        'multipleExpertsName': null,
+        'otherPartyName': null,
+        'otherPartyQuestionsDocumentName': null,
+        'questionDocumentName': null}]);
+    });
+
+    it('should not mutate the original request object', () => {
+      const mockRequest = {
+        body: {
+          expertStatement: [{statement: 'expertStatement'}],
+        },
+      } as any;
+
+      const mockRequestClone = JSON.parse(JSON.stringify(mockRequest));
+
+      getUploadDocumentsForm(mockRequest);
+      expect(mockRequest.body).toEqual(mockRequestClone.body);
     });
   });
 });
