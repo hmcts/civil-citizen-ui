@@ -19,30 +19,56 @@
           {{ errorSummary(form.getErrors(), t) }}
         </div>
       {% endif %}
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
 
-            {% set description %}
-              {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING') }} {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.IE') }}
-            {% endset %}
+            <!-- Accessible grouping of question and Yes/No radios -->
+            <fieldset class="govuk-fieldset" role="group">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <h1 class="govuk-heading-l">
+                  {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE') }}
+                </h1>
+              </legend>
 
-            {% set noHtml %}
-              {{ govukTextarea({
-                name: "reasonForHearing",
-                id: "reasonForHearing",
-                value: form.model.reasonForHearing,
-                label: {
-                  text: t('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY')
-                },
-                errorMessage: {
-                  html: t(form.errorFor("reasonForHearing"))
-                } if form.hasFieldError("reasonForHearing")
-              }) }}
-            {% endset %}
+              <p class="govuk-body" id="determination-question-hint">
+                <span class="govuk-!-font-weight-bold">
+                  {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING') }}
+                </span>
+                {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.IE') }}
+              </p>
 
-            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE'), form, description | trim, {noHtml: noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+              {% set noHtml %}
+                {{ govukTextarea({
+                  name: "reasonForHearing",
+                  id: "reasonForHearing",
+                  value: form.model.reasonForHearing,
+                  label: {
+                    text: t('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY')
+                  },
+                  errorMessage: {
+                    html: t(form.errorFor("reasonForHearing"))
+                  } if form.hasFieldError("reasonForHearing")
+                }) }}
+              {% endset %}
+
+              {{ yesNoRadioButton(
+                t,
+                'option',
+                'option',
+                '',
+                form,
+                '',
+                {
+                  noHtml: noHtml,
+                  yes: 'COMMON.VARIATION_2.YES',
+                  no: 'COMMON.VARIATION_2.NO',
+                  classes: 'govuk-radios--inline'
+                }
+              ) }}
+            </fieldset>
 
             <div class="govuk-form-group">
               {{ govukButton({
