@@ -92,7 +92,7 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
     expect(routeLayer).toBeDefined();
     const handler = routeLayer.route.stack[0].handle as RequestHandler;
 
-    const axiosError = {response: {status: 404}};
+    const axiosError: {response: {status: number}; status?: number} = {response: {status: 404}};
     jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(axiosError);
 
     const req = {params: {id: '999'}, cookies: {}, query: {}} as unknown as Request;
