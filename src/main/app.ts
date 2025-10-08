@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import * as path from 'path';
+import {existsSync} from 'fs';
 import favicon from 'serve-favicon';
 import session from 'express-session';
 import 'express-async-errors';
@@ -122,19 +123,24 @@ const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = 90 * (60 * 1000); // 90 minutes
+const logger = Logger.getLogger('app');
 
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
-app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
-app.use(express.static(path.join(__dirname, 'public')));
+const staticDir = path.join(__dirname, 'public');
+const faviconPath = path.join(staticDir, 'assets', 'images', 'favicon.ico');
+if (existsSync(faviconPath)) {
+  app.use(favicon(faviconPath));
+} else {
+  logger.warn(`Favicon not found at ${faviconPath}, skipping favicon middleware`);
+}
+app.use(express.static(staticDir));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.locals.ENV = env;
 I18Next.enableFor(app);
-
-const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
@@ -356,4 +362,3 @@ app.use(routes);
 new ErrorHandler().enableFor(app);
 
 setupDev(app,developmentMode);
-

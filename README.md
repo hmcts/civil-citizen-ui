@@ -174,11 +174,10 @@ Make sure you have those values set correctly for your application.
 
 ### Healthcheck
 
-The application exposes a health endpoint (https://localhost:3001/health), created with the use of
-[Nodejs Healthcheck](https://github.com/hmcts/nodejs-healthcheck) library. This endpoint is defined
-in [health.ts](src/main/routes/health.ts) file. Make sure you adjust it correctly in your application.
-In particular, remember to replace the sample check with checks specific to your frontend app,
-e.g. the ones verifying the state of each service it depends on.
+The application exposes a health endpoint (https://localhost:3001/health). The implementation lives in
+[src/main/modules/health/index.ts](src/main/modules/health/index.ts) and performs a simple Redis ping before
+returning the service status. If you introduce additional upstream dependencies, extend the module so the
+`checks` payload reflects their availability as well.
 
 ## Adding Git Conventions
 
