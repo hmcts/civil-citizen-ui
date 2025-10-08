@@ -1,5 +1,5 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {boolean, isBooleanable} from 'boolean';
+import {parseBoolean} from 'common/utils/boolean';
 import {NumberOfChildren} from './numberOfChildren';
 import {AtLeastOneFieldIsPopulated} from '../../../validators/atLeastOneFieldIsPopulated';
 
@@ -18,7 +18,7 @@ export class Dependants {
   }
 
   static fromObject(_declared: unknown, under11?: string, between11and15?: string, between16and19?: string): Dependants {
-    const declared: boolean = isBooleanable(_declared) ? boolean(_declared) : undefined;
+    const declared: boolean = parseBoolean(_declared);
 
     return new Dependants(
       declared,
