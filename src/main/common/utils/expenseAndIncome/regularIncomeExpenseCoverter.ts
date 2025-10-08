@@ -2,7 +2,10 @@ import {Request} from 'express';
 import {RegularExpenses} from '../../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {RegularIncome} from '../../form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {Transaction} from '../../form/models/statementOfMeans/expensesAndIncome/transaction';
-import {OtherTransaction} from '../../form/models/statementOfMeans/expensesAndIncome/otherTransaction';
+import {
+  OtherTransaction,
+  OtherTransactionRequestParams,
+} from '../../form/models/statementOfMeans/expensesAndIncome/otherTransaction';
 
 function toRegularExpenseForm(req: Request): RegularExpenses {
   const regularExpenses = RegularExpenses.buildEmptyForm();
@@ -30,9 +33,10 @@ function toRegularIncomeForm(req: Request): RegularIncome {
 
 function getValueFromRequest(key: string, req: Request, isIncome: boolean): Transaction | OtherTransaction {
   if (key === 'other') {
-    return OtherTransaction.buildPopulatedForm(req.body.model[key].transactionSources, isIncome);
+    const transactionSources: OtherTransactionRequestParams[] = req.body.model[key].transactionSources;
+    return OtherTransaction.buildPopulatedForm(transactionSources, isIncome);
   }
-  return Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name, req.body.model[key].transactionSource.amount, req.body.model[key].transactionSource.schedule, isIncome);
+  return Transaction.buildPopulatedForm(req.body.model[key].transactionSource?.name, req.body.model[key].transactionSource?.amount, req.body.model[key].transactionSource?.schedule, isIncome);
 }
 
 function updateFormWithResponseData(key: string, req: Request, transactionModel: RegularExpenses | RegularIncome, income: boolean) {

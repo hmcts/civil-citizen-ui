@@ -13,7 +13,7 @@ export class AtLeastOneRowIsPopulatedConstraint implements ValidatorConstraintIn
       return false;
     }
 
-    if (!(value instanceof Array)) {
+    if (!(Array.isArray(value))) {
       return false;
     }
 
