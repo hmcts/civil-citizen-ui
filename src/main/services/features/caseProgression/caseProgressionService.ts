@@ -214,11 +214,15 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   );
 };
 
-const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] => {
+const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[] => {
   const formSection: T[] = [];
-  data?.forEach(function (request: any) {
-    formSection.push(bindFunction(request));
-  });
+  if (Array.isArray(data)) {
+    data?.forEach(function (request: unknown) {
+      formSection.push(bindFunction(request));
+    });
+  } else {
+    logger.error('Invalid form section, Single value:',  data);
+  }
   return formSection;
 };
 
@@ -265,7 +269,7 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   return formObj;
 };
 
-const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
+const bindRequestToFileOnlySectionObj = (request: NonNullable<unknown> ): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
   assignCaseDocumentIfPresent(formObj, request);
   return formObj;
