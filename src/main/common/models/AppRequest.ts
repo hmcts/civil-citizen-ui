@@ -11,6 +11,7 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
     lang: string;
   };
   body: T;
+  csrfToken?: () => string;
 }
 
 export interface FirstContact {
