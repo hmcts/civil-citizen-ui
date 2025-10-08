@@ -266,7 +266,7 @@ describe('case Progression service', () => {
           documentsForDisclosure: [{name: 'doc1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
           disclosureList: [{file: 'file1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
           witnessStatement: [{witnessName: 'statement1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
-          trialCaseSummary: [{file: 'caseSummary1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          trialCaseSummary: [{file: 'caseSummary1'}],
 
         },
       } as any;
