@@ -9,7 +9,6 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {getHearingFeeStartPageContent} from 'services/features/caseProgression/hearingFee/hearingFeeStartPageContent';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CaseRole} from 'form/models/caseRoles';
-import {AxiosError} from 'axios';
 
 const payHearingFeeStartScreenViewPath = 'features/caseProgression/hearingFee/pay-hearing-fee-start';
 const payHearingFeeStartScreenController = Router();
@@ -28,12 +27,7 @@ payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, ne
       dashboardUrl,
     });
   } catch (error) {
-    const status = (error as AxiosError)?.response?.status;
-    if (status === 404) {
-      next(new Error('Case not found...'));
-    } else {
-      next(error);
-    }
+    next(error);
   }
 }) as RequestHandler);
 

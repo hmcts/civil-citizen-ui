@@ -1,5 +1,5 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {parseBoolean} from 'common/utils/boolean';
+import {boolean, isBooleanable} from 'boolean';
 import {CourtOrder} from './courtOrder';
 import {AtLeastOneRowIsPopulated} from 'form/validators/atLeastOneRowIsPopulated';
 
@@ -22,7 +22,7 @@ export class CourtOrders {
       return undefined;
     }
 
-    const declared: boolean = parseBoolean(value.declared);
+    const declared: boolean = isBooleanable(value.declared) ? boolean(value.declared) : undefined;
 
     return new CourtOrders(
       declared,

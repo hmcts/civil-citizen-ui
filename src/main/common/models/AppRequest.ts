@@ -11,7 +11,6 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
     lang: string;
   };
   body: T;
-  csrfToken?: () => string;
 }
 
 export interface FirstContact {
@@ -34,7 +33,6 @@ export interface AppSession extends Session {
   dashboard: Dashboard;
   history?: string[];
   qmShareConfirmed: boolean;
-  csrfToken?: string;
 }
 
 export interface UserDetails {
