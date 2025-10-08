@@ -3053,16 +3053,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-session@npm:^2.0.44":
-  version: 2.0.47
-  resolution: "@types/cookie-session@npm:2.0.47"
-  dependencies:
-    "@types/express": "npm:*"
-    "@types/keygrip": "npm:*"
-  checksum: 10/9a7196812be1c5c4b2c04b4fbc3d6f9e4664021927aae857edabd9a48709b15fd37a2f7acb588c2e8248ba3f917eccf0fb67e9260f3d955d11521c329a0690cd
-  languageName: node
-  linkType: hard
-
 "@types/cookiejar@npm:*":
   version: 2.1.2
   resolution: "@types/cookiejar@npm:2.1.2"
@@ -3243,13 +3233,6 @@ __metadata:
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 10/e50864a93f4dcb9de64c0c605d836f5416341c824d7a8cde1aa15a5fc68bed44b33cdcb2e04e5098339e9121848378f2d0cc5b124dec41c89203c6f67d6f344a
-  languageName: node
-  linkType: hard
-
-"@types/keygrip@npm:*":
-  version: 1.0.2
-  resolution: "@types/keygrip@npm:1.0.2"
-  checksum: 10/60bc2738a4f107070ee3d96f44709cb38f3a96c7ccabab09f56c1b2b4d85f869fd8fb9f1f2937e863d0e9e781f005c2223b823bf32b859185b4f52370c352669
   languageName: node
   linkType: hard
 
@@ -5263,7 +5246,6 @@ __metadata:
     "@playwright/test": "npm:^1.47.2"
     "@types/config": "npm:^3.3.5"
     "@types/cookie-parser": "npm:^1.4.3"
-    "@types/cookie-session": "npm:^2.0.44"
     "@types/copy-webpack-plugin": "npm:^10.1.0"
     "@types/csurf": "npm:^1.9.36"
     "@types/es6-promisify": "npm:^6.0.1"
@@ -5295,7 +5277,6 @@ __metadata:
     config: "npm:^3.3.12"
     connect-redis: "npm:^7.1.0"
     cookie-parser: "npm:^1.4.6"
-    cookie-session: "npm:^2.0.0"
     copy-webpack-plugin: "npm:^11.0.0"
     crypto-js: "npm:^4.2.0"
     css-loader: "npm:^6.7.2"
@@ -5798,18 +5779,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-session@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "cookie-session@npm:2.0.0"
-  dependencies:
-    cookies: "npm:0.8.0"
-    debug: "npm:3.2.7"
-    on-headers: "npm:~1.0.2"
-    safe-buffer: "npm:5.2.1"
-  checksum: 10/aeb51fad26226b64643899f93d2b8f1cf54de28f04758aafc4e8a628df5ab62148c00207011867f5a25623ea3aad813fe54f9ff2e190ffaceac108193f17614e
-  languageName: node
-  linkType: hard
-
 "cookie-signature@npm:1.0.6":
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
@@ -5856,16 +5825,6 @@ __metadata:
   version: 2.1.4
   resolution: "cookiejar@npm:2.1.4"
   checksum: 10/4a184f5a0591df8b07d22a43ea5d020eacb4572c383e853a33361a99710437eaa0971716c688684075bbf695b484f5872e9e3f562382e46858716cb7fc8ce3f4
-  languageName: node
-  linkType: hard
-
-"cookies@npm:0.8.0":
-  version: 0.8.0
-  resolution: "cookies@npm:0.8.0"
-  dependencies:
-    depd: "npm:~2.0.0"
-    keygrip: "npm:~1.1.0"
-  checksum: 10/5da4d72ba81c2740511751ac8ea9506e10e2366b9ad3360333581e4667fd8d063d02c5be0bef16177de3e366b8128ed2b72921e2952c79cbca084d177e529bba
   languageName: node
   linkType: hard
 
@@ -10091,15 +10050,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keygrip@npm:~1.1.0":
-  version: 1.1.0
-  resolution: "keygrip@npm:1.1.0"
-  dependencies:
-    tsscmp: "npm:1.0.6"
-  checksum: 10/078cd16a463d187121f0a27c1c9c95c52ad392b620f823431689f345a0501132cee60f6e96914b07d570105af470b96960402accd6c48a0b1f3cd8fac4fa2cae
-  languageName: node
-  linkType: hard
-
 "keyv@npm:^4.5.2":
   version: 4.5.2
   resolution: "keyv@npm:4.5.2"
@@ -11560,13 +11510,6 @@ __metadata:
   dependencies:
     ee-first: "npm:1.1.1"
   checksum: 10/8e81472c5028125c8c39044ac4ab8ba51a7cdc19a9fbd4710f5d524a74c6d8c9ded4dd0eed83f28d3d33ac1d7a6a439ba948ccb765ac6ce87f30450a26bfe2ea
-  languageName: node
-  linkType: hard
-
-"on-headers@npm:~1.0.2":
-  version: 1.0.2
-  resolution: "on-headers@npm:1.0.2"
-  checksum: 10/870766c16345855e2012e9422ba1ab110c7e44ad5891a67790f84610bd70a72b67fdd71baf497295f1d1bf38dd4c92248f825d48729c53c0eae5262fb69fa171
   languageName: node
   linkType: hard
 
