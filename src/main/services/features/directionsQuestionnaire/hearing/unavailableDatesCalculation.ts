@@ -4,6 +4,8 @@ import {
   UnavailableDatePeriod,
 } from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('unavailableDatesCalculation');
 
 export const getNumberOfUnavailableDays = (unavailableDates: UnavailableDates): number => {
   if (!unavailableDates) return 0;
@@ -21,6 +23,10 @@ const getDatesBetween = (startDate: Date, endDate: Date, lng: string): Set<strin
 
 export const getListOfUnavailableDate = (unavailableDates: UnavailableDates, lng?: string): Set<string> => {
   const unavailableDateSet = new Set<string>();
+  if (!unavailableDates?.items?.length) {
+    logger.info('No unavailable dates found');
+    return unavailableDateSet;
+  }
   unavailableDates.items.forEach((item: UnavailableDatePeriod) => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
       unavailableDateSet.add(formatDateToFullDate(new Date(item.from), lng));
