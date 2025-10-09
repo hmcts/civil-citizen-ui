@@ -79,4 +79,36 @@ describe('regular income converter', () => {
       expect(form.universalCredit.transactionSource.schedule).toBe(TransactionSchedule.MONTH);
     });
   });
+
+  it('other income', () => {
+    //Given
+    const req = express.request;
+    req.body = {
+      declared: ['other'], model: {
+        other: {
+          transactionSources: {
+            0: {
+              name: 'test',
+              amount: '10',
+              schedule: 'WEEK',
+            },
+            NaN: [{
+              name: '',
+              amount: '',
+            }, {
+              name: '',
+              amount: '',
+            }],
+          },
+        },
+      },
+    };
+    //When
+    const form = toRegularIncomeForm(req);
+    //Then
+    expect(form).not.toBeUndefined();
+    expect(form.other.declared).toBeTruthy();
+    expect(form.other.transactionSources[0].amount).toBe(10);
+    expect(form.other.transactionSources[0].schedule).toBe(TransactionSchedule.WEEK);
+  });
 });
