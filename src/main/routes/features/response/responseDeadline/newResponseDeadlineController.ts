@@ -16,6 +16,9 @@ import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient
 const newResponseDeadlineController = Router();
 const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-response-deadline';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('newResponseDeadlineController');
+
 newResponseDeadlineController
   .get(NEW_RESPONSE_DEADLINE_URL, (async (req: AppRequest, res, next: NextFunction) => {
     try {
@@ -29,6 +32,7 @@ newResponseDeadlineController
         isReleaseTwoEnabled,
       });
     } catch (error) {
+      logger.error(`Error when GET : new response deadline - ${error.message}`);
       next(error);
     }
   }) as RequestHandler)
@@ -37,6 +41,7 @@ newResponseDeadlineController
       await submitExtendedResponseDeadline(req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     } catch (error) {
+      logger.error(`Error when POST : new respones deadline - ${error.message}`);
       next(error);
     }
   }) as RequestHandler);
