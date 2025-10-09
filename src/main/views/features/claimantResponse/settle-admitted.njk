@@ -28,7 +28,7 @@
             {{ csrfProtection(csrf) }}
             <fieldset class="govuk-fieldset">
               <legend class="govuk-visually-hidden">
-                {{ t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.TITLE') }}
+                {{ t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.TITLE', { admittedAmount: admittedAmount }) }}
               </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', { yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO' , yesHint:yesHint,  noHint: noHint }) }}
             </fieldset>
