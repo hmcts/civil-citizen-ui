@@ -43,21 +43,16 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
-            {{ govukFieldset({
-              legend: {
-                text: title,
-                classes: "govuk-fieldset__legend--l",
-                isPageHeading: true
-              }
-            }) }}
-              {% if isClaimantResponse %}
-                {% if responseType === ResponseType.FULL_ADMISSION %}
-                  <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
-                  <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
-                  <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
-                {% endif %}
-              {% else %}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
+            </legend>
+             {% if isClaimantResponse %}
+               {% if responseType === ResponseType.FULL_ADMISSION %}
+                <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+               {% endif %}
+             {% else %}
                 {% if responseType === ResponseType.PART_ADMISSION %}
                   <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
                 {% else %}
@@ -66,35 +61,40 @@
                 {% endif %}
               {% endif %}
 
-              {{ govukRadios({
-                idPrefix: "paymentType",
-                name: "paymentType",
-                items: [
-                  {
-                    value: PaymentOptionType.IMMEDIATELY,
-                    text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
-                    checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
-                    conditional: { html: hintPayImmediately if not isClaimantResponse }
-                  },
-                  {
-                    value: PaymentOptionType.BY_SET_DATE,
-                    text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
-                    checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
-                    conditional: { html: hintPayLater if not isClaimantResponse }
-                  },
-                  {
-                    value: PaymentOptionType.INSTALMENTS,
-                    text: t(instalmentsOrRepaymentPlan),
-                    checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
-                    conditional: { html: hintPayLater if not isClaimantResponse }
-                  }
-                ],
-                errorMessage: {
-                  text: t(form.errorFor('paymentType'))
-                } if form.hasFieldError('paymentType')
-              }) }}
-            {% endgovukFieldset %}
+            {{ govukRadios({
+              idPrefix: "paymentType",
+              name: "paymentType",
+              items: [
+                {
+                  value: PaymentOptionType.IMMEDIATELY,
+                  text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
+                  checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
+                  conditional: {
+                  html: hintPayImmediately if not isClaimantResponse
+                }
+                },
+                {
+                  value: PaymentOptionType.BY_SET_DATE,
+                  text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
+                  checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
+                  conditional: {
+                  html: hintPayLater if not isClaimantResponse
+                }
+                },
+                {
+                  value: PaymentOptionType.INSTALMENTS,
+                  text: t(instalmentsOrRepaymentPlan),
+                  checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
+                  conditional: {
+                  html: hintPayLater if not isClaimantResponse
+                }
+                }
+              ],
+              errorMessage: {
+                text: t(form.errorFor('paymentType'))
+              } if form.hasFieldError('paymentType')
 
+            }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
