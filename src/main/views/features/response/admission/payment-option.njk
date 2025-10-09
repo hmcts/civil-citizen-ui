@@ -11,12 +11,12 @@
 {% set pageTitleForDefendant = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else 'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
 {% set pageTitle = pageTitleForClaimant if isClaimantResponse else pageTitleForDefendant %}
 
-{% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE') %}
+{% set titleForClaimant = t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE')  %}
 {% set totalAmount = form.model.totalClaimAmount.toFixed(2) if form.model.totalClaimAmount else 0 %}
-{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2) if amount else totalAmount }) %}
+{% set titleForDefendant = t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount.toFixed(2) if amount else totalAmount })%}
 {% set title = titleForClaimant if isClaimantResponse else titleForDefendant %}
 
-{% set totalAmountClaimedText = t('PAGES.PAYMENT_OPTION.SUBTITLE', { totalAmount: form.model.totalClaimAmount }) %}
+{% set totalAmountClaimedText =  t('PAGES.PAYMENT_OPTION.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
 {% set instalmentsOrRepaymentPlan = 'COMMON.PAYMENT_OPTION.INSTALMENTS' if isClaimantResponse else 'PAGES.PAYMENT_OPTION.REPAYMENT' %}
 
 {% block pageTitle %}
@@ -25,49 +25,48 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper">
+    <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediately %}
-        <div class='govuk-hint'>
-          {{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT_PA') if amount else t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT_FA') }}
-        </div>
+         <div class='govuk-hint'>
+           {{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT_PA') if amount else t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT_FA') }}
+         </div>
       {% endset -%}
 
       {% set hintPayLater %}
         <div class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.REQUEST') }}</div>
       {% endset -%}
-
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
-
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
-            {% if isClaimantResponse %}
-              {% if responseType === ResponseType.FULL_ADMISSION %}
-                <p class="govuk-body-m">{{ totalAmountClaimedText }}</p>
-                <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }}</p>
-                <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }}</p>
-              {% endif %}
-            {% else %}
-              {% if responseType === ResponseType.PART_ADMISSION %}
-                <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }}</p>
-              {% else %}
-                <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }}</p>
-                <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }}</p>
-              {% endif %}
-            {% endif %}
 
             {{ govukFieldset({
               legend: {
                 text: title,
                 classes: "govuk-fieldset__legend--l",
                 isPageHeading: true
-              },
-              html: govukRadios({
+              }
+            }) }}
+              {% if isClaimantResponse %}
+                {% if responseType === ResponseType.FULL_ADMISSION %}
+                  <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
+                  <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                  <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+                {% endif %}
+              {% else %}
+                {% if responseType === ResponseType.PART_ADMISSION %}
+                  <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
+                {% else %}
+                   <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                   <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+                {% endif %}
+              {% endif %}
+
+              {{ govukRadios({
                 idPrefix: "paymentType",
                 name: "paymentType",
                 items: [
@@ -75,32 +74,27 @@
                     value: PaymentOptionType.IMMEDIATELY,
                     text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
                     checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
-                    conditional: {
-                      html: hintPayImmediately if not isClaimantResponse
-                    }
+                    conditional: { html: hintPayImmediately if not isClaimantResponse }
                   },
                   {
                     value: PaymentOptionType.BY_SET_DATE,
                     text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
                     checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
-                    conditional: {
-                      html: hintPayLater if not isClaimantResponse
-                    }
+                    conditional: { html: hintPayLater if not isClaimantResponse }
                   },
                   {
                     value: PaymentOptionType.INSTALMENTS,
                     text: t(instalmentsOrRepaymentPlan),
                     checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
-                    conditional: {
-                      html: hintPayLater if not isClaimantResponse
-                    }
+                    conditional: { html: hintPayLater if not isClaimantResponse }
                   }
                 ],
                 errorMessage: {
                   text: t(form.errorFor('paymentType'))
                 } if form.hasFieldError('paymentType')
-              })
-            }) }}
+              }) }}
+            {% endgovukFieldset %}
+
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
