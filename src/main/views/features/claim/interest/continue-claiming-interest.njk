@@ -24,8 +24,8 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                <h2 class="govuk-fieldset__heading">{{ t('PAGES.CLAIM_JOURNEY.CONTINUE_CLAIMING_INTEREST.QUESTION') }}</h2>
+               <legend class="govuk-visually-hidden">
+                <h2 class="govuk-fieldset__heading">{{ t('PAGES.CLAIM_JOURNEY.CONTINUE_CLAIMING_INTEREST.TITLE') }}</h2>
               </legend>
               {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
             </fieldset>

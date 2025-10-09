@@ -24,7 +24,7 @@
             {{ csrfProtection(csrf) }}
              <fieldset class="govuk-fieldset">
                 <legend class="govuk-visually-hidden">
-                 {{ t('PAGES.TENANCY_DEPOSIT.QUESTION') }}
+                 {{ t('PAGES.TENANCY_DEPOSIT.TITLE') }}
                 </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', classes: 'govuk-radios--inline'}) }}
             </fieldset>
@@ -32,9 +32,9 @@
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
-              {{ contactUsForHelp(t) }}
             </div>
           </form>
+          {{ contactUsForHelp(t) }}
         </div>
       </div>
     </main>

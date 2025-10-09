@@ -18,18 +18,18 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.INTEREST_CLAIM_OPTIONS.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                <h2 class="govuk-fieldset__heading">
-                  {{ t('PAGES.INTEREST_CLAIM_OPTIONS.QUESTION') }}
-                </h2>
-              </legend>
               {{ govukRadios({
                 idPrefix: "interestType",
                 name: "interestType",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.INTEREST_CLAIM_OPTIONS.TITLE'),
+                    isPageHeading: false,   // changed to prevent duplicate <h1>
+                    classes: 'govuk-fieldset__legend--l'
+                  }
+                },
                 items: [
                   {
                     value: InterestClaimOptionsType.SAME_RATE_INTEREST,
@@ -47,9 +47,8 @@
                 ],
                 errorMessage: {
                   text: t(form.errorFor('interestType'))
-                } if form.hasFieldError('interestType')
+                } if form.hasErrors()
               }) }}
-            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

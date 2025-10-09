@@ -31,7 +31,7 @@
             <p class="govuk-body">{{t('PAGES.WELSH_LANGUAGE.OFFICIAL_LANGUAGE')}}</p>
         {% endif %}
             {{ govukRadios({
-              id: "speakLanguage",
+              idPrefix: "speakLanguage",
               name: "speakLanguage",
               fieldset: {
                 legend: {
@@ -66,7 +66,7 @@
               }) }}
 
             {{ govukRadios({
-              id: "documentsLanguage",
+              idPrefix: "documentsLanguage",
               name: "documentsLanguage",
               fieldset: {
                 legend: {

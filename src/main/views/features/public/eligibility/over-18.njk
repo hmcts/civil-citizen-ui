@@ -24,7 +24,7 @@
             {{ csrfProtection(csrf) }}
              <fieldset class="govuk-fieldset">
                 <legend class="govuk-visually-hidden">
-                 {{ t('PAGES.ELIGIBILITY_OVER_18_CLAIMANT.QUESTION') }}
+                 {{ t('PAGES.ELIGIBILITY_OVER_18_CLAIMANT.TITLE') }}
                 </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', classes: 'govuk-radios--inline'}) }}
             </fieldset>
