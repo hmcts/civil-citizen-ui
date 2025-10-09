@@ -42,6 +42,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
             </legend>
@@ -49,6 +50,7 @@
               <div id="hint" class="govuk-hint">{{t('PAGES.SUPPORT_REQUIRED.MEDIATION_TEXT')}}</div>
             {% endif %}
             {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
