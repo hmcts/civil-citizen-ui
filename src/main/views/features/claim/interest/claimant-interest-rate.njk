@@ -55,6 +55,8 @@
             <p class="govuk-body">{{ t('PAGES.CLAIMANT_INTEREST_RATE.RATE_INFORMATION') }}:</p>
             <form method="post" novalidate autocomplete="off">
               {{ csrfProtection(csrf) }}
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">{{ t('PAGES.CLAIMANT_INTEREST_RATE.TITLE') }}</legend>
               {{ govukRadios({
                 idPrefix: "sameRateInterestType",
                 name: "sameRateInterestType",
@@ -73,6 +75,7 @@
                 ],
                 errorMessage: { text: t(optionError) } if t(optionError) else ''
               }) }}
+              </fieldset>
               <div class="govuk-form-group">
                 {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
