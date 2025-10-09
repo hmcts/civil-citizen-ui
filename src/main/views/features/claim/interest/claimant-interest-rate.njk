@@ -56,7 +56,7 @@
             <form method="post" novalidate autocomplete="off">
               {{ csrfProtection(csrf) }}
               <fieldset class="govuk-fieldset">
-                <legend class="govuk-visually-hidden">{{ t('PAGES.CLAIMANT_INTEREST_RATE.QUESTION') }}</legend>
+                <legend class="govuk-visually-hidden">{{ t('PAGES.CLAIMANT_INTEREST_RATE.TITLE') }}</legend>
               {{ govukRadios({
                 idPrefix: "sameRateInterestType",
                 name: "sameRateInterestType",

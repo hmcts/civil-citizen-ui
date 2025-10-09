@@ -42,54 +42,50 @@
               } if form.errorFor('flightNumber')
             }) }}
 
-            {{ govukDateInput({
-              id: "flightDate",
-              name: "flightDate",
-              fieldset: {
-                legend: {
-                  text: t('PAGES.FLIGHT_DETAILS.SCHEDULED_DATE'),
-                  classes: "govuk-fieldset__legend--s",
-                  isPageHeading: false
-                }
-              },
-              hint: {
-                text: t('COMMON.DATE_EXAMPLE', {
-                  date: today.getDate() + ' ' + today.getMonth() + ' ' + today.getFullYear()
-                })
-              },
-              errorMessage: {
-                html: '<p class="govuk-error-message">' + t(form.errorFor('flightDate')) + '</p>' +
-                '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-                '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-                '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-              } if (form.hasFieldError('flightDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
-              items: [
-                {
-                  classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
-                  id: "day",
-                  label: t('COMMON.DAY'),
-                  name: "day",
-                  value: form.model.day,
-                  max: 31
+            <fieldset>
+              <legend class="govuk-visually-hidden">{{ t('PAGES.FLIGHT_DETAILS.SCHEDULED_DATE') }}</legend>
+              {{ govukDateInput({
+                id: "flightDate",
+                name: "flightDate",
+                hint: {
+                  text: t('COMMON.DATE_EXAMPLE', {
+                    date: today.getDate() + ' ' + today.getMonth() + ' ' + today.getFullYear()
+                  })
                 },
-                {
-                  classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
-                  id: "month",
-                  label: t('COMMON.MONTH'),
-                  name: "month",
-                  value: form.model.month,
-                  max: 12
-                },
-                {
-                  classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
-                  id: "year",
-                  label: t('COMMON.YEAR'),
-                  name: "year",
-                  value: form.model.year,
-                  max: 9999
-                }
-              ]
-            }) }}
+                errorMessage: {
+                  html: '<p class="govuk-error-message">' + t(form.errorFor('flightDate')) + '</p>' +
+                  '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
+                  '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
+                  '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
+                } if (form.hasFieldError('flightDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+                items: [
+                  {
+                    classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                    id: "day",
+                    label: t('COMMON.DAY'),
+                    name: "day",
+                    value: form.model.day,
+                    max: 31
+                  },
+                  {
+                    classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                    id: "month",
+                    label: t('COMMON.MONTH'),
+                    name: "month",
+                    value: form.model.month,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                    id: "year",
+                    label: t('COMMON.YEAR'),
+                    name: "year",
+                    value: form.model.year,
+                    max: 9999
+                  }
+                ]
+              }) }}
+            </fieldset>
 
             <div class="govuk-form-group">
               {{ govukButton({
