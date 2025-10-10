@@ -7,14 +7,14 @@
     <div class="multiple-row">
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
         {{ govukDateInput({
-          id: "rows["+index+"][date]",
+          id: "rows-"+index+"-date",
           type: "number",
           inputmode: "numeric",
           name: "date",
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
-              id: "day",
+              id: "rows-"+index+"-day",
               label: t('COMMON.DAY'),
               name: "rows["+index+"][day]",
               value: timelineModel.day,
@@ -22,7 +22,7 @@
             },
             {
               classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
-              id: "month",
+              id: "rows-"+index+"-month",
               label: t('COMMON.MONTH'),
               name: "rows["+index+"][month]",
               value: timelineModel.month,
@@ -30,7 +30,7 @@
             },
             {
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
-              id: "year",
+              id: "rows-"+index+"-year",
               label: t('COMMON.YEAR'),
               name: "rows["+index+"][year]",
               value: timelineModel.year,
