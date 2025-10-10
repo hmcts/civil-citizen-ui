@@ -286,11 +286,11 @@ export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim)
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
-function toNonEmptyTrimmedString(v: unknown): string {
-  return typeof v === 'string' ? v.trim() : '';
+function toNonEmptyTrimmedString(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
 }
 
-const parseCaseDocument = (request: any): CaseDocument | undefined => {
+const parseCaseDocument = (request: Record<string, unknown>): CaseDocument | undefined => {
   const CASE_DOCUMENT = 'caseDocument';
   const rawCaseDoc = request?.[CASE_DOCUMENT];
   if (rawCaseDoc === undefined || rawCaseDoc === null || rawCaseDoc === '') {
@@ -330,7 +330,7 @@ const createSectionWithDate = <T>(Ctor: DateCtor<T>, request: unknown): T => {
 };
 
 const assignCaseDocumentIfPresent = <T extends { caseDocument?: CaseDocument }>(target: T, request: unknown): void => {
-  const parsed = parseCaseDocument(request as any);
+  const parsed = parseCaseDocument(request as Record<string, unknown>);
   if (parsed) {
     target.caseDocument = parsed;
   }
