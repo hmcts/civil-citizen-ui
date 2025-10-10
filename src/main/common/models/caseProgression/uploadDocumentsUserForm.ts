@@ -1,6 +1,4 @@
-import 'reflect-metadata';
 import {
-  IsArray,
   IsDate,
   IsDefined,
   IsNotEmpty,
@@ -17,68 +15,37 @@ import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
 import {CaseDocument} from 'models/document/caseDocument';
-import {Type} from 'class-transformer';
 
 export class UploadDocumentsUserForm {
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => TypeOfDocumentSection)
+  @ValidateNested()
     documentsForDisclosure?: TypeOfDocumentSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => FileOnlySection)
+  @ValidateNested()
     disclosureList?: FileOnlySection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => WitnessSection)
+  @ValidateNested()
     witnessStatement?: WitnessSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => WitnessSummarySection)
+  @ValidateNested()
     witnessSummary?: WitnessSummarySection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => WitnessSection)
+  @ValidateNested()
     noticeOfIntention?: WitnessSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => ReferredToInTheStatementSection)
+  @ValidateNested()
     documentsReferred?: ReferredToInTheStatementSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => ExpertSection)
+  @ValidateNested()
     expertReport?: ExpertSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => ExpertSection)
+  @ValidateNested()
     expertStatement?: ExpertSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => ExpertSection)
+  @ValidateNested()
     questionsForExperts?: ExpertSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => ExpertSection)
+  @ValidateNested()
     answersForExperts?: ExpertSection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => FileOnlySection)
+  @ValidateNested()
     trialCaseSummary?: FileOnlySection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => FileOnlySection)
+  @ValidateNested()
     trialSkeletonArgument?: FileOnlySection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => FileOnlySection)
+  @ValidateNested()
     trialAuthorities?: FileOnlySection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => FileOnlySection)
+  @ValidateNested()
     trialCosts?: FileOnlySection[];
-  @ValidateNested({each: true})
-  @IsArray()
-  @Type(() => TypeOfDocumentSection)
+  @ValidateNested()
     trialDocumentary?: TypeOfDocumentSection[];
 
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
@@ -123,7 +90,6 @@ export class FileUpload {
 export class FileOnlySection {
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
-  @ValidateNested()
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 }
