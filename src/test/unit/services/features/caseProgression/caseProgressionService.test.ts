@@ -285,7 +285,7 @@ describe('case Progression service', () => {
           'dateMonth': '2',
           'dateYear': '2003',
         },
-        'typeOfDocument': '',
+        'typeOfDocument': null,
       }]);
       expect(result.disclosureList).toEqual([{}]);
       expect(result.witnessStatement).toEqual([{
