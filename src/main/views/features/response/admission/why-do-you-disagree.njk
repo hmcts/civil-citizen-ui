@@ -29,7 +29,8 @@
               name: "text",
               id: "text",
               label: {
-                text: t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE')
+                    text: t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.LABEL '+explanation),
+                    classes: "govuk-visually-hidden"
               },
               value: form.model.text,
               errorMessage: {
