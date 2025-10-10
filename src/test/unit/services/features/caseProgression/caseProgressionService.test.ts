@@ -15,7 +15,11 @@ import {
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
-import {getUploadDocumentsForm, readDateParts} from 'services/features/caseProgression/caseProgressionService';
+import {
+  getUploadDocumentsForm,
+  readDateParts,
+  toNonEmptyTrimmedString,
+} from 'services/features/caseProgression/caseProgressionService';
 import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
@@ -345,6 +349,43 @@ describe('case Progression service', () => {
     });
   });
 
+  describe('toNonEmptyTrimmedString', () => {
+    it('trims leading and trailing spaces', () => {
+      expect(toNonEmptyTrimmedString('  hello  ')).toBe('hello');
+    });
+
+    it('trims tabs and newlines', () => {
+      expect(toNonEmptyTrimmedString('\t\nhello\n\t')).toBe('hello');
+    });
+
+    it('returns the same string when no trimming is needed', () => {
+      expect(toNonEmptyTrimmedString('hello')).toBe('hello');
+    });
+
+    it('returns empty string when input is empty string', () => {
+      expect(toNonEmptyTrimmedString('')).toBe('');
+    });
+
+    it('returns empty string when input is whitespace only', () => {
+      expect(toNonEmptyTrimmedString('   \t\n  ')).toBe('');
+    });
+
+    it.each([
+      0,
+      42,
+      true,
+      false,
+      null,
+      undefined,
+      {},
+      [],
+      Symbol('x'),
+      BigInt(0),
+    ])('returns empty string for non-string input: %p', (value) => {
+      expect(toNonEmptyTrimmedString(value as unknown)).toBe(null);
+    });
+  });
+
   describe('readDateParts', () => {
     it('returns strings when numeric values are provided', () => {
       const request = {
@@ -395,16 +436,6 @@ describe('case Progression service', () => {
       const result = readDateParts(request as unknown);
 
       expect(result).toEqual({ day: undefined, month: '12', year: '2025' });
-    });
-
-    it('converts null values to the string "null" (current implementation behavior)', () => {
-      const request = {
-        dateInputFields: { dateDay: '10', dateMonth: null, dateYear: 2020 },
-      };
-
-      const result = readDateParts(request as unknown);
-
-      expect(result).toEqual({ day: '10', month: 'null', year: '2020' });
     });
 
     it('ignores extra fields and only returns day, month, year', () => {
