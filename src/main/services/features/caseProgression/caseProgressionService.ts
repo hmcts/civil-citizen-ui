@@ -256,16 +256,14 @@ const bindRequestToWitnessSummarySectionObj = (request: any): WitnessSummarySect
 };
 
 const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
-  const formObj: ExpertSection = new ExpertSection(request['dateInputFields']?.dateDay, request['dateInputFields']?.dateMonth, request['dateInputFields']?.dateYear);
-  formObj.expertName = request['expertName'] != null ? request['expertName'].trim() : null;
-  formObj.multipleExpertsName = request['multipleExpertsName'] != null ? request['multipleExpertsName'].trim() : null;
-  formObj.fieldOfExpertise = request['fieldOfExpertise'] != null ? request['fieldOfExpertise'].trim() : null;
-  formObj.otherPartyName = request['otherPartyName'] != null ? request['otherPartyName'].trim() : null;
-  formObj.questionDocumentName = request['questionDocumentName'] != null ? request['questionDocumentName'].trim() : null;
-  formObj.otherPartyQuestionsDocumentName = request['otherPartyQuestionsDocumentName'] != null ? request['otherPartyQuestionsDocumentName'].trim() : null;
-  if (request['caseDocument'] && request['caseDocument'] !== '') {
-    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
-  }
+  const formObj = createSectionWithDate(ExpertSection, request);
+  formObj.expertName = toNonEmptyTrimmedString(request?.expertName);
+  formObj.multipleExpertsName = toNonEmptyTrimmedString(request?.multipleExpertsName);
+  formObj.fieldOfExpertise = toNonEmptyTrimmedString(request?.fieldOfExpertise);
+  formObj.otherPartyName = toNonEmptyTrimmedString(request?.otherPartyName);
+  formObj.questionDocumentName = toNonEmptyTrimmedString(request?.questionDocumentName);
+  formObj.otherPartyQuestionsDocumentName = toNonEmptyTrimmedString(request?.otherPartyQuestionsDocumentName);
+  assignCaseDocumentIfPresent(formObj, request);
   return formObj;
 };
 
@@ -286,8 +284,8 @@ export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim)
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
-function toNonEmptyTrimmedString(value: unknown): string {
-  return typeof value === 'string' ? value.trim() : '';
+export function toNonEmptyTrimmedString(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : null;
 }
 
 const parseCaseDocument = (request: Record<string, unknown>): CaseDocument | undefined => {
