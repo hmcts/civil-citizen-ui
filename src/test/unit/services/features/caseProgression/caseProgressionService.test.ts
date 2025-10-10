@@ -15,7 +15,7 @@ import {
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
-import {getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
+import {getUploadDocumentsForm, readDateParts} from 'services/features/caseProgression/caseProgressionService';
 import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
@@ -344,4 +344,83 @@ describe('case Progression service', () => {
       expect(mockRequest.body).toEqual(mockRequestClone.body);
     });
   });
+
+  describe('readDateParts', () => {
+    it('returns strings when numeric values are provided', () => {
+      const request = {
+        dateInputFields: { dateDay: 1, dateMonth: 2, dateYear: 2003 },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '1', month: '2', year: '2003' });
+    });
+
+    it('returns provided string values unchanged', () => {
+      const request = {
+        dateInputFields: { dateDay: '01', dateMonth: '02', dateYear: '1980' },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '01', month: '02', year: '1980' });
+    });
+
+    it('returns undefined for missing fields', () => {
+      const request = {
+        dateInputFields: { dateDay: '15' },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '15', month: undefined, year: undefined });
+    });
+
+    it('returns all undefined when dateInputFields is missing', () => {
+      const request = {};
+      const result = readDateParts(request as unknown);
+      expect(result).toEqual({ day: undefined, month: undefined, year: undefined });
+    });
+
+    it('returns all undefined when request is null', () => {
+      const result = readDateParts(null as unknown);
+      expect(result).toEqual({ day: undefined, month: undefined, year: undefined });
+    });
+
+    it('returns undefined when a field is explicitly undefined', () => {
+      const request = {
+        dateInputFields: { dateMonth: '12', dateYear: '2025' },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: undefined, month: '12', year: '2025' });
+    });
+
+    it('converts null values to the string "null" (current implementation behavior)', () => {
+      const request = {
+        dateInputFields: { dateDay: '10', dateMonth: null, dateYear: 2020 },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '10', month: 'null', year: '2020' });
+    });
+
+    it('ignores extra fields and only returns day, month, year', () => {
+      const request = {
+        dateInputFields: {
+          dateDay: '7',
+          dateMonth: '8',
+          dateYear: '2024',
+          someOtherField: 'ignored',
+        },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '7', month: '8', year: '2024' });
+    });
+  });
+
 });

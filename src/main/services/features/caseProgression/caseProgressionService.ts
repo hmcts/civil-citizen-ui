@@ -316,7 +316,7 @@ interface DateParts {
   year?: string;
 }
 
-const readDateParts = (request: unknown): DateParts => {
+export const readDateParts = (request: unknown): DateParts => {
   const dateFields = (request as any)?.dateInputFields ?? {};
   const day = dateFields?.dateDay !== undefined ? String(dateFields.dateDay) : undefined;
   const month = dateFields?.dateMonth !== undefined ? String(dateFields.dateMonth) : undefined;
