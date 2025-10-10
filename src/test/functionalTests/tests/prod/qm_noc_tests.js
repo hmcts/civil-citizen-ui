@@ -6,7 +6,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 
 let caseData, claimNumber, claimRef;
 
-Feature('QM - NOC - Claimant and Defendant Journey @regression @qm');
+Feature('QM - NOC - Claimant and Defendant Journey @qm').tag('@nightly');
 
 async function claimSetup(api) {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -60,7 +60,7 @@ Scenario('LR v LIP NOC Claimant and Defendant send message to court, follow up a
   await closeQuery(qm, claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
   await loginAndSelectClaim({I, user: config.defendantCitizenUser});
   await ResponseSteps.verifyClosedQuery('Defendant Query');
-});
+}).tag('@regression');
 
 Scenario('LIP v LR NOC Claimant and Defendant send message to court, follow up and admin closes query', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForRespondent1Solicitor(claimRef, config.defendantSolicitorUser);
