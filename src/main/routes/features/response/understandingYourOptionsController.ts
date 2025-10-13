@@ -7,6 +7,9 @@ import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient
 
 const understandingYourOptionsController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('understandingYourOptionsController');
+
 understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -18,6 +21,7 @@ understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadL
         isReleaseTwoEnabled,
       });
     } catch (error) {
+      logger.error(`Error when getting understanding your opinions, req.params.claimId  ${ req.params.claimId } -  ${error.message}`);
       next(error);
     }
   }) as RequestHandler);

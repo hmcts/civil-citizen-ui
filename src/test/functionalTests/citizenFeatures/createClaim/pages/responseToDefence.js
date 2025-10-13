@@ -610,7 +610,7 @@ class ResponseToDefence {
     I.see('If Sir John Doe signs the settlement agreement but breaks the terms');
     I.see('you can request a County Court Judgment (CCJ) by signing in to your account.');
     I.see('After you\'ve requested a CCJ you can ask the court to enforce payment.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -626,7 +626,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -637,7 +637,7 @@ class ResponseToDefence {
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against the defendant.');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1137,7 +1137,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim has now ended. We\'ve emailed Sir John Doe to tell them.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1146,7 +1146,7 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1156,7 +1156,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1166,7 +1166,7 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
@@ -1177,7 +1177,7 @@ class ResponseToDefence {
     I.see('What happens next');
     I.see('A mediation appointment will now be arranged by the Small Claims Mediation Service.');
     I.see('within the next 28 days.');
-    I.see('Email');
+    I.see('You can send messages and documents to the court by selecting');
     I.see('Telephone');
   }
 
