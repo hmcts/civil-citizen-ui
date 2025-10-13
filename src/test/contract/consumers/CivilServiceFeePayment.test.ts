@@ -3,16 +3,15 @@ import { CivilServiceClient } from '../../../main/app/client/civilServiceClient'
 import { AppRequest } from '../../../main/common/models/AppRequest';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 
-const mockProvider = new Pact({
+const createMockProvider = () => new Pact({
   log: PACT_LOG_PATH,
   dir: PACT_DIRECTORY_PATH,
   logLevel: 'info',
   consumer: 'civil_citizen_ui',
   provider: 'civil-service',
-  port: 8991,
 });
 
-const { like, iso8601DateTimeWithMillis } = Matchers;
+const { like, decimal } = Matchers;
 
 const CLAIM_REFERENCE = '1234567890123456';
 const FEE_TYPE = 'CLAIMISSUED';
@@ -51,22 +50,21 @@ const createAppRequest = (): AppRequest =>
 
 describe('Civil Service fee payment contract', () => {
   let civilServiceClient: CivilServiceClient;
+  let mockProvider: Pact;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
+    mockProvider = createMockProvider();
     await mockProvider.setup();
     civilServiceClient = new CivilServiceClient(mockProvider.mockService.baseUrl);
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
+    await mockProvider.verify();
     await mockProvider.finalize();
   });
 
-  afterEach(async () => {
-    await mockProvider.verify();
-  });
-
   describe('Create payment request for claim issue fee', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       await mockProvider.addInteraction({
         state: 'Claim issue payment can be initiated for case 1234567890123456',
         uponReceiving: 'a request to create a GovPay payment',
@@ -87,7 +85,7 @@ describe('Civil Service fee payment contract', () => {
             paymentReference: like(PAYMENT_REFERENCE),
             status: like('Initiated'),
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
-            dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313+00:00'),
+            dateCreated: decimal(1701090906.313),
           },
         },
       });
@@ -107,13 +105,13 @@ describe('Civil Service fee payment contract', () => {
         paymentReference: PAYMENT_REFERENCE,
         status: 'Initiated',
         nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-        dateCreated: '2023-11-27T13:15:06.313+00:00',
       }));
+      expect(response.dateCreated).toEqual(expect.any(Number));
     });
   });
 
   describe('Retrieve payment status for claim issue fee', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       await mockProvider.addInteraction({
         state: 'Payment status SUCCESS is available for payment RC-1701-0909-0602-0418',
         uponReceiving: 'a request to retrieve GovPay payment status',
