@@ -24,15 +24,13 @@
     <main class="govuk-main-wrapper" role="main">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                    <h1 class="govuk-fieldset__heading">{{ pageText }}</h1>
-                </legend>
+                <h1 class="govuk-heading-l">{{ pageText }}</h1>
 
-                <div id="hint" class="govuk-hint">
+                <div id="mediation-unavailable-dates-hint-1" class="govuk-hint">
                     {{pageHint.text1}}
                 </div>
 
-                <div id="hint" class="govuk-hint">
+                <div id="mediation-unavailable-dates-hint-2" class="govuk-hint">
                     {{pageHint.text2}}
                 </div>
 
@@ -40,9 +38,9 @@
                     {{ csrfProtection(csrf) }}
 
                     {% for unavailableDate in form.model.items %}
-                      {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true) }}
+                      {{ unavailableDateRow(unavailableDate, 'PAGES.UNAVAILABILITY_SELECT_DATES_MEDIATION.SELECT', loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true, 'govuk-fieldset__legend--s govuk-visually-hidden') }}
                     {% else %}
-                      {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today, true) }}
+                      {{ unavailableDateRow(unavailableDate, 'PAGES.UNAVAILABILITY_SELECT_DATES_MEDIATION.SELECT', 0, form.errorFor, t, {hidden:true}, today, true, 'govuk-fieldset__legend--s govuk-visually-hidden') }}
                     {% endfor %}
 
                     <div class="govuk-!-margin-top-6">

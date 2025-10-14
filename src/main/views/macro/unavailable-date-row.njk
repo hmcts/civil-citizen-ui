@@ -2,7 +2,7 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% macro unavailableDateRow(unavailableDate, legend, index, errorFor, t, removeButton, today, isCarm) %}
+{% macro unavailableDateRow(unavailableDate, legend, index, errorFor, t, removeButton, today, isCarm, legendClasses='govuk-fieldset__legend--s') %}
 
   {% set exampleDate = today.getDate() + ' ' + (today.getMonth() + 1)+ ' ' + (today.getFullYear() + 1) %}
   {% set indexPlusOne = (index + 1) %}
@@ -181,9 +181,9 @@
           fieldset: {
             legend: {
               text: t(legend),
-              classes: "govuk-fieldset__legend--s"
+              classes: legendClasses
             }
-          } if legend is defined,
+          } if legend is defined and legend,
           items: [
                   {
                     id: 'items-' +index+ '-single-date',

@@ -1489,7 +1489,8 @@
       "PAGE_TITLE": "Unavailability dates for mediation",
       "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend mediation",
       "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
-      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
+      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays.",
+      "SELECT": "Select whether this unavailability is for a single date or a longer period of time"
     },
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
@@ -5085,6 +5086,7 @@
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
       "FROM": "From",
       "LONGER_PERIOD": "Longer period of time",
+      "SELECT": "Select whether this unavailability is for a single date or a longer period of time",
       "PAGE_TITLE": "Unavailable dates for hearing",
       "SINGLE_DATE": "Single date",
       "TITLE": "Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing",
