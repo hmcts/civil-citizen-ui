@@ -67,7 +67,7 @@
     "applicationinsights": "^2.9.5",
     "axios": "^1.12.2",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.2",
+    "class-validator": "^0.14.0",
     "config": "^3.3.12",
     "connect-redis": "^7.1.0",
     "cookie-parser": "^1.4.7",
@@ -107,7 +107,7 @@
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.9.5",
     "uuid": "^9.0.0",
-    "validator": "^13.15.15"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
