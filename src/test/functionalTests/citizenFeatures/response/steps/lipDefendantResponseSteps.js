@@ -731,7 +731,6 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    sharedData.language = ['en', 'cy', 'both'].includes(languageOption) ? languageOption : 'en';
     await this.SelectLanguageOption();
   }
 
