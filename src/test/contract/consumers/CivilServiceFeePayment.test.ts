@@ -9,6 +9,7 @@ const createMockProvider = () => new Pact({
   logLevel: 'info',
   consumer: 'civil_citizen_ui',
   provider: 'civil-service',
+  host: '127.0.0.1',
 });
 
 const { like, decimal } = Matchers;
@@ -75,7 +76,7 @@ describe('Civil Service fee payment contract', () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ACCESS_TOKEN}`,
           },
-          body: '',
+          body: {},
         },
         willRespondWith: {
           status: 200,
