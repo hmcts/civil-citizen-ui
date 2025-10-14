@@ -14,11 +14,13 @@
     id: "evidenceItem[" + evidenceIndex + "][type]",
     name: "evidenceItem[" + evidenceIndex + "][type]",
     label: {
-      text: t('PAGES.EVIDENCE.EVIDENCE')
+      text: t('PAGES.EVIDENCE.EVIDENCE'),
+      classes: "govuk-visually-hidden"
     },
     attributes: {
       'data-name': 'evidenceItem[%index%][type]',
-      'data-id': 'evidenceItem[%index%][type]'
+      'data-id': 'evidenceItem[%index%][type]',
+      'aria-label': t('PAGES.EVIDENCE.EVIDENCE')
     },
     items: [
       {
@@ -83,11 +85,13 @@
       id: "evidenceItem[" + evidenceIndex + "][description]",
       value: evidenceValue.description,
       label: {
-        text: t('COMMON.DESCRIPTION')
+        text: t('COMMON.DESCRIPTION'),
+        classes: 'govuk-visually-hidden'
       },
       attributes: {
         'data-name': 'evidenceItem[%index%][description]',
-        'data-id': 'evidenceItem[%index%][description]'
+        'data-id': 'evidenceItem[%index%][description]',
+        'aria-label': t('COMMON.DESCRIPTION')
       },
       errorMessage: {
         text: t(errorFor('evidenceItem['+evidenceIndex+'][description]'))
