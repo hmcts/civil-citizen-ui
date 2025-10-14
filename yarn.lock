@@ -5393,7 +5393,7 @@ __metadata:
     tsconfig-paths: "npm:^4.1.1"
     typescript: "npm:^4.9.5"
     uuid: "npm:^9.0.0"
-    validator: "npm:^13.7.0"
+    validator: "npm:^13.15.15"
     webdriverio: "npm:^8.3.2"
     webpack: "npm:^5.102.1"
     webpack-cli: "npm:^5.1.4"
@@ -15039,6 +15039,13 @@ __metadata:
     "@types/istanbul-lib-coverage": "npm:^2.0.1"
     convert-source-map: "npm:^1.6.0"
   checksum: 10/95811ff2f17a31432c3fc7b3027b7e8c2c6ca5e60a7811c5050ce51920ab2b80df29feb04c52235bbfdaa9a6809acd5a5dd9668292e98c708617c19e087c3f68
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.15.15":
+  version: 13.15.15
+  resolution: "validator@npm:13.15.15"
+  checksum: 10/a43d9271c879468b1ad6dd5d2597b71719a185d2c7ceb3d68f3c9c8c17c25af0d90a53edfa7efaa6ac0d4425ba0345684b9c7d8111bde0d06d915a634a287018
   languageName: node
   linkType: hard
 
