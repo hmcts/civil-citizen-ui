@@ -1,23 +1,15 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import RedisStore from 'connect-redis';
-import Redis from 'ioredis';
 import { app } from '../../../../../main/app';
-import {
-  getClaimById,
-  getRedisStoreForSession,
-} from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import { VIEW_CLAIMANT_INFO } from 'routes/urls';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
+jest.mock('../../../../../main/app/client/civilServiceClient');
 
 describe('View Defendant Information', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,13 +18,10 @@ describe('View Defendant Information', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    (getRedisStoreForSession as jest.Mock).mockReturnValueOnce(new RedisStore({
-      client: new Redis(),
-    }));
   });
   it('should return contact claimant details from claim ', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(caseData);
     await request(app)
       .get(VIEW_CLAIMANT_INFO)
       .expect((res) => {

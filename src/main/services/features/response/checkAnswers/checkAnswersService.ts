@@ -130,7 +130,7 @@ export const saveStatementOfTruth = async (claimId: string, defendantStatementOf
     claim.defendantStatementOfTruth = defendantStatementOfTruth;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(error);
+    logger.error(`Error when saving the statement of truth -  ${error.message}`);
     throw error;
   }
 };
