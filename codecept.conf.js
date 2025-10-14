@@ -17,7 +17,7 @@ const getTests = () => {
   }
 
   if (process.env.ENVIRONMENT == 'aat')
-    return [`${testPath}/functionalTests/tests/nonprod/**/*.js`,
+    return [`${testPath}/functionalTests/tests/prod/**/*.js`,
       `${testPath}/functionalTests/tests/common/**/*.js`,
       `${testPath}/e2eTests/tests/**/*.js`];
 
@@ -44,9 +44,9 @@ exports.config = {
     }
   },
   async teardown() {
-    // console.log('Current worker has finished running tests so we should clean up the user roles');
-    // await unAssignAllUsers();
-    // await deleteAllIdamTestUsers();
+    console.log('Current worker has finished running tests so we should clean up the user roles');
+    await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
   },
   tests: getTests(),
   output: process.env.REPORT_DIR || 'test-results/functional',

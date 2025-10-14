@@ -1,8 +1,1 @@
-[31m[1mInternal Error[22m[39m: axios@npm:^1.7.4: This package doesn't seem to be present in your lockfile; run "yarn install" to update the lockfile
-    at HT.getCandidates (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:204:4607)
-    at rm.getCandidates (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:141:1311)
-    at /Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:209:8420
-    at qE (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:140:45033)
-    at mt (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:209:8400)
-    at async Promise.allSettled (index 34)
-    at async Uu (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:140:44361)
+{"value":"csurf","children":{"ID":"csurf (deprecation)","Issue":"This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions","Severity":"moderate","Vulnerable Versions":"1.11.0","Tree Versions":["1.11.0"],"Dependents":["civil-citizen-ui@workspace:."]}}

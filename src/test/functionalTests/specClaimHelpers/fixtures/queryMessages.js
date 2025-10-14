@@ -8,7 +8,7 @@ const initialQueryMessage = async (userName, userId, isHearingRelated) => elemen
   name: userName,
   subject: `${userName} Query`,
   createdBy: userId,
-  createdOn: '2025-11-26T13:28:49.951Z',
+  createdOn: new Date().toISOString(),
   attachments: [element({...(await uploadDocument()), filename: 'query-attachment.pdf'})],
   isHearingRelated: isHearingRelated ? 'Yes' : 'No',
   ...(isHearingRelated ? {  hearingDate: '2026-01-01' } : {}),
