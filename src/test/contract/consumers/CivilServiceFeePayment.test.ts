@@ -76,7 +76,7 @@ describe('Civil Service fee payment contract', () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${ACCESS_TOKEN}`,
           },
-          body: {},
+          body: '',
         },
         willRespondWith: {
           status: 200,
