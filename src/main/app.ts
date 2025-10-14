@@ -156,6 +156,7 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
