@@ -7,7 +7,7 @@ const { PUBLIC_QUERY } = require('../../specClaimHelpers/fixtures/queryTypes');
 let caseData, claimNumber;
 const claimType = 'SmallClaims';
 
-Feature('QM - LIP - Follow up tests @regression @qm');
+Feature('QM - LIP - Follow up tests @qm').tag('@nightly');
 
 Before(async () => {
   await Promise.all([
@@ -82,4 +82,4 @@ Scenario('Claimant and Defendant send message to court and follow up and admin c
   await closeQuery(qm, caseId, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
   await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
   await ResponseSteps.verifyClosedQuery('Defendant Query');
-});
+}).tag('@regression');
