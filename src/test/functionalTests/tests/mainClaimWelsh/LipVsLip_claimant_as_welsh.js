@@ -15,7 +15,7 @@ let caseData, claimNumber, claimRef, claimAmount = 1500, claimFee = 80, deadline
 let claimTotalAmount = claimAmount + claimFee;
 let welshEnabled;
 
-Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@api @full-admit');
+Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@api @full-admit @debug');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
   welshEnabled = await checkToggleEnabled('enableWelshForMainCase');

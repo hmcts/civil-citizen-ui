@@ -11,7 +11,9 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 let claimNumber, claimType, claimRef, caseData;
 let welshEnabled;
+
 Feature('Create Lip v Lip claim - Rejected All By defendant document welsh').tag('@reject-all');
+
 Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh', async ({api}) => {
   welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
   if (!welshEnabled) {
@@ -44,7 +46,6 @@ Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh', as
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true, 'both');
-  sharedData.language = 'en';
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Go to your account');
   await I.wait(5);
