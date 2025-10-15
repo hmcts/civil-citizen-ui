@@ -16,7 +16,6 @@ const fields = {
   },
 };
 
-
 const content = {
   heading: {
     en: 'Welsh language',
@@ -33,7 +32,7 @@ const content = {
   },
   hintTextMediation: {
     en: 'This includes the language that you or your representative will speak at mediation.',
-    cy: 'Mae hyn yn cynnwys yr iaith y byddwch chi neu\'ch cynrychiolydd yn ei siarad yn y cyfryngu.'
+    cy: 'Mae hyn yn cynnwys yr iaith y byddwch chi neu\'ch cynrychiolydd yn ei siarad yn y cyfryngu.',
   },
   speakLanguageQuestion: {
     en: 'What languages will you, your experts and your witnesses speak at the hearing?',

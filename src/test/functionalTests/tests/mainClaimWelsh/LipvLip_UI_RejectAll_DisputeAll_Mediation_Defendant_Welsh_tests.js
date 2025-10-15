@@ -5,7 +5,6 @@ const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/st
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
-const sharedData = require('../../sharedData');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
