@@ -8,7 +8,7 @@ const createMockProvider = () => new Pact({
   dir: PACT_DIRECTORY_PATH,
   logLevel: 'info',
   consumer: 'civil_citizen_ui',
-  provider: 'civil-service',
+  provider: 'civil_service',
   host: '127.0.0.1',
 });
 
