@@ -4,8 +4,9 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 
 {% block nestedContent %}
-      <form method="post" novalidate>
+      <form method="post" novalidate aria-labelledby="apply-help-fee-heading">
        {{ csrfProtection(csrf) }}
+       <h2 class="govuk-heading-l" id="apply-help-fee-heading">Apply for help with fees</h2>
        {% for content in applyHelpFeeStartContents %}
           {{ itemContent(content,t) }}
        {% endfor %}

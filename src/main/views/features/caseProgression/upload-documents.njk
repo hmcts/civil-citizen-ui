@@ -21,19 +21,20 @@
     {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
     {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
-      <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+      <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate aria-describedby="upload-documents-description">
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
 
           {% for content in uploadDocumentsContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
-          <p class="govuk-body-m">{{ paragraph }}</p>
+          <h2 class="govuk-heading-s" id="upload-documents-subtitle">{{ titleH2 }}</h2>
+          <p class="govuk-body-m" id="upload-documents-description">{{ paragraph }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
 
           {% if disclosureContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ disclosure }}</h2>
+            <section aria-labelledby="disclosure-heading">
+            <h2 class="govuk-heading-l" id="disclosure-heading">{{ disclosure }}</h2>
             {% for disclosureSections in disclosureContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
@@ -51,7 +52,8 @@
                         name: 'action',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-disclosure-list'
+                          'id': 'add-another-disclosure-list',
+                          'aria-describedby': 'disclosure-heading'
                         }
                       }) }}
                 </div>
@@ -59,10 +61,12 @@
               </div>
             </div>
             {% endfor %}
+            </section>
           {% endif %}
 
           {% if witnessContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ witness }}</h2>
+            <section aria-labelledby="witness-heading">
+            <h2 class="govuk-heading-l" id="witness-heading">{{ witness }}</h2>
             {% for witnessSections in witnessContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
@@ -79,7 +83,8 @@
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-witness-list'
+                          'id': 'add-another-witness-list',
+                          'aria-describedby': 'witness-heading'
                         }
                       }) }}
                 </div>
@@ -87,10 +92,12 @@
               </div>
             </div>
             {% endfor %}
+            </section>
           {% endif %}
 
           {% if expertContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ expert }}</h2>
+            <section aria-labelledby="expert-heading">
+            <h2 class="govuk-heading-l" id="expert-heading">{{ expert }}</h2>
             {% for expertSections in expertContent %}
             <div class="row-container">
               <div data-module="moj-add-another">
@@ -107,7 +114,8 @@
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-expert-list'
+                          'id': 'add-another-expert-list',
+                          'aria-describedby': 'expert-heading'
                         }
                       }) }}
                 </div>
@@ -115,13 +123,16 @@
               </div>
             </div>
             {% endfor %}
+            </section>
           {% endif %}
 
           {% if trialContent.length > 0 %}
             {% if isSmallClaims %}
-              <h2 class="govuk-heading-l">{{ hearing }}</h2>
+              <section aria-labelledby="hearing-heading">
+              <h2 class="govuk-heading-l" id="hearing-heading">{{ hearing }}</h2>
             {% else %}
-              <h2 class="govuk-heading-l">{{ trial }}</h2>
+              <section aria-labelledby="trial-heading">
+              <h2 class="govuk-heading-l" id="trial-heading">{{ trial }}</h2>
             {% endif %}
             {% for trialSections in trialContent %}
             <div class="row-container">
@@ -139,7 +150,8 @@
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-trial-list'
+                          'id': 'add-another-trial-list',
+                          'aria-describedby': isSmallClaims ? 'hearing-heading' : 'trial-heading'
                         }
                       }) }}
                 </div>
@@ -147,6 +159,7 @@
               </div>
             </div>
             {% endfor %}
+            </section>
           {% endif %}
 
           <br>
