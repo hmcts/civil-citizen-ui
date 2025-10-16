@@ -45,7 +45,8 @@
                   classes: 'moj-add-another__item',
                   legend: {
                   classes: 'moj-add-another__title',
-                  isPageHeading: false
+                  isPageHeading: false,
+                  text: section.heading or ''
                 }
                 }) %}
                   {{ claimSummaryContent({ contentSections: section.contentSections }, t) }}
@@ -75,7 +76,8 @@
                 classes: 'moj-add-another__item',
                 legend: {
                 classes: 'moj-add-another__title',
-                isPageHeading: false
+                isPageHeading: false,
+                text: section.heading or ''
               }
               }) %}
                 {{ claimSummaryContent({contentSections: section.contentSections }, t) }}
