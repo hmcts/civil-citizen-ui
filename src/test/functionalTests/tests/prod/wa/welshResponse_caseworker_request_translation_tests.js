@@ -53,7 +53,7 @@ Scenario('Welsh Response with PartAdmit - SetDate ', async () => {
   await ResponseSteps.ConfirmAltPhoneDetails();
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef, true, false);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, true);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   sharedData.language = 'en';
 });
