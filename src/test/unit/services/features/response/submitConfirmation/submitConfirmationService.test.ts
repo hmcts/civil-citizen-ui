@@ -22,6 +22,7 @@ import {FullAdmission} from 'common/models/fullAdmission';
 import {YesNo} from 'common/form/models/yesNo';
 import {Mediation} from 'common/models/mediation/mediation';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/claimantResponse/submitClaimantResponse';
 
 jest.mock('../../../../../../main/modules/i18n');
@@ -559,6 +560,10 @@ describe('Submit Confirmation service', () => {
   });
 
   describe('getClaimWithExtendedPaymentDeadline', () => {
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
     it('should not calculate deadline for Full Admit Pay Immediately',
       async () => {
         jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
@@ -590,5 +595,17 @@ describe('Submit Confirmation service', () => {
         const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
         expect(claimWithExtendedPaymentDeadline).not.toBeUndefined();
       });
+
+    it('should rethrow error when extended deadline calculation fails', async () => {
+      const error = new Error(TestMessages.REQUEST_FAILED);
+      jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockRejectedValue(error);
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+      await expect(getClaimWithExtendedPaymentDeadline(claim, null)).rejects.toThrow(TestMessages.REQUEST_FAILED);
+    });
   });
 });
