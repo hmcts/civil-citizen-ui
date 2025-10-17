@@ -110,7 +110,7 @@ describe('Upload document- upload document controller', () => {
     const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
     (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
 
-    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({ lang: 'en' }).expect((res) => {
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'}).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain('Upload documents');
       expect(res.text).toContain('Hearing');
