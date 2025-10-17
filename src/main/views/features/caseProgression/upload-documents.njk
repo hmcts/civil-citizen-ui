@@ -51,7 +51,8 @@
                         name: 'action',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-disclosure-list'
+                          'id': 'add-another-disclosure-list',
+                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ disclosure
                         }
                       }) }}
                 </div>
@@ -79,7 +80,8 @@
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-witness-list'
+                          'id': 'add-another-witness-list',
+                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ witness
                         }
                       }) }}
                 </div>
@@ -107,7 +109,8 @@
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-expert-list'
+                          'id': 'add-another-expert-list',
+                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ expert
                         }
                       }) }}
                 </div>
@@ -139,7 +142,8 @@
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-trial-list'
+                          'id': 'add-another-trial-list',
+                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (isSmallClaims ? hearing : trial)
                         }
                       }) }}
                 </div>
