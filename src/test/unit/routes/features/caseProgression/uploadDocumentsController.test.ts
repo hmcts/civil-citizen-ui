@@ -654,4 +654,95 @@ describe('on POST', () => {
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
+
+  it('should redirect to 404 or default route when case progression v1 feature is disabled', async () => {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    await request(app)
+      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res) => {
+        // Expecting redirect or error - adjust as per controller logic
+        expect([302, 404]).toContain(res.status);
+      });
+  });
+
+  it('should return 500 if saveCaseProgression rejects on POST', async () => {
+    (saveCaseProgression as jest.Mock).mockRejectedValueOnce(new Error('Redis error'));
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(new UploadDocumentsUserForm());
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+  });
+
+  it('should show validation error when file type is unsupported', async () => {
+    const file = {
+      fieldname: 'documentsForDisclosure[0][fileUpload]',
+      originalname: 'malware.exe',
+      mimetype: 'application/x-msdownload',
+      size: 123,
+      buffer: Buffer.from('Fake exe'),
+    };
+
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(new UploadDocumentsUserForm());
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .attach('documentsForDisclosure[0][fileUpload]', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_CHOOSE_THE_FILE);
+      });
+  });
+
+  it('should handle null form gracefully without throwing', async () => {
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(null);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    await request(app)
+      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Upload documents');
+      });
+  });
+
+  it('should redirect to check answers page in Welsh after successful POST', async () => {
+    const form = new UploadDocumentsUserForm();
+    form.documentsForDisclosure = [new TypeOfDocumentSection()];
+    form.documentsForDisclosure[0].typeOfDocument = 'pdf';
+    form.documentsForDisclosure[0].dateInputFields.date = new Date();
+    form.documentsForDisclosure[0].caseDocument = caseDoc;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(form);
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .query({ lang: 'cy' })
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.get('location')).toBe(CP_CHECK_ANSWERS_URL);
+      });
+  });
+
+  it('should show validation error when trialDocumentary section is invalid', async () => {
+    const form = new UploadDocumentsUserForm();
+    form.trialDocumentary = [new TypeOfDocumentSection()];
+    form.trialDocumentary[0].typeOfDocument = '';
+    form.trialDocumentary[0].dateInputFields.dateDay = '';
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(form);
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
+      });
+  });
+
 });
