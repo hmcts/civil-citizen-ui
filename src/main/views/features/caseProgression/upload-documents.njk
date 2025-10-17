@@ -46,13 +46,12 @@
                 </div>
                 <div class="moj-button-action">
                       {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD') + ' ' + disclosure,
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         name: 'action',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-disclosure-list',
-                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (disclosure | default('')))
+                          'id': 'add-another-disclosure-list'
                         }
                       }) }}
                 </div>
@@ -76,12 +75,11 @@
                 </div>
                 <div class="moj-button-action">
                       {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD') + ' ' + witness,
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-witness-list',
-                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (witness | default('')))
+                          'id': 'add-another-witness-list'
                         }
                       }) }}
                 </div>
@@ -105,12 +103,11 @@
                 </div>
                 <div class="moj-button-action">
                       {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD') + ' ' + expert,
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-expert-list',
-                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (expert | default('')))
+                          'id': 'add-another-expert-list'
                         }
                       }) }}
                 </div>
@@ -138,12 +135,11 @@
                 </div>
                 <div class="moj-button-action">
                       {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD') + ' ' + (isSmallClaims ? hearing : trial),
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         type: 'button',
                         attributes: {
-                          'id': 'add-another-trial-list',
-                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ ((isSmallClaims ? hearing : trial) | default('')))
+                          'id': 'add-another-trial-list'
                         }
                       }) }}
                 </div>
