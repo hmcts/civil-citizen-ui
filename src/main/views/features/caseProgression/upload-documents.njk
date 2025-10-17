@@ -52,7 +52,7 @@
                         type: 'button',
                         attributes: {
                           'id': 'add-another-disclosure-list',
-                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ disclosure
+                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (disclosure or ''))
                         }
                       }) }}
                 </div>
@@ -81,7 +81,7 @@
                         type: 'button',
                         attributes: {
                           'id': 'add-another-witness-list',
-                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ witness
+                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (witness or ''))
                         }
                       }) }}
                 </div>
@@ -110,7 +110,7 @@
                         type: 'button',
                         attributes: {
                           'id': 'add-another-expert-list',
-                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ expert
+                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (expert or ''))
                         }
                       }) }}
                 </div>
@@ -143,7 +143,7 @@
                         type: 'button',
                         attributes: {
                           'id': 'add-another-trial-list',
-                          'aria-label': t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ (isSmallClaims ? hearing : trial)
+                          'aria-label': (t('PAGES.UPLOAD_DOCUMENTS.ADD') ~ ' ' ~ ((isSmallClaims ? hearing : trial) or ''))
                         }
                       }) }}
                 </div>
