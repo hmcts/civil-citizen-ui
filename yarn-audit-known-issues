@@ -1,0 +1,24 @@
+➤ YN0001: RequestError: Timeout awaiting 'socket' for 60000ms
+    at ClientRequest.<anonymous> (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:146:14230)
+    at Object.onceWrapper (node:events:634:26)
+    at ClientRequest.emit (node:events:531:35)
+    at c.emit (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:141:22975)
+    at emitErrorEvent (node:_http_client:103:11)
+    at TLSSocket.socketErrorListener (node:_http_client:506:5)
+    at TLSSocket.emit (node:events:519:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at h (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:142:15329)
+    at ClientRequest.C (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:142:15573)
+    at Object.onceWrapper (node:events:633:28)
+    at ClientRequest.emit (node:events:531:35)
+    at c.emit (/Users/nivethag/Documents/GitHub/civil-citizen-ui/.yarn/releases/yarn-4.10.3.cjs:141:22975)
+    at TLSSocket.emitRequestTimeout (node:_http_client:851:9)
+    at Object.onceWrapper (node:events:633:28)
+    at TLSSocket.emit (node:events:531:35)
+    at Socket._onTimeout (node:net:595:8)
+    at listOnTimeout (node:internal/timers:594:17)
+
+➤ Errors happened when preparing the environment required to run this command.
+➤ This might be caused by packages being missing from the lockfile, in which case running "yarn install" might help.
