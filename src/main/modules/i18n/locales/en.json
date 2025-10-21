@@ -5072,6 +5072,7 @@
       "NAME_OF_PERSON": "Name of the person who needs support",
       "OTHER": "Other support",
       "PAGE_TITLE": "Support required",
+      "PERSON_LEGEND": "Person {{ number }} details",
       "PERSON_TEXT": "Person",
       "SELECT_ALL_THAT_APPLY": "Select all that apply.",
       "SIGN_LANGUAGE": "Sign language interpreter",
