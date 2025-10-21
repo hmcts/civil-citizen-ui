@@ -1,4 +1,4 @@
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 import config from 'config';
 import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
@@ -32,8 +32,11 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
   }
   if (claim?.id) {
     const appRequest = <AppRequest>req;
-    appRequest.session.caseReference = claim.id;
-    syncCaseReferenceCookie(appRequest);
+    const session = (appRequest.session as AppSession | undefined);
+    if (session) {
+      session.caseReference = claim.id;
+      syncCaseReferenceCookie(appRequest);
+    }
   }
   return claim;
 };

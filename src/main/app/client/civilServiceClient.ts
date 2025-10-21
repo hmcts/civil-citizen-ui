@@ -1,7 +1,7 @@
 import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {AppRequest} from 'common/models/AppRequest';
+import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
@@ -159,8 +159,11 @@ export class CivilServiceClient {
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       const caseId = caseDetails.id?.toString();
       if (caseId) {
-        req.session.caseReference = caseId;
-        syncCaseReferenceCookie(req);
+        const session = req.session as AppSession | undefined;
+        if (session) {
+          session.caseReference = caseId;
+          syncCaseReferenceCookie(req);
+        }
       }
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {

@@ -10,7 +10,17 @@ type CookieOptions = {
 
 let storedCookieOptions: CookieOptions;
 
-const normaliseCaseReference = (caseReference: string): string => caseReference?.replace(/\s/g, '');
+const normaliseCaseReference = (caseReference: unknown): string | undefined => {
+  if (caseReference === undefined || caseReference === null) {
+    return undefined;
+  }
+
+  if (typeof caseReference === 'string' || typeof caseReference === 'number') {
+    return caseReference.toString().replace(/\s/g, '');
+  }
+
+  return undefined;
+};
 
 const resolveCaseReference = (req: AppRequest): string => {
   const sessionCaseReference = req.session?.caseReference;
@@ -26,8 +36,9 @@ const applyCookie = (req: AppRequest, res: Response): void => {
 
   const rawReference = resolveCaseReference(req);
 
-  if (rawReference) {
-    const normalisedReference = normaliseCaseReference(rawReference);
+  const normalisedReference = normaliseCaseReference(rawReference);
+
+  if (normalisedReference) {
     if (req.cookies?.[CASE_REFERENCE_COOKIE_NAME] !== normalisedReference) {
       res.cookie(CASE_REFERENCE_COOKIE_NAME, normalisedReference, {
         maxAge: storedCookieOptions.maxAge,
