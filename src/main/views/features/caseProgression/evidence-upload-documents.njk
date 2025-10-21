@@ -8,14 +8,17 @@
 </script>
 
 {% block nestedContent %}
+  <h2 class="govuk-visually-hidden" id="claim-summary-heading">Claim summary information</h2>
 
   {{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
 
   {% for documentSection in documentSections %}
-    {{ claimSummaryContent({
-      contentSections: documentSection.contentSections,
-      hasDivider: documentSection.hasDivider
-    }, t) }}
+    <section role="group" aria-labelledby="claim-summary-heading">
+      {{ claimSummaryContent({
+        contentSections: documentSection.contentSections,
+        hasDivider: documentSection.hasDivider
+      }, t) }}
+    </section>
   {% endfor %}
 
 {% endblock %}
