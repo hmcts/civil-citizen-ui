@@ -1,7 +1,7 @@
 import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {AppRequest} from 'common/models/AppRequest';
+import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
@@ -63,6 +63,7 @@ import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
+import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -156,6 +157,14 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
+      const caseId = caseDetails.id?.toString();
+      if (caseId) {
+        const session = req.session as AppSession | undefined;
+        if (session) {
+          session.caseReference = caseId;
+          syncCaseReferenceCookie(req);
+        }
+      }
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(`Error when retrieving claim details for claim id - ${claimId} `);

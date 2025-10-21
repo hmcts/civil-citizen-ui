@@ -1,4 +1,4 @@
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 import config from 'config';
 import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
@@ -7,6 +7,7 @@ import {Request} from 'express';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
+import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -27,6 +28,14 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
       await saveDraftClaim(redisKey, claim, true);
     } else {
       throw new Error('Case not found...');
+    }
+  }
+  if (claim?.id) {
+    const appRequest = <AppRequest>req;
+    const session = (appRequest.session as AppSession | undefined);
+    if (session) {
+      session.caseReference = claim.id;
+      syncCaseReferenceCookie(appRequest);
     }
   }
   return claim;
