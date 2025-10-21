@@ -227,6 +227,7 @@ const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSect
   const formObj: TypeOfDocumentSection = new TypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = typeof request['typeOfDocument'] === 'string' ? request['typeOfDocument'].trim() : '';
   if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
+    logger.info('caseDocument: ' + request[CASE_DOCUMENT] + ', typeOfDocument: ' + request['typeOfDocument']);// NOSONAR
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }
   return formObj;
