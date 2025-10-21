@@ -11,7 +11,7 @@ describe('caseReferenceCookie middleware', () => {
     clearCookie: jest.fn(),
   }) as unknown as Response;
 
-  const baseSession: AppSession = {
+  const baseSession = {
     user: {
       accessToken: '',
       id: '',
@@ -31,9 +31,9 @@ describe('caseReferenceCookie middleware', () => {
     issuedAt: 0,
     dashboard: {taskIdHearingUploadDocuments: ''},
     qmShareConfirmed: false,
-  };
+  } as unknown as AppSession;
 
-  const createRequest = (overrides: Partial<AppRequest> & {session?: Partial<AppSession>} = {}) => {
+  const createRequest = (overrides: Partial<Omit<AppRequest, 'session'>> & {session?: Partial<AppSession>} = {}) => {
     const {session, ...rest} = overrides;
     return {
       session: {...baseSession, ...(session ?? {})} as AppSession,
