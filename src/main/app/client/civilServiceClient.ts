@@ -63,6 +63,7 @@ import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
+import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -156,6 +157,11 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
+      const caseId = caseDetails.id?.toString();
+      if (caseId) {
+        req.session.caseReference = caseId;
+        syncCaseReferenceCookie(req);
+      }
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error(`Error when retrieving claim details for claim id - ${claimId} `);

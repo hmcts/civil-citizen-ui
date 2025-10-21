@@ -1,0 +1,83 @@
+import {Response} from 'express';
+import {setCaseReferenceCookie, CASE_REFERENCE_COOKIE_NAME, syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {AppRequest} from 'models/AppRequest';
+
+describe('caseReferenceCookie middleware', () => {
+  const maxAge = 1000;
+  const middleware = setCaseReferenceCookie({secure: false, maxAge});
+
+  const createResponse = () => ({
+    cookie: jest.fn(),
+    clearCookie: jest.fn(),
+  }) as unknown as Response;
+
+  const createRequest = (overrides: Partial<AppRequest> = {}) => ({
+    session: {},
+    cookies: {},
+    ...overrides,
+  }) as AppRequest;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('sets cookie when case reference stored in session', () => {
+    const req = createRequest({session: {caseReference: '1645882162449409'} as any});
+    const res = createResponse();
+    const next = jest.fn();
+
+    middleware(req, res, next);
+
+    expect(res.cookie).toHaveBeenCalledWith(
+      CASE_REFERENCE_COOKIE_NAME,
+      '1645882162449409',
+      expect.objectContaining({httpOnly: false, maxAge}),
+    );
+    expect(res.clearCookie).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('sets cookie from first contact details when session case reference missing', () => {
+    const req = createRequest({session: {firstContact: {claimId: '1234567890123456'}} as any});
+    const res = createResponse();
+    const next = jest.fn();
+
+    middleware(req, res, next);
+
+    expect(res.cookie).toHaveBeenCalledWith(
+      CASE_REFERENCE_COOKIE_NAME,
+      '1234567890123456',
+      expect.objectContaining({httpOnly: false, maxAge}),
+    );
+    expect(res.clearCookie).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('clears cookie when no case reference data present', () => {
+    const req = createRequest({cookies: {[CASE_REFERENCE_COOKIE_NAME]: 'existing'}});
+    const res = createResponse();
+    const next = jest.fn();
+
+    middleware(req, res, next);
+
+    expect(res.clearCookie).toHaveBeenCalledWith(
+      CASE_REFERENCE_COOKIE_NAME,
+      expect.objectContaining({sameSite: 'lax'}),
+    );
+    expect(res.cookie).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('syncs cookie using provided response', () => {
+    const res = createResponse();
+    const req = createRequest({session: {caseReference: 'ABC123456789'}});
+
+    syncCaseReferenceCookie(req, res as unknown as Response);
+
+    expect(res.cookie).toHaveBeenCalledWith(
+      CASE_REFERENCE_COOKIE_NAME,
+      'ABC123456789',
+      expect.objectContaining({httpOnly: false, maxAge}),
+    );
+  });
+});

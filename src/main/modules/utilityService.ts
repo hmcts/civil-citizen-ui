@@ -7,6 +7,7 @@ import {Request} from 'express';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
+import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -28,6 +29,11 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
     } else {
       throw new Error('Case not found...');
     }
+  }
+  if (claim?.id) {
+    const appRequest = <AppRequest>req;
+    appRequest.session.caseReference = claim.id;
+    syncCaseReferenceCookie(appRequest);
   }
   return claim;
 };
