@@ -34,7 +34,7 @@
           <h2 class="govuk-heading-s">{{ t(subtitle) }}</h2>
           <p class="govuk-body-m">{{ t(paragraph) }}</p>
           <h1 class="govuk-heading-l">{{ t(sectionTitle) }}</h1>
-+         <h2 class="govuk-visually-hidden" id="your-statement-heading">Your statement section</h2>
+         <h2 class="govuk-visually-hidden" id="your-statement-heading">Your statement section</h2>
 
             {% if yourStatementContent.length > 0 %}
 
@@ -68,7 +68,7 @@
             </div>
             {% endfor %}
             {% endif %}
-+         <h2 class="govuk-visually-hidden" id="documents-referred-heading">Documents referred section</h2>
+         <h2 class="govuk-visually-hidden" id="documents-referred-heading">Documents referred section</h2>
           {% if documentsReferredContent.length > 0 %}
           {% for documentsReferredSection in documentsReferredContent %}
           <div class="row-container" role="group" aria-labelledby="documents-referred-heading">
