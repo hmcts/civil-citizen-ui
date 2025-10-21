@@ -153,9 +153,9 @@ class ClaimCreation {
     clickButton(buttonType.SAVE_AND_CONTINUE);
     //timeline
     I.seeInCurrentUrl('/claim/timeline');
-    I.fillField('input[id="day"]', '01');
-    I.fillField('input[id="month"]', '01');
-    I.fillField('input[id="year"]', '2024');
+    I.fillField('input[id="rows-0-day"]', '01');
+    I.fillField('input[id="rows-0-month"]', '01');
+    I.fillField('input[id="rows-0-year"]', '2024');
     I.fillField('textarea[id="rows[0][description]"]', 'test');
     clickButton(buttonType.SAVE_AND_CONTINUE);
     //evidence
