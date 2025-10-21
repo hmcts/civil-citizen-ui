@@ -3,10 +3,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {
-  civilClaimResponseMock,
-  mockCivilClaimUndefined,
-} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock, mockCivilClaimUndefined} from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
 import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
 import currencyFormat, {convertToPoundsFilter} from 'common/utils/currencyFormat';
@@ -16,17 +13,19 @@ import {PartyType} from 'models/partyType';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-import { isCUIReleaseTwoEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import civilClaimResponsePDFTimeline from '../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json';
+import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseState} from 'form/models/claimDetails';
+import {DocumentType} from 'models/document/documentType';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
-
 const nock = require('nock');
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
+const isWelshEnabledForMainCase = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
@@ -51,7 +50,7 @@ describe('Claim details page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    isReleaseTwo.mockResolvedValue(false);
+    isWelshEnabledForMainCase.mockResolvedValue(false);
   });
 
   describe('on Get', () => {
@@ -68,6 +67,7 @@ describe('Claim details page', () => {
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
+      isWelshEnabledForMainCase.mockResolvedValue(false);
       nock(civilServiceUrl)
         .post('/fees/claim/calculate-interest')
         .times(3)
@@ -82,7 +82,7 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('000MC009'); // case number
+          expect(res.text).toContain('1111'); // case number
           expect(res.text).toContain(totalClaimAmount); // tottal claim amount
           expect(res.text).toContain('House repair'); // claim reason
           expect(res.text).toContain('200'); // claim amount
@@ -144,7 +144,7 @@ describe('Claim details page', () => {
         });
     });
 
-    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled flags are enabled', async () => {
+    it('should return your new claim details page with values from civil-service', async () => {
       nock(civilServiceUrl)
         .get('/cases/1713273393110043')
         .reply(200, CivilClaimResponseMock);
@@ -155,7 +155,7 @@ describe('Claim details page', () => {
         .post('/fees/claim/calculate-interest')
         .times(3)
         .reply(200, '0');
-      isReleaseTwo.mockResolvedValue(true);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
@@ -177,6 +177,48 @@ describe('Claim details page', () => {
           expect(res.text).toContain('House repair'); // details of claim
           expect(res.text).toContain('I noticed a leak on the landing and told Mr Smith about this.'); // timeline description
           expect(res.text).toContain('1 January 2022'); // timeline date
+        });
+    });
+
+    it('Should Get the Warning Message when Claim is under translation', async () => {
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .times(2)
+        .reply(200, '0');
+      const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      claim.preTranslationDocuments = [{
+        id: '1234',
+        value: {
+          createdBy: 'some one',
+          documentLink: {
+            document_url: 'url',
+            document_filename: 'filename',
+            document_binary_url: 'http://dm-store:8080/documents/77121e9b-e83a-440a-9429-e7f0fe89e518/binary',
+          },
+          documentName: 'some name',
+          documentType: DocumentType.SEALED_CLAIM,
+          documentSize: 123,
+          createdDatetime: new Date(),
+        },
+      }];
+
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      isWelshEnabledForMainCase.mockResolvedValue(true);
+      await request(app)
+        .get('/case/1111/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.DOCUMENTS_BEING_TRANSLATED'));
+          expect(res.text).toContain(claim?.claimAmountBreakup[0].value.claimReason);
+          expect(res.text).toContain(claim?.claimAmountBreakup[0].value.claimAmount);
+          expect(res.text).toContain(claim?.totalInterest.toString());
+          expect(res.text).toContain(convertToPoundsFilter(claim?.claimFee.calculatedAmountInPence).toString());
+          expect(res.text).toContain(claim?.claimDetails.reason.text);
+          expect(res.text).toContain(claim?.timelineOfEvents[0].value.timelineDescription);
+          expect(res.text).toContain(dateFilter(claim?.timelineOfEvents[0].value.timelineDate));
         });
     });
   });

@@ -1,5 +1,8 @@
-{% set startDate = "2025-08-22" | addDays(0) %}
-{% set endDate = "2025-08-27T04:00+01:00" | addDays(0)  %}
+
+{% macro addBanner(startDate, endDate, message, t) %}
+
+{% set startDate = startDate | addDays(0) %}
+{% set endDate = endDate | addDays(0)  %}
 {% set currentDate = "now" | addDays(0) %}
 
 {% if currentDate >= startDate and currentDate < endDate %}
@@ -11,7 +14,9 @@ C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.
     </svg>
     <div class="hmcts-banner-message">
       <span class="hmcts-banner-assistive">information</span>
-      {{ t('BANNERS.CUI_COSC.MESSAGE') }}
+      {{ message }}
     </div>
   </div>
 {% endif %}
+
+{% endmacro %}

@@ -17,7 +17,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@part-admit @skip-regression-cui-r1');
+Feature('Welsh Response with PartAdmit - Small Claims').tag('@nightly');
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -33,7 +33,7 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   console.log('Security code', securityCode);
 });
 
-Scenario('Welsh Response with PartAdmit - SetDate @citizenUI', async () => {
+Scenario('Welsh Response with PartAdmit - SetDate ', async () => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
@@ -53,7 +53,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI', async () => {
   await ResponseSteps.ConfirmAltPhoneDetails();
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef, true, false);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, true);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   sharedData.language = 'en';
 });

@@ -9,6 +9,9 @@ import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyC
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteSubmissionController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('incompleteSubmissionController');
+
 incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
@@ -22,6 +25,7 @@ incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, (async (r
       pageTitle: 'PAGES.INCOMPLETE_SUBMISSION.TITLE',
     });
   } catch (error) {
+    logger.error(`Error when getting incomplete submission -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

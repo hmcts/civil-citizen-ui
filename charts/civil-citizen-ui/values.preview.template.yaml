@@ -185,6 +185,7 @@ ccd:
 
   ccd-data-store-api:
     java:
+      image: hmctspublic.azurecr.io/ccd/data-store-api:prod-8d7d4a8-20250918185030
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 1000m
@@ -484,6 +485,7 @@ civil-service:
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       ASSIGN_ROLES_ON_STARTUP: true
       COURT_LOCATION_WA_DMN_ENABLED: true
+      TASK_MANAGEMENT_ENABLED: false
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
