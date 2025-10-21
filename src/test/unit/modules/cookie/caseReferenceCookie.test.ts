@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import {setCaseReferenceCookie, CASE_REFERENCE_COOKIE_NAME, syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 
 describe('caseReferenceCookie middleware', () => {
   const maxAge = 1000;
@@ -11,18 +11,43 @@ describe('caseReferenceCookie middleware', () => {
     clearCookie: jest.fn(),
   }) as unknown as Response;
 
-  const createRequest = (overrides: Partial<AppRequest> = {}) => ({
-    session: {},
-    cookies: {},
-    ...overrides,
-  }) as AppRequest;
+  const baseSession: AppSession = {
+    user: {
+      accessToken: '',
+      id: '',
+      email: '',
+      givenName: '',
+      familyName: '',
+      roles: [],
+    },
+    lang: undefined,
+    previousUrl: '',
+    claimId: '',
+    taskLists: [],
+    assignClaimURL: '',
+    claimIssueTasklist: false,
+    firstContact: {},
+    fileUpload: '',
+    issuedAt: 0,
+    dashboard: {taskIdHearingUploadDocuments: ''},
+    qmShareConfirmed: false,
+  };
+
+  const createRequest = (overrides: Partial<AppRequest> & {session?: Partial<AppSession>} = {}) => {
+    const {session, ...rest} = overrides;
+    return {
+      session: {...baseSession, ...(session ?? {})} as AppSession,
+      cookies: {},
+      ...rest,
+    } as AppRequest;
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('sets cookie when case reference stored in session', () => {
-    const req = createRequest({session: {caseReference: '1645882162449409'} as any});
+    const req = createRequest({session: {caseReference: '1645882162449409'}});
     const res = createResponse();
     const next = jest.fn();
 
@@ -38,7 +63,7 @@ describe('caseReferenceCookie middleware', () => {
   });
 
   it('sets cookie from first contact details when session case reference missing', () => {
-    const req = createRequest({session: {firstContact: {claimId: '1234567890123456'}} as any});
+    const req = createRequest({session: {firstContact: {claimId: '1234567890123456'}}});
     const res = createResponse();
     const next = jest.fn();
 
