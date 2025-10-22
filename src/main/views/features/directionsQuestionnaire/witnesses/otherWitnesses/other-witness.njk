@@ -8,83 +8,83 @@
   {% set telephone = "witnessItems[" + index + "][telephone]" %}
   {% set details = "witnessItems[" + index + "][details]" %}
   <div class="row-container">
-   <fieldset class="govuk-fieldset">
-      <legend class="govuk-visually-hidden">{{ t('PAGES.OTHER_WITNESSES.PAGE_TITLE') }}</legend>
+    <fieldset class="govuk-fieldset">
+     <legend class="govuk-visually-hidden">{{ t('PAGES.OTHER_WITNESSES.PAGE_TITLE') }}</legend>
       <div class="multiple-row">
-        {{ govukInput({
-          id: firstName,
-          name: firstName,
-          type: "text",
-          autocomplete: "text",
-          classes: "govuk-!-width-one-half",
-          label: {
-            text: t('COMMON.INPUT_LABELS.FIRST_NAME')
-          },
-          value: witnessItems.firstName,
-          errorMessage: {
-            text: t(form.errorFor(firstName))
-          } if form.hasFieldError(firstName)
-        }) }}
-        {{ govukInput({
-          id: lastName,
-          name: lastName,
-          type: "text",
-          autocomplete: "text",
-          classes: "govuk-!-width-one-half",
-          label: {
-            text: t('COMMON.INPUT_LABELS.LAST_NAME_2')
-          },
-          value: witnessItems.lastName,
-          errorMessage: {
-            text: t(form.errorFor(lastName))
-          } if form.hasFieldError(lastName)
-        }) }}
-        {{ govukInput({
-          id: email,
-          name: email,
-          type: "text",
-          autocomplete: "text",
-          classes: "govuk-!-width-one-half",
-          label: {
-            text: t('PAGES.OTHER_WITNESSES.EMAIL_LABEL')
-          },
-          value: witnessItems.email,
-          errorMessage: {
-            text: t(form.errorFor(email))
-          } if form.hasFieldError(email)
-        }) }}
-        {{ govukInput({
-          id: telephone,
-          name: telephone,
-          type: "text",
-          autocomplete: "text",
-          classes: "govuk-!-width-one-half",
-          label: {
-            text: t('PAGES.OTHER_WITNESSES.PHONE_LABEL')
-          },
-          value: witnessItems.telephone,
-          errorMessage: {
-            text: t(form.errorFor(telephone))
-          } if form.hasFieldError(telephone)
-        }) }}
-        {{ govukTextarea({
-          id: details,
-          name: details,
-          value: witnessItems.details,
-          classes: "govuk-!-width-three-quarters",
-          label: {
-            text: t('PAGES.OTHER_WITNESSES.WHAT_THEY_WITNESSED_LABEL')
-          },
-          errorMessage: {
-            text: t(form.errorFor(details))
-          } if form.hasFieldError(details)
-        }) }}
-        {{ govukButton({
-          text: t('PAGES.OTHER_WITNESSES.REMOVE_WITNESS'),
-          classes: "govuk-button--secondary remove-row govuk-visually-hidden" if removeButton.hidden else "govuk-button--secondary remove-row",
-          type: "button"
-        }) }}
-      </div>
+      {{ govukInput({
+        id: firstName,
+        name: firstName,
+        type: "text",
+        autocomplete: "text",
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('COMMON.INPUT_LABELS.FIRST_NAME')
+        },
+        value: witnessItems.firstName,
+        errorMessage: {
+          text: t(form.errorFor(firstName))
+        } if form.hasFieldError(firstName)
+      }) }}
+      {{ govukInput({
+        id: lastName,
+        name: lastName,
+        type: "text",
+        autocomplete: "text",
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('COMMON.INPUT_LABELS.LAST_NAME_2')
+        },
+        value: witnessItems.lastName,
+        errorMessage: {
+          text: t(form.errorFor(lastName))
+        } if form.hasFieldError(lastName)
+      }) }}
+      {{ govukInput({
+        id: email,
+        name: email,
+        type: "text",
+        autocomplete: "text",
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.OTHER_WITNESSES.EMAIL_LABEL')
+        },
+        value: witnessItems.email,
+        errorMessage: {
+          text: t(form.errorFor(email))
+        } if form.hasFieldError(email)
+      }) }}
+      {{ govukInput({
+        id: telephone,
+        name: telephone,
+        type: "text",
+        autocomplete: "text",
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.OTHER_WITNESSES.PHONE_LABEL')
+        },
+        value: witnessItems.telephone,
+        errorMessage: {
+          text: t(form.errorFor(telephone))
+        } if form.hasFieldError(telephone)
+      }) }}
+      {{ govukTextarea({
+        id: details,
+        name: details,
+        value: witnessItems.details,
+        classes: "govuk-!-width-three-quarters",
+        label: {
+          text: t('PAGES.OTHER_WITNESSES.WHAT_THEY_WITNESSED_LABEL')
+        },
+        errorMessage: {
+          text: t(form.errorFor(details))
+        } if form.hasFieldError(details)
+      }) }}
+      {{ govukButton({
+        text: t('PAGES.OTHER_WITNESSES.REMOVE_WITNESS'),
+        classes: "govuk-button--secondary remove-row govuk-visually-hidden" if removeButton.hidden else "govuk-button--secondary remove-row",
+        type: "button"
+      }) }}
+    </div>
     </fieldset>
   </div>
 {% endmacro %}
