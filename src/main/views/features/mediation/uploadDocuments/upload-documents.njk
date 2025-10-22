@@ -34,7 +34,9 @@
           <h2 class="govuk-heading-s">{{ t(subtitle) }}</h2>
           <p class="govuk-body-m">{{ t(paragraph) }}</p>
           <h1 class="govuk-heading-l">{{ t(sectionTitle) }}</h1>
-         <h2 class="govuk-visually-hidden" id="your-statement-heading">Your statement section</h2>
+         <h2 class="govuk-visually-hidden" id="your-statement-heading">
+          {{ t('PAGES.UPLOAD_DOCUMENTS.STATEMENT') }}
+         </h2>
 
             {% if yourStatementContent.length > 0 %}
 
