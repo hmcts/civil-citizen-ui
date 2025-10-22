@@ -4,7 +4,10 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 
 {% block nestedContent %}
-      <form method="post" novalidate>
+      <form method="post" novalidate aria-labelledby="apply-help-fee-heading">
+        <h2 class="govuk-visually-hidden" id="apply-help-fee-heading">
+          {{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE') }}
+         </h2>
        {{ csrfProtection(csrf) }}
        {% for content in applyHelpFeeStartContents %}
           {{ itemContent(content,t) }}
