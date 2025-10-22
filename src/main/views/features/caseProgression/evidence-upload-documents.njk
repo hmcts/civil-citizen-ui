@@ -8,7 +8,9 @@
 </script>
 
 {% block nestedContent %}
-  <h2 class="govuk-visually-hidden" id="claim-summary-heading">Claim summary information</h2>
+  <h2 class="govuk-visually-hidden" id="claim-summary-heading">
+   {{t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_SUMMARY')}}
+  </h2>
 
   {{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
 
