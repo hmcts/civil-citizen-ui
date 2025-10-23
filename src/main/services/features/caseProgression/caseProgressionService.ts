@@ -220,8 +220,6 @@ const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[]
     data?.forEach(function (request: unknown) {
       formSection.push(bindFunction(request));
     });
-  } else {
-    logger.error('Invalid form section, Single value:',  data);
   }
   return formSection;
 };

@@ -124,6 +124,7 @@ export class FileOnlySection {
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
   @ValidateNested()
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 }
@@ -181,6 +182,7 @@ export class TypeOfDocumentSection {
   @ValidateNested()
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
@@ -202,6 +204,8 @@ export class WitnessSection {
     dateInputFields: DateInputFields;
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateNested()
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
@@ -249,6 +253,8 @@ export class ExpertSection {
 
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateNested()
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
