@@ -8,8 +8,10 @@
         {{ itemContent(item, t) }}
       {% endfor %}
     {% endset %}
+    {% set titleId = 'notification-banner-title-' ~ loop.index0 %}
     {{ govukNotificationBanner({
       titleText: notification.title,
+      titleId: titleId,
       html: html
     }) }}
   {% endfor %}
