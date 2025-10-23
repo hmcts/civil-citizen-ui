@@ -23,6 +23,13 @@
 {% endset -%}
 
 {% set moreThan28DaysHtml %}
+{% if isGaNroEnabled %}
+  <p class="govuk-body govuk-!-margin-bottom-6"> {{ t('PAGES.REQUEST_MORE_TIME.YOU_NEED_TO') }}
+    <a class="govuk-link" href={{ applyGaApplication }} rel="noopener noreferrer">
+      {{ t('COMMON.APPLY_TO_THE_COURT') }}
+    </a> {{ t('PAGES.REQUEST_MORE_TIME.YOU_NEED_P2') }}
+  </p>
+{% else %}
   <p class="govuk-body govuk-!-margin-bottom-6">
      {{ t('PAGES.REQUEST_MORE_TIME.APPLY_TO_COURT') }}
      {% if isReleaseTwoEnabled %}
@@ -52,6 +59,7 @@
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.CITY') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.POSTCODE') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}</p>
+  {% endif %}
 {% endset -%}
 
 {% block content %}

@@ -16,6 +16,9 @@ const expertReportsViewPath = 'features/directionsQuestionnaire/experts/sent-exp
 const dqPropertyName = 'sentExpertReports';
 const dqParentName = 'experts';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('sentExpertReportsController');
+
 function renderView(form: GenericForm<SentExpertReports>, res: Response): void {
   res.render(expertReportsViewPath, {form, pageTitle: 'PAGES.SENT_EXPERT_REPORTS.PAGE_TITLE'});
 }
@@ -26,6 +29,7 @@ sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, ne
     const sentExpertReports = directionQuestionnaire.experts?.sentExpertReports ? directionQuestionnaire.experts.sentExpertReports : new SentExpertReports();
     renderView(new GenericForm(sentExpertReports), res);
   } catch (error) {
+    logger.error(`Error when GET : sent export reports - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -42,6 +46,7 @@ sentExpertReportsController.post(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, n
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL));
     }
   } catch (error) {
+    logger.error(`Error when POST : sent export reports - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
