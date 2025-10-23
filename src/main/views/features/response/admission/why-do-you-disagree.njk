@@ -33,8 +33,9 @@
                 classes: "govuk-visually-hidden"
               },
               attributes: {
-                'aria-labelledby': 'why-disagree-heading'
-              },
+                'aria-labelledby': 'why-disagree-heading',
+                'aria-label': t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE')
+               },
               value: form.model.text,
               errorMessage: {
                 text: t(form.errorFor('text'))

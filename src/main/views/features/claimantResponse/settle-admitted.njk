@@ -26,7 +26,12 @@
           <p class="govuk-body">{{ t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.THIS_IS_THE_TOTAL_AMOUNT')}}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.TITLE', { admittedAmount: admittedAmount }) }}
+              </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', { yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO' , yesHint:yesHint,  noHint: noHint }) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
