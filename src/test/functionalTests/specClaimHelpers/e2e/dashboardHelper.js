@@ -12,7 +12,7 @@ module.exports = {
     const currentUrl = await I.grabCurrentUrl();
     if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
       await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
+      await I.click(locate('a').withText(claimNumber));
     }
     const maxRetries = 3;
     for (let tries = 1; tries <= maxRetries; tries++) {
@@ -50,7 +50,7 @@ module.exports = {
     //Step to check if status is already updated, if not it will refresh the page
     if (claimNumber && claimNumber != '') {
       await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
+      await I.click(locate('a').withText(claimNumber));
     }
     await I.waitForVisible(selectors.titleClass, 60);
     const actualStatus = await I.grabTextFrom(locator);
