@@ -5,10 +5,10 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set applicationHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')}}</h1>
+  <span class="govuk-heading-m govuk-!-display-block">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION') }}</span>
 {% endset %}
 {% set courtResponseHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
+  <span class="govuk-heading-m govuk-!-display-block">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT') }}</span>
 {% endset %}
 
 {% set applicantDocRows = [] %}
@@ -78,7 +78,7 @@
 {% endif %}
 
 {% set applicationDocuments %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS')}}</h1>
+  <span class="govuk-heading-m govuk-!-display-block">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS') }}</span>
 {% endset %}
 
 {% set applicationDocumentsHtml %}

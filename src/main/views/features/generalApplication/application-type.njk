@@ -81,9 +81,9 @@
 
 {% block nestedContent %}
           {% if isQMEnabled %}
-            <h1 class="govuk-caption-l">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
+            <span class="govuk-caption-l">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</span>
           {% else %}
-            <h1 class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
+            <span class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</span>
           {% endif %}
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
 
@@ -91,7 +91,7 @@
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.APPLICATION_NOT_NEW') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.SELECT_APPLICATION') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.NEED_MULTIPLE_APPLICATIONS') }}</p>
-          <h1 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ALL_APPLICATIONS') }}</h1>
+          <h2 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ALL_APPLICATIONS') }}</h2>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
