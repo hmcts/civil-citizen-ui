@@ -27,7 +27,7 @@ class AgreementFromOtherParty {
   }
 
   verifyHeadingDetails(applicationType) {
-    I.see(applicationType, 'h1');
+    I.see(applicationType, '.govuk-caption-l');
     I.see('Agreement from the other parties', 'h1');
   }
 
@@ -45,7 +45,7 @@ class AgreementFromOtherParty {
   }
 
   async verifyOptions() {
-    I.see('Have the other parties agreed to this application?', 'h1');
+    I.see('Have the other parties agreed to this application?');
     I.see('If you\'ll be selecting multiple applications, this answer will apply to all of them.');
     I.see('Yes');
     await I.see('No');
