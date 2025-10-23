@@ -28,8 +28,12 @@
             {{ govukTextarea({
               name: "text",
               id: "text",
+              label: {
+                    text: t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.LABEL'),
+                    classes: "govuk-visually-hidden"
+              },
               attributes: {
-                'aria-label' : 'why do you disagree explanation'
+                'aria-label': t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE')
               },
               value: form.model.text,
               errorMessage: {
