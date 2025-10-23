@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import {
+  IsArray,
   IsDate,
   IsDefined,
   IsNotEmpty,
@@ -15,37 +17,68 @@ import {DateDayValidator} from 'form/validators/dateDayValidator';
 import {DateMonthValidator} from 'form/validators/dateMonthValidator';
 import {DateYearValidator} from 'form/validators/dateYearValidator';
 import {CaseDocument} from 'models/document/caseDocument';
+import {Type} from 'class-transformer';
 
 export class UploadDocumentsUserForm {
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => TypeOfDocumentSection)
     documentsForDisclosure?: TypeOfDocumentSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => FileOnlySection)
     disclosureList?: FileOnlySection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => WitnessSection)
     witnessStatement?: WitnessSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => WitnessSummarySection)
     witnessSummary?: WitnessSummarySection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => WitnessSection)
     noticeOfIntention?: WitnessSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => ReferredToInTheStatementSection)
     documentsReferred?: ReferredToInTheStatementSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => ExpertSection)
     expertReport?: ExpertSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => ExpertSection)
     expertStatement?: ExpertSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => ExpertSection)
     questionsForExperts?: ExpertSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => ExpertSection)
     answersForExperts?: ExpertSection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => FileOnlySection)
     trialCaseSummary?: FileOnlySection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => FileOnlySection)
     trialSkeletonArgument?: FileOnlySection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => FileOnlySection)
     trialAuthorities?: FileOnlySection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => FileOnlySection)
     trialCosts?: FileOnlySection[];
-  @ValidateNested()
+  @ValidateNested({each: true})
+  @IsArray()
+  @Type(() => TypeOfDocumentSection)
     trialDocumentary?: TypeOfDocumentSection[];
 
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
@@ -90,6 +123,8 @@ export class FileUpload {
 export class FileOnlySection {
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateNested()
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 }
@@ -147,6 +182,7 @@ export class TypeOfDocumentSection {
   @ValidateNested()
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
@@ -168,6 +204,8 @@ export class WitnessSection {
     dateInputFields: DateInputFields;
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateNested()
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
@@ -215,6 +253,8 @@ export class ExpertSection {
 
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
+  @ValidateNested()
+  @Type(() => FileUpload)
     fileUpload: FileUpload;
   caseDocument: CaseDocument;
 

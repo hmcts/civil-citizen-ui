@@ -15,7 +15,12 @@ import {
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
-
+import {
+  getUploadDocumentsForm,
+  readDateParts,
+  toNonEmptyTrimmedString,
+} from 'services/features/caseProgression/caseProgressionService';
+import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -257,4 +262,196 @@ describe('case Progression service', () => {
         .rejects.toThrow(REDIS_FAILURE);
     });
   });
+
+  describe('getUploadDocumentsForm', () => {
+    it('should correctly map sections from request body to UploadDocumentsUserForm object', () => {
+      const mockRequest = {
+        body: {
+          documentsForDisclosure: [{name: 'doc1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          disclosureList: [{file: 'file1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          witnessStatement: [{witnessName: 'statement1',dateInputFields: {dateDay:'1', dateMonth:'2', dateYear:'2003'} as DateInputFields}],
+          trialCaseSummary: [{file: 'caseSummary1'}],
+
+        },
+      } as any;
+
+      const result = getUploadDocumentsForm(mockRequest);
+
+      expect(result).toBeInstanceOf(UploadDocumentsUserForm);
+      expect(result.documentsForDisclosure).toEqual([{
+        'dateInputFields': {
+          'date': new Date('2003-02-01T00:00:00.000Z'),
+          'dateDay': '1',
+          'dateMonth': '2',
+          'dateYear': '2003',
+        },
+        'typeOfDocument': null,
+      }]);
+      expect(result.disclosureList).toEqual([{}]);
+      expect(result.witnessStatement).toEqual([{
+        'dateInputFields': {
+          'date': new Date('2003-02-01T00:00:00.000Z'),
+          'dateDay': '1',
+          'dateMonth': '2',
+          'dateYear': '2003',
+        },
+        'witnessName': 'statement1',
+      }]);
+      expect(result.trialCaseSummary).toEqual([{}]);
+    });
+
+    it('should return an empty UploadDocumentsUserForm object when request body is empty', () => {
+      const mockRequest = {body: {}} as any;
+
+      const result = getUploadDocumentsForm(mockRequest);
+
+      expect(result).toBeInstanceOf(UploadDocumentsUserForm);
+      expect(result.documentsForDisclosure).toBeDefined();
+      expect(result.disclosureList).toBeDefined();
+      expect(result.witnessStatement).toBeDefined();
+      expect(result.witnessSummary).toBeDefined();
+      expect(result.trialCaseSummary).toBeDefined();
+    });
+
+    it('should handle undefined sections gracefully in the request body', () => {
+      const mockRequest = {
+        body: {
+          witnessSummary: undefined,
+          expertReport: [{report: 'report1'}],
+        },
+      } as any;
+
+      const result = getUploadDocumentsForm(mockRequest);
+
+      expect(result).toBeInstanceOf(UploadDocumentsUserForm);
+      expect(result.witnessSummary).toBeDefined();
+      expect(result.expertReport).toEqual([{
+        'dateInputFields': {},
+        'expertName': null,
+        'fieldOfExpertise': null,
+        'multipleExpertsName': null,
+        'otherPartyName': null,
+        'otherPartyQuestionsDocumentName': null,
+        'questionDocumentName': null}]);
+    });
+
+    it('should not mutate the original request object', () => {
+      const mockRequest = {
+        body: {
+          expertStatement: [{statement: 'expertStatement'}],
+        },
+      } as any;
+
+      const mockRequestClone = JSON.parse(JSON.stringify(mockRequest));
+
+      getUploadDocumentsForm(mockRequest);
+      expect(mockRequest.body).toEqual(mockRequestClone.body);
+    });
+  });
+
+  describe('toNonEmptyTrimmedString', () => {
+    it('trims leading and trailing spaces', () => {
+      expect(toNonEmptyTrimmedString('  hello  ')).toBe('hello');
+    });
+
+    it('trims tabs and newlines', () => {
+      expect(toNonEmptyTrimmedString('\t\nhello\n\t')).toBe('hello');
+    });
+
+    it('returns the same string when no trimming is needed', () => {
+      expect(toNonEmptyTrimmedString('hello')).toBe('hello');
+    });
+
+    it('returns empty string when input is empty string', () => {
+      expect(toNonEmptyTrimmedString('')).toBe('');
+    });
+
+    it('returns empty string when input is whitespace only', () => {
+      expect(toNonEmptyTrimmedString('   \t\n  ')).toBe('');
+    });
+
+    it.each([
+      0,
+      42,
+      true,
+      false,
+      null,
+      undefined,
+      {},
+      [],
+      Symbol('x'),
+      BigInt(0),
+    ])('returns empty string for non-string input: %p', (value) => {
+      expect(toNonEmptyTrimmedString(value as unknown)).toBe(null);
+    });
+  });
+
+  describe('readDateParts', () => {
+    it('returns strings when numeric values are provided', () => {
+      const request = {
+        dateInputFields: { dateDay: 1, dateMonth: 2, dateYear: 2003 },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '1', month: '2', year: '2003' });
+    });
+
+    it('returns provided string values unchanged', () => {
+      const request = {
+        dateInputFields: { dateDay: '01', dateMonth: '02', dateYear: '1980' },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '01', month: '02', year: '1980' });
+    });
+
+    it('returns undefined for missing fields', () => {
+      const request = {
+        dateInputFields: { dateDay: '15' },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '15', month: undefined, year: undefined });
+    });
+
+    it('returns all undefined when dateInputFields is missing', () => {
+      const request = {};
+      const result = readDateParts(request as unknown);
+      expect(result).toEqual({ day: undefined, month: undefined, year: undefined });
+    });
+
+    it('returns all undefined when request is null', () => {
+      const result = readDateParts(null as unknown);
+      expect(result).toEqual({ day: undefined, month: undefined, year: undefined });
+    });
+
+    it('returns undefined when a field is explicitly undefined', () => {
+      const request = {
+        dateInputFields: { dateMonth: '12', dateYear: '2025' },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: undefined, month: '12', year: '2025' });
+    });
+
+    it('ignores extra fields and only returns day, month, year', () => {
+      const request = {
+        dateInputFields: {
+          dateDay: '7',
+          dateMonth: '8',
+          dateYear: '2024',
+          someOtherField: 'ignored',
+        },
+      };
+
+      const result = readDateParts(request as unknown);
+
+      expect(result).toEqual({ day: '7', month: '8', year: '2024' });
+    });
+  });
+
 });
