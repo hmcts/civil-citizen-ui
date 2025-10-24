@@ -18,7 +18,7 @@
           {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <h1 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS') }}</h1>
+            <h2 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS') }}</h2>
             {{ govukTextarea({
               name: "text",
               id: "text",
