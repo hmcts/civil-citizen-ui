@@ -65,6 +65,7 @@
                       </div>
                       <div class="column">
                         <strong class="govuk-tag app-task-list__tag {{ task.statusColour}}">
+                          <span class="govuk-visually-hidden">Status: </span>
                           {% if lang=="cy"%}{{ task.statusCy }} {% else %} {{ task.statusEn }} {% endif %}
                         </strong>
                       </div>

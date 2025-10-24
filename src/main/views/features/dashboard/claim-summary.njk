@@ -26,13 +26,13 @@
                                 {% for i in range(0, tabContent.length)  %}
                                     {% if i == 0 %}
                                         <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}" aria-label="{{ t(tabContent[i].label) }}">
                                                 {{ t(tabContent[i].label) }}
                                             </a>
                                         </li>
                                     {% else %}
                                         <li class="govuk-tabs__list-item">
-                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
+                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}" aria-label="{{ t(tabContent[i].label) }}">
                                                 {{ t(tabContent[i].label) }}
                                             </a>
                                         </li>
