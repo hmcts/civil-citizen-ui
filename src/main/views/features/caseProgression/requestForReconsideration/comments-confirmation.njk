@@ -10,10 +10,15 @@
 
 
 {% block nestedContent %}
+  <div role="region" aria-labelledby="confirmation-panel-heading">
+    <h2 class="govuk-visually-hidden" id="confirmation-panel-heading">
+      {{ t('PAGES.REQUEST_FOR_RECONSIDERATION.COMMENTS_CONFIRMATION.PANEL_TEXT') }}
+    </h2>
   {{ govukPanel({
     titleText: t('PAGES.REQUEST_FOR_RECONSIDERATION.COMMENTS_CONFIRMATION.PANEL_TEXT')
   }) }}
   {% for item in confirmationContents %}
     {{ itemContent(item,t) }}
   {% endfor %}
+  </div>
 {% endblock %}
