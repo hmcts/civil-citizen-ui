@@ -4468,7 +4468,8 @@
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Pam rydych chi'n anghytuno?",
       "SUBTITLE": "Y cyfanswm, gan gynnwys unrhyw log a hawlir hyd yn hyn, yw £{{ claimAmount }}.",
-      "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?"
+      "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?",
+      "LABEL": "Esboniwch pam eich bod yn anghytuno â swm yr hawliad"
     },
     "PARTNER": {
       "EXAMPLE": "Er enghraifft, cariad, gŵr, gwraig neu bartner sifil.",
