@@ -185,7 +185,7 @@ ccd:
 
   ccd-data-store-api:
     java:
-      image: hmctspublic.azurecr.io/ccd/data-store-api:pr-2662
+      image: hmctspublic.azurecr.io/ccd/data-store-api:pr-2665
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 1000m
