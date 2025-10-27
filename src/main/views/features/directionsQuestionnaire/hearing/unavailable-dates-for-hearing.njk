@@ -38,9 +38,13 @@
             }) %}
 
             {% for unavailableDate in form.model.items %}
-              {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
+              <div role="group" aria-label="{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }} {{ loop.index }}">
+                {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
+              </div>
             {% else %}
+              <div role="group" aria-label="{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }} 1">
                 {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today) }}
+              </div>
             {% endfor %}
 
             {% endcall %}
