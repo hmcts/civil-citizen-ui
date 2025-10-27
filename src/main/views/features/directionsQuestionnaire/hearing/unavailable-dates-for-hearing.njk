@@ -32,11 +32,13 @@
           <form method="post" novalidate aria-describedby="page-title">
             {{ csrfProtection(csrf) }}
 
+         <fieldset class="govuk-fieldset" role="group" aria-labelledby="page-title">
             {% for unavailableDate in form.model.items %}
               {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
             {% else %}
                 {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today) }}
             {% endfor %}
+          </fieldset>
 
             <div class="govuk-!-margin-top-6">
               {{ govukButton({
