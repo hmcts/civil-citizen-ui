@@ -56,25 +56,38 @@
           </div>
 
           <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HOW_TO_COUNTERCLAIM') }}</h2>
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_1') }}</h3>
+          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_1') }}</span>
 
-          <p><a target="_blank" rel="noreferrer noopener" class="govuk-link" href={{pdfUrl}}>{{pdfDefence}}<span>{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.OPEN_IN_NEW_WINDOW') }}</span></a></p>
+      <p>
+        <a
+          target="_blank"
+          rel="noreferrer noopener"
+          class="govuk-link"
+          href="{{pdfUrl}}"
+          aria-describedby="pdf-defence-hint"
+        >
+          {{ pdfDefence }}
+        </a>
+        <span id="pdf-defence-hint" class="govuk-visually-hidden">
+          {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.OPEN_IN_NEW_WINDOW') }}, PDF document
+        </span>
+      </p>
 
           <p class="govuk-body govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.NEEDED_DETAILS')}}:</p>
           <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.CLAIM_NUMBER')}}: {{form.legacyCaseReference}}</p>
           <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.CLAIMANT')}}: {{claimantName}}</p>
           <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.DEFENDANT')}}: {{defendantName}}</p>
 
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_2') }}</h3>
+          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_2') }}</span>
           {% if isQMFlagEnabled === true %}
           <p class="govuk-body govuk-!-margin-top-4">{{ t('COMMON.QM_INFORMATION_DOCUMENTS') }}
-            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer" aria-label="{{ t('COMMON.QM_INFORMATION_LINK') }}">
               {{ t('COMMON.QM_INFORMATION_LINK') }}
             </a>.
           </p>
           {% else %}
             <p class="govuk-body govuk-!-margin-top-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.EMAIL_COMPLETED') }}:
-              <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{supportEmailAddress}}>{{supportEmailAddress}}</a>
+              <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:{{supportEmailAddress}}'>{{supportEmailAddress}}</a>
             </p>
           {% endif %}
           <p class="govuk-body govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SEND_BY_POST') }}:</p>
@@ -94,7 +107,7 @@
           {% endif %}
 
           <div>
-              <h3 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_3') }}</h3>
+              <span class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_3') }}</span>
               <p class="govuk-body govuk-!-margin-top-4">
                 {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.PAY_COURT_FEE') }}
               </p>

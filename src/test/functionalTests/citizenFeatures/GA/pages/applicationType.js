@@ -27,7 +27,7 @@ class ApplicationType {
   }
 
   verifyHeadingDetails() {
-    I.see('Ask the court to change something on your case (make an application)', '.govuk-caption-l');
+    I.see('Ask the court to change something on your case (make an application)', 'h1');
     I.see('Select application', 'h1');
   }
 
@@ -36,11 +36,11 @@ class ApplicationType {
     I.see('An application is not a new claim. It is a request for a judge to take an action on an existing claim.');
     I.see('Select the application you want and click continue.');
     I.see('If you need to make multiple applications, you\'ll have the option to add another application later on.');
-    await I.see('All applications', 'h2');
+    await I.see('All applications', 'h1');
   }
 
   async verifyOptions() {
-    I.see('All applications', 'h2');
+    I.see('All applications', 'h1');
     I.see('Ask to set aside (cancel) a judgment');
     I.see('For example, if you do not believe a judgment should\'ve been made or you\'ve not had the opportunity to respond to a claim and you have a defence. This application is usually made by defendants.');
     I.see('Ask to vary a judgment');

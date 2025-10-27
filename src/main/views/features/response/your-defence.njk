@@ -27,7 +27,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ heading }}</h1>
           <div class="govuk-description-block govuk-body">
-            {{ expandableSection(label = 'PAGES.YOUR_DEFENCE.REASON', content = theirReason, id = 'summaryContent') }}
+            {{ expandableSection(label = t('PAGES.YOUR_DEFENCE.REASON'), content = theirReason, id = 'summaryContent') }}
           </div>
 
           <form method="post" novalidate>
@@ -39,7 +39,13 @@
               classes:"govuk-!-width-three-quarters",
               label: {
                 classes: "govuk-label--s",
-                html: labelContent
+                html: labelContent,
+                attributes: {
+                  'aria-label': t('PAGES.YOUR_DEFENCE.BRIEFLY') + ", " +
+                               t('PAGES.YOUR_DEFENCE.FAIL') + ", " +
+                               t('PAGES.YOUR_DEFENCE.ACCEPT') + ", " +
+                               t('PAGES.YOUR_DEFENCE.TIMELINE')
+                }
               },
               errorMessage: {
                 text: t(form.errorFor('text'))

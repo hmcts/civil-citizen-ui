@@ -1,9 +1,8 @@
-{% macro expandableSection(label, content, limit = 400, id, headingLevel = 2, headingClass = 'govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-0') %}
+{% macro expandableSection(label, content, limit = 400, id) %}
   {% set longContent = content.length > limit %}
-  {% set headingTag = 'h' ~ headingLevel %}
 
   <div class="show-more-block">
-    <{{ headingTag }} class="{{ headingClass }}">{{ t(label) }}</{{ headingTag }}>
+    <div class="govuk-!-font-weight-bold">{{ t(label) }}</div>
     {% if longContent %}
       <input id="{{ id }}" type="checkbox">
     {% endif %}

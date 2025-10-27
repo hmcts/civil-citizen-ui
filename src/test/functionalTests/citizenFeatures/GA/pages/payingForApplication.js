@@ -31,7 +31,7 @@ class PayingForApplication {
   }
 
   async verifyPageText(feeAmount) {
-    I.see('Application fee to pay:', 'h2');
+    I.see('Application fee to pay:', 'h1');
     I.see(`£${feeAmount}`);
     await I.see('You\'ll be asked to pay for your application once it\'s been submitted.');
   }

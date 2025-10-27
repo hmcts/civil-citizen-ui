@@ -26,7 +26,7 @@ class OrderJudge {
   }
 
   verifyHeadingDetails(applicationType) {
-    I.see(applicationType, '.govuk-caption-l');
+    I.see(applicationType, 'h1');
     I.see('What order do you want the judge to make?', 'h1');
   }
 
@@ -115,7 +115,7 @@ class OrderJudge {
         I.see('The information you enter on this page will be seen by the other parties.');
         break;
     }
-    I.see('Enter the order that you want the judge to make', 'h2');
+    I.see('Enter the order that you want the judge to make', 'h1');
     await I.seeElement('//*[@id="text"]');
   }
 

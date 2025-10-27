@@ -7,9 +7,8 @@
 
 {% macro supportRequired(index, value, errorFor, t, removeButton, nameList) %}
 
-  {% set personLegend = t('PAGES.SUPPORT_REQUIRED.PERSON_LEGEND', { number: index + 1 }) %}
-
-  {% set checkedSignHtml %}
+  <div class='multiple-row'>
+    {% set checkedSignHtml %}
     {% set signLanguageInterpretedError = errorFor('model[items][' + index + '][signLanguageInterpreter][content]', 'model') %}
     {{ govukInput({
       id: 'model[items]['+index+'][signLanguageInterpreter][content]',
@@ -24,23 +23,23 @@
         text: t(signLanguageInterpretedError)
       } if signLanguageInterpretedError
     }) }}
-  {% endset -%}
-  {% set checkedLanguageHtml %}
+    {% endset -%}
+    {% set checkedLanguageHtml %}
     {% set languageInterpretedError = errorFor('model[items][' + index + '][languageInterpreter][content]', 'model') %}
     {{ govukInput({
       id: 'model[items]['+index+'][languageInterpreter][content]',
       name: 'model[items]['+index+'][languageInterpreter][content]',
       value: value.languageInterpreter.content,
       classes: 'govuk-!-width-one-half',
-      label: {
+        label: {
         text: t('PAGES.SUPPORT_REQUIRED.WHAT_LANGUAGE')
       },
       errorMessage: {
         text: t(languageInterpretedError)
       } if languageInterpretedError
     }) }}
-  {% endset -%}
-  {% set checkedOtherHtml %}
+    {% endset -%}
+    {% set checkedOtherHtml %}
     {% set otherSupportError = errorFor('model[items][' + index + '][otherSupport][content]', 'model') %}
     {{ govukTextarea({
       id: 'model[items]['+index+'][otherSupport][content]',
@@ -54,11 +53,16 @@
         text: t(otherSupportError)
       } if otherSupportError
     }) }}
-  {% endset -%}
-
-  {% set fullNameError = errorFor('model[items][' + index + '][fullName]', 'model') %}
-  {% set checkboxGrpError = errorFor('model[items][' + index + '][checkboxGrp]', 'model') %}
-  {% set fieldsetHtml %}
+    {% endset -%}
+    {{ govukFieldset({
+      classes: 'moj-add-another__item govuk-!-margin-bottom-6',
+      legend: {
+        text:  t('PAGES.SUPPORT_REQUIRED.PERSON_TEXT'),
+        classes: 'moj-add-another__title govuk-fieldset__legend--m',
+        isPageHeading: false
+      }
+    }) }}
+    {% set fullNameError = errorFor('model[items][' + index + '][fullName]', 'model') %}
     {{ govukSelect({
       id: 'model[items]['+index+'][fullName]',
       name: 'model[items]['+index+'][fullName]',
@@ -70,7 +74,8 @@
         text: t(fullNameError)
       } if fullNameError
     }) }}
-    <div id="model[items][{{ index }}][checkboxGrp]">
+    {% set checkboxGrpError = errorFor('model[items][' + index + '][checkboxGrp]', 'model') %}
+    <div id={{'model[items]['+index+'][checkboxGrp]'}}>
       {{ govukCheckboxes({
         idPrefix: 'declared['+index+']',
         name: 'model[items]['+index+'][declared]',
@@ -123,18 +128,6 @@
         ]
       }) }}
     </div>
-  {% endset %}
-
-  <div class='multiple-row'>
-    {{ govukFieldset({
-      classes: 'moj-add-another__item govuk-!-margin-bottom-6',
-      legend: {
-        text: personLegend,
-        classes: 'moj-add-another__title govuk-fieldset__legend--m',
-        isPageHeading: false
-      },
-      html: fieldsetHtml
-    }) }}
     <br>
     {% if removeButton.hidden %}
       {{ govukButton({

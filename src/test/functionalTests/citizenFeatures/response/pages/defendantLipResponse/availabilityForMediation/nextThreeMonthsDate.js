@@ -7,8 +7,7 @@ const cButtons = require('../../../../../commonComponents/cButtons');
 //const contactUs = new ContactUs();
 
 const fields = {
-  yesButton: 'input[id="option"]',
-  noButton: 'input[id="option-2"]',
+  yesButton: 'input[value="yes"]',
 };
 
 const content = {

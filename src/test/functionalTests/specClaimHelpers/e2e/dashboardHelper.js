@@ -12,14 +12,7 @@ module.exports = {
     const currentUrl = await I.grabCurrentUrl();
     if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
       await I.amOnPage('/dashboard');
-      const claimLink = locate('a').withText(claimNumber).first();
-      const linkCount = await I.grabNumberOfVisibleElements(claimLink);
-      if (linkCount > 0) {
-        await I.waitForElement(claimLink, 30);
-        await I.click(claimLink);
-      } else {
-        console.log(`Claim link for ${claimNumber} not found on dashboard; continuing without navigation.`);
-      }
+      await I.click(claimNumber);
     }
     const maxRetries = 3;
     for (let tries = 1; tries <= maxRetries; tries++) {
@@ -57,14 +50,7 @@ module.exports = {
     //Step to check if status is already updated, if not it will refresh the page
     if (claimNumber && claimNumber != '') {
       await I.amOnPage('/dashboard');
-      const claimLink = locate('a').withText(claimNumber).first();
-      const linkCount = await I.grabNumberOfVisibleElements(claimLink);
-      if (linkCount > 0) {
-        await I.waitForElement(claimLink, 30);
-        await I.click(claimLink);
-      } else {
-        console.log(`Claim link for ${claimNumber} not found on dashboard; continuing without navigation.`);
-      }
+      await I.click(claimNumber);
     }
     await I.waitForVisible(selectors.titleClass, 60);
     const actualStatus = await I.grabTextFrom(locator);

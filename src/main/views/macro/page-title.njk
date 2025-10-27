@@ -5,7 +5,7 @@
   {% endblock %}
 {% endmacro %}
 
-{% macro createPageTitle(title, t, size = 'l', level = '1') %}
-  {% set headingTag = 'h' ~ level %}
-  <{{ headingTag }} class="govuk-heading-{{size}}">{{ t(title) }}</{{ headingTag }}>
+{% macro createPageTitle(title, t, size = 'l') %}
+  <h1 class=govuk-heading-{{size}}>{{ t(title) }}</h1>
 {% endmacro %}
+
