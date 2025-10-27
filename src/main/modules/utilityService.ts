@@ -30,13 +30,16 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
       throw new Error('Case not found...');
     }
   }
-  if (claim?.id) {
-    const appRequest = <AppRequest>req;
-    const session = (appRequest.session as AppSession | undefined);
-    if (session) {
+  const appRequest = <AppRequest>req;
+  const session = (appRequest.session as AppSession | undefined);
+
+  if (session) {
+    if (claim?.id) {
       session.caseReference = claim.id;
-      syncCaseReferenceCookie(appRequest);
+    } else {
+      delete session.caseReference;
     }
+    syncCaseReferenceCookie(appRequest);
   }
   return claim;
 };
