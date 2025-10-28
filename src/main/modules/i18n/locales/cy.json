@@ -1489,8 +1489,7 @@
       "PAGE_TITLE": "Unavailability dates for mediation",
       "PAGE_TEXT": "Nodwch ddyddiad unigol neu gyfnod hirach o amser pan na allwch fynychu apwyntiad cyfryngu",
       "PAGE_HINT_TEXT1": "Nodwch yr holl ddyddiadau yn y 3 mis nesaf pan na allwch fynychu apwyntiad cyfryngu, gan fod mor gywir ag y gallwch. Unwaith y bydd dyddiad ar gyfer cyfryngu wedi’i bennu, gall fod yn anodd i’w aildrefnu.",
-      "PAGE_HINT_TEXT2": "Mae’r Gwasanaeth Cyfryngu Hawliadau Bychain yn gweithredu dydd Llun i ddydd Gwener, 8am i 5pm, heblaw am wyliau banc.",
-      "SELECT": "Dewiswch p’un a yw’r cyfnod pan nad ydych ar gael yn berthnasol i un dyddiad penodol neu gyfnod hirach"
+      "PAGE_HINT_TEXT2": "Mae’r Gwasanaeth Cyfryngu Hawliadau Bychain yn gweithredu dydd Llun i ddydd Gwener, 8am i 5pm, heblaw am wyliau banc."
     },
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
@@ -5072,7 +5071,6 @@
       "NAME_OF_PERSON": "Enw’r unigolyn sydd angen cymorth",
       "OTHER": "Cefnogaeth arall",
       "PAGE_TITLE": "Angen cymorth",
-      "PERSON_LEGEND": "Manylion unigolyn {{ number }}",
       "PERSON_TEXT": "Unigolyn",
       "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy'n berthnasol.",
       "SIGN_LANGUAGE": "Dehonglydd iaith arwyddion",
@@ -5087,7 +5085,6 @@
       "CONTENT": "Dim ond dyddiadau digwyddiadau pwysig fel apwyntiadau meddygol, gwrandawiad llys arall, neu wyliau rydych eisoes wedi'u trefnu",
       "FROM": "O",
       "LONGER_PERIOD": "Cyfnod hirach o amser",
-      "SELECT": "Dewiswch p’un a yw’r cyfnod pan nad ydych ar gael yn berthnasol i un dyddiad penodol neu gyfnod hirach",
       "PAGE_TITLE": "Dyddiadau lle nad ydych ar gael i fynd i wrandawiad",
       "SINGLE_DATE": "Dyddiad unigol",
       "TITLE": "Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu'ch tystion fynd i wrandawiad",
