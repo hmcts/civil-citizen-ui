@@ -79,6 +79,9 @@
               hint: {
                 text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SELECT_ALL_THAT_APPLY')
               },
+              attributes: {
+                "aria-describedby": "requiredSupport-hint" + (form.hasFieldError('requiredSupport') ? ' requiredSupport-error' : '')
+              },
               items: [
                 {
                   value: "stepFreeAccess",
