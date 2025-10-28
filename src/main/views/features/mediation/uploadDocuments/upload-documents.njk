@@ -33,7 +33,7 @@
 
           <h2 class="govuk-heading-s">{{ t(subtitle) }}</h2>
           <p class="govuk-body-m">{{ t(paragraph) }}</p>
-          <h2 class="govuk-heading-l">{{ t(sectionTitle) }}</h2>
+          <h1 class="govuk-heading-l">{{ t(sectionTitle) }}</h1>
 
             {% if yourStatementContent.length > 0 %}
 
@@ -41,6 +41,11 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in yourStatementSection %}
+
+                <span class="govuk-visually-hidden">
+                  {{ section.title or t(pageTitle) }}
+                </span>
+
                 {% call govukFieldset({
                   classes: 'moj-add-another__item',
                   legend: {
@@ -70,7 +75,13 @@
           {% for documentsReferredSection in documentsReferredContent %}
           <div class="row-container">
             <div data-module="moj-add-another">
+
               {% for section in documentsReferredSection %}
+
+              <span class="govuk-visually-hidden">
+                {{ section.title or t(pageTitle) }}
+              </span>
+
               {% call govukFieldset({
                 classes: 'moj-add-another__item',
                 legend: {
