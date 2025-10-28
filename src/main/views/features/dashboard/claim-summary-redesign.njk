@@ -40,9 +40,11 @@
         <div class="border-small-top"></div>
          <div class="dashboard-notification">
           {% for notification in dashboardNotifications.items %}
+              {% set titleId = 'dashboard-notification-banner-title-' ~ loop.index0 %}
               {{ govukNotificationBanner({
                  titleText: notification.titleCy if lang=="cy" else notification.titleEn,
                  html: notification.descriptionCy if lang=="cy" else notification.descriptionEn,
+                 titleId: titleId,
                  classes: "govuk-!-margin-bottom-4"
                })  }}
           {% endfor %}
