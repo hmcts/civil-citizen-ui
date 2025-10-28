@@ -11,6 +11,9 @@
     {% set hrefTarget= "_self" %}
   {% endif %}
 
+  {% if name == t('COMMON.EMAIL') %}
+    <h2 class="govuk-visually-hidden">{{ t('COMMON.EMAIL') }}</h2>
+  {% endif %}
   <h3 class="govuk-heading-m">{{ name }}</h3>
   {% if phoneNumber %}
     {{ phoneNumber }}
@@ -19,15 +22,21 @@
     <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
-    <a class="govuk-link" target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
-    {% endif %}{{ hrefContent }}</a></p>
+    <p>
+      <a class="govuk-link" target="{{ hrefTarget }}" href="{{ href }}" rel="noopener noreferrer">
+        {% if hrefContact and hrefContact != '' %}
+          {{ hrefContact }}
+        {% endif %}
+        {{ hrefContent }}
+      </a>
+    </p>
   {% endif %}
 {% endmacro %}
 
 {% macro _widgetRedesign(disclosureStatement, sendMessageTitle, sendMessageLink, sendMessageContent, telephone) %}
   <p class="govuk-body">{{ disclosureStatement }}</p>
   <h3 class="govuk-heading-m">{{ sendMessageTitle }}</h3>
-  <div class="govuk-!-margin-bottom-2"><a class="govuk-link" href={{qmStartUrl}}>{{ sendMessageLink }}</a></div>
+  <div class="govuk-!-margin-bottom-2"><a class="govuk-link" href="{{ qmStartUrl }}">{{ sendMessageLink }}</a></div>
   <p class="govuk-body">{{ sendMessageContent }}</p>
   {{ telephone }}
 {% endmacro %}
@@ -64,9 +73,9 @@
   {% set sendMessageLink = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_LINK') %}
   {% set sendMessageHint = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_RESPONSE') %}
   {% if disableSendMessage %}
-  {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
+    {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
   {% else %}
-  {% set qmContent = _widgetRedesign(emailWidget, callChargesWidget) %}
+    {% set qmContent = _widgetRedesign(emailWidget, callChargesWidget) %}
   {% endif %}
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
@@ -76,7 +85,7 @@
     <div class="govuk-details">
       {% if isQMFlagEnabled === true %}
           <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
-            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+            <a class="govuk-link" href="{{ qmContactLink }}" rel="noopener noreferrer">
               {{ t('COMMON.QM_INFORMATION_LINK') }}
             </a>.
           </p>
@@ -88,16 +97,16 @@
   {% else %}
     {% if isQMFlagEnabled %}
       {{ govukDetails({
-        summaryText: ContactUs,
+        summaryText: '<span class="govuk-heading-m">' ~ ContactUs ~ '</span>',
         html: qmContent,
         id: contactUsForHelpComponentId
-      }) }}
+      }) | safe }}
       {% else %}
     {{ govukDetails({
-      summaryText: ContactUs,
+      summaryText: '<span class="govuk-heading-m">' ~ ContactUs ~ '</span>',
       html: content,
       id: contactUsForHelpComponentId
-    }) }}
+    }) | safe }}
       {% endif %}
   {% endif %}
 {% endmacro %}
