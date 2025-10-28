@@ -33,6 +33,9 @@ const nock = require('nock');
 const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
+const claimSummaryService = require('services/features/dashboard/claimSummaryService');
+const getDocumentsContentMock = claimSummaryService.getDocumentsContent as jest.Mock;
+const getEvidenceUploadContentMock = claimSummaryService.getEvidenceUploadContent as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
@@ -189,6 +192,22 @@ describe('Claim Summary Controller Defendant', () => {
   };
 
   describe('on GET', () => {
+    beforeEach(() => {
+      getDocumentsContentMock.mockResolvedValue([{
+        contentSections: [{
+          type: ClaimSummaryType.TITLE,
+          data: {text: 'Mock notices tab'},
+        }],
+        hasDivider: false,
+      }]);
+      getEvidenceUploadContentMock.mockReturnValue([{
+        contentSections: [{
+          type: ClaimSummaryType.TITLE,
+          data: {text: 'Mock evidence tab'},
+        }],
+        hasDivider: false,
+      }]);
+    });
 
     it('should return evidence upload content when case progression documents exist', async () => {
       //given
@@ -205,8 +224,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
-          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
+          expect(res.text).toContain('Mock evidence tab');
         });
     });
 
@@ -243,7 +261,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Upload documents');
+          expect(res.text).not.toContain('Mock evidence tab');
           expect(res.text).toContain(TabId.LATEST_UPDATE);
           expect(res.text).not.toContain(TabId.NOTICES);
         });
@@ -264,7 +282,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
+          expect(res.text).toContain('Mock evidence tab');
           expect(res.text).toContain(t(TabLabel.UPDATES));
           expect(res.text).toContain(t(TabLabel.NOTICES));
           expect(res.text).not.toContain('A hearing has been scheduled for your case');
@@ -300,7 +318,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
+          expect(res.text).toContain('Mock evidence tab');
           expect(res.text).not.toContain(t(TabLabel.LATEST_UPDATE));
           expect(res.text).toContain(t(TabLabel.UPDATES));
           expect(res.text).toContain(t(TabLabel.NOTICES));
@@ -343,7 +361,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Upload documents');
+          expect(res.text).toContain('Mock evidence tab');
           expect(res.text).not.toContain(t(TabLabel.LATEST_UPDATE));
           expect(res.text).toContain(t(TabLabel.UPDATES));
           expect(res.text).toContain(t(TabLabel.NOTICES));
