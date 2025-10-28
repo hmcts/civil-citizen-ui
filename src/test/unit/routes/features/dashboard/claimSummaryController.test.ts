@@ -2,12 +2,8 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import Module from 'module';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {
-  isCaseProgressionV1Enable,
-} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
 
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
 import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
@@ -37,7 +33,6 @@ const nock = require('nock');
 const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
-const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
@@ -195,9 +190,8 @@ describe('Claim Summary Controller Defendant', () => {
 
   describe('on GET', () => {
 
-    it('should not return evidence upload content when flag is disabled', async () => {
+    it('should return evidence upload content when case progression documents exist', async () => {
       //given
-      isCaseProgressionV1EnableMock.mockResolvedValue(false);
       getLatestUpdateContentMock.mockReturnValue([]);
       //when
       nock(civilServiceUrl)
@@ -211,14 +205,13 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Upload documents');
-          expect(res.text).not.toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
+          expect(res.text).toContain('Upload documents');
+          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
 
     it('should not return evidence upload content when flag is enabled and no hasSDODocument', async () => {
       //given
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
 
       const claimWithoutSDO = JSON.parse(JSON.stringify(claim));
@@ -258,7 +251,6 @@ describe('Claim Summary Controller Defendant', () => {
 
     it('should not return evidence upload content when flag is enabled and hasSDODocument but latestUpdateContent not empty', async () => {
       //given
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue(mockClaimSummaryContent);
       //when
       nock(civilServiceUrl)
@@ -279,26 +271,6 @@ describe('Claim Summary Controller Defendant', () => {
         });
     });
 
-    it('should return status 500 when error thrown', async () => {
-      //given
-      isCaseProgressionV1EnableMock.mockRejectedValue(new Error('Mocked error'));
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-
     it('should show case progression hearing latest Update', async () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
@@ -315,7 +287,6 @@ describe('Claim Summary Controller Defendant', () => {
         },
       };
 
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
       //when
       nock(civilServiceUrl)
@@ -358,7 +329,6 @@ describe('Claim Summary Controller Defendant', () => {
         },
       };
 
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
 
       //when
@@ -399,7 +369,6 @@ describe('Claim Summary Controller Defendant', () => {
         },
       };
 
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
       //when
       nock(civilServiceUrl)
@@ -493,7 +462,6 @@ describe('Claim Summary Controller Defendant', () => {
       };
 
       isDashboardEnabledForCase.mockResolvedValue(true);
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
