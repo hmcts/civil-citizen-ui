@@ -29,12 +29,12 @@ const resolveCaseReference = (req: AppRequest): string => {
   return sessionCaseReference || firstContactClaimId || firstContactReference;
 };
 
-const applyCookie = (req: AppRequest, res: Response): void => {
+const applyCookie = (req: AppRequest, res: Response, overrideReference?: unknown): void => {
   if (!storedCookieOptions) {
     return;
   }
 
-  const rawReference = resolveCaseReference(req);
+  const rawReference = overrideReference !== undefined ? overrideReference : resolveCaseReference(req);
 
   const normalisedReference = normaliseCaseReference(rawReference);
 
@@ -68,7 +68,7 @@ export const setCaseReferenceCookie = ({secure, maxAge}: CookieOptions) => {
   };
 };
 
-export const syncCaseReferenceCookie = (req: AppRequest, resOverride?: Response): void => {
+export const syncCaseReferenceCookie = (req: AppRequest, resOverride?: Response, overrideReference?: unknown): void => {
   if (!storedCookieOptions) {
     return;
   }
@@ -76,5 +76,9 @@ export const syncCaseReferenceCookie = (req: AppRequest, resOverride?: Response)
   if (!response) {
     return;
   }
-  applyCookie(req, response);
+  applyCookie(req, response, overrideReference);
+};
+
+export const clearCaseReferenceCookie = (req: AppRequest, resOverride?: Response): void => {
+  syncCaseReferenceCookie(req, resOverride, null);
 };

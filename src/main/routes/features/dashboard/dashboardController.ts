@@ -7,7 +7,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 import {buildPagination} from 'services/features/dashboard/claimPaginationService';
 import {DashboardClaimantResponse, DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
-import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {clearCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -39,7 +39,11 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   if (appRequest.session?.caseReference) {
     delete appRequest.session.caseReference;
   }
-  syncCaseReferenceCookie(appRequest, res);
+  if (appRequest.session?.firstContact) {
+    delete appRequest.session.firstContact.claimId;
+    delete appRequest.session.firstContact.claimReference;
+  }
+  clearCaseReferenceCookie(appRequest, res);
   try{
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);

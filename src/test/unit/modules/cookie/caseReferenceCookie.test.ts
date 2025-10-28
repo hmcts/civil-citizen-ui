@@ -1,5 +1,5 @@
 import {Response} from 'express';
-import {setCaseReferenceCookie, CASE_REFERENCE_COOKIE_NAME, syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {setCaseReferenceCookie, CASE_REFERENCE_COOKIE_NAME, syncCaseReferenceCookie, clearCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {AppRequest, AppSession} from 'models/AppRequest';
 
 describe('caseReferenceCookie middleware', () => {
@@ -104,5 +104,21 @@ describe('caseReferenceCookie middleware', () => {
       'ABC123456789',
       expect.objectContaining({httpOnly: false, maxAge}),
     );
+  });
+
+  it('clears cookie with override even when first contact present', () => {
+    const res = createResponse();
+    const req = createRequest({
+      cookies: {[CASE_REFERENCE_COOKIE_NAME]: 'existing'},
+      session: {firstContact: {claimId: '1234567890123456'}},
+    });
+
+    clearCaseReferenceCookie(req, res as unknown as Response);
+
+    expect(res.clearCookie).toHaveBeenCalledWith(
+      CASE_REFERENCE_COOKIE_NAME,
+      expect.objectContaining({sameSite: 'lax'}),
+    );
+    expect(res.cookie).not.toHaveBeenCalled();
   });
 });
