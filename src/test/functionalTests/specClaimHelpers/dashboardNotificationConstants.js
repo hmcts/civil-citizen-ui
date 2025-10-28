@@ -154,7 +154,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDateDefendant: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${amount} by ${deadline}. We will contact you when the claimant responds to your offer.`,
+      content: [`You have offered to pay £${amount}`, `by ${deadline}.`, 'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
@@ -162,10 +162,10 @@ module.exports = {
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayBySetDate.Claimant
   //This might not be strictly correct ^
   //Deadline logic needs adding
-  defendantResponseFullAdmitPayBySetDateClaimant: (amount) => {
+  defendantResponseFullAdmitPayBySetDateClaimant: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: ['Sir John Doe has offered to pay', `£${amount} plus the claim fee by`],
+      content: [`Sir John Doe has offered to pay you £${amount}`, `by ${deadline}`],
       nextSteps: 'View and respond',
     };
   },
@@ -188,6 +188,16 @@ module.exports = {
     return {
       title: 'Response to the claim',
       content: ['Test Company Defendant has rejected the claim and refused mediation.', 'You need to respond by '],
+      nextSteps: 'View and respond',
+    };
+  },
+
+  claimantNotificationFullAdmitPayImmediately: (amount) => {
+    return {
+      title: 'Response to the claim',
+      content: [`Sir John Doe has offered to pay £${amount}`, 
+        'If you accept, the payment must be received in your account within 5 working days, if not you can request a County Court Judgment.',
+      ],
       nextSteps: 'View and respond',
     };
   },

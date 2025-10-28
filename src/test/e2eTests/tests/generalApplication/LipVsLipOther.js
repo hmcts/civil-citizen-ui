@@ -3,7 +3,7 @@ const createGAApplication = require('../../genralApplication/createGAApplication
 const responseApplicationSummary = require('../../genralApplication/responseApplicationSummary');
 const config = require('../../../config');
 
-Feature('Lip V Lip other without notice').tag('@galip');
+Feature('Lip V Lip other without notice').tag('@lipga');
 Scenario('Claimant creates GA Application with application other without notice @other', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);

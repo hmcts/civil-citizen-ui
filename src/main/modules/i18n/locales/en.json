@@ -4,6 +4,7 @@
     "HOME_CARM": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
+    "SAVE_FILE": "Save file",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "View documents",
     "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
@@ -19,6 +20,7 @@
     "CASE_NUMBER_PARAM_CARM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
+    "APPLY_TO_THE_COURT": "apply to the court",
     "ANNUAL_TURNOVER": "Annual Turnover",
     "AMOUNT": "Amount",
     "BALANCE": "Balance",
@@ -563,7 +565,7 @@
         "GO_TO_DASHBOARD": "Go to your dashboard"
       },
       "COMMON": {
-        "ANYTHING_ELSE": "Anything else",
+        "ANYTHING_ELSE": "If you need help with anything else",
         "MESSAGE_TO_THE_COURT_V1": "If you still need an update on your claim, you can send a message to the court.",
         "MESSAGE_TO_THE_COURT_V2": "If you still need help with your claim, you can send a message to the court.",
         "WE_TRY_TO_ANSWER": "We try to answer messages within 10 working days, but it could take longer.",
@@ -840,7 +842,7 @@
         "FOLLOW_UP": {
           "PARAGRAPH_1": "Your messages are listed on your dashboard.",
           "LINK": {
-            "TEXT": "Applications and messages to the court",
+            "TEXT": "Messages to the court",
             "TEXT_BEFORE": "You can follow up on a message by selecting the one you want to view from the ",
             "TEXT_AFTER": " section."
           },
@@ -968,7 +970,7 @@
         "IS_HEARING": "Is your message about an upcoming hearing?",
         "HEARING_DATE": "What is the date of the hearing?",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
-        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message. After choosing the file, click 'save file'.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "HEADING": "Review message details",
@@ -1001,7 +1003,7 @@
         "BODY_TITLE": "Message details",
         "BODY_HINT": "Include as many details as possible so case workers can respond to your message",
         "DOCUMENTS_TITLE": "Upload documents (optional)",
-        "DOCUMENTS_HINT": "<span>Only upload documents related to your message.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Only upload documents related to your message. After choosing the file, click 'save file'.</br> To upload documents to progress your claim, use the appropriate upload options. </br></br>Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Message details",
@@ -1356,7 +1358,7 @@
       "P_2": "By using this service you’re agreeing to the following terms of use.This includes the ",
       "P_4": "By creating an account, you agree to accept documents from the court electronically.",
       "P_5": "Who we are",
-      "P_6": "This service is managed by Her Majesty’s Courts and Tribunals Service.",
+      "P_6": "This service is managed by HMCTS.",
       "P_7": "You should check these terms and conditions regularly. We may update them at any time without notice. If you continue to use this service after the terms and conditions have changed, you are deemed to have agreed to the changes.",
       "P_8": "Information provided by this service",
       "P_9": "This service provides information to support your claim or application. We cannot give legal advice on individual cases.",
@@ -1475,7 +1477,8 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
         "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "EACH_DOCUMENT_MUST_WITH_SAVE_FILE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF. After choosing the file, click 'save file'."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -3655,6 +3658,7 @@
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF. After choosing the file, click 'save file'.",
         "LIST_TITLE": "Uploaded files",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
@@ -3749,6 +3753,7 @@
       },
       "RESPONDENT_VIEW_APPLICATION": {
         "APPLICATION_TYPE_AND_DESC": "Application type and description",
+        "WELSH_MESSAGE": "A party in this case has indicated a preference to conduct their case in Welsh, and the application document is being translated. All documents will be available to view shortly and you will be able to respond to it after you have received the translation.",
         "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
         "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
@@ -3858,9 +3863,9 @@
         "HEARING_ORDER" : "Hearing Order",
         "TRANSLATED_HEARING_ORDER": "Translated Hearing Order Request",
         "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
-        "GENERAL_ORDER" : "General Order",
         "DISMISSAL_ORDER": "Dismissal order",
         "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+        "TRANSLATED_JUDGE_HAS_MADE_ORDER": "Translated Judge’s directions order Request",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
@@ -3877,10 +3882,14 @@
         "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_CONCURRENT": "Translated Written Representations - Concurrent Request",
         "TRANSLATED_REQUEST_WRITTEN_REPRESENTATION_SEQUENTIAL": "Translated Written Representations - Sequential Request",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
+        "TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_APPLICANT": "Translated Response to Written Representations – applicant Request",
+        "TRANSLATED_WRITTEN_REPRESENTATION_RESPONSE_RESPONDENT": "Translated Response to Written Representations – respondent Request",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "TRANSLATED_REQUEST_MORE_INFO": "Translated Request for More information",
         "REQUEST_MORE_INFO": "Request for more information",
+        "TRANSLATED_MORE_INFO_RESPONSE_APPLICANT": "Translated Response for More information- applicant Request",
+        "TRANSLATED_MORE_INFO_RESPONSE_RESPONDENT": "Translated Response for More information – respondent Request",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -3909,7 +3918,9 @@
         "UPLOAD_DOCUMENTS_3": " if you need to.",
         "UPLOAD_DOCUMENTS_TRIAL_1": "You can ",
         "UPLOAD_DOCUMENTS_TRIAL_2": "upload documents",
-        "UPLOAD_DOCUMENTS_TRIAL_3": " you would like to be included in a trial bundle."
+        "UPLOAD_DOCUMENTS_TRIAL_3": " you would like to be included in a trial bundle.",
+        "ADDITIONAL_INFORMATION": "Additional information",
+        "WRITTEN_REPRESENTATION_DOC": "Written representation"
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
@@ -4257,6 +4268,8 @@
       "WITNESS_STATEMENT": "Witness statement",
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
       "WITNESS_SUMMARY": "Witness summary",
+      "WITNESS_SUMMARY_HINT_NRO_P1": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must",
+      "WITNESS_SUMMARY_HINT_NRO_P2": "to use a witness summary at the hearing. You must do this before the deadline.",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
       "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice' (opens in a new tab)",
       "YOUR_STATEMENT": "Your statement",
@@ -4513,7 +4526,8 @@
       "TOTAL_AMOUNT_HINT_TEXT2": "The amount does not include the claim fee and any fixed costs which are payable in addition.",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "TITLE_FOR_PART_ADMIT_HINT_TEXT": "The claim fee and any fixed costs claimed are payable in addition to the claim amount admitted.",
-      "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
+      "YOU_MUST_CONTACT_FA": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.",
+      "YOU_MUST_CONTACT_PA": "If the claimant accepts, you must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
@@ -4649,6 +4663,8 @@
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
       "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "TITLE": "Request more time to respond",
+      "YOU_NEED_TO": "You need to",
+      "YOU_NEED_P2": "to request more time. You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "UP_TO_28_DAYS": "Up to 28 days"
     },
     "RESIDENCE": {
@@ -4674,7 +4690,10 @@
       "PAGE_TITLE": "Response deadline",
       "POST": "Or, you can post the completed form to:",
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
-      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
+      "REQUEST_REFUSED_NRO_P1": "If your request to the other party or their legal representative for more time has been refused, you need to",
+      "REQUEST_REFUSED_NRO_P2": "make an application",
+      "REQUEST_REFUSED_NRO_P3": "to the court to consider your request."
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "How many are aged 11 to 15?",
@@ -4870,14 +4889,14 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
-        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
+        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are cleared in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }} plus the claim fee and any fixed costs claimed",
         "MAKE_SURE_THAT": "Make sure that:",
-        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
-        "THEY_GET_MONEY_BY": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "RECEIPT_FOR_PAYMENTS": "you get the receipt for any payments",
+        "THEY_GET_MONEY_BY": "they receive the money within 5 days from when they accept your offer - they can request a County Court Judgment against you if not.",
         "YOU_HAVE_SAID_YOU_OWW": "You've said you owe £{{ partialAmount }} plus the claim fee and any fixed costs claimed and offered to pay {{ claimantName }} immediately.",
-        "YOU_NEED_PAY_IMMEDIATELY": "You need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed immediately."
+        "YOU_NEED_PAY_IMMEDIATELY": "You will need to pay {{ claimantName }} £{{ partialAmount }} plus the claim fee and any fixed costs claimed."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "make sure any cheques or bank transfers are clear in their account by the deadline",
@@ -5102,6 +5121,7 @@
       "DATE_EXAMPLE": "For example, 27 9 2022",
       "DAY": "Day",
       "FORMAT": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "FORMAT_WITH_SAVE_FILE": "Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF. After choosing the file, click 'save file'",
       "NAME": "Your name",
       "MONTH": "Month",
       "NO_UPLOAD": "No files uploaded",
@@ -5254,7 +5274,7 @@
       "UNSEALED_CLAIM":"Unsealed Claim form",
       "COSC":"Certificate of Satisfaction or Cancellation of Judgment Debt",
       "COURT_OFFICER_ORDER": "Court Officer Order Request",
-      "TRANSLATED_COURT_OFFICER_ORDER": "Translated Court officer order Requestr",
+      "TRANSLATED_COURT_OFFICER_ORDER": "Translated Court officer order Request",
       "JBA_DEFENDANT":"Judgment by admission defendant",
       "JBA_CLAIMANT":"Judgment by admission claimant",
       "DJ_DEFENDANT":"Default Judgment defendant",
@@ -5442,11 +5462,12 @@
     "HELP_USING_GOV_URL": "Help using GOV.UK",
     "PRIVACY_POLICY_URL": "Privacy Policy",
     "TERMS_AND_CONDITIONS_URL": "Terms and Conditions",
-    "TESTING_SUPPORT": "Testing Support"
+    "TESTING_SUPPORT": "Testing Support",
+    "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to give the court.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to get from the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "You must select what problem you are having with the Money claims system.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "You must select how you want to manage your hearing.",
@@ -5957,7 +5978,7 @@
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
-      "UPLOAD_FILE_MESSAGE_V2": "You need to choose a file before clicking 'Upload file'",
+      "UPLOAD_FILE_MESSAGE_V2": "You need to choose a file before clicking 'Save file'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
@@ -5990,13 +6011,19 @@
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 13th May 2025 and 02:00 on 14th May 2025"
     },
     "WELSH_PARTY" : {
-      "MESSAGE" : "A party in this case has expressed a Welsh language preference. Delays to visibility of documents could be caused during translation processes."
+      "MESSAGE" : "A party in this case has expressed a Welsh language preference. All documents and responses will be available to view shortly."
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 11th August 2025 and 03:45 on 12th August 2025."
     },
     "CUI_JO" : {
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 18th August 2025 and 02:00 on 19th August 2025."
+    },
+    "CUI_COSC" : {
+      "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 26th August 2025 and 04:00 on 27th August 2025"
+    },
+    "CUI_MAIN_WELSH_LIP": {
+      "MESSAGE": "The Citizen User Service will be unavailable between 19:00 on 15th September 2025 and 04:00 on 16th September 2025."
     }
   }
 }

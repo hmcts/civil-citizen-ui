@@ -87,13 +87,13 @@ import {
   QM_START_URL,
   QM_VIEW_QUERY_URL,
   QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
-  REASON_FOR_FRC_BAND_URL,
-  RESPONSE_CHECK_ANSWERS_URL,
+  REASON_FOR_FRC_BAND_URL, REQUEST_MORE_TIME_URL,
+  RESPONSE_CHECK_ANSWERS_URL, RESPONSE_DEADLINE_OPTIONS_URL,
   SIGN_OUT_URL,
   STATEMENT_OF_MEANS_URL,
   SUBJECT_TO_FRC_URL,
   TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
-  TRIAL_ARRANGEMENTS_HEARING_DURATION,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION, TYPES_OF_DOCUMENTS_URL, UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
@@ -121,7 +121,7 @@ const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
-const cookieMaxAge = 90 * (60 * 1000); // 90 minutes
+const cookieMaxAge = config.get<number>('cookieMaxAge');
 
 export const app = express();
 app.use(cookieParser());
@@ -156,6 +156,7 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
@@ -270,6 +271,10 @@ app.use([
   GA_UPLOAD_DOCUMENTS_COSC_URL,
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
+  REQUEST_MORE_TIME_URL,
+  RESPONSE_DEADLINE_OPTIONS_URL,
+  TYPES_OF_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 ], GaTrackHistory);
 
 app.use([

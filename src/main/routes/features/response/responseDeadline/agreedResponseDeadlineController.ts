@@ -17,6 +17,9 @@ const responseDeadlineService = new ResponseDeadlineService();
 const agreedResponseDeadlineViewPath = 'features/response/responseDeadline/agreed-response-deadline';
 const agreedResponseDeadlineController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('agreedResponseDeadlineController');
+
 agreedResponseDeadlineController
   .get(
     AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req: Request, res: Response, next: NextFunction) => {
@@ -33,6 +36,7 @@ agreedResponseDeadlineController
           isReleaseTwoEnabled,
         });
       } catch (error) {
+        logger.error(`Error when GET : agreed response - ${error.message}`);
         next(error);
       }
     }) as RequestHandler)
@@ -49,6 +53,7 @@ agreedResponseDeadlineController
         await form.validate();
         const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
         if (form.hasErrors()) {
+          logger.info(`form has error - ${form.hasErrors()}`);
           res.render(agreedResponseDeadlineViewPath, {
             form,
             today: new Date(),
@@ -61,6 +66,7 @@ agreedResponseDeadlineController
           res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
         }
       } catch (error) {
+        logger.error(`Error when POST : agreed response - ${error.message}`);
         next(error);
       }
     }) as RequestHandler);

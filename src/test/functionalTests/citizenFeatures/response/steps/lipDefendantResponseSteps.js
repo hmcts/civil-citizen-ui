@@ -717,7 +717,7 @@ class ResponseSteps {
     freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  async EnterDQForSmallClaims(claimRef, isIndividual = true) {
+  async EnterDQForSmallClaims(claimRef, isIndividual = true, languageOption = 'en') {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
     await this.EnterExpertReportDetails();
@@ -730,7 +730,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(true, languageOption);
   }
 
   async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
@@ -900,8 +900,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(smallClaims = true) {
-    await welshLanguage.selectLanguageOption(smallClaims);
+  async SelectLanguageOption(smallClaims = true, languageOption = 'en') {
+    await welshLanguage.selectLanguageOption(smallClaims, languageOption);
   }
 
   async SelectOptionForTriedToSettle(claimRef){

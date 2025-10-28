@@ -3,15 +3,24 @@ const config = require('../../../../../../config');
 const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
-const fields ={
-  speakLanguage: 'input[id="speakLanguage"]',
-  documentLanguage: 'input[id="documentsLanguage"]',
+const fields = {
+  speakingLanguageOption: {
+    en: 'input[id="speakLanguage"]',
+    cy: 'input[id="speakLanguage-2"]',
+    both: 'input[id="speakLanguage-3"]',
+  },
+  documentLanguageOption: {
+    en: 'input[id="documentsLanguage"]',
+    cy: 'input[id="documentsLanguage-2"]',
+    both: 'input[id="documentsLanguage-3"]',
+  },
 };
 
 const content = {
   heading: {
     en: 'Welsh language',
     cy: 'Yr iaith Gymraeg',
+    both: 'Welsh language',
   },
   descriptionText: {
     en: 'Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.',
@@ -37,7 +46,7 @@ const content = {
 
 class WelshLanguage {
 
-  async selectLanguageOption(smallClaims = true) {
+  async selectLanguageOption(smallClaims = true, languageOption = 'en') {
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     if (smallClaims) {
@@ -47,9 +56,9 @@ class WelshLanguage {
       await I.see(content.descriptionText[language]);
     }
     await I.see(content.speakLanguageQuestion[language]);
-    await I.click(fields.speakLanguage);
-    await I.see(content.documentsLanguageQuestion[language]);
-    await I.click(fields.documentLanguage);
+    
+    await I.click(fields.speakingLanguageOption[languageOption]);
+    await I.click(fields.documentLanguageOption[languageOption]);
     await I.click(cButtons.saveAndContinue[language]);
   }
 }

@@ -50,5 +50,5 @@ Scenario.skip('Case progression journey - Small Claims - Claimant and Defendant 
     await I.click(claimNumber);
     await I.dontSee(notification.title);
   }
-}).tag('@nightly-regression-cp');
+}).tag('@nightly');
 
