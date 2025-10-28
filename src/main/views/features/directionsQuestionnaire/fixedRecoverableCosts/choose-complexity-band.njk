@@ -27,6 +27,11 @@
                         {{ csrfProtection(csrf) }}
                         {{ createPageTitle(title,t) }}
                         {{ createDetails( whichComplexityBandToChooseContent ,t) }}
+
+                        <span id="complexityBand-description" class="govuk-visually-hidden">
+                            {{ t('PAGES.CHOOSE_COMPLEXITY_BAND.COMBO_BOX.TITLE') }}
+                        </span>
+
                         {{ govukRadios({
                                          id: "complexityBand",
                                          name: "complexityBand",
