@@ -8,13 +8,9 @@
   idPrefix: "option",
   name: "option",
   items: form.model.items,
-  fieldset: {
-    legend: {
-      text: t('PAGES.QM.WHAT_DO_YOU_WANT_TODO_TITLE'),
-      classes: "govuk-visually-hidden"
-    }
-  },
-  errorMessage: form.hasErrors() ? { text: t(form.errorFor('option')) } : null
+  errorMessage: {
+    text: t(form.errorFor('option'))
+  } if form.hasErrors()
 }) }}
 
 {% endblock %}
