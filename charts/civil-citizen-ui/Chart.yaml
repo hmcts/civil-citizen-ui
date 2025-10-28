@@ -12,7 +12,7 @@ dependencies:
     version: 3.2.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
   - name: civil-service
-    version: 0.0.84
+    version: 0.0.92
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: civil-service.enabled
   - name: ccd
