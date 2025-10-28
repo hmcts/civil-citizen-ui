@@ -121,7 +121,7 @@ const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
-const cookieMaxAge = 90 * (60 * 1000); // 90 minutes
+const cookieMaxAge = config.get<number>('cookieMaxAge');
 
 export const app = express();
 app.use(cookieParser());
@@ -156,6 +156,7 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
