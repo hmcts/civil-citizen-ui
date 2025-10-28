@@ -22,9 +22,7 @@
                         {{ csrfProtection(csrf) }}
                         {{ createPageTitle(title,t) }}
                         {{ createDetails( whichComplexityBandToChooseContent ,t) }}
-                        {{ createTextArea("reasonsForBandSelection", form.model.reasonsForBandSelection, form ,t, {
-                            "aria-describedby": "reasonsForBandSelection-hint" + (form.hasFieldError('reasonsForBandSelection') ? ' reasonsForBandSelection-error' : '')
-                        }) }}
+                        {{ createTextArea("reasonsForBandSelection", form.model.reasonsForBandSelection, form ,t) }}
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
                         {{ contactUsForHelp(t) }}
                     </form>
