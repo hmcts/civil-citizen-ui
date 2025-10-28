@@ -8,9 +8,12 @@
   idPrefix: "option",
   name: "option",
   items: form.model.items,
-  errorMessage: {
-    text: t(form.errorFor('option'))
-  } if form.hasErrors()
+  fieldset: {
+    legend: {
+      text: t('PAGES.QM.WHAT_DO_YOU_WANT_TODO_TITLE')
+    }
+  },
+  errorMessage: form.hasErrors() ? { text: t(form.errorFor('option')) } : null
 }) }}
 
 {% endblock %}
