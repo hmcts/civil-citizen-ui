@@ -11,8 +11,9 @@
     {% set hrefTarget= "_self" %}
   {% endif %}
 
+  {# Add visually hidden h2 for screen readers to fix skipped heading level #}
   {% if name == t('COMMON.EMAIL') %}
-    <h2 class="govuk-visually-hidden">{{ t('COMMON.EMAIL') }}</h2>
+    <h2 class="govuk-visually-hidden">{{ t('COMMON.CONTACT_US_FOR_HELP.TITLE') }}</h2>
   {% endif %}
   <h3 class="govuk-heading-m">{{ name }}</h3>
   {% if phoneNumber %}
@@ -73,9 +74,9 @@
   {% set sendMessageLink = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_LINK') %}
   {% set sendMessageHint = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_RESPONSE') %}
   {% if disableSendMessage %}
-    {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
+  {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
   {% else %}
-    {% set qmContent = _widgetRedesign(emailWidget, callChargesWidget) %}
+  {% set qmContent = _widgetRedesign(emailWidget, callChargesWidget) %}
   {% endif %}
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
@@ -97,16 +98,16 @@
   {% else %}
     {% if isQMFlagEnabled %}
       {{ govukDetails({
-        summaryText: '<span class="govuk-heading-m">' ~ ContactUs ~ '</span>',
+        summaryText: ContactUs,
         html: qmContent,
         id: contactUsForHelpComponentId
-      }) | safe }}
+      }) }}
       {% else %}
     {{ govukDetails({
-      summaryText: '<span class="govuk-heading-m">' ~ ContactUs ~ '</span>',
+      summaryText: ContactUs,
       html: content,
       id: contactUsForHelpComponentId
-    }) | safe }}
+    }) }}
       {% endif %}
   {% endif %}
 {% endmacro %}
