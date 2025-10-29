@@ -56,7 +56,6 @@ requestForReconsiderationCommentsCheckAnswersController.post(REQUEST_FOR_RECONSI
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
     await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
-
     res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL));
   } catch (error) {
     next(error);
