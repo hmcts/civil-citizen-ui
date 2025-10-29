@@ -15,7 +15,7 @@ export function assertHasData<T>(res: AxiosResponse<T | null | undefined>, meta?
     throw new EventSubmissionError(`Empty response body${meta?.action ? ` during: ${meta.action}` : ''}`, {
       status: res.status,
       url: res.config?.url,
-      event: String((meta?.event as any)?.type ?? '<event-name>'),
+      event: meta?.event ?? '<event-name>',
     });
   }
 }
