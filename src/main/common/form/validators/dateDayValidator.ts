@@ -1,7 +1,8 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import validator from 'validator';
-import isInt = validator.isInt;
 import {toNumber} from 'lodash';
+
+const {isInt} = validator;
 
 /**
  * Validates that the input value is a valid day
