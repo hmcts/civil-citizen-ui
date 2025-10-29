@@ -16,13 +16,16 @@
           {% for content in contentList %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-labelledby="reason-heading">
             {{ csrfProtection(csrf) }}
-            <h1 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS') }}</h1>
+            <h1 class="govuk-heading-s" id="reason-heading">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS') }}</h1>
             {{ govukTextarea({
               name: "text",
               id: "text",
               value: form.model.text,
+              attributes: {
+                'aria-labelledby': 'reason-heading'
+              },
               errorMessage: {
                 html: t(form.errorFor("text"))
               } if form.hasFieldError("text")

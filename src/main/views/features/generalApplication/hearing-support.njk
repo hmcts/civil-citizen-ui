@@ -67,6 +67,11 @@
             {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+
+            <span id="requiredSupport-description" class="govuk-visually-hidden">
+              {{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.DO_YOU_NEED') }}
+            </span>
+
             {{ govukCheckboxes({
               idPrefix: "requiredSupport",
               name: "requiredSupport",
