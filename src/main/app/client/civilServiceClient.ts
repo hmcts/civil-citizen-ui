@@ -66,6 +66,7 @@ import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
 import {Logger} from '@hmcts/nodejs-logging';
+import {EventSubmissionError} from 'client/common/error/eventSubmissionError';
 const logger = Logger.getLogger('civilServiceClient');
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
@@ -394,8 +395,13 @@ export class CivilServiceClient {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
+
       if (!response.data) {
-        throw new AssertionError({message: `Error when submitting event : ${event}`});
+        throw new EventSubmissionError('Empty response body when submitting event', {
+          status: response.status,
+          url: response.config?.url,
+          event: event ?? '<event-name>',
+        });
       }
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
