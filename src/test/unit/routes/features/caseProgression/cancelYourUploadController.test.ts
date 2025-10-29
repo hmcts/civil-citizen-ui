@@ -18,9 +18,7 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
-import {
-  isCaseProgressionV1Enable, isCUIReleaseTwoEnabled,
-} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -44,7 +42,6 @@ describe('Cancel document upload', () => {
   });
   beforeEach(()=> {
     app.locals.draftStoreClient = mockCivilClaim;
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   describe('Cancel document upload - On GET', () => {

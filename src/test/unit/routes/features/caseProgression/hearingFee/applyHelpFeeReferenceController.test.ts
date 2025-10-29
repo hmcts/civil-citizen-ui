@@ -15,7 +15,6 @@ import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('services/features/caseProgression/hearingFee/hearingFeeService');
 jest.mock('../../../../../../main/modules/oidc');
@@ -30,9 +29,6 @@ describe('Apply for help with fees', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
     it('should return resolving apply help fees reference page', async () => {

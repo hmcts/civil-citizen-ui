@@ -113,10 +113,6 @@ export async function isGaForLipsEnabledAndLocationWhiteListed(location: string)
   return gaLipsFlag && eaFlagForGaLips;
 }
 
-export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return true;
-}
-
 export async function isServiceShuttered(): Promise<boolean> {
   return await getFlagValue(SHUTTER_CUI_SERVICE) as boolean;
 }
