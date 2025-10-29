@@ -29,8 +29,8 @@
               {% if theirTimeline.length %}
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
-                <th scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
+                <th scope="col" id="timeline-date-header" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
+                <th scope="col" id="timeline-event-header" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
               </tr>
               </thead>
               <tbody class="govuk-table__body">
@@ -40,11 +40,11 @@
                   <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
                 </tr>
               {% endfor %}
+              </tbody>
               {% elseif pdfUrl %}
                 <a id="timeline-link" href="{{ pdfUrl }}" target="_blank" rel="noreferrer noopener"
                    class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
               {% endif %}
-              </tbody>
             </table>
           </div>
           <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t('PAGES.DEFENDANT_TIMELINE.ADD_YOUR_TIMELINE') }}</h2>
@@ -64,9 +64,9 @@
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
               <label class="govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
-              <p
-                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
+              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
             </div>
+
             {% for timeline in form.model.rows %}
               {{ timelineRow(timeline, loop.index0, form, t) }}
             {% endfor %}
@@ -88,7 +88,7 @@
               spellcheck: false,
               errorMessage: {
                 text: t(form.errorFor("comment"))
-              } if form.hasFieldError( "comment")
+              } if form.hasFieldError("comment")
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
