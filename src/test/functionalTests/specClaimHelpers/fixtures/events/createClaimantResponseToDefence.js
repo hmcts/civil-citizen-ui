@@ -22,9 +22,8 @@ module.exports = {
           partyTypeDisplayValue: 'Company',
           flags: {
             partyName: 'Test Inc',
-            roleOnCase: 'Applicant 1',
+            roleOnCase: 'Claimant 1',
           },
-
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -44,7 +43,6 @@ module.exports = {
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
           partyPhone: '07123456789',
-
           flags: null,
         },
         partAdmitPaidValuePounds: null,
