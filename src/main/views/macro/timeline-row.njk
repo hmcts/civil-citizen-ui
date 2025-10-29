@@ -5,7 +5,12 @@
 {% macro timelineRow(timelineModel, index, form, t) %}
   <div class="row-container">
     <div class="multiple-row">
+
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+        <fieldset class="govuk-fieldset">
+          <legend id="timelineDate" class="govuk-fieldset__legend govuk-visually-hidden">
+            {{ t('COMMON.DATE') }}
+          </legend>
         {{ govukDateInput({
           id: "rows-"+index+"-date",
           type: "number",
@@ -41,7 +46,9 @@
             text: t(form.errorFor("rows["+index+"][date]"))
           } if form.hasFieldError( "rows["+index+"][date]")
         }) }}
+        </fieldset>
       </div>
+
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
         {{ govukTextarea({
           id: "rows["+index+"][description]",
@@ -51,13 +58,18 @@
           spellcheck: false,
           label: {
             text: t('COMMON.TIMELINE.WHAT_HAPPENED'),
-            classes: 'govuk-visually-hidden'
+            classes: 'govuk-visually-hidden',
+            isPageHeading: false
+          },
+          attributes: {
+            "aria-labelledby": "timelineEvent"
           },
           errorMessage: {
             text: t(form.errorFor("rows["+index+"][description]"))
           } if form.hasFieldError( "rows["+index+"][description]")
         }) }}
       </div>
+
     </div>
   </div>
 {% endmacro %}
