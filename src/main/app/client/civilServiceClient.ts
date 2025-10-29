@@ -64,8 +64,7 @@ import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetail
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-
-import {EventSubmissionError} from 'client/common/error/eventSubmissionError';
+import {assertHasData} from 'client/common/error/eventSubmissionError';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -396,15 +395,7 @@ export class CivilServiceClient {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-
-      if (response.data === null || response.data === undefined) {
-        throw new EventSubmissionError('Empty response body when submitting event', {
-          status: response.status,
-          url: response.config?.url,
-          event: String((event as unknown as { type?: string })?.type ?? '<event-name>'),
-
-        });
-      }
+      assertHasData(response, { action: 'submit event', event: String((event as any)?.type ?? '<event-name>') });
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
