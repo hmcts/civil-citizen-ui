@@ -104,6 +104,10 @@ exports.config = {
       enabled: functional ?? false,
       require: `${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin`,
     },
+    allure: {
+      enabled: true,
+      require: "allure-codeceptjs",
+    },
   },
   mocha: {
     bail: true,
