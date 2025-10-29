@@ -396,11 +396,12 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
 
-      if (!response.data) {
+      if (response.data === null || response.data === undefined) {
         throw new EventSubmissionError('Empty response body when submitting event', {
           status: response.status,
           url: response.config?.url,
-          event: event ?? '<event-name>',
+          event: String((event as unknown as { type?: string })?.type ?? '<event-name>'),
+
         });
       }
       const claimResponse = response.data as CivilClaimResponse;
