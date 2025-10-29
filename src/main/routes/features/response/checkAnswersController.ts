@@ -68,6 +68,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     if (form.hasErrors()) {
       logger.info(`form has error -  ${req.params.id}`);
       renderView(req, res, form, claim);
+      return;
     } else {
       logger.info('form has no error');
       await saveStatementOfTruth(redisKey, form.model);

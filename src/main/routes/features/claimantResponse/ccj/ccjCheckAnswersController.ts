@@ -53,6 +53,7 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
       await renderView(req, res, form, claim);
+      return;
     } else {
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
@@ -61,6 +62,7 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
     }
   } catch (error) {
     next(error);
+    return;
   }
 });
 

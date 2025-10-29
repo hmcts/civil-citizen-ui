@@ -13,8 +13,10 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 /**
- * Gets the claim from draft store and if not existing then gets it from ccd.
- * @param claimId, req, useRedisKey
+ * Gets the claim from draft store and if not existing, then gets it from ccd.
+ * @param claimId
+ * @param req
+ * @param useRedisKey
  * @returns claim
  */
 export const getClaimById = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
