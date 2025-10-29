@@ -24,7 +24,6 @@
 {% endblock %}
 
 {% block content %}
-
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediately %}
@@ -44,26 +43,25 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
+            </legend>
+             {% if isClaimantResponse %}
+               {% if responseType === ResponseType.FULL_ADMISSION %}
+                <p class="govuk-body-m"> {{ totalAmountClaimedText }}</p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+               {% endif %}
+             {% else %}
+                {% if responseType === ResponseType.PART_ADMISSION %}
+                  <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
+                {% else %}
+                   <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                   <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+                {% endif %}
+              {% endif %}
 
-        {{ govukFieldset({
-          legend: {
-            text: title,
-            classes: "govuk-fieldset__legend--l",
-            isPageHeading: true
-          },
-          html: (
-            (isClaimantResponse and responseType === ResponseType.FULL_ADMISSION) ?
-              ("<p class='govuk-body-m'>" + totalAmountClaimedText + "</p>" +
-               "<p class='govuk-body-m'>" + t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') + "</p>" +
-               "<p class='govuk-body-m'>" + t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') + "</p>")
-            :
-              (not isClaimantResponse and responseType === ResponseType.PART_ADMISSION) ?
-                ("<p class='govuk-body-m'>" + t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') + "</p>")
-              :
-                ("<p class='govuk-body-m'>" + t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') + "</p>" +
-                 "<p class='govuk-body-m'>" + t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') + "</p>")
-          ),
-          children: govukRadios({
+            {{ govukRadios({
               idPrefix: "paymentType",
               name: "paymentType",
               items: [
@@ -95,7 +93,7 @@
               errorMessage: {
                 text: t(form.errorFor('paymentType'))
               } if form.hasFieldError('paymentType')
-           })
+
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
