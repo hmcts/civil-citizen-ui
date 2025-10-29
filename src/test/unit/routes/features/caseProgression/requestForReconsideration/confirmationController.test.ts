@@ -38,7 +38,6 @@ describe('Request for reconsideration page test', () => {
     .post('/o/token')
     .reply(200, {id_token: citizenRoleToken});
 
-
   describe('on GET', () => {
     it('should return expected page in English when claim exists', async () => {
       //Given
