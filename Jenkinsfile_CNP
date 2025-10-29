@@ -126,6 +126,10 @@ def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
 }
 
+def checkForRunAllFunctionalTests(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
+}
+
 withPipeline(type, product, component) {
   pipelineConf = config
   disableLegacyDeployment()
@@ -184,7 +188,11 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
-    copyPrevFailedAndNotExecutedTestFilesJson();
+    if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
+      env.RUN_ALL_FUNCTIONAL_TESTS = true
+    } else {
+      copyPrevFailedAndNotExecutedTestFilesJson();
+    }
   }
 
   afterAlways('functionalTest:preview') {
