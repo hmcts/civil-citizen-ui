@@ -13,7 +13,7 @@ let welshEnabled;
 
 Feature('Create Lip v Lip claim - Rejected All By defendant document welsh').tag('@reject-all');
 
-Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh @debug', async ({api}) => {
+Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh', async ({api}) => {
   welshEnabled = await checkToggleEnabled('enableWelshForMainCase');
   if (!welshEnabled) {
     return;
