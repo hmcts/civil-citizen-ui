@@ -65,8 +65,8 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
-import {Logger} from '@hmcts/nodejs-logging';
 import {EventSubmissionError} from 'client/common/error/eventSubmissionError';
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
