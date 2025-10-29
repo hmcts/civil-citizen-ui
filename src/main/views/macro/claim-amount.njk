@@ -4,6 +4,11 @@
   {% set amountValue =  '' + claimAmountModel.amount %}
   <div class="row-container govuk-form-group">
     <div class="multiple-row civil-amount-breakdown-row">
+
+      <h2 class="govuk-heading-m">
+        {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.HEADING') }}
+      </h2>
+
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
       {{ govukInput({
         id: "claimAmountRows["+index+"][reason]",
@@ -13,16 +18,14 @@
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
-          classes: 'govuk-visually-hidden'
-        },
-        attributes: {
-          "aria-label": t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON')
+          classes: 'govuk-label--m'
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
         } if form.hasFieldError( "claimAmountRows["+index+"][reason]")
       }) }}
       </div>
+
       <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
       {{ govukInput({
         id: "claimAmountRows["+index+"][amount]",
@@ -31,22 +34,24 @@
         prefix: {
           text: "£"
         },
-        autocomplete: "number",
+        autocomplete: "off",
         type: "number",
         classes: "govuk-grid-column-full civil-claim-amount",
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
-          classes: 'govuk-visually-hidden'
-        },
-        attributes: {
-          "aria-label": t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT')
+          classes: 'govuk-label--m'
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
         } if form.hasFieldError( "claimAmountRows["+index+"][amount]")
       }) }}
       </div>
+
+      <p class="govuk-body">
+        <a href="/contact" class="govuk-link">Contact us for help</a>
+      </p>
+
     </div>
   </div>
 {% endmacro %}
