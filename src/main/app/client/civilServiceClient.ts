@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -391,6 +391,15 @@ export class CivilServiceClient {
       event: event,
       caseDataUpdate: updatedClaim,
     };
+
+    if ( userId === undefined || userId === null || userId.length === 0) {
+      throw new Error('User id is undefined for event ' + event);
+    }
+
+    if ( claimId === undefined || claimId === null || claimId.length === 0) {
+      throw new Error('Claim id is undefined for event ' + event);
+    }
+
     try {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
@@ -398,8 +407,11 @@ export class CivilServiceClient {
       assertHasData(response, { action: 'submit event', event: String((event as any)?.type ?? '<event-name>') });
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
-    } catch (err: unknown) {
-      logger.error(`Error when submitting event ${event},  - claimId- ${claimId}`);
+    } catch (e: unknown) {
+      const err = e as AxiosError;
+      const status = err.response?.status;
+      const body = err.response?.data;
+      logger.error(`Submit event failed (event=${event}, claimId=${claimId}, status=${status})`, { body });
       throw err;
     }
   }
