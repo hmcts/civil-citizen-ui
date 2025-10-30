@@ -13,7 +13,7 @@
     "startwin:dev": "nodemon --config nodemon.json --exec yarn startwin",
     "lint": "stylelint **/*.scss -v -q && eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:win": "yarn lint -c win.eslint.json",
-    "build": "yarn webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "echo -c jest.config.js",
     "test:coverage": "LOG_LEVEL=OFF jest --coverage --maxWorkers=8 --logHeapUsage --silent",
@@ -106,7 +106,7 @@
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.9.5",
     "uuid": "^9.0.0",
-    "validator": "^13.7.0"
+    "validator": "13.15.20"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
