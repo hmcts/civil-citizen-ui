@@ -5446,7 +5446,7 @@ __metadata:
     babel-loader: "npm:^9.1.0"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.0"
-    codeceptjs: "npm:^3.7.5"
+    codeceptjs: "npm:^3.3.7"
     config: "npm:^3.3.12"
     connect-redis: "npm:^7.1.0"
     cookie-parser: "npm:^1.4.7"
@@ -5655,7 +5655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"codeceptjs@npm:^3.7.5":
+"codeceptjs@npm:^3.3.7":
   version: 3.7.5
   resolution: "codeceptjs@npm:3.7.5"
   dependencies:
