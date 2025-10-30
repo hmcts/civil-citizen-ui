@@ -1,5 +1,6 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import validator from 'validator';
+import isInt = validator.isInt;
 import {toNumber} from 'lodash';
 
 /**
@@ -14,7 +15,7 @@ export class DateMonthValidator implements ValidatorConstraintInterface {
       return false;
     }
     this.monthExists = true;
-    return !(month.length > 2 || !(validator.isInt(month)) || toNumber(month) > 12 || toNumber(month) < 1);
+    return !(month.length > 2 || !(isInt(month)) || toNumber(month) > 12 || toNumber(month) < 1);
   }
 
   defaultMessage() {

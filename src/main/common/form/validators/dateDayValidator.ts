@@ -1,5 +1,6 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import validator from 'validator';
+import isInt = validator.isInt;
 import {toNumber} from 'lodash';
 
 /**
@@ -14,7 +15,7 @@ export class DateDayValidator implements ValidatorConstraintInterface {
       return false;
     }
     this.dayExists = true;
-    return !(day.length > 2 || !(validator.isInt(day)) || toNumber(day) > 31 || toNumber(day) < 1);
+    return !(day.length > 2 || !(isInt(day)) || toNumber(day) > 31 || toNumber(day) < 1);
   }
 
   defaultMessage() {
