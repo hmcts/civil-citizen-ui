@@ -102,6 +102,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     }
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
+      return;
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
@@ -118,6 +119,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     }
   } catch (error) {
     next(error);
+    return;
   }
 });
 
