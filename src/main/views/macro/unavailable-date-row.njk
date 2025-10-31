@@ -72,15 +72,14 @@
     <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endMonth]')) }}</p>
     <p class="govuk-error-message">{{ t(errorFor('items['+index+'][endYear]')) }}</p>
   </div>
+
+  <fieldset>
+    <legend class="govuk-visually-hidden">{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') }}</legend>
+    <h3 class="govuk-heading-s">{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') }}</h3>
   {{ govukDateInput({
     id: 'items[' +index+ '][from]',
     type: "number",
     inputmode: "numeric",
-    fieldset: {
-      legend: {
-        text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM')
-      }
-    },
     hint: {
       text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
     },
@@ -91,10 +90,7 @@
         name: 'items[' + index + '][period][start][day]',
         label: t('COMMON.DAY'),
         value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
-        max: 31,
-        attributes: {
-          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') +' '+ t('COMMON.DAY') +' '+ '['+(indexPlusOne)+']'
-        }
+        max: 31
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
@@ -102,10 +98,7 @@
         name: 'items[' + index + '][period][start][month]',
         label: t('COMMON.MONTH'),
         value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
-        max: 12,
-        attributes: {
-          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') +' '+ t('COMMON.MONTH') +' '+ '['+(indexPlusOne)+']'
-        }
+        max: 12
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startYear]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
@@ -113,24 +106,20 @@
         name: 'items[' + index + '][period][start][year]',
         label: t('COMMON.YEAR'),
         value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
-        max: 9999,
-        attributes: {
-          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') +' '+ t('COMMON.YEAR') +' '+ '['+(indexPlusOne)+']'
+        max: 9999
         }
-      }
-    ]
-  }) }}
+      ]
+    }) }}
+  </fieldset>
 
+  <fieldset>
+    <legend class="govuk-visually-hidden">{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') }}</legend>
+    <h3 class="govuk-heading-s">{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') }}</h3>
   {{ govukDateInput({
     id: 'items[' + index + '][until]',
     type: "number",
     inputmode: "numeric",
-    fieldset: {
-      legend: {
-        text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO')
-      }
-    },
-    hint: {
+      hint: {
       text: t('COMMON.DATE_EXAMPLE', { date: exampleDate })
     },
     items: [
@@ -140,21 +129,15 @@
         name: 'items[' + index + '][period][end][day]',
         label: t('COMMON.DAY'),
         value: unavailableDate.endDay,
-        max: 31,
-        attributes: {
-          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') +' '+ t('COMMON.DAY') +' '+ '['+(indexPlusOne)+']'
-        }
-      },
+        max: 31
+        },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endMonth]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
         id: 'items[' + index + '][endMonth]',
         name: 'items[' + index + '][period][end][month]',
         label: t('COMMON.MONTH'),
         value: unavailableDate.endMonth,
-        max: 12,
-        attributes: {
-          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') +' '+ t('COMMON.MONTH') +' '+ '['+(indexPlusOne)+']'
-        }
+        max: 12
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endYear]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
@@ -162,14 +145,11 @@
         name: 'items[' + index + '][period][end][year]',
         label: t('COMMON.YEAR'),
         value: unavailableDate.endYear,
-        max: 9999,
-        attributes: {
-          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') +' '+ t('COMMON.YEAR') +' '+ '['+(indexPlusOne)+']'
+        max: 9999
         }
-      }
-    ]
-  }) }}
-{% endset -%}
+      ]
+    }) }}
+  </fieldset>
 
   <div class="row-container">
     <div class="multiple-row">
