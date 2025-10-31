@@ -26,6 +26,7 @@ import { ClaimantResponse } from 'common/models/claimantResponse';
 import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {PartyType} from 'models/partyType';
+import {AppSession, UserDetails} from "models/AppRequest";
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -44,7 +45,7 @@ describe('Respond To Settlement Agreement', () => {
       .reply(200, { id_token: citizenRoleToken });
     nock('http://localhost:4000')
       .post(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId','undefined')
+        .replace(':submitterId','1234')
         .replace(':caseId',':id'))
       .reply(200, {});
   });
@@ -235,8 +236,8 @@ describe('Respond To Settlement Agreement', () => {
 
     it('should redirect to the claimant response task-list if sign agreement checkbox is selected', async () => {
       const mockClaim = getMockClaim();
-      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
-
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim as Claim);
+      app.request.session = <AppSession>{user: <UserDetails>{id: '1234'}};
       await request(app).post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
