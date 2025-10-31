@@ -3,6 +3,11 @@
 {% macro headerComponent(t, user) %}
   {% set navigationList = [
     {
+      href: '/dashboard',
+      text: t('COMMON.HEADER.MY_ACCOUNT'),
+      active: false
+    },
+    {
       href: '/logout',
       text: t('COMMON.HEADER.SIGN_OUT'),
       active: false
@@ -12,7 +17,7 @@
   ] %}
   {% block header %}
     {{ govukHeader({
-      homepageUrl: '[https://www.gov.uk](https://www.gov.uk)',
+      homepageUrl: 'https://www.gov.uk',
       containerClasses: 'govuk-width-container',
       serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
       serviceUrl: '/dashboard',
