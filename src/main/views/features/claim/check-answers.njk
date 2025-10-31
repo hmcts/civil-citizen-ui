@@ -33,16 +33,7 @@
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
-                    rows: section.summaryList.rows | map((row, rowIndex) => {
-                      if (row.actions) {
-                        row.actions = row.actions | map((action, actionIndex) => {
-                          // Append section index + row index + action index to href to make it unique
-                          action.href = action.href + '-s' + loop.index ~ '-r' ~ rowIndex ~ '-a' ~ actionIndex
-                          return action
-                        })
-                      }
-                      return row
-                    })
+                    rows: section.summaryList.rows
                   }) }}
                 </div>
               </div>
