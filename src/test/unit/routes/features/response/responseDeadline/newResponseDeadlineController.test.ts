@@ -9,7 +9,7 @@ import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import {AppSession, UserDetails} from "models/AppRequest";
+import {AppSession, UserDetails} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
