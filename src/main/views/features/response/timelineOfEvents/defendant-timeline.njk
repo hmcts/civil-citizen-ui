@@ -25,19 +25,22 @@
           <h1 class="govuk-heading-l">{{ t(title) }}</h1>
           <div class="govuk-description-block govuk-body">
             <h2 class="govuk-heading-s">{{ t('PAGES.DEFENDANT_TIMELINE.THEIR_TIMELINE') }}</h2>
-            <table class="govuk-table">
+            <table class="govuk-table" aria-describedby="their-timeline-desc">
+              <caption id="their-timeline-desc" class="govuk-visually-hidden">
+                {{ t('PAGES.DEFENDANT_TIMELINE.THEIR_TIMELINE') }}
+              </caption>
               {% if theirTimeline.length %}
               <thead class="govuk-table__head">
               <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
-                <th scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
+                <th id="their-date-header" scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
+                <th id="their-what-happened-header" scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
               </tr>
               </thead>
               <tbody class="govuk-table__body">
               {% for event in theirTimeline %}
                 <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
-                  <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+                  <td class="govuk-table__cell" headers="their-date-header">{{ event.value.timelineDate | date }}</td>
+                  <td class="govuk-table__cell" headers="their-what-happened-header">{{ event.value.timelineDescription }}</td>
                 </tr>
               {% endfor %}
               {% elseif pdfUrl %}
@@ -52,19 +55,21 @@
             {{ t('PAGES.DEFENDANT_TIMELINE.INCLUDE_DATES_IF_YOU_KNOW') }}
           </p>
 
-          <form method="post" novalidate aria-describedby="defendant-timeline">
+          <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label for="defendant-timeline" class="govuk-label--s">
+              <label class="govuk-label--s" for="timeline-date">
                 {{ t('COMMON.DATE') }}
               </label>
-              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
+              <p id="timeline-date-hint" class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
                 {{ t('COMMON.DATE_EXAMPLE', { date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 1)}) }}
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label for="defendant-timeline" class="govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
-              <p
+              <label class="govuk-label--s" for="timeline-event">
+                {{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}
+              </label>
+              <p id="timeline-event-hint"
                 class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
             </div>
             {% for timeline in form.model.rows %}
