@@ -18,7 +18,10 @@
               label: t('COMMON.DAY'),
               name: "rows["+index+"][day]",
               value: timelineModel.day,
-              max: 31
+              max: 31,
+              attributes: {
+                'aria-describedby': "rows-"+index+"-day-hint"
+              }
             },
             {
               classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
@@ -26,7 +29,10 @@
               label: t('COMMON.MONTH'),
               name: "rows["+index+"][month]",
               value: timelineModel.month,
-              max: 12
+              max: 12,
+              attributes: {
+                'aria-describedby': "rows-"+index+"-month-hint"
+              }
             },
             {
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
@@ -34,7 +40,10 @@
               label: t('COMMON.YEAR'),
               name: "rows["+index+"][year]",
               value: timelineModel.year,
-              max: 9999
+              max: 9999,
+              attributes: {
+                'aria-describedby': "rows-"+index+"-year-hint"
+              }
             }
           ],
           errorMessage: {
@@ -51,7 +60,13 @@
           spellcheck: false,
           label: {
             text: t('COMMON.TIMELINE.WHAT_HAPPENED'),
-            classes: 'govuk-visually-hidden'
+            classes: 'govuk-visually-hidden',
+            attributes: {
+              'id': "rows-"+index+"-description-label"
+            }
+          },
+          attributes: {
+            'aria-describedby': "rows-"+index+"-description-label"
           },
           errorMessage: {
             text: t(form.errorFor("rows["+index+"][description]"))
