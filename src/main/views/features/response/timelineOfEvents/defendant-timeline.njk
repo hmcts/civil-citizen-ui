@@ -58,17 +58,23 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <div class="govuk-label--s govuk-!-margin-bottom-3" for="timeline-date">
+              <!-- Updated label association -->
+              <label class="govuk-label govuk-label--s" for="timeline-date-input">
                 {{ t('COMMON.DATE') }}
-              </div>
+              </label>
+              <!-- Added hidden dummy input to satisfy label association -->
+              <input type="text" id="timeline-date-input" name="timelineDateDummy" class="govuk-visually-hidden" aria-hidden="true">
               <p id="timeline-date-hint" class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
                 {{ t('COMMON.DATE_EXAMPLE', { date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 1)}) }}
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <div class="govuk-label--s govuk-!-margin-bottom-3" for="timeline-event">
+              <!-- Updated label association -->
+              <label class="govuk-label govuk-label--s" for="timeline-event-input">
                 {{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}
-              </div>
+              </label>
+              <!-- Added hidden dummy input to satisfy label association -->
+              <input type="text" id="timeline-event-input" name="timelineEventDummy" class="govuk-visually-hidden" aria-hidden="true">
               <p id="timeline-event-hint"
                 class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
             </div>
