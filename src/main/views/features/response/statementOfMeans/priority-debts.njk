@@ -18,7 +18,7 @@
   {% set scheduleLabel = t('COMMON.CONDITIONAL_CHECKBOX.PRIORITY_DEBTS') %}
   {% set amountHint = t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT_HINT') %}
   {% set hint %}
-  <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
+  <p id="priority-debts-hint">{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
   <ul>
     <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
     <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
@@ -118,12 +118,12 @@
               ]
             }) }}
             <div class="govuk-form-group">
-              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+              <h2 class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
                 {{ t('PAGES.REGULAR_EXPENSES.TOTAL_MONTHLY_EXPENDITURE') }}: £
                 <span class="total-monthly-income-expense">
                   0
                 </span>
-              </p>
+              </h2>
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
