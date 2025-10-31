@@ -9,12 +9,14 @@ import nock from 'nock';
 import config from 'config';
 import {ResponseOptions} from 'form/models/responseDeadline';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {AppSession, UserDetails} from '../../../../../../main/common/models/AppRequest';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id: '1'};
+mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1234'}};
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const claim = new Claim();
 claim.applicant1 = {
@@ -39,7 +41,7 @@ describe('Extend ResponseDeadline Service', () => {
     it('should submit event when task is incomplete', async () => {
       //Given
       nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
+        .post('/cases/1/citizen/1234/event')
         .reply(200, {});
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
