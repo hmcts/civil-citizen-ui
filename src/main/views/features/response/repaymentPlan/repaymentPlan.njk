@@ -21,7 +21,7 @@
       {% set errors = form.getAllErrors() %}
       {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
       {% set totalAmount = form.model.totalClaimAmount %}
-      {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT1') + '<br><br>' + t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT2')%}
+      {% set totalAmountClaimedHintText = t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT1') + '<br><br>' + t('PAGES.REPAYMENT_PLAN.SUBTITLE_HINT_TEXT2') %}
       {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.LENGTH_HINT_TEXT') %}
       {% if admission %}
         {% set formattedAmountText = amount.toFixed(2) if amount else 0 %}
@@ -42,7 +42,7 @@
       <div class="govuk-grid-column-full">
         {% call govukFieldset({
           legend: {
-            html: title + '<p class="govuk-body-m">' + totalAmountClaimedText + '</p>' + '<p class="govuk-body-m">' + totalAmountClaimedHintText + '</p>',
+            html: title + '<p class="govuk-body-m">' + totalAmountClaimedText + '</p>' + '<p class="govuk-body-m" id="total-amount-hint">' + totalAmountClaimedHintText + '</p>',
             classes: "govuk-fieldset__legend--l",
             isPageHeading: true
           }
@@ -59,7 +59,8 @@
             classes: 'govuk-visually-hidden'
           },
           hint: {
-            text: t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + '£200'
+            text: t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + '£200',
+            attributes: { id: "paymentAmount-hint" }
           },
           classes: "repayment-instalments",
           id: "paymentAmount",
@@ -71,6 +72,7 @@
           },
           spellcheck: false,
           value: form.model.getPaymentAmountAsString(),
+          attributes: { 'aria-describedby': 'paymentAmount-hint' },
           errorMessage: {
             text:t(form.errorFor('paymentAmount'))
           } if form.hasFieldError('paymentAmount')
@@ -111,7 +113,7 @@
           <p class="govuk-body">
             <strong>{{ t('PAGES.REPAYMENT_PLAN.LENGTH') }}</strong>
           </p>
-          <div class="govuk-body repayment-length">
+          <div class="govuk-body repayment-length" aria-live="polite" aria-atomic="true">
             <span id="numberOfInstalments"></span>
             <div class="schedule">
               <span id="week_schedule">{{ t('COMMON.SCHEDULE.WEEK_LOWER_CASE') }}</span>
@@ -142,8 +144,10 @@
             }
           },
           hint: {
-            text: firstPaymentExample
+            text: firstPaymentExample,
+            attributes: { id: "firstRepaymentDate-hint" }
           },
+          attributes: { 'aria-describedby': 'firstRepaymentDate-hint' },
           errorMessage: {
             html: '<p class="govuk-error-message">' + t(form.errorFor('firstRepaymentDate'),{firstPaymentDate:firstPaymentDate}) + '</p>' +
             '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +

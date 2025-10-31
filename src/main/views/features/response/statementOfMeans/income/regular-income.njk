@@ -86,7 +86,8 @@
                 }
               },
               hint: {
-                text: t('PAGES.REGULAR_INCOME.SELECT_ALL_THAT_APPLY')
+                text: t('PAGES.REGULAR_INCOME.SELECT_ALL_THAT_APPLY'),
+                attributes: { id: "regular-income-hint" }
               },
               items: [
                 {
@@ -181,12 +182,12 @@
             }) }}
 
             <div class="govuk-form-group">
-              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+              <h2 class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
                 {{ t('PAGES.REGULAR_INCOME.TOTAL_MONTHLY') }} £
-                <span class="total-monthly-income-expense">
+                <span id="total-monthly-income" class="total-monthly-income-expense" aria-live="polite" aria-atomic="true">
                   0
                </span>
-              </p>
+              </h2>
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
                 type: "submit"

@@ -15,12 +15,16 @@
 
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" id="main-content" role="main">
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <fieldset class="govuk-fieldset" role="group" aria-labelledby="task-list-heading">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t('PAGES.TASK_LIST.HEADER') }}</h1>
+            <h1 id="task-list-heading" class="govuk-fieldset__heading govuk-!-margin-bottom-7">
+              {{ t('PAGES.TASK_LIST.HEADER') }}
+              </h1>
           </legend>
+          </fieldset>
         </div>
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
 
@@ -31,8 +35,8 @@
           </p>
 
           {% for taskList in taskLists %}
-            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-              <h2 class="app-task-list__section">
+            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}" role="group" aria-labelledby="section-{{loop.index}}">
+              <h2 id="section-{{loop.index}}" class="app-task-list__section">
                 <span class="app-task-list__section-number">
                   {{loop.index}} . </span>
                   {{ t(taskList.title) }}
@@ -47,7 +51,7 @@
                         {{ t(task.description) }}
                       {% endif %}
                     </span>
-                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
+                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}" aria-label="{{ t('PAGES.TASK_LIST.' + task.status) }}">
                       {{ t('PAGES.TASK_LIST.' + task.status) }}
                     </strong>
                   </li>

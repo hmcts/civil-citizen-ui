@@ -18,17 +18,17 @@
   {% set scheduleLabel = t('COMMON.CONDITIONAL_CHECKBOX.PRIORITY_DEBTS') %}
   {% set amountHint = t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT_HINT') %}
   {% set hint %}
-  <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
+  <p id="priority-debts-hint">{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
   <ul>
     <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
     <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
   </ul>
   {% endset -%}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" id="main-content">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-describedby="priority-debts-hint">
             {{ csrfProtection(csrf) }}
             {{ govukCheckboxes({
               idPrefix: "declared",
@@ -41,15 +41,17 @@
                 }
               },
               hint: {
-                html: hint
+                html: hint,
+                attributes: { id: "priority-debts-hint" }
               },
               items: [
                 {
                   name: "model[mortgage][declared]",
                   value: "mortgage",
                   text: t('COMMON.CHECKBOX_FIELDS.MORTGAGE'),
+                  attributes: { "aria-controls": "conditional-mortgage", "aria-expanded": form.model.mortgage.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[mortgage][transactionSource]', form.model.mortgage.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-mortgage">' + transactionDetails(t, amountHint, 'model[mortgage][transactionSource]', form.model.mortgage.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.mortgage.declared
                 },
@@ -57,8 +59,9 @@
                   name: "model[rent][declared]",
                   value: 'rent',
                   text: t('COMMON.CHECKBOX_FIELDS.RENT'),
+                  attributes: { "aria-controls": "conditional-rent", "aria-expanded": form.model.rent.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[rent][transactionSource]', form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-rent">' + transactionDetails(t, amountHint, 'model[rent][transactionSource]', form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.rent.declared
                 },
@@ -66,8 +69,9 @@
                   name: "model[councilTax][declared]",
                   value: 'councilTax',
                   text: t('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX_AND_COMMUNITY_CHARGE'),
+                  attributes: { "aria-controls": "conditional-councilTax", "aria-expanded": form.model.councilTax.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[councilTax][transactionSource]', form.model.councilTax.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-councilTax">' + transactionDetails(t, amountHint, 'model[councilTax][transactionSource]', form.model.councilTax.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.councilTax.declared
                 },
@@ -75,8 +79,9 @@
                   name: "model[gas][declared]",
                   value: "gas",
                   text: t('COMMON.CHECKBOX_FIELDS.GAS'),
+                  attributes: { "aria-controls": "conditional-gas", "aria-expanded": form.model.gas.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-gas">' + transactionDetails(t, amountHint, 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.gas.declared
                 },
@@ -84,8 +89,9 @@
                   name: "model[electricity][declared]",
                   value: "electricity",
                   text: t('COMMON.CHECKBOX_FIELDS.ELECTRICITY'),
+                  attributes: { "aria-controls": "conditional-electricity", "aria-expanded": form.model.electricity.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-electricity">' + transactionDetails(t, amountHint, 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.electricity.declared
                 },
@@ -93,8 +99,9 @@
                   name: "model[water][declared]",
                   value: "water",
                   text: t('COMMON.CHECKBOX_FIELDS.WATER'),
+                  attributes: { "aria-controls": "conditional-water", "aria-expanded": form.model.water.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-water">' + transactionDetails(t, amountHint, 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.water.declared
                 },
@@ -102,20 +109,21 @@
                   name: "model[maintenance][declared]",
                   value: "maintenance",
                   text: t('COMMON.CHECKBOX_FIELDS.MAINTENANCE'),
+                  attributes: { "aria-controls": "conditional-maintenance", "aria-expanded": form.model.maintenance.declared },
                   conditional: {
-                    html: transactionDetails(t, amountHint, 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form)
+                    html: '<div id="conditional-maintenance">' + transactionDetails(t, amountHint, 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) + '</div>'
                   },
                   checked: true if form.model.maintenance.declared
                 }
               ]
             }) }}
             <div class="govuk-form-group">
-              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+              <h2 class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
                 {{ t('PAGES.REGULAR_EXPENSES.TOTAL_MONTHLY_EXPENDITURE') }}: £
                 <span class="total-monthly-income-expense">
                   0
                 </span>
-              </p>
+              </h2>
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}

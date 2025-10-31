@@ -55,30 +55,26 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <p class="govuk-body-m">
-            {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_1') }}
-          </p>
+          <p class="govuk-body-m">{{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_1') }}</p>
         </div>
         <div class="govuk-grid-column-two-thirds">
-          <p class="govuk-body-m">
-            {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_2') }}
-          </p>
+          <p class="govuk-body-m">{{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_2') }}</p>
         </div>
         <div class="govuk-grid-column-two-thirds">
-          <p class="govuk-body-m">
-            {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_3') }}
-          </p>
+          <p class="govuk-body-m">{{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_3') }}</p>
         </div>
         <div class="govuk-grid-column-two-thirds">
-          <p class="govuk-body-m">
-            <div class="govuk-grid-row">
-              <div class="govuk-grid-column-two-thirds">
-                <h4 class="govuk-heading-m">{{ question }}</h4>
-              </div>
-             </div>
-          </p>
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <h2 class="govuk-heading-m">{{ question }}</h2>
+            </div>
+          </div>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+             <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">
+                 {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.QUESTION') }}
+                </legend>
             {{ govukRadios({
               idPrefix: id,
               name: name,
@@ -87,6 +83,7 @@
                 html: t(form.errorFor(name))
               } if form.hasFieldError(name)
             }) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
