@@ -1,3 +1,4 @@
+{% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
@@ -13,13 +14,13 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main" id="main-content">
+    <main class="govuk-main-wrapper" role="main">
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate {% if form.hasErrors() %}aria-describedby="error-summary" {% endif %}>
+          <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% call govukFieldset({
              legend: {
@@ -42,8 +43,7 @@
                   },
                   errorMessage: {
                     text: t(housingDetailsError)
-                  } if housingDetailsError,
-                  attributes: (housingDetailsError ? { 'aria-describedby': 'housingDetails-error' } : {})
+                  } if housingDetailsError
                 }) }}
               {% endset -%}
 
@@ -82,9 +82,8 @@
                 ],
                 errorMessage: {
                   text: t(typeError)
-                } if typeError,
-            attributes: (typeError ? { 'aria-describedby': 'residenceType-error' } : {})
-          }) }}
+                } if typeError
+              }) }}
             </div>
 
             <div class="govuk-form-group">
