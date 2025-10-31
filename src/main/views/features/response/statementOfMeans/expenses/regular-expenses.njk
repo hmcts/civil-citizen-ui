@@ -106,7 +106,7 @@
     <main class="govuk-main-wrapper" role="main" id="main-content">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate aria-describedby="regular-expenses-hint">
+          <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukCheckboxes({
               idPrefix: "declared",
@@ -238,12 +238,12 @@
               ]
             }) }}
             <div class="govuk-form-group">
-              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+              <h2 class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
                 {{ t('PAGES.REGULAR_EXPENSES.TOTAL_MONTHLY_EXPENDITURE') }}: £
                 <span class="total-monthly-income-expense">
                   0
                 </span>
-              </p>
+              </h2>
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
