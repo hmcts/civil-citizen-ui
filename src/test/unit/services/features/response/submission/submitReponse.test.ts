@@ -10,7 +10,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Party} from '../../../../../../main/common/models/party';
 import {CaseRole} from 'form/models/caseRoles';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {AppSession, UserDetails} from "../../../../../../main/common/models/AppRequest";
+import {AppSession, UserDetails} from '../../../../../../main/common/models/AppRequest';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
