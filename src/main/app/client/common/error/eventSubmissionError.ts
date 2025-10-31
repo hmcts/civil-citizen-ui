@@ -1,4 +1,4 @@
-import {AxiosResponse, HttpStatusCode} from 'axios';
+import {AxiosResponse} from 'axios';
 
 export class EventSubmissionError extends Error {
   constructor(
@@ -10,7 +10,7 @@ export class EventSubmissionError extends Error {
   }
 }
 export function assertHasData<T>(res: AxiosResponse<T | null | undefined>, meta?: { action?: string; event?: string }): asserts res is AxiosResponse<T> {
-  if (res.status !== HttpStatusCode.Ok || res.data == null) {
+  if (res.data == null) {
     throw new EventSubmissionError(`Empty response body ${meta?.action ? `during: ${meta.action}` : ''}`, {
       status: res.status,
       url: res.config?.url,
