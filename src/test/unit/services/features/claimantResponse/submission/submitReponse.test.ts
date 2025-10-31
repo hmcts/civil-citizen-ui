@@ -10,6 +10,7 @@ import {Party} from 'models/party';
 import {ClaimantResponse} from 'models/claimantResponse';
 import { CaseState } from 'common/form/models/claimDetails';
 import * as ccdTranslationForRequestJudement from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {AppSession, UserDetails} from '../../../../../../main/common/models/AppRequest';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/claimantResponse/ccdTranslation');
@@ -17,6 +18,7 @@ jest.mock('../../../../../../main/services/translation/claimantResponse/ccdReque
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id:'1'};
+mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1234'}};
 
 const citizenBaseUrl: string = config.get('services.civilService.url');
 describe('Submit claimant to ccd', ()=>{
@@ -39,7 +41,7 @@ describe('Submit claimant to ccd', ()=>{
   it('should submit claimant response successfully when there are no errors', async ()=> {
     //Given
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1234/event')
       .reply(200, {});
     mockGetCaseData.mockImplementation(async () => {
       return claim;
@@ -64,7 +66,7 @@ describe('Submit claimant to ccd', ()=>{
       return claim;
     });
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1234/event')
       .reply(500, {error:'error'});
     //Then
     await expect(submitClaimantResponse(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
@@ -72,7 +74,7 @@ describe('Submit claimant to ccd', ()=>{
   it('should submit claimant response successfully when there are no errors for claimant request by admission', async () => {
     //Given
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1234/event')
       .reply(200, {});
     mockGetCaseData.mockImplementation(async () => {
       claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
