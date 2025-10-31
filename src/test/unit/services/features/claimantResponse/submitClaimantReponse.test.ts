@@ -19,6 +19,7 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PartialAdmission} from 'models/partialAdmission';
 import {ResponseType} from 'form/models/responseType';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {AppSession, UserDetails} from "../../../../../main/common/models/AppRequest";
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation');
@@ -27,6 +28,7 @@ jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id: '1'};
+mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1235'}};
 
 const citizenBaseUrl: string = config.get('services.civilService.url');
 
@@ -39,7 +41,7 @@ describe('Submit claimant response to ccd', () => {
   it('should submit claimant response successfully when there are no errors', async () => {
     //Given
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1235/event')
       .reply(200, {});
     mockGetCaseData.mockImplementation(async () => {
       return claim;
@@ -68,7 +70,7 @@ describe('Submit claimant response to ccd', () => {
       return claim;
     });
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1235/event')
       .reply(500, {error: 'error'});
     //Then
     await expect(submitClaimantResponse(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
@@ -84,7 +86,7 @@ describe('Submit claimant response to ccd', () => {
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
+        .post('/cases/1/citizen/1235/event')
         .reply(200, {});
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -108,7 +110,7 @@ describe('Submit claimant response to ccd', () => {
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
+        .post('/cases/1/citizen/1235/event')
         .reply(200, {});
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -133,7 +135,7 @@ describe('Submit claimant response to ccd', () => {
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
+        .post('/cases/1/citizen/1235/event')
         .reply(200, {});
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -158,8 +160,9 @@ describe('Submit claimant response to ccd', () => {
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
       nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
+        .post('/cases/1/citizen/1235/event')
         .reply(200, {});
+      mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1235'}};
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
