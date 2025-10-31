@@ -8,7 +8,7 @@ export class CSRFToken {
       if (req.path.startsWith('/eligibility') || req.path.startsWith('/first-contact') || isTestingSupportDraftUrl(req.originalUrl)) {
         return next();
       }
-      return csurf()(req, res, next);
+      return csurf()(req as any, res as any, next);
     });
     app.use((req, res, next) => {
       if (!(req.path.startsWith('/eligibility') || req.path.startsWith('/first-contact')) && !isTestingSupportDraftUrl(req.originalUrl)) {
