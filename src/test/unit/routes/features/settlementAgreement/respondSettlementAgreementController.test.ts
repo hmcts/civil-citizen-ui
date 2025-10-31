@@ -26,7 +26,7 @@ import { ClaimantResponse } from 'common/models/claimantResponse';
 import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {PartyType} from 'models/partyType';
-import {AppSession, UserDetails} from "models/AppRequest";
+import {AppSession, UserDetails} from 'models/AppRequest';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
