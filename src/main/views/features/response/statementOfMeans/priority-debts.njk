@@ -25,7 +25,7 @@
   </ul>
   {% endset -%}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" id="main-content">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate aria-describedby="priority-debts-hint">
@@ -41,7 +41,8 @@
                 }
               },
               hint: {
-                html: hint
+                html: hint,
+                attributes: { id: "priority-debts-hint" }
               },
               items: [
                 {

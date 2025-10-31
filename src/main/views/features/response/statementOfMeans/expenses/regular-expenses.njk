@@ -103,7 +103,7 @@
   </div>
   {% endset -%}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" id="main-content">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate aria-describedby="regular-expenses-hint">
@@ -119,7 +119,8 @@
                 }
               },
               hint: {
-                text: t('PAGES.REGULAR_EXPENSES.INFORMATION_NOTE')
+                text: t('PAGES.REGULAR_EXPENSES.INFORMATION_NOTE'),
+                attributes: { id: "regular-expenses-hint" }
               },
               items: [
                 {

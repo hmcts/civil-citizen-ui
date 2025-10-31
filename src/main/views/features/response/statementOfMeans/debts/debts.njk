@@ -19,7 +19,7 @@
       }) }}
 {% endif %}
 {% set formErrors = form.getAllErrors() %}
-<div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}">
+<div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}" role="group" aria-labelledby="debts-label">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
       <label id="debts-label" class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
@@ -59,7 +59,8 @@
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-select--error" if form.errorFor(debt) else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-select--error" if form.errorFor(debt) else "govuk-grid-column-full",
+              attributes: (form.errorFor(debt) ? { 'aria-describedby': debt + '-error' } : {})
             }) }}
         </div>
         <div class="govuk-grid-column-one-quarter">
@@ -76,7 +77,8 @@
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full",
+              attributes: (form.errorFor(totalOwned) ? { 'aria-describedby': totalOwned + '-error' } : {})
             }) }}
         </div>
         <div class="govuk-grid-column-one-quarter">
@@ -93,7 +95,8 @@
                 classes: 'govuk-visually-hidden'
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full",
+              attributes: (form.errorFor(monthlyPayments) ? { 'aria-describedby': monthlyPayments + '-error' } : {})
             }) }}
         </div>
       </div>
@@ -104,14 +107,15 @@
   <div class="govuk-grid-column-two-thirds">
     {{ govukButton({
           text: t('PAGES.DEBTS.ADD'),
-          classes: "govuk-button--secondary append-row"
+          classes: "govuk-button--secondary append-row",
+          attributes: { 'aria-label': t('PAGES.DEBTS.ADD') }
         }) }}
   </div>
 </div>
 {% endset %}
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" id="main-content">
       {% set title = t('PAGES.DEBTS.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() %}
@@ -119,12 +123,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-describedby="debts-label">
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t,'debtsRadio','option',title, form,'',{yesHtml:yesHtml}) }}
               <div class="govuk-form-group">
                 {{ govukButton({
-                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                  attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
                 }) }}
                 {{ contactUsForHelp(t) }}
               </div>
