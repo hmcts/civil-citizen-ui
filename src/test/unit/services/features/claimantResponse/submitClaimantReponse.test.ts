@@ -19,7 +19,7 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PartialAdmission} from 'models/partialAdmission';
 import {ResponseType} from 'form/models/responseType';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
-import {AppSession, UserDetails} from "../../../../../main/common/models/AppRequest";
+import {AppSession, UserDetails} from '../../../../../main/common/models/AppRequest';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation');
