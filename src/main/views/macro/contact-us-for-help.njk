@@ -11,6 +11,11 @@
     {% set hrefTarget= "_self" %}
   {% endif %}
 
+  {# Add visually hidden h2 for screen readers to fix skipped heading level #}
+  {% if name == t('COMMON.EMAIL') or name == t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') or name == t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE_CARM') %}
+    <h2 class="govuk-visually-hidden">{{ t('COMMON.CONTACT_US_FOR_HELP.TITLE') }}</h2>
+  {% endif %}
+
   <h3 class="govuk-heading-m">{{ name }}</h3>
   {% if phoneNumber %}
     {{ phoneNumber }}
@@ -19,15 +24,23 @@
     <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
-    <a class="govuk-link" target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
-    {% endif %}{{ hrefContent }}</a></p>
+    <p>
+      <a class="govuk-link" target="{{ hrefTarget }}" href="{{ href }}" rel="noopener noreferrer">
+        {% if hrefContact and hrefContact != '' %}
+          {{ hrefContact }}
+        {% endif %}
+        {{ hrefContent }}
+      </a>
+    </p>
   {% endif %}
 {% endmacro %}
 
 {% macro _widgetRedesign(disclosureStatement, sendMessageTitle, sendMessageLink, sendMessageContent, telephone) %}
   <p class="govuk-body">{{ disclosureStatement }}</p>
+  {# Add visually hidden h2 to maintain heading hierarchy for Send a message #}
+  <h2 class="govuk-visually-hidden">{{ t('COMMON.CONTACT_US_FOR_HELP.TITLE') }}</h2>
   <h3 class="govuk-heading-m">{{ sendMessageTitle }}</h3>
-  <div class="govuk-!-margin-bottom-2"><a class="govuk-link" href={{qmStartUrl}}>{{ sendMessageLink }}</a></div>
+  <div class="govuk-!-margin-bottom-2"><a class="govuk-link" href="{{ qmStartUrl }}">{{ sendMessageLink }}</a></div>
   <p class="govuk-body">{{ sendMessageContent }}</p>
   {{ telephone }}
 {% endmacro %}
@@ -76,7 +89,7 @@
     <div class="govuk-details">
       {% if isQMFlagEnabled === true %}
           <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
-            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+            <a class="govuk-link" href="{{ qmContactLink }}" rel="noopener noreferrer">
               {{ t('COMMON.QM_INFORMATION_LINK') }}
             </a>.
           </p>
