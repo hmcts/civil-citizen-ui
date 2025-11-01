@@ -4,7 +4,6 @@ import {AppRequest} from 'models/AppRequest';
 import { CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCaseProgressionV1Enable,
   isDashboardEnabledForCase,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
@@ -133,7 +132,6 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
 
 async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): Promise<TabItem[]>
 {
-  const caseProgressionEnabled = await isCaseProgressionV1Enable();
   const bundleAvailable = claim.isBundleStitched();
   const tabItems = [] as TabItem[];
 
@@ -149,7 +147,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
   let evidenceUploadTabId: TabId;
   let evidenceUploadContent: ClaimSummaryContent[];
 
-  if(caseProgressionEnabled && claim.hasSdoOrderDocument()) {
+  if(claim.hasSdoOrderDocument()) {
     latestUpdateContent = getCaseProgressionLatestUpdates(claim, lang);
 
     latestUpdateTabLabel = TabLabel.UPDATES;
@@ -166,11 +164,11 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
   tabItems.push(new TabItem(latestUpdateTabLabel, latestUpdateTabId, latestUpdateContent));
   tabItems.push(new TabItem(noticesTabLabel, noticesTabId, noticesContent));
 
-  if (caseProgressionEnabled && claim.hasSdoOrderDocument()) {
+  if (claim.hasSdoOrderDocument()) {
     tabItems.push(new TabItem(evidenceUploadTabLabel, evidenceUploadTabId, evidenceUploadContent));
   }
 
-  if(caseProgressionEnabled && bundleAvailable) {
+  if(bundleAvailable) {
     const bundleTabLabel = TabLabel.BUNDLES;
     const bundleTabId = TabId.BUNDLES;
     const bundleTabContent = getBundlesContent(claimId, claim, lang);
