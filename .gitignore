@@ -54,3 +54,4 @@ package-lock.json
 **/.terraform.lock.hcl
 **/override.tf
 .env.local
+allure-results/*
