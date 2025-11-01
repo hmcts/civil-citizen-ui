@@ -22,9 +22,14 @@
           <h1 class="govuk-heading-l">{{t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.TITLE')}}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.TITLE') }}
+              </legend>
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+            </fieldset>
             <div class="govuk-form-group">
-              {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
+              {{ addButton(t, 'SAVE_AND_CONTINUE_CARM', '', {'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE')}) }}
               {{ contactUsForHelp(t) }}
             </div>
           </form>

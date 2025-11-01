@@ -21,17 +21,23 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.TITLE') }}</h1>
           <p class="govuk-body-s">
-            <a id="govuk-gov-list" target="_blank" class="govuk-link"
+            <a id="govuk-gov-list" target="_blank" rel="noopener noreferrer" class="govuk-link"
                href='https://www.gov.uk/government/publications/serve-the-treasury-solicitor-with-legal-proceedings'>
               {{ t('PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.LIST_OF_GOVERNMENT') }}
             </a>
           </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+             <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">
+                 {{ t('PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.TITLE') }}
+                </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', classes: 'govuk-radios--inline'}) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

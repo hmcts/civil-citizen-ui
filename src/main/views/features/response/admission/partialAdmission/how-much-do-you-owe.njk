@@ -24,6 +24,10 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+             <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">
+                 {{ t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.TITLE') }}
+                </legend>
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
@@ -50,9 +54,11 @@
                 text: t(form.errorFor('amount'))
               } if form.hasFieldError('amount')
             }) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
           </form>

@@ -12,7 +12,7 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" aria-labelledby="why-disagree-heading">
       {% set header = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE') %}
       {% set subTitle = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.SUBTITLE', { claimAmount: claimAmount.toFixed(2) }) %}
       {% set errors = form.getAllErrors()%}
@@ -21,16 +21,21 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ header }}</h1>
+          <h1 id="why-disagree-heading" class="govuk-heading-l govuk-!-margin-bottom-1">{{ header }}</h1>
           <form novalidate method="post">
            {{ csrfProtection(csrf) }}
             <p class="govuk-body">{{ subTitle }}</p>
             {{ govukTextarea({
               name: "text",
               id: "text",
-              attributes: {
-                'aria-label' : 'why do you disagree explanation'
+              label: {
+                text: t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE'),
+                classes: "govuk-visually-hidden"
               },
+              attributes: {
+                'aria-labelledby': 'why-disagree-heading',
+                'aria-label': t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE')
+               },
               value: form.model.text,
               errorMessage: {
                 text: t(form.errorFor('text'))
@@ -38,7 +43,8 @@
             }) }}
             <div class="govuk-form-group">
             {{ govukButton({
-              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+              attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
             }) }}
             {{ contactUsForHelp(t) }}
             </div>

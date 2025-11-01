@@ -109,13 +109,15 @@
           {{ govukButton({
             text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
             classes: "govuk-button--secondary remove-row govuk-visually-hidden",
-            type: "button"
+            type: "button",
+            attributes: { "aria-label": t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT') }
           }) }}
         {% else %}
           {{ govukButton({
             text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
             classes: "govuk-button--secondary remove-row",
-            type: "button"
+            type: "button",
+            attributes: { "aria-label": t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT') }
           }) }}
         {% endif %}
       {% endif %}
