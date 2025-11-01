@@ -119,6 +119,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
+    "allure-codeceptjs": "^3.4.2",
     "babel-loader": "^9.1.0",
     "codeceptjs": "^3.3.7",
     "copy-webpack-plugin": "^11.0.0",

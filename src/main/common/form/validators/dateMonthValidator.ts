@@ -1,6 +1,6 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import validator from 'validator';
-import isInt = validator.isInt;
+const isInt = validator.isInt;
 import {toNumber} from 'lodash';
 
 /**
