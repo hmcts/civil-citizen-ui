@@ -1,11 +1,20 @@
-import {getClaimBusinessProcess} from 'modules/utilityService';
+import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import {BusinessProcess} from 'models/businessProcess';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
+import {Party} from 'models/party';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
-jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
-  generateRedisKey:jest.fn,
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+  saveDraftClaim: jest.fn(),
+}));
+
+jest.mock('modules/cookie/caseReferenceCookie', () => ({
+  syncCaseReferenceCookie: jest.fn(),
 }));
 
 describe('Utility service', () => {
@@ -45,6 +54,69 @@ describe('Utility service', () => {
         //Then
         expect(error.message).toEqual('Case not found...');
       }
+    });
+  });
+
+  describe('getClaimById', () => {
+    const getCaseDataFromStoreMock = getCaseDataFromStore as jest.Mock;
+    const syncCaseReferenceCookieMock = syncCaseReferenceCookie as jest.Mock;
+
+    const createSession = (overrides: Partial<AppSession> = {}): AppSession => ({
+      user: {
+        accessToken: '',
+        id: 'user-123',
+        email: '',
+        givenName: '',
+        familyName: '',
+        roles: [],
+      },
+      lang: undefined,
+      previousUrl: '',
+      claimId: '',
+      taskLists: [],
+      assignClaimURL: '',
+      claimIssueTasklist: false,
+      firstContact: {},
+      fileUpload: '',
+      issuedAt: 0,
+      dashboard: {taskIdHearingUploadDocuments: ''},
+      qmShareConfirmed: false,
+      ...overrides,
+    }) as AppSession;
+
+    const createRequest = (sessionOverrides: Partial<AppSession> = {}): AppRequest => ({
+      session: createSession(sessionOverrides),
+    } as unknown as AppRequest);
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('stores case reference on the session and syncs cookie when claim has an id', async () => {
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.id = '1645882162449409';
+      getCaseDataFromStoreMock.mockResolvedValueOnce(claim);
+      const request = createRequest({caseReference: 'existing'});
+
+      const result = await getClaimById('1645882162449409', request);
+
+      expect(result).toBe(claim);
+      expect(request.session.caseReference).toBe('1645882162449409');
+      expect(syncCaseReferenceCookieMock).toHaveBeenCalledWith(request);
+    });
+
+    it('clears case reference from the session and syncs cookie when claim has no id', async () => {
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      getCaseDataFromStoreMock.mockResolvedValueOnce(claim);
+      const request = createRequest({caseReference: 'existing-reference'});
+
+      const result = await getClaimById('draft-claim-id', request);
+
+      expect(result).toBe(claim);
+      expect(request.session.caseReference).toBeUndefined();
+      expect(syncCaseReferenceCookieMock).toHaveBeenCalledWith(request);
     });
   });
 });

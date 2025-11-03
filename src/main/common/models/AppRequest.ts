@@ -33,6 +33,7 @@ export interface AppSession extends Session {
   dashboard: Dashboard;
   history?: string[];
   qmShareConfirmed: boolean;
+  caseReference?: string;
 }
 
 export interface UserDetails {
