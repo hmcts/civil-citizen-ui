@@ -33,15 +33,13 @@
                 id: "text",
                 label: {
                   text: t('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE'),
-                  classes: "govuk-label--l govuk-visually-hidden",
-                  isPageHeading: true
-                },
-                value: form.model.text,
-                classes:"govuk-!-width-three-quarters",
-                label: {
-                  text: t("PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE"),
                   classes: "govuk-visually-hidden"
                 },
+                attributes: {
+                  'aria-label': title
+                },
+                value: form.model.text,
+                classes: "govuk-!-width-three-quarters",
                 errorMessage: {
                   text: t(form.errorFor('text'))
                 } if form.hasFieldError('text')

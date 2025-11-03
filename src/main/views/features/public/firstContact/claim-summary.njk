@@ -17,48 +17,60 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.HEADER') }}</h1>
+
+          <h1 class="govuk-heading-l">
+            {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.HEADER') }}
+          </h1>
+
           {% if claim.helpWithFeesNumber %}
+            <h2 class="govuk-heading-s">
+              {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.CLAIM_NUMBER') }}
+            </h2>
             <p class="govuk-body">
-              <span class="govuk-!-font-weight-bold">
-                {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.CLAIM_NUMBER') }}
-              </span>
-              <span>
-                {% set dash = joiner("-") %}
-                {% for batch in claim.ccdCaseId | string | batch(4) -%}
-                  {{ dash() }}
-                  {% for items in batch -%}
-                    {{ items }}
-                  {%- endfor %}
+              {% set dash = joiner("-") %}
+              {% for batch in claim.ccdCaseId | string | batch(4) -%}
+                {{ dash() }}
+                {% for items in batch -%}
+                  {{ items }}
                 {%- endfor %}
-              </span>
+              {%- endfor %}
             </p>
           {% else %}
-            <p class="govuk-body">
-              <span class="govuk-!-font-weight-bold">
-                {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.CLAIM_NUMBER') }}:
-              </span>
-              {{ claim.legacyCaseReference }}</p>
+            <h2 class="govuk-heading-s">
+              {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.CLAIM_NUMBER') }}
+            </h2>
+            <p class="govuk-body">{{ claim.legacyCaseReference }}</p>
           {% endif %}
+
+          <h2 class="govuk-heading-s">
+            {{ t('COMMON.CLAIM_AMOUNT') }}
+          </h2>
           <p class="govuk-body">
-            <span class="govuk-!-font-weight-bold">
-              {{ t('COMMON.CLAIM_AMOUNT') }}:
-            </span>
             {{ totalAmount | currencyFormat(totalAmount) }}
           </p>
           {{ govukDetails({
             summaryText: t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.VIEW_AMOUNT_BREAKDOWN'),
             html: amountBreakdownTable(t, claim, interestData, totalAmount, fixedCost)
           }) }}
-          <h2 class="govuk-heading-s">{{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.REASON_FOR_CLAIM') }}</h2>
+
+          <h2 class="govuk-heading-s">
+            {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.REASON_FOR_CLAIM') }}
+          </h2>
           <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>
           {% if timelineRows and timelineRows.length %}
             {{ timelineSummary(t, timelineRows) }}
           {% elseif timelinePdfUrl %}
             <div class="govuk-body">
-              <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
-              <a id="timeline-link" href={{ timelinePdfUrl }} target="_blank" rel="noreferrer noopener"
-                 class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+              <h2 class="govuk-heading-s">
+                {{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}
+              </h2>
+              <a id="timeline-link"
+                 href={{ timelinePdfUrl }}
+                 target="_blank"
+                 rel="noreferrer noopener"
+                 class="govuk-link">
+                {{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}
+              </a>
             </div>
           {% endif %}
           {% if evidenceRows and evidenceRows.length %}
@@ -71,11 +83,15 @@
           {{ govukDetails({
             summaryText: t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION_USAGE'),
             html: '<p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.THIS_CLAIM_INFORMATION', {claimant: claim.getClaimantFullName()})
-            + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT') + '<a class="govuk-link" href="' + urls.PRIVACY_POLICY_URL +'">'
+            + '</p><p class="govuk-body">' + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.FIND_OUT')
+              + '<a class="govuk-link" href="' + urls.PRIVACY_POLICY_URL + '">'
             + t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PERSONAL_INFORMATION') + '</a></p>'
           }) }}
-          <p class="govuk-body">{{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.WE_HAVE_SENT') }}</a></p>
-          <br>
+
+          <p class="govuk-body">
+            {{ t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.WE_HAVE_SENT') }}
+          </p>
+
           {{ contactUsForHelp(t) }}
         </div>
       </div>

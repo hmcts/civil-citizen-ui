@@ -45,8 +45,8 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-           <fieldset class="govuk-fieldset" role="group" aria-describedby="hint">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l" id="page-heading">
+            <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
             </legend>
             {% if carmEnabled %}

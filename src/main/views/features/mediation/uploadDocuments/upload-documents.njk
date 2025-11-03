@@ -34,11 +34,14 @@
           <h2 class="govuk-heading-s">{{ t(subtitle) }}</h2>
           <p class="govuk-body-m">{{ t(paragraph) }}</p>
           <h1 class="govuk-heading-l">{{ t(sectionTitle) }}</h1>
+         <h2 class="govuk-visually-hidden" id="your-statement-heading">
+          {{ t('PAGES.UPLOAD_DOCUMENTS.STATEMENT') }}
+         </h2>
 
             {% if yourStatementContent.length > 0 %}
 
             {% for yourStatementSection in yourStatementContent %}
-            <div class="row-container">
+            <div class="row-container" role="group" aria-labelledby="your-statement-heading">
               <div data-module="moj-add-another">
                 {% for section in yourStatementSection %}
 
@@ -50,7 +53,8 @@
                   classes: 'moj-add-another__item',
                   legend: {
                   classes: 'moj-add-another__title',
-                  isPageHeading: false
+                  isPageHeading: false,
+                  text: section.heading or ''
                 }
                 }) %}
                   {{ claimSummaryContent({ contentSections: section.contentSections }, t) }}
@@ -71,9 +75,10 @@
             </div>
             {% endfor %}
             {% endif %}
+         <h2 class="govuk-visually-hidden" id="documents-referred-heading">Documents referred section</h2>
           {% if documentsReferredContent.length > 0 %}
           {% for documentsReferredSection in documentsReferredContent %}
-          <div class="row-container">
+          <div class="row-container" role="group" aria-labelledby="documents-referred-heading">
             <div data-module="moj-add-another">
 
               {% for section in documentsReferredSection %}
@@ -86,7 +91,8 @@
                 classes: 'moj-add-another__item',
                 legend: {
                 classes: 'moj-add-another__title',
-                isPageHeading: false
+                isPageHeading: false,
+                text: section.heading or ''
               }
               }) %}
                 {{ claimSummaryContent({contentSections: section.contentSections }, t) }}

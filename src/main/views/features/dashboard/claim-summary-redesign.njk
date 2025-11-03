@@ -10,7 +10,7 @@
 
 {% block nestedContent %}
         {% block warning_message %}
-          {{ addBanner("2025-09-11T07:00+01:00", "2025-09-16T04:00+01:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
+          {{ addBanner("2025-10-31T07:00+01:00", "2025-11-07T04:00+01:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
         {% endblock %}
         {% block welsh_party_message %}
           {% include "../../macro/welsh_party_banner.njk" %}
@@ -51,10 +51,10 @@
          </div>
           {% for taskList in dashboardTaskList.items %}
             <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-              <h2 class="app-task-list__section">
+              <h2 class="app-task-list__section" id="tasklist-heading-{{ loop.index }}">
                  {% if lang=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
               </h2>
-              <ol class="app-task-list app-task-list__items">
+             <ol class="app-task-list app-task-list__items" role="group" aria-labelledby="tasklist-heading-{{ loop.index }}">
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
                     <div class="row">
