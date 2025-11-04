@@ -1,13 +1,6 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% import "external-urls.njk" as externalURLs %}
 
-<style>
-  /* Fix accessibility scanner false positive: prevent underline on summary text */
-  .contact-us-details .govuk-details__summary-text {
-    text-decoration: none;
-  }
-</style>
-
 {# Set some default values #}
 
 {% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber, linkTarget) %}
@@ -107,21 +100,17 @@
     </div>
   {% else %}
     {% if isQMFlagEnabled %}
-    <div class="contact-us-details">
       {{ govukDetails({
-        summaryText: ContactUs,
+        summaryHtml: '<span class="govuk-details__summary-text" style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
         html: qmContent,
         id: contactUsForHelpComponentId
       }) }}
-     </div>
       {% else %}
-    <div class="contact-us-details">
     {{ govukDetails({
-      summaryText: ContactUs,
+      summaryHtml: '<span class="govuk-details__summary-text" style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
       html: content,
       id: contactUsForHelpComponentId
     }) }}
-    </div>
       {% endif %}
   {% endif %}
 {% endmacro %}
