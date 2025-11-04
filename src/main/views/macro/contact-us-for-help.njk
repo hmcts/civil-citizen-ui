@@ -16,16 +16,20 @@
     <h2 class="govuk-visually-hidden">{{ t('COMMON.CONTACT_US_FOR_HELP.TITLE') }}</h2>
   {% endif %}
 
-  <h3 class="govuk-heading-m">{{ name }}</h3>
+  <h3 class="govuk-heading-m">{{ name | striptags }}</h3>
   {% if phoneNumber %}
     {{ phoneNumber }}
   {% endif %}
   {% if spanContent %}
-    <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
+    <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent | striptags }}</span></p>
   {% endif %}
   {% if href %}
     <p>
-      <a class="govuk-link" target="{{ hrefTarget }}" href="{{ href }}" rel="noopener noreferrer">
+      <a class="govuk-link"
+         target="{{ hrefTarget }}"
+         href="{{ href }}"
+         rel="noopener noreferrer"
+         aria-label="{{ hrefContent if hrefContent else hrefContact }}">
         {% if hrefContact and hrefContact != '' %}
           {{ hrefContact }}
         {% endif %}
@@ -36,17 +40,21 @@
 {% endmacro %}
 
 {% macro _widgetRedesign(disclosureStatement, sendMessageTitle, sendMessageLink, sendMessageContent, telephone) %}
-  <p class="govuk-body">{{ disclosureStatement }}</p>
+  <p class="govuk-body">{{ disclosureStatement | striptags }}</p>
   {# Add visually hidden h2 to maintain heading hierarchy for Send a message #}
   <h2 class="govuk-visually-hidden">{{ t('COMMON.CONTACT_US_FOR_HELP.TITLE') }}</h2>
-  <h3 class="govuk-heading-m">{{ sendMessageTitle }}</h3>
-  <div class="govuk-!-margin-bottom-2"><a class="govuk-link" href="{{ qmStartUrl }}">{{ sendMessageLink }}</a></div>
-  <p class="govuk-body">{{ sendMessageContent }}</p>
+  <h3 class="govuk-heading-m">{{ sendMessageTitle | striptags }}</h3>
+  <div class="govuk-!-margin-bottom-2">
+    <a class="govuk-link"
+       href="{{ qmStartUrl }}"
+       aria-label="{{ sendMessageLink }}">{{ sendMessageLink }}</a>
+  </div>
+  <p class="govuk-body">{{ sendMessageContent | striptags }}</p>
   {{ telephone }}
 {% endmacro %}
 
 {% macro contactUsForHelp(t, widget, open, isCarm=False) %}
-  {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
+  {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') | striptags %}
   {% set Email = t('COMMON.EMAIL') %}
   {% if isCarm %}
     {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE_CARM') %}
