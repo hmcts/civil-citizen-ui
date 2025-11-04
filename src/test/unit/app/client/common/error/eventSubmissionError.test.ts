@@ -1,4 +1,8 @@
-import {assertHasData, EventSubmissionError} from '../../../../../../main/app/client/common/error/eventSubmissionError';
+import {
+  assertHasData,
+  assertNonEmpty,
+  EventSubmissionError
+} from '../../../../../../main/app/client/common/error/eventSubmissionError';
 import {AxiosResponse} from 'axios';
 
 describe('assertHasData', () => {
@@ -113,5 +117,28 @@ describe('EventSubmissionError', () => {
     expect(error.meta?.status).toBe(500);
     expect(error.meta?.url).toBeUndefined();
     expect(error.meta?.event).toBeUndefined();
+  });
+});
+
+describe('assertNonEmpty', () => {
+  it('returns the same string when value is non-empty', () => {
+    expect(assertNonEmpty('hello')).toBe('hello');
+  });
+
+  it.each([undefined, null, ''])('throws with default message when value is %p', (input) => {
+    expect(() => assertNonEmpty(input as unknown as string)).toThrow('Value is is undefined');
+  });
+
+  it('throws with a custom error message', () => {
+    const custom = 'Custom error';
+    expect(() => assertNonEmpty('', custom)).toThrow(custom);
+  });
+
+  it('treats whitespace-only strings as non-empty', () => {
+    expect(assertNonEmpty('  ')).toBe('  ');
+  });
+
+  it('treats "0" as a non-empty string', () => {
+    expect(assertNonEmpty('0')).toBe('0');
   });
 });
