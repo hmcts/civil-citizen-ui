@@ -35,6 +35,7 @@ const config = {
         'citizen-ui-session.sig',
         'eligibility',
         'firstContact',
+        'caseReference',
         'lang',
         'newDeadlineDate',
       ],
