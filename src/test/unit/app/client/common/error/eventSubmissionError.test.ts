@@ -1,7 +1,7 @@
 import {
   assertHasData,
   assertNonEmpty,
-  EventSubmissionError
+  EventSubmissionError,
 } from '../../../../../../main/app/client/common/error/eventSubmissionError';
 import {AxiosResponse} from 'axios';
 
