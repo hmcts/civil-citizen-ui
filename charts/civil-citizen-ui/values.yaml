@@ -7,9 +7,6 @@ idam-pr:
 xui-webapp:
   enabled: false
 
-camunda-bpm:
-  enabled: false
-
 civil-service:
   enabled: false
 

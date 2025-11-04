@@ -27,10 +27,6 @@ dependencies:
     version: 2.3.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: idam-pr.enabled
-  - name: camunda-bpm
-    version: 0.0.48
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: camunda-bpm.enabled
   - name: servicebus
     version: 1.1.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
@@ -44,19 +40,10 @@ dependencies:
     version: 1.0.6
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: civil-wa.enabled
-  # CCD message publisher
-  - name: ccd-message-publisher
-    version: ~0.1.22
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-wa.enabled
   - name: aac-manage-case-assignment
     version: ~0.2.19
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: aac-manage-case-assignment.enabled
-  - name: postgresql
-    version: 1.0.2
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: postgresql.enabled
 
   - name: ccd-case-document-am-api
     version: 1.7.17
