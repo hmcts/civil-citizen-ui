@@ -397,7 +397,7 @@ export class CivilServiceClient {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-      assertHasData(response, { action: 'submit event', event: String((event as any)?.type ?? '<event-name>') });
+      assertHasData(response, { action: 'submit event', event });
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (e: unknown) {
