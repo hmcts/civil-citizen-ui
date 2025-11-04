@@ -15,10 +15,6 @@ dependencies:
     version: ~0.0.92
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: civil-service.enabled
-  - name: ccd
-    version: 9.2.2
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: ccd.enabled
   - name: xui-webapp
     version: ~1.0.31
     repository: 'oci://hmctspublic.azurecr.io/helm'

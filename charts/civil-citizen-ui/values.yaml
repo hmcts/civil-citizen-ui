@@ -1,6 +1,3 @@
-ccd:
-  enabled: false
-
 idam-pr:
   enabled: false
 
