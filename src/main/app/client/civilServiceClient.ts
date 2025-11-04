@@ -64,7 +64,7 @@ import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetail
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-import {assertHasData} from 'client/common/error/eventSubmissionError';
+import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -391,15 +391,8 @@ export class CivilServiceClient {
       event: event,
       caseDataUpdate: updatedClaim,
     };
-
-    if ( userId === undefined || userId === null || userId.length === 0) {
-      throw new Error('User id is undefined for event ' + event);
-    }
-
-    if ( claimId === undefined || claimId === null || claimId.length === 0) {
-      throw new Error('Claim id is undefined for event ' + event);
-    }
-
+    assertNonEmpty(userId, 'User id is undefined');
+    assertNonEmpty(claimId, 'Claim id is undefined');
     try {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)

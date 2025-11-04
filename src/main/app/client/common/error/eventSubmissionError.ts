@@ -18,3 +18,11 @@ export function assertHasData<T>(res: AxiosResponse<T | null | undefined>, meta?
     });
   }
 }
+
+export const assertNonEmpty = (value?: string | null, errorMessage = 'Value is is undefined'): string => {
+  if (!value) {
+    throw new Error(`${errorMessage}`);
+  }
+  return value;
+};
+
