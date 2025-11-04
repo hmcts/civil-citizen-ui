@@ -111,7 +111,7 @@
     "@babel/core": "^7.26.0",
     "@babel/eslint-parser": "^7.26.5",
     "@babel/preset-env": "^7.26.0",
-    "@pact-foundation/pact": "^15.0.1",
+    "@pact-foundation/pact": "^16.0.0",
     "@pact-foundation/pact-node": "^10.18.0",
     "@playwright/test": "^1.47.2",
     "@types/git-rev-sync": "^2.0.2",
