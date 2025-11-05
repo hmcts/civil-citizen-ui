@@ -30,7 +30,7 @@
             </fieldset>
             <div class="govuk-form-group">
               {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
-              <div class="no-underline">
+              <div class="govuk-link govuk-link--no-underline">
                 {{ contactUsForHelp(t) }}
               </div>
             </div>
@@ -39,16 +39,4 @@
       </div>
     </main>
   </div>
-{% endblock %}
-
-{% block styles %}
-  <style>
-    .no-underline a {
-      text-decoration: none !important;
-    }
-    .no-underline a:focus,
-    .no-underline a:hover {
-      text-decoration: underline; /* keep accessibility feedback */
-    }
-  </style>
 {% endblock %}
