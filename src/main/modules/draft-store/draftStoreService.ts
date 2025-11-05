@@ -9,6 +9,7 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
+import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -26,7 +27,7 @@ export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror =
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
-const convertRedisDataToCivilClaimResponse = (data: string) => {
+const convertRedisDataToCivilClaimResponse = (data: string): CivilClaimResponse => {
   let jsonData = undefined;
   if (data) {
     try {
@@ -49,19 +50,20 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
 };
 
 /**
- * Saves claim in Draft store. If the claim does not exist
- * it creates a new CivilClaimResponse object and passes the claim in parameter to it
+ * Saves claim in Draft store. If the claim does not exist,
+ * it creates a new CivilClaimResponse object and passes the claim in parameter to it,
  * then saves the new data in redis.
- * If claim exists then it updates the claim with the new claim passed in parameter
+ * If a claim exists, then it updates the claim with the new claim passed in parameter
  * @param claimId
  * @param claim
+ * @param doNotThrowError
  */
 export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  storedClaimResponse.case_data = claim;
+  storedClaimResponse.case_data = translateDraftClaimToCCD(claim);
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
