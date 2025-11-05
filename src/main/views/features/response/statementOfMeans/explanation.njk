@@ -12,7 +12,7 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" aria-labelledby="explanation-heading">
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -31,6 +31,10 @@
               label: {
                 text: t("PAGES.EXPLANATION.TITLE"),
                 classes: "govuk-label--l"
+              },
+              attributes: {
+               'aria-labelledby': 'explanation-heading',
+               'aria-label': t('PAGES.EXPLANATION.TITLE')
               },
               errorMessage: {
                 text: t(form.errorFor('text'))
