@@ -12,7 +12,7 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main" aria-labelledby="explanation-heading">
+    <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -20,6 +20,11 @@
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+
+          <h1 class="govuk-heading-l">
+            {{ t("PAGES.EXPLANATION.PAGE_TITLE") }}
+          </h1>
+
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
@@ -32,15 +37,11 @@
                 text: t("PAGES.EXPLANATION.TITLE"),
                 classes: "govuk-label--l"
               },
-              attributes: {
-               'aria-labelledby': 'explanation-heading',
-               'aria-label': t('PAGES.EXPLANATION.TITLE')
-              },
               errorMessage: {
                 text: t(form.errorFor('text'))
               } if form.hasFieldError('text')
             }) }}
-              <div class="govuk-form-group">
+              <div class="govuk-button-group">
                 {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
