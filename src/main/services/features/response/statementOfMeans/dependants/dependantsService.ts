@@ -4,6 +4,7 @@ import {Validator} from 'class-validator';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Claim} from '../../../../../common/models/claim';
+import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantsService');
@@ -34,8 +35,9 @@ class DependantsService {
         statementOfMeans.dependants = dependants;
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
-      return civilClaimResponse.case_data;
+      const claim = translateCCDCaseDataToCUIModel(civilClaimResponse.case_data);
+      await saveDraftClaim(claimId, claim);
+      return claim;
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
       throw error;
