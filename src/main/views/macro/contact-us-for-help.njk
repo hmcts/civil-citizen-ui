@@ -101,16 +101,27 @@
   {% else %}
     {% if isQMFlagEnabled %}
       {{ govukDetails({
-        summaryHtml: '<span style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
+        summaryText: ContactUs,
         html: qmContent,
         id: contactUsForHelpComponentId
       }) }}
       {% else %}
     {{ govukDetails({
-      summaryHtml: '<span style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
+      summaryText: ContactUs,
       html: content,
       id: contactUsForHelpComponentId
     }) }}
       {% endif %}
   {% endif %}
+
+  <style>
+    /* Accessibility fix: remove underline from 'Contact us for help' summary only */
+    #contact-us-for-help .govuk-details__summary {
+      text-decoration: none;
+    }
+    #contact-us-for-help .govuk-details__summary:hover,
+    #contact-us-for-help .govuk-details__summary:focus {
+      text-decoration: underline;
+    }
+  </style>
 {% endmacro %}
