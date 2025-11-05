@@ -101,13 +101,13 @@
   {% else %}
     {% if isQMFlagEnabled %}
       {{ govukDetails({
-        summaryHtml: '<span class="govuk-details__summary-text" style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
+        summaryHtml: '<span style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
         html: qmContent,
         id: contactUsForHelpComponentId
       }) }}
       {% else %}
     {{ govukDetails({
-      summaryHtml: '<span class="govuk-details__summary-text" style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
+      summaryHtml: '<span style="text-decoration: none;">' ~ ContactUs | escape ~ '</span>',
       html: content,
       id: contactUsForHelpComponentId
     }) }}
