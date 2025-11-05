@@ -20,7 +20,7 @@ module.exports = {
           partyTypeDisplayValue: 'Company',
           flags: {
             partyName: 'Test Inc',
-            roleOnCase: 'Applicant 1',
+            roleOnCase: 'Claimant 1',
           },
 
         },
@@ -108,7 +108,7 @@ module.exports = {
           partyTypeDisplayValue: 'Company',
           flags: {
             partyName: 'Test Inc',
-            roleOnCase: 'Applicant 1',
+            roleOnCase: 'Claimant 1',
           },
 
         },
