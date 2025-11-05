@@ -116,12 +116,13 @@
 
   <style>
     /* Accessibility fix: remove underline from 'Contact us for help' summary only */
-    #contact-us-for-help .govuk-details__summary {
-      text-decoration: none;
+    #contact-us-for-help .govuk-details__summary,
+    #contact-us-for-help .govuk-details__summary .govuk-details__summary-text {
+      text-decoration: none !important;
     }
     #contact-us-for-help .govuk-details__summary:hover,
     #contact-us-for-help .govuk-details__summary:focus {
-      text-decoration: underline;
+      text-decoration: underline !important;
     }
   </style>
 {% endmacro %}
