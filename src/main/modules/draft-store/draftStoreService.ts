@@ -63,14 +63,14 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  storedClaimResponse.case_data = translateDraftClaimToCCD(claim);
+  const ccdClaim = translateDraftClaimToCCD(claim);
+  storedClaimResponse.case_data = ccdClaim;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
     await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
   }
 };
-
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
