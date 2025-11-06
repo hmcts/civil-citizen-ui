@@ -2,11 +2,9 @@
 
 {% macro claimAmount(claimAmountModel, index, form, t) %}
   {% set amountValue =  '' + claimAmountModel.amount %}
-  <div class="row-container govuk-form-group">
+  <div class="row-container">
     <div class="multiple-row civil-amount-breakdown-row">
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
-      {# ensure a programmatic label is present and associated (visually hidden so no UI change) #}
-      <label class="govuk-visually-hidden" for="claimAmountRows[{{ index }}][reason]">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}</label>
       {{ govukInput({
         id: "claimAmountRows["+index+"][reason]",
         name: "claimAmountRows["+index+"][reason]",
@@ -23,14 +21,12 @@
       }) }}
       </div>
       <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-      {# ensure a programmatic label is present and associated (visually hidden so no UI change) #}
-      <label class="govuk-visually-hidden" for="claimAmountRows[{{ index }}][amount]">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}</label>
       {{ govukInput({
         id: "claimAmountRows["+index+"][amount]",
         name: "claimAmountRows["+index+"][amount]",
         value: amountValue,
         prefix: {
-          html: '<span aria-hidden="true">£</span>'
+          text: "£"
         },
         autocomplete: "number",
         type: "number",
