@@ -2,6 +2,8 @@
 
 {% macro claimAmount(claimAmountModel, index, form, t) %}
   {% set amountValue =  '' + claimAmountModel.amount %}
+  {% set labelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
+
   <div class="row-container govuk-form-group">
     <div class="multiple-row civil-amount-breakdown-row">
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
@@ -13,7 +15,7 @@
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
-          classes: 'govuk-visually-hidden'
+          classes: labelClass
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
@@ -26,18 +28,15 @@
         name: "claimAmountRows["+index+"][amount]",
         value: amountValue,
         prefix: {
-          text: "£",
-          attributes: {
-            "aria-hidden": "true"
-          }
+          text: "£"
         },
-        type: "text",
-        inputmode: "decimal",
-        classes: "govuk-input--width-10 civil-claim-amount",
+        autocomplete: "number",
+        type: "number",
+        classes: "govuk-grid-column-full civil-claim-amount",
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
-          classes: 'govuk-visually-hidden'
+          classes: labelClass
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
