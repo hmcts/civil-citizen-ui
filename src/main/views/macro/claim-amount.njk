@@ -27,11 +27,13 @@
         value: amountValue,
         prefix: {
           text: "£",
-          attributes: { "aria-hidden": "true" }
+          attributes: {
+            "aria-hidden": "true"
+          }
         },
-        autocomplete: "number",
-        type: "number",
-        classes: "govuk-grid-column-full civil-claim-amount",
+        type: "text",
+        inputmode: "decimal",
+        classes: "govuk-input--width-10 civil-claim-amount",
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
