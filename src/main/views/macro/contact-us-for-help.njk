@@ -3,7 +3,7 @@
 
 {# Set some default values #}
 
-{% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber, linkTarget) %}
+{% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber, linkTarget, noUnderline=false) %}
   {% if linkTarget %}
     {% set hrefTarget= linkTarget %}
   {% else %}
@@ -24,8 +24,13 @@
     <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
+    {% if noUnderline %}
+      {% set linkClass = "govuk-link govuk-link--no-underline" %}
+    {% else %}
+      {% set linkClass = "govuk-link" %}
+    {% endif %}
     <p>
-      <a class="govuk-link govuk-link--no-underline" target="{{ hrefTarget }}" href="{{ href }}" rel="noopener noreferrer">
+      <a class="{{ linkClass }}" target="{{ hrefTarget }}" href="{{ href }}" rel="noopener noreferrer">
         {% if hrefContact and hrefContact != '' %}
           {{ hrefContact }}
         {% endif %}
@@ -66,8 +71,8 @@
   {% endif %}
 
   {% set content = '' %}
-  {% set emailWidget = _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','') %}
-  {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank') %}
+  {% set emailWidget = _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','','',true) %}
+  {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank',true) %}
   {% set webChatUnavailableWidget = _widget(webChatUnavailable,webChat,'','','','') %}
   {% set webChatClosedWidget =  _widget(webChatClosed,webChat,'','','','') %}
   {% set contactUsForHelpComponentId = 'contact-us-for-help' %}
