@@ -1,8 +1,7 @@
-{% from "govuk/components/input/macro.njk" import govukInput %}
-
 {% macro claimAmount(claimAmountModel, index, form, t) %}
   {% set amountValue =  '' + claimAmountModel.amount %}
-  {% set labelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
+  {% set reasonLabelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
+  {% set amountLabelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
 
   <div class="row-container govuk-form-group">
     <div class="multiple-row civil-amount-breakdown-row">
@@ -15,7 +14,7 @@
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
-          classes: labelClass
+          classes: reasonLabelClass
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
@@ -36,7 +35,7 @@
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
-          classes: labelClass
+          classes: amountLabelClass
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
