@@ -9,7 +9,7 @@ export const toCCDMediationCarm = (mediation: MediationCarm): CcdMediationCarm =
   return {
     //new mediation
     isMediationContactNameCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationContactNameCorrect),
-    alternativeMediationContactPerson: mediation?.isMediationContactNameCorrect?.option === YesNo.NO ? mediation?.alternativeMediationContactPerson.alternativeContactPerson : undefined,
+    alternativeMediationContactPerson: mediation?.isMediationContactNameCorrect?.option === YesNo.NO ? mediation?.alternativeMediationContactPerson?.alternativeContactPerson : undefined,
     isMediationEmailCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationEmailCorrect),
     alternativeMediationEmail: mediation?.isMediationEmailCorrect?.option === YesNo.NO ? mediation?.alternativeMediationEmail.alternativeEmailAddress : undefined,
     isMediationPhoneCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationPhoneCorrect),
