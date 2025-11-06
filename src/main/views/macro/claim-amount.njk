@@ -3,7 +3,7 @@
 {% macro claimAmount(claimAmountModel, index, form, t) %}
   {% set amountValue =  '' + claimAmountModel.amount %}
   <div class="row-container govuk-form-group">
-    <div class="multiple-row civil-amount-breakdown-row">
+    <div class="multiple-row civil-amount-breakdown-row" role="group" aria-labelledby="claim-amount-row-{{ index }}-heading">
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
       {{ govukInput({
         id: "claimAmountRows["+index+"][reason]",
@@ -26,7 +26,7 @@
         name: "claimAmountRows["+index+"][amount]",
         value: amountValue,
         prefix: {
-          text: "£"
+          html: '<span aria-hidden="true">£</span>'
         },
         autocomplete: "number",
         type: "number",
