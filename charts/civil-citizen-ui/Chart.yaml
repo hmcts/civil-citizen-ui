@@ -13,7 +13,7 @@ dependencies:
     repository: 'oci://hmctspublic.azurecr.io/helm'
 
   - name: civil-general-applications
-    version: ~0.0.74
+    version: '*'
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: civil-general-applications.enabled
 
