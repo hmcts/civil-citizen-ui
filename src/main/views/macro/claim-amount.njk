@@ -1,7 +1,8 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
 {% macro claimAmount(claimAmountModel, index, form, t) %}
   {% set amountValue =  '' + claimAmountModel.amount %}
-  {% set reasonLabelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
-  {% set amountLabelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
+  {% set labelClass = 'govuk-label--s' if index == 0 else 'govuk-visually-hidden' %}
 
   <div class="row-container govuk-form-group">
     <div class="multiple-row civil-amount-breakdown-row">
@@ -14,11 +15,11 @@
         spellcheck: false,
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
-          classes: reasonLabelClass
+          classes: labelClass
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
-        } if form.hasFieldError( "claimAmountRows["+index+"][reason]")
+        } if form.hasFieldError("claimAmountRows["+index+"][reason]")
       }) }}
       </div>
       <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
@@ -34,12 +35,12 @@
         classes: "govuk-grid-column-full civil-claim-amount",
         spellcheck: false,
         label: {
-          text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
-          classes: amountLabelClass
+          text: index == 0 ? t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') : '',
+          classes: labelClass
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
-        } if form.hasFieldError( "claimAmountRows["+index+"][amount]")
+        } if form.hasFieldError("claimAmountRows["+index+"][amount]")
       }) }}
       </div>
     </div>
