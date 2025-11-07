@@ -1,25 +1,10 @@
-idam-pr:
-  enabled: false
-
-civil-wa:
-  enabled: false
-
-servicebus:
-  enabled: false
-
-aac-manage-case-assignment:
-  enabled: false
-
 civil-general-applications:
   enabled: false
 
-ccd-case-document-am-api:
+wa:
   enabled: false
 
-em-ccdorc:
-  enabled: false
-
-em-stitching:
+servicebus:
   enabled: false
 
 nodejs:

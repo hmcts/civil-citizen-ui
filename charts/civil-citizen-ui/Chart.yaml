@@ -11,37 +11,18 @@ dependencies:
   - name: nodejs
     version: 3.2.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
-  - name: idam-pr
-    version: 2.3.0
+
+  - name: civil-general-applications
+    version: ~0.0.74
     repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: idam-pr.enabled
+    condition: civil-general-applications.enabled
+
   - name: servicebus
     version: 1.1.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: servicebus.enabled
-  - name: civil-general-applications
-    version: ~0.0.75
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-general-applications.enabled
-# WA
+
   - name: wa
     version: 1.0.6
     repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-wa.enabled
-  - name: aac-manage-case-assignment
-    version: ~0.2.19
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: aac-manage-case-assignment.enabled
-
-  - name: ccd-case-document-am-api
-    version: 1.7.17
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: ccd-case-document-am-api.enabled
-  - name: em-ccdorc
-    version: 2.1.0
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: em-ccdorc.enabled
-  - name: em-stitching
-    version: 1.1.0
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: em-stitching.enabled
+    condition: wa.enabled
