@@ -11,14 +11,6 @@ dependencies:
   - name: nodejs
     version: 3.2.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
-  - name: civil-service
-    version: ~0.0.92
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-service.enabled
-  - name: xui-webapp
-    version: ~1.0.31
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: xui-webapp.enabled
   - name: idam-pr
     version: 2.3.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
@@ -28,7 +20,7 @@ dependencies:
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: servicebus.enabled
   - name: civil-general-applications
-    version: ~0.0.74
+    version: ~0.0.75
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: civil-general-applications.enabled
 # WA

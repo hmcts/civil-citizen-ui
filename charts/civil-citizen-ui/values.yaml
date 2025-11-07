@@ -1,15 +1,6 @@
 idam-pr:
   enabled: false
 
-xui-webapp:
-  enabled: false
-
-civil-service:
-  enabled: false
-
-elastic:
-  enabled: false
-
 civil-wa:
   enabled: false
 
@@ -20,9 +11,6 @@ aac-manage-case-assignment:
   enabled: false
 
 civil-general-applications:
-  enabled: false
-
-postgresql:
   enabled: false
 
 ccd-case-document-am-api:
