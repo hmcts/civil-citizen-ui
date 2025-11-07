@@ -2,9 +2,7 @@
 {% import "external-urls.njk" as externalURLs %}
 <p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.MULTIPLE_CLAIMANTS.CANT_USE_IF_MULTIPLE_CLAIMANTS') }}</p>
 <p class="govuk-body">
-  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM', externalURLs.n1FormUrl, true,
-    { "aria-label": t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM') + " (PDF, opens in a new tab)" }) }}
-  <span class="govuk-visually-hidden">(PDF document, opens in a new tab)</span>,
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM', externalURLs.n1FormUrl, true) }},
   {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.COMPLETE_AND_RETURN_PAPER_FORM') }}
 </p>
 
