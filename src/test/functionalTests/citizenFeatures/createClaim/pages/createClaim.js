@@ -764,8 +764,8 @@ class CreateClaim {
       I.fillField(paths.fields.signerName, 'signer claimant name');
       I.fillField(paths.fields.signerRole, 'signer claimant role');
     }
-    // Toggle statement of truth by clicking the visible label text to avoid hidden checkbox visibility issues
-    I.click('I believe that the facts stated in this claim are true.');
+    I.uncheckOption(paths.fields.statement_of_truth);
+    I.checkOption(paths.fields.statement_of_truth);
     I.click(paths.buttons.submit_claim);
     await I.waitForContent('Claim submitted', 60);
     const caseReference = await this.verifyClaimSubmitted(selectedHWF);
