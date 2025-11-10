@@ -15,6 +15,6 @@ export const toCCDMediationCarm = (mediation: MediationCarm): CcdMediationCarm =
     isMediationPhoneCorrect: toCCDYesNoFromGenericYesNo(mediation?.isMediationPhoneCorrect),
     alternativeMediationTelephone: mediation?.isMediationPhoneCorrect?.option === YesNo.NO ? mediation?.alternativeMediationTelephone.alternativeTelephone : undefined,
     hasUnavailabilityNextThreeMonths: toCCDYesNoFromGenericYesNo(mediation.hasUnavailabilityNextThreeMonths),
-    unavailableDatesForMediation: mediation?.hasUnavailabilityNextThreeMonths?.option === YesNo.YES ? toCCDUnavailableDates(mediation?.unavailableDatesForMediation.items) : undefined,
+    unavailableDatesForMediation: mediation?.hasUnavailabilityNextThreeMonths?.option === YesNo.YES ? toCCDUnavailableDates(mediation?.unavailableDatesForMediation?.items) : undefined,
   };
 };
