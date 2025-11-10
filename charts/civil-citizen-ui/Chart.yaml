@@ -3,7 +3,7 @@ appVersion: "1.1"
 description: Helm chart for the HMCTS Civil Citizen Frontend service
 name: civil-citizen-ui
 home: https://github.com/hmcts/civil-citizen-ui
-version: 0.1.6
+version: 0.1.7
 maintainers:
   - name: HMCTS Civil Citizen Ui team
 
@@ -11,62 +11,18 @@ dependencies:
   - name: nodejs
     version: 3.2.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
-  - name: civil-service
-    version: ~0.0.92
+
+  - name: civil-general-applications
+    version: '*'
     repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-service.enabled
-  - name: ccd
-    version: 9.2.2
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: ccd.enabled
-  - name: xui-webapp
-    version: ~1.0.31
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: xui-webapp.enabled
-  - name: idam-pr
-    version: 2.3.0
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: idam-pr.enabled
-  - name: camunda-bpm
-    version: 0.0.48
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: camunda-bpm.enabled
+    condition: civil-general-applications.enabled
+
   - name: servicebus
     version: 1.1.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: servicebus.enabled
-  - name: civil-general-applications
-    version: ~0.0.74
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-general-applications.enabled
-# WA
+
   - name: wa
     version: 1.0.6
     repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-wa.enabled
-  # CCD message publisher
-  - name: ccd-message-publisher
-    version: ~0.1.22
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: civil-wa.enabled
-  - name: aac-manage-case-assignment
-    version: ~0.2.19
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: aac-manage-case-assignment.enabled
-  - name: postgresql
-    version: 1.0.2
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: postgresql.enabled
-
-  - name: ccd-case-document-am-api
-    version: 1.7.17
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: ccd-case-document-am-api.enabled
-  - name: em-ccdorc
-    version: 2.1.0
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: em-ccdorc.enabled
-  - name: em-stitching
-    version: 1.1.0
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: em-stitching.enabled
+    condition: wa.enabled

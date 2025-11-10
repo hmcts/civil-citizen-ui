@@ -1,43 +1,10 @@
-ccd:
-  enabled: false
-
-idam-pr:
-  enabled: false
-
-xui-webapp:
-  enabled: false
-
-camunda-bpm:
-  enabled: false
-
-civil-service:
-  enabled: false
-
-elastic:
-  enabled: false
-
-civil-wa:
-  enabled: false
-
-servicebus:
-  enabled: false
-
-aac-manage-case-assignment:
-  enabled: false
-
 civil-general-applications:
   enabled: false
 
-postgresql:
+wa:
   enabled: false
 
-ccd-case-document-am-api:
-  enabled: false
-
-em-ccdorc:
-  enabled: false
-
-em-stitching:
+servicebus:
   enabled: false
 
 nodejs:
