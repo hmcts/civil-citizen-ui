@@ -206,6 +206,7 @@ export class CivilServiceClient {
       amount = roundOffTwoDecimals(amount);
       logger.info('After Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee amount ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
