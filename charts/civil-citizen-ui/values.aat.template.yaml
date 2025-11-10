@@ -219,26 +219,77 @@ civil-general-applications:
           username: ${POSTGRES_USER}
           password: ${POSTGRES_PASSWORD}
           postgresPassword: ${POSTGRES_PASSWORD}
-    camunda-bpm:
+    idam-pr:
+      releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
+      enabled: true
+      redirect_uris:
+        Civil Citizen UI:
+          - https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
+        XUI:
+          - https://civil-cui-xui-staging.aat.platform.hmcts.net/oauth2/callback
+    aac-manage-case-assignment:
       enabled: true
       java:
-        disableKeyVaults: true
-        releaseNameOverride: ${SERVICE_NAME}-camunda
-        ingressHost: civil-service-camunda-staging-aat.service.core-compute-aat.internal
-        devcpuRequests: 500m
-        devmemoryRequests: 512Mi
-        devcpuLimits: 1
-        devmemoryLimits: 1Gi
+        imagePullPolicy: Always
+        releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
+        image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+        ingressHost: civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net
         environment:
-          CAMUNDA_API_AUTH_ENABLED: false
-          CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
-          CAMUNDA_DB_NAME: camunda
-          CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
-          CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
-          CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
+          IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+          IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+          OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
           S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-          CAMUNDA_DB_CONN_OPTIONS: ""
-          RELEASE_REVISION: "{{ .Release.Revision }}"
+          MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
+          MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
+          MANAGE_CASE_S2S_AUTHORISED_SERVICES: xui_webapp,ccd_data,fpl_case_service,divorce_frontend,divorce_ccd_submission,finrem_case_orchestration,civil_service
+          CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
+          CCD_DEFINITION_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-definition-store-api
+          PRD_HOST: http://rd-professional-api-aat.service.core-compute-aat.internal
+        autoscaling:
+          enabled: false
+        keyVaults:
+          aac:
+            secrets:
+              - name: aac-manage-case-s2s-secret
+                alias: MANAGE_CASE_S2S_KEY
+              - name: idam-mca-client-secret
+                alias: IDAM_CLIENT_SECRET
+              - name: idam-mca-system-user-username
+                alias: IDAM_CAA_USERNAME
+              - name: idam-mca-system-user-password
+                alias: IDAM_CAA_PASSWORD
+              - name: idam-noc-approver-username
+                alias: IDAM_NOC_APPROVER_USERNAME
+              - name: idam-noc-approver-password
+                alias: IDAM_NOC_APPROVER_PASSWORD
+              - name: notify-mca-api-key-secret
+                alias: NOTIFY_MCA_API_KEY
+    xui-webapp:
+      enabled: true
+      nodejs:
+        ingressHost: civil-cui-xui-staging.aat.platform.hmcts.net
+        imagePullPolicy: Always
+        releaseNameOverride: ${SERVICE_NAME}-xui-webapp
+        image: hmctspublic.azurecr.io/xui/webapp:latest
+        memoryRequests: 2Gi
+        cpuRequests: 2000m
+        memoryLimits: 4Gi
+        cpuLimits: 3500m
+        devmemoryRequests: 6Gi
+        devcpuRequests: 2000m
+        devmemoryLimits: 8Gi
+        devcpuLimits: 4500m
+        environment:
+          HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
+          HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
+          HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-aat.service.core-compute-aat.internal/health
+          SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
+          SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+          SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-aat.service.core-compute-aat.internal
+          JURISDICTIONS: CIVIL
+          WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
+          SERVICES_IDAM_ISS_URL: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+          SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
     ccd:
       enabled: true
       ccd:
@@ -247,6 +298,8 @@ civil-general-applications:
         apiGatewayWeb:
           enabled: true
         definitionImporter:
+          enabled: false
+        managementWeb:
           enabled: false
         s2s:
           enabled: false
@@ -411,74 +464,19 @@ civil-general-applications:
           es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
         livenessProbe:
           initialDelaySeconds: 90
-    xui-webapp:
-      enabled: true
-      nodejs:
-        ingressHost: civil-cui-xui-staging.aat.platform.hmcts.net
-        imagePullPolicy: Always
-        releaseNameOverride: ${SERVICE_NAME}-xui-webapp
-        image: hmctspublic.azurecr.io/xui/webapp:latest
-        memoryRequests: 2Gi
-        cpuRequests: 2000m
-        memoryLimits: 4Gi
-        cpuLimits: 3500m
-        devmemoryRequests: 6Gi
-        devcpuRequests: 2000m
-        devmemoryLimits: 8Gi
-        devcpuLimits: 4500m
-        environment:
-          HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
-          HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
-          HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-aat.service.core-compute-aat.internal/health
-          SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
-          SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
-          SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-aat.service.core-compute-aat.internal
-          JURISDICTIONS: CIVIL
-          WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
-          SERVICES_IDAM_ISS_URL: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
-          SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
-    idam-pr:
-      releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
-      enabled: true
-      redirect_uris:
-        Civil Citizen UI:
-          - https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
-        XUI:
-          - https://civil-cui-xui-staging.aat.platform.hmcts.net/oauth2/callback
-    aac-manage-case-assignment:
+    camunda-bpm:
       enabled: true
       java:
-        imagePullPolicy: Always
-        releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
-        image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
-        ingressHost: civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net
+        ingressHost: civil-cui-camunda-staging.aat.platform.hmcts.net
+        disableKeyVaults: true
+        releaseNameOverride: ${SERVICE_NAME}-camunda
         environment:
-          IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-          IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
-          OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
+          CAMUNDA_API_AUTH_ENABLED: false
+          CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+          CAMUNDA_DB_NAME: camunda
+          CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
+          CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
+          CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
           S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-          MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
-          MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
-          MANAGE_CASE_S2S_AUTHORISED_SERVICES: xui_webapp,ccd_data,fpl_case_service,divorce_frontend,divorce_ccd_submission,finrem_case_orchestration,civil_service
-          CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
-          CCD_DEFINITION_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-definition-store-api
-          PRD_HOST: http://rd-professional-api-aat.service.core-compute-aat.internal
-        autoscaling:
-          enabled: false
-        keyVaults:
-          aac:
-            secrets:
-              - name: aac-manage-case-s2s-secret
-                alias: MANAGE_CASE_S2S_KEY
-              - name: idam-mca-client-secret
-                alias: IDAM_CLIENT_SECRET
-              - name: idam-mca-system-user-username
-                alias: IDAM_CAA_USERNAME
-              - name: idam-mca-system-user-password
-                alias: IDAM_CAA_PASSWORD
-              - name: idam-noc-approver-username
-                alias: IDAM_NOC_APPROVER_USERNAME
-              - name: idam-noc-approver-password
-                alias: IDAM_NOC_APPROVER_PASSWORD
-              - name: notify-mca-api-key-secret
-                alias: NOTIFY_MCA_API_KEY
+          CAMUNDA_DB_CONN_OPTIONS: ""
+          RELEASE_REVISION: "{{ .Release.Revision }}"
