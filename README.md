@@ -113,12 +113,7 @@ $ yarn test:e2e
 
 Running Preview pipeline :
 
-Raise a PR and add below labels to run the pipeline without any issues
-```bash
-pr-values:elasticsearch
-```
 Add "enable_keep_helm" label to retain helm release on preview
-Add "pr-values:enableNotifyEmails" label to be able to send live notifications on the PR
 
 Running Crossbrowser tests:
 
