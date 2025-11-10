@@ -51,7 +51,7 @@ const toCCDExpertDetails = (expertDetailsList: ExpertDetails[]) => {
         emailAddress: expertDetails.emailAddress,
         whyRequired: expertDetails.whyNeedExpert,
         fieldOfExpertise: expertDetails.fieldOfExpertise,
-        estimatedCost: convertToPence(expertDetails.estimatedCost),
+        estimatedCost: convertToPence(expertDetails.estimatedCost) || undefined,
       },
     };
   });

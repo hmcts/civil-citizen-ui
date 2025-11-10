@@ -91,7 +91,7 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
       phoneNumber: Number(phoneNumber) || undefined,
       whyNeedExpert: whyRequired,
       fieldOfExpertise,
-      estimatedCost: convertToPound(estimatedCost),
+      estimatedCost: convertToPound(estimatedCost) || undefined,
     } as ExpertDetails;
   });
   return new ExpertDetailsList(convertedValue);
