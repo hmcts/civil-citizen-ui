@@ -39,7 +39,8 @@
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', noHtml:noHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
