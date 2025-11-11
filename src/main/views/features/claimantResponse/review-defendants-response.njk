@@ -43,6 +43,7 @@
           <p class="govuk-body">{{ defendantResponse }}</p>
 
           {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS or claim.responseStatus === ClaimResponseStatus.FA_PAY_INSTALLMENTS %}
+          <div role="region" aria-label="{{ howDoTheyWantToPay }}">
             {% for item in repaymentPlan %}
               {{ govukSummaryList({
                 rows: [
@@ -57,6 +58,7 @@
                 ]
               }) }}
             {% endfor %}
+           </div>
           {% endif %}
          {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS %}
             <p class="govuk-body">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.REPAYMENT_PLAN.LENGTH_HINT') }}</p>

@@ -10,14 +10,13 @@
 
 {% block nestedContent %}
           {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.INFORM_OTHER_PARTIES_HEADER' ) }}
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.COURT_SEND_OTHER_PARTIES') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SOME_CIRCUMSTANCES') }}</p>
-          <h1 class="govuk-heading-m">{{  t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.DO_NOT_WANT_COURT') }}</h1>
+          <p class="govuk-body" id="inform-other-parties-desc-1">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.COURT_SEND_OTHER_PARTIES') }}</p>
+          <p class="govuk-body" id="inform-other-parties-desc-2">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SOME_CIRCUMSTANCES') }}</p>
+          <h1 class="govuk-heading-m" id="inform-other-parties-subheading">{{  t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.DO_NOT_WANT_COURT') }}</h1>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.PROVIDE_A_REASON') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.JUDGE_ORDERS_OTHER_PARTIES') }}</p>
 
-
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-labelledby="inform-other-parties-subheading" aria-describedby="inform-other-parties-desc-1 inform-other-parties-desc-2">
             {{ csrfProtection(csrf) }}
 
             {% set noHtml %}

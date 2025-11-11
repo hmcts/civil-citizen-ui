@@ -44,6 +44,11 @@
             <div class="row-container" role="group" aria-labelledby="your-statement-heading">
               <div data-module="moj-add-another">
                 {% for section in yourStatementSection %}
+
+                <span class="govuk-visually-hidden">
+                  {{ section.title or t(pageTitle) }}
+                </span>
+
                 {% call govukFieldset({
                   classes: 'moj-add-another__item',
                   legend: {
@@ -75,7 +80,13 @@
           {% for documentsReferredSection in documentsReferredContent %}
           <div class="row-container" role="group" aria-labelledby="documents-referred-heading">
             <div data-module="moj-add-another">
+
               {% for section in documentsReferredSection %}
+
+              <span class="govuk-visually-hidden">
+                {{ section.title or t(pageTitle) }}
+              </span>
+
               {% call govukFieldset({
                 classes: 'moj-add-another__item',
                 legend: {
