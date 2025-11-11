@@ -6,6 +6,7 @@ import {CCDExportReportSent} from 'models/ccdResponse/ccdExpert';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {Claim} from 'models/claim';
 import {YesNo, YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {convertToPence} from 'services/translation/claim/moneyConversation';
 
 export const toCCDExpert = (claim: Claim) => {
   const referenceDQ = claim.isClaimantIntentionPending() ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
@@ -50,7 +51,7 @@ const toCCDExpertDetails = (expertDetailsList: ExpertDetails[]) => {
         emailAddress: expertDetails.emailAddress,
         whyRequired: expertDetails.whyNeedExpert,
         fieldOfExpertise: expertDetails.fieldOfExpertise,
-        estimatedCost: expertDetails.estimatedCost * 100,
+        estimatedCost: convertToPence(expertDetails.estimatedCost) || undefined,
       },
     };
   });
