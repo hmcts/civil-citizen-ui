@@ -15,7 +15,7 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.MICRO_TEXT %}
-    <p class="govuk-caption-l">{{ t(content.data.text) }}</p>
+    <span class="govuk-caption-l">{{ t(content.data.text) }}</span>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.MAINTITLE %}
@@ -24,9 +24,9 @@
 
   {% if content.type === ClaimSummaryType.TITLE %}
     {% set object = '' %}
-    {% if content.data.variables %}
+    {% if  content.data.variables %}
       {% set object = content.data.variables %}
-      <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text, object) }}</h2>
+      <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
     {% else %}
       <h2 class="govuk-heading-m {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
     {% endif %}
@@ -34,11 +34,11 @@
 
   {% if content.type === ClaimSummaryType.SUBTITLE %}
      {% set object = '' %}
-     {% if content.data.variables %}
+     {% if  content.data.variables %}
        {% set object = content.data.variables %}
-       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text, object) }}</h3>
+       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
      {% else %}
-       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h3>
+       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
      {% endif %}
   {% endif %}
 
@@ -46,7 +46,7 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text, object) }}</p>
+      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
     {% else %}
       <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</p>
     {% endif %}
@@ -56,7 +56,7 @@
     {% set object = '' %}
     {% if content.data.variables %}
         {% set object = content.data.variables %}
-        <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text, object) | safe }}</p>
+        <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object) | safe}}</p>
     {% else %}
       <p class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) | safe }}</p>
     {% endif %}
@@ -66,7 +66,7 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text, object) }}</span>
+      <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text,object)}}</span>
     {% else %}
       <span class="govuk-body {{ content.data.classes }}">{{ t(content.data.text) }}</span>
     {% endif %}
@@ -75,14 +75,20 @@
   {% if content.type === ClaimSummaryType.INSET_TEXT %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      {{ govukInsetText({ html: t(content.data.html, object) }) }}
+      {{ govukInsetText({
+        html: t(content.data.html,object)
+      }) }}
     {% else %}
-      {{ govukInsetText({ html: t(content.data.html) }) }}
+      {{ govukInsetText({
+        html: t(content.data.html)
+      }) }}
     {% endif %}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SUMMARY %}
-    {{ govukSummaryList({ rows: content.data.rows }) }}
+    {{ govukSummaryList({
+      rows: content.data.rows
+    }) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.BUTTON %}
@@ -97,16 +103,16 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.REMOVE_BUTTON %}
-    <div>
-      {{ govukButton({
-        href: content.data.href,
-        text:  t(content.data.text),
-        name: 'action',
-        value: content.data.category+'['+content.data.index+'][removeButton]',
-        classes: content.data.classes,
-        isStartButton: content.data.isStartButton
-      }) }}
-    </div>
+  <div>
+    {{ govukButton({
+                     href: content.data.href,
+                     text:  t(content.data.text),
+      name: 'action',
+      value: content.data.category+'['+content.data.index+'][removeButton]',
+      classes: content.data.classes,
+      isStartButton: content.data.isStartButton
+    }) }}
+  </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.NEW_TAB_BUTTON %}
@@ -120,9 +126,9 @@
       {% set object = '' %}
       {% if content.data.variables %}
         {% set object = content.data.variables %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text, object) }}</a>
-      {% elif content.data.externalLink %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
+      {% elif  content.data.externalLink %}
+         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
       {% else %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
       {% endif %}
@@ -136,8 +142,8 @@
       {% set object = '' %}
       {% if content.data.variables %}
         {% set object = content.data.variables %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text, object) }}</a>.
-      {% elif content.data.externalLink %}
+        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>.
+        {% elif  content.data.externalLink %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>.
       {% else %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
@@ -174,27 +180,223 @@
          name: "name",
          value: form.model.name,
          classes: content.data.classes,
-         label: { html: '<strong>'+ t(content.data.text) +'</strong>' },
-         hint: { text: t(content.data.hint) }
+         label: {
+           html: '<strong>'+ t(content.data.text)+'</strong>'
+         },
+         hint: {
+             text: t(content.data.hint)
+         }
       }) }}
     </div>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.INPUT_ARRAY %}
+     <div>
+        {{ govukInput({
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           value: content.data.value,
+           classes: 'govuk-!-width-three-half '+content.data.classes,
+           label: {
+             html: '<strong>'+ t(content.data.text)+'</strong>'
+           },
+           hint: {
+             text: t(content.data.hint)
+           },
+           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
+           attributes: {
+             'data-name': content.data.category+'[%index%]['+content.data.field+']',
+             'data-id': content.data.category+'[%index%]['+content.data.field+']'
+           }
+        }) }}
+     </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.DATE_ARRAY %}
+    {% if (content.data.invalidDateError !== undefined and content.data.invalidDateError != '') or (content.data.invalidDayError !== undefined and content.data.invalidDayError != '') or (content.data.invalidMonthError !== undefined and content.data.invalidMonthError != '') or (content.data.invalidYearError !== undefined and content.data.invalidYearError != '') %}
+       {% set isDateError = 'true' %}
+    {% endif %}
+     <div>
+        {{ govukDateInput({
+           id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
+           fieldset: {
+             legend: {
+              text: t(content.data.text),
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--s"
+             }
+           },
+           hint: {
+            text: t(content.data.hint)
+           },
+           errorMessage: {
+            html: '<p class="govuk-error-message">' + t(content.data.invalidDateError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidDayError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidMonthError) + '</p>' +
+                        '<p class="govuk-error-message">' + t(content.data.invalidYearError) + '</p>'
+           } if (isDateError == 'true'),
+           items: [
+             {
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
+               name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
+               label: t('COMMON.DAY'),
+               value: content.data.dayValue,
+               classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidDayError or content.data.invalidDateError else "govuk-input--width-2",
+               attributes: {
+                 'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]',
+                 'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]'
+               }
+             },
+             {
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Month]',
+               name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Month]',
+               label: t('COMMON.MONTH'),
+               value: content.data.monthValue,
+               classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidMonthError or content.data.invalidDateError else "govuk-input--width-2",
+               attributes: {
+                'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Month]',
+                'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Month]'
+               }
+             },
+             {
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Year]',
+               name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Year]',
+               label: t('COMMON.YEAR'),
+               value: content.data.yearValue,
+               classes: "govuk-input--width-3 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-3",
+               attributes: {
+                  'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Year]',
+                  'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Year]'
+               }
+             }
+           ]
+        }) }}
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
+    <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
+    <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
+     <div class="govuk-inset-text">
+       {{ govukFileUpload({
+           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+           classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
+           value: content.data.value,
+           label: {
+             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
+           },
+           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
+           attributes: {
+              'data-name': content.data.category+'[%index%]['+content.data.field+']',
+              'data-id': content.data.category+'[%index%]['+content.data.field+']'
+           }
+        }) }}
+         {{ govukButton({
+                          id: 'uploadFileButton',
+                          name: 'action',
+                          value: content.data.category+'['+content.data.index+'][uploadButton]',
+           text: t('COMMON.SAVE_FILE'),
+           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+         }) }}
+    </div>
+    {{ govukInput({
+       id: content.data.category+'['+content.data.index+'][caseDocument]',
+       name: content.data.category+'['+content.data.index+'][caseDocument]',
+       type:'hidden',
+       label: {
+        text: 'Case Document',
+        classes: 'govuk-visually-hidden'
+       },
+       value: content.data.caseDocument,
+       attributes: {
+         'data-name': content.data.category+'[%index%][caseDocument]',
+         'data-id': content.data.category+'[%index%][caseDocument]'
+       }
+    }) }}
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.UPLOAD %}
+    <div class="govuk-inset-text">
+      {{ govukFileUpload({
+           id: content.data.id,
+           name: content.data.name,
+           label: {
+             html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</br></br>'
+           }
+        }) }}
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.DATE %}
     <div>
-      {{ govukInput({
-         id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-         name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-         value: content.data.value,
-         classes: 'govuk-!-width-three-half '+content.data.classes,
-         label: { html: '<strong>'+ t(content.data.text) +'</strong>' },
-         hint: { text: t(content.data.hint) },
-         errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
-         attributes: {
-           'data-name': content.data.category+'[%index%]['+content.data.field+']',
-           'data-id': content.data.category+'[%index%]['+content.data.field+']'
-         }
+      {{ govukDateInput({
+           id: content.data.id,
+           namePrefix: content.data.name,
+           fieldset: {
+             legend: {
+              text: t(content.data.text),
+              isPageHeading: false,
+              classes: content.data.classes
+             }
+           },
+           hint: {
+            text: t(content.data.hint)
+           }
+        }) }}
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.WARNING %}
+    {% set object = '' %}
+    {% if content.data.variables %}
+    {% set object = content.data.variables %}
+    {% set warningText = t(content.data.text,object) %}
+    {% else %}
+      {% set warningText = t(content.data.text) %}
+    {% endif %}
+
+    {{ govukWarningText({
+      text: warningText,
+      iconFallbackText: "Warning"
+     }) }}
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.SELECT %}
+    <div>
+      <fieldset class="govuk-fieldset">
+        {{ govukSelect({
+          id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+          name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+          value: content.data.value,
+          classes: 'govuk-!-width-three-half '+content.data.classes,
+          hint: {
+            text: t(content.data.hint)
+          },
+          errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
+          label: {
+            html: '<strong>'+ t(content.data.text)+'</strong>'
+          },
+          items: content.data.items,
+          attributes: {
+            'data-name': content.data.category+'[%index%]['+content.data.field+']',
+            'data-id': content.data.category+'[%index%]['+content.data.field+']'
+          }
+        }) }}
+      </fieldset>
+    </div>
+  {% endif %}
+
+  {% if content.type === ClaimSummaryType.BUTTON_WITH_CANCEL_LINK %}
+    <div class="govuk-button-group">
+      {{ govukButton({
+        href: content.data.href,
+        text:  t(content.data.text),
+        classes: content.data.classes,
+        isStartButton: content.data.isStartButton
       }) }}
+      <a href={{ content.data.cancelHref }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
     </div>
   {% endif %}
 {% endmacro %}
