@@ -33,18 +33,18 @@
               </span>
             </p>
           {% else %}
-            <p class="govuk-body">
+            <h2 class="govuk-body">
               <span class="govuk-!-font-weight-bold">
                 {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}:
               </span>
-              {{ claim.legacyCaseReference }}</p>
+              {{ claim.legacyCaseReference }}</h2>
           {% endif %}
-          <p class="govuk-body">
+          <h2 class="govuk-body">
             <span class="govuk-!-font-weight-bold">
               {{ t('COMMON.CLAIM_AMOUNT') }}:
             </span>
             {{ totalAmount | currencyFormat(totalAmount) }}
-          </p>
+          </h2>
           {{ govukDetails({
             summaryText: t('PAGES.CLAIM_DETAILS.VIEW_AMOUNT_BREAKDOWN'),
             html: amountBreakdownTable(t, claim, interestData, totalAmount, fixedCost)
@@ -55,8 +55,9 @@
             {{ timelineSummary(t, timelineRows) }}
           {% elseif timelinePdfUrl %}
             <div class="govuk-body">
-              <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
+              <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}
               <a id="timeline-link" href={{ timelinePdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+              </h2>
             </div>
           {% endif %}
           <p class="govuk-body">
