@@ -22,7 +22,7 @@
   {% endif %}
 
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" aria-labelledby="page-title">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
@@ -46,6 +46,7 @@
                 {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today) }}
               </div>
             {% endfor %}
+          </fieldset>
 
             {% endcall %}
 

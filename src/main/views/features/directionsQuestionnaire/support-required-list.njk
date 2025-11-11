@@ -28,13 +28,16 @@
     {{ govukButton({
       text: t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'),
       classes: "govuk-button--secondary append-row",
-      type: "button"
+      type: "button",
+      attributes: {
+        "aria-label": t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER')
+      }
     }) }}
   </div>
 {% endset %}
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" aria-labelledby="page-heading">
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
