@@ -2,7 +2,6 @@ import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
 import { Application } from 'express';
 import { get, set } from 'lodash';
-import logger from '@pact-foundation/pact-node/src/logger';
 
 export class PropertiesVolume {
 
@@ -24,9 +23,7 @@ export class PropertiesVolume {
 
   private static setSecret(fromPath: string, toPath: string): void {
     if (config.has(fromPath)) {
-      const configValue = get(config, fromPath);
-      logger.info(`Setting ${toPath} from ${fromPath} value: ${configValue}`);
-      set(config, toPath, configValue);
+      set(config, toPath, get(config, fromPath));
     }
   }
 }
