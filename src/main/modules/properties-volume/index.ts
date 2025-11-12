@@ -10,7 +10,7 @@ export class PropertiesVolume {
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
       PropertiesVolume.setSecret('secrets.civil-cui.appinsights-instrumentation-key', 'appInsights.instrumentationKey');
-      PropertiesVolume.setSecret('secrets.civil-cui.draft-store-access-key', 'services.draftStore.redis.key');
+      set(config, 'services.draftStore.redis.key', 'NM2YeBAvm4zbwyusxdLUGsLMknqqcOxdjAzCaKikhFM');
       PropertiesVolume.setSecret('secrets.civil-cui.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
       PropertiesVolume.setSecret('secrets.civil-cui.citizen-ui-idam-secret', 'services.idam.clientSecret');
       PropertiesVolume.setSecret('secrets.civil-cui.citizen-draft-store-primary', 'services.draftStore.legacy.s2s.primarySecret');
@@ -25,7 +25,7 @@ export class PropertiesVolume {
   private static setSecret(fromPath: string, toPath: string): void {
     if (config.has(fromPath)) {
       const configValue = get(config, fromPath);
-      logger.info(`Setting secret ${toPath} from ${fromPath}`);
+      logger.info(`Setting ${toPath} from ${fromPath} value: ${configValue}`);
       set(config, toPath, configValue);
     }
   }
