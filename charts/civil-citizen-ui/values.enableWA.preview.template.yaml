@@ -5,7 +5,7 @@ civil-general-applications:
         TASK_MANAGEMENT_ENABLED: true
         TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
     camunda-bpm:
-      enabled: true
+      enabled: false
     ccd:
       mps:
         enabled: true
