@@ -3,7 +3,7 @@ properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
 ]);
 
-@Library("Infrastructure")
+@Library("Infrastructure@feat/helm-upgrade-wait-for-scheduling")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
