@@ -9,7 +9,6 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
-import {translateDraftClaimToCCD} from 'services/translation/claim/ccdTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -27,7 +26,7 @@ export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror =
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
-const convertRedisDataToCivilClaimResponse = (data: string): CivilClaimResponse => {
+const convertRedisDataToCivilClaimResponse = (data: string) => {
   let jsonData = undefined;
   if (data) {
     try {
@@ -63,8 +62,7 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  const ccdClaim = translateDraftClaimToCCD(claim);
-  storedClaimResponse.case_data = ccdClaim;
+  storedClaimResponse.case_data = claim;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
