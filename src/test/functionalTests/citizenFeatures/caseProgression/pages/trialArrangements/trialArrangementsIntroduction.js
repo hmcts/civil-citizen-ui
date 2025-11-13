@@ -161,8 +161,8 @@ class TrialArrangementsIntroduction {
   }
 
   verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'p');
-    I.see('Claim amount: ' + claimAmount, 'p');
+    I.see('Case number: ' + caseNumber, 'h2');
+    I.see('Claim amount: ' + claimAmount, 'h2');
   }
 
   verifyHeadingDetails(deadline) {
