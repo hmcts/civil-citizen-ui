@@ -10,7 +10,8 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
-import logger from '@pact-foundation/pact-node/src/logger';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('interestUtils');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
