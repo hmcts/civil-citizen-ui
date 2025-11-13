@@ -76,13 +76,13 @@ export const correctInterestSelected = (claim: Claim): boolean => {
     || claim.interest?.interestClaimFrom === undefined
     || claim.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE && claim.interest?.interestStartDate?.date === undefined));
   if(correctInterestOptionsNotSelected) {
-    logger.info(`Interest is not calculated for claim ${claim?.id} as claim interest options are not selected correctly. Claim interest options: ${claim.interest?.interestClaimOptions}`);
+    logger.debug(`Interest is not calculated for claim ${claim?.id} as claim interest options are not selected correctly. Claim interest options: ${claim.interest?.interestClaimOptions}`);
   }
   return correctInterestOptionsNotSelected;
 };
 export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
   if(!claim.hasInterest() || correctInterestSelected(claim) === false) {
-    logger.info(`Interest is not calculated for claim ${claim?.id} as claim has no interest or interest is not selected correctly`);
+    logger.debug(`Interest is not calculated for claim ${claim?.id} as claim has no interest or interest is not selected correctly`);
     return 0;
   }
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
