@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {
@@ -55,7 +55,7 @@ requestForReconsiderationCommentsCheckAnswersController.post(REQUEST_FOR_RECONSI
     const claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
-    await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+    await deleteDraftClaim(req);
     res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL));
   } catch (error) {
     next(error);

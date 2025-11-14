@@ -75,6 +75,13 @@ const createNewCivilClaimResponse = (claimId: string) => {
   return storedClaimResponse;
 };
 
+export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
+  const claimId = req.params.id;
+  const userId = (<AppRequest>req)?.session?.user?.id;
+  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
+  await deleteDraftClaimFromStore(redisKey);
+};
+
 export const deleteDraftClaimFromStore = async (claimId: string, field?: string): Promise<void> => {
   await app.locals.draftStoreClient.del(claimId, field);
 };
