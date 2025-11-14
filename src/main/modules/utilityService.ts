@@ -1,6 +1,7 @@
 import {AppRequest, AppSession} from 'models/AppRequest';
 import config from 'config';
 import {
+  deleteDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
   saveDraftClaim,
@@ -56,7 +57,7 @@ export const refreshDraftStoreClaimFrom = async (claimId: string, req: Request, 
 
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
-    //await deleteDraftClaimFromStore(redisKey);
+    await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true);
   } else {
     throw new Error('Case not found...');

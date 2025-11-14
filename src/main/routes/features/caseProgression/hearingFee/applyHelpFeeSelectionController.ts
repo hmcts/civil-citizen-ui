@@ -10,11 +10,10 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getButtonsContents} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents';
 import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
 import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
 
@@ -24,9 +23,7 @@ const applyHelpFeeSelectionController: Router = Router();
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
   let claim: Claim = await getClaimById(claimId, req, true);
   if (!claim.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    await deleteDraftClaimFromStore(redisKey);
-    claim = await getClaimById(claimId, req, true);
+    claim = await refreshDraftStoreClaimFrom(claimId, req, true);
   }
   if (!form) {
     form = new GenericForm(new GenericYesNo(null, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));

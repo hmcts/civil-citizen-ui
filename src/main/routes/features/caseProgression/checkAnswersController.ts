@@ -70,17 +70,15 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       const isClaimant = claim.isClaimant();
       renderView(res, form, claim, claimId, isClaimant, lang);
       return;
-    } else {
-      await saveUploadedDocuments(claim, appReq);
-      const taskId = appReq.session?.dashboard?.taskIdHearingUploadDocuments;
-      if(taskId){
-        await civilServiceClient.updateTaskStatus(taskId, appReq);
-      }
-      const redisKey= generateRedisKey(appReq);
-      await deleteDraftClaimFromStore(redisKey);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
-      return;
     }
+    await saveUploadedDocuments(claim, appReq);
+    const taskId = appReq.session?.dashboard?.taskIdHearingUploadDocuments;
+    if(taskId){
+      await civilServiceClient.updateTaskStatus(taskId, appReq);
+    }
+    const redisKey= generateRedisKey(appReq);
+    await deleteDraftClaimFromStore(redisKey);
+    res.redirect(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
   } catch (error) {
     next(error);
     return;
