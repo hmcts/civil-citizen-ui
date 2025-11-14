@@ -176,10 +176,8 @@ describe('Draft store service to save and retrieve claim', () => {
     const expectedClaim = {
       id: CLAIM_ID,
       case_data: {
+        refreshDataForDJ: true,
         id: CLAIM_ID,
-        applicant1Represented: 'No',
-        specRespondent1Represented: 'No',
-        isFlightDelayClaim: 'No',
       },
     };
     expectedClaim.id = CLAIM_ID;
@@ -193,18 +191,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
-    expect(spySet).toHaveBeenCalled();
-    const [, rawPayload] = spySet.mock.calls[0];
-    expect(JSON.parse(rawPayload as string)).toEqual(expect.objectContaining({
-      id: CLAIM_ID,
-      case_data: expect.objectContaining({
-        id: CLAIM_ID,
-        applicant1Represented: 'No',
-        specRespondent1Represented: 'No',
-        isFlightDelayClaim: 'No',
-      }),
-    }));
-
+    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim));
   });
 
   describe('findClaimIdsbyUserId', () => {
