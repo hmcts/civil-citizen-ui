@@ -1,6 +1,10 @@
 import {AppRequest, AppSession} from 'models/AppRequest';
 import config from 'config';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  generateRedisKey,
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
@@ -31,6 +35,32 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
     } else {
       throw new Error('Case not found...');
     }
+  }
+  const appRequest = <AppRequest>req;
+  const session = (appRequest.session as AppSession | undefined);
+
+  if (session) {
+    if (claim?.id) {
+      session.caseReference = claim.id;
+    } else {
+      delete session.caseReference;
+    }
+    syncCaseReferenceCookie(appRequest);
+  }
+  return claim;
+};
+
+export const refreshDraftStoreClaimFrom = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
+  const userId = (<AppRequest>req)?.session?.user?.id;
+  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
+  //let claim: Claim = await getCaseDataFromStore(redisKey, true);
+
+  const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+  if (claim) {
+    //await deleteDraftClaimFromStore(redisKey);
+    await saveDraftClaim(redisKey, claim, true);
+  } else {
+    throw new Error('Case not found...');
   }
   const appRequest = <AppRequest>req;
   const session = (appRequest.session as AppSession | undefined);
