@@ -6,10 +6,11 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/banner.njk" import addBanner %}
 
 {% block nestedContent %}
         {% block warning_message %}
-          {% include "../../macro/banner.njk" %}
+          {{ addBanner("2025-10-31T07:00+01:00", "2025-11-07T04:00+01:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
         {% endblock %}
         {% block welsh_party_message %}
           {% include "../../macro/welsh_party_banner.njk" %}
@@ -39,9 +40,11 @@
         <div class="border-small-top"></div>
          <div class="dashboard-notification">
           {% for notification in dashboardNotifications.items %}
+              {% set titleId = 'dashboard-notification-banner-title-' ~ loop.index0 %}
               {{ govukNotificationBanner({
                  titleText: notification.titleCy if lang=="cy" else notification.titleEn,
                  html: notification.descriptionCy if lang=="cy" else notification.descriptionEn,
+                 titleId: titleId,
                  classes: "govuk-!-margin-bottom-4"
                })  }}
           {% endfor %}

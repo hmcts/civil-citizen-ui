@@ -10,6 +10,9 @@ import {AppRequest} from 'common/models/AppRequest';
 const yourDefenceViewPath = 'features/response/your-defence';
 const yourDefenceController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('yourDefenceController');
+
 yourDefenceController.get(RESPONSE_YOUR_DEFENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
@@ -41,6 +44,7 @@ yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, (async (req: Request, res:
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
+    logger.error(`Error when getting your defence, req.params.claimId  ${ req.params.claimId } -  ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

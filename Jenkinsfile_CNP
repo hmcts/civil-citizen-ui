@@ -122,12 +122,12 @@ def setUrls(suffix){
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo', 'perftest', 'ithc']
 
-def checkForFullDeployLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
-}
-
 def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
+}
+
+def checkForRunAllFunctionalTests(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
 }
 
 withPipeline(type, product, component) {
@@ -188,7 +188,11 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
-    copyPrevFailedAndNotExecutedTestFilesJson();
+    if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
+      env.RUN_ALL_FUNCTIONAL_TESTS = true
+    } else {
+      copyPrevFailedAndNotExecutedTestFilesJson();
+    }
   }
 
   afterAlways('functionalTest:preview') {
@@ -238,13 +242,5 @@ withPipeline(type, product, component) {
   afterSuccess('functionalTest:aat') {
     //createGithubRelease()
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-  }
-
-  before('akschartsinstall') {
-    onPR() {
-      if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
-        error("Build failed because there is no label full deploy.")
-      }
-    }
   }
 }

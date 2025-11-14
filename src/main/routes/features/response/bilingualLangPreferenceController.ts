@@ -19,6 +19,9 @@ import {isWelshEnabledForMainCase} from '../../../app/auth/launchdarkly/launchDa
 const bilingualLangPreferenceViewPath = 'features/response/bilingual-language-preference';
 const bilingualLangPreferenceController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('bilingualLangPreferenceController');
+
 async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
   const welshEnabled = await isWelshEnabledForMainCase();
   res.render(bilingualLangPreferenceViewPath, {form, welshEnabled});
@@ -33,6 +36,7 @@ bilingualLangPreferenceController.get(
         const form: GenericYesNo = await getBilingualLangPreference(req);
         await renderView(new GenericForm<GenericYesNo>(form), res);
       } catch (error) {
+        logger.error(`Error when getting bilingual language preference - ${error.message}`);
         next(error);
       }
     })();
@@ -51,6 +55,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
+    logger.error(`Error when posting bilingual language preference - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
