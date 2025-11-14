@@ -53,7 +53,6 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
 export const refreshDraftStoreClaimFrom = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
-  //let claim: Claim = await getCaseDataFromStore(redisKey, true);
 
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {

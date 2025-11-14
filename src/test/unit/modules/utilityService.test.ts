@@ -1,4 +1,4 @@
-import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
+import {getClaimBusinessProcess, getClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import {BusinessProcess} from 'models/businessProcess';
@@ -11,6 +11,8 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
   getCaseDataFromStore: jest.fn(),
   saveDraftClaim: jest.fn(),
+  deleteDraftClaimFromStore: jest.fn(),
+  getClaimById: jest.fn(),
 }));
 
 jest.mock('modules/cookie/caseReferenceCookie', () => ({
@@ -117,6 +119,70 @@ describe('Utility service', () => {
       expect(result).toBe(claim);
       expect(request.session.caseReference).toBeUndefined();
       expect(syncCaseReferenceCookieMock).toHaveBeenCalledWith(request);
+    });
+  });
+
+  describe('refreshDraftStoreClaimFrom', () => {
+    let req: AppRequest;
+
+    const createSession = (overrides: Partial<AppSession> = {}): AppSession => ({
+      user: {
+        accessToken: '',
+        id: 'user-123',
+        email: '',
+        givenName: '',
+        familyName: '',
+        roles: [],
+      },
+      lang: undefined,
+      previousUrl: '',
+      claimId: '',
+      taskLists: [],
+      assignClaimURL: '',
+      claimIssueTasklist: false,
+      firstContact: {},
+      fileUpload: '',
+      issuedAt: 0,
+      dashboard: {taskIdHearingUploadDocuments: ''},
+      qmShareConfirmed: false,
+      ...overrides,
+    }) as AppSession;
+
+    const createRequest = (sessionOverrides: Partial<AppSession> = {}): AppRequest => ({
+      session: createSession(sessionOverrides),
+    } as unknown as AppRequest);
+
+    beforeEach(() => {
+      req = createRequest({caseReference: undefined, user: { id: 'user-123' } as unknown as AppSession['user']});
+    });
+
+    it('should successfully refresh a draft store claim', async () => {
+      const claim = {
+        isClaimantIntentionPending: jest.fn().mockReturnValue(false),
+        id: '1645882162449409',
+      } as unknown as Claim;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+
+      const result = await refreshDraftStoreClaimFrom('1645882162449409', req);
+
+      expect(result).toBe(claim);
+      expect(req.session.caseReference).toBe('1645882162449409');
+
+    });
+
+    it('should throw an error if the claim does not exist', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(null);
+      try {
+        await refreshDraftStoreClaimFrom('non-existent-claim-id', req);
+      } catch (err) {
+        expect(err.message).toBe('Case not found...');
+      }
+
+      expect(req.session.caseReference).toBeUndefined();
     });
   });
 });
