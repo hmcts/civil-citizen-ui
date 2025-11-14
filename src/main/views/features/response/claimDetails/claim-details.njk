@@ -18,7 +18,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_DETAILS.HEADER') }}</h1>
           {% if claim.helpWithFeesNumber %}
-            <h2 class="govuk-body">
+            <p class="govuk-body">
               <span class="govuk-!-font-weight-bold">
                 {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}
               </span>
@@ -31,13 +31,13 @@
                   {%- endfor %}
                 {%- endfor %}
               </span>
-            </h2>
+            </p>
           {% else %}
-            <h2 class="govuk-body">
+            <p class="govuk-body">
               <span class="govuk-!-font-weight-bold">
                 {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}:
               </span>
-              {{ claim.legacyCaseReference }}</h2>
+              {{ claim.legacyCaseReference }}</p>
           {% endif %}
           <p class="govuk-body">
             <span class="govuk-!-font-weight-bold">
