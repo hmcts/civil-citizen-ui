@@ -1,2 +1,2 @@
 {"value":"csurf","children":{"ID":"csurf (deprecation)","Issue":"This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions","Severity":"moderate","Vulnerable Versions":"1.11.0","Tree Versions":["1.11.0"],"Dependents":["civil-citizen-ui@workspace:."]}}
-{"value":"js-yaml","children":{"ID":1109754,"Issue":"js-yaml has prototype pollution in merge (<<)","URL":"https://github.com/advisories/GHSA-mh29-5h37-fv8m","Severity":"moderate","Vulnerable Versions":"<4.1.1","Tree Versions":["4.1.0"],"Dependents":["@hmcts/info-provider@npm:1.2.2"]}}
+
