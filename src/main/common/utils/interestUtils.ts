@@ -10,6 +10,8 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('interestUtils');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -71,13 +73,17 @@ export const getInterestEndDate = (claim: Claim): Date => {
   return interestEndDate;
 };
 export const correctInterestSelected = (claim: Claim): boolean => {
-  return !(claim.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST && (claim.interest?.sameRateInterestSelection?.sameRateInterestType === undefined
+  const correctInterestOptionsNotSelected=  !(claim.interest?.interestClaimOptions === InterestClaimOptionsType.SAME_RATE_INTEREST && (claim.interest?.sameRateInterestSelection?.sameRateInterestType === undefined
     || claim.interest?.interestClaimFrom === undefined
     || claim.interest?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE && claim.interest?.interestStartDate?.date === undefined));
-
+  if(correctInterestOptionsNotSelected) {
+    logger.debug(`Interest is not calculated for claim ${claim?.id} as claim interest options are not selected correctly. Claim interest options: ${claim.interest?.interestClaimOptions}`);
+  }
+  return correctInterestOptionsNotSelected;
 };
 export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
   if(!claim.hasInterest() || correctInterestSelected(claim) === false) {
+    logger.debug(`Interest is not calculated for claim ${claim?.id} as claim has no interest or interest is not selected correctly`);
     return 0;
   }
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);

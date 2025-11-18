@@ -202,10 +202,11 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
-      logger.info('Before Round off ' + amount);
+      logger.info('Total Claim Amount before Round off ' + amount);
       amount = roundOffTwoDecimals(amount);
-      logger.info('After Round off ' + amount);
+      logger.info('Total Claim Amount after Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee amount ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
