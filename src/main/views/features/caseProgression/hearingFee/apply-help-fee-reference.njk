@@ -16,7 +16,7 @@
             {{ csrfProtection(csrf) }}
             <fieldset class="govuk-fieldset">
               <legend class="govuk-visually-hidden">
-                {{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.TITLE') }}
+                {{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.QUESTION_TITLE') }}
               </legend>
             {% set yesHtml %}
               <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</h2>
@@ -37,7 +37,7 @@
               }) }}
             {% endset %}
             {% set noHtml %}
-              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</p>
+              <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</h2>
               <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.PARAGRAPH_NO') }}</p>
               <ol class="govuk-list govuk-list--number govuk-!-margin-bottom-1 govuk-!-margin-left-2">
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST')}}
