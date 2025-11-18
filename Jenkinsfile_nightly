@@ -61,7 +61,12 @@ properties([
                     'https://civil-citizen-ui-pr-{PR_NUMBER}-general-applications.preview.platform.hmcts.net',
                   ],
         description: 'The URL of GA service'),
-      choice(name: 'AAC_API_URL', choices: ['http://aac-manage-case-assignment-aat.service.core-compute-aat.internal', 'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal'],
+      choice(name: 'AAC_API_URL', 
+        choices: [
+                    'http://aac-manage-case-assignment-aat.service.core-compute-aat.internal', 
+                    'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal',
+                    'https://manage-case-assignment-civil-citizen-ui-pr-{PR_NUMBER}.preview.platform.hmcts.net'
+                  ],
         description: 'The URL of case assignment service'),
     ])
 ])
@@ -140,7 +145,7 @@ withNightlyPipeline(type, product, component) {
   def ccdDataStoreUrl = resolvePreviewUrl(params.CCD_DATA_STORE_URL, 'CCD_DATA_STORE_URL')
   def civilServiceUrl = resolvePreviewUrl(params.CIVIL_SERVICE_URL, 'CIVIL_SERVICE_URL')
   def civilGeneralApplicationsUrl = resolvePreviewUrl(params.CIVIL_GENERAL_APPLICATIONS_URL, 'CIVIL_GENERAL_APPLICATIONS_URL')
-
+  def aacApiUrl = resolvePreviewUrl(params.AAC_API_URL, 'AAC_API_URL')
 
   env.TEST_URL = testUrl
   env.URL = exuiUrl
@@ -151,6 +156,7 @@ withNightlyPipeline(type, product, component) {
   env.CCD_DATA_STORE_URL = ccdDataStoreUrl
   env.CIVIL_SERVICE_URL = civilServiceUrl
   env.CIVIL_GENERAL_APPLICATIONS_URL = civilGeneralApplicationsUrl
+  env.AAC_API_URL = aacApiUrl
   env.TESTS_FOR_ACCESSIBILITY = false
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT == 'preview' ? 'aat' : params.ENVIRONMENT
