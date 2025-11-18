@@ -12,7 +12,7 @@
 {% block nestedContent %}
   {{ govukPanel({
     titleText: t('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PANEL_TEXT'),
-    html: '<a class="govuk-link govuk-link--inverse" href=' + requestForReconsiderationDoc + ' target="_blank" rel="noreferrer noopener">'
+    html: '<a class="govuk-link govuk-link--inverse" href=' + requestForReconsiderationDoc + ' target="_blank" rel="noreferrer noopener" aria-label="' + t('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PANEL_LINK') + '">'
     + t('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PANEL_LINK') + '</a>'
   }) }}
   {% for item in confirmationContents %}

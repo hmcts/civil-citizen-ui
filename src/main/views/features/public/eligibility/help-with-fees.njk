@@ -23,10 +23,16 @@
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_HELP_WITH_FEES.FINANCIAL_HELP') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+             <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">
+                 {{ t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE') }}
+                </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+           </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

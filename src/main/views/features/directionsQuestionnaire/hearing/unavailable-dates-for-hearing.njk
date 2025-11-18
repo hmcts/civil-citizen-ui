@@ -5,6 +5,7 @@
 {% from "../../../macro/unavailable-date-row.njk" import unavailableDateRow %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -21,22 +22,33 @@
   {% endif %}
 
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" aria-labelledby="page-title">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }}</h1>
-          </legend>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
+            {% call govukFieldset({
+              legend: {
+                text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE'),
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+              }
+            }) %}
+
             {% for unavailableDate in form.model.items %}
-              {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
+              <div role="group" aria-label="{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }} {{ loop.index }}">
+                {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
+              </div>
             {% else %}
+              <div role="group" aria-label="{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }} 1">
                 {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today) }}
+              </div>
             {% endfor %}
+          </fieldset>
+
+            {% endcall %}
 
             <div class="govuk-!-margin-top-6">
               {{ govukButton({

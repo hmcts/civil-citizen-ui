@@ -19,7 +19,8 @@
     },
     attributes: {
       'data-name': 'evidenceItem[%index%][type]',
-      'data-id': 'evidenceItem[%index%][type]'
+      'data-id': 'evidenceItem[%index%][type]',
+      'aria-label': t('PAGES.EVIDENCE.EVIDENCE')
     },
     items: [
       {
@@ -89,7 +90,8 @@
       },
       attributes: {
         'data-name': 'evidenceItem[%index%][description]',
-        'data-id': 'evidenceItem[%index%][description]'
+        'data-id': 'evidenceItem[%index%][description]',
+        'aria-label': t('COMMON.DESCRIPTION')
       },
       errorMessage: {
         text: t(errorFor('evidenceItem['+evidenceIndex+'][description]'))

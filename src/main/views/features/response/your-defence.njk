@@ -39,7 +39,13 @@
               classes:"govuk-!-width-three-quarters",
               label: {
                 classes: "govuk-label--s",
-                html: labelContent
+                html: labelContent,
+                attributes: {
+                  'aria-label': t('PAGES.YOUR_DEFENCE.BRIEFLY') + ", " +
+                               t('PAGES.YOUR_DEFENCE.FAIL') + ", " +
+                               t('PAGES.YOUR_DEFENCE.ACCEPT') + ", " +
+                               t('PAGES.YOUR_DEFENCE.TIMELINE')
+                }
               },
               errorMessage: {
                 text: t(form.errorFor('text'))
