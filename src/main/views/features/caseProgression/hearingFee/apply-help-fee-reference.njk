@@ -14,8 +14,12 @@
       {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.TITLE') }}
+              </legend>
             {% set yesHtml %}
-              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
+              <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</h2>
               {{ govukInput({
                 id: "referenceNumber",
                 name: "referenceNumber",
@@ -49,6 +53,7 @@
               </ol>
             {% endset %}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
+            </fieldset>
             {% for content in applyHelpFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
