@@ -22,6 +22,10 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+             <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                 {{ t('PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE') }}
+              </legend>
             {{ govukRadios({
               idPrefix: "claimType",
               name: "claimType",
@@ -46,10 +50,11 @@
                 html: t(form.errorFor('option'))
               } if form.hasErrors()
             }) }}
-
+             </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

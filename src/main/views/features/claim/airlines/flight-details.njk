@@ -42,10 +42,15 @@
               } if form.errorFor('flightNumber')
             }) }}
 
-            <h1 class="govuk-heading-s">{{ t('PAGES.FLIGHT_DETAILS.SCHEDULED_DATE') }}</h1>
             {{ govukDateInput({
               id: "flightDate",
               name: "flightDate",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.FLIGHT_DETAILS.SCHEDULED_DATE'),
+                  classes: 'govuk-fieldset__legend--s'
+                }
+              },
               hint: {
                 text: t('COMMON.DATE_EXAMPLE', {
                   date: today.getDate() + ' ' + today.getMonth() + ' ' + today.getFullYear()

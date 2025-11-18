@@ -37,15 +37,17 @@
                 </p>
               {% endif %}
               <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop govuk-form-group">
-                <label class="govuk-label govuk-label--s">
+                <span id="claim-reason-heading" class="govuk-label govuk-label--s">
                   {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
-                </label>
+                </span>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
                   {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.HINT') }}
                 </p>
               </div>
-              <div class="govuk-label govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                <label class="govuk-label--s">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}</label>
+              <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
+                <span id="claim-amount-heading" class="govuk-label govuk-label--s">
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}
+                </span>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
@@ -60,22 +62,22 @@
 
               <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
               <div class="language">
-                <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
-                  £
-                  <span class="total-claim-amount">
-                  0
-               </span>
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-0">
+                  <span aria-hidden="true">£</span>
+                  <span class="total-claim-amount" aria-label="{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.TOTAL_AMOUNT') }}">
+                    0
+                  </span>
                   <input type="hidden" class="total-claim-amount" name="totalAmount" value="{{ form.model.totalAmount }}"/>
-                </p>
+                </h2>
               </div>
             </div>
             <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-form-group">
-              {{ govukButton({
-                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
-              }) }}
-              {{ contactUsForHelp(t) }}
-            </div>
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+                }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
             </div>
           </form>
         </div>

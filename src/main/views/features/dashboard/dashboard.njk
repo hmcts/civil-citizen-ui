@@ -32,11 +32,12 @@
   {% if claimsAsClaimant | length or claimDraftSaved | length %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.CLAIMANT_TITLE') }}</h2>
-        <p class="govuk-body">
-          {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
-        </p>
-        <table class="govuk-table">
+        <h2 class="govuk-heading-m" id="claimant-section-heading">{{ t('PAGES.DASHBOARD.CLAIMANT_TITLE') }}</h2>
+         <p class="govuk-body">
+           {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
+         </p>
+        <table class="govuk-table" aria-labelledby="claimant-section-heading claimant-table-caption" aria-describedby="claimant-table-caption">
+          <caption id="claimant-table-caption" class="govuk-visually-hidden">{{ t('PAGES.DASHBOARD.CLAIMANT_TITLE') }}</caption>
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
@@ -50,7 +51,7 @@
               {% set viewClaimNumberDraft = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:t(claimDraftSaved.claimNumber) }) %}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
-                  <a class="table-link" href={{ claimDraftSaved.getHref() }}>
+                  <a class="table-link" href={{ claimDraftSaved.getHref() }} aria-label="{{ viewClaimNumberDraft }}">
                     {{ t(claimDraftSaved.claimNumber) }}
                   </a>
                 </td>
@@ -63,7 +64,7 @@
               {% set viewClaimNumber = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber })%}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
-                  <a class="table-link" href={{ item.getHref() }}>
+                  <a class="table-link" href={{ item.getHref() }} aria-label="{{ viewClaimNumber }}">
                     {{ item.claimNumber }}
                   </a>
                 </td>
@@ -87,11 +88,12 @@
   {% if claimsAsDefendant | length %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.DEFENDANT_TITLE') }}</h2>
-        <p class="govuk-body">
-          {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
-        </p>
-        <table class="govuk-table">
+        <h2 class="govuk-heading-m" id="defendant-section-heading">{{ t('PAGES.DASHBOARD.DEFENDANT_TITLE') }}</h2>
+         <p class="govuk-body">
+           {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
+         </p>
+        <table class="govuk-table" aria-labelledby="defendant-section-heading defendant-table-caption" aria-describedby="defendant-table-caption">
+          <caption id="defendant-table-caption" class="govuk-visually-hidden">{{ t('PAGES.DASHBOARD.DEFENDANT_TITLE') }}</caption>
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
@@ -102,9 +104,10 @@
           </thead>
           <tbody class="govuk-table__body">
             {% for item in claimsAsDefendant %}
+              {% set viewClaimNumberDefendant = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber }) %}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
-                  <a class="table-link" href={{ item.getHref() }}>
+                  <a class="table-link" href={{ item.getHref() }} aria-label="{{ viewClaimNumberDefendant }}">
                     {{ item.claimNumber }}
                   </a>
                 </td>
