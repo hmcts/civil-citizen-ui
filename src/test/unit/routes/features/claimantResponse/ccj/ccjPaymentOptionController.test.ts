@@ -11,8 +11,8 @@ import {
 } from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CivilServiceClient} from "client/civilServiceClient";
-import {Claim} from "models/claim";
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
