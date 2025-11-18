@@ -9,8 +9,12 @@
           {{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE') }}
          </h2>
        {{ csrfProtection(csrf) }}
+        <legend class="govuk-visually-hidden">
+          {{ t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION') }}
+        </legend>
        {% for content in applyHelpFeeStartContents %}
           {{ itemContent(content,t) }}
        {% endfor %}
+       </fieldset>
       </form>
 {% endblock %}
