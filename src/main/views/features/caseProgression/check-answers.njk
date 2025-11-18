@@ -91,7 +91,6 @@
           {% for content in bottomPageContents %}
                 {{ itemContent(content,t) }}
           {% endfor %}
-
           <form method="post" novalidate autocomplete="off" aria-describedby="form-error" aria-live="polite">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
