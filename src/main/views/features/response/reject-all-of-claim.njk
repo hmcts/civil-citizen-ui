@@ -1,6 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
@@ -27,9 +26,17 @@
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group {% if optionError %} govuk-form-group--error {% endif %}">
             {{ govukRadios({
               idPrefix: "option",
               name: "option",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }),
+                    classes: "govuk-fieldset__legend--m",
+                    isPageHeading: false
+                  }
+                },
               items: [
                 {
                   value: rejectAllOfClaimType.ALREADY_PAID,
@@ -47,8 +54,14 @@
                   html: t('PAGES.REJECT_ALL_CLAIM.COUNTERCLAIM')
                 }
               ],
-              errorMessage: { text: ' ' } if optionError else ''
-            }) }}
+              errorMessage: {
+                  text: t(optionError)
+                } if optionError,
+                attributes: {
+                  "aria-describedby": "option-error" if optionError
+                }
+              }) }}
+            </div>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

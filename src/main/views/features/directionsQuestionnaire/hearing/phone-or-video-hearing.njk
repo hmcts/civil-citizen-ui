@@ -24,7 +24,10 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.PHONE_OR_VIDEO_HEARING.TITLE') }}
+              </legend>
             {% set yesHtml %}
               {{ govukTextarea({
                 name: "details",
@@ -40,7 +43,7 @@
             {% endset %}
 
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
