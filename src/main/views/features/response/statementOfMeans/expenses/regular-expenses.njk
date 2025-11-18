@@ -19,45 +19,72 @@
   {% set scheduleLabel = t('PAGES.REGULAR_EXPENSES.PAID_EVERY') %}
   {% set expenseSourceLabel = t('PAGES.REGULAR_EXPENSES.SOURCE_OF_EXPENSES') %}
   {% set checkedMortgageHtml %}
+  <div id="conditional-mortgage" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.MORTGAGE') }}">
   {{ transactionDetails(t,'PAGES.REGULAR_EXPENSES.INCLUDE_ALL_MORTGAGES', 'model[mortgage][transactionSource]',  form.model.mortgage.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedRentHtml %}
+  <div id="conditional-rent" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.RENT') }}">
   {{ transactionDetails(t,'', 'model[rent][transactionSource]',  form.model.rent.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedCouncilTaxHtml %}
+  <div id="conditional-councilTax" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX') }}">
   {{ transactionDetails(t,'', 'model[councilTax][transactionSource]',  form.model.councilTax.transactionSource, {amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedGasHtml %}
+  <div id="conditional-gas" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.GAS') }}">
   {{ transactionDetails(t,'', 'model[gas][transactionSource]', form.model.gas.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedElectricityHtml %}
+  <div id="conditional-electricity" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.ELECTRICITY') }}">
   {{ transactionDetails(t,'', 'model[electricity][transactionSource]', form.model.electricity.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedWaterHtml %}
+  <div id="conditional-water" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.WATER') }}">
   {{ transactionDetails(t,'PAGES.REGULAR_EXPENSES.INCLUDE_SEWERAGE_PAYMENTS', 'model[water][transactionSource]', form.model.water.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedTravelHtml %}
+  <div id="conditional-travel" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.TRAVEL') }}">
   {{ transactionDetails(t,'', 'model[travel][transactionSource]', form.model.travel.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedSchoolHtml %}
+  <div id="conditional-schoolCosts" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.SCHOOL_COSTS') }}">
   {{ transactionDetails(t,'', 'model[schoolCosts][transactionSource]', form.model.schoolCosts.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedFoodHtml %}
+  <div id="conditional-foodAndHousekeeping" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.FOOD_AND_HOUSEKEEPING') }}">
   {{ transactionDetails(t,'', 'model[foodAndHousekeeping][transactionSource]',  form.model.foodAndHousekeeping.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedTvHtml %}
+  <div id="conditional-tvAndBroadband" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.TV_AND_BROADBAND') }}">
   {{ transactionDetails(t,'', 'model[tvAndBroadband][transactionSource]',  form.model.tvAndBroadband.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedHirePurchaseHtml %}
+  <div id="conditional-hirePurchase" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.HIRE_PURCHASE') }}">
   {{ transactionDetails(t,'', 'model[hirePurchase][transactionSource]',  form.model.hirePurchase.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedMobileHtml %}
+  <div id="conditional-mobilePhone" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.MOBILE_PHONE') }}">
   {{ transactionDetails(t,'', 'model[mobilePhone][transactionSource]', form.model.mobilePhone.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedMaintenanceHtml %}
+  <div id="conditional-maintenance" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.MAINTENANCE') }}">
   {{ transactionDetails(t,'', 'model[maintenance][transactionSource]', form.model.maintenance.transactionSource,{amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  </div>
   {% endset -%}
   {% set checkedOtherHtml %}
+  <div id="conditional-other" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.OTHER') }}">
   <div class="govuk-form-group">
     {% for transactionSource in form.model.other.transactionSources %}
       {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
@@ -73,9 +100,10 @@
         classes: "govuk-button--secondary append-row"
       }) }}
   </div>
+  </div>
   {% endset -%}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" role="main" id="main-content">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
@@ -91,130 +119,131 @@
                 }
               },
               hint: {
-                text: t('PAGES.REGULAR_EXPENSES.INFORMATION_NOTE')
+                text: t('PAGES.REGULAR_EXPENSES.INFORMATION_NOTE'),
+                attributes: { id: "regular-expenses-hint" }
               },
               items: [
                 {
                   value: "mortgage",
                   text: t('COMMON.CHECKBOX_FIELDS.MORTGAGE'),
                   conditional: {
-                  html: checkedMortgageHtml
-                },
+                    html: checkedMortgageHtml
+                  },
                   checked: true if form.model.mortgage.declared
                 },
                 {
                   value: "rent",
                   text: t('COMMON.CHECKBOX_FIELDS.RENT'),
                   conditional: {
-                  html: checkedRentHtml
-                },
+                    html: checkedRentHtml
+                  },
                   checked: true if form.model.rent.declared
                 },
                 {
                   value: "councilTax",
                   text: t('COMMON.CHECKBOX_FIELDS.COUNCIL_TAX'),
                   conditional: {
-                  html: checkedCouncilTaxHtml
-                },
+                    html: checkedCouncilTaxHtml
+                  },
                   checked: true if form.model.councilTax.declared
                 },
                 {
                   value: "gas",
                   text: t('COMMON.CHECKBOX_FIELDS.GAS'),
                   conditional: {
-                  html: checkedGasHtml
-                },
+                    html: checkedGasHtml
+                  },
                   checked: true if form.model.gas.declared
                 },
                 {
                   value: "electricity",
                   text: t('COMMON.CHECKBOX_FIELDS.ELECTRICITY'),
                   conditional: {
-                  html: checkedElectricityHtml
-                },
+                    html: checkedElectricityHtml
+                  },
                   checked: true if form.model.electricity.declared
                 },
                 {
                   value: "water",
                   text: t('COMMON.CHECKBOX_FIELDS.WATER'),
                   conditional: {
-                  html: checkedWaterHtml
-                },
+                    html: checkedWaterHtml
+                  },
                   checked: true if form.model.water.declared
                 },
                 {
                   value: "travel",
                   text: t('COMMON.CHECKBOX_FIELDS.TRAVEL'),
                   conditional: {
-                  html: checkedTravelHtml
-                },
+                    html: checkedTravelHtml
+                  },
                   checked: true if form.model.travel.declared
                 },
                 {
                   value: "schoolCosts",
                   text: t('COMMON.CHECKBOX_FIELDS.SCHOOL_COSTS'),
                   conditional: {
-                  html: checkedSchoolHtml
-                },
+                    html: checkedSchoolHtml
+                  },
                   checked: true if form.model.schoolCosts.declared
                 },
                 {
                   value: "foodAndHousekeeping",
                   text: t('COMMON.CHECKBOX_FIELDS.FOOD_AND_HOUSEKEEPING'),
                   conditional: {
-                  html: checkedFoodHtml
-                },
+                    html: checkedFoodHtml
+                  },
                   checked: true if form.model.foodAndHousekeeping.declared
                 },
                 {
                   value: "tvAndBroadband",
                   text: t('COMMON.CHECKBOX_FIELDS.TV_AND_BROADBAND'),
                   conditional: {
-                  html: checkedTvHtml
-                },
+                    html: checkedTvHtml
+                  },
                   checked: true if form.model.tvAndBroadband.declared
                 },
                 {
                   value: "hirePurchase",
                   text: t('COMMON.CHECKBOX_FIELDS.HIRE_PURCHASE'),
                   conditional: {
-                  html: checkedHirePurchaseHtml
-                },
+                    html: checkedHirePurchaseHtml
+                  },
                   checked: true if form.model.hirePurchase.declared
                 },
                 {
                   value: "mobilePhone",
                   text: t('COMMON.CHECKBOX_FIELDS.MOBILE_PHONE'),
                   conditional: {
-                  html: checkedMobileHtml
-                },
+                    html: checkedMobileHtml
+                  },
                   checked: true if form.model.mobilePhone.declared
                 },
                 {
                   value: "maintenance",
                   text: t('COMMON.CHECKBOX_FIELDS.MAINTENANCE'),
                   conditional: {
-                  html: checkedMaintenanceHtml
-                },
+                    html: checkedMaintenanceHtml
+                  },
                   checked: true if form.model.maintenance.declared
                 },
                 {
                   value: "other",
                   text: t('COMMON.CHECKBOX_FIELDS.OTHER'),
                   conditional: {
-                  html: checkedOtherHtml
-                },
+                    html: checkedOtherHtml
+                  },
                   checked: true if form.model.other.declared
                 }
               ]
             }) }}
             <div class="govuk-form-group">
-              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+              <h2 class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
                 {{ t('PAGES.REGULAR_EXPENSES.TOTAL_MONTHLY_EXPENDITURE') }}: £
                 <span class="total-monthly-income-expense">
                   0
                 </span>
-              </p>
+              </h2>
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}

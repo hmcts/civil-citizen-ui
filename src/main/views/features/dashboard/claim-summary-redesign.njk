@@ -6,10 +6,11 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/banner.njk" import addBanner %}
 
 {% block nestedContent %}
         {% block warning_message %}
-          {% include "../../macro/banner.njk" %}
+          {{ addBanner("2025-10-31T07:00+01:00", "2025-11-07T04:00+01:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
         {% endblock %}
         {% block welsh_party_message %}
           {% include "../../macro/welsh_party_banner.njk" %}
@@ -39,19 +40,21 @@
         <div class="border-small-top"></div>
          <div class="dashboard-notification">
           {% for notification in dashboardNotifications.items %}
+              {% set titleId = 'dashboard-notification-banner-title-' ~ loop.index0 %}
               {{ govukNotificationBanner({
                  titleText: notification.titleCy if lang=="cy" else notification.titleEn,
                  html: notification.descriptionCy if lang=="cy" else notification.descriptionEn,
+                 titleId: titleId,
                  classes: "govuk-!-margin-bottom-4"
                })  }}
           {% endfor %}
          </div>
           {% for taskList in dashboardTaskList.items %}
             <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-              <h2 class="app-task-list__section">
+              <h2 class="app-task-list__section" id="tasklist-heading-{{ loop.index }}">
                  {% if lang=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
               </h2>
-              <ol class="app-task-list app-task-list__items">
+             <ol class="app-task-list app-task-list__items" role="group" aria-labelledby="tasklist-heading-{{ loop.index }}">
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
                     <div class="row">
