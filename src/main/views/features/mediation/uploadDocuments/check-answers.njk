@@ -20,18 +20,18 @@
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-column-two-thirds" role="region" aria-labelledby="check-your-answer-heading">
           {% for content in topPageContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
 
 
           {% if summarySections.sections.length > 0 %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE') }}</h1>
+            <h1 id="check-your-answer-heading" class="govuk-heading-l">{{ t('PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE') }}</h1>
             {% for section in summarySections.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
-                    <div class="govuk-form-group">
+                    <h2 id="section-{{ loop.index0 }}-heading" class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    <div class="govuk-form-group" aria-labelledby="section-{{ loop.index0 }}-heading">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
                       }) }}
@@ -44,10 +44,11 @@
           {% for content in bottomPageContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          <form method="post" novalidate autocomplete="off">
+          <form method="post" novalidate autocomplete="off" aria-describedby="signed-hint">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
 
+            <div id="signed-hint" class="govuk-hint">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE') }}</div>
             {{ govukCheckboxes({
               idPrefix: 'signed',
               name: 'signed',

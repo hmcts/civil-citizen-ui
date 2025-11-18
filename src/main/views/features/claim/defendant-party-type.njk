@@ -18,7 +18,6 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.DEFENDANT_PARTY_TYPE.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% set typeError = form.errorFor('option') %}
@@ -26,6 +25,13 @@
               {{ govukRadios({
                 idPrefix: "defendantPartyType",
                 name: "option",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.DEFENDANT_PARTY_TYPE.TITLE'),
+                    classes: "govuk-fieldset__legend--l",
+                    isPageHeading: true
+                  }
+                },
                 items: [
                   {
                     value: partyType.INDIVIDUAL,

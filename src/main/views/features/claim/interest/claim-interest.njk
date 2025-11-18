@@ -25,8 +25,13 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.TITLE') }}
+              </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '',{yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             {% include "features/claim/help-with-interest-rates.njk"%}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

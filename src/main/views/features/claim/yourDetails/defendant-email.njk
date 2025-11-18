@@ -38,6 +38,9 @@
                 text: t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE'),
                 classes: 'govuk-visually-hidden'
               },
+              attributes: {
+                "aria-label": t('PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE')
+              },
               errorMessage: {
                 html: t(form.errorFor('emailAddress'))
               } if form.hasErrors()

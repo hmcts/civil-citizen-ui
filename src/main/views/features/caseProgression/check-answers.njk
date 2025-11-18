@@ -13,7 +13,8 @@
           {% endfor %}
 
           {% if summarySections.disclosureEvidenceSection.sections.length > 0 %}
-            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE') }}</h2>
+            <section role="region" aria-labelledby="disclosure-evidence-heading">
+            <h2 id="disclosure-evidence-heading" class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE') }}</h2>
             {% for section in summarySections.disclosureEvidenceSection.sections %}
               <div class="govuk-!-margin-bottom-9">
                 {% if section.title %}
@@ -26,10 +27,12 @@
                 </div>
               </div>
             {% endfor %}
+            </section>
           {% endif %}
 
           {% if summarySections.witnessEvidenceSection.sections.length > 0 %}
-            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE') }}</h2>
+            <section role="region" aria-labelledby="witness-evidence-heading">
+            <h2 id="witness-evidence-heading" class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE') }}</h2>
             {% for section in summarySections.witnessEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
                     {% if section.title %}
@@ -42,10 +45,12 @@
                     </div>
                   </div>
             {% endfor %}
+            </section>
           {% endif %}
 
           {% if summarySections.expertEvidenceSection.sections.length > 0 %}
-            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE') }}</h2>
+            <section role="region" aria-labelledby="expert-evidence-heading">
+            <h2 id="expert-evidence-heading" class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE') }}</h2>
             {% for section in summarySections.expertEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
                     {% if section.title %}
@@ -58,14 +63,16 @@
                     </div>
                   </div>
             {% endfor %}
+            </section>
           {% endif %}
 
 
           {% if summarySections.trialEvidenceSection.sections.length > 0 %}
+            <section role="region" aria-labelledby="trial-evidence-heading">
             {% if isSmallClaims %}
-              <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS') }}</h2>
+              <h2 id="trial-evidence-heading" class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS') }}</h2>
             {% else %}
-              <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TRIAL') }}</h2>
+              <h2 id="trial-evidence-heading" class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TRIAL') }}</h2>
             {% endif %}
             {% for section in summarySections.trialEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
@@ -79,17 +86,24 @@
                     </div>
                   </div>
             {% endfor %}
+            </section>
           {% endif %}
           {% for content in bottomPageContents %}
                 {{ itemContent(content,t) }}
           {% endfor %}
-          <form method="post" novalidate autocomplete="off">
+          <form method="post" novalidate autocomplete="off" aria-describedby="form-error" aria-live="polite">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
 
             {{ govukCheckboxes({
               idPrefix: 'signed',
               name: 'signed',
+              fieldset: {
+                legend: {
+                  text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_CORRECT'),
+                  classes: "govuk-visually-hidden"
+                }
+              },
               items: [
                 {
                   value: true,
@@ -98,7 +112,8 @@
                 }
               ],
               errorMessage: {
-                text:t(form.errorFor(signed))
+                text:t(form.errorFor(signed)),
+                attributes: { id: "form-error" }
               } if form.errorFor(signed)
             }) }}
             {{ addButton(t, 'SUBMIT',cancelUrl) }}
