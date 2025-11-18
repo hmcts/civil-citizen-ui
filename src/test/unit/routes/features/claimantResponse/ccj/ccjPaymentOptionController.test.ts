@@ -11,6 +11,8 @@ import {
 } from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {CivilServiceClient} from "client/civilServiceClient";
+import {Claim} from "models/claim";
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
@@ -28,6 +30,11 @@ describe('CCJ - Payment option', () => {
   describe('on GET', () => {
     it('should return ccj payment option', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockCivilClaim  as unknown as Claim)),
+        );
       const res = await request(app).get(CCJ_PAYMENT_OPTIONS_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Payment Option');

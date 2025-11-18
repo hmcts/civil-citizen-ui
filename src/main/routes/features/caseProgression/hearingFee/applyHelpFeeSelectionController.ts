@@ -23,7 +23,7 @@ const applyHelpFeeSelectionController: Router = Router();
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
   let claim: Claim = await getClaimById(claimId, req, true);
   if (!claim.caseProgressionHearing?.hearingFeeInformation?.hearingFee) {
-    claim = await refreshDraftStoreClaimFrom(claimId, req, true);
+    claim = await refreshDraftStoreClaimFrom(req, true);
   }
   if (!form) {
     form = new GenericForm(new GenericYesNo(null, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));

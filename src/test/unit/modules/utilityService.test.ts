@@ -165,7 +165,7 @@ describe('Utility service', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
 
-      const result = await refreshDraftStoreClaimFrom('1645882162449409', req);
+      const result = await refreshDraftStoreClaimFrom(req);
 
       expect(result).toBe(claim);
       expect(req.session.caseReference).toBe('1645882162449409');
@@ -177,7 +177,7 @@ describe('Utility service', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(null);
       try {
-        await refreshDraftStoreClaimFrom('non-existent-claim-id', req);
+        await refreshDraftStoreClaimFrom( req);
       } catch (err) {
         expect(err.message).toBe('Case not found...');
       }

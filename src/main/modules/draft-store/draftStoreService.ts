@@ -114,7 +114,7 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return req.params.id + req.session.user?.id;
+  return req.params?.id + req.session.user?.id;
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {

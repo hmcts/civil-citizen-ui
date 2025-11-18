@@ -14,9 +14,7 @@ const claimantResponseConfirmationController = Router();
 claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, claimantResponseConfirmationGuard, (async (req: AppRequest, res: Response, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    //await deleteDraftClaimFromStore(generateRedisKey(req));
-    //const claim = await getClaimById(req.params.id, req, true);
-    const claim = await refreshDraftStoreClaimFrom(req.params.id, req, true);
+    const claim = await refreshDraftStoreClaimFrom(req, true);
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
     const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
     const isMultiOrIntermediateTrack = isIntermediateTrack(claim.totalClaimAmount, mintiEnabled) || isMultiTrack(claim.totalClaimAmount, mintiEnabled);
