@@ -26,7 +26,6 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
     const claimFee = convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
-
     const form = {
       claimAmount: claim.totalClaimAmount?.toFixed(2),
       interestToDate: interestToDate.toFixed(2),
