@@ -179,4 +179,4 @@ wa:
         CAMUNDA_DB_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: true
+          disabled: false
