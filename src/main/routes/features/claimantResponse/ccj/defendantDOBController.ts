@@ -31,7 +31,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
 defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
-    logger.info(`Getting defendant DOB ${claimantResponse.ccjRequest.defendantDOB}`);
+    logger.info(`Getting defendant DOB ${claimantResponse.ccjRequest?.defendantDOB}`);
     const defendantDOB = claimantResponse.ccjRequest ?
       claimantResponse.ccjRequest.defendantDOB : new DefendantDOB();
     renderView(new GenericForm(defendantDOB), res);
