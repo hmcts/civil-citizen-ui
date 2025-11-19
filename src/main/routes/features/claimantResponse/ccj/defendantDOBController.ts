@@ -13,7 +13,8 @@ import {DateOfBirth} from 'models/claimantResponse/ccj/dateOfBirth';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
-
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('Claim - Claim Interest');
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';
 const crPropertyName = 'defendantDOB';
@@ -30,6 +31,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
 defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
+    logger.info(`Getting defendant DOB ${claimantResponse.ccjRequest.defendantDOB}`);
     const defendantDOB = claimantResponse.ccjRequest ?
       claimantResponse.ccjRequest.defendantDOB : new DefendantDOB();
     renderView(new GenericForm(defendantDOB), res);
