@@ -237,6 +237,9 @@ describe('Claim - Check answers', () => {
         });
     });
     it('should return submit button when Fee is no', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.applicant1 = new Party();
@@ -265,6 +268,9 @@ describe('Claim - Check answers', () => {
         });
     });
     it('should return submit button when Fee is yes', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.applicant1 = new Party();
@@ -293,6 +299,9 @@ describe('Claim - Check answers', () => {
         });
     });
     it('should redirect to claim submitted confirmation page when help with fees is set to yes', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockSubmitClaim.mockImplementation(() => {
         const submittedClaim = new Claim();
         submittedClaim.id = ':id';
@@ -335,6 +344,9 @@ describe('Claim - Check answers', () => {
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
     it('should redirect to claim confirmation page when Fee is no', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
         claim.applicant1 = new Party();
