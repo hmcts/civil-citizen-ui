@@ -13,8 +13,8 @@ class HelpWithFees {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Help with fees', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0002', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0002', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
     I.seeElement('div.govuk-inset-text');
     I.seeElement('//span[contains(., "The hearing fee is: £70")]');
     I.see('Applying for help with fees does not guarantee your fee will be covered. You will need to meet the', 'p.govuk-body');
@@ -46,8 +46,8 @@ class HelpWithFees {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Apply for help with fees', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0002', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0002', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
 
     I.see('If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.', 'p.govuk-body');
 
@@ -72,8 +72,8 @@ class HelpWithFees {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Help with fees', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0002', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0002', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
 
     I.see('Do you have a help with fees reference number?', 'h2.govuk-heading-m');
 
