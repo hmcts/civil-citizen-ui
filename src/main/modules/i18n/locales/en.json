@@ -5752,6 +5752,7 @@
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SOMETHING_WENT_WRONG": "Something went wrong",
+    "WAIT_FOR_DEFENDANT_TO_PAY_BEFORE_CCJ": "Wait for 5 days before requesting CCJ.",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
