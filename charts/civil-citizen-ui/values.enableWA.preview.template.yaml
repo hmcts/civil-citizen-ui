@@ -160,7 +160,7 @@ wa:
         DB_READER_USERNAME: "hmcts"
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
-        CAMUNDA_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
+        CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
     secrets:
       POSTGRES_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
