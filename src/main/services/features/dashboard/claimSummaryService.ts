@@ -6,7 +6,6 @@ import {
   buildTrialReadyDocumentSection,
 } from './claimDocuments/claimDocumentContentBuilder';
 import {getEvidenceUploadDocuments} from 'services/features/caseProgression/documentTableBuilder';
-import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {buildDownloadSectionTitle} from 'services/features/dashboard/documentBuilderService';
 import {
@@ -14,12 +13,12 @@ import {
 } from 'services/features/dashboard/finalOrderDocuments/finalOrderDocumentContentBuilder';
 
 async function getDocumentsContent(claim: Claim, claimId: string, lang?: string): Promise<ClaimSummaryContent[]> {
-  const downloadOrdersSection = await isCaseProgressionV1Enable() ? buildDownloadFinalOrderSection(claim, claimId, lang): [];
+  const downloadOrdersSection = buildDownloadFinalOrderSection(claim, claimId, lang);
   const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
   const downloadClaimSection = buildSystemGeneratedDocumentSections(claim, claimId, lang);
-  const downloadHearingNoticeSection = await isCaseProgressionV1Enable() ? buildDownloadHearingNoticeSection(claim, claimId, lang) : undefined;
-  const downloadTrialReadyClaimantSection = await isCaseProgressionV1Enable() ? buildTrialReadyDocumentSection(claim, claimId, lang, true) : undefined;
-  const downloadTrialReadyDefendantSection = await isCaseProgressionV1Enable() ? buildTrialReadyDocumentSection(claim, claimId, lang, false) : undefined;
+  const downloadHearingNoticeSection = buildDownloadHearingNoticeSection(claim, claimId, lang);
+  const downloadTrialReadyClaimantSection = buildTrialReadyDocumentSection(claim, claimId, lang, true);
+  const downloadTrialReadyDefendantSection = buildTrialReadyDocumentSection(claim, claimId, lang, false);
 
   return [{
     contentSections: [

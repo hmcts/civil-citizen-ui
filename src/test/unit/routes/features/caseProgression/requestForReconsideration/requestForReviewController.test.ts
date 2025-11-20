@@ -11,7 +11,6 @@ import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -30,9 +29,6 @@ describe('Request for Review - On GET', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should render page successfully in English if cookie has correct values', async () => {
@@ -79,9 +75,6 @@ describe('Request for Review - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
   });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
-  });
 
   it('should redirect to "Check your answers" page when click continue', async () => {
 
@@ -101,4 +94,3 @@ describe('Request for Review - on POST', () => {
       });
   });
 });
-

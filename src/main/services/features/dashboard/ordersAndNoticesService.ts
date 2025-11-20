@@ -12,7 +12,6 @@ import { ClaimBilingualLanguagePreference } from 'models/claimBilingualLanguageP
 import { Document } from 'models/document/document';
 import { documentIdExtractor } from 'common/utils/stringUtils';
 import {
-  isCaseProgressionV1Enable,
   isCaseWorkerEventsEnabled,
   isGaForLipsEnabled,
   isWelshEnabledForMainCase,
@@ -26,7 +25,6 @@ export const getClaimantDocuments = async (
   claimId: string,
   lang: string,
 ) => {
-  const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const claimantDocumentsArray: DocumentInformation[] = [];
@@ -59,11 +57,9 @@ export const getClaimantDocuments = async (
     );
     claimantDocumentsArray.push(...getClaimantDraftClaim(claim, claimId, lang));
   }
-  if (isCaseProgressionEnabled) {
-    claimantDocumentsArray.push(
-      ...getTrialArrangementsDocument(claim, claimId, lang, true),
-    );
-  }
+  claimantDocumentsArray.push(
+    ...getTrialArrangementsDocument(claim, claimId, lang, true),
+  );
   // Documents for LR only
   claimantDocumentsArray.push(
     ...getClaimantParticularsOfClaim(claim, claimId, lang),
@@ -78,7 +74,6 @@ export const getClaimantDocuments = async (
 };
 
 export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
-  const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCUIWelshEnabled = await isWelshEnabledForMainCase();
 
   const defendantDocumentsArray: DocumentInformation[] = [];
@@ -92,9 +87,7 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
   }
   defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantRequestForReconsideration(claim, claimId, lang));
-  if (isCaseProgressionEnabled) {
-    defendantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, false));
-  }
+  defendantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, false));
   // Documents for LR only
   defendantDocumentsArray.push(...getDefendantSupportDocument(claim, claimId, lang));
   defendantDocumentsArray.push(...getCoSCDocument(claim, claimId, lang));
@@ -102,7 +95,6 @@ export const getDefendantDocuments = async (claim: Claim, claimId: string, lang:
 };
 
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
-  const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const isCaseworkerEventsEnabled = await isCaseWorkerEventsEnabled();
   const isJudgmentOnlineEnabled = await isJudgmentOnlineLive();
 
@@ -121,11 +113,9 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
   courtDocumentsArray.push(...getCcjRequestDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
 
-  if (isCaseProgressionEnabled) {
-    courtDocumentsArray.push(...getDecisionOnReconsideration(claim, claimId, lang));
-    courtDocumentsArray.push(...getTranslatedOrders(claim, claimId, lang));
-    courtDocumentsArray.push(...getFinalOrders(claim, claimId, lang));
-  }
+  courtDocumentsArray.push(...getDecisionOnReconsideration(claim, claimId, lang));
+  courtDocumentsArray.push(...getTranslatedOrders(claim, claimId, lang));
+  courtDocumentsArray.push(...getFinalOrders(claim, claimId, lang));
 
   if (await isGaForLipsEnabled()) {
     courtDocumentsArray.push(...getGeneralApplicationOrders(claim, claimId, lang));
