@@ -96,6 +96,7 @@ function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, p
     delete claim.claimantResponse.mediation;
     delete claim.claimantResponse.directionQuestionnaire;
   }
+  delete claim.claimantResponse.mediationCarm;
   return claim;
 }
 
@@ -225,7 +226,7 @@ const constructBanksAndSavingsAccountSection = (claim: Claim, lng: string) => {
           text: t('COMMON.BALANCE', {lng}),
         },
         value: {
-          text: currencyFormatWithNoTrailingZeros(parseFloat(account.balance)),
+          text: currencyFormatWithNoTrailingZeros(Number.parseFloat(account.balance)),
         },
         classes: 'govuk-summary-list__row--no-border',
       },
@@ -656,7 +657,7 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
           text: t('COMMON.TOTAL_DEBT', {lng}),
         },
         value: {
-          text: currencyFormatWithNoTrailingZeros(parseFloat(debt?.totalOwned)),
+          text: currencyFormatWithNoTrailingZeros(Number.parseFloat(debt?.totalOwned)),
         },
         classes: 'govuk-summary-list__row--no-border',
       });
@@ -666,7 +667,7 @@ const constructDebtsSection = (claim: Claim, lng: string) => {
           text: t('COMMON.MONTHLY_PAYMENTS', {lng}),
         },
         value: {
-          text: currencyFormatWithNoTrailingZeros(parseFloat(debt?.monthlyPayments)),
+          text: currencyFormatWithNoTrailingZeros(Number.parseFloat(debt?.monthlyPayments)),
         },
       });
     });

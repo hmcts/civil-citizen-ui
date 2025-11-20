@@ -4,6 +4,7 @@
     "HOME_CARM": "Tudalen gartref",
     "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Uwchlwytho ffeil",
+    "SAVE_FILE": "Cadw ffeil",
     "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DATE_UPLOADED": "Dyddiad uwchlwytho [{{ uploadedDate }}]",
@@ -19,6 +20,7 @@
     "CASE_NUMBER_PARAM_CARM": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
+    "APPLY_TO_THE_COURT": "wneud cais i’r llys",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
     "AMOUNT": "Swm",
     "BALANCE": "Balans",
@@ -563,7 +565,7 @@
         "GO_TO_DASHBOARD": "Mynd i’ch dangosfwrdd"
       },
       "COMMON": {
-        "ANYTHING_ELSE": "Unrhyw beth arall",
+        "ANYTHING_ELSE": "Os ydych angen cymorth gydag unrhyw beth arall",
         "MESSAGE_TO_THE_COURT_V1": "Os ydych chi dal angen diweddariad ar eich hawliad, gallwch anfon neges i’r llys.",
         "MESSAGE_TO_THE_COURT_V2": "Os ydych chi dal angen cymorth gyda’ch hawliad, gallwch anfon neges i’r llys.",
         "WE_TRY_TO_ANSWER": "Rydym yn ceisio ateb negeseuon o fewn 10 diwrnod gwaith, ond gallai gymryd mwy o amser.",
@@ -968,7 +970,7 @@
         "IS_HEARING": "A yw eich neges yn ymwneud â gwrandawiad sydd ar y gweill?",
         "HEARING_DATE": "Beth yw dyddiad y gwrandawiad?",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges. Ar ôl dewis y ffeil, cliciwch ar 'cadw ffeil'.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "SEND_MESSAGE_CYA": {
         "HEADING": "Adolygu manylion y neges",
@@ -1001,7 +1003,7 @@
         "BODY_TITLE": "Manylion y neges",
         "BODY_HINT": "Dylech gynnwys gymaint o fanylion â phosib fel y gall gweithwyr achos ymateb i’ch neges",
         "DOCUMENTS_TITLE": "Uwchlwytho dogfennau (dewisol)",
-        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
+        "DOCUMENTS_HINT": "<span>Dylech ond uwchlwytho dogfennau sy’n gysylltiedig â’ch neges. Ar ôl dewis y ffeil, cliciwch ar 'cadw ffeil'.</br> Defnyddiwch yr opsiynau uwchlwytho priodol i uwchlwytho dogfennau i symud eich hawliad yn ei flaen. </br></br>Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.</span>"
       },
       "VIEW_QUERY_DETAILS": {
         "PAGE_TITLE": "Manylion y neges",
@@ -1475,7 +1477,8 @@
 
         "BEFORE_YOU_UPLOAD_TITLE": "Cyn ichi lwytho eich dogfennau",
         "BEFORE YOU UPLOAD": "Cyn i chi lwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft “Datganiad cyfryngu di-bresenoldeb gan Jane Smith”/",
-        "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "EACH_DOCUMENT_MUST_WITH_SAVE_FILE": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF. Ar ôl dewis y ffeil, cliciwch ar 'cadw ffeil'."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -3655,6 +3658,7 @@
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE": "Rhaid i bob dogfen fod yn llai na 100MB o ran maint. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF. Ar ôl dewis y ffeil, cliciwch ar 'cadw ffeil'.",
         "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
         "MSG1": "Dylech ond uwchlwytho dogfennau sy’n berthnasol i’ch cais.",
         "NAME_DOCUMENT": "Cyn i chi uwchlwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft, ‘Llythyr apwyntiad ysbyty’.",
@@ -3914,7 +3918,9 @@
         "UPLOAD_DOCUMENTS_3": " os oes arnoch angen gwneud hynny.",
         "UPLOAD_DOCUMENTS_TRIAL_1": "Gallwch ",
         "UPLOAD_DOCUMENTS_TRIAL_2": "uwchlwytho dogfennau",
-        "UPLOAD_DOCUMENTS_TRIAL_3": " yr hoffech iddynt gael eu cynnwys mewn bwndel treial."
+        "UPLOAD_DOCUMENTS_TRIAL_3": " yr hoffech iddynt gael eu cynnwys mewn bwndel treial.",
+        "ADDITIONAL_INFORMATION": "Gwybodaeth ychwanegol",
+        "WRITTEN_REPRESENTATION_DOC": "Sylwadau ysgrifenedig"
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
         "PARA_1": "Os ydych wedi talu'r ddyled o ddyfarniad y llys sirol (CCJ), gallwch ofyn i'r llys am dystiolaeth o’r taliad i'w rannu gyda banciau ac asiantaethau archwilio credyd. Gelwir hyn hefyd yn gais am dystysgrif canslo neu dystysgrif diwallu.",
@@ -4262,6 +4268,8 @@
       "WITNESS_STATEMENT": "Datganiad tyst",
       "WITNESS_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn y mae eich tyst am ei ddweud wrth y llys",
       "WITNESS_SUMMARY": "Crynodeb tyst",
+      "WITNESS_SUMMARY_HINT_NRO_P1": "Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o'r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae’n rhaid i chi",
+      "WITNESS_SUMMARY_HINT_NRO_P2": " i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid i chi wneud hyn cyn y dyddiad cau.",
       "WITNESS_SUMMARY_HINT": "Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o'r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae'n rhaid i chi wneud cais i'r llys i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid gwneud hyn cyn y dyddiad cau. Defnyddiwch ",
       "WITNESS_SUMMARY_HINT_URL": "ffurflen N244 ‘rhybudd cyflwyno cais' (yn agor mewn tab newydd)",
       "YOUR_STATEMENT": "Eich datganiad chi",
@@ -4460,7 +4468,8 @@
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Pam rydych chi'n anghytuno?",
       "SUBTITLE": "Y cyfanswm, gan gynnwys unrhyw log a hawlir hyd yn hyn, yw £{{ claimAmount }}.",
-      "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?"
+      "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?",
+      "LABEL": "Esboniwch pam eich bod yn anghytuno â swm yr hawliad"
     },
     "PARTNER": {
       "EXAMPLE": "Er enghraifft, cariad, gŵr, gwraig neu bartner sifil.",
@@ -4655,6 +4664,8 @@
       "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
       "TELL_OTHER_PARTY_R2": "Bydd angen i chi hefyd roi gwybod i’r parti arall neu eu cynrychiolydd cyfreithiol eich bod yn gwneud cais i’r llys.",
       "TITLE": "Gwneud cais am ragor o amser i ymateb",
+      "YOU_NEED_TO": "Mae angen i chi",
+      "YOU_NEED_P2": "am ragor o amser. Bydd angen i chi hefyd ddweud wrth y parti arall neu eu cynrychiolydd cyfreithiol eich bod wedi gwneud cais i’r llys.",
       "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
     "RESIDENCE": {
@@ -4680,7 +4691,10 @@
       "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho",
-      "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho "
+      "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho ",
+      "REQUEST_REFUSED_NRO_P1": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi’i wrthod, mae angen i chi",
+      "REQUEST_REFUSED_NRO_P2": "wneud cais",
+      "REQUEST_REFUSED_NRO_P3": "i’r llys i ystyried eich cais."
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "Faint sy’n 11 i 15 oed?",
@@ -4876,14 +4890,14 @@
         "WE_ASK_CLAIMANT_FOR_MEDIATION": "Byddwn yn gofyn a yw am roi cynnig ar gyfryngu. Os yw'n cytuno, byddwn yn cysylltu â chi i geisio trefnu apwyntiad."
       },
       "PA_PAY_IMMEDIATELY": {
-        "CHEQUES_OR_BANK_TRANSFERS": "unrhyw sieciau neu drosglwyddiadau banc yn glir yn y cyfrif erbyn y dyddiad terfyn",
+        "CHEQUES_OR_BANK_TRANSFERS": "bod unrhyw sieciau neu drosglwyddiadau banc wedi clirio yn eu cyfrif erbyn y dyddiad cau",
         "CLAIM_SETTLED": "Bydd yr hawliad yn cael ei setlo.",
         "IF_CLAIMANT_ACCEPTS_OFFER_OF": "Os yw {{ claimantName }}  yn derbyn eich cynnig o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir",
         "MAKE_SURE_THAT": "Gwnewch yn siŵr:",
         "RECEIPT_FOR_PAYMENTS": "eich bod yn cael derbynneb am unrhyw daliadau",
-        "THEY_GET_MONEY_BY": "ei fod yn cael yr arian erbyn {{ paymentDate }} - gall ofyn am Ddyfarniad Llys Sirol yn eich erbyn fel arall",
+        "THEY_GET_MONEY_BY": "eu bod yn derbyn yr arian o fewn 5 diwrnod o’r adeg bu iddynt dderbyn eich cynnig - gallant wneud cais am Ddyfarniad Llys Sirol yn eich erbyn os na fyddwch yn gwneud hynny.",
         "YOU_HAVE_SAID_YOU_OWW": "Rydych wedi dweud bod gennych ddyled o £{{ partialAmount }} ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ac wedi cynnig talu  {{ claimantName }} yn syth.",
-        "YOU_NEED_PAY_IMMEDIATELY": "Mae angen i chi dalu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir ar unwaith."
+        "YOU_NEED_PAY_IMMEDIATELY": "Bydd arnoch angen talu £{{ partialAmount }} i {{ claimantName }}  ynghyd â ffi’r hawliad ac unrhyw gostau sefydlog a hawlir."
       },
       "PA_PAY_BY_DATE": {
         "CHEQUES_OR_BANK_TRANSFERS": "sicrhau bod unrhyw sieciau neu drosglwyddiadau banc yn glir yn ei gyfrif erbyn y dyddiad terfyn",
@@ -5108,6 +5122,7 @@
       "DATE_EXAMPLE": "Er enghraifft, 27 9 2022",
       "DAY": "Diwrnod",
       "FORMAT": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
+      "FORMAT_WITH_SAVE_FILE": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF. Ar ôl dewis y ffeil, cliciwch ar 'cadw ffeil'.",
       "NAME": "Eich enw",
       "MONTH": "Mis",
       "NO_UPLOAD": "Nid oes ffeiliau wedi cael eu huwchlwytho",
@@ -5453,7 +5468,7 @@
   },
   "ERRORS": {
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
-    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Mae’n rhaid i chi ddewis pa ddiweddariad yr hoffech roi i’r llys.",
+    "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SOLVE_PROBLEM": "Mae’n rhaid i chi ddewis pa broblem rydych yn ei chael gyda’r system Hawliadau am Arian.",
     "QUERY_MANAGEMENT_HOW_YOU_WANT_TO_MANAGE_HEARING": "Mae’n rhaid i chi ddewis sut rydych eisiau rheoli eich gwrandawiad.",
@@ -5964,7 +5979,7 @@
       },
       "TYPE_OF_DOC": "Mae angen i chi ddweud wrthym pa fath o ddogfen rydych yn ei huwchlwytho.",
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
-      "UPLOAD_FILE_MESSAGE_V2": "Mae angen i chi ddewis ffeil cyn clicio 'Uwchlwytho ffeil'",
+      "UPLOAD_FILE_MESSAGE_V2": "Mae angen i chi ddewis ffeil cyn clicio 'Cadw ffeil'",
       "UPLOAD_ONE_FILE": "Rhaid ichi uwchlwytho o leiaf un ffeil.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "Mae arnoch angen dweud wrthym os ydych eisiau ychwanegu cais arall. Dewiswch opsiwn: Ydw neu Nac ydw",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich cais. Dewiswch opsiwn: Ydw neu Nac ydw",
@@ -5997,7 +6012,7 @@
       "MESSAGE" : "Ni fydd y Gwasanaeth i Ddefnyddwyr Citizen ar gael rhwng 19:00 ar y 13eg o Fai a 02:00 ar y 14eg  o Fai 2025"
     },
     "WELSH_PARTY" : {
-      "MESSAGE" : "Mae parti yn yr achos hwn wedi nodi Cymraeg fel dewis iaith. Gallai oedi cyn gweld dogfennau ddigwydd yn ystod prosesau cyfieithu."
+      "MESSAGE" : "Mae parti yn yr achos hwn wedi mynegi dymuniad i ddefnyddio’r iaith Gymraeg. Bydd yr holl ddogfennau ac ymatebion ar gael yn fuan."
     },
     "CUI_LIP_V_LR" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth ‘Citizen User’ ar gael rhwng 19:00 ar 11 Awst 2025 a 03:45 ar 12 Awst 2025."
@@ -6007,6 +6022,9 @@
     },
     "CUI_COSC" : {
       "MESSAGE" : "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
+    },
+    "CUI_MAIN_WELSH_LIP": {
+      "MESSAGE": "Ni fydd y gwasanaeth ar gael o 6:00PM ar y 6ed o Dachwedd tan 04:00AM ar y 7fed o Dachwedd, oherwydd gwaith cynnal a chadw."
     }
   }
 }
