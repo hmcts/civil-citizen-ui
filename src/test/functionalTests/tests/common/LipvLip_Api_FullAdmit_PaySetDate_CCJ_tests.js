@@ -44,12 +44,10 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   await I.click(notification.nextSteps);
   await ResponseToDefenceLipVsLipSteps.ConfirmThatYouHaveBeenpPaidforCoSC(claimRef, claimNumber);
   await I.click('Sign out');
-
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await api.waitForFinishedBusinessProcess();
   notification = defendantResponseConfirmYouHavePaidAJudgmentCCJDebt();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
-
   await api.waitForFinishedBusinessProcess();
 }).tag('@regression');
