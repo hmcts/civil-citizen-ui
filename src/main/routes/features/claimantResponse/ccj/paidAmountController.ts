@@ -12,6 +12,7 @@ import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
+import {t} from 'i18next';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -26,7 +27,7 @@ paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], as
   try {
     const claim = await getClaimById(req.params.id, req, true);
     if(claim.respondToClaimAdmitPartLRspec?.whenWillThisAmountBePaid) {
-      throw new Error('CCJ_PAID_AMOUNT_ERROR');
+      throw new Error(t('ERRORS.WAIT_FOR_DEFENDANT_TO_PAY_BEFORE_CCJ'));
     }
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const paidAmount = claimantResponse.ccjRequest?.paidAmount ?
