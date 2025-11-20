@@ -99,7 +99,7 @@ wa:
   #    databaseNamePrefix: "pr-${CHANGE_ID}-"
   wa:
     postgresql:
-      enabled: false
+      enabled: true
   wa-case-event-handler:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
@@ -111,7 +111,7 @@ wa:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: true
+          disabled: false
       environment:
         CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
         CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
@@ -153,7 +153,7 @@ wa:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: true
+          disabled: false
   wa-workflow-api:
     java:
       environment:
@@ -165,7 +165,7 @@ wa:
       POSTGRES_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
-        disabled: true
+        disabled: false
   camunda-bpm:
     java:
       environment:
@@ -180,3 +180,4 @@ wa:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: false
+
