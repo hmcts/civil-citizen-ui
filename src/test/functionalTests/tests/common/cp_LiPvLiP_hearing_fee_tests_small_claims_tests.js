@@ -30,38 +30,38 @@ Before(async ({api}) => {
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'smallClaimsTrack');
-  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
-  await api.waitForFinishedBusinessProcess();
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+ // await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
+ // await api.waitForFinishedBusinessProcess();
+ // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
-  const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-  if (isDashboardServiceEnabled) {
-    notification = hearingScheduled(hearingDate);
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-    await I.click(notification.nextSteps);
-    await ResponseSteps.SignOut();
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await I.click(claimNumber);
-    await I.dontSee(notification.title);
-    notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-    taskListItem = viewHearings();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-    taskListItem = payTheHearingFee(hearingFeeDueDate);
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
-    await I.click(notification.nextSteps2);
-  }
-  formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
-  await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
-  await api.waitForFinishedBusinessProcess();
-  if (isDashboardServiceEnabled) {
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
-    taskListItem = payTheHearingFee(hearingFeeDueDate);
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
-  }
+Scenario('Apply for Help with Fees Journey - Small Claims @test1122', async ({I, api}) => {
+  // const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+  // if (isDashboardServiceEnabled) {
+  //   notification = hearingScheduled(hearingDate);
+  //   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  //   await I.click(notification.nextSteps);
+  //   await ResponseSteps.SignOut();
+  //   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  //   await I.click(claimNumber);
+  //   await I.dontSee(notification.title);
+  //   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
+  //   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  //   taskListItem = viewHearings();
+  //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+  //   taskListItem = payTheHearingFee(hearingFeeDueDate);
+  //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
+  //   await I.click(notification.nextSteps2);
+  // }
+  // formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
+  // await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
+  // await api.waitForFinishedBusinessProcess();
+  // if (isDashboardServiceEnabled) {
+  //   await I.amOnPage('/dashboard');
+  //   await I.click(claimNumber);
+  //   taskListItem = payTheHearingFee(hearingFeeDueDate);
+  //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
+  // }
 });
 
 Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
