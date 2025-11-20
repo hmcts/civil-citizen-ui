@@ -1,2 +1,2 @@
 {"value":"csurf","children":{"ID":"csurf (deprecation)","Issue":"This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions","Severity":"moderate","Vulnerable Versions":"1.11.0","Tree Versions":["1.11.0"],"Dependents":["civil-citizen-ui@workspace:."]}}
-
+{"value":"glob","children":{"ID":1109842,"Issue":"glob CLI: Command injection via -c/--cmd executes matches with shell:true","URL":"https://github.com/advisories/GHSA-5j98-mcp5-4vw2","Severity":"high","Vulnerable Versions":">=10.2.0 <10.5.0","Tree Versions":["10.3.3"],"Dependents":["civil-citizen-ui@workspace:."]}}
