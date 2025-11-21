@@ -1,10 +1,12 @@
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Validator} from 'class-validator';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Claim} from '../../../../../common/models/claim';
-import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantsService');
@@ -14,9 +16,9 @@ class DependantsService {
 
   public async getDependants(claimId: string): Promise<Dependants> {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.statementOfMeans?.dependants) {
-        return civilClaimResponse.case_data.statementOfMeans.dependants;
+      const claimData = await getCaseDataFromStore(claimId);
+      if (claimData?.statementOfMeans?.dependants) {
+        return claimData.statementOfMeans.dependants;
       }
       return new Dependants();
     } catch (error) {
@@ -27,17 +29,16 @@ class DependantsService {
 
   public async saveDependants(claimId: string, dependants: Dependants): Promise<Claim> {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.dependants = dependants;
+      const claimData = await getCaseDataFromStore(claimId);
+      if (claimData?.statementOfMeans) {
+        claimData.statementOfMeans.dependants = dependants;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.dependants = dependants;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
+        claimData.statementOfMeans = statementOfMeans;
       }
-      const claim = translateCCDCaseDataToCUIModel(civilClaimResponse.case_data);
-      await saveDraftClaim(claimId, claim);
-      return claim;
+      await saveDraftClaim(claimId, claimData);
+      return claimData;
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
       throw error;
