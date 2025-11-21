@@ -14,16 +14,9 @@
           {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                {{ t('PAGES.ELIGIBILITY_SINGLE_DEFENDANT.TITLE') }}
-              </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', classes: 'govuk-radios--inline'}) }}
-            </fieldset>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             {% for content in applyHelpWithFeeSelectionButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
-            </fieldset>
           </form>
 {% endblock %}
