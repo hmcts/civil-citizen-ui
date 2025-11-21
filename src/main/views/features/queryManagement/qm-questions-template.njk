@@ -4,13 +4,22 @@
 
 {% block qmContent %}
 
-{{ govukRadios({
-  idPrefix: "option",
-  name: "option",
-  items: form.model.items,
-  errorMessage: {
-    text: t(form.errorFor('option'))
-  } if form.hasErrors()
-}) }}
+<fieldset class="govuk-fieldset">
+  <legend class="govuk-visually-hidden">
+    {{ t("PAGES.QM.WHAT_DO_YOU_WANT_TODO_TITLE") }}
+  </legend>
+
+  {{ govukRadios({
+    idPrefix: "option",
+    name: "option",
+    items: form.model.items,
+    errorMessage: {
+      text: t(form.errorFor('option'))
+    } if form.hasErrors()
+  }) }}
+</fieldset>
 
 {% endblock %}
+
+
+
