@@ -316,7 +316,7 @@ class UploadYourDocument {
 
   verifyDisclosureSectionContent() {
     I.see(content.disclosure.title[language], 'h2');
-    I.see(content.disclosure.documents.title[language], 'h3');
+    I.see(content.disclosure.documents.title[language], 'h2');
     I.see(content.disclosure.documents.documentType[language]);
     I.see(content.disclosure.documents.documentTypeHint[language]);
     I.see(content.disclosure.documents.dateTitle[language]);
