@@ -26,8 +26,3 @@ dependencies:
     version: 1.0.6
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: wa.enabled
-
-  - name: ccd-message-publisher
-    version: ~0.1.22
-    repository: 'oci://hmctspublic.azurecr.io/helm'
-    condition: wa.enabled
