@@ -37,7 +37,7 @@ class AgreementFromOtherParty {
     I.see('Getting agreement', 'h2');
     I.see('Asking the other parties to agree is optional. If they\'ve agreed, you do not need to have proof of this.');
     I.see('If you\'re not able to contact the other parties, or you\'ve attempted to contact them but have not had a response, select \'No\'.');
-    I.see('If the other parties have agreed', 'h5');
+    I.see('If the other parties have agreed', 'h2');
     I.see('The application fee will be reduced, unless this is an application to:');
     I.see('set aside (remove) a judgment', 'li');
     I.see('vary a judgment', 'li');
