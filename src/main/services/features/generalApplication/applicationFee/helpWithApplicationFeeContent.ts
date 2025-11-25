@@ -3,7 +3,13 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_REFERENCE, HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
 
-const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset">`;
+const fieldsetHtml = String.raw`
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-visually-hidden">
+      ${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')}
+    </legend>
+  </fieldset>
+`;
 
 export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentSyncError: boolean) => {
   const linkBefore = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE';
@@ -49,7 +55,6 @@ export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, fee
     .addSpan('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED_TITLE', '', 'govuk-!-font-weight-bold')
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED')
     .addRawHtml(fieldsetHtml,'')
-    .addLegend('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION', '', 'govuk-visually-hidden' )
     .addTitle('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')
     .build();
   return pageBuilder.build();

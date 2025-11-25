@@ -106,19 +106,6 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addLegend(text: string, variables?: any, classes?: string) {
-    const legendSection = ({
-      type: ClaimSummaryType.LEGEND,
-      data: {
-        text: text,
-        variables: variables,
-        classes: classes,
-      },
-    });
-    this._claimSummarySections.push(legendSection);
-    return this;
-  }
-
   addInsetText(text: string, variables?: unknown) {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
