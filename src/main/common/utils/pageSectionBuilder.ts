@@ -106,6 +106,30 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addFieldSet(classes: string) {
+    const fieldSetSection = ({
+      type: ClaimSummaryType.FIELD_SET,
+      data: {
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(fieldSetSection);
+    return this;
+  }
+
+  addLegend(text: string, variables?: any, classes?: string) {
+    const legendSection = ({
+      type: ClaimSummaryType.LEGEND,
+      data: {
+        text: text,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(legendSection);
+    return this;
+  }
+
   addInsetText(text: string, variables?: unknown) {
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,

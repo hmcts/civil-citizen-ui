@@ -61,4 +61,6 @@ export enum ClaimSummaryType {
   MICRO_TEXT = 'microText',
   SPAN = 'span',
   REMOVE_BUTTON = 'removeButton',
+  FIELD_SET = 'fieldset',
+  LEGEND = 'legend',
 }

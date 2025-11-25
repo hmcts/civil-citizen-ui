@@ -46,6 +46,8 @@ export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, fee
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_PARTIALLY')
     .addSpan('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED_TITLE', '', 'govuk-!-font-weight-bold')
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED')
+    .addFieldSet('govuk-fieldset')
+    .addLegend('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION', '', 'govuk-visually-hidden' )
     .addTitle('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')
     .build();
   return pageBuilder.build();
