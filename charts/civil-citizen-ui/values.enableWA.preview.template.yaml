@@ -7,8 +7,9 @@ civil-general-applications:
     camunda-bpm:
       enabled: false
     ccd:
-      mps:
-        enabled: true
+      ccd:
+        mps:
+          enabled: true
       ccd-message-publisher:
         java:
           ingressHost: ccd-message-publisher-${SERVICE_FQDN}
