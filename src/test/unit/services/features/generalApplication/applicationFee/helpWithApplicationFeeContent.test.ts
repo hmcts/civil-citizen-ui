@@ -71,6 +71,7 @@ describe('Help with Application fee content', () => {
     expect(actualContent[9].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED_TITLE');
     expect(actualContent[10].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED');
     expect(actualContent[11].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
+    expect(actualContent[12].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
   });
 
   it('should return all the content for getApplicationFeeContentPageDetails', () => {
