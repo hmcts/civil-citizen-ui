@@ -54,7 +54,7 @@ describe('Help with Application fee content', () => {
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
     const calculatedAmountInPence = '230';
-    const fieldsetHtml = '<fieldset class="govuk-fieldset">';
+    const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset">`;
 
     //When
     const actualContent = getHelpApplicationFeeContinuePageContents(calculatedAmountInPence, false);
