@@ -79,7 +79,8 @@ describe('Help with Application fee content', () => {
     //When
     const actualContent = getButtonsContents('123');
     //Then
-    expect(actualContent[0].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
+    expect(actualContent[0].data.text).toEqual(String.raw`</fieldset>`);
+    expect(actualContent[1].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
   });
 
   it('should return all the content for getHelpWithApplicationFeeContent', () => {
