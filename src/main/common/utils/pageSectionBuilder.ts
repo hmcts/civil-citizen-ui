@@ -106,17 +106,6 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addFieldSet(classes: string) {
-    const fieldSetSection = ({
-      type: ClaimSummaryType.FIELD_SET,
-      data: {
-        classes: classes,
-      },
-    });
-    this._claimSummarySections.push(fieldSetSection);
-    return this;
-  }
-
   addLegend(text: string, variables?: any, classes?: string) {
     const legendSection = ({
       type: ClaimSummaryType.LEGEND,

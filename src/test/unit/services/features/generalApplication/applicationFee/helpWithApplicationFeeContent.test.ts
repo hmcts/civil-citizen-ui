@@ -54,6 +54,7 @@ describe('Help with Application fee content', () => {
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
     const calculatedAmountInPence = '230';
+    const fieldsetHtml = '<fieldset class="govuk-fieldset">';
 
     //When
     const actualContent = getHelpApplicationFeeContinuePageContents(calculatedAmountInPence, false);
@@ -70,8 +71,9 @@ describe('Help with Application fee content', () => {
     expect(actualContent[8].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_PARTIALLY');
     expect(actualContent[9].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED_TITLE');
     expect(actualContent[10].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED');
-    expect(actualContent[11].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
+    expect(actualContent[11].data.text).toEqual(fieldsetHtml);
     expect(actualContent[12].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
+    expect(actualContent[13].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
   });
 
   it('should return all the content for getApplicationFeeContentPageDetails', () => {
