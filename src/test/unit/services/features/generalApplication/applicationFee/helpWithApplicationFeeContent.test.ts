@@ -53,11 +53,12 @@ describe('Help with Application fee content', () => {
 
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
+    const lang = 'en';
     const calculatedAmountInPence = '230';
-    const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset"><legend class="govuk-visually-hidden">${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')}</legend>`;
+    const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset"><legend class="govuk-visually-hidden">${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION', {lang})}</legend>`;
 
     //When
-    const actualContent = getHelpApplicationFeeContinuePageContents(calculatedAmountInPence, false);
+    const actualContent = getHelpApplicationFeeContinuePageContents(lang, calculatedAmountInPence, false);
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE');

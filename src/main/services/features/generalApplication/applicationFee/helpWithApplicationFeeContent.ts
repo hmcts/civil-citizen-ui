@@ -3,8 +3,6 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_REFERENCE, HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
 
-const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset"><legend class="govuk-visually-hidden">${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')}</legend>`;
-
 export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentSyncError: boolean) => {
   const linkBefore = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE';
   const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})}
@@ -31,8 +29,10 @@ export const getButtonsContents  = (claimId : string) => {
     .build();
 };
 
-export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, feeTypeFlag: boolean) => {
+export const getHelpApplicationFeeContinuePageContents = (lang: string, feeAmount: string, feeTypeFlag: boolean) => {
   const pageBuilder=new PageSectionBuilder();
+  const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset"><legend class="govuk-visually-hidden">${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION', {lang})}</legend>`;
+
   if (feeTypeFlag) {
     pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
   } else{
