@@ -14,11 +14,10 @@
       {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group">
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
-                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
-              }) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.PAGE_TITLE') }}
+              </legend>
             {% set yesHtml %}
               <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
               {{ govukInput({
