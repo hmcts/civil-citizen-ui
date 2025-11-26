@@ -16,7 +16,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set noHtml %}
 
-        <h3 class="govuk-heading-s">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE') }}</h3>
+        <h2 class="govuk-heading-s">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE') }}</h2>
         <p class="govuk-body">
           {{ externalLink(t, 'PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK', externalURLs.feesHelpUrl, true) }}
           {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_CLAIM_USING') }}
@@ -36,7 +36,12 @@
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.ALREADY_APPLIED') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', noHtml:noHtml}) }}
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="option-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.TITLE') }}
+              </legend>
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', noHtml:noHtml}) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),

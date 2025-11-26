@@ -13,8 +13,8 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Upload your documents', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
     I.see('Check the order the court sent you for what documents you need to upload for your case.', 'p.govuk-body');
     I.see('You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example \'version2\'.', 'p.govuk-body');
     I.see('The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.', 'p.govuk-body');
@@ -43,8 +43,8 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('What types of documents do you want to upload?', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
 
     I.see('Select the types of documents that apply to your case. You may not need to upload documents for every category.', 'p.govuk-body');
 
@@ -90,14 +90,14 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Upload documents', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
 
     I.see('Acceptable documents formats', 'h2.govuk-heading-s');
     I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.', 'p.govuk-body-m');
 
     I.see('Witness evidence', 'h2.govuk-heading-l');
-    I.see('Witness statement', 'h3.govuk-heading-s');
+    I.see('Witness statement', 'h2.govuk-heading-s');
     I.see('Witness\'s name', 'strong');
     I.fillField('witnessStatement[0][witnessName]', 'test');
 
@@ -122,8 +122,8 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Check your answers', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
-    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'h2.govuk-body-l');
+    I.see('Claim amount: £1,000', 'h2.govuk-body-l');
 
     I.seeElement('div.govuk-inset-text');
 
