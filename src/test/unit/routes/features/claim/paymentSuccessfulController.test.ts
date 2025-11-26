@@ -9,7 +9,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {Claim} from 'models/claim';
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -24,9 +23,6 @@ describe('Apply for help with fees', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {

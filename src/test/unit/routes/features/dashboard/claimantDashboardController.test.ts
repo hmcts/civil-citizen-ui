@@ -423,7 +423,6 @@ describe('claimant Dashboard Controller', () => {
           .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
           .mockResolvedValueOnce(claim);
         jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-        jest.spyOn(launchDarkly, 'isCaseProgressionV1Enable').mockResolvedValueOnce(true);
 
         await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
           expect(res.status).toBe(200);

@@ -10,7 +10,6 @@ import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Session} from 'express-session';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 
@@ -28,9 +27,6 @@ describe('Apply for help with fees', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {

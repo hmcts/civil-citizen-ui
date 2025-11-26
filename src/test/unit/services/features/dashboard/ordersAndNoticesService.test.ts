@@ -16,7 +16,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
-  isCaseProgressionV1Enable, isCaseWorkerEventsEnabled,
+  isCaseWorkerEventsEnabled,
   isGaForLipsEnabled, isJudgmentOnlineLive,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
@@ -783,7 +783,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for Claimant Trial Arrangements', async () => {
       //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.caseProgression = new CaseProgression();
@@ -804,7 +803,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for Claimant Trial Arrangements', async () => {
       //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.caseProgression = new CaseProgression();
@@ -825,7 +823,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for decision on reconsideration', async () => {
       //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS);
@@ -844,7 +841,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for translated decision on Reconsideration', async () => {
 
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       //given
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
@@ -862,23 +858,8 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should not get data array for decision on reconsideration if toggle off', async () => {
-      //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      const expectedResult = new DocumentsViewComponent('CourtDocument', []);
-      expect(result).toEqual(expectedResult);
-    });
-
     it('should get data array for translated order', async () => {
       //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
@@ -898,7 +879,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for final order', async () => {
       //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.caseProgression = new CaseProgression();
@@ -919,7 +899,6 @@ describe('View Orders And Notices Service', () => {
 
     it('should get data array for translated final order', async () => {
       //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.caseProgression = new CaseProgression();
@@ -935,20 +914,6 @@ describe('View Orders And Notices Service', () => {
         new DocumentLinkInformation(documentUrl, documentName),
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should not get data array for translated order if toggle off', async () => {
-      //given
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getCourtDocuments(claim, claimId, 'en');
-      //Then
-      const expectedResult = new DocumentsViewComponent('CourtDocument', []);
       expect(result).toEqual(expectedResult);
     });
 
