@@ -91,6 +91,8 @@ civil-service:
             alias: mediation.emails.recipient
           - name: hmc-servicebus-shared-access-key-tf
             alias: HMC_HEARINGS_TOPIC_ACCESS_KEY
+          - name: ccd-shared-servicebus-connection-string
+            alias: CCD_EVENTS_TOPIC_CONNECTION_STRING
     environment:
       IDAM_CLIENT_ID: civil-service
       IDAM_CLIENT_REDIRECT_URI: https://civil-ccd-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
@@ -141,6 +143,15 @@ civil-service:
       ASSIGN_ROLES_ON_STARTUP: true
       COURT_LOCATION_WA_DMN_ENABLED: true
       TASK_MANAGEMENT_ENABLED: false
+      ROLE_INITIALISATION_ENABLED: true
+      CASE_FLAGS_LOGGING_ENABLED: true
+      CCD_EVENTS_TOPIC_NAME: ${SERVICE_NAME}-asb-ccd-case-events
+      CCD_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
+      CCD_EVENTS_SERVICE_BUS_CONCURRENT_SESSIONS: 1
+      CCD_EVENTS_SUBSCRIPTION_ENABLED: true
+      CCD_EVENTS_SUBSCRIPTION_RETRY_DURATION: 60
+      RESPONSE_DEADLINE_CHECK_EVENT_EMITTER_ENABLED: false
+      PAY_CALLBACK_URL: https://${SERVICE_NAME}.preview.platform.hmcts.net/service-request-update
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
