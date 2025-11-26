@@ -5,7 +5,6 @@ import {TestData} from 'launchdarkly-node-server-sdk/integrations';
 let ldClient: LDClient;
 let testData: TestData;
 
-const CUI_CASE_PROGRESSION = 'cui-case-progression';
 const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
@@ -30,7 +29,6 @@ async function getClient(): Promise<void> {
     let client;
     if (process.env.NODE_ENV === 'e2eTest') {
       testData = TestData();
-      await testData.update(testData.flag(CUI_CASE_PROGRESSION).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
@@ -113,10 +111,6 @@ export async function isGaForLipsEnabledAndLocationWhiteListed(location: string)
   const gaLipsFlag = await getFlagValue(GA_FOR_LIPS) as boolean;
   const eaFlagForGaLips =  await getEaFlagValueForGaLips(EA_COURT_FOR_GA_LIPS, location) as boolean;
   return gaLipsFlag && eaFlagForGaLips;
-}
-
-export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return await getFlagValue(CUI_CASE_PROGRESSION) as boolean;
 }
 
 export async function isServiceShuttered(): Promise<boolean> {

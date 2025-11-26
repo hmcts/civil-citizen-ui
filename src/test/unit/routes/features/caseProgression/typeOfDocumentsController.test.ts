@@ -13,7 +13,6 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import express from 'express';
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -29,9 +28,6 @@ describe('Upload document- type of documents controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
     it('should render page successfully if cookie has correct values', async () => {
@@ -83,7 +79,6 @@ describe('Upload document- type of documents controller', () => {
   describe('on POST', () => {
     beforeEach(() => {
       app.locals.draftStoreClient = mockCivilClaim;
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
     });
     it('should display error when there is no option selection', async () => {
       await request(app)
