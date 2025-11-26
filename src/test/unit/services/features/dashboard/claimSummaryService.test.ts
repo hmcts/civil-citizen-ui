@@ -1,4 +1,3 @@
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {
   getDocumentsContent,
   getEvidenceUploadContent,
@@ -32,7 +31,6 @@ import {
 } from 'services/features/dashboard/finalOrderDocuments/finalOrderDocumentContentBuilder';
 
 jest.mock('services/features/caseProgression/uploadedEvidenceFormatter');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next');
@@ -40,7 +38,6 @@ jest.mock('i18next');
 const lang = 'en';
 const urlElement = '<a> url </a>';
 
-const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getDocumentTypeNameMock = UploadedEvidenceFormatter.getDocumentTypeName as jest.Mock;
 const getDocumentLinkMock = UploadedEvidenceFormatter.getDocumentLink as jest.Mock;
 const getTranslateMock = t as jest.Mock;
@@ -119,7 +116,6 @@ describe('getDocumentsContent', () => {
     // Given
     const claimId = '123';
     const lang = 'en';
-    isCaseProgressionV1EnableMock.mockResolvedValue(true);
 
     const claim = new Claim();
     claim.systemGeneratedCaseDocuments =  [{
@@ -160,7 +156,6 @@ describe('getDocumentsContent', () => {
     // Given
     const claimId = '123';
     const lang = 'en';
-    isCaseProgressionV1EnableMock.mockResolvedValue(true);
 
     // When
     const result = await getDocumentsContent(claimContainingFinalOrder, claimId, lang);
@@ -176,25 +171,6 @@ describe('getDocumentsContent', () => {
     expect(result[0].contentSections[1]).toEqual(downloadFinalOrderSectionLink);
   });
 
-  it('should not return an array with the Final Orders section if CaseProgressionV1 disabled', async () => {
-  // Given
-    const claimId = '123';
-    const lang = 'en';
-    isCaseProgressionV1EnableMock.mockResolvedValue(false);
-
-    // When
-    const result = await getDocumentsContent(claimContainingFinalOrder, claimId, lang);
-
-    // Then
-    expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(4);
-
-    const downloadClaimTitle = buildDownloadSectionTitle(t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', { lng: lang }));
-    const downloadClaimSection = buildSystemGeneratedDocumentSections(claimContainingFinalOrder, claimId, lang);
-
-    expect(result[0].contentSections[0]).toEqual(downloadClaimTitle);
-    expect(result[0].contentSections[1]).toEqual(downloadClaimSection[0]);
-  });
 });
 
 describe('getEvidenceUploadContent', () => {
