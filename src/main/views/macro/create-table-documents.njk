@@ -37,6 +37,10 @@
     caption: title,
     captionClasses: "govuk-table__caption--m",
     classes: 'tableWrap',
+    head: [
+        { text: "Column 1", classes: "govuk-visually-hidden", attributes: { scope: "col" } },
+        { text: "Column 2", classes: "govuk-visually-hidden", attributes: { scope: "col" } }
+    ],
     rows: rows
 }) }}
 {% endmacro %}
@@ -44,6 +48,10 @@
 {% macro createDocumentsTableWithoutTableCaption(rows) %}
 {{ govukTable({
     classes: 'tableWrap',
+    head: [
+        { text: "Column 1", classes: "govuk-visually-hidden", attributes: { scope: "col" } },
+        { text: "Column 2", classes: "govuk-visually-hidden", attributes: { scope: "col" } }
+    ],
     rows: rows
 }) }}
 {% endmacro %}

@@ -36,10 +36,10 @@
           <h1 class="govuk-heading-l">{{ t(pageTitle) }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <p class="govuk-body-l">{{
+            <h2 class="govuk-body-l">{{
               t(
-              'COMMON.CASE_REFERENCE', {claimId: claimId})}}</p>
-            <p class="govuk-body-l">{{partyInformation.claimantName}} v {{partyInformation.defendantName}}</p>
+              'COMMON.CASE_REFERENCE', {claimId: claimId})}}</h2>
+            <h2 class="govuk-body-l">{{partyInformation.claimantName}} v {{partyInformation.defendantName}}</h2>
             <p class="govuk-body">{{t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT')}}</p>
             <div class='multiple-row'>
               {{

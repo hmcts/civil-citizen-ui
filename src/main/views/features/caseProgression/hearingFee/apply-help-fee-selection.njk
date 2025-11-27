@@ -14,7 +14,12 @@
           {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE') }}
+              </legend>
             {{ yesNoRadioButton(t,'option','option','',form,'',{yesHtml: yesHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            </fieldset>
             {% for content in applyHelpFeeSelectionButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}

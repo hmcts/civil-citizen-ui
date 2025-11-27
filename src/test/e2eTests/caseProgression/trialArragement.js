@@ -14,8 +14,8 @@ class TrialArragement {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Finalise your trial arrangements', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
-    I.see('Claim amount: £15,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0003', 'h2.govuk-body-l');
+    I.see('Claim amount: £15,000', 'h2.govuk-body-l');
     I.seeElement('div.govuk-warning-text');
     I.seeElement('//strong[contains(., "You have until 30 May 2023 to provide this information.")]');
 
@@ -57,8 +57,8 @@ class TrialArragement {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Finalise your trial arrangements', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
-    I.see('Claim amount: £15,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0003', 'h2.govuk-body-l');
+    I.see('Claim amount: £15,000', 'h2.govuk-body-l');
 
     I.see('Is the case ready for trial?', 'h2.govuk-heading-m');
     I.see('You are reminded that this information will be shared with all other parties', 'p.govuk-body');
@@ -78,8 +78,8 @@ class TrialArragement {
 
     I.see('Finalise your trial arrangements', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
-    I.see('Claim amount: £15,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0003', 'h2.govuk-body-l');
+    I.see('Claim amount: £15,000', 'h2.govuk-body-l');
 
     I.see('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?', 'h2.govuk-heading-m');
     I.see('You can check your previous answers in the', 'p.govuk-body');
@@ -103,8 +103,8 @@ class TrialArragement {
 
     I.see('Finalise your trial arrangements', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
-    I.see('Claim amount: £15,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0003', 'h2.govuk-body-l');
+    I.see('Claim amount: £15,000', 'h2.govuk-body-l');
 
     I.see('Trial duration', 'h2.govuk-heading-m');
     I.see('The trial duration originally allocated is ', 'p.govuk-body');
@@ -131,8 +131,8 @@ class TrialArragement {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Check your answers', 'h1.govuk-heading-l');
 
-    I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
-    I.see('Claim amount: £15,000', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0003', 'h2.govuk-body-l');
+    I.see('Claim amount: £15,000', 'h2.govuk-body-l');
 
     I.see('Is the case ready for trial?', 'dt.govuk-summary-list__key');
     I.see('Yes', 'dd.govuk-summary-list__value');
