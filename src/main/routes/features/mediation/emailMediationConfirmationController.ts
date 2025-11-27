@@ -8,7 +8,7 @@ import {
   getMediationCarm,
   saveMediationCarm,
 } from 'services/features/response/mediation/mediationService';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -32,11 +32,11 @@ const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: R
 };
 
 const getPartyEmail = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
-  const claim = await getCaseDataFromStore(redisKey);
+  const claim = await getDraftClaimFromStore(redisKey);
   if (isClaimantResponse) {
-    return claim.applicant1.emailAddress.emailAddress;
+    return claim.case_data.applicant1.emailAddress.emailAddress;
   }
-  return claim.respondent1.emailAddress.emailAddress;
+  return claim.case_data.respondent1.emailAddress.emailAddress;
 };
 
 emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
