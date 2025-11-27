@@ -105,7 +105,7 @@ civil-general-applications:
       CUI_URL: https://${SERVICE_FQDN}
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       STITCHING_API_ENABLED: false
-      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
   civil-service:
@@ -213,7 +213,7 @@ civil-general-applications:
         SERVICE_REQUEST_UPDATE_CLAIM_ISSUED: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update-claim-issued
         CIVIL_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service,civil-citizen-ui,civil_general_applications
         ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
-        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
         ASSIGN_ROLES_ON_STARTUP: true
         COURT_LOCATION_WA_DMN_ENABLED: true
         TASK_MANAGEMENT_ENABLED: false
@@ -375,7 +375,7 @@ civil-general-applications:
             IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
             IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
             IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
-            ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+            ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
             ELASTIC_SEARCH_ENABLED: true
             ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
             ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
