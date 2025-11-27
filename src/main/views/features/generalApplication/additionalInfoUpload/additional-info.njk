@@ -22,10 +22,6 @@
   </p>
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
-     <fieldset class="govuk-fieldset">
-       <legend class="govuk-visually-hidden">
-         {{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.OPTION') }}
-        </legend>
     {{ govukTextarea({
           name: "additionalText",
           id: "additionalText",
@@ -46,7 +42,6 @@
       {{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.OPTION') }}
     </label>
     {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-    </fieldset>
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </div>
