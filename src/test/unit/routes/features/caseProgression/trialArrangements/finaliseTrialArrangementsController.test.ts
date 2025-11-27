@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {CaseRole} from 'form/models/caseRoles';
 import {DocumentType} from 'models/document/documentType';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -81,9 +80,6 @@ describe('"finalise trial arrangements" page test', () => {
         }
         return done();
       });
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
     it('should return expected page in English when claim exists', async () => {
@@ -159,4 +155,3 @@ describe('"finalise trial arrangements" page test', () => {
     });
   });
 });
-

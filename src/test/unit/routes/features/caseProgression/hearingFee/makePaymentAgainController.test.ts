@@ -8,7 +8,6 @@ import config from 'config';
 import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as makePaymentAgainService from 'services/features/caseProgression/hearingFee/makePaymentAgainService';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -22,13 +21,9 @@ describe('Hearing Fees - Make Payment Again', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
-  });
   describe('on GET', () => {
     it('should redirect user to govPay Payment Page', async () => {
       jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockResolvedValueOnce('12354');
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       await request(app)
         .get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL)
         .expect((res) => {
@@ -38,7 +33,6 @@ describe('Hearing Fees - Make Payment Again', () => {
 
     it('should return 500 error page for any service error', async () => {
       jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
-      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
       await request(app)
         .get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL)
         .expect((res) => {
