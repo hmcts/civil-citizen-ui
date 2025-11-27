@@ -26,7 +26,6 @@ import {
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {FileUpload} from 'models/caseProgression/fileUpload';
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {getClaimById} from 'modules/utilityService';
 import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -97,10 +96,6 @@ describe('Upload document- upload document controller', () => {
     });
     getExpertContentMock.mockReturnValue([]);
     getTrialContentMock.mockReturnValue([]);
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
-
   });
   it('should render page successfully if cookie has correct values', async () => {
 
@@ -219,7 +214,6 @@ describe('on POST', () => {
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
     (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display documentForDisclosure validation error when invalid', async () => {
 
