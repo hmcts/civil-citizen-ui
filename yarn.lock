@@ -3515,10 +3515,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.7.10":
-  version: 13.7.15
-  resolution: "@types/validator@npm:13.7.15"
-  checksum: 10/7ca21d4b5686a15377864a2da4490e1af6ffbc467b2e2ce420dca733aeb3069459bd06b6f69d59eab76eeeabb42e2ab57f2e939274bece379fcbe6a9a5c1a864
+"@types/validator@npm:^13.15.3":
+  version: 13.15.10
+  resolution: "@types/validator@npm:13.15.10"
+  checksum: 10/63117a776ced4d066d7fb63130d90ba487d38209dd45c25641ca1a6f5040e8394cc9a855750b919b72a923c5ffb51f8474f213b10b5aaa27d9db108bef07ad10
   languageName: node
   linkType: hard
 
@@ -5422,13 +5422,13 @@ __metadata:
   linkType: hard
 
 "class-validator@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "class-validator@npm:0.14.0"
+  version: 0.14.3
+  resolution: "class-validator@npm:0.14.3"
   dependencies:
-    "@types/validator": "npm:^13.7.10"
-    libphonenumber-js: "npm:^1.10.14"
-    validator: "npm:^13.7.0"
-  checksum: 10/bf550a4ab7b424467737c75e7e6171a45fe010ccab6af50793539d9d2e1f5cce1a35fbc8b11f9a5de4f049852f768232acca16f05cf80993a36369b494560f44
+    "@types/validator": "npm:^13.15.3"
+    libphonenumber-js: "npm:^1.11.1"
+    validator: "npm:^13.15.20"
+  checksum: 10/492a3d3bf6db896a10bb473298b9e51cf3384a2810e32c549f1f82050786835aacc8c887b6d2f4a90aa82c4359f88252ef707f75295971db58532a73c40fffdf
   languageName: node
   linkType: hard
 
@@ -10216,10 +10216,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.10.14":
-  version: 1.10.28
-  resolution: "libphonenumber-js@npm:1.10.28"
-  checksum: 10/b8bac26d534861ef6bdecbe015b6581fbd34f6fe87fec21c47dbf6760574ae7f2fc4bae11324a492452f37466e54289b13767113c110304986145217c9273a64
+"libphonenumber-js@npm:^1.11.1":
+  version: 1.12.29
+  resolution: "libphonenumber-js@npm:1.12.29"
+  checksum: 10/46f84580d250fe24dce81019c445a8c64965a8712e411290d7d4ae360798dd0626523846b247ccf831d216fc4920197bd82725d53a23e5db8221ac733eb1375d
   languageName: node
   linkType: hard
 
@@ -15064,10 +15064,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:13.15.20, validator@npm:^13.6.0, validator@npm:^13.7.0":
+"validator@npm:13.15.20, validator@npm:^13.6.0":
   version: 13.15.20
   resolution: "validator@npm:13.15.20"
   checksum: 10/498f9b201dda7b09207bbc13606e6f90595987eab9e3a60fc5b8d8d96141c9351192aea56d392c78640e2462770eedccf545cf13b2ef43e87d73a755ba485c5d
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.15.20":
+  version: 13.15.23
+  resolution: "validator@npm:13.15.23"
+  checksum: 10/03e4a37c04c4e8337b0c91e529bdb6376de6b52ef683616e2e909276be73903e6054203d274ed35e88e3498ec68764125b194338dd2ee893818d3008fbad1ba7
   languageName: node
   linkType: hard
 
