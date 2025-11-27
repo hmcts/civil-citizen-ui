@@ -24,7 +24,6 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
   const mockDraftClaimFromStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
