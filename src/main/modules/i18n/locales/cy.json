@@ -31,6 +31,7 @@
     "CHOOSE": "Dewiswch",
     "CASE_NUMBER": "Rhif yr achos: ",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
+    "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
     "CLAIM_AMOUNT": "Swm yr hawliad",
     "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
     "CLAIM_NUMBER": "Rhif hawlio",
