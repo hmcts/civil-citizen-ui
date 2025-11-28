@@ -129,7 +129,7 @@ civil-service:
       CMC_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
       REFERENCE_DATABASE_MIGRATION: true
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
-      CAMUNDA_URL: http://camunda-${SERVICE_NAME}.preview.platform.hmcts.net/engine-rest/
+      CAMUNDA_URL: http://camunda-${SERVICE_NAME}/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
       STITCHING_API_ENABLED: false
@@ -141,9 +141,9 @@ civil-service:
       ASSIGN_ROLES_ON_STARTUP: true
       COURT_LOCATION_WA_DMN_ENABLED: true
       TASK_MANAGEMENT_ENABLED: false
-      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://camunda-${SERVICE_NAME}.preview.platform.hmcts.net/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://camunda-${SERVICE_NAME}.preview.platform.hmcts.net/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://camunda-${SERVICE_NAME}.preview.platform.hmcts.net/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://camunda-${SERVICE_NAME}/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://camunda-${SERVICE_NAME}/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://camunda-${SERVICE_NAME}/engine-rest/
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update
     postgresql:
       enabled: true
