@@ -123,10 +123,10 @@ civil-service:
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
-      CMC_DB_HOST: "{{ .Values.postgresql.releaseNameOverride}}"
+      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
       CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
-      CMC_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
-      CMC_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
+      CMC_DB_USERNAME: ${POSTGRES_USER}
+      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       REFERENCE_DATABASE_MIGRATION: true
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
@@ -145,6 +145,10 @@ civil-service:
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-civil-service.preview.platform.hmcts.net/service-request-update
+      DASHBOARD_API_URL: http://${SERVICE_NAME}-civil-service
+      RELEASE_REVISION: "{{ .Release.Revision }}"
+      GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
+
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
@@ -403,7 +407,7 @@ civil-service:
       devmemoryLimits: 2Gi
       environment:
         FEATURE_ACCESS_MANAGEMENT_ENABLED: true
-        SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
+        SERVICES_ROLE_ASSIGNMENT_API: http://am-role-assignment-service-aat.service.core-compute-aat.internal
         HEALTH_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw/health
         HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
         HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
