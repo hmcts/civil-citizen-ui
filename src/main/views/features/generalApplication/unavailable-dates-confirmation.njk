@@ -14,7 +14,12 @@
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.GA_UNAVAILABLE_DATES_CONFIRMATION.DESCRIPTION') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+           <fieldset class="govuk-fieldset">
+           <legend class="govuk-visually-hidden">
+             {{ t('PAGES.GENERAL_APPLICATION.GA_UNAVAILABLE_DATES_CONFIRMATION.TITLE') }}
+           </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes:'COMMON.VARIATION_8.YES', no: 'COMMON.VARIATION_8.NO'}) }}
+           </fieldset>
             <div class="govuk-button-group">
               {{ addButton(t, 'CONTINUE', cancelUrl) }}
             </div>

@@ -27,9 +27,14 @@
           <p class="govuk-body"> {{ t('PAGES.DEFENDANT_EXPERT_EVIDENCE.EXPERT') }}</p>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE') }}
+              </legend>
             {% set id = "option" %}
             {% set name = "option" %}
             {{ yesNoRadioButton(t,id,name,title,form,'',{yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+           </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

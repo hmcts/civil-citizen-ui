@@ -28,7 +28,12 @@
           </p>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.SHARED_EXPERT.PAGE_TITLE') }}
+              </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '',{yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+           </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
