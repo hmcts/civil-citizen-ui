@@ -5,7 +5,6 @@ const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/st
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
-const sharedData = require('../../sharedData');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const {checkToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
@@ -34,8 +33,7 @@ Scenario('Create Lip v Lip claim - Rejected All By Defendant and claimant welsh'
   await api.submitUploadTranslatedDoc('CLAIM_ISSUE');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  await ResponseSteps.RespondToClaim(claimRef, 'both');
-  sharedData.language = 'en';
+  await ResponseSteps.RespondToClaim(claimRef, 'en');
   await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
@@ -48,7 +46,6 @@ Scenario('Create Lip v Lip claim - Rejected All By Defendant and claimant welsh'
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true, 'both');
-  sharedData.language = 'en';
   await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
   await I.click('Go to your account');
   await I.wait(5);

@@ -20,7 +20,7 @@ export class HowMuchOweAmountValidator implements ValidatorConstraintInterface {
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
       const propertyValue = (validationArguments.object as any)[property];
-      if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
+      if (propertyValue === undefined || Number.isNaN(propertyValue) || !value || Number.isNaN(value)) {
         return true;
       }
       const ONE_PENCE = 0.01;

@@ -26,8 +26,14 @@
             {{ csrfProtection(csrf) }}
             {{ govukDetails({
               summaryText: t('PAGES.CITIZEN_RESPONSE_TYPE.RESPONSE_MEANING'),
-              html: detailsContent(componentDetailItemsList, t)
+              html: detailsContent(componentDetailItemsList, t),
+              attributes: { "id": "responseType-details" }
             }) }}
+
+             <fieldset class="govuk-fieldset " aria-describedby="responseType-details">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                 {{ t('PAGES.CITIZEN_RESPONSE_TYPE.HOW_DO_YOU_RESPOND') }}
+                </legend>
             {{ govukRadios({
               idPrefix: "responseType",
               name: "responseType",
@@ -61,6 +67,7 @@
                 html: t(errors[0].text)
               } if form.hasErrors()
             }) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

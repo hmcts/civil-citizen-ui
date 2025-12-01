@@ -18,10 +18,10 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
+import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
-  BASE_CASE_PROGRESSION_URL,
   BASE_CLAIM_URL,
   BASE_CLAIMANT_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_RESPONSE_URL,
@@ -87,13 +87,13 @@ import {
   QM_START_URL,
   QM_VIEW_QUERY_URL,
   QM_WHAT_DO_YOU_WANT_TO_DO_URL, QUERY_MANAGEMENT_CREATE_QUERY,
-  REASON_FOR_FRC_BAND_URL,
-  RESPONSE_CHECK_ANSWERS_URL,
+  REASON_FOR_FRC_BAND_URL, REQUEST_MORE_TIME_URL,
+  RESPONSE_CHECK_ANSWERS_URL, RESPONSE_DEADLINE_OPTIONS_URL,
   SIGN_OUT_URL,
   STATEMENT_OF_MEANS_URL,
   SUBJECT_TO_FRC_URL,
   TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
-  TRIAL_ARRANGEMENTS_HEARING_DURATION,
+  TRIAL_ARRANGEMENTS_HEARING_DURATION, TYPES_OF_DOCUMENTS_URL, UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
@@ -101,7 +101,6 @@ import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragem
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
-import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
@@ -121,7 +120,7 @@ const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
-const cookieMaxAge = 90 * (60 * 1000); // 90 minutes
+const cookieMaxAge = config.get<number>('cookieMaxAge');
 
 export const app = express();
 app.use(cookieParser());
@@ -156,12 +155,15 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
 }));
+
+app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 
 app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
@@ -198,7 +200,6 @@ app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
-app.use(BASE_CASE_PROGRESSION_URL, isCaseProgressionV1Enabled);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
@@ -270,6 +271,10 @@ app.use([
   GA_UPLOAD_DOCUMENTS_COSC_URL,
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
+  REQUEST_MORE_TIME_URL,
+  RESPONSE_DEADLINE_OPTIONS_URL,
+  TYPES_OF_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 ], GaTrackHistory);
 
 app.use([
@@ -352,4 +357,3 @@ app.use(routes);
 new ErrorHandler().enableFor(app);
 
 setupDev(app,developmentMode);
-

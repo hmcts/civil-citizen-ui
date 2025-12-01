@@ -67,8 +67,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask to set aside');
@@ -163,8 +161,7 @@ class createGASteps {
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Vary a judgment';
     const feeAmount = '15';
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
+
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask to vary a judgment');
@@ -265,8 +262,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask the court to reconsider an order');
@@ -378,8 +373,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask to change a hearing date');
@@ -490,8 +483,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask for more time to do what is required by a court order');
@@ -603,8 +594,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask for relief from a penalty you\'ve been given by the court');
@@ -718,8 +707,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -832,8 +819,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -946,8 +931,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -1060,8 +1043,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -1174,8 +1155,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -1277,8 +1256,6 @@ class createGASteps {
     const applicationType = 'Court to make an order settling the claim by consent';
     const feeAmount = '123';
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -1374,8 +1351,6 @@ class createGASteps {
         break;
     }
 
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Other applications');
@@ -1504,8 +1479,6 @@ class createGASteps {
     }
 
     // Primary application to Adjourn a hearing
-    await I.waitForContent('Contact the court to request a change to my case', 60);
-    await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask to change a hearing date');

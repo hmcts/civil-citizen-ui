@@ -1,11 +1,11 @@
 export function toNumberOrUndefined(value: string): number {
-  const numberValue: number = parseFloat(value);
-  return isNaN(numberValue) ? undefined : numberValue;
+  const numberValue: number = Number.parseFloat(value);
+  return Number.isNaN(numberValue) ? undefined : numberValue;
 }
 
 export function toNumberOrString(value: string): number | string {
-  const numberValue: number = parseFloat(value);
-  return isNaN(numberValue) ? value : numberValue;
+  const numberValue: number = Number.parseFloat(value);
+  return Number.isNaN(numberValue) ? value : numberValue;
 }
 
 export function isDecimal(value: number) {

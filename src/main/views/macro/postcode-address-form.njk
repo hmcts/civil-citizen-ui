@@ -28,53 +28,43 @@
     <div class="govuk-visually-hidden govuk-error-message">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-    <input class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
+    <input id="{{ params.addressType + 'Postcode' }}" class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
-    <div class="govuk-visually-hidden govuk-!-margin-bottom-2">
-      {{ govukSelect({
-        id: params.addressType + 'postcodeAddress',
+
+    {{ govukSelect({
+      id: params.addressType + 'postcodeAddress',
       name: "addressList",
       classes: 'addressList',
       label: {
         text: t('COMMON.POSTCODE.PICK_ADDRESS'),
-        for: params.addressType + 'postcodeAddress'
+        classes: 'govuk-visually-hidden'
       },
       items: [
         {
           value: "",
           disabled: true,
+          selected: true,
           text: t('COMMON.POSTCODE.ADDESSES_FOUND')
         }
       ]
     }) }}
-    </div>
+
     <div class="{{ govukVisuallyHiddenForAnchor }}">
       <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
     <div>
-      {% if params.addressType === 'primaryAddress' %}
-        <div class="{{ govukVisuallyHidden }} address-form">
-          {{ addressForm(
-            t,
-            party = params.party,
-            addressType = params.addressType,
-            addressTitle = params.addressTitle
-          ) }}
-        </div>
-      {% else %}
-        <div class="{{ govukVisuallyHidden }} address-form">
-          {{ addressForm(
-            t,
-            party = params.party,
-            addressType = params.addressType,
-            addressTitle = params.addressTitle
-          ) }}
-        </div>
-      {% endif %}
+      <div class="{{ govukVisuallyHidden }} address-form">
+        {{ addressForm(
+          t,
+          party = params.party,
+          addressType = params.addressType,
+          addressTitle = params.addressTitle
+        ) }}
+      </div>
     </div>
   </div>
 {% endmacro %}

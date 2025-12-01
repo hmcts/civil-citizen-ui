@@ -23,7 +23,7 @@
       <a href="{{ directionOrderDocUrl }}" target="_blank">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.COURT_DOCUMENT') }}</a>
       {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.IF_NOT_SURE_END') }}
   </p>
-  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE') }}</p>
   <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
     {{ csrfProtection(csrf) }}
     <div class="govuk-inset-text" >
@@ -39,7 +39,7 @@
         id: 'uploadFileButton',
         name: 'action',
         value: 'uploadButton',
-        text: t('COMMON.UPLOAD_FILE'),
+        text: t('COMMON.SAVE_FILE'),
         classes: "govuk-button--secondary govuk-!-margin-bottom-0"
       }) }}
     </div>

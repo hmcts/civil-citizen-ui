@@ -1,6 +1,6 @@
 import {IsDefined, IsNotEmpty, IsNumber, Max, MaxLength, Min, ValidateIf} from 'class-validator';
 import {YesNo} from '../../../yesNo';
-import {FREE_TEXT_MAX_LENGTH, MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from '../../../../validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH, MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from 'form/validators/validationConstraints';
 
 export class OnTaxPayments {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
@@ -26,7 +26,7 @@ export class OnTaxPayments {
   }
 
   getAmountYouOweAsString(): string {
-    return !this.amountYouOwe || isNaN(this.amountYouOwe) ? '' : String(this.amountYouOwe);
+    return !this.amountYouOwe || Number.isNaN(this.amountYouOwe) ? '' : String(this.amountYouOwe);
   }
 
   isOptionYesSelected(): boolean {

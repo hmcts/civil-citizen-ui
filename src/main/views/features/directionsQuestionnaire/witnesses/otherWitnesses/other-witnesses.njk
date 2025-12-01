@@ -40,7 +40,12 @@
           <p class="govuk-body">{{ t('PAGES.OTHER_WITNESSES.THIS_IS_SOMEONE_WHO_CAN_CONFIRM') }}</p>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.OTHER_WITNESSES.PAGE_TITLE') }}
+              </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),

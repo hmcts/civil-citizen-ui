@@ -259,6 +259,10 @@ const getAddlDocumentLabel = (additionalDocument: CcdGeneralApplicationAddlDocum
       return 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_MORE_INFO_RESPONSE_APPLICANT';
     case DocumentType.REQUEST_MORE_INFORMATION_RESPONDENT_TRANSLATED:
       return 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_MORE_INFO_RESPONSE_RESPONDENT';
+    case DocumentType.REQUEST_MORE_INFORMATION:
+      return 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_INFORMATION';
+    case DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL:
+      return 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.WRITTEN_REPRESENTATION_DOC';
     default:
       return additionalDocument.value.documentName;
   }
@@ -311,7 +315,7 @@ export const getHearingNotice = (applicationResponse: ApplicationResponse, lng: 
   return hearingOrderDocInfoArray;
 };
 
-export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getGeneralOrder = (applicationResponse: ApplicationResponse, lng: string) => {
   const generalOrderDocs = applicationResponse?.case_data?.generalOrderDocument;
   let generalOrderDocInfoArray : DocumentInformation[] = [];
   if(generalOrderDocs) {
@@ -319,9 +323,9 @@ export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: 
       return new Date(item2.value.createdDatetime).getTime() - new Date(item1.value.createdDatetime).getTime();
     }).map(generalOrder => {
       const documentLabel = generalOrder.value.documentName.indexOf('Translated') !== -1
-        ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_GENERAL_ORDER', {lang})
-        : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER', {lang});
-      return setUpDocumentLinkObject(generalOrder.value?.documentLink, generalOrder.value?.createdDatetime, applicationResponse?.id, lang, documentLabel);
+        ? t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TRANSLATED_GENERAL_ORDER', {lng})
+        : t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER', {lng});
+      return setUpDocumentLinkObject(generalOrder.value?.documentLink, generalOrder.value?.createdDatetime, applicationResponse?.id, lng, documentLabel);
     });
   }
   return generalOrderDocInfoArray;

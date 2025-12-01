@@ -9,7 +9,7 @@ const MINIMUM_FOUR_DIGIT_YEAR = 1000;
 export class OptionalDateFourDigitValidator implements ValidatorConstraintInterface {
 
   validate(year: number) {
-    return !(!isNaN(year) && year < MINIMUM_FOUR_DIGIT_YEAR);
+    return !(!Number.isNaN(year) && year < MINIMUM_FOUR_DIGIT_YEAR);
   }
 
   defaultMessage() {

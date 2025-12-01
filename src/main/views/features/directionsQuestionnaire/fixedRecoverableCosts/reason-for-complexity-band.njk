@@ -22,6 +22,9 @@
                         {{ csrfProtection(csrf) }}
                         {{ createPageTitle(title,t) }}
                         {{ createDetails( whichComplexityBandToChooseContent ,t) }}
+                        <span id="reasonsForBandSelection-description" class="govuk-visually-hidden">
+                            {{ t('PAGES.CHOOSE_COMPLEXITY_BAND.COMBO_BOX.TITLE') }}
+                        </span>
                         {{ createTextArea("reasonsForBandSelection", form.model.reasonsForBandSelection, form ,t) }}
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
                         {{ contactUsForHelp(t) }}

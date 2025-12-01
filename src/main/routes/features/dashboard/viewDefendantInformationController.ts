@@ -7,14 +7,18 @@ import {
 import { Claim } from 'models/claim';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import {getAddress, getRespondentSolicitorAddress} from 'services/features/response/contactThem/contactThemService';
-import { getClaimById } from 'modules/utilityService';
 import { caseNumberPrettify } from 'common/utils/stringUtils';
 import {
   isDefendantNoCOnlineForCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
-
+import {AppRequest} from 'models/AppRequest';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 const viewDefendantInformation = 'features/dashboard/contact-them-new';
 const viewDefendantInformationController = Router();
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 async function renderView(res: Response, claim: Claim, claimId: string) {
   const pageTitle = 'PAGES.CONTACT_THEM.PAGE_TITLE_DEFENDANT';
@@ -43,8 +47,8 @@ viewDefendantInformationController.get(
   VIEW_DEFENDANT_INFO, async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const claim: Claim = await getClaimById(claimId, req, true);
-      renderView(res, claim, claimId);
+      const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      await renderView(res, claim, claimId);
     } catch (error) {
       next(error);
     }

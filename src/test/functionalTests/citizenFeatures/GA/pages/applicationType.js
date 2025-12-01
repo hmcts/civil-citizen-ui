@@ -27,7 +27,7 @@ class ApplicationType {
   }
 
   verifyHeadingDetails() {
-    I.see('Make an application', 'h1');
+    I.see('Ask the court to change something on your case (make an application)', 'h1');
     I.see('Select application', 'h1');
   }
 

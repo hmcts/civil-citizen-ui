@@ -1,0 +1,21 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "jest"],
+    "noEmit": true,
+    "baseUrl": "../../main",
+    "paths": {
+      "common/*": ["common/*"],
+      "models/*": ["common/models/*"],
+      "form/*": ["common/form/*"],
+      "modules/*": ["modules/*"],
+      "client/*": ["app/client/*"],
+      "routes/*": ["routes/*"],
+      "services/*": ["services/*"]
+    }
+  },
+  "include": [
+    "../contract/consumers/**/*",
+    "../../main/**/*"
+  ]
+}

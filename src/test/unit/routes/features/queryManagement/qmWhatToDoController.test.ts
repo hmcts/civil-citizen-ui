@@ -96,8 +96,8 @@ describe('Query management what do do controller', () => {
   describe('on POST', () => {
     describe('Validation Tests', () => {
       it.each([
-        [WhatToDoTypeOption.GET_UPDATE, 'You must select what update you want to give the court.'],
-        [WhatToDoTypeOption.SEND_UPDATE, 'You must select what update you want to give the court.'],
+        [WhatToDoTypeOption.GET_UPDATE, 'You must select what update you want to get from the court.'],
+        [WhatToDoTypeOption.SEND_UPDATE, 'You must select what update you want to get from the court.'],
         [WhatToDoTypeOption.SEND_DOCUMENTS, 'You must select which documents you want to send.'],
         [WhatToDoTypeOption.SOLVE_PROBLEM, 'You must select what problem you are having with the Money claims system.'],
         [WhatToDoTypeOption.MANAGE_HEARING, 'You must select how you want to manage your hearing.'],

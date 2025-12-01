@@ -196,7 +196,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       content: [`Sir John Doe has offered to pay £${amount}`, 
-        'The payment must be received in your account by then, if not you can request a county court judgment.',
+        'If you accept, the payment must be received in your account within 5 working days, if not you can request a County Court Judgment.',
       ],
       nextSteps: 'View and respond',
     };

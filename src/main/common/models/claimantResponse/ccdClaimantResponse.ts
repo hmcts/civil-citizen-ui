@@ -8,7 +8,7 @@ import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDDQSupportRequirements, CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
-import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
+import {CCDClaimantPayBySetDate, CCDPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
@@ -48,4 +48,5 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   specApplicant1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
   specApplicant1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
   applicant1DQDefendantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
+  respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
 }

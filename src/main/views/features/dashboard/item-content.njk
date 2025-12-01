@@ -36,9 +36,9 @@
      {% set object = '' %}
      {% if  content.data.variables %}
        {% set object = content.data.variables %}
-       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
+       <h2 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
      {% else %}
-       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
+       <h2 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
      {% endif %}
   {% endif %}
 
@@ -46,9 +46,9 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
+      <h2 class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
     {% else %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</p>
+      <h2 class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
     {% endif %}
   {% endif %}
 
@@ -297,7 +297,7 @@
                           id: 'uploadFileButton',
                           name: 'action',
                           value: content.data.category+'['+content.data.index+'][uploadButton]',
-           text: t('COMMON.UPLOAD_FILE'),
+           text: t('COMMON.SAVE_FILE'),
            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
          }) }}
     </div>

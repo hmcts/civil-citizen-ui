@@ -8,6 +8,13 @@
 {% set pageTitle = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') %}
 
 {% block nestedContent %}
+{% set witnessSummaryHintHtml %}
+{% if isGaNroEnabled === true %}
+{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_NRO_P1') }}  <a class='govuk-link' href={{ applyGaApplication }} rel='noopener noreferrer'>{{ t('COMMON.APPLY_TO_THE_COURT') }}</a>   {{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_NRO_P2') }}
+{% else %}
+ {{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT') }} <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice'  target='_blank'>  {{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_URL') }} </a>
+{% endif %}
+{% endset %}
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
            {% for content in typeOfDocumentsContents %}
@@ -77,7 +84,7 @@
                               value: 'summary',
                               text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'),
                                                           hint: {
-                                                                html: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT') + "<a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice'  target='_blank'>" + t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_URL') + "</a>"
+                                                                html: witnessSummaryHintHtml
                                                           },
                               checked: true if form.model.witness[1].selected
                             },
@@ -251,7 +258,7 @@
                             text: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY'),
                                                         hint: {
 
-                                                          html: t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT') + "<a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice'  target='_blank'>" + t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_SUMMARY_HINT_URL') + "</a>"
+                                                          html: witnessSummaryHintHtml
                                                         },
                             checked: true if form.model.witness[1].selected
                           },

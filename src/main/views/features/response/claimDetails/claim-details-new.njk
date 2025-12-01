@@ -5,12 +5,21 @@
 {% from "../../../macro/timeline-summary.njk" import timelineSummary %}
 {% from "../../../macro/page-information.njk" import pageInformation %}
 {% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
 {% set claimHasBeenMadeHtml %}
     <p class="govuk-body">{{ t('PAGES.CLAIM_DETAILS.CLAIM_HAS_BEEN_MADE_TEXT') }} <a id="order-and-notice-link" href="{{ ordersAndNoticesUrl }}" rel="noreferrer noopener" class="govuk-link">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
 {% endset -%}
 {% set evidenceRows = claim.claimantEvidence.evidenceItem %}
 
 {% block nestedContent %}
+
+    {% if showErrorAwaitingTranslation %}
+              {{ govukWarningText({
+                text: t('ERRORS.DOCUMENTS_BEING_TRANSLATED'),
+                iconFallbackText: "Warning"
+              }) }}
+    {% endif %}
 
     {{ pageInformation(t,pageCaption, pageTitle, claimId, totalAmount)}}
 
@@ -32,11 +41,11 @@
      {% if evidenceRows and evidenceRows.length %}
             {{ evidenceSummary(evidenceRows, t) }}
      {% endif %}
-     <p class="govuk-body">
+     <h2 class="govuk-body">
        <span class="govuk-!-font-weight-bold">
            {{ t('PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW') }}
        </span>
-     </p>
+     </h2>
      <p class="govuk-body"><a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.VIEW_THE_CLAIM_PDF') }}</a></p>
      <br>
      {{ govukButton({
