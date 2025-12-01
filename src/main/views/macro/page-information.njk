@@ -2,9 +2,9 @@
     <span class="govuk-caption-l">{{ t(pageCaption)}}</span>
     <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
     {% if isCarm %}
-      <p class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM_CARM', {claimId: claimId}) }}</p>
+      <h2 class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM_CARM', {claimId: claimId}) }}</<h2>
     {% else %}
-      <p class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM', {claimId: claimId}) }}</p>
+      <h2 class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_NUMBER_PARAM', {claimId: claimId}) }}</<h2>
     {% endif %}
-    <p class="govuk-body-l">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmount | currencyFormat(claimAmount)}) }}</p>
+    <h2 class="govuk-body-l">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmount | currencyFormat(claimAmount)}) }}</h2>
 {% endmacro %}

@@ -66,7 +66,6 @@
             </section>
           {% endif %}
 
-
           {% if summarySections.trialEvidenceSection.sections.length > 0 %}
             <section role="region" aria-labelledby="trial-evidence-heading">
             {% if isSmallClaims %}
@@ -88,10 +87,11 @@
             {% endfor %}
             </section>
           {% endif %}
+
           {% for content in bottomPageContents %}
                 {{ itemContent(content,t) }}
           {% endfor %}
-          <form method="post" novalidate autocomplete="off" aria-describedby="form-error" aria-live="polite">
+          <form method="post" novalidate autocomplete="off" {% if form.errorFor(signed) %}aria-describedby="form-error"{% endif %} aria-live="polite">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
 
@@ -116,6 +116,11 @@
                 attributes: { id: "form-error" }
               } if form.errorFor(signed)
             }) }}
+
+            {% if not form.errorFor(signed) %}
+              <div id="form-error" class="govuk-visually-hidden"></div>
+            {% endif %}
+
             {{ addButton(t, 'SUBMIT',cancelUrl) }}
           </form>
 
