@@ -30,13 +30,19 @@
         {% else %}
             <p class="govuk-body">{{t('PAGES.WELSH_LANGUAGE.OFFICIAL_LANGUAGE')}}</p>
         {% endif %}
-            <p class="govuk-body govuk-!-font-weight-bold">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK')}}</p>
-        {% if carmEnabled %}
-              <div id="hint" class="govuk-hint">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK_MEDIATION')}}</div>
-        {% endif %}
             {{ govukRadios({
-              id: "speakLanguage",
+              idPrefix: "speakLanguage",
               name: "speakLanguage",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK'),
+                  classes: "govuk-fieldset__legend--m",
+                  isPageHeading: false
+                }
+              },
+              hint: {
+                text: t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK_MEDIATION')
+              } if carmEnabled,
               items: [
                 {
                   value: LanguageOptions.ENGLISH,
@@ -59,10 +65,16 @@
                 } if form.hasErrors()
               }) }}
 
-            <p class="govuk-body govuk-!-font-weight-bold">{{t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS')}}</p>
             {{ govukRadios({
-              id: "documentsLanguage",
+              idPrefix: "documentsLanguage",
               name: "documentsLanguage",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS'),
+                  classes: "govuk-fieldset__legend--m",
+                  isPageHeading: false
+                }
+              },
               items: [
                 {
                   value: LanguageOptions.ENGLISH,

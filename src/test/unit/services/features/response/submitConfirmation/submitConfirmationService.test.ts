@@ -21,6 +21,9 @@ import {PartyDetails} from 'common/form/models/partyDetails';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {YesNo} from 'common/form/models/yesNo';
 import {Mediation} from 'common/models/mediation/mediation';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getClaimWithExtendedPaymentDeadline} from 'services/features/claimantResponse/submitClaimantResponse';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -178,15 +181,15 @@ describe('Submit Confirmation service', () => {
 
     it('should display next steps section', () => {
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
-      expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_NEED_PAY_IMMEDIATELY');
-      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT');
-      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY');
-      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CHEQUES_OR_BANK_TRANSFERS');
-      expect(nextStepsSection[1].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
-      expect(nextStepsSection[2].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
-      expect(nextStepsSection[2].data?.textAfter).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
-      expect(nextStepsSection[2].data?.href).toContain(`/dashboard/${mockClaimId}/contact-them`);
-      expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF');
+      expect(nextStepsSection[0].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF');
+      expect(nextStepsSection[1].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_NEED_PAY_IMMEDIATELY');
+      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT');
+      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY');
+      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CHEQUES_OR_BANK_TRANSFERS');
+      expect(nextStepsSection[2].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
+      expect(nextStepsSection[3].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
+      expect(nextStepsSection[3].data?.textAfter).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[3].data?.href).toContain(`/dashboard/${mockClaimId}/contact-them`);
       expect(nextStepsSection[4].data?.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CLAIM_SETTLED');
       expect(nextStepsSection[5].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
       expect(nextStepsSection[6].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION');
@@ -553,6 +556,56 @@ describe('Submit Confirmation service', () => {
         expect(nextStepsSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.CLAIMANT_REJECTS_MEDIATION');
         expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_MEDIATION2');
       });
+    });
+  });
+
+  describe('getClaimWithExtendedPaymentDeadline', () => {
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('should not calculate deadline for Full Admit Pay Immediately',
+      async () => {
+        jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
+        {
+          return new Date(Date.now());
+        });
+        const claim = new Claim();
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+        claim.fullAdmission = new FullAdmission();
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+        claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+        const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
+        expect(claimWithExtendedPaymentDeadline).toBeUndefined();
+      });
+
+    it('should calculate deadline for Part Admit Pay Immediately',
+      async () => {
+        jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(async () =>
+        {
+          return new Date(Date.now());
+        });
+        const claim = new Claim();
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+        claim.partialAdmission = new PartialAdmission();
+        claim.partialAdmission.paymentIntention = new PaymentIntention();
+        claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+        const claimWithExtendedPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, null);
+        expect(claimWithExtendedPaymentDeadline).not.toBeUndefined();
+      });
+
+    it('should rethrow error when extended deadline calculation fails', async () => {
+      const error = new Error(TestMessages.REQUEST_FAILED);
+      jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockRejectedValue(error);
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+      await expect(getClaimWithExtendedPaymentDeadline(claim, null)).rejects.toThrow(TestMessages.REQUEST_FAILED);
     });
   });
 });

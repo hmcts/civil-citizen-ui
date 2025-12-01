@@ -24,10 +24,18 @@
           <h1 class="govuk-heading-l">{{t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT')}}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+             <fieldset class="govuk-fieldset" role="group" aria-describedby="have-you-paid-legend">
+                <legend id="have-you-paid-legend" class="govuk-visually-hidden">
+                 {{ t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT') }}
+                </legend>
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            </fieldset>
+            </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE"),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

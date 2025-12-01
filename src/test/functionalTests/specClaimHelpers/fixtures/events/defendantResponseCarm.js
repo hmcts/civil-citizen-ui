@@ -655,6 +655,9 @@ module.exports = {
           otherSupport: null,
           requirements: ['DISABLED_ACCESS', 'HEARING_LOOPS'],
         },
+        respondent1DQHearing: {
+          unavailableDatesRequired: 'No',
+        },
       },
       VulnerabilityQuestions: {
         respondent1DQVulnerabilityQuestions: {
@@ -663,13 +666,6 @@ module.exports = {
         },
       },
       StatementOfTruth: {
-        uiStatementOfTruth: {
-          name: 'Test',
-          role: 'Worker',
-        },
-        respondent1DQHearing: {
-          unavailableDatesRequired: 'No',
-        },
       },
     };
     responseData.midEventData = {

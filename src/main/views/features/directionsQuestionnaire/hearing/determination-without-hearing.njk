@@ -31,6 +31,10 @@
 
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset" role="group" aria-describedby="determination-legend">
+              <legend id="determination-legend" class="govuk-fieldset__legend govuk-visually-hidden">
+                {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE') }}
+              </legend>
 
             {% set noHtml %}
               {{ govukTextarea({
@@ -47,6 +51,7 @@
             {% endset %}
 
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {noHtml: noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            </fieldset>
 
             <div class="govuk-form-group">
               {{ govukButton({

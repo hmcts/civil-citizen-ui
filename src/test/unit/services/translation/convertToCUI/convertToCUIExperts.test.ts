@@ -116,6 +116,35 @@ describe('translate CCD data to CUI DQ Experts model', () => {
       expect(result.items[0].fieldOfExpertise).toBe('Construction');
       expect(result.items[0].estimatedCost).toBe(100);
     });
+
+    it('should handle floating point rounding for estimatedCost in CCD to CUI ExpertDetailsList conversion', () => {
+      // Given
+      const ccdExpertDetailsList: CCDExpertDetails[] = [
+        <CCDExpertDetails>{
+          value: <CCDExpertDetailsItem>{
+            name: 'Mike Brown',
+            firstName: 'Mike',
+            lastName: 'Brown',
+            phoneNumber: '121',
+            emailAddress: 'abc@test.com',
+            whyRequired: 'Test Reason',
+            fieldOfExpertise: 'Construction',
+            estimatedCost: 28,
+          },
+        },
+      ];
+      // When
+      const result = toCUIExpertDetails(ccdExpertDetailsList);
+      // Then
+      expect(result.items.length).toBe(1);
+      expect(result.items[0].firstName).toBe('Mike');
+      expect(result.items[0].lastName).toBe('Brown');
+      expect(result.items[0].phoneNumber).toBe(121);
+      expect(result.items[0].emailAddress).toBe('abc@test.com');
+      expect(result.items[0].whyNeedExpert).toBe('Test Reason');
+      expect(result.items[0].fieldOfExpertise).toBe('Construction');
+      expect(result.items[0].estimatedCost).toBe(0.28);
+    });
   });
 
   describe('toCUIExpertReportDetails', () => {

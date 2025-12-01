@@ -177,11 +177,17 @@ document.addEventListener('DOMContentLoaded', function () {
       );
     }
     if (element.getAttribute('aria-describedby')) {
-      element.setAttribute('aria-describedby', element.getAttribute('aria-describedby').replace(indexRegex, '[' + newIndex + ']'));
+      const describedBy = element.getAttribute('aria-describedby')
+        .replace(checkboxIndexRegex, '-' + newIndex + '-')
+        .replace(indexRegex, '[' + newIndex + ']');
+      element.setAttribute('aria-describedby', describedBy);
     }
     if (element.getAttribute('aria-label')) {
       const updatedIndex = newIndex + 1;
-      element.setAttribute('aria-label', element.getAttribute('aria-label').replace(indexRegex, '[' + updatedIndex + ']'));
+      const ariaLabel = element.getAttribute('aria-label')
+        .replace(checkboxIndexRegex, '-' + updatedIndex + '-')
+        .replace(indexRegex, '[' + updatedIndex + ']');
+      element.setAttribute('aria-label', ariaLabel);
     }
   }
 

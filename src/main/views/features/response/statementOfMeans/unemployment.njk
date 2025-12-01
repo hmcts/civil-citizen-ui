@@ -70,6 +70,10 @@
 
               }) }}
             {% endset -%}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.UNEMPLOYMENT.TITLE') }}
+              </legend>
             {{ govukRadios({
               idPrefix: "option",
               name: "option",
@@ -94,6 +98,7 @@
               ],
               errorMessage: { text: optionError } if optionError else ''
             }) }}
+         </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

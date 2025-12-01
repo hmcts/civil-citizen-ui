@@ -22,6 +22,9 @@ const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/he
 const dqPropertyName = 'determinationWithoutHearing';
 const dqParentName = 'hearing';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('determinationWithoutHearingController');
+
 function renderView(form: GenericForm<DeterminationWithoutHearing>, res: Response): void {
   res.render(determinationWithoutHearingViewPath, {form, pageTitle: 'PAGES.DETERMINATION_WITHOUT_HEARING.TITLE'});
 }
@@ -35,6 +38,7 @@ determinationWithoutHearingController
 
       renderView(new GenericForm(determinationWithoutHearing), res);
     } catch (error) {
+      logger.error(`Error when GET : determination without hearing - ${error.message}`);
       next(error);
     }
   }) as RequestHandler);
@@ -48,12 +52,14 @@ determinationWithoutHearingController
       determinationWithoutHearing.validateSync();
 
       if (determinationWithoutHearing.hasErrors()) {
+        logger.info(`determination without hearing har error - ${determinationWithoutHearing.hasErrors()}`);
         renderView(determinationWithoutHearing, res);
       } else {
         await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), determinationWithoutHearing.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_SMALL_CLAIMS_URL));
       }
     } catch (error) {
+      logger.error(`Error when POST : determination without hearing - ${error.message}`);
       next(error);
     }
   }) as RequestHandler);

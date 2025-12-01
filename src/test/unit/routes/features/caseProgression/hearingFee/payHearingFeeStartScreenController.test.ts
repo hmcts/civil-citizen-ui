@@ -1,3 +1,4 @@
+import {Request, RequestHandler, Response} from 'express';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import config from 'config';
@@ -8,7 +9,8 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {FIXED_DATE} from '../../../../../utils/dateUtils';
 import {CaseRole} from 'form/models/caseRoles';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import payHearingFeeStartScreenController from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 
 const session = require('supertest-session');
 const testSession = session(app);
@@ -42,8 +44,9 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
         return done();
       });
   });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  afterEach(() => {
+    jest.restoreAllMocks();
+    nock.cleanAll();
   });
   it('should return expected pay hearing fee page when claim exists', async () => {
     //Given
@@ -77,5 +80,24 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
+  });
+
+  it('should pass error with status 500 to next when civil service responds with 404', async () => {
+    const controllerStack = (payHearingFeeStartScreenController as unknown as {stack: Array<any>}).stack;
+    const routeLayer = controllerStack.find((layer) => layer.route?.path === PAY_HEARING_FEE_URL);
+    expect(routeLayer).toBeDefined();
+    const handler = routeLayer.route.stack[0].handle as RequestHandler;
+
+    const axiosError: {response: {status: number}; status?: number} = {response: {status: 404}};
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(axiosError);
+
+    const req = {params: {id: '999'}, cookies: {}, query: {}} as unknown as Request;
+    const res = {render: jest.fn()} as unknown as Response;
+    const next = jest.fn();
+
+    await handler(req, res, next);
+
+    expect(axiosError.status).toBe(500);
+    expect(next).toHaveBeenCalledWith(axiosError);
   });
 });

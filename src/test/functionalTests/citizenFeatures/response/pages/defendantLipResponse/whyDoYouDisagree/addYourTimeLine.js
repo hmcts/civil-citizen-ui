@@ -4,9 +4,9 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields = {
-  date1Day: '[id="day"]',
-  date1Month: '[id="month"]',
-  date1Year: '[id="year"]',
+  date1Day: 'input[name="rows[0][day]"]',
+  date1Month: 'input[name="rows[0][month]"]',
+  date1Year: 'input[name="rows[0][year]"]',
   description1: '[id="rows[0][description]"]',
 };
 

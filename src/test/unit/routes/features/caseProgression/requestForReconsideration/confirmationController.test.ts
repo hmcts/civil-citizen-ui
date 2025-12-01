@@ -8,7 +8,6 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {mockCivilClaimFastTrack} from '../../../../../utils/mockDraftStore';
 import {CaseRole} from 'form/models/caseRoles';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -38,10 +37,6 @@ describe('Request for reconsideration page test', () => {
   nock(idamUrl)
     .post('/o/token')
     .reply(200, {id_token: citizenRoleToken});
-
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
-  });
 
   describe('on GET', () => {
     it('should return expected page in English when claim exists', async () => {
@@ -85,4 +80,3 @@ describe('Request for reconsideration page test', () => {
 
   });
 });
-

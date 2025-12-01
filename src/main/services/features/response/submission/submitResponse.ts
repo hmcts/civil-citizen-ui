@@ -17,6 +17,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitResponse = async (req: AppRequest): Promise<Claim> => {
   try {
+    logger.info(`submitting the response - ${req.params.id}`);
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
@@ -26,7 +27,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     logger.info('Successfully translated the defendant response to ccd');
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
-    logger.error(err);
+    logger.error(`Error when submitting response -  ${err.message}`);
     throw err;
   }
 };

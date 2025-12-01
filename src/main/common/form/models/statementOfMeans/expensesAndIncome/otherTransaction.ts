@@ -26,8 +26,8 @@ export class OtherTransaction {
 
   static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[], income: boolean): OtherTransaction {
     const otherTransactionSources: TransactionSource[] = [];
-    if (otherTransactions?.length) {
-      otherTransactions.forEach(transaction => otherTransactionSources.push(new TransactionSource({
+    if (Object.values(otherTransactions).length) {
+      Object.values(otherTransactions).forEach(transaction => otherTransactionSources.push(new TransactionSource({
         name: transaction.name,
         amount: toNumberOrUndefined(transaction.amount),
         schedule: transaction.schedule,

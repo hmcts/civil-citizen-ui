@@ -66,11 +66,11 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsForm>) {
   const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).filter(file =>
+  const inputFile = (req.files as Express.Multer.File[]).find(file =>
     file.fieldname === target,
   );
-  if (inputFile[0]){
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
+  if (inputFile){
+    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
     form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
     form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
     form.validateSync();
@@ -103,7 +103,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     claimId: caseNumberPrettify(claimId),
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     subtitle: 'PAGES.UPLOAD_DOCUMENTS.SUBTITLE',
-    paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST',
+    paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST_WITH_SAVE_FILE',
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
     partyInformation: partyInformation(claim),
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),

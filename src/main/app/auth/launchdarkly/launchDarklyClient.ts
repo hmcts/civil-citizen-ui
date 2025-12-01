@@ -5,7 +5,6 @@ import {TestData} from 'launchdarkly-node-server-sdk/integrations';
 let ldClient: LDClient;
 let testData: TestData;
 
-const CUI_CASE_PROGRESSION = 'cui-case-progression';
 const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
@@ -15,12 +14,13 @@ const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
-const IS_COSC_ENABLED = 'isCoSCEnabled';
 const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 const QUERY_MANAGEMENT = 'cui-query-management';
 const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
 const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
+const LR_QUERY_MANAGEMENT = 'query-management';
+const CUI_GA_NRO = 'cui-ga-nro';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -29,7 +29,6 @@ async function getClient(): Promise<void> {
     let client;
     if (process.env.NODE_ENV === 'e2eTest') {
       testData = TestData();
-      await testData.update(testData.flag(CUI_CASE_PROGRESSION).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
@@ -40,9 +39,11 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(IS_COSC_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(LR_QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
+
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
@@ -112,10 +113,6 @@ export async function isGaForLipsEnabledAndLocationWhiteListed(location: string)
   return gaLipsFlag && eaFlagForGaLips;
 }
 
-export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return await getFlagValue(CUI_CASE_PROGRESSION) as boolean;
-}
-
 export async function isServiceShuttered(): Promise<boolean> {
   return await getFlagValue(SHUTTER_CUI_SERVICE) as boolean;
 }
@@ -130,10 +127,6 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
-}
-
-export async function isCoSCEnabled(): Promise<boolean> {
-  return await getFlagValue(IS_COSC_ENABLED) as boolean;
 }
 
 export async function isJudgmentOnlineLive(): Promise<boolean> {
@@ -190,3 +183,10 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
   return await getFlagValue(IS_DEFENDANT_NOC_ONLINE_FOR_CASE, epoch) as boolean;
 }
 
+export async function isLRQueryManagementEnabled(): Promise<boolean> {
+  return await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
+}
+
+export async function isCuiGaNroEnabled(): Promise<boolean> {
+  return await getFlagValue(CUI_GA_NRO);
+}

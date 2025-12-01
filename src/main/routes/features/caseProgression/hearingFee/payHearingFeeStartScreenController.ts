@@ -27,7 +27,11 @@ payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, ne
       dashboardUrl,
     });
   } catch (error) {
-    next(error);
+    const claimRetrievalError = error as { response?: { status?: number }, status?: number };
+    if (claimRetrievalError?.response?.status === 404) {
+      claimRetrievalError.status = 500;
+    }
+    next(claimRetrievalError);
   }
 }) as RequestHandler);
 

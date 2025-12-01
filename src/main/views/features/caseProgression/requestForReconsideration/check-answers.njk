@@ -27,7 +27,7 @@
           {% endfor %}
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
-      {{ addButton(t, 'SUBMIT',cancelUrl) }}
+     {{ addButton(t, 'SUBMIT', cancelUrl, {'aria-label': t('COMMON.BUTTONS.SUBMIT')}) }}
           </form>
 
 {% endblock %}

@@ -49,7 +49,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   await ResponseSteps.ConfirmAltPhoneDetails();
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef, true, true);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, true);
   await ResponseSteps.submitResponse(claimRef, partAdmit);
   await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
 });
@@ -63,7 +63,7 @@ Scenario('LiP Claimant response with Part admit', async ({api}) => {
   await ResponseSteps.ConfirmAltPhoneDetails();
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef, true, true);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, true);
   await ClaimantResponseSteps.verifyClaimantMediationDetailsInCYA(claimRef);
   await ClaimantResponseSteps.submitClaimantResponse();
   await api.waitForFinishedBusinessProcess();

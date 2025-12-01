@@ -20,6 +20,7 @@ import {
   CCDExportReportSent,
 } from 'common/models/ccdResponse/ccdExpert';
 import {CaseRole} from 'form/models/caseRoles';
+import { convertToPound } from '../claim/moneyConversation';
 
 export const toCUIExperts = (ccdClaim: CCDClaim): Experts => {
   if (ccdClaim) {
@@ -90,7 +91,7 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
       phoneNumber: Number(phoneNumber) || undefined,
       whyNeedExpert: whyRequired,
       fieldOfExpertise,
-      estimatedCost: estimatedCost / 100 || undefined,
+      estimatedCost: convertToPound(estimatedCost) || undefined,
     } as ExpertDetails;
   });
   return new ExpertDetailsList(convertedValue);

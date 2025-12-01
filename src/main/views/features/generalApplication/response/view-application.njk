@@ -5,10 +5,10 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set applicationHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')}}</h1>
+  <h1 class="govuk-heading-m" id="application-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')}}</h1>
 {% endset %}
 {% set courtResponseHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
+  <h1 class="govuk-heading-m" id="court-response-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
 {% endset %}
 
 {% set applicantDocRows = [] %}
@@ -78,10 +78,11 @@
 {% endif %}
 
 {% set applicationDocuments %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS')}}</h1>
+  <h1 class="govuk-heading-m" id="application-documents-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS')}}</h1>
 {% endset %}
 
 {% set applicationDocumentsHtml %}
+<div aria-labelledby="application-documents-header">
   {{ createDocumentsTableWithoutTableCaption(applicantDocRows) }}
   {{ createDocumentsTableWithoutTableCaption(respondentDocRows) }}
   {% if respondentDocuments.documents.length > 0 and additionalDocUrl %}
@@ -91,9 +92,11 @@
     }) }}
   {% endif %}
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
+</div>
 {% endset %}
 
 {% set responseFromCourtHtml %}
+ <div aria-labelledby="court-response-header">
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
   {% for item in responseFromCourt %}
       {{ govukSummaryList({
@@ -106,6 +109,7 @@
         }) }}
       {% endif %}
   {% endfor %}
+ </div>
 {% endset %}
 
 {% block nestedContent %}

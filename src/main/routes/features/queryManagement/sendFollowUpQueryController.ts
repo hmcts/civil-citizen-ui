@@ -69,7 +69,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   }
 }));
 
-sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file-upload'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const queryId = req.params.queryId;
@@ -101,7 +101,7 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('query-file
       }
 
       if (action?.includes('[deleteFile]')) {
-        const index = action.split(/[[\]]/).filter((word: string) => word !== '')[0];
+        const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
         await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery, true);
         return res.redirect(`${currentUrl}`);
       }

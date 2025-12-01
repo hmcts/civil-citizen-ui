@@ -1,7 +1,7 @@
 import {Claim} from 'common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {AppRequest} from 'common/models/AppRequest';
+import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
@@ -63,6 +63,7 @@ import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
+import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -110,7 +111,7 @@ export class CivilServiceClient {
       const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
       return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
     } catch (err) {
-      logger.error('Error when getting claims for claimant');
+      logger.error(`Error when getting claims for claimant - submitterId - ${submitterId}, error - ${err.message}`);
       throw err;
     }
   }
@@ -124,7 +125,7 @@ export class CivilServiceClient {
       const dashboardDefendantItemList = plainToInstance(DashboardDefendantItem, response.data.claims as object[]);
       return { claims: dashboardDefendantItemList, totalPages: response.data.totalPages };
     } catch (err) {
-      logger.error('Error when getting claims for defendant');
+      logger.error(`Error when getting claims for defendant -submitterId - ${submitterId}, error - ${err.message}`);
       throw err;
     }
   }
@@ -141,7 +142,7 @@ export class CivilServiceClient {
       });
       return claims;
     } catch (err) {
-      logger.error('Error when retrieving by defendant id');
+      logger.error(`Error when retrieving by defendant id - error - ${err.message} `);
       throw err;
     }
   }
@@ -156,9 +157,17 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
+      const caseId = caseDetails.id?.toString();
+      if (caseId) {
+        const session = req.session as AppSession | undefined;
+        if (session) {
+          session.caseReference = caseId;
+          syncCaseReferenceCookie(req);
+        }
+      }
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
-      logger.error('Error when retrieving claim details');
+      logger.error(`Error when retrieving claim details for claim id - ${claimId} `);
       throw err;
     }
   }
@@ -169,7 +178,7 @@ export class CivilServiceClient {
       const response = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
     } catch (err: unknown) {
-      logger.error('Error when getting fee ranges');
+      logger.error(`Error when getting fee ranges, req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -180,7 +189,7 @@ export class CivilServiceClient {
       const response = await this.client.get(`${CIVIL_SERVICE_HEARING_URL}/${amount}`, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting hearing amount');
+      logger.error(`Error when getting hearing amount, req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -193,14 +202,15 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
-      logger.info('Before Round off ' + amount);
+      logger.info('Total Claim Amount before Round off ' + amount);
       amount = roundOffTwoDecimals(amount);
-      logger.info('After Round off ' + amount);
+      logger.info('Total Claim Amount after Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee amount ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting claim fee data');
+      logger.error(`Error when getting claim fee data, req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -211,7 +221,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting general application fee data');
+      logger.error(`Error when getting general application fee data - req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -222,7 +232,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_AIRLINES_URL}`, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting airline list');
+      logger.error(`Error when getting airline list - req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -238,7 +248,7 @@ export class CivilServiceClient {
       return convertCaseToClaim(caseDetails);
 
     } catch (err: unknown) {
-      logger.error('Error when verifying pin');
+      logger.error(`Error when verifying pin - req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -252,7 +262,7 @@ export class CivilServiceClient {
       }
       return response.data as string;
     } catch (err: unknown) {
-      logger.error('Error when verifying OCMC pin');
+      logger.error(`Error when verifying OCMC pin -caseReference - ${caseReference}`);
       throw err;
     }
   }
@@ -266,7 +276,7 @@ export class CivilServiceClient {
       }
       return response.data as boolean;
     } catch (err: unknown) {
-      logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
+      logger.error(`Error when checking a claim ${caseReference} is linked to a defendant,caseReference - ${caseReference}`);
       throw err;
     }
   }
@@ -288,7 +298,7 @@ export class CivilServiceClient {
         return response.data as CaseDocument;
       }
     } catch (err: unknown) {
-      logger.error('Error when uploading document');
+      logger.error(`Error when uploading document, error - req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -304,7 +314,7 @@ export class CivilServiceClient {
         response.data as Buffer);
 
     } catch (err) {
-      logger.error('Error when retrieving document');
+      logger.error(`Error when retrieving document, - documentId- ${documentId}`);
       throw err;
     }
   }
@@ -388,14 +398,16 @@ export class CivilServiceClient {
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
-      logger.error(`Error when submitting event ${event}`);
+      logger.error(`Error when submitting event ${event},  - claimId- ${claimId}`);
       throw err;
     }
   }
 
   async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
     try {
+      logger.info('calculateClaimInterest');
       const response = await this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
+      logger.info(`calculateClaimInterest response: ${response.data}` );
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating interest');
@@ -426,7 +438,7 @@ export class CivilServiceClient {
       }, config);
       return response.data as Date;
     } catch (err: unknown) {
-      logger.error('Error when calculating extended response deadline');
+      logger.error(`Error when calculating extended response deadline - req.params.id - ${req.params.id}`);
       throw err;
     }
   }
@@ -446,7 +458,7 @@ export class CivilServiceClient {
     await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
-        logger.error('Error when assigning defendant to claim');
+        logger.error(`Error when assigning defendant to claim ${claimId}`);
         throw err;
       }); // nosonar
   }
@@ -458,7 +470,7 @@ export class CivilServiceClient {
       if(response.data)
         return new Date(response.data.toString());
     } catch (err: unknown) {
-      logger.error('Error when getting agreed deadline response date');
+      logger.error(`Error when getting agreed deadline response date for claimId: ${claimId}`);
       throw err;
     }
   }

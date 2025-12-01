@@ -95,7 +95,6 @@ const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagem
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
 const config = require('../../../../config');
-const sharedData = require('../../../sharedData');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -731,8 +730,7 @@ class ResponseSteps {
     await this.SelectOptionForVulnerability();
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
-    sharedData.language = ['en', 'cy', 'both'].includes(languageOption) ? languageOption : 'en';
-    await this.SelectLanguageOption();
+    await this.SelectLanguageOption(true, languageOption);
   }
 
   async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
@@ -902,8 +900,8 @@ class ResponseSteps {
     await courtLocation.selectPreferredCourtLocation();
   }
 
-  async SelectLanguageOption(smallClaims = true) {
-    await welshLanguage.selectLanguageOption(smallClaims);
+  async SelectLanguageOption(smallClaims = true, languageOption = 'en') {
+    await welshLanguage.selectLanguageOption(smallClaims, languageOption);
   }
 
   async SelectOptionForTriedToSettle(claimRef){

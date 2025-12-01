@@ -20,6 +20,9 @@ const unavailableDatesForHearingViewPath = 'features/directionsQuestionnaire/hea
 const dqPropertyName = 'unavailableDatesForHearing';
 const dqParentName = 'hearing';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('unavailableDatesForHearingController');
+
 function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res: Response) {
   res.render(unavailableDatesForHearingViewPath, { form , pageTitle: 'PAGES.UNAVAILABLE_DATES_FOR_HEARING.PAGE_TITLE'});
 }
@@ -31,6 +34,7 @@ unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, 
     const form = new GenericForm(unavailableDatesForHearing);
     renderView(form, res);
   } catch (error) {
+    logger.error(`Error when GET : unavailable dates for hearing - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -42,6 +46,7 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
     const form = new GenericForm(unavailableDatesForHearing);
     form.validateSync();
     if (form.hasErrors()) {
+      logger.info(`Form has errors: ${form.hasErrors()}`);
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
@@ -53,6 +58,7 @@ unavailableDatesForHearingController.post(DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
       }
     }
   } catch (error) {
+    logger.error(`Error when POST : unavailable dates for hearing - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

@@ -21,6 +21,9 @@ const dqParentName = 'experts';
 
 const viewPath = 'features/directionsQuestionnaire/experts/expert-report-details';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('expertReportDetailsController');
+
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(viewPath, {form, today: new Date(), pageTitle: 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE'});
 }
@@ -32,6 +35,7 @@ expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res
       new GenericYesNo(directionQuestionnaire.experts?.expertReportDetails?.option) : new GenericYesNo();
     renderView(new GenericForm(expertReportDetails), res);
   } catch (error) {
+    logger.error(`Error when GET : expert report details - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -50,6 +54,7 @@ expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, re
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
   } catch (error) {
+    logger.error(`Error when POST : expert report details - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

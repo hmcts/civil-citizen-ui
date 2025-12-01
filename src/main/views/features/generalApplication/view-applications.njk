@@ -7,11 +7,11 @@
 {% from "../../macro/create-table-documents.njk" import addDateUploadedFileInformation, addFileLink, createDocumentsTableWithoutTableCaption %}
 
 {% set applicationHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')}}</h1>
+  <h1 class="govuk-heading-m" id="application-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')}}</h1>
 {% endset %}
 
 {% set applicationHtml %}
-  <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
+  <div class="govuk-!-margin-bottom-9 summaryListBorderTop" aria-labelledby="application-header">
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS') }}</p>
     {% if statusRow %}
       <div class="govuk-form-group">
@@ -36,11 +36,11 @@
 {% endset %}
 
 {% set responseHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.TITLE')}}</h1>
+  <h1 class="govuk-heading-m" id="response-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.TITLE')}}</h1>
 {% endset %}
 
 {% set responseHtml %}
-  <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
+  <div class="govuk-!-margin-bottom-9 summaryListBorderTop" aria-labelledby="response-header">
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.OTHER_PARTIES_RESPONSE')}}</p>
     <div class="govuk-form-group">
         {{ govukSummaryList({
@@ -51,7 +51,7 @@
 {% endset %}
 
 {% set courtResponseHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
+  <h1 class="govuk-heading-m" id="court-response-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
 {% endset %}
 
 {% set applicantDocRows = [] %}
@@ -127,10 +127,11 @@
 {% endif %}
 
 {% set applicationDocuments %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS')}}</h1>
+  <h1 class="govuk-heading-m" id="application-documents-header">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS')}}</h1>
 {% endset %}
 
 {% set applicationDocumentsHtml %}
+ <div aria-labelledby="application-documents-header">
   {{ createDocumentsTableWithoutTableCaption(applicantDocRows) }}
   {% if applicantDocuments.documents.length > 0 and additionalDocUrl %}
     {{ govukButton({
@@ -140,9 +141,11 @@
   {% endif %}
   {{ createDocumentsTableWithoutTableCaption(respondentDocRows) }}
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
+ </div>
 {% endset %}
 
 {% set responseFromCourtHtml %}
+<div aria-labelledby="court-response-header">
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
   {% for item in responseFromCourt %}
       {{ govukSummaryList({
@@ -155,7 +158,7 @@
         }) }}
       {% endif %}
   {% endfor %}
-
+</div>
 {% endset %}
 
 {% block nestedContent %}

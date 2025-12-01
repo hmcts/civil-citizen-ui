@@ -30,7 +30,7 @@ let chai, expect, assert;
 });
 
 const {
-  waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, checkToggleEnabled, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
+  waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -76,7 +76,6 @@ const data = {
 
 let caseId, eventName, payload;
 let caseData = {};
-const PBAv3Toggle = 'pba-version-3-ways-to-pay';
 
 module.exports = {
 
@@ -383,14 +382,10 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
-    const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
-    console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
-    if (pbaV3) {
-      await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
-        claimSpecData.serviceUpdateDto(caseId, 'paid'));
-      console.log('Service request update sent to callback URL');
-    }
+    await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
+      claimSpecData.serviceUpdateDto(caseId, 'paid'));
+    console.log('Service request update sent to callback URL');
     await waitForFinishedBusinessProcess(caseId);
 
     if (!manualPIP) {
@@ -521,14 +516,10 @@ module.exports = {
     }
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
-    const pbaV3 = await checkToggleEnabled(PBAv3Toggle);
-    console.log('Is PBAv3 toggle on?: ' + pbaV3);
 
-    if (pbaV3) {
-      await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
-        claimSpecData.serviceUpdateDto(caseId, 'paid'));
-      console.log('Service request update sent to callback URL');
-    }
+    await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
+      claimSpecData.serviceUpdateDto(caseId, 'paid'));
+    console.log('Service request update sent to callback URL');
 
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');

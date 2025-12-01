@@ -13,14 +13,8 @@ class ClaimantUpdate {
   async respondToClaim(claimRef, notification) {
     console.log('notification..', notification);
     I.amOnPage('/dashboard/' + claimRef + '/claimant');
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      await verifyNotificationTitleAndContent('', notification.title, notification.content);
-      I.click(notification.nextSteps);
-    } else {
-      I.waitForContent('About claim', config.WaitForText);
-      I.click('Respond to claim');
-    }
+    await verifyNotificationTitleAndContent('', notification.title, notification.content);
+    I.click(notification.nextSteps);
   }
 
   async viewAndRespondToClaim(claimRef, notification) {

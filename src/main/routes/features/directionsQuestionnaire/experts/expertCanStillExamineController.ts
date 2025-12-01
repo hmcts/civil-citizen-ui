@@ -20,6 +20,9 @@ const expertCanStillExamineViewPath = 'features/directionsQuestionnaire/experts/
 const dqPropertyName = 'expertCanStillExamine';
 const dqParentName = 'experts';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('expertCanStillExamineController');
+
 function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): void {
   res.render(expertCanStillExamineViewPath, {form, pageTitle: 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.PAGE_TITLE'});
 }
@@ -32,6 +35,7 @@ expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, (async (req
 
     renderView(new GenericForm(expertCanStillExamine), res);
   } catch (error) {
+    logger.error(`Error when GET : expert can still examine - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);
@@ -54,6 +58,7 @@ expertCanStillExamineController.post(DQ_EXPERT_CAN_STILL_EXAMINE_URL, (async (re
       }
     }
   } catch (error) {
+    logger.error(`Error when POST : expert can still examine - ${error.message}`);
     next(error);
   }
 }) as RequestHandler);

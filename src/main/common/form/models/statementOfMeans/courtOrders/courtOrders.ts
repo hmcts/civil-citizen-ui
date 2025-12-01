@@ -1,5 +1,5 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {boolean, isBooleanable} from 'boolean';
+import {boolean, isBooleanable} from 'common/utils/boolean';
 import {CourtOrder} from './courtOrder';
 import {AtLeastOneRowIsPopulated} from 'form/validators/atLeastOneRowIsPopulated';
 

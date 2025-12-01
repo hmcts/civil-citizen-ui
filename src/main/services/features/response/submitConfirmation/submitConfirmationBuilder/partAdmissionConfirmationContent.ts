@@ -297,11 +297,20 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
 
   const claimantName = claim.getClaimantFullName();
   const claimAmount = claim.totalClaimAmount;
-  const paymentDate = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
   const isDefendantRejectedMediationOrIsFastTrackClaim = isDefendantRejectedMediationOrFastTrackClaim(claim);
 
   const content: ClaimSummarySection[] = [
+    {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: `${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF', {
+          claimantName,
+          partialAmount,
+          lng: lang,
+        })}`,
+      },
+    },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
@@ -317,7 +326,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
       data: {
         html: `<p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.MAKE_SURE_THAT', {lng: lang})}</p>
         <ul class="govuk-list govuk-list--bullet">
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY', {paymentDate, lng: lang})}</li>
+          <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.THEY_GET_MONEY_BY', {lng: lang})}</li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CHEQUES_OR_BANK_TRANSFERS', {lng: lang})}</li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS', {lng: lang})}</li>
         </ul>`,
@@ -329,16 +338,6 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
         text: `${t('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT', {claimantName, lng: lang})}`,
         textAfter: t('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS', {lng: lang}),
         href: CITIZEN_CONTACT_THEM_URL.replace(':id', claimId),
-      },
-    },
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: `${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF', {
-          claimantName,
-          partialAmount,
-          lng: lang,
-        })}`,
       },
     },
     {
