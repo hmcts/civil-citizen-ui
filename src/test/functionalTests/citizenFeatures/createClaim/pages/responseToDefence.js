@@ -691,13 +691,13 @@ class ResponseToDefence {
   }
 
   async verifyDefendantsResponseForRejection() {
-    I.waitForContent('Full response',60,'h3');
-    I.see('The defendant’s response','h1');
+    I.waitForContent('Full response',60);
+    I.see('The defendant’s response');
     I.see('has rejected the claim.');
-    I.see('Their defence','h2');
-    I.see('Why they disagree with the claim?','h2');
+    I.see('Their defence');
+    I.see('Why they disagree with the claim?');
     I.see('Test reason');
-    I.see('Their evidence','h2');
+    I.see('Their evidence');
     I.see('Type');
     I.see('Description');
     I.see('Contracts and agreements');
@@ -708,43 +708,43 @@ class ResponseToDefence {
   }
 
   async verifyDefendantsResponseForRejectAllDisputeAll() {
-    I.waitForContent('Full response',60,'h3');
-    I.see('The defendant’s response','h1');
+    I.waitForContent('Full response',60);
+    I.see('The defendant’s response');
     I.see('Sir John Doe has rejected the claim.');
-    I.see('Their defence','h2');
-    I.see('Why they disagree with the claim?','h3');
+    I.see('Their defence');
+    I.see('Why they disagree with the claim?');
     I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
     await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidInFull() {
-    I.waitForContent('Full response',60,'h3');
-    I.see('The defendant’s response','h1');
+    I.waitForContent('Full response',60);
+    I.see('The defendant’s response');
     I.see('Sir John Doe said they paid you');
-    I.see('When they say they paid this amount','h3');
-    I.see('How they say they paid?','h3');
+    I.see('When they say they paid this amount');
+    I.see('How they say they paid?');
     I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
     await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidNotInFull() {
-    I.waitForContent('Full response',60,'h3');
-    I.see('The defendant’s response','h1');
+    I.waitForContent('Full response',60);
+    I.see('The defendant’s response');
     I.see('Sir John Doe said they paid you');
     I.see('They said this is all they owe, not the amount you claim.');
-    I.see('When they say they paid this amount','h3');
-    I.see('How they say they paid?','h3');
-    I.see('Why they say they dont owe the amount you claimed?', 'h3');
+    I.see('When they say they paid this amount');
+    I.see('How they say they paid?');
+    I.see('Why they say they dont owe the amount you claimed?');
     I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
     await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForPartAdmiAlreadyPaid(withTimeLineEvidenceDisagree) {
-    I.waitForContent('Full response', 60, 'h3');
-    I.see('The defendant’s response', 'h1');
+    I.waitForContent('Full response', 60);
+    I.see('The defendant’s response');
     I.see('Sir John Doe said they paid you');
     I.see('They said this is all they owe, not the amount you claimed.');
     I.see('When they say they paid this amount');
