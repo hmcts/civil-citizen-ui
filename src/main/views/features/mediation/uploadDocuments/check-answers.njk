@@ -20,7 +20,7 @@
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds" role="region" aria-labelledby="check-your-answer-heading">
+        <div class="govuk-grid-column-two-thirds" role="region" {% if summarySections.sections.length > 0 %}aria-labelledby="check-your-answer-heading"{% endif %}>
           {% for content in topPageContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
@@ -30,8 +30,10 @@
             <h1 id="check-your-answer-heading" class="govuk-heading-l">{{ t('PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE') }}</h1>
             {% for section in summarySections.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h2 id="section-{{ loop.index0 }}-heading" class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
-                    <div class="govuk-form-group" aria-labelledby="section-{{ loop.index0 }}-heading">
+                    {% if section.title %}
+                      <h2 id="section-{{ loop.index0 }}-heading" class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    {% endif %}
+                    <div class="govuk-form-group" {% if section.title %}aria-labelledby="section-{{ loop.index0 }}-heading"{% endif %}>
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
                       }) }}
