@@ -33,8 +33,8 @@ class CommentsForReconsideration {
   }
 
   async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'p');
-    await I.see('Claim amount: ' + claimAmount, 'p');
+    I.see('Case number: ' + caseNumber);
+    await I.see('Claim amount: ' + claimAmount);
   }
 
   async verifyPageText(partyName) {
