@@ -174,7 +174,7 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
   if (rows.length > 0) {
     orderDocumentNewestToOldest(rows);
     const header = t(title, {lng: lang});
-    documentsHTML = documentsHTML.concat('<p class="govuk-body"><span class="govuk-body govuk-!-font-weight-bold">' + header + '</span></p>');
+    documentsHTML = documentsHTML.concat('<h2 class="govuk-body"><span class="govuk-body govuk-!-font-weight-bold">' + header + '</span></h2>');
     documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
   }
 
