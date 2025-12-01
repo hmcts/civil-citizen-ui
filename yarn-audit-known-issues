@@ -1,2 +1,2 @@
-{"value":"body-parser","children":{"ID":1110857,"Issue":"body-parser is vulnerable to denial of service when url encoding is used","URL":"https://github.com/advisories/GHSA-wqch-xfxh-vrr4","Severity":"moderate","Vulnerable Versions":"<2.2.1","Tree Versions":["1.20.3"],"Dependents":["express@npm:4.21.2"]}}
 {"value":"csurf","children":{"ID":"csurf (deprecation)","Issue":"This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions","Severity":"moderate","Vulnerable Versions":"1.11.0","Tree Versions":["1.11.0"],"Dependents":["civil-citizen-ui@workspace:."]}}
+
