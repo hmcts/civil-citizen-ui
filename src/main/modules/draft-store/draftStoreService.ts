@@ -26,7 +26,7 @@ export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror =
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
-const convertRedisDataToCivilClaimResponse = (data: string) => {
+const convertRedisDataToCivilClaimResponse = (data: string): CivilClaimResponse => {
   let jsonData = undefined;
   if (data) {
     try {
@@ -35,7 +35,8 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
       logger.error(`${(err as Error).stack || err}`);
     }
   }
-  return Object.assign(new CivilClaimResponse(), jsonData);
+  const civilClaimResponse = new CivilClaimResponse();
+  return Object.assign(civilClaimResponse, jsonData);
 };
 /**
  * Gets only case data.
@@ -62,7 +63,7 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  storedClaimResponse.case_data = claim;
+  storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
