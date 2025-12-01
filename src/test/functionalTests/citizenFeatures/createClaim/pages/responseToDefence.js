@@ -695,9 +695,9 @@ class ResponseToDefence {
     I.see('The defendant’s response','h1');
     I.see('has rejected the claim.');
     I.see('Their defence','h2');
-    I.see('Why they disagree with the claim?','h3');
+    I.see('Why they disagree with the claim?','h2');
     I.see('Test reason');
-    I.see('Their evidence','h3');
+    I.see('Their evidence','h2');
     I.see('Type');
     I.see('Description');
     I.see('Contracts and agreements');
