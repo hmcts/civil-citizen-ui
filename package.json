@@ -24,7 +24,7 @@
     "test:smoke": "yarn playwright install && MOCHAWESOME_REPORTFILENAME=smokeTests REPORT_DIR=test-results/smokeTest codeceptjs run-workers --suites 1 --grep @smoketest --reporter mocha-multi --verbose",
     "test:local-tests": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 1 --grep @local-testing --reporter mocha-multi --verbose",
     "test:ocmc": "MOCHAWESOME_REPORTFILENAME=ocmc codeceptjs run-workers --suites 9 --grep @ocmc --reporter mocha-multi --verbose",
-    "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep @regression --reporter mocha-multi --verbose",
+    "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep @nightly --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:e2e-nightly": "MOCHAWESOME_REPORTFILENAME=e2e-nightly FUNCTIONAL=true codeceptjs run-workers --suites 10 --grep @nightly --reporter mocha-multi --verbose",
     "test:fullfunctional": "./src/test/functionalTests/run-full-functional-tests.sh",
