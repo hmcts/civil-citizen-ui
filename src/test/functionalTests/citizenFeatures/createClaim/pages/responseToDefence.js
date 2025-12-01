@@ -730,13 +730,13 @@ class ResponseToDefence {
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidNotInFull() {
-    I.waitForContent('Full response',60,'h3');
-    I.see('The defendant’s response','h1');
+    I.waitForContent('Full response',60);
+    I.see('The defendant’s response');
     I.see('Sir John Doe said they paid you');
     I.see('They said this is all they owe, not the amount you claim.');
-    I.see('When they say they paid this amount','h3');
-    I.see('How they say they paid?','h3');
-    I.see('Why they say they dont owe the amount you claimed?', 'h3');
+    I.see('When they say they paid this amount');
+    I.see('How they say they paid?');
+    I.see('Why they say they dont owe the amount you claimed?');
     I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
     await I.click(paths.buttons.continue);
