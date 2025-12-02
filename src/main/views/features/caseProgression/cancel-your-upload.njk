@@ -28,7 +28,12 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', classes: 'govuk-radios--inline'}) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE') }}
+              </legend>
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', classes: 'govuk-radios--inline'}) }}
+            </fieldset>
 
             <div class="govuk-form-group">
               {{ govukButton({

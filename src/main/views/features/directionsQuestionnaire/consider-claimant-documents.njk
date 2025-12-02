@@ -39,7 +39,12 @@
               }) }}
             {% endset %}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml,  yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.CONSIDER_CLAIMANT_DOCUMENTS.TITLE') }}
+              </legend>
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml,  yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
+            </fieldset>
 
             <div class="govuk-form-group">
               {{ govukButton({

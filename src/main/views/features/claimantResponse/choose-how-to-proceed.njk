@@ -34,6 +34,12 @@
             {{ govukRadios({
               idPrefix: "option",
               name: "option",
+              fieldset: {
+                legend: {
+                  text: title,
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: chooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT,

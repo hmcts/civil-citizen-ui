@@ -46,6 +46,12 @@
             {{ govukRadios({
               idPrefix: "option",
               name: "option",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE'),
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: YesNo.YES,
