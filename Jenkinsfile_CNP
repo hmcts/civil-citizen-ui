@@ -122,7 +122,7 @@ def setUrls(suffix){
     env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
     env.CIVIL_GENERAL_APPLICATIONS_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
     env.AAC_API_URL="https://manage-case-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    env.ROLE_ASSIGNMENT_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
+    env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
   env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
 }

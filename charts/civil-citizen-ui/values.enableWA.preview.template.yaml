@@ -47,7 +47,7 @@ civil-service:
         SERVICES_PRD_JUDICIAL_API: http://rd-judicial-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_COMMONDATA_API: http://rd-commondata-api-aat.service.core-compute-aat.internal
         SERVICES_DOCUMENTS_API_V2: http://${SERVICE_NAME}-cdam
-        HEALTH_ROLE_ASSIGNMENT_API: http://am-role-assignment-service-aat.service.core-compute-aat.internal/health
+        HEALTH_ROLE_ASSIGNMENT_API: http://${SERVICE_NAME}-am-role-assignment-service/health
         GLOBAL_SEARCH_SERVICES: IA,CIVIL,PRIVATELAW,PUBLICLAW,SSCS
         FEATURE_WORKALLOCATION_ENABLED: true
         FEATURE_REDIS_ENABLED: false
@@ -116,7 +116,7 @@ wa:
         CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
         CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
         CCD_SEARCH_URL: http://{{ .Release.Name }}-ccd-data-store-api
-        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         WA_WORKFLOW_API_URL: "http://{{ .Release.Name }}-wa-workflow-api"
         WA_TASK_MANAGEMENT_API_URL: "http://{{ .Release.Name }}-wa-task-management-api"
         AZURE_SERVICE_BUS_TOPIC_NAME: ${SERVICE_NAME}-asb-ccd-case-events
@@ -130,12 +130,12 @@ wa:
       ingressHost: wa-task-monitor-${SERVICE_FQDN}
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
-        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
   wa-task-management-api:
     java:
       ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
-        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
         POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
         POSTGRES_REPLICA_HOST: "{{ .Release.Name }}-postgresql"
