@@ -361,7 +361,7 @@ class CreateClaim {
     I.see('Hearing fee');
     I.see('£181');
     I.see('You don’t have to pay a hearing fee unless the claim goes to a hearing.');
-    I.seeElement(paths.links.find_out_more_about_court_fees);
+    I.see('Find out more about court fees');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
