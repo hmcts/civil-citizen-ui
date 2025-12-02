@@ -7,9 +7,6 @@ wa:
 servicebus:
   enabled: false
 
-am-role-assignment-service:
-  enabled: false
-
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
