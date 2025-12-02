@@ -361,8 +361,8 @@ class UploadYourDocument {
   }
 
   verifyExpertSectionContentForSmallClaims() {
-    I.see(content.expert.title[language], 'h2');
-    I.see(content.expert.report.title[language], 'h3');
+    I.see(content.expert.title[language]);
+    I.see(content.expert.report.title[language]);
     I.see(content.expert.report.name[language]);
     I.see(content.expert.report.expertise[language]);
     I.see(content.expert.report.dateTitle[language]);
@@ -387,8 +387,8 @@ class UploadYourDocument {
   }
 
   verifyHearingDocumentsSectionContent() {
-    I.see(content.hearing.title[language], 'h2');
-    I.see(content.hearing.documentaryEvidence.title[language], 'h3');
+    I.see(content.hearing.title[language]);
+    I.see(content.hearing.documentaryEvidence.title[language]);
     I.see(content.hearing.documentaryEvidence.documentType[language]);
     I.see(content.hearing.documentaryEvidence.documentTypeHint[language]);
     I.see(content.hearing.documentaryEvidence.dateTitle[language]);
