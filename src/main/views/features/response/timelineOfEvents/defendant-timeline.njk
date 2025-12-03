@@ -55,7 +55,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s">
+              <label class="govuk-label--s" for="timelineDate-0">
                 {{ t('COMMON.DATE') }}
               </label>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
@@ -63,7 +63,7 @@
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
+              <label class="govuk-label--s" for="timelineDescription-0">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
               <p
                 class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
             </div>
