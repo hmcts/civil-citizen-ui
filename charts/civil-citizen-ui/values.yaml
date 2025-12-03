@@ -1,4 +1,4 @@
-civil-general-applications:
+civil-service:
   enabled: false
 
 wa:
@@ -64,7 +64,7 @@ nodejs:
     APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
     LAUNCH_DARKLY_ENV: '{{ .Values.global.environment }}'
     DYNATRACE_TAG: https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/59eec5518455ca7b_complete.js
-    CIVIL_GENERAL_APPLICATIONS_URL: http://civil-general-applications-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CIVIL_GENERAL_APPLICATIONS_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
   autoscaling:
     enabled: true
