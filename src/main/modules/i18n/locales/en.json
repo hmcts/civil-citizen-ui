@@ -31,6 +31,7 @@
     "CHOOSE": "Choose",
     "CASE_NUMBER": "Case number: ",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
     "CLAIM_AMOUNT": "Claim amount",
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
