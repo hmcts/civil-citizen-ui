@@ -55,17 +55,22 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s" for="timelineDate-0">
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-label--s">
                 {{ t('COMMON.DATE') }}
-              </label>
+              </legend>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
                 {{ t('COMMON.DATE_EXAMPLE', { date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 1)}) }}
               </p>
+              </fieldset>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s" for="timelineDescription-0">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
-              <p
-                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-label--s">
+                  {{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}
+                </legend>
+              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
+              </fieldset>
             </div>
             {% for timeline in form.model.rows %}
               {{ timelineRow(timeline, loop.index0, form, t) }}
