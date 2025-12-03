@@ -31,7 +31,12 @@
               {{ createPageTitle(componentText,t, 'm') }}
             <form method="post" novalidate aria-describedby="page-title">
               {{ csrfProtection(csrf) }}
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_8.YES', no: 'COMMON.VARIATION_8.NO'}) }}
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">
+                  {{ title }}
+                </legend>
+                {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_8.YES', no: 'COMMON.VARIATION_8.NO'}) }}
+              </fieldset>
 
               {{ addButton(t, 'SAVE_AND_CONTINUE') }}
               {{ contactUsForHelp(t) }}
