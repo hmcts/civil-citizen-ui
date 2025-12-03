@@ -53,10 +53,12 @@ describe('Help with Application fee content', () => {
 
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
+    const lang = 'en';
     const calculatedAmountInPence = '230';
+    const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset"><legend class="govuk-visually-hidden">${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION', {lang})}</legend>`;
 
     //When
-    const actualContent = getHelpApplicationFeeContinuePageContents(calculatedAmountInPence, false);
+    const actualContent = getHelpApplicationFeeContinuePageContents(lang, calculatedAmountInPence, false);
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE');
@@ -70,14 +72,16 @@ describe('Help with Application fee content', () => {
     expect(actualContent[8].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_PARTIALLY');
     expect(actualContent[9].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED_TITLE');
     expect(actualContent[10].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED');
-    expect(actualContent[11].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
+    expect(actualContent[11].data.html).toEqual(fieldsetHtml);
+    expect(actualContent[12].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION');
   });
 
   it('should return all the content for getApplicationFeeContentPageDetails', () => {
     //When
     const actualContent = getButtonsContents('123');
     //Then
-    expect(actualContent[0].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
+    expect(actualContent[0].data.html).toEqual(String.raw`</fieldset>`);
+    expect(actualContent[1].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
   });
 
   it('should return all the content for getHelpWithApplicationFeeContent', () => {

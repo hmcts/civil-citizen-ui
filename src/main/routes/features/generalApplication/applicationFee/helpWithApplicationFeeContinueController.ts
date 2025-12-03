@@ -27,6 +27,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   let backLinkUrl: string;
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
   if (feeTypeFlag) {
     backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id,  req.params.appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
@@ -40,7 +41,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     form,
     backLinkUrl,
     cancelUrl,
-    applyHelpWithFeeContinueContents: getHelpApplicationFeeContinuePageContents(feeTypeFlag ? gaHwFDetails.additionalFee : gaHwFDetails.applicationFee, feeTypeFlag),
+    applyHelpWithFeeContinueContents: getHelpApplicationFeeContinuePageContents(lang,feeTypeFlag ? gaHwFDetails.additionalFee : gaHwFDetails.applicationFee, feeTypeFlag),
     applyHelpWithFeeContinueButtonContents: getButtonsContents(claimId),
   });
 }
