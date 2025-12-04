@@ -50,7 +50,7 @@ helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (re
     const claimId = req.params.id;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
-    await renderView(res, req, null, claimId, isAdditionalFeeType, lang);
+    await renderView(res, req, null, claimId, isAdditionalFeeType, lng);
   } catch (error) {
     next(error);
   }
