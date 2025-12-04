@@ -65,7 +65,7 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_ALT', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(res, req, form, claimId, false, lang);
+      await renderView(res, req, form, claimId, false, lng);
     } else {
       await saveHelpWithFeesDetails(generateRedisKeyForGA(<AppRequest>req), req.body.option, hwfPropertyName);
       res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType, genAppId));
