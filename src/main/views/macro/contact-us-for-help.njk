@@ -11,7 +11,7 @@
     {% set hrefTarget= "_self" %}
   {% endif %}
 
-  <h3 class="govuk-heading-m">{{ name }}</h3>
+  <h2 class="govuk-heading-m">{{ name }}</h2>
   {% if phoneNumber %}
     {{ phoneNumber }}
   {% endif %}
@@ -26,7 +26,7 @@
 
 {% macro _widgetRedesign(disclosureStatement, sendMessageTitle, sendMessageLink, sendMessageContent, telephone) %}
   <p class="govuk-body">{{ disclosureStatement }}</p>
-  <h3 class="govuk-heading-m">{{ sendMessageTitle }}</h3>
+  <h2 class="govuk-heading-m">{{ sendMessageTitle }}</h2>
   <div class="govuk-!-margin-bottom-2"><a class="govuk-link" href={{qmStartUrl}}>{{ sendMessageLink }}</a></div>
   <p class="govuk-body">{{ sendMessageContent }}</p>
   {{ telephone }}
