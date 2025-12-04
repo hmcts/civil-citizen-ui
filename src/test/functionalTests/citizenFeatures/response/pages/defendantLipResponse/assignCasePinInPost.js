@@ -29,7 +29,7 @@ class AssignCasePinInPost {
   async verifyClaimSummaryPageContent(claimNumber) {
     await I.seeInCurrentUrl('first-contact/claim-summary');
     await I.waitForContent('Claim details', config.WaitForText);
-    await I.see('Claim number:');
+    await I.see('Claim number');
     await I.see(claimNumber);
     await I.see('Claim amount');
     await I.see('View amount breakdown');
