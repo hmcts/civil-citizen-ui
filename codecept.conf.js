@@ -16,7 +16,7 @@ const getTests = () => {
     return [...prevFailedTestFiles, ...prevNotExecutedTestFiles];
   }
 
-  if (process.env.ENVIRONMENT == 'preview')
+  if (process.env.ENVIRONMENT == 'aat')
     return [`${testPath}/functionalTests/tests/prod/**/*.js`,
       `${testPath}/functionalTests/tests/common/**/*.js`,
       `${testPath}/e2eTests/tests/**/*.js`];
