@@ -23,11 +23,10 @@ const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
 const hwfPropertyName = 'helpWithFeesRequested';
 
-async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
+async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean, lang: string) {
   const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   let backLinkUrl: string;
-  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
   if (feeTypeFlag) {
     backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id,  req.params.appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
@@ -49,8 +48,9 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
-    await renderView(res, req, null, claimId, isAdditionalFeeType);
+    await renderView(res, req, null, claimId, isAdditionalFeeType, lang);
   } catch (error) {
     next(error);
   }
@@ -65,7 +65,7 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_ALT', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(res, req, form, claimId, false);
+      await renderView(res, req, form, claimId, false, lang);
     } else {
       await saveHelpWithFeesDetails(generateRedisKeyForGA(<AppRequest>req), req.body.option, hwfPropertyName);
       res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType, genAppId));
