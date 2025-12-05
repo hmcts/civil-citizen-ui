@@ -52,12 +52,8 @@
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a
-        aria-expanded="false"
-        aria-controls="enterAddressManually"
-        href="#"
-        class="govuk-body govuk-link"
-        onclick="
+      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link"
+         onclick="
           event.preventDefault();
           var link=this;
           var container=document.getElementById('enterAddressManually');
@@ -66,14 +62,17 @@
             link.style.display='none';
             container.classList.remove('govuk-visually-hidden');
             container.setAttribute('aria-hidden','false');
+            container.style.position='static'; // ensure visible for screen reader
             container.removeAttribute('tabindex');
             setTimeout(function(){
-              var input=document.getElementById('primaryAddress[addressLine1]') || document.getElementById('correspondenceAddress[addressLine1]');
-              if(input) input.focus();
-            },10);
+              var field=document.querySelector('#primaryAddress\\\\[addressLine1\\\\]') || document.querySelector('#correspondenceAddress\\\\[addressLine1\\\\]');
+              if(field){
+                field.scrollIntoView({behavior:'smooth',block:'center'}); // optional smooth scroll
+                field.focus({preventScroll:true});
+            }
+            },50); // slight delay ensures field is visible to screen reader
           }
-        "
-      >
+        ">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
