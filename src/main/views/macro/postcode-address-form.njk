@@ -3,22 +3,15 @@
 
 {% macro postcodeLookupAndAddressForm(t, params) %}
 
-  {# ---------------------------------------------
-     DETERMINE IF WE SHOULD SHOW MANUAL ADDRESS FORM
-     ---------------------------------------------- #}
-
-  {% set showAddressForm =
+  {% set formShouldShow =
       (params.addressType == 'primaryAddress' and params.party.hasFieldError('primaryAddress'))
       or
       (params.addressType == 'correspondenceAddress' and params.party.hasFieldError('correspondenceAddress'))
   %}
 
-  {# Controls if the “Enter manually” link is visible #}
-  {% set showManualLink = not showAddressForm %}
-
   <div class="govuk-form-group postcode-container">
 
-    <label class="govuk-label" for="{{ params.addressType + 'Postcode' }}">
+    <label class="govuk-label" for="{{ params.addressType }}Postcode">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
 
@@ -27,9 +20,9 @@
     </div>
 
     <input
-      id="{{ params.addressType + 'Postcode' }}"
+      id="{{ params.addressType }}Postcode"
       class="govuk-input govuk-input--width-10 postcode-val"
-      name="{{ params.addressType + 'Postcode' }}"
+      name="{{ params.addressType }}Postcode"
       type="text"
       autocomplete="postal-code"
     />
@@ -56,13 +49,10 @@
       ]
     }) }}
 
-    {# ---------------------------------------------
-       ENTER ADDRESS MANUALLY LINK (removed from SR when hidden)
-       ---------------------------------------------- #}
-
+    {# Manual link #}
     <div
       id="{{ params.addressType }}-manual-link-wrapper"
-      {% if not showManualLink %}
+      {% if formShouldShow %}
         hidden aria-hidden="true"
       {% endif %}
     >
@@ -70,25 +60,22 @@
         id="{{ params.addressType }}-enter-manually"
         href="#"
         class="govuk-body govuk-link"
-        {% if not showManualLink %}
+        {% if formShouldShow %}
           tabindex="-1"
         {% endif %}
-        data-address-type="{{ params.addressType }}"
         aria-controls="{{ params.addressType }}-manual-address-wrapper"
+        data-address-type="{{ params.addressType }}"
       >
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
 
-    {# ---------------------------------------------
-       MANUAL ADDRESS FORM (hidden from SR + UI until opened)
-       ---------------------------------------------- #}
-
+    {# Manual address form #}
     <div>
       <div
         id="{{ params.addressType }}-manual-address-wrapper"
         class="address-form"
-        {% if not showAddressForm %}
+        {% if not formShouldShow %}
           hidden aria-hidden="true"
         {% endif %}
       >
@@ -101,39 +88,63 @@
       </div>
     </div>
 
-  </div>
+    {# Temporary debug visual for testing #}
+    <div
+      id="{{ params.addressType }}-focus-debug"
+      style="display:none; margin-top:8px; padding:6px; background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:4px; font-size:14px;"
+    >
+      Debug: waiting to focus addressLine1…
+    </div>
 
-  {# ----------------------------------------------------------------
-     INLINE ACCESSIBLE JS — FULLY GOV.UK COMPATIBLE AND SCREEN-READER SAFE
-     ---------------------------------------------------------------- #}
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-      const link = document.getElementById("{{ params.addressType }}-enter-manually");
-      if (!link) return;
+      const addressType = "{{ params.addressType }}";
+      const link       = document.getElementById(addressType + "-enter-manually");
+      const linkWrap   = document.getElementById(addressType + "-manual-link-wrapper");
+      const formWrap   = document.getElementById(addressType + "-manual-address-wrapper");
+      const debugBox   = document.getElementById(addressType + "-focus-debug");
 
-      const wrapper = document.getElementById("{{ params.addressType }}-manual-address-wrapper");
-      const linkWrapper = document.getElementById("{{ params.addressType }}-manual-link-wrapper");
+      if (!link || !formWrap) return;
 
-      link.addEventListener("click", function(e) {
+      link.addEventListener("click", function (e) {
         e.preventDefault();
 
-        // SHOW address form
-        wrapper.hidden = false;
-        wrapper.setAttribute("aria-hidden", "false");
+        // SHOW manual address form
+        formWrap.hidden = false;
+        formWrap.setAttribute("aria-hidden", "false");
 
-        // REMOVE the enter manually link from SR + UI
-        linkWrapper.hidden = true;
-        linkWrapper.setAttribute("aria-hidden", "true");
+        // HIDE link from SR + tab order + UI
+        linkWrap.hidden = true;
+        linkWrap.setAttribute("aria-hidden", "true");
+        link.setAttribute("tabindex", "-1");
 
-        // Move focus into first address field
-        const firstInput = wrapper.querySelector("input[id$='addressLine1']");
-        if (firstInput) {
-          firstInput.focus({ preventScroll: false });
+        // Show debug visual
+        if (debugBox) {
+          debugBox.style.display = "block";
+          debugBox.textContent = "Debug: focusing addressLine1 in 100ms…";
         }
-      });
 
+        // Focus first input after small delay (VoiceOver safe)
+        setTimeout(() => {
+          const firstInput = formWrap.querySelector("input[id$='addressLine1']");
+          if (firstInput) {
+            firstInput.focus({ preventScroll: false });
+            console.log("DEBUG: Focus moved to", firstInput.id, "at", Date.now());
+            if (debugBox) {
+              debugBox.textContent = "Debug: Focus moved to " + firstInput.id;
+              // hide debug box after 3s
+              setTimeout(() => { debugBox.style.display = "none"; }, 3000);
+            }
+          } else {
+            console.warn("DEBUG: addressLine1 input not found!");
+            if (debugBox) debugBox.textContent = "DEBUG: addressLine1 input NOT FOUND!";
+          }
+        }, 100);
+
+      });
     });
   </script>
 
