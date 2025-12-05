@@ -2,35 +2,33 @@
 {% from "./address.njk" import addressForm %}
 {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
 {% set govukVisuallyHiddenForAnchor = '' %}
-
 {% macro postcodeLookupAndAddressForm(t,params) %}
-  {% set showManualLink = true %}
-  {% set showAddressForm = false %}
-
-  {% if params.addressType === 'primaryAddress' and params.party.hasFieldError('primaryAddress') %}
-    {% set showAddressForm = true %}
-    {% set showManualLink = false %}
+  {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
+    {% if params.party.hasFieldError('primaryAddress') %}
+      {% set govukVisuallyHidden = '' %}
+      {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
+    {% else %}
+      {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
+      {% set govukVisuallyHiddenForAnchor = '' %}
+    {% endif %}
   {% endif %}
-  {% if params.addressType === 'correspondenceAddress' and params.party.hasFieldError('correspondenceAddress') %}
-    {% set showAddressForm = true %}
-    {% set showManualLink = false %}
+  {% if params.addressType === 'correspondenceAddress' and params.party.model.correspondenceAddress %}
+    {% if params.party.hasFieldError('correspondenceAddress') %}
+      {% set govukVisuallyHidden = '' %}
+      {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
+    {% else %}
+      {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
+      {% set govukVisuallyHiddenForAnchor = '' %}
+    {% endif %}
   {% endif %}
-
   <div class="govuk-form-group postcode-container">
-    <label class="govuk-label" for="{{ params.addressType + 'Postcode' }}">
+    <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
-
     <div class="govuk-visually-hidden govuk-error-message">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-
-    <input id="{{ params.addressType + 'Postcode' }}"
-           class="govuk-input govuk-input--width-10 postcode-val"
-           name="{{ params.addressType + 'Postcode' }}"
-           type="text"
-           autocomplete="postal-code"/>
-
+    <input id="{{ params.addressType + 'Postcode' }}" class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
@@ -53,78 +51,20 @@
       ]
     }) }}
 
-    <div id="{{ params.addressType }}-manual-link-wrapper"
-         {% if not showManualLink %} hidden aria-hidden="true" {% endif %}>
-      <a id="{{ params.addressType }}-enter-manually"
-         href="#"
-         class="govuk-body govuk-link"
-         {% if not showManualLink %} tabindex="-1" {% endif %}
-         aria-controls="{{ params.addressType }}-manual-address-wrapper">
+    <div class="{{ govukVisuallyHiddenForAnchor }}">
+      <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
-
     <div>
-      <div id="{{ params.addressType }}-manual-address-wrapper"
-           class="address-form {{ govukVisuallyHidden }}"
-           {% if not showAddressForm %} hidden aria-hidden="true" {% endif %}>
+      <div class="{{ govukVisuallyHidden }} address-form">
         {{ addressForm(
-            t,
-            party = params.party,
-            addressType = params.addressType,
-            addressTitle = params.addressTitle
+          t,
+          party = params.party,
+          addressType = params.addressType,
+          addressTitle = params.addressTitle
         ) }}
       </div>
     </div>
-
-    <div id="{{ params.addressType }}-focus-debug"
-         style="display:none; margin-top:6px; padding:4px; background:#fff3cd; color:#856404; border:1px solid #ffeeba; font-size:14px; border-radius:4px;">
-      Debug: waiting for focus on addressLine1...
-    </div>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const addressType = "{{ params.addressType }}";
-      const link = document.getElementById(addressType + "-enter-manually");
-      const wrapper = document.getElementById(addressType + "-manual-address-wrapper");
-      const linkWrapper = document.getElementById(addressType + "-manual-link-wrapper");
-      const debugBox = document.getElementById(addressType + "-focus-debug");
-
-      if (!link || !wrapper) return;
-
-      link.addEventListener("click", function(e) {
-        e.preventDefault();
-
-        // Show address form
-        wrapper.hidden = false;
-        wrapper.setAttribute("aria-hidden", "false");
-
-        // Hide link from UI and screen readers
-        linkWrapper.hidden = true;
-        linkWrapper.setAttribute("aria-hidden", "true");
-        link.setAttribute("tabindex", "-1");
-
-        // Show debug visual
-        if (debugBox) {
-          debugBox.style.display = "block";
-          debugBox.textContent = "Debug: focusing addressLine1 in 100ms…";
-        }
-
-        // Focus first input after small delay
-        setTimeout(() => {
-          const firstInput = wrapper.querySelector("input[id$='addressLine1']");
-          if (firstInput) {
-            firstInput.focus({ preventScroll: false });
-            console.log("DEBUG: Focus moved to", firstInput.id);
-            if (debugBox) {
-              debugBox.textContent = "Debug: Focus moved to " + firstInput.id;
-              setTimeout(() => { debugBox.style.display = "none"; }, 3000);
-            }
-          }
-        }, 100);
-      });
-    });
-  </script>
-
 {% endmacro %}
