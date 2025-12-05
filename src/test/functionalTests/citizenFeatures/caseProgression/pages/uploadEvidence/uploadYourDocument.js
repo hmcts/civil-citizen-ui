@@ -316,7 +316,7 @@ class UploadYourDocument {
 
   verifyDisclosureSectionContent() {
     I.see(content.disclosure.title[language], 'h2');
-    I.see(content.disclosure.documents.title[language], 'h3');
+    I.see(content.disclosure.documents.title[language], 'h2');
     I.see(content.disclosure.documents.documentType[language]);
     I.see(content.disclosure.documents.documentTypeHint[language]);
     I.see(content.disclosure.documents.dateTitle[language]);
@@ -330,7 +330,7 @@ class UploadYourDocument {
 
   verifyWitnessSectionContent(claimType) {
     I.see(content.witness.title[language], 'h2');
-    I.see(content.witness.statement.title[language], 'h3');
+    I.see(content.witness.statement.title[language], 'h2');
     I.see(content.witness.witnessName[language]);
     I.see(content.witness.statement.dateTitle[language]);
     I.see(content.witness.summary.title[language]);
@@ -345,7 +345,7 @@ class UploadYourDocument {
 
   verifyExpertSectionContentForFastTrack() {
     I.see(content.expert.title[language], 'h2');
-    I.see(content.expert.report.title[language], 'h3');
+    I.see(content.expert.report.title[language], 'h2');
     I.see(content.expert.report.name[language]);
     I.see(content.expert.report.expertise[language]);
     I.see(content.expert.report.dateTitle[language]);
@@ -356,13 +356,13 @@ class UploadYourDocument {
     I.see(content.expert.questions.title[language]);
     I.see(content.expert.questions.partyName[language]);
     I.see(content.expert.questions.documentName[language]);
-    I.see(content.expert.answers.title[language], 'h3');
+    I.see(content.expert.answers.title[language], 'h2');
     I.see(content.expert.answers.documentName[language]);
   }
 
   verifyExpertSectionContentForSmallClaims() {
-    I.see(content.expert.title[language], 'h2');
-    I.see(content.expert.report.title[language], 'h3');
+    I.see(content.expert.title[language]);
+    I.see(content.expert.report.title[language]);
     I.see(content.expert.report.name[language]);
     I.see(content.expert.report.expertise[language]);
     I.see(content.expert.report.dateTitle[language]);
@@ -379,16 +379,16 @@ class UploadYourDocument {
 
   verifyTrialDocumentsSectionContent() {
     I.see(content.trial.title[language], 'h2');
-    I.see(content.trial.summary[language], 'h3');
-    I.see(content.trial.skeleton[language], 'h3');
-    I.see(content.trial.authority[language], 'h3');
-    I.see(content.trial.costs[language], 'h3');
-    I.see(content.trial.documentaryEvidence[language], 'h3');
+    I.see(content.trial.summary[language], 'h2');
+    I.see(content.trial.skeleton[language], 'h2');
+    I.see(content.trial.authority[language], 'h2');
+    I.see(content.trial.costs[language], 'h2');
+    I.see(content.trial.documentaryEvidence[language], 'h2');
   }
 
   verifyHearingDocumentsSectionContent() {
-    I.see(content.hearing.title[language], 'h2');
-    I.see(content.hearing.documentaryEvidence.title[language], 'h3');
+    I.see(content.hearing.title[language]);
+    I.see(content.hearing.documentaryEvidence.title[language]);
     I.see(content.hearing.documentaryEvidence.documentType[language]);
     I.see(content.hearing.documentaryEvidence.documentTypeHint[language]);
     I.see(content.hearing.documentaryEvidence.dateTitle[language]);
