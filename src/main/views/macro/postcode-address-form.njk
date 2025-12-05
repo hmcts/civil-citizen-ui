@@ -52,7 +52,8 @@
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link toggle-manual-address" onclick="document.getElementById('enterAddressManually').querySelector('input,select,textarea')?.focus()">
+      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link toggle-manual-address"
+         onclick="event.preventDefault(); var c=document.getElementById('enterAddressManually'); var ex=this.getAttribute('aria-expanded')==='true'; if(!ex){ this.setAttribute('aria-expanded','true'); c.classList.remove('govuk-visually-hidden'); c.setAttribute('aria-hidden','false'); setTimeout(function(){var f=c.querySelector('input,select,textarea,button'); if(f) f.focus();},20); }">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
