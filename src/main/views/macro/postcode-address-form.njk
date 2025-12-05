@@ -1,17 +1,23 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "./address.njk" import addressForm %}
+{% set govukVisuallyHidden = 'govuk-visually-hidden' %}
+{% set govukVisuallyHiddenForAnchor = '' %}
 
-{% macro postcodeLookupAndAddressForm(t, params) %}
+{% macro postcodeLookupAndAddressForm(t,params) %}
+  {% set showManualLink = true %}
+  {% set showAddressForm = false %}
 
-  {% set formShouldShow =
-      (params.addressType == 'primaryAddress' and params.party.hasFieldError('primaryAddress'))
-      or
-      (params.addressType == 'correspondenceAddress' and params.party.hasFieldError('correspondenceAddress'))
-  %}
+  {% if params.addressType === 'primaryAddress' and params.party.hasFieldError('primaryAddress') %}
+    {% set showAddressForm = true %}
+    {% set showManualLink = false %}
+  {% endif %}
+  {% if params.addressType === 'correspondenceAddress' and params.party.hasFieldError('correspondenceAddress') %}
+    {% set showAddressForm = true %}
+    {% set showManualLink = false %}
+  {% endif %}
 
   <div class="govuk-form-group postcode-container">
-
-    <label class="govuk-label" for="{{ params.addressType }}Postcode">
+    <label class="govuk-label" for="{{ params.addressType + 'Postcode' }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
 
@@ -19,15 +25,13 @@
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
 
-    <input
-      id="{{ params.addressType }}Postcode"
-      class="govuk-input govuk-input--width-10 postcode-val"
-      name="{{ params.addressType }}Postcode"
-      type="text"
-      autocomplete="postal-code"
-    />
+    <input id="{{ params.addressType + 'Postcode' }}"
+           class="govuk-input govuk-input--width-10 postcode-val"
+           name="{{ params.addressType + 'Postcode' }}"
+           type="text"
+           autocomplete="postal-code"/>
 
-    <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
 
@@ -49,36 +53,21 @@
       ]
     }) }}
 
-    {# Manual link #}
-    <div
-      id="{{ params.addressType }}-manual-link-wrapper"
-      {% if formShouldShow %}
-        hidden aria-hidden="true"
-      {% endif %}
-    >
-      <a
-        id="{{ params.addressType }}-enter-manually"
-        href="#"
-        class="govuk-body govuk-link"
-        {% if formShouldShow %}
-          tabindex="-1"
-        {% endif %}
-        aria-controls="{{ params.addressType }}-manual-address-wrapper"
-        data-address-type="{{ params.addressType }}"
-      >
+    <div id="{{ params.addressType }}-manual-link-wrapper"
+         {% if not showManualLink %} hidden aria-hidden="true" {% endif %}>
+      <a id="{{ params.addressType }}-enter-manually"
+         href="#"
+         class="govuk-body govuk-link"
+         {% if not showManualLink %} tabindex="-1" {% endif %}
+         aria-controls="{{ params.addressType }}-manual-address-wrapper">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
 
-    {# Manual address form #}
     <div>
-      <div
-        id="{{ params.addressType }}-manual-address-wrapper"
-        class="address-form"
-        {% if not formShouldShow %}
-          hidden aria-hidden="true"
-        {% endif %}
-      >
+      <div id="{{ params.addressType }}-manual-address-wrapper"
+           class="address-form {{ govukVisuallyHidden }}"
+           {% if not showAddressForm %} hidden aria-hidden="true" {% endif %}>
         {{ addressForm(
             t,
             party = params.party,
@@ -88,37 +77,32 @@
       </div>
     </div>
 
-    {# Temporary debug visual for testing #}
-    <div
-      id="{{ params.addressType }}-focus-debug"
-      style="display:none; margin-top:8px; padding:6px; background:#fff3cd; color:#856404; border:1px solid #ffeeba; border-radius:4px; font-size:14px;"
-    >
-      Debug: waiting to focus addressLine1…
+    <div id="{{ params.addressType }}-focus-debug"
+         style="display:none; margin-top:6px; padding:4px; background:#fff3cd; color:#856404; border:1px solid #ffeeba; font-size:14px; border-radius:4px;">
+      Debug: waiting for focus on addressLine1...
     </div>
-
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-
+    document.addEventListener("DOMContentLoaded", function() {
       const addressType = "{{ params.addressType }}";
-      const link       = document.getElementById(addressType + "-enter-manually");
-      const linkWrap   = document.getElementById(addressType + "-manual-link-wrapper");
-      const formWrap   = document.getElementById(addressType + "-manual-address-wrapper");
-      const debugBox   = document.getElementById(addressType + "-focus-debug");
+      const link = document.getElementById(addressType + "-enter-manually");
+      const wrapper = document.getElementById(addressType + "-manual-address-wrapper");
+      const linkWrapper = document.getElementById(addressType + "-manual-link-wrapper");
+      const debugBox = document.getElementById(addressType + "-focus-debug");
 
-      if (!link || !formWrap) return;
+      if (!link || !wrapper) return;
 
-      link.addEventListener("click", function (e) {
+      link.addEventListener("click", function(e) {
         e.preventDefault();
 
-        // SHOW manual address form
-        formWrap.hidden = false;
-        formWrap.setAttribute("aria-hidden", "false");
+        // Show address form
+        wrapper.hidden = false;
+        wrapper.setAttribute("aria-hidden", "false");
 
-        // HIDE link from SR + tab order + UI
-        linkWrap.hidden = true;
-        linkWrap.setAttribute("aria-hidden", "true");
+        // Hide link from UI and screen readers
+        linkWrapper.hidden = true;
+        linkWrapper.setAttribute("aria-hidden", "true");
         link.setAttribute("tabindex", "-1");
 
         // Show debug visual
@@ -127,23 +111,18 @@
           debugBox.textContent = "Debug: focusing addressLine1 in 100ms…";
         }
 
-        // Focus first input after small delay (VoiceOver safe)
+        // Focus first input after small delay
         setTimeout(() => {
-          const firstInput = formWrap.querySelector("input[id$='addressLine1']");
+          const firstInput = wrapper.querySelector("input[id$='addressLine1']");
           if (firstInput) {
             firstInput.focus({ preventScroll: false });
-            console.log("DEBUG: Focus moved to", firstInput.id, "at", Date.now());
+            console.log("DEBUG: Focus moved to", firstInput.id);
             if (debugBox) {
               debugBox.textContent = "Debug: Focus moved to " + firstInput.id;
-              // hide debug box after 3s
               setTimeout(() => { debugBox.style.display = "none"; }, 3000);
             }
-          } else {
-            console.warn("DEBUG: addressLine1 input not found!");
-            if (debugBox) debugBox.textContent = "DEBUG: addressLine1 input NOT FOUND!";
           }
         }, 100);
-
       });
     });
   </script>
