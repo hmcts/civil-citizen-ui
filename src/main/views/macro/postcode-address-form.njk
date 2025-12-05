@@ -30,7 +30,15 @@
     <div class="govuk-visually-hidden govuk-error-message">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-    <input id="{{ params.addressType + 'Postcode' }}" class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
+
+    <input
+      id="{{ params.addressType + 'Postcode' }}"
+      class="govuk-input govuk-input--width-10 postcode-val"
+      name="{{ params.addressType + 'Postcode' }}"
+      type="text"
+      autocomplete="postal-code"
+    />
+
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
@@ -57,29 +65,28 @@
       <a
         href="#"
         aria-controls="enterAddressManually"
-        aria-expanded="false"
         class="govuk-body govuk-link"
         onclick="
           event.preventDefault();
-          var link=this;
-          var container=document.getElementById('enterAddressManually');
 
-          // Remove link from accessibility tree
-          link.setAttribute('aria-hidden','true');
-          link.setAttribute('tabindex','-1');
-          link.setAttribute('aria-expanded','true');
+          // Select elements
+          var link = this;
+          var container = document.getElementById('enterAddressManually');
 
-          // Reveal address form
+          // Reveal the manual address form
           container.classList.remove('govuk-visually-hidden');
           container.setAttribute('aria-hidden','false');
 
-          // Focus first input after short delay so screen reader detects it
-          setTimeout(function(){
-            var firstInput = container.querySelector('input,select,textarea');
-            if(firstInput){
-              firstInput.focus({preventScroll:true});
-            }
-          },100);
+          // Remove the link from the DOM entirely (fixes VoiceOver)
+          link.parentNode.removeChild(link);
+
+          // Move focus after a short delay (required for VoiceOver)
+          setTimeout(function() {
+          var firstInput = container.querySelector('input[id="primaryAddress[addressLine1]"]');
+              if (firstInput) {
+              firstInput.focus();
+              }
+          }, 80);
         "
       >
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
@@ -91,7 +98,6 @@
         id="enterAddressManually"
         class="{{ govukVisuallyHidden }} address-form"
         aria-hidden="true"
-        tabindex="-1"
       >
         {{ addressForm(
           t,
