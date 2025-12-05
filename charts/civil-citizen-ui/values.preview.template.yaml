@@ -113,7 +113,7 @@ civil-general-applications:
     java:
       applicationPort: 4000
       releaseNameOverride: ${SERVICE_NAME}-civil-service
-      image: 'hmctspublic.azurecr.io/civil/service:pr-7220'
+      image: 'hmctspublic.azurecr.io/civil/service:pr-7222'
       imagePullPolicy: Always
       ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
       devcpuRequests: 1000m
