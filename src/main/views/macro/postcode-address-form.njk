@@ -2,6 +2,7 @@
 {% from "./address.njk" import addressForm %}
 {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
 {% set govukVisuallyHiddenForAnchor = '' %}
+
 {% macro postcodeLookupAndAddressForm(t,params) %}
   {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
     {% if params.party.hasFieldError('primaryAddress') %}
@@ -21,6 +22,7 @@
       {% set govukVisuallyHiddenForAnchor = '' %}
     {% endif %}
   {% endif %}
+
   <div class="govuk-form-group postcode-container">
     <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
@@ -52,32 +54,45 @@
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link"
-         onclick="
+      <a
+        href="#"
+        aria-controls="enterAddressManually"
+        aria-expanded="false"
+        class="govuk-body govuk-link"
+        onclick="
           event.preventDefault();
           var link=this;
           var container=document.getElementById('enterAddressManually');
-          if(link.getAttribute('aria-expanded')==='false'){
-            link.setAttribute('aria-expanded','true');
-            link.style.display='none';
-            container.classList.remove('govuk-visually-hidden');
-            container.setAttribute('aria-hidden','false');
-            container.style.position='static'; // ensure visible for screen reader
-            container.removeAttribute('tabindex');
-            setTimeout(function(){
-              var field=document.querySelector('#primaryAddress\\\\[addressLine1\\\\]') || document.querySelector('#correspondenceAddress\\\\[addressLine1\\\\]');
-              if(field){
-                field.scrollIntoView({behavior:'smooth',block:'center'}); // optional smooth scroll
-                field.focus({preventScroll:true});
+
+          // Remove link from accessibility tree
+          link.setAttribute('aria-hidden','true');
+          link.setAttribute('tabindex','-1');
+          link.setAttribute('aria-expanded','true');
+
+          // Reveal address form
+          container.classList.remove('govuk-visually-hidden');
+          container.setAttribute('aria-hidden','false');
+
+          // Focus first input after short delay so screen reader detects it
+          setTimeout(function(){
+            var firstInput = container.querySelector('input,select,textarea');
+            if(firstInput){
+              firstInput.focus({preventScroll:true});
             }
-            },50); // slight delay ensures field is visible to screen reader
-          }
-        ">
+          },100);
+        "
+      >
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
+
     <div>
-      <div id="enterAddressManually" class="{{ govukVisuallyHidden }} address-form" aria-hidden="true" tabindex="-1">
+      <div
+        id="enterAddressManually"
+        class="{{ govukVisuallyHidden }} address-form"
+        aria-hidden="true"
+        tabindex="-1"
+      >
         {{ addressForm(
           t,
           party = params.party,
