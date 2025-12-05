@@ -52,12 +52,12 @@
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
+      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link toggle-manual-address">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
     <div>
-      <div class="{{ govukVisuallyHidden }} address-form">
+      <div id="enterAddressManually" class="{{ govukVisuallyHidden }} address-form" aria-hidden="true">
         {{ addressForm(
           t,
           party = params.party,
