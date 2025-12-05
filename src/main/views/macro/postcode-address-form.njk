@@ -3,39 +3,21 @@
 
 {% macro postcodeLookupAndAddressForm(t, params) %}
 
-  {# Figure out whether manual address has data or errors #}
-  {% set manualHasError = false %}
-  {% set manualHasValue = false %}
+  {# ---------------------------------------------
+     DETERMINE IF WE SHOULD SHOW MANUAL ADDRESS FORM
+     ---------------------------------------------- #}
 
-  {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
-    {% set manualHasValue = true %}
-    {% if params.party.hasFieldError('primaryAddress') %}
-      {% set manualHasError = true %}
-    {% endif %}
-  {% endif %}
+  {% set showAddressForm =
+      (params.addressType == 'primaryAddress' and params.party.hasFieldError('primaryAddress'))
+      or
+      (params.addressType == 'correspondenceAddress' and params.party.hasFieldError('correspondenceAddress'))
+  %}
 
-  {% if params.addressType === 'correspondenceAddress' and params.party.model.correspondenceAddress %}
-    {% set manualHasValue = true %}
-    {% if params.party.hasFieldError('correspondenceAddress') %}
-      {% set manualHasError = true %}
-    {% endif %}
-  {% endif %}
-
-  {# Decide whether manual form should be initially visible #}
-  {% if manualHasValue or manualHasError %}
-    {% set manualInitiallyHidden = false %}
-  {% else %}
-    {% set manualInitiallyHidden = true %}
-  {% endif %}
-
-  {# Use classes for styling only; use hidden/aria-* for accessibility #}
-  {% set manualClass = manualInitiallyHidden ? 'govuk-visually-hidden address-form' : 'address-form' %}
-
-  {# Unique IDs for toggle + manual container so JS can work reliably #}
-  {% set manualToggleId = params.addressType + '-enter-address-manually' %}
-  {% set manualContainerId = params.addressType + '-manual-address-container' %}
+  {# Controls if the “Enter manually” link is visible #}
+  {% set showManualLink = not showAddressForm %}
 
   <div class="govuk-form-group postcode-container">
+
     <label class="govuk-label" for="{{ params.addressType + 'Postcode' }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
@@ -47,15 +29,12 @@
     <input
       id="{{ params.addressType + 'Postcode' }}"
       class="govuk-input govuk-input--width-10 postcode-val"
-      title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}"
       name="{{ params.addressType + 'Postcode' }}"
       type="text"
-      autocomplete="postal-code" />
+      autocomplete="postal-code"
+    />
 
-    <button
-      type="button"
-      class="govuk-button govuk-button--secondary"
-      data-module="govuk-button">
+    <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
 
@@ -77,42 +56,85 @@
       ]
     }) }}
 
-    {# "Enter address manually" button:
-       - present only when manual form is initially hidden
-       - not rendered at all once manual form is active (so it cannot stay in tab order) #}
-    {% if manualInitiallyHidden %}
-      <div>
-        <button
-          id="{{ manualToggleId }}"
-          type="button"
-          class="govuk-link govuk-body govuk-link--no-visited-state"
-          aria-controls="{{ manualContainerId }}"
-          aria-expanded="false">
-        {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
-      </button>
-    </div>
-    {% endif %}
+    {# ---------------------------------------------
+       ENTER ADDRESS MANUALLY LINK (removed from SR when hidden)
+       ---------------------------------------------- #}
 
-    {# Manual address form container:
-       - when hidden: has hidden + aria-hidden="true", so it is not focusable or visible
-       - when shown: aria-hidden="false" and no hidden attribute #}
+    <div
+      id="{{ params.addressType }}-manual-link-wrapper"
+      {% if not showManualLink %}
+        hidden aria-hidden="true"
+      {% endif %}
+    >
+      <a
+        id="{{ params.addressType }}-enter-manually"
+        href="#"
+        class="govuk-body govuk-link"
+        {% if not showManualLink %}
+          tabindex="-1"
+        {% endif %}
+        data-address-type="{{ params.addressType }}"
+        aria-controls="{{ params.addressType }}-manual-address-wrapper"
+      >
+        {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
+      </a>
+    </div>
+
+    {# ---------------------------------------------
+       MANUAL ADDRESS FORM (hidden from SR + UI until opened)
+       ---------------------------------------------- #}
+
     <div>
       <div
-        id="{{ manualContainerId }}"
-        class="{{ manualClass }}"
-        {% if manualInitiallyHidden %}
-          hidden
-          aria-hidden="true"
-        {% else %}
-          aria-hidden="false"
-        {% endif %}>
+        id="{{ params.addressType }}-manual-address-wrapper"
+        class="address-form"
+        {% if not showAddressForm %}
+          hidden aria-hidden="true"
+        {% endif %}
+      >
         {{ addressForm(
-          t,
-          party = params.party,
-          addressType = params.addressType,
-          addressTitle = params.addressTitle
+            t,
+            party = params.party,
+            addressType = params.addressType,
+            addressTitle = params.addressTitle
         ) }}
       </div>
     </div>
+
   </div>
+
+  {# ----------------------------------------------------------------
+     INLINE ACCESSIBLE JS — FULLY GOV.UK COMPATIBLE AND SCREEN-READER SAFE
+     ---------------------------------------------------------------- #}
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const link = document.getElementById("{{ params.addressType }}-enter-manually");
+      if (!link) return;
+
+      const wrapper = document.getElementById("{{ params.addressType }}-manual-address-wrapper");
+      const linkWrapper = document.getElementById("{{ params.addressType }}-manual-link-wrapper");
+
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+
+        // SHOW address form
+        wrapper.hidden = false;
+        wrapper.setAttribute("aria-hidden", "false");
+
+        // REMOVE the enter manually link from SR + UI
+        linkWrapper.hidden = true;
+        linkWrapper.setAttribute("aria-hidden", "true");
+
+        // Move focus into first address field
+        const firstInput = wrapper.querySelector("input[id$='addressLine1']");
+        if (firstInput) {
+          firstInput.focus({ preventScroll: false });
+        }
+      });
+
+    });
+  </script>
+
 {% endmacro %}
