@@ -52,24 +52,33 @@
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link"
-         onclick="event.preventDefault();
-                  var container=document.getElementById('enterAddressManually');
-                  var expanded=this.getAttribute('aria-expanded')==='true';
-                  if(!expanded){
-                    this.setAttribute('aria-expanded','true');
-                    container.classList.remove('govuk-visually-hidden');
-                    container.setAttribute('aria-hidden','false');
-                    setTimeout(function(){
-                      var field=document.getElementById('primaryAddress[addressLine1]') || document.getElementById('correspondenceAddress[addressLine1]');
-                      if(field) field.focus();
-                    },20);
-                  }">
+      <a
+        aria-expanded="false"
+        aria-controls="enterAddressManually"
+        href="#"
+        class="govuk-body govuk-link"
+        onclick="
+          event.preventDefault();
+          var link=this;
+          var container=document.getElementById('enterAddressManually');
+          if(link.getAttribute('aria-expanded')==='false'){
+            link.setAttribute('aria-expanded','true');
+            link.style.display='none';
+            container.classList.remove('govuk-visually-hidden');
+            container.setAttribute('aria-hidden','false');
+            container.removeAttribute('tabindex');
+            setTimeout(function(){
+              var input=document.getElementById('primaryAddress[addressLine1]') || document.getElementById('correspondenceAddress[addressLine1]');
+              if(input) input.focus();
+            },10);
+          }
+        "
+      >
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
     <div>
-      <div id="enterAddressManually" class="{{ govukVisuallyHidden }} address-form" aria-hidden="true">
+      <div id="enterAddressManually" class="{{ govukVisuallyHidden }} address-form" aria-hidden="true" tabindex="-1">
         {{ addressForm(
           t,
           party = params.party,
