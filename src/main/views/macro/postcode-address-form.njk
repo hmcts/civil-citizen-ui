@@ -1,32 +1,45 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "./address.njk" import addressForm %}
-{% set govukVisuallyHidden = 'govuk-visually-hidden' %}
-{% set govukVisuallyHiddenForAnchor = '' %}
 
-{% macro postcodeLookupAndAddressForm(t,params) %}
+{% macro postcodeLookupAndAddressForm(t, params) %}
+
+  {# Figure out whether manual address has data or errors #}
+  {% set manualHasError = false %}
+  {% set manualHasValue = false %}
+
   {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
+    {% set manualHasValue = true %}
     {% if params.party.hasFieldError('primaryAddress') %}
-      {% set govukVisuallyHidden = '' %}
-      {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
-    {% else %}
-      {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
-      {% set govukVisuallyHiddenForAnchor = '' %}
+      {% set manualHasError = true %}
     {% endif %}
   {% endif %}
+
   {% if params.addressType === 'correspondenceAddress' and params.party.model.correspondenceAddress %}
+    {% set manualHasValue = true %}
     {% if params.party.hasFieldError('correspondenceAddress') %}
-      {% set govukVisuallyHidden = '' %}
-      {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
-    {% else %}
-      {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
-      {% set govukVisuallyHiddenForAnchor = '' %}
+      {% set manualHasError = true %}
     {% endif %}
   {% endif %}
+
+  {# Decide whether manual form should be initially visible #}
+  {% if manualHasValue or manualHasError %}
+    {% set manualInitiallyHidden = false %}
+  {% else %}
+    {% set manualInitiallyHidden = true %}
+  {% endif %}
+
+  {# Use classes for styling only; use hidden/aria-* for accessibility #}
+  {% set manualClass = manualInitiallyHidden ? 'govuk-visually-hidden address-form' : 'address-form' %}
+
+  {# Unique IDs for toggle + manual container so JS can work reliably #}
+  {% set manualToggleId = params.addressType + '-enter-address-manually' %}
+  {% set manualContainerId = params.addressType + '-manual-address-container' %}
 
   <div class="govuk-form-group postcode-container">
-    <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
+    <label class="govuk-label" for="{{ params.addressType + 'Postcode' }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
+
     <div class="govuk-visually-hidden govuk-error-message">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
@@ -34,12 +47,15 @@
     <input
       id="{{ params.addressType + 'Postcode' }}"
       class="govuk-input govuk-input--width-10 postcode-val"
+      title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}"
       name="{{ params.addressType + 'Postcode' }}"
       type="text"
-      autocomplete="postal-code"
-    />
+      autocomplete="postal-code" />
 
-    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+    <button
+      type="button"
+      class="govuk-button govuk-button--secondary"
+      data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
 
@@ -61,44 +77,35 @@
       ]
     }) }}
 
-    <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a
-        href="#"
-        aria-controls="enterAddressManually"
-        class="govuk-body govuk-link"
-        onclick="
-          event.preventDefault();
-
-          // Select elements
-          var link = this;
-          var container = document.getElementById('enterAddressManually');
-
-          // Reveal the manual address form
-          container.classList.remove('govuk-visually-hidden');
-          container.setAttribute('aria-hidden','false');
-
-          // Remove the link from the DOM entirely (fixes VoiceOver)
-          link.parentNode.removeChild(link);
-
-          // Move focus after a short delay (required for VoiceOver)
-          setTimeout(function() {
-          var firstInput = container.querySelector('input[id="primaryAddress[addressLine1]"]');
-              if (firstInput) {
-              firstInput.focus();
-              }
-          }, 80);
-        "
-      >
+    {# "Enter address manually" button:
+       - present only when manual form is initially hidden
+       - not rendered at all once manual form is active (so it cannot stay in tab order) #}
+    {% if manualInitiallyHidden %}
+      <div>
+        <button
+          id="{{ manualToggleId }}"
+          type="button"
+          class="govuk-link govuk-body govuk-link--no-visited-state"
+          aria-controls="{{ manualContainerId }}"
+          aria-expanded="false">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
-      </a>
+      </button>
     </div>
+    {% endif %}
 
+    {# Manual address form container:
+       - when hidden: has hidden + aria-hidden="true", so it is not focusable or visible
+       - when shown: aria-hidden="false" and no hidden attribute #}
     <div>
       <div
-        id="enterAddressManually"
-        class="{{ govukVisuallyHidden }} address-form"
-        aria-hidden="true"
-      >
+        id="{{ manualContainerId }}"
+        class="{{ manualClass }}"
+        {% if manualInitiallyHidden %}
+          hidden
+          aria-hidden="true"
+        {% else %}
+          aria-hidden="false"
+        {% endif %}>
         {{ addressForm(
           t,
           party = params.party,
