@@ -52,7 +52,7 @@
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link toggle-manual-address">
+      <a aria-expanded="false" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link toggle-manual-address" onclick="document.getElementById('enterAddressManually').querySelector('input,select,textarea')?.focus()">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
