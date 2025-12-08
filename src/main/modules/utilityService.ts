@@ -1,6 +1,11 @@
 import {AppRequest, AppSession} from 'models/AppRequest';
 import config from 'config';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore,
+  generateRedisKey,
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
@@ -13,8 +18,10 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 /**
- * Gets the claim from draft store and if not existing then gets it from ccd.
- * @param claimId, req, useRedisKey
+ * Gets the claim from draft store and if not existing, then gets it from ccd.
+ * @param claimId
+ * @param req
+ * @param useRedisKey
  * @returns claim
  */
 export const getClaimById = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
@@ -29,6 +36,32 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
     } else {
       throw new Error('Case not found...');
     }
+  }
+  const appRequest = <AppRequest>req;
+  const session = (appRequest.session as AppSession | undefined);
+
+  if (session) {
+    if (claim?.id) {
+      session.caseReference = claim.id;
+    } else {
+      delete session.caseReference;
+    }
+    syncCaseReferenceCookie(appRequest);
+  }
+  return claim;
+};
+
+export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = false): Promise<Claim> => {
+  const userId = (<AppRequest>req)?.session?.user?.id;
+  const claimId = req.params?.id;
+  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
+
+  const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+  if (claim) {
+    await deleteDraftClaimFromStore(redisKey);
+    await saveDraftClaim(redisKey, claim, true);
+  } else {
+    throw new Error('Case not found...');
   }
   const appRequest = <AppRequest>req;
   const session = (appRequest.session as AppSession | undefined);
