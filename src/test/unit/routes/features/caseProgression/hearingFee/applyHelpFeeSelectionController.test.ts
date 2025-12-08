@@ -4,21 +4,20 @@ import nock from 'nock';
 import config from 'config';
 import {APPLY_HELP_WITH_FEES, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure, mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Session} from 'express-session';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionService');
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const spyDel = jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore');
+const spyDel = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
 
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -28,9 +27,6 @@ describe('Apply for help with fees', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
@@ -44,7 +40,7 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return resolving apply help fees page with no case progression data', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
+      app.locals.draftStoreClient = mockCivilClaimHearingFee;
 
       spyDel.mockImplementation(() => {return null;});
 
