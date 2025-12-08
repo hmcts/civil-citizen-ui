@@ -100,6 +100,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     await saveClaimFee(userId, claimFeeData);
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
+      return;
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);
@@ -109,16 +110,14 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         //TODO Will be implemented after integration ready
         //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
         //res.redirect(paymentUrlWithId);
-        await deleteDraftClaimFromStore(userId);
         res.clearCookie('eligibilityCompleted');
-        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
-      } else {
-        await deleteDraftClaimFromStore(userId);
-        res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
+      await deleteDraftClaimFromStore(userId);
+      res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
+    return;
   }
 });
 

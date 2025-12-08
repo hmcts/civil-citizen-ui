@@ -28,7 +28,7 @@ import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {convertToCCDStatementOfTruth} from 'services/translation/response/convertToCCDStatementOfTruth';
 import {toCCDFixedCost} from 'models/ccdResponse/ccdFixedCosts';
 
-export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
+export const translateDraftClaimToCCD = (claim: Claim, req?: AppRequest): CCDClaim => {
   return {
     applicant1: toCCDParty(claim.applicant1),
     respondent1: toCCDParty(claim.respondent1),
@@ -49,7 +49,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     interestFromSpecificDate: claim.isInterestFromASpecificDate() ? DateTime.fromJSDate(new Date(claim.interest?.interestStartDate?.date)).toFormat('yyyy-MM-dd') : undefined,
     interestFromSpecificDateDescription: claim.isInterestFromASpecificDate() ? claim.interest?.interestStartDate?.reason : undefined,
     interestClaimUntil: claim.interest?.interestEndDate,
-    claimantUserDetails: getClaimantIdamDetails(req.session?.user),
+    claimantUserDetails: req ? getClaimantIdamDetails(req.session?.user) : undefined,
     respondent1LiPResponse: toCCDRespondentLiPResponse(claim),
     respondent1LiPResponseCarm: toCCDMediationCarm(claim.mediationCarm),
     specRespondent1Represented: YesNoUpperCamelCase.NO,
