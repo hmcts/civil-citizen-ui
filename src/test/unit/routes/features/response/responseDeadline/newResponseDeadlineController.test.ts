@@ -9,6 +9,7 @@ import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {AppSession, UserDetails} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -82,9 +83,10 @@ describe('Response - New response deadline', () => {
   describe('On Post', () => {
     it('should redirect to task list successfully', async () => {
       nock(citizenBaseUrl)
-        .post('/cases/:id/citizen/undefined/event')
+        .post('/cases/:id/citizen/1234/event')
         .reply(200, {});
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
+      app.request.session = <AppSession>{user: <UserDetails>{id: '1234'}};
 
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
@@ -94,8 +96,9 @@ describe('Response - New response deadline', () => {
     });
     it('should show error when there is error with the call to submit event', async () => {
       nock(citizenBaseUrl)
-        .post('/cases/:id/citizen/undefined/event')
+        .post('/cases/:id/citizen/1234/event')
         .reply(500, {error: 'error'});
+      app.request.session = <AppSession>{user: <UserDetails>{id: '1234'}};
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
