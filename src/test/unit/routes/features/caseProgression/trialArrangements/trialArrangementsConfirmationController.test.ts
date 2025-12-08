@@ -11,7 +11,6 @@ import { CaseProgression } from 'models/caseProgression/caseProgression';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -36,9 +35,6 @@ describe('Confirm trial arrangements - On GET', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should render page successfully in English with IsCaseReady yes', async () => {
     mockGetClaimById.mockImplementation(async () => {

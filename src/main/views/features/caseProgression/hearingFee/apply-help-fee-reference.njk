@@ -14,8 +14,12 @@
       {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.QUESTION_TITLE') }}
+              </legend>
             {% set yesHtml %}
-              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
+              <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</h2>
               {{ govukInput({
                 id: "referenceNumber",
                 name: "referenceNumber",
@@ -33,7 +37,7 @@
               }) }}
             {% endset %}
             {% set noHtml %}
-              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</p>
+              <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</h2>
               <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.PARAGRAPH_NO') }}</p>
               <ol class="govuk-list govuk-list--number govuk-!-margin-bottom-1 govuk-!-margin-left-2">
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST')}}
@@ -46,6 +50,7 @@
               </ol>
             {% endset %}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
+            </fieldset>
             {% for content in applyHelpFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}

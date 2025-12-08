@@ -22,7 +22,6 @@ import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
-  BASE_CASE_PROGRESSION_URL,
   BASE_CLAIM_URL,
   BASE_CLAIMANT_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_RESPONSE_URL,
@@ -102,7 +101,6 @@ import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragem
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
-import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
@@ -202,7 +200,6 @@ app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
-app.use(BASE_CASE_PROGRESSION_URL, isCaseProgressionV1Enabled);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
