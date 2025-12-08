@@ -76,13 +76,13 @@ confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (re
     const joIssuedDate = claim.joJudgementByAdmissionIssueDate != null ? claim.joJudgementByAdmissionIssueDate : claim.joDJCreatedDate;
     const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed, joIssuedDate));
     await form.validate();
-    await deleteDraftClaimFromStore(claimId);
+
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
-
     if (isClaimant) {
       if (form.hasErrors()) {
         renderView(form, res, lang, cancelUrl, claimId);
+        return;
       } else {
         const judgmentOnline = new JudgmentOnline();
         const judgmentPaidInFull = new CuiJudgmentPaidInFull;
@@ -91,6 +91,7 @@ confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (re
         judgmentOnline.joJudgmentPaidInFull = judgmentPaidInFull;
         const claimUpdate = toCCDjudgmentPaidInFull(judgmentOnline);
         await civilServiceClient.submitJudgmentPaidInFull(claimId, claimUpdate, req);
+        await deleteDraftClaimFromStore(claimId);
         res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
       }
     } else {

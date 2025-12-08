@@ -156,5 +156,8 @@ export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM
 }
 
 export const roundOffTwoDecimals = (amount: number) => {
+  if (amount === undefined) {
+    return undefined;
+  }
   return Math.round((amount + Number.EPSILON) * 100) / 100;
 };
