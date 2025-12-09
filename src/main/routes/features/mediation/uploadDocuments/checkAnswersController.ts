@@ -82,6 +82,7 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
     form.validateSync();
     if (form.hasErrors()) {
       renderView(uploadDocuments, res, form, claim, claimId, lang);
+      return;
     } else {
       await saveMediationUploadedDocuments(claimId, uploadDocuments, <AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
@@ -89,6 +90,7 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
     }
   } catch (error) {
     next(error);
+    return;
   }
 
 })as RequestHandler);

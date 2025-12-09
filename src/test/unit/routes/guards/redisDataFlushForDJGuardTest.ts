@@ -1,5 +1,5 @@
-import {getClaimById} from 'modules/utilityService';
-import {deleteDraftClaimFromStore, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import { refreshDraftStoreClaimFrom} from 'modules/utilityService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
@@ -10,7 +10,7 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
 }));
 
 jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
+  refreshDraftStoreClaimFrom: jest.fn(),
 }));
 
 describe('redisDataFlushForDJ', () => {
@@ -28,13 +28,11 @@ describe('redisDataFlushForDJ', () => {
 
   it('should refresh and save the claim data when refreshDataForDJ is true', async () => {
     (getCaseDataFromStore as jest.Mock).mockResolvedValue({refreshDataForDJ: true});
-    (getClaimById as jest.Mock).mockResolvedValue({id: 'test-case-id', refreshDataForDJ: true});
+    (refreshDraftStoreClaimFrom as jest.Mock).mockResolvedValue({id: 'test-case-id', refreshDataForDJ: true});
 
     await redisDataFlushForDJ(mockReq, mockRes, mockNext);
 
-    expect(getCaseDataFromStore).toHaveBeenCalledWith('mockRedisKey');
-    expect(deleteDraftClaimFromStore).toHaveBeenCalledWith('mockRedisKey');
-    expect(getClaimById).toHaveBeenCalledWith('test-case-id', mockReq, true);
+    expect(refreshDraftStoreClaimFrom).toHaveBeenCalledWith(mockReq, true);
     expect(saveDraftClaim).toHaveBeenCalledWith('mockRedisKey', {id: 'test-case-id', refreshDataForDJ: false});
     expect(mockNext).toHaveBeenCalled();
   });
@@ -43,10 +41,7 @@ describe('redisDataFlushForDJ', () => {
     (getCaseDataFromStore as jest.Mock).mockResolvedValue({refreshDataForDJ: false});
 
     await redisDataFlushForDJ(mockReq, mockRes, mockNext);
-
-    expect(getCaseDataFromStore).toHaveBeenCalledWith('mockRedisKey');
-    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
-    expect(getClaimById).not.toHaveBeenCalled();
+    expect(refreshDraftStoreClaimFrom).not.toHaveBeenCalled();
     expect(saveDraftClaim).not.toHaveBeenCalled();
     expect(mockNext).toHaveBeenCalled();
   });
