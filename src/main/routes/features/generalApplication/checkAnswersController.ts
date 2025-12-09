@@ -67,6 +67,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
+      return;
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
       const claimResponse = await submitApplication(req);
@@ -77,6 +78,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     }
   } catch (error) {
     next(error);
+    return;
   }
 }) as RequestHandler);
 

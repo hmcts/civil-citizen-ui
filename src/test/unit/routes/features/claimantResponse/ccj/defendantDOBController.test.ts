@@ -9,6 +9,8 @@ import {
 } from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -26,6 +28,11 @@ describe('CCJ - Defendant`s date of birth', () => {
   describe('on GET', () => {
     it('should return Defendant`s date of birth', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockCivilClaim  as unknown as Claim)),
+        );
       const res = await request(app).get(CCJ_DEFENDANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Do you know the defendant&#39;s date of birth?');
