@@ -122,6 +122,7 @@
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "allure-codeceptjs": "^3.4.2",
+    "allure-commandline": "^2.29.0",
     "allure-js-commons": "^3.4.2",
     "babel-loader": "^9.1.0",
     "codeceptjs": "3.5.11",
