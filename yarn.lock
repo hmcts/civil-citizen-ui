@@ -4397,6 +4397,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"allure-commandline@npm:^2.29.0":
+  version: 2.35.1
+  resolution: "allure-commandline@npm:2.35.1"
+  bin:
+    allure: bin/allure
+  checksum: 10/d123e28b872b9f95248334e4a6327a7b5a8dc95489cec1825d1cecc6e855e14d78746b2f76a6da5a93056f1c74966319afd6bae3b02bd6bb413d84c7035cdd1b
+  languageName: node
+  linkType: hard
+
 "allure-js-commons@npm:3.4.3, allure-js-commons@npm:^3.4.2":
   version: 3.4.3
   resolution: "allure-js-commons@npm:3.4.3"
@@ -5677,6 +5686,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.50.0"
     "@typescript-eslint/parser": "npm:^5.50.0"
     allure-codeceptjs: "npm:^3.4.2"
+    allure-commandline: "npm:^2.29.0"
     allure-js-commons: "npm:^3.4.2"
     applicationinsights: "npm:^2.9.5"
     axios: "npm:^1.12.2"
