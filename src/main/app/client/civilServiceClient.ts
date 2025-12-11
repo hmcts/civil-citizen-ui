@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -64,7 +64,7 @@ import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetail
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-
+import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -202,10 +202,11 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
-      logger.info('Before Round off ' + amount);
+      logger.info('Total Claim Amount before Round off ' + amount);
       amount = roundOffTwoDecimals(amount);
-      logger.info('After Round off ' + amount);
+      logger.info('Total Claim Amount after Round off ' + amount);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      logger.info('claim fee amount ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       logger.info('claim fee data ' + (response.data as ClaimFeeData).calculatedAmountInPence);
       return response.data;
     } catch (err: unknown) {
@@ -390,14 +391,20 @@ export class CivilServiceClient {
       event: event,
       caseDataUpdate: updatedClaim,
     };
+    assertNonEmpty(userId, 'User id is undefined');
+    assertNonEmpty(claimId, 'Claim id is undefined');
     try {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
+      assertHasData(response, { action: 'submit event', event });
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
-    } catch (err: unknown) {
-      logger.error(`Error when submitting event ${event},  - claimId- ${claimId}`);
+    } catch (e: unknown) {
+      const err = e as AxiosError;
+      const status = err.response?.status;
+      const body = err.response?.data;
+      logger.error(`Submit event failed (event=${event}, claimId=${claimId}, status=${status})`, { body });
       throw err;
     }
   }

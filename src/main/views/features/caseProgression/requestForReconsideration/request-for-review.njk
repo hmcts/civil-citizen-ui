@@ -11,11 +11,13 @@
 
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
+
     {{ govukTextarea({
       name: "textArea",
       id: "textArea",
       label: {
-        text: " "
+        text: t('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.MAIN_TITLE'),
+        classes: "govuk-visually-hidden"
       },
       attributes: {
         "aria-label":  t('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.MAIN_TITLE')
