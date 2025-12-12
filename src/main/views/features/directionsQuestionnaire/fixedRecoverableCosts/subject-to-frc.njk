@@ -30,7 +30,12 @@
                         {{ createPageTitle(title,t) }}
                         {{ createDetails( whatAreFixedRecoverableCostsContent ,t) }}
                         {{ createPageTitle(buttonTitle,t,'m') }}
-                        {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', noHtml: noHtml}) }}
+                        <fieldset class="govuk-fieldset">
+                          <legend class="govuk-visually-hidden">
+                            {{ title }}
+                          </legend>
+                          {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', noHtml: noHtml}) }}
+                        </fieldset>
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
                         {{ contactUsForHelp(t) }}
                     </form>
