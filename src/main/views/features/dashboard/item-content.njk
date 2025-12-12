@@ -366,10 +366,6 @@
   {% if content.type === ClaimSummaryType.SELECT %}
     <div>
       <fieldset class="govuk-fieldset">
-        {% set selectLegend = t(content.data.text, content.data.variables) if content.data.variables else t(content.data.text) %}
-        <legend class="govuk-visually-hidden">
-          {{ selectLegend }}
-        </legend>
         {{ govukSelect({
           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
           name: content.data.category+'['+content.data.index+']['+content.data.field+']',

@@ -52,12 +52,6 @@
                 type: "number",
                 inputmode: "numeric",
                 name: "date",
-                fieldset: {
-                  legend: {
-                    text: title,
-                    classes: 'govuk-visually-hidden'
-                  }
-                },
                 hint: {
                   text: t('COMMON.DATE_EXAMPLE', {
                     date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() - 18)
@@ -107,3 +101,4 @@
     </main>
   </div>
 {% endblock %}
+

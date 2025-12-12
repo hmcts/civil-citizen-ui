@@ -11,12 +11,6 @@
           type: "number",
           inputmode: "numeric",
           name: "date",
-          fieldset: {
-            legend: {
-              text: t('COMMON.DATE'),
-              classes: 'govuk-visually-hidden'
-            }
-          },
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
