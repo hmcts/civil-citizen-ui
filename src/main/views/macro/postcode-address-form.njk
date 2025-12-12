@@ -8,8 +8,8 @@
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = '' %}
     {% else %}
-      {% set govukVisuallyHidden = 'hidden' %}
-      {% set govukVisuallyHiddenForAnchor = 'hidden' %}
+      {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
+      {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
     {% endif %}
   {% endif %}
   {% if params.addressType === 'correspondenceAddress' and params.party.model.correspondenceAddress %}
@@ -17,8 +17,8 @@
       {% set govukVisuallyHidden = '' %}
       {% set govukVisuallyHiddenForAnchor = '' %}
     {% else %}
-      {% set govukVisuallyHidden = 'hidden' %}
-      {% set govukVisuallyHiddenForAnchor = 'hidden' %}
+      {% set govukVisuallyHidden = 'govuk-visually-hidden' %}
+      {% set govukVisuallyHiddenForAnchor = 'govuk-visually-hidden' %}
     {% endif %}
   {% endif %}
   <div class="govuk-form-group postcode-container">
@@ -33,7 +33,12 @@
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
 
-    <div {% if govukVisuallyHidden == 'hidden' %}hidden aria-hidden="true" style="display:none"{% endif %}>
+    {# --- Address dropdown --- #}
+    <div
+      {% if govukVisuallyHidden == 'govuk-visually-hidden' %}
+        hidden aria-hidden="true" style="display:none"
+      {% endif %}
+    >
     {{ govukSelect({
       id: params.addressType + 'postcodeAddress',
       name: "addressList",
@@ -53,14 +58,25 @@
     }) }}
     </div>
 
-    <div {% if govukVisuallyHiddenForAnchor == 'hidden' %}hidden aria-hidden="true" style="display:none"{% endif %}>
+    {# --- Enter address manually link --- #}
+    <div
+      {% if govukVisuallyHiddenForAnchor == 'govuk-visually-hidden' %}
+        hidden aria-hidden="true" style="display:none"
+      {% endif %}
+    >
       <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
 
+    {# --- Manual address form --- #}
     <div>
-      <div {% if govukVisuallyHidden == 'hidden' %}hidden aria-hidden="true" style="display:none"{% endif %} class="address-form">
+      <div
+        class="address-form"
+        {% if govukVisuallyHidden == 'govuk-visually-hidden' %}
+          hidden aria-hidden="true" style="display:none"
+        {% endif %}
+      >
         {{ addressForm(
           t,
           party = params.party,
@@ -69,5 +85,6 @@
         ) }}
       </div>
     </div>
+
   </div>
 {% endmacro %}
