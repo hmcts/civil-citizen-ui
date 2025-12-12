@@ -25,18 +25,11 @@
     <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
-    <div class="govuk-visually-hidden govuk-error-message" role="alert" aria-live="polite">
+    <div class="govuk-visually-hidden govuk-error-message" aria-hidden="true">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-    <input
-      id="{{ params.addressType + 'Postcode' }}"
-      class="govuk-input govuk-input--width-10 postcode-val"
-      title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}"
-      name="{{ params.addressType + "Postcode" }}"
-      type="text"
-      autocomplete="postal-code"
-    />
-    <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
+    <input id="{{ params.addressType + 'Postcode' }}" class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
+    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
 
@@ -49,7 +42,7 @@
         classes: 'govuk-visually-hidden'
       },
       attributes: {
-        "aria-labelledby": params.addressType + "Postcode"
+        "aria-hidden": "true"
       },
       items: [
         {
@@ -61,19 +54,13 @@
       ]
     }) }}
 
-    <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <button
-        class="govuk-body govuk-link"
-        role="button"
-        aria-expanded="false"
-        aria-controls="enterAddressManually"
-        type="button"
-      >
+    <div class="{{ govukVisuallyHiddenForAnchor }}" aria-hidden="{{ govukVisuallyHiddenForAnchor ? 'true' : 'false' }}">
+      <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
-      </button>
+      </a>
     </div>
     <div>
-      <div id="enterAddressManually" class="{{ govukVisuallyHidden }} address-form">
+      <div class="{{ govukVisuallyHidden }} address-form" aria-hidden="{{ govukVisuallyHidden ? 'true' : 'false' }}">
         {{ addressForm(
           t,
           party = params.party,
