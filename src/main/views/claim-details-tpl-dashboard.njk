@@ -31,7 +31,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% endblock %}
 
 {% block pageTitle %}
-  {{setPageTitle(t, pageTitle)}}
+  {{setPageTitle(t, pageTitle) + claimNumber}}
 {% endblock %}
 
 {% block skipLink %}
