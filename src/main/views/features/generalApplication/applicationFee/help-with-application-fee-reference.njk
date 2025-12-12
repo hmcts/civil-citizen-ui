@@ -14,6 +14,10 @@
       {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.PAGE_TITLE') }}
+              </legend>
             {% set yesHtml %}
               <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
               {{ govukInput({
@@ -33,7 +37,7 @@
               }) }}
             {% endset %}
             {% set noHtml %}
-              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</p>
+              <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</h2>
               <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.PARAGRAPH_NO') }}</p>
               <ol class="govuk-list govuk-list--number govuk-!-margin-bottom-1 govuk-!-margin-left-2">
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST')}}
@@ -49,5 +53,6 @@
             {% for content in applyHelpWithFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
+            </fieldset>
           </form>
 {% endblock %}

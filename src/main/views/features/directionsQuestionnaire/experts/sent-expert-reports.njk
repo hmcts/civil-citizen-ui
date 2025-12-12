@@ -24,7 +24,10 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.SENT_EXPERT_REPORTS.TITLE') }}
+              </legend>
             {{ govukRadios({
               idPrefix: "sentExpertReportsOptions",
               name: "sentExpertReportsOptions",
@@ -55,7 +58,7 @@
                 html: t(form.errorFor('option'))
                 } if form.hasErrors()
               }) }}
-
+            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
