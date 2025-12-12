@@ -34,10 +34,10 @@ class ContactUs {
     if (!verified) {
       I.click(`//span[contains(text(),'${content.title[language]}')]`);
       I.waitForContent(content.introduction[language], 60);
-      I.see(content.sendMessageTitle[language], 'h3');
+      I.see(content.sendMessageTitle[language], 'h2');
       I.seeElement('//a[contains(@href, \'qm/start?linkFrom=start\')]');
       I.see(content.sendMessage[language]);
-      I.see(content.telephone[language], 'h3');
+      I.see(content.telephone[language], 'h2');
       I.see('0300 123 7050');
       I.see(content.openingHours[language]);
       await I.seeElement('[href=\'https://www.gov.uk/call-charges\']');
