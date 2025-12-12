@@ -25,24 +25,21 @@
     <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
       {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
     </label>
-    <div class="govuk-visually-hidden govuk-error-message">
+    <div class="govuk-visually-hidden govuk-error-message" role="alert" aria-live="polite">
       {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
     </div>
-
     <input
       id="{{ params.addressType + 'Postcode' }}"
       class="govuk-input govuk-input--width-10 postcode-val"
       title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}"
       name="{{ params.addressType + "Postcode" }}"
       type="text"
-      autocomplete="postal-code"/>
-
-    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+      autocomplete="postal-code"
+    />
+    <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
       {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
     </button>
 
-    {# Address select – completely hidden from screen readers and keyboard until needed #}
-    <div hidden aria-hidden="true" class="address-list-container">
     {{ govukSelect({
       id: params.addressType + 'postcodeAddress',
       name: "addressList",
@@ -50,6 +47,9 @@
       label: {
         text: t('COMMON.POSTCODE.PICK_ADDRESS'),
         classes: 'govuk-visually-hidden'
+      },
+      attributes: {
+        "aria-labelledby": params.addressType + "Postcode"
       },
       items: [
         {
@@ -60,23 +60,27 @@
         }
       ]
     }) }}
-  </div>
 
-    {# Manual entry link – visible only when select is hidden (and vice versa) #}
     <div class="{{ govukVisuallyHiddenForAnchor }}">
-      <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
+      <button
+        class="govuk-body govuk-link"
+        role="button"
+        aria-expanded="false"
+        aria-controls="enterAddressManually"
+        type="button"
+      >
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
-      </a>
+      </button>
     </div>
-
-      {# Manual address form – completely removed from accessibility tree until shown #}
-      <div id="enterAddressManually" hidden aria-hidden="true" class="{{ govukVisuallyHidden }} address-form">
+    <div>
+      <div id="enterAddressManually" class="{{ govukVisuallyHidden }} address-form">
         {{ addressForm(
           t,
           party = params.party,
           addressType = params.addressType,
           addressTitle = params.addressTitle
         ) }}
+      </div>
     </div>
   </div>
 {% endmacro %}
