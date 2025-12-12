@@ -1,17 +1,26 @@
 import cookieManager from '@hmcts/cookie-manager';
 
+const DYNATRACE_READY_RETRY_DELAY_MS = 250;
+const DYNATRACE_READY_MAX_RETRY_ATTEMPTS = 120;
+
 const pushCookiePreferencesEvent = (preferences: Preferences) => {
   const dataLayer = window.dataLayer || [];
   dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
 };
 
-const updateDynatracePreference = (preferences: Preferences) => {
-  const dtrum = window.dtrum;
+let dynatraceRetryTimeout: number | undefined;
+let dynatraceRetryAttempts = 0;
+let pendingDynatracePreferences: Preferences | undefined;
 
-  if (dtrum === undefined) {
-    return;
+const resetDynatraceRetryState = () => {
+  if (dynatraceRetryTimeout !== undefined) {
+    window.clearTimeout(dynatraceRetryTimeout);
+    dynatraceRetryTimeout = undefined;
   }
+  dynatraceRetryAttempts = 0;
+};
 
+const applyDynatracePreference = (preferences: Preferences, dtrum: DtrumApi) => {
   if (preferences.apm === 'on') {
     dtrum.enable();
     dtrum.enableSessionReplay();
@@ -19,6 +28,61 @@ const updateDynatracePreference = (preferences: Preferences) => {
     dtrum.disableSessionReplay();
     dtrum.disable();
   }
+};
+
+const tryApplyDynatracePreference = (preferences: Preferences): boolean => {
+  const dtrum = window.dtrum;
+
+  if (!dtrum) {
+    return false;
+  }
+
+  applyDynatracePreference(preferences, dtrum);
+  resetDynatraceRetryState();
+  return true;
+};
+
+const tryApplyPendingPreference = (): boolean => {
+  if (!pendingDynatracePreferences) {
+    return true;
+  }
+
+  return tryApplyDynatracePreference(pendingDynatracePreferences);
+};
+
+const scheduleDynatracePreferenceUpdate = () => {
+  if (dynatraceRetryTimeout !== undefined || dynatraceRetryAttempts >= DYNATRACE_READY_MAX_RETRY_ATTEMPTS) {
+    return;
+  }
+
+  dynatraceRetryTimeout = window.setTimeout(() => {
+    dynatraceRetryTimeout = undefined;
+
+    if (tryApplyPendingPreference()) {
+      return;
+    }
+
+    dynatraceRetryAttempts++;
+    scheduleDynatracePreferenceUpdate();
+  }, DYNATRACE_READY_RETRY_DELAY_MS);
+};
+
+const ensureDynatracePreferenceUpdateScheduled = () => {
+  if (dynatraceRetryTimeout === undefined && dynatraceRetryAttempts >= DYNATRACE_READY_MAX_RETRY_ATTEMPTS) {
+    dynatraceRetryAttempts = 0;
+  }
+
+  scheduleDynatracePreferenceUpdate();
+};
+
+export const updateDynatracePreference = (preferences: Preferences) => {
+  pendingDynatracePreferences = preferences;
+
+  if (tryApplyDynatracePreference(preferences)) {
+    return;
+  }
+
+  ensureDynatracePreferenceUpdateScheduled();
 };
 
 cookieManager.on('UserPreferencesLoaded', (preferences: Preferences) => {
