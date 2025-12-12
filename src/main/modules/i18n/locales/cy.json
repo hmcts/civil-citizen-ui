@@ -1053,7 +1053,7 @@
       }
     },
     "SUBJECT_TO_FRC": {
-      "PAGE_TITLE": "A yw’r Gyfundrefn Costau Adferadwy a Bennwyd  yn berthnasol i’r hawliad hwn?",
+      "PAGE_TITLE": "Pam nad yw’r dudalen hon yn destun y Gyfundrefn Costau Adferadwy a Bennwyd?",
       "TITLE": "Costau Adferadwy a Bennwyd",
       "BUTTON_TITLE": "A yw’r Gyfundrefn Costau Adferadwy a Bennwyd  yn berthnasol i’r hawliad hwn?"
     },
@@ -4555,7 +4555,8 @@
       "FOR_A_NEW_SECURITY_CODE": "am god diogelwch newydd.",
       "SECURITY_CODE": "Cod diogelwch",
       "TITLE": "Nodwch y cod diogelwch",
-      "CLAIM_ASSIGNED_TO_LR": "Ni allwch gael mynediad at yr hawliad hwn oherwydd mae wedi’i neilltuo i’ch cynrychiolydd cyfreithiol."
+      "CLAIM_ASSIGNED_TO_LR": "Ni allwch gael mynediad at yr hawliad hwn oherwydd mae wedi’i neilltuo i’ch cynrychiolydd cyfreithiol.",
+      "PAGE_TITLE": "Nodwch y cod diogelwch"
     },
     "REASON": {
       "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
