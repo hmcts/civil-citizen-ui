@@ -40,27 +40,16 @@
       label: {
         text: t('COMMON.POSTCODE.PICK_ADDRESS'),
         classes: 'govuk-visually-hidden'
-      },
-      attributes: {
-        "aria-hidden": "true"
-      },
-      items: [
-        {
-          value: "",
-          disabled: true,
-          selected: true,
-          text: t('COMMON.POSTCODE.ADDESSES_FOUND')
-        }
-      ]
+      }
     }) }}
 
-    <div class="{{ govukVisuallyHiddenForAnchor }}" aria-hidden="{{ govukVisuallyHiddenForAnchor ? 'true' : 'false' }}">
+    <div class="{{ govukVisuallyHiddenForAnchor }}" aria-hidden="{{ govukVisuallyHiddenForAnchor == 'govuk-visually-hidden' }}">
       <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
         {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
       </a>
     </div>
     <div>
-      <div class="{{ govukVisuallyHidden }} address-form" aria-hidden="{{ govukVisuallyHidden ? 'true' : 'false' }}">
+      <div class="{{ govukVisuallyHidden }} address-form" aria-hidden="{{ govukVisuallyHidden == 'govuk-visually-hidden' }}">
         {{ addressForm(
           t,
           party = params.party,
