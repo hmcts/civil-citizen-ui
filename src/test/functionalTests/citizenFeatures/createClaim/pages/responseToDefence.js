@@ -732,10 +732,12 @@ class ResponseToDefence {
     I.waitForContent('Full response',60);
     I.see('The defendant’s response');
     I.see('has rejected the claim.');
+
     I.see('Their defence');
     I.see('Why they disagree with the claim?');
     I.see('Test reason');
     I.see('Their evidence');
+
     I.see('Type');
     I.see('Description');
     I.see('Contracts and agreements');
