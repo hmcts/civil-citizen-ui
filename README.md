@@ -6,6 +6,10 @@
 
 [![codecov](https://codecov.io/gh/hmcts/civil-citizen-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/civil-citizen-ui)
 
+## Contents
+- [Generating CodeceptJS E2E Test Documentation](#generating-codeceptjs-e2e-test-documentation)
+  - [UI Test Documentation](#ui-test-documentation)
+
 ## Getting Started
 
 ### Prerequisites
