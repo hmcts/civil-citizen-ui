@@ -103,4 +103,54 @@
       </div>
     </main>
   </div>
+
+  <script>
+    (function () {
+      function getOrdinal(index) {
+        if (index === 0) return 'first';
+        if (index === 1) return 'second';
+        if (index === 2) return 'third';
+        return (index + 1) + 'th';
+      }
+
+      function updateClaimRowAccessibility() {
+        var rows = document.querySelectorAll('.row-container');
+
+        rows.forEach(function (row, index) {
+          var ordinal = getOrdinal(index);
+
+          var label = row.querySelector('[id^="claim-row-label-"]');
+          if (label) {
+            label.id = 'claim-row-label-' + index;
+            label.textContent =
+              'What is the ' + ordinal + ' thing you are claiming for? ' +
+              'Amount for ' + ordinal + ' claim in pounds.';
+          }
+
+          var reason = row.querySelector('input[name*="[reason]"]');
+          var amount = row.querySelector('input[name*="[amount]"]');
+
+          if (reason) {
+            reason.setAttribute(
+              'aria-labelledby',
+              'claim-row-label-' + index + ' ' + reason.id + '-label'
+            );
+          }
+
+          if (amount) {
+            amount.setAttribute(
+              'aria-labelledby',
+              'claim-row-label-' + index + ' ' + amount.id + '-label'
+            );
+          }
+        });
+      }
+
+      document.addEventListener('click', function (e) {
+        if (e.target.closest('.append-row')) {
+          setTimeout(updateClaimRowAccessibility, 0);
+        }
+      });
+    })();
+  </script>
 {% endblock %}
