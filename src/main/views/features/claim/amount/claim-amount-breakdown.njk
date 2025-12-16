@@ -51,12 +51,21 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
+                {% if loop.index == 1 %}
+                  {% set ordinal = 'first' %}
+                {% elseif loop.index == 2 %}
+                  {% set ordinal = 'second' %}
+                {% elseif loop.index == 3 %}
+                  {% set ordinal = 'third' %}
+                {% else %}
+                  {% set ordinal = loop.index ~ 'th' %}
+                {% endif %}
                 <span
                   id="claim-row-desc-{{ loop.index0 }}"
                   class="govuk-visually-hidden"
                 >
-                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }} {{ loop.index }},
-                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }} {{ loop.index }}
+                  What is the {{ ordinal }} thing you are claiming for?
+                  Amount for {{ ordinal }} claim in pounds.
                 </span>
 
                 {{ claimAmount(claimAmountRow, loop.index0, form, t, {
