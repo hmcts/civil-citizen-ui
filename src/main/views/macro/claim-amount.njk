@@ -4,6 +4,12 @@
   {% set amountValue =  '' + claimAmountModel.amount %}
   <div class="row-container govuk-form-group">
     <div class="multiple-row civil-amount-breakdown-row">
+
+      {# Hidden span for accessibility, unique per row #}
+      <span id="claim-row-label-{{ index }}" class="govuk-visually-hidden">
+        {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }} and {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}
+      </span>
+
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
       {{ govukInput({
         id: "claimAmountRows["+index+"][reason]",
@@ -14,6 +20,9 @@
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
           classes: 'govuk-visually-hidden'
+        },
+        attributes: {
+          'aria-labelledby': 'claim-row-label-' ~ index
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
@@ -35,6 +44,9 @@
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
           classes: 'govuk-visually-hidden'
+        },
+        attributes: {
+          'aria-labelledby': 'claim-row-label-' ~ index
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
