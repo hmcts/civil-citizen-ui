@@ -27,7 +27,7 @@ compare_ft_groups() {
 }
 
 run_functional_test_groups() {
-  command="yarn test:cui-regression --grep "
+  command="yarn test:ui-nonprod --grep "
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
   
   regex_pattern=""
@@ -38,7 +38,7 @@ run_functional_test_groups() {
       if [ -n "$regex_pattern" ]; then
           regex_pattern+="|"
       fi
-      regex_pattern+="@e2e-$ft_group"
+      regex_pattern+="@ui-$ft_group"
   done
 
   command+="'$regex_pattern'"
@@ -49,9 +49,9 @@ run_functional_test_groups() {
 run_functional_tests() {
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [ "$ENVIRONMENT" = "aat" ]; then
-    yarn test:e2e-prod
+    yarn test:ui-prod
   elif [ -z "$PR_FT_GROUPS" ]; then
-    yarn test:e2e-nonprod
+    yarn test:ui-nonprod
   else
     run_functional_test_groups
   fi

@@ -18,9 +18,9 @@ const dependentUiFiles = new Set(
 );
 
 const pipelineTagMap = {
-  '@e2e-prod': ['civil-citizen-ui: master'],
-  '@e2e-nonprod': ['civil-citizen-ui: PR'],
-  '@e2e-nightly-prod': ['civil-citizen-ui: nightly']
+  '@ui-prod': ['civil-citizen-ui: master'],
+  '@ui-nonprod': ['civil-citizen-ui: PR'],
+  '@ui-nightly-prod': ['civil-citizen-ui: nightly']
 };
 
 const pipelineTagSet = new Set(Object.keys(pipelineTagMap));
@@ -356,7 +356,7 @@ function isFunctionalTag(tag) {
   if (pipelineTagSet.has(tag)) {
     return false;
   }
-  return tag.startsWith('@e2e-') || tag.startsWith('@api-');
+  return tag.startsWith('@ui-') || tag.startsWith('@api-');
 }
 
 function deriveTagMetadata(tags) {
@@ -369,7 +369,7 @@ function deriveTagMetadata(tags) {
       pipelineTagMap[tag].forEach(p => pipelines.add(p));
     } else if (isFunctionalTag(tag)) {
       functionalTags.push(tag);
-      const rawGroup = tag.replace(/^@(e2e|api)-/, '');
+      const rawGroup = tag.replace(/^@(ui|api)-/, '');
       if (rawGroup) {
         functionalGroups.push(`pr_ft_${rawGroup}`);
       }
