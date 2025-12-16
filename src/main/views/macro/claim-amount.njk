@@ -2,7 +2,7 @@
 
 {% macro claimAmount(claimAmountModel, index, form, t) %}
   {% set amountValue =  '' + claimAmountModel.amount %}
-  <div class="row-container govuk-form-group{% if not isTest %} govuk-!-margin-bottom-3{% endif %}">
+  <div class="row-container govuk-form-group">
     <div class="multiple-row civil-amount-breakdown-row">
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
       {{ govukInput({
