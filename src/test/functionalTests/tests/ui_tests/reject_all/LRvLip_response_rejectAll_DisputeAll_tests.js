@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll').tag('@reject-all @nightly-prod');
+Feature('Response with RejectAll and DisputeAll').tag('@e2e-reject-all @e2e-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

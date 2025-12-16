@@ -19,7 +19,7 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem, paidDate;
 const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company').tag('@nightly-prod');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company').tag('@e2e-nightly-prod');
 
 Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

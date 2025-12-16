@@ -9,7 +9,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track').tag('@nightly-prod @api-prod');
+Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track').tag('@e2e-nightly-prod @e2e-prod');
 
 Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

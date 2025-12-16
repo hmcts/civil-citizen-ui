@@ -7,7 +7,7 @@ const {caseOffline, caseOfflineAfterSDO} = require('../../../specClaimHelpers/da
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('Lip v Lip - Case Offline Tests').tag('@case-offline');
+Feature('Lip v Lip - Case Offline Tests').tag('@e2e-case-offline');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

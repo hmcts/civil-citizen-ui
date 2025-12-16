@@ -13,7 +13,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber, defendantName;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@part-admit @nightly-prod');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@e2e-part-admit @e2e-nightly-prod');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,
@@ -38,7 +38,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject'
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, mediationCARMClaimantDefendantNotif.title, mediationCARMClaimantDefendantNotif.content);
-}).tag('@api-prod');
+}).tag('@e2e-prod');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', async ({ api, I }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -68,7 +68,7 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', 
   const nocForLipNotif = nocForLip(defendantName);
   await verifyNotificationTitleAndContent(claimNumber, nocForLipNotif.title, nocForLipNotif.content);
   await I.click(nocForLipNotif.nextSteps);
-}).tag('@noc');
+}).tag('@e2e-noc');
 
 // TODO undo when part payment journey is restored
 Scenario.skip('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({

@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims').tag('@part-admit @nightly-prod');
+Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claims').tag('@e2e-part-admit @e2e-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

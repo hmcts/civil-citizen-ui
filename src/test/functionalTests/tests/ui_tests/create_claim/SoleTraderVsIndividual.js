@@ -15,7 +15,7 @@ const {
 let caseData,legacyCaseReference,caseRef,claimInterestFlag,StandardInterest,selectedHWF,claimAmount = 1600,
   claimFee = 115;
 
-Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@create-claim');
+Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@e2e-create-claim');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({ I, api }) => {
   selectedHWF = false;

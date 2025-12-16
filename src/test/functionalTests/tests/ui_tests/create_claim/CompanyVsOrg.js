@@ -10,7 +10,7 @@ let caseData,legacyCaseReference,caseRef,claimInterestFlag,StandardInterest,sele
   claimFee = 115,claimantPartyType = 'Company';
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Company vs Org').tag('@create-claim');
+Feature('Create Lip v Lip claim - Company vs Org').tag('@e2e-create-claim');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,

@@ -14,7 +14,7 @@ const claimType = 'SmallClaims';
 let caseData,claimNumber,claimRef,claimAmount = 1500,claimFee = 80,deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
 
-Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@api @full-admit');
+Feature('Create Lip v Lip claim claimant as welsh -  Full Admit and pay Immediately ').tag('@e2e-full-admit');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({ I, api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

@@ -14,7 +14,7 @@ const {
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName;
 const claimType = 'SmallClaims';
 
-Feature('Lip v LR Post Defendant Response e2e Tests').tag('@nightly-prod @noc');
+Feature('Lip v LR Post Defendant Response e2e Tests').tag('@e2e-nightly-prod @e2e-noc');
 
 Before(async ({ I, api }) => {
   selectedHWF = false;

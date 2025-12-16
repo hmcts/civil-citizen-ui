@@ -10,7 +10,7 @@ const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 let claimNumber, claimType, claimRef, caseData;
 
-Feature('Create Lip v Lip claim - Rejected All By Defendant welsh').tag('@reject-all');
+Feature('Create Lip v Lip claim - Rejected All By Defendant welsh').tag('@e2e-reject-all');
 
 Scenario('Create Lip v Lip claim - Rejected All By Defendant welsh', async ({api}) => {
   claimType = 'SmallClaims';

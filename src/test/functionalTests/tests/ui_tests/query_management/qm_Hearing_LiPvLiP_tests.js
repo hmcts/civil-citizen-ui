@@ -5,18 +5,12 @@ const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefend
 
 let claimRef, caseData, claimNumber;
 
-Feature('QM - LIP - Claimant and Defendant Journey - Hearing').tag('@nightly-prod @qm');
+Feature('QM - LIP - Claimant and Defendant Journey - Hearing').tag('@e2e-nightly-prod @e2e-qm');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
-
-async function loginAndOpenClaim(I, user, claimNumber) {
-  await LoginSteps.EnterCitizenCredentials(user.email, user.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-}
 
 Scenario('Claimant sends message to court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
@@ -33,13 +27,19 @@ Scenario('Claimant sends message to court', async ({ api, I }) => {
   const message = 'Claimant Hearing Test message';
   const isHearingRelated = true;
 
-  await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
   await ResponseSteps.SendMessageToCourt(subject, message, isHearingRelated);
 
-  await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
   await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
 
-  await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
   await ResponseSteps.viewYourMessagesInDashboard();
 });
 
@@ -48,12 +48,18 @@ Scenario('Defendant sends message to court', async ({ I }) => {
   const message = 'Defendant Hearing Test message';
   const isHearingRelated = true;
 
-  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
   await ResponseSteps.SendMessageToCourt(subject, message, isHearingRelated);
 
-  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
   await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
 
-  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
   await ResponseSteps.viewYourMessagesInDashboard();
 });

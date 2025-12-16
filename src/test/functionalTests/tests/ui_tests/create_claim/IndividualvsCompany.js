@@ -8,7 +8,7 @@ let caseRef, selectedHWF;
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Company claim - Individual vs Company').tag('@create-claim');
+Feature('Create Lip v Company claim - Individual vs Company').tag('@e2e-create-claim');
 
 Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({
   api,

@@ -12,7 +12,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber, defendantName;
 
-Feature('Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track').tag('@reject-all @nightly-prod');
+Feature('Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track').tag('@e2e-reject-all @e2e-nightly-prod');
 
 Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant settle', async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -42,17 +42,15 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant pro
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
-    await api.checkUserCaseAccess(config.defendantCitizenUser, false);
-    await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
+  await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
+  await api.checkUserCaseAccess(config.defendantCitizenUser, false);
+  await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
 
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await I.amOnPage('/dashboard');
-    await I.click(claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
 
-    const nocForLipNotif = nocForLip(defendantName);
-    await verifyNotificationTitleAndContent(claimNumber, nocForLipNotif.title, nocForLipNotif.content);
-    await I.click(nocForLipNotif.nextSteps);
-  }
+  const nocForLipNotif = nocForLip(defendantName);
+  await verifyNotificationTitleAndContent(claimNumber, nocForLipNotif.title, nocForLipNotif.content);
+  await I.click(nocForLipNotif.nextSteps);
 });

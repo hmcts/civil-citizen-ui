@@ -14,7 +14,7 @@ const claimAmount = '£1,500';
 const feeAmount = '123';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims').tag('@case-progression @nightly-prod');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims').tag('@e2e-case-progression @e2e-nightly-prod');
 
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);

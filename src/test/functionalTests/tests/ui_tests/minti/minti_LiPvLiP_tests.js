@@ -14,7 +14,7 @@ let claimRef, caseData, claimNumber, securityCode, paidDate;
 const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
-Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@nightly-prod @e2e-prod');
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@e2e-nightly-prod @e2e-prod');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

@@ -14,7 +14,7 @@ const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@nightly-prod');
+Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@e2e-nightly-prod');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {

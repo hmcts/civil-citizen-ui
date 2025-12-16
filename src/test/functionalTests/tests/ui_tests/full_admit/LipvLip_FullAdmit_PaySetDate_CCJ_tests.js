@@ -14,7 +14,7 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025';
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant').tag('@full-admit @nightly-prod');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant').tag('@e2e-full-admit @e2e-nightly-prod');
 
 // TODO undo when part payment journey is restored
 Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
@@ -46,4 +46,4 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
     const claimantNotificationCCJRequestedNotif = claimantNotificationCCJRequested();
     await verifyNotificationTitleAndContent(claimNumber, claimantNotificationCCJRequestedNotif.title, claimantNotificationCCJRequestedNotif.content);
   }
-}).tag('@api-prod');
+}).tag('@e2e-prod');

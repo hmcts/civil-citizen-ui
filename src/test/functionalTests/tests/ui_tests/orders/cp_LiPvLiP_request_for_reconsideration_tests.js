@@ -14,7 +14,7 @@ const claimType = 'SmallClaimsThousand';
 const claimAmount = '£1,000';
 let caseData, claimNumber, claimRef, taskListItem, notification, deadline, todayDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@nightly-prod');
+Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@e2e-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

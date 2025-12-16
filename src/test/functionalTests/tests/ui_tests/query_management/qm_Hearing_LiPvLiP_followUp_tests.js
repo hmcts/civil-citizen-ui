@@ -7,7 +7,7 @@ const { PUBLIC_QUERY } = require('../../../specClaimHelpers/fixtures/queryTypes'
 let caseData, claimNumber;
 const claimType = 'SmallClaims';
 
-Feature('QM - LIP - Follow up tests').tag('@nightly-prod @qm');
+Feature('QM - LIP - Follow up tests').tag('@e2e-nightly-prod @e2e-qm');
 
 Before(async () => {
   await Promise.all([
@@ -16,26 +16,7 @@ Before(async () => {
   ]);
 });
 
-async function loginAndOpenClaim(I, user, claimNumber) {
-  await LoginSteps.EnterCitizenCredentials(user.email, user.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  console.log(`Opened claim dashboard for user: ${user.email}`);
-}
-
-async function raiseAndRespondToQueries(qmSteps, caseId, citizenUser, caseworkerUser, queryType, isHearingRelated) {
-  let query = await qmSteps.raiseLipQuery(caseId, citizenUser, queryType, isHearingRelated);
-  query = await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType);
-  console.log(`Raised and responded to query of type: ${queryType}`);
-  return query;
-}
-
-async function closeQuery(qmSteps, caseId, caseworkerUser, query, queryType) {
-  await qmSteps.respondToQuery(caseId, caseworkerUser, query, queryType, true);
-  console.log('Caseworker closed the query');
-}
-
-async function createLipClaim(api) {
+Scenario('Claimant and Defendant send message to court and follow up and admin closes query', async ({ api, qm, I }) => {
   const claimRef = await api.createLiPClaim(
     config.claimantCitizenUser,
     claimType,
@@ -47,39 +28,35 @@ async function createLipClaim(api) {
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
   console.log(`Created LiP claim. Claim number: ${claimNumber}`);
-  return claimRef;
-}
+  const caseId = claimRef;
 
-Scenario('Claimant and Defendant send message to court and follow up and admin closes query', async ({ api, qm, I }) => {
-  const caseId = await createLipClaim(api);
+  const claimantQuery = await qm.raiseLipQuery(caseId, config.claimantCitizenUser, PUBLIC_QUERY, false);
+  await qm.respondToQuery(caseId, config.ctscAdmin, claimantQuery, PUBLIC_QUERY);
+  console.log(`Raised and responded to query of type: ${PUBLIC_QUERY}`);
 
-  await raiseAndRespondToQueries(
-    qm,
-    caseId,
-    config.claimantCitizenUser,
-    config.ctscAdmin,
-    PUBLIC_QUERY,
-    false,
-  );
-
-  await loginAndOpenClaim(I, config.claimantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+  console.log(`Opened claim dashboard for user: ${config.claimantCitizenUser.email}`);
   await ResponseSteps.followUpMessage('Claimant Query', 'This query was raised by Claimant.', false);
   await ResponseSteps.verifyFollowUpMessage('Claimant Query');
 
-  const latestQuery = await raiseAndRespondToQueries(
-    qm,
-    caseId,
-    config.defendantCitizenUser,
-    config.ctscAdmin,
-    PUBLIC_QUERY,
-    false,
-  );
+  let latestQuery = await qm.raiseLipQuery(caseId, config.defendantCitizenUser, PUBLIC_QUERY, false);
+  latestQuery = await qm.respondToQuery(caseId, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
+  console.log(`Raised and responded to query of type: ${PUBLIC_QUERY}`);
 
-  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+  console.log(`Opened claim dashboard for user: ${config.defendantCitizenUser.email}`);
   await ResponseSteps.followUpMessage('Defendant Query', 'This query was raised by Defendant.', false);
   await ResponseSteps.verifyFollowUpMessage('Defendant Query');
 
-  await closeQuery(qm, caseId, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
-  await loginAndOpenClaim(I, config.defendantCitizenUser, claimNumber);
+  await qm.respondToQuery(caseId, config.ctscAdmin, latestQuery, PUBLIC_QUERY, true);
+  console.log('Caseworker closed the query');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+  console.log(`Opened claim dashboard for user: ${config.defendantCitizenUser.email}`);
   await ResponseSteps.verifyClosedQuery('Defendant Query');
 }).tag('@e2e-prod');

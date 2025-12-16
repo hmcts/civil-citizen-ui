@@ -15,7 +15,7 @@ const claimAmount = '£15,000.00';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Fast Track').tag('@nightly-prod');
+Feature('Case progression journey - Verify Bundle - Fast Track').tag('@e2e-nightly-prod');
 
 Before(async ({api}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {

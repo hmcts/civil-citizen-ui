@@ -8,7 +8,7 @@ const { uploadHearingDocuments } = require('../../../specClaimHelpers/dashboardT
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track').tag('@nightly-prod');
+Feature('Case progression - Lip v Lip - Case Struck Out journey - Fast Track').tag('@e2e-nightly-prod');
 
 Before(async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
