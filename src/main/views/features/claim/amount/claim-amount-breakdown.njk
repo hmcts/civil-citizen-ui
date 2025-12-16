@@ -61,7 +61,7 @@
                   {% set ordinal = loop.index ~ 'th' %}
                 {% endif %}
                 <span
-                  id="claim-row-desc-{{ loop.index0 }}"
+                  id="claim-row-label-{{ loop.index0 }}"
                   class="govuk-visually-hidden"
                 >
                   What is the {{ ordinal }} thing you are claiming for?
@@ -69,7 +69,7 @@
                 </span>
 
                 {{ claimAmount(claimAmountRow, loop.index0, form, t, {
-                  'aria-describedby': 'claim-row-desc-' ~ loop.index0
+                  'aria-labelledby': 'claim-row-label-' ~ loop.index0
                 }) }}
               {% endfor %}
             </div>
