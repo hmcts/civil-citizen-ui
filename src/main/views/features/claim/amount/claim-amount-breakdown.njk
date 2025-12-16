@@ -51,7 +51,17 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
-                {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
+                <span
+                  id="claim-row-desc-{{ loop.index0 }}"
+                  class="govuk-visually-hidden"
+                >
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }} {{ loop.index }},
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }} {{ loop.index }}
+                </span>
+
+                {{ claimAmount(claimAmountRow, loop.index0, form, t, {
+                  'aria-describedby': 'claim-row-desc-' ~ loop.index0
+                }) }}
               {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
