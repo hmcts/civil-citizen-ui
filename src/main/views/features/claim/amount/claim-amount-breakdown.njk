@@ -50,28 +50,13 @@
                 </span>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
-
               {% for claimAmountRow in form.model.claimAmountRows %}
-                {% if loop.index == 1 %}
-                  {% set ordinal = 'first' %}
-                {% elseif loop.index == 2 %}
-                  {% set ordinal = 'second' %}
-                {% elseif loop.index == 3 %}
-                  {% set ordinal = 'third' %}
-                {% else %}
-                  {% set ordinal = loop.index ~ 'th' %}
-                {% endif %}
+                {% set labelText = t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ROW_LABEL', { ordinal: loop.index|ordinal }) %}
                 <span
                   id="claim-row-label-{{ loop.index0 }}"
                   class="govuk-visually-hidden"
-                >
-                  What is the {{ ordinal }} thing you are claiming for?
-                  Amount for {{ ordinal }} claim in pounds.
-                </span>
-
-                {{ claimAmount(claimAmountRow, loop.index0, form, t, {
-                  'aria-labelledby': 'claim-row-label-' ~ loop.index0
-                }) }}
+                >{{ labelText }}</span>
+                {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
               {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
@@ -108,13 +93,6 @@
   <script>
     (function () {
 
-      function getOrdinal(index) {
-        if (index === 0) return 'first';
-        if (index === 1) return 'second';
-        if (index === 2) return 'third';
-        return (index + 1) + 'th';
-      }
-
       function updateAllClaimRowAccessibility() {
         var container = document.getElementById('claimAmountRows');
         if (!container) return;
@@ -122,52 +100,33 @@
         var rows = container.querySelectorAll('.row-container');
 
         rows.forEach(function (row, index) {
-          var ordinal = getOrdinal(index);
-          var labelId = 'claim-row-label-' + index;
-
-          // 1. Create or update hidden label span
           var label = row.querySelector('.govuk-visually-hidden');
-          if (!label) {
-            label = document.createElement('span');
-            label.className = 'govuk-visually-hidden';
-            row.insertBefore(label, row.firstChild);
+          if (label) {
+            var ordinal = index + 1;
+            label.textContent = "{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ROW_LABEL', { ordinal: '__ORDINAL__' }) }}".replace('__ORDINAL__', ordinal);
+            label.id = 'claim-row-label-' + index;
           }
 
-          label.id = labelId;
-          label.textContent =
-            'What is the ' + ordinal + ' thing you are claiming for? ' +
-            'Amount for ' + ordinal + ' claim in pounds.';
-
-          // 2. Update aria-labelledby on reason and amount inputs
           var reason = row.querySelector('input[name*="[reason]"]');
           var amount = row.querySelector('input[name*="[amount]"]');
 
           if (reason) {
-            reason.setAttribute(
-              'aria-labelledby',
-              labelId + ' ' + reason.id + '-label'
-            );
+            reason.setAttribute('aria-labelledby', 'claim-row-label-' + index);
           }
 
           if (amount) {
-            amount.setAttribute(
-              'aria-labelledby',
-              labelId + ' ' + amount.id + '-label'
-            );
+            amount.setAttribute('aria-labelledby', 'claim-row-label-' + index);
           }
         });
       }
 
-      // Run on page load
       document.addEventListener('DOMContentLoaded', updateAllClaimRowAccessibility);
-
-      // Run after clicking "Add another row"
       document.addEventListener('click', function (e) {
         if (e.target.closest('.append-row')) {
-          // Delay ensures the new row exists in the DOM
           setTimeout(updateAllClaimRowAccessibility, 50);
         }
       });
+
     })();
   </script>
 {% endblock %}
