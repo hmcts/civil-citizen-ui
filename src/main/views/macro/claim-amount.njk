@@ -1,46 +1,117 @@
-{% from "govuk/components/input/macro.njk" import govukInput %}
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/claim-amount.njk" import claimAmount %}
 
-{% macro claimAmount(claimAmountModel, index, form, t) %}
-  {% set amountValue =  '' + claimAmountModel.amount %}
-  <div class="row-container govuk-form-group">
-    <div class="multiple-row civil-amount-breakdown-row">
-      <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
-      {{ govukInput({
-        id: "claimAmountRows["+index+"][reason]",
-        name: "claimAmountRows["+index+"][reason]",
-        value: claimAmountModel.reason,
-        classes: "govuk-grid-column-full",
-        spellcheck: false,
-        label: {
-          text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
-          classes: 'govuk-visually-hidden'
-        },
-        errorMessage: {
-          text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
-        } if form.hasFieldError( "claimAmountRows["+index+"][reason]")
-      }) }}
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% set length = form.model.claimAmountRows.length %}
+{% set claimAmountError = form.errorFor('claimAmountRows') %}
+{% block content %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+  {% endif %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE') }} </h1>
+          <p class="govuk-body">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.DESCRIPTION') }}</p>
+          <p class="govuk-body">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.DONT_INCLUDE') }}</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.INTEREST') }}</li>
+            <li>{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.CLAIM_FEE') }}</li>
+          </ul>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
+              {% if claimAmountError %}
+                <p class="govuk-error-message">
+                  <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(claimAmountError) }}
+                </p>
+              {% endif %}
+
+              <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop govuk-form-group">
+                <span id="claim-reason-heading" class="govuk-label govuk-label--s">
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
+                </span>
+                <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.HINT') }}
+                </p>
+              </div>
+
+              <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
+                <span id="claim-amount-heading" class="govuk-label govuk-label--s">
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}
+                </span>
+                <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
+              </div>
+
+              {% for claimAmountRow in form.model.claimAmountRows %}
+                <div
+                  role="group"
+                  aria-labelledby="claim-row-label-{{ loop.index0 }}"
+                >
+                  <span
+                    id="claim-row-label-{{ loop.index0 }}"
+                    class="govuk-visually-hidden"
+                  >
+                    {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }} {{ loop.index | ordinal }},
+                    {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }} {{ loop.index | ordinal }}
+                  </span>
+
+                  {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="govuk-grid-column-full">
+              {{ govukButton({
+                text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ADD_ANOTHER_ROW'),
+                classes: "govuk-button--secondary append-row"
+              }) }}
+
+              <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+              <div class="language">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-0">
+                  <span aria-hidden="true">£</span>
+                  <span
+                    class="total-claim-amount"
+                    aria-label="{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.TOTAL_AMOUNT') }}"
+                  >
+                    0
+                  </span>
+                  <input
+                    type="hidden"
+                    class="total-claim-amount"
+                    name="totalAmount"
+                    value="{{ form.model.totalAmount }}"
+                  />
+                </h2>
+              </div>
+            </div>
+
+            <div class="govuk-grid-column-two-thirds">
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+                }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
+            </div>
+          </form>
+
+        </div>
       </div>
-      <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-      {{ govukInput({
-        id: "claimAmountRows["+index+"][amount]",
-        name: "claimAmountRows["+index+"][amount]",
-        value: amountValue,
-        prefix: {
-          text: "£"
-        },
-        autocomplete: "number",
-        type: "number",
-        classes: "govuk-grid-column-full civil-claim-amount",
-        spellcheck: false,
-        label: {
-          text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
-          classes: 'govuk-visually-hidden'
-        },
-        errorMessage: {
-          text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
-        } if form.hasFieldError( "claimAmountRows["+index+"][amount]")
-      }) }}
-      </div>
-    </div>
+    </main>
   </div>
-{% endmacro %}
+{% endblock %}
