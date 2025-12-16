@@ -10,7 +10,7 @@ const {
   updateHWFNum,
   hwfMoreInfoRequired,
   hwfFullRemission,
-  waitForDefendantToRespond
+  waitForDefendantToRespond,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData,legacyCaseReference,caseRef,claimNumber,claimInterestFlag,StandardInterest,selectedHWF,
@@ -22,7 +22,7 @@ Feature('Create Lip v Lip claim - Individual vs Individual').tag('@ui-create-cla
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = false;
@@ -58,7 +58,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = true;
@@ -81,7 +81,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = true;

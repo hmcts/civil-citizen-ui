@@ -8,7 +8,7 @@ const {
   hwfSubmission,
   waitForDefendantToRespond,
   hwfNoRemission,
-  updateHWFNum
+  updateHWFNum,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
@@ -21,7 +21,7 @@ Feature('Create Lip v Lip claim - Company vs Individual').tag('@ui-create-claim'
 
 Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = false;
@@ -40,7 +40,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
   legacyCaseReference = await caseData.legacyCaseReference;
   const claimFeeNotif = payClaimFee(defaultClaimFee);
   await verifyNotificationTitleAndContent(legacyCaseReference, claimFeeNotif.title, claimFeeNotif.content);
-  await I.click(notification.nextSteps);
+  await I.click(claimFeeNotif.nextSteps);
   await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
   await api.waitForFinishedBusinessProcess();
   const waitForDefResponseNotif = await waitForDefendantToRespond();
@@ -73,7 +73,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with standard i
   await api.waitForFinishedBusinessProcess();
   const claimFeeNotif = payClaimFee(claimFee);
   await verifyNotificationTitleAndContent(legacyCaseReference, claimFeeNotif.title, claimFeeNotif.content);
-  await I.click(notification.nextSteps);
+  await I.click(claimFeeNotif.nextSteps);
   await steps.verifyAndPayClaimFee(claimAmount, claimFee);
   await api.waitForFinishedBusinessProcess();
   const waitForDefResponseNotif = await waitForDefendantToRespond(caseData.respondent1.partyName, await caseData.respondent1ResponseDeadline);

@@ -11,7 +11,7 @@ const {
   applicationBeingProcessedGA,
   otherPartiesRequestedChange,
   orderMoreInformation,
-  writtenRepresentations
+  writtenRepresentations,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
@@ -33,7 +33,7 @@ Before(async ({ api }) => {
 
 Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'approveOrEdit';
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -52,7 +52,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
   await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to more time to do what is required by a court order', 'Miss Jane Doe v Sir John Doe');
 
   await api.makeOrderGA(gaID, courtResponseType);
-
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -73,7 +72,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
 
 Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'dismissAnOrder';
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -84,7 +83,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
   await api.makeOrderGA(gaID, courtResponseType);
-
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -97,7 +95,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'giveDirections';
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -108,7 +106,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
   gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
   await api.makeOrderGA(gaID, courtResponseType);
-
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -121,7 +118,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Give directions without list
 
 Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'freeFormOrder';
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -131,7 +128,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order', async ({
   gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
   await api.makeOrderGA(gaID, courtResponseType);
-
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -144,7 +140,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Free Form Order', async ({
 
 Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'withoutNoticeToWith';
   let feeAmount = 184;
@@ -155,7 +151,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
   gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
   await api.makeOrderGA(gaID, courtResponseType);
-
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -186,7 +181,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notic
 
 Scenario('LipvLip Applicant GA creation e2e tests - Request for more info', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'requestMoreInformation';
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -205,7 +200,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request for more info', asyn
   console.log('Request more information as the Judge');
   await api.makeOrderGA(gaID, courtResponseType);
 
-
   const orderMoreInformationNotif = orderMoreInformation();
   await I.wait(10);
   await verifyNotificationTitleAndContent(claimNumber, orderMoreInformationNotif.title, orderMoreInformationNotif.content);
@@ -214,7 +208,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request for more info', asyn
 
 Scenario('LipvLip Applicant GA creation e2e tests - List for hearing', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'listForHearing';
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -233,7 +227,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - List for hearing', async ({
   console.log('Perform List for hearing as the Judge');
   await api.makeOrderGA(gaID, courtResponseType);
 
-
   const orderMadeGANotif = orderMadeGA();
   await I.wait(10);
   await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content);
@@ -242,7 +235,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - List for hearing', async ({
 
 Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representations', async ({
   I,
-  api
+  api,
 }) => {
   courtResponseType = 'writtenRepresentations';
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -260,7 +253,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representa
 
   console.log('Request written representations as the Judge');
   await api.makeOrderGA(gaID, courtResponseType);
-
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');

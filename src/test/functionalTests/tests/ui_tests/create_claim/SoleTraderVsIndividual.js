@@ -9,7 +9,7 @@ const {
   updateHWFNum,
   hwfSubmission,
   hwfPartRemission,
-  waitForDefendantToRespond
+  waitForDefendantToRespond,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData,legacyCaseReference,caseRef,claimInterestFlag,StandardInterest,selectedHWF,claimAmount = 1600,
@@ -42,7 +42,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - 
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with standard interest - no hwf', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = true;
@@ -66,7 +66,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with standard 
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable interest - no hwf', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = true;

@@ -14,7 +14,7 @@ Feature('Create Lip v Lip claim - Company vs Org').tag('@ui-create-claim');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,
-  api
+  api,
 }) => {
   selectedHWF = false;
   claimInterestFlag = false;

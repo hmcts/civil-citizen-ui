@@ -7,7 +7,6 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
 const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
-const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 let claimNumber, claimType, claimRef, caseData;
 
 Feature('Create Lip v Lip claim - Rejected All By Defendant welsh').tag('@ui-reject-all');

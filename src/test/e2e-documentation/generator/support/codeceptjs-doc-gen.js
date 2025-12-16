@@ -14,13 +14,13 @@ const dependentUiList = require('./dependent-ui-features');
 
 const dependentApiFiles = new Set();
 const dependentUiFiles = new Set(
-  dependentUiList.map(p => p.replace(/\\/g, '/'))
+  dependentUiList.map(p => p.replace(/\\/g, '/')),
 );
 
 const pipelineTagMap = {
   '@ui-prod': ['civil-citizen-ui: master'],
   '@ui-nonprod': ['civil-citizen-ui: PR'],
-  '@ui-nightly-prod': ['civil-citizen-ui: nightly']
+  '@ui-nightly-prod': ['civil-citizen-ui: nightly'],
 };
 
 const pipelineTagSet = new Set(Object.keys(pipelineTagMap));
@@ -118,7 +118,7 @@ function extractNameAndInlineTags(rawName) {
   });
   return {
     name: cleaned.replace(/\s+/g, ' ').trim(),
-    tags: inlineTags
+    tags: inlineTags,
   };
 }
 
@@ -131,7 +131,7 @@ function extractHelperSteps(fn) {
   const hasIgnoredPrefix = method => {
     const lower = method.toLowerCase();
     return ignoredObjectMethodPrefixes.some(prefix =>
-      lower.startsWith(prefix.toLowerCase())
+      lower.startsWith(prefix.toLowerCase()),
     );
   };
   const verifyObjectNames = new Set();
@@ -165,7 +165,7 @@ function extractHelperSteps(fn) {
   if (standaloneStepPrefixes.length) {
     const standaloneRegex = new RegExp(
       `\\b((${standaloneStepPrefixes.join('|')})[A-Za-z0-9_]*)\\s*\\(`,
-      'g'
+      'g',
     );
     while ((match = standaloneRegex.exec(source))) {
       const methodName = match[1];
@@ -235,7 +235,7 @@ function collectScenarios(filePath, suiteType) {
     DataTable: global.DataTable,
     inject: global.inject,
     config: global.config,
-    actor: global.actor
+    actor: global.actor,
   };
 
   function restoreGlobals() {
@@ -255,7 +255,7 @@ function collectScenarios(filePath, suiteType) {
       rawName,
       tags: [],
       tagsSet: new Set(),
-      skip
+      skip,
     };
     tags.forEach(tag => {
       if (!feature.tagsSet.has(tag)) {
@@ -287,7 +287,7 @@ function collectScenarios(filePath, suiteType) {
         beforeSteps: beforeHookSteps.flat(),
         beforeSuiteSteps: beforeSuiteSteps.flat(),
         skipped: skip || featureSkipped,
-        featureSkipped
+        featureSkipped,
       };
       splitTags(tags.join(' ')).forEach(tag => scenario.tagsSet.add(tag));
       scenario.tags = Array.from(scenario.tagsSet);
@@ -321,7 +321,7 @@ function collectScenarios(filePath, suiteType) {
   function noop() {}
   const Data = () => ({
     Scenario,
-    xScenario: Scenario
+    xScenario: Scenario,
   });
 
   global.Feature = Feature;
@@ -380,7 +380,7 @@ function deriveTagMetadata(tags) {
     tags,
     pipelines: Array.from(pipelines),
     functionalTestGroupTags: functionalTags,
-    functionalTestGroups: functionalGroups
+    functionalTestGroups: functionalGroups,
   };
 }
 
@@ -411,7 +411,7 @@ function formatDependentFeature(scenarios) {
     independentScenario: boolToYesNo(false),
     ...tagMeta,
     steps: flattenedSteps,
-    skipped: boolToYesNo(dependentSkipped)
+    skipped: boolToYesNo(dependentSkipped),
   };
 }
 
@@ -420,7 +420,7 @@ function formatIndependentScenario(scenario) {
   const tagMeta = deriveTagMetadata(tags);
   const allSteps = [
     ...(scenario.beforeSteps || []),
-    ...(scenario.collectedSteps || [])
+    ...(scenario.collectedSteps || []),
   ];
   return {
     testName: scenario.testName,
@@ -429,7 +429,7 @@ function formatIndependentScenario(scenario) {
     independentScenario: boolToYesNo(true),
     ...tagMeta,
     steps: allSteps,
-    skipped: boolToYesNo(Boolean(scenario.skipped))
+    skipped: boolToYesNo(Boolean(scenario.skipped)),
   };
 }
 
@@ -467,5 +467,5 @@ function generateDocs({ suiteType, targetDir, outputFile }) {
 }
 
 module.exports = {
-  generateDocs
+  generateDocs,
 };

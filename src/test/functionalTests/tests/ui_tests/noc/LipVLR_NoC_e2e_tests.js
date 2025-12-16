@@ -6,7 +6,7 @@ const steps = require('../../../citizenFeatures/createClaim/steps/createLipvLipC
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   payClaimFee,
-  nocForLip
+  nocForLip,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, camundaEvent, expectedState;
@@ -37,7 +37,7 @@ Before(async ({ I, api }) => {
 
 Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   I,
-  api
+  api,
 }) => {
   await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
   await api.checkUserCaseAccess(config.defendantCitizenUser, false);
@@ -58,7 +58,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
 
 Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   I,
-  api
+  api,
 }) => {
   await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
   await api.checkUserCaseAccess(config.defendantCitizenUser, false);
@@ -79,7 +79,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
 
 Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit', async ({
   I,
-  api
+  api,
 }) => {
   await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
   await api.checkUserCaseAccess(config.defendantCitizenUser, false);
@@ -100,7 +100,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit', async ({
 
 Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim', async ({
   I,
-  api
+  api,
 }) => {
   await nocSteps.requestNoticeOfChangeForRespondent1Solicitor(claimRef, defendantName, config.defendantSolicitorUser);
   await api.checkUserCaseAccess(config.defendantCitizenUser, false);

@@ -6,7 +6,7 @@ const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/l
 const { claimantNotificationFullAdmitPayImmediately, mediationCARMClaimantDefendant } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
-  verifyTasklistLinkAndState
+  verifyTasklistLinkAndState,
 } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const { viewMediationDocuments, uploadMediationDocuments, viewMediationSettlementAgreement } = require('../../../specClaimHelpers/dashboardTasklistConstants');
 

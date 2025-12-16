@@ -8,7 +8,7 @@ const {
   payClaimFee,
   nocForLip,
   nocForLipCaseGoesOffline,
-  responseToTheClaim
+  responseToTheClaim,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName;
@@ -39,7 +39,7 @@ Before(async ({ I, api }) => {
 
 Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online', async ({
   I,
-  api
+  api,
 }) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.waitForFinishedBusinessProcess();
@@ -65,7 +65,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
 
 Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline', async ({
   I,
-  api
+  api,
 }) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
   await api.waitForFinishedBusinessProcess();
@@ -86,7 +86,7 @@ Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline'
 
 Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline', async ({
   I,
-  api
+  api,
 }) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
   await api.waitForFinishedBusinessProcess();

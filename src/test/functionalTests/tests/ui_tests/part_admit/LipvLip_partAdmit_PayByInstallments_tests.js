@@ -5,7 +5,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/respons
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   mediationCARMClaimantDefendant,
-  judgmentRequestedClaimantDisagrees, nocForLip
+  judgmentRequestedClaimantDisagrees, nocForLip,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const nocSteps = require('../../../lrFeatures/noc/steps/nocSteps');
 // eslint-disable-next-line no-unused-vars
@@ -17,7 +17,7 @@ Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track')
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,
-  api
+  api,
 }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -73,7 +73,7 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', 
 // TODO undo when part payment journey is restored
 Scenario.skip('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({
   I,
-  api
+  api,
 }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

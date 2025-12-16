@@ -5,9 +5,8 @@ const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   respondToClaim,
-  defendantResponseFullAdmitPayImmediately
+  defendantResponseFullAdmitPayImmediately,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
-const { checkToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars

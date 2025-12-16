@@ -40,4 +40,4 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Se
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidNotInFull(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-})
+});

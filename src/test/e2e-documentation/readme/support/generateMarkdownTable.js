@@ -9,7 +9,7 @@ const COLUMN_ORDER = [
   { key: 'featureName', label: 'Feature Name' },
   { key: 'filePath', label: 'File Path' },
   { key: 'skipped', label: 'Skipped' },
-  { key: 'independentScenario', label: 'Independent Scenario' }
+  { key: 'independentScenario', label: 'Independent Scenario' },
 ];
 
 const DOUBLE_BREAK_FIELDS = new Set(['tags', 'pipelines', 'functionalTestGroups']);

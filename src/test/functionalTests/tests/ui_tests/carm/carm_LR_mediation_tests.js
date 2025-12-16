@@ -4,16 +4,16 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {
   mediationUnsuccessfulClaimant1NonAttendance,
   mediationCARMClaimantDefendant,
-  mediationUnsuccessfulNOTClaimant1NonContactable
+  mediationUnsuccessfulNOTClaimant1NonContactable,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
-  verifyTasklistLinkAndState
+  verifyTasklistLinkAndState,
 } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   viewMediationDocuments,
   uploadMediationDocuments,
-  viewMediationSettlementAgreement
+  viewMediationSettlementAgreement,
 } = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';

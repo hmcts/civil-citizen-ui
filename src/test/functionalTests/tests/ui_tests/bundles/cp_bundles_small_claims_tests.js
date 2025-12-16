@@ -1,5 +1,4 @@
 const config = require('../../../../config');
-const CaseProgressionSteps = require('../../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const StringUtilsComponent = require('../../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
