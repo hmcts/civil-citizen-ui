@@ -115,7 +115,7 @@
         return (index + 1) + 'th';
       }
 
-      function updateClaimRowAccessibility() {
+      function updateAllClaimRowAccessibility() {
         var container = document.getElementById('claimAmountRows');
         if (!container) return;
 
@@ -125,8 +125,8 @@
           var ordinal = getOrdinal(index);
           var labelId = 'claim-row-label-' + index;
 
-          // Ensure hidden row label exists
-          var label = row.querySelector('[id^="claim-row-label-"]');
+          // 1. Create or update hidden label span
+          var label = row.querySelector('.govuk-visually-hidden');
           if (!label) {
             label = document.createElement('span');
             label.className = 'govuk-visually-hidden';
@@ -138,6 +138,7 @@
             'What is the ' + ordinal + ' thing you are claiming for? ' +
             'Amount for ' + ordinal + ' claim in pounds.';
 
+          // 2. Update aria-labelledby on reason and amount inputs
           var reason = row.querySelector('input[name*="[reason]"]');
           var amount = row.querySelector('input[name*="[amount]"]');
 
@@ -158,12 +159,13 @@
       }
 
       // Run on page load
-      document.addEventListener('DOMContentLoaded', updateClaimRowAccessibility);
+      document.addEventListener('DOMContentLoaded', updateAllClaimRowAccessibility);
 
-      // Run after dynamically adding a row
+      // Run after clicking "Add another row"
       document.addEventListener('click', function (e) {
         if (e.target.closest('.append-row')) {
-          setTimeout(updateClaimRowAccessibility, 0);
+          // Delay ensures the new row exists in the DOM
+          setTimeout(updateAllClaimRowAccessibility, 50);
         }
       });
     })();
