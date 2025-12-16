@@ -7,7 +7,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType;
 
-Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track').tag('@e2e-nightly-prod');
+Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track').tag('@ui-nightly-prod');
 
 Scenario('Response with PartAdmit-PayImmediately Small claims', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -21,7 +21,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims', async ({api}) =>
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
   await api.waitForFinishedBusinessProcess();
-}).tag('@e2e-prod');
+}).tag('@ui-prod');
 
 Scenario('Response with PartAdmit-PayImmediately Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

@@ -20,7 +20,7 @@ let claimRef;
 let caseData;
 let claimNumber;
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant').tag('@e2e-nightly-prod');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant').tag('@ui-nightly-prod');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
 Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant', async ({
@@ -88,4 +88,4 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const defendantRejectsSettlementClaimantNotif = defendantRejectsSettlementClaimant();
   await verifyNotificationTitleAndContent(claimNumber, defendantRejectsSettlementClaimantNotif.title, defendantRejectsSettlementClaimantNotif.content);
-}).tag('@e2e-prod');
+}).tag('@ui-prod');

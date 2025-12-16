@@ -6,7 +6,7 @@ const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefend
 
 let caseData, claimNumber, claimRef;
 
-Feature('QM - NOC - Claimant and Defendant Journey').tag('@e2e-nightly-prod @e2e-qm');
+Feature('QM - NOC - Claimant and Defendant Journey').tag('@ui-nightly-prod @ui-qm');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -40,7 +40,7 @@ Scenario('LR v LIP NOC Claimant and Defendant send message to court, follow up a
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await ResponseSteps.verifyClosedQuery('Defendant Query');
-}).tag('@e2e-prod');
+}).tag('@ui-prod');
 
 Scenario('LIP v LR NOC Claimant and Defendant send message to court, follow up and admin closes query', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForRespondent1Solicitor(claimRef, config.defendantSolicitorUser);

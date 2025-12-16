@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, claimAmount = 1500, claimFee = 80, deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
 
-Feature('Create Lip v Lip claim -  Full Admit and pay Immediately').tag('@e2e-nightly-prod');
+Feature('Create Lip v Lip claim -  Full Admit and pay Immediately').tag('@ui-nightly-prod');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -32,4 +32,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   await verifyNotificationTitleAndContent(claimNumber, defendantFullAdmitPayImmediatelyNotif.title, defendantFullAdmitPayImmediatelyNotif.content);
   await I.click(defendantFullAdmitPayImmediatelyNotif.nextSteps);
   await I.click('Sign out');
-}).tag('@e2e-prod');
+}).tag('@ui-prod');

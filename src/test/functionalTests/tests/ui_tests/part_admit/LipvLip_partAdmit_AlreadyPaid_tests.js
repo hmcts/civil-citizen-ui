@@ -12,7 +12,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@e2e-nightly-prod');
+Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@ui-nightly-prod');
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim', async ({
   I,
@@ -68,4 +68,4 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
-}).tag('@e2e-prod');
+}).tag('@ui-prod');

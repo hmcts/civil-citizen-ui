@@ -14,7 +14,7 @@ const claimType = 'SmallClaimsThousand';
 const claimAmount = '£1,000';
 let caseData, claimNumber, claimRef, taskListItem, notification, deadline, todayDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@e2e-nightly-prod');
+Feature('Case progression - Lip v Lip - Request for reconsideration').tag('@ui-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -60,7 +60,7 @@ Scenario('Claimant performs Request for reconsideration and Defendant adds a com
   await viewOrdersAndNoticesPage.verifyPageContent(formattedCaseId, claimAmount);
   await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
   await viewOrdersAndNoticesPage.checkRequestToReviewOrder('defendant', todayDate);
-}).tag('@e2e-prod');
+}).tag('@ui-prod');
 
 Scenario('Defendant performs Request for reconsideration and Claimant adds a comment', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

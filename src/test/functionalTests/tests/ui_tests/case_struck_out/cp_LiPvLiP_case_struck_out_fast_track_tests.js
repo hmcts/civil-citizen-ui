@@ -40,4 +40,4 @@ Scenario('Fast Track LiPvLiP case is struck out due to hearing fee not being pai
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = uploadHearingDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@e2e-prod');
+}).tag('@ui-prod');

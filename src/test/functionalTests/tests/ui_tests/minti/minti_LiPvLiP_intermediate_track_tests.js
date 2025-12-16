@@ -5,7 +5,7 @@ const intTrackClaimType = 'Intermediate';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Intermediate').tag('@e2e-nightly-prod');
+Feature('LiP - Minti Intermediate').tag('@ui-nightly-prod');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

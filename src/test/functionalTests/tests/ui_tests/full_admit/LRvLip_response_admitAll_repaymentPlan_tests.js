@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with AdmitAll and Repayment plan').tag('@e2e-nightly-prod');
+Feature('Response with AdmitAll and Repayment plan').tag('@ui-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

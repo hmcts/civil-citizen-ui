@@ -22,7 +22,7 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-Feature('LiP - CARM - Mediation Journey').tag('@e2e-nightly-prod @e2e-carm');
+Feature('LiP - CARM - Mediation Journey').tag('@ui-nightly-prod @ui-carm');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -86,7 +86,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@e2e-prod');
+}).tag('@ui-prod');
 
 Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');

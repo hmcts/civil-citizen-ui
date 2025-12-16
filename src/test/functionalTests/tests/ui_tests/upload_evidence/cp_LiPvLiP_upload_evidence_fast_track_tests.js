@@ -12,7 +12,7 @@ const claimType = 'FastTrack';
 const partyType = 'LiPvLiP';
 let claimRef,caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track').tag('@e2e-nightly-prod');
+Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track').tag('@ui-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

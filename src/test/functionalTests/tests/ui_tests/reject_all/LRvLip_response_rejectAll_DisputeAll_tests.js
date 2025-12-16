@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll').tag('@e2e-reject-all @e2e-nightly-prod');
+Feature('Response with RejectAll and DisputeAll').tag('@ui-reject-all @ui-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -56,4 +56,4 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time)', asyn
   await api.mediationUnsuccessful(config.caseWorker);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
 
-}).tag('@e2e-prod');
+}).tag('@ui-prod');

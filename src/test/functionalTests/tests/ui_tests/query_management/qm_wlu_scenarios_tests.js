@@ -6,7 +6,7 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseData, claimNumber;
 
-Feature('Query management - WLU Scenarios').tag('@e2e-qm');
+Feature('Query management - WLU Scenarios').tag('@ui-qm');
 
 const claimType = 'SmallClaims';
 

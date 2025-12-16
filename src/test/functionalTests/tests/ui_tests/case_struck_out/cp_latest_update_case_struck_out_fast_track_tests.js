@@ -9,7 +9,7 @@ const { addTrialArrangements, uploadHearingDocuments } = require('../../../specC
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression - Case Struck Out journey - Fast Track').tag('@e2e-nightly-prod');
+Feature('Case progression - Case Struck Out journey - Fast Track').tag('@ui-nightly-prod');
 
 Before(async ({ api }) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

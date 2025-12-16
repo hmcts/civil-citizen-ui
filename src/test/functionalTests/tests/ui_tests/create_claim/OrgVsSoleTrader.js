@@ -11,7 +11,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Org vs Sole trader').tag('@e2e-create-claim');
+Feature('Create Lip v Lip claim - Org vs Sole trader').tag('@ui-create-claim');
 
 Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,

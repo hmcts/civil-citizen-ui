@@ -16,7 +16,7 @@ const {
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
-Feature('Lip v Lip GA e2e Tests').tag('@e2e-nightly-prod @e2e-ga');
+Feature('Lip v Lip GA e2e Tests').tag('@ui-nightly-prod @ui-ga');
 
 Before(async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -93,7 +93,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   const orderMadeGANotif = orderMadeGA();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content);
   await I.click(orderMadeGANotif.nextSteps);
-}).tag('@e2e-prod');
+}).tag('@ui-prod');
 
 Scenario('LipvLip Applicant GA creation e2e tests - Give directions without listing', async ({
   I,

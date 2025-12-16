@@ -18,7 +18,7 @@ let caseData,legacyCaseReference,caseRef,claimNumber,claimInterestFlag,StandardI
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Individual vs Individual').tag('@e2e-create-claim');
+Feature('Create Lip v Lip claim - Individual vs Individual').tag('@ui-create-claim');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -131,4 +131,4 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   await api.submitHwfEventForUser(config.hwfEvents.feePayOutcome);
   const waitForDefResponseNotif = await waitForDefendantToRespond();
   await verifyNotificationTitleAndContent(legacyCaseReference, waitForDefResponseNotif.title, waitForDefResponseNotif.content);
-}).tag('@e2e-prod');
+}).tag('@ui-prod');
