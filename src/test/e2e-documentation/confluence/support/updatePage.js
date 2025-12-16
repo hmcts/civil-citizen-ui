@@ -59,9 +59,6 @@ async function updateConfluencePage({ jsonPath, targetHeadingText }) {
 
     const tableHtml = generateConfluenceTable(jsonPath);
 
-    const fs = require('fs')
-    fs.writeFileSync('tablehtml.html', tableHtml)
-
     const res = await axios.get(
       `${CONFLUENCE_BASE_URL}/confluence/rest/api/content/${CONFLUENCE_PAGE_ID}?expand=body.storage,version`,
       { headers }
