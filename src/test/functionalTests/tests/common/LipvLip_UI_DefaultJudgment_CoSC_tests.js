@@ -37,4 +37,4 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression');
+}).tag('@nightly');

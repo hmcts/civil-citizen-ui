@@ -50,4 +50,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@regression');
+}).tag('@nightly');
