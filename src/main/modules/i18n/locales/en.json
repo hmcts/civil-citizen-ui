@@ -1948,8 +1948,7 @@
       "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
       "INTEREST": "interest - we’ll ask you about this next",
       "REASON": "What you’re claiming for?",
-      "TITLE": "Claim amount",
-      "ROW_LABEL": "What is the {ordinal} thing you are claiming for? Amount for {ordinal} claim in pounds."
+      "TITLE": "Claim amount"
     },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
