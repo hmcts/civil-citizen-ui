@@ -38,7 +38,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject'
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, mediationCARMClaimantDefendantNotif.title, mediationCARMClaimantDefendantNotif.content);
-}).tag('@ui-prod');
+});
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', async ({ api, I }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -68,7 +68,7 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', 
   const nocForLipNotif = nocForLip(defendantName);
   await verifyNotificationTitleAndContent(claimNumber, nocForLipNotif.title, nocForLipNotif.content);
   await I.click(nocForLipNotif.nextSteps);
-}).tag('@ui-noc');
+});
 
 // TODO undo when part payment journey is restored
 Scenario.skip('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept', async ({

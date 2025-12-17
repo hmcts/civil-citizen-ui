@@ -13,7 +13,7 @@ const claimType = 'FastTrack';
 const partyType = 'LRvLiP';
 let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate, trialArrangementsDueDate;
 
-Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track').tag('@ui-case-progression');
+Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track').tag('@ui-hearings');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

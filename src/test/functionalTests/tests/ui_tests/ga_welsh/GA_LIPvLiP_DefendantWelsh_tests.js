@@ -8,7 +8,7 @@ let claimRef;
 let caseData;
 let claimNumber;
 
-Feature('Lip v Lip - Defendant Welsh - GA application');
+Feature('Lip v Lip - Defendant Welsh - GA application').tag('@ui-nightly-prod');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

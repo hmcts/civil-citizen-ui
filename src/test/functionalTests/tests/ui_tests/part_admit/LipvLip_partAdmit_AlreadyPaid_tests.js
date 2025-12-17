@@ -68,4 +68,4 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
   await api.waitForFinishedBusinessProcess();
-}).tag('@ui-prod');
+});

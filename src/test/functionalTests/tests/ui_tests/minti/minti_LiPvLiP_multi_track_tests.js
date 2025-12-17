@@ -5,7 +5,7 @@ const multiTrackClaimType = 'Multi';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Multi track').tag('@ui-nightly-prod');
+Feature('LiP - Minti Multi track').tag('@ui-nightly-prod @ui-minti');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

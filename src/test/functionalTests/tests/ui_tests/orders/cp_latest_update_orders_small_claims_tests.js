@@ -9,7 +9,7 @@ const { ordersAndNotices } = require('../../../specClaimHelpers/dashboardTasklis
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@ui-orders');
 
 Before(async ({ api }) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.

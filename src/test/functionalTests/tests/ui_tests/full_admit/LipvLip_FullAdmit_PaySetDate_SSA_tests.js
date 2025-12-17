@@ -88,4 +88,4 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const defendantRejectsSettlementClaimantNotif = defendantRejectsSettlementClaimant();
   await verifyNotificationTitleAndContent(claimNumber, defendantRejectsSettlementClaimantNotif.title, defendantRejectsSettlementClaimantNotif.content);
-}).tag('@ui-prod');
+});

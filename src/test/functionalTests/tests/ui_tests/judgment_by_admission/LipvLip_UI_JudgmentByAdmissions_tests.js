@@ -8,7 +8,7 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let claimRef;
 
-Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@ui-nightly-prod');
+Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@ui-nightly-prod @ui-jba');
 
 // TODO undo when part payment journey is restored
 Scenario.skip('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {

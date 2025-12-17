@@ -8,7 +8,7 @@ const { ordersAndNotices } = require('../../../specClaimHelpers/dashboardTasklis
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, taskListItem, notification;
 
-Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Fast Track').tag('@ui-case-progression');
+Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Fast Track').tag('@ui-nightly-prod @ui-orders');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -43,5 +43,5 @@ Scenario('Case progression journey - Fast Track - Claimant and Defendant verify 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.click(claimNumber);
   await I.dontSee(notification.title);
-});
+}).tag('@ui-prod');
 
