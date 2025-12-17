@@ -41,7 +41,7 @@
                 </p>
               {% endif %}
               <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-                <h3 class="govuk-label-wrapper govuk-label govuk-label--s">
+                <h3 class="govuk-label-wrapper govuk-label govuk-label--s" id="timeline-date-heading">
                   {{ t('COMMON.DATE') }}
                 </h3>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
@@ -49,14 +49,14 @@
                 </p>
               </div>
               <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-                <h3 class="govuk-label-wrapper govuk-label govuk-label--s">
+                <h3 class="govuk-label-wrapper govuk-label govuk-label--s" id="timeline-description-heading">
                   {{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}
                 </h3>
                 <p
                   class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
               </div>
               {% for timeline in form.model.rows %}
-                {{ timelineRow(timeline, loop.index0, form, t) }}
+                {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
               {% endfor %}
             </div>
 
