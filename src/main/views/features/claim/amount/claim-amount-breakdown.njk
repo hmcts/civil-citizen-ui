@@ -30,7 +30,7 @@
           </ul>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
+            <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}" aria-live="polite">
               {% if claimAmountError %}
                 <p class="govuk-error-message">
                   <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(claimAmountError) }}
@@ -51,8 +51,32 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
-                <div role="group" aria-label="Row {{ loop.index }}">
-                  {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
+                <div role="group" aria-labelledby="row-label-{{ loop.index0 }}">
+                  <span id="row-label-{{ loop.index0 }}" class="govuk-visually-hidden">Row {{ loop.index }}</span>
+
+                  <div>
+                    <label for="reason-{{ loop.index0 }}" class="govuk-label govuk-label--s">
+                      {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
+                    </label>
+                    <input
+                      type="text"
+                      id="reason-{{ loop.index0 }}"
+                      name="claimAmountRows[{{ loop.index0 }}][reason]"
+                      value="{{ claimAmountRow.reason or '' }}"
+                      class="govuk-input">
+                  </div>
+
+                  <div>
+                    <label for="amount-{{ loop.index0 }}" class="govuk-label govuk-label--s">
+                      {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}
+                    </label>
+                    <input
+                      type="text"
+                      id="amount-{{ loop.index0 }}"
+                      name="claimAmountRows[{{ loop.index0 }}][amount]"
+                      value="{{ claimAmountRow.amount or '' }}"
+                      class="govuk-input">
+                  </div>
                 </div>
               {% endfor %}
             </div>
@@ -86,4 +110,24 @@
       </div>
     </main>
   </div>
+
+  {# Focus newly added row's Reason input for screen reader #}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const container = document.getElementById('claimAmountRows');
+      const addButton = document.querySelector('.append-row');
+
+      addButton.addEventListener('click', function () {
+        // Small delay to ensure the new row is appended
+        setTimeout(() => {
+          const rows = container.querySelectorAll('[role="group"]');
+          if (rows.length === 0) return;
+
+          const newRow = rows[rows.length - 1];
+          const firstInput = newRow.querySelector('input[type="text"]');
+          if (firstInput) firstInput.focus();
+        }, 50);
+      });
+    });
+  </script>
 {% endblock %}
