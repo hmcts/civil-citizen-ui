@@ -40,6 +40,12 @@
                 type: "number",
                 inputmode: "numeric",
                 name: "dateOfBirth",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.INTEREST_START_DATE.TITLE'),
+                    classes: 'govuk-visually-hidden'
+                  }
+                },
                 hint: {
                   text: t('COMMON.DATE_EXAMPLE', {
                     date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 18)
@@ -98,4 +104,3 @@
     </main>
   </div>
 {% endblock %}
-

@@ -59,6 +59,12 @@
             type: "number",
             inputmode: "numeric",
             name: "date",
+            fieldset: {
+              legend: {
+                text: t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1'),
+                classes: 'govuk-visually-hidden'
+              }
+            },
             errorMessage: {
               html: errorMessages
             } if form.hasErrors(),
@@ -94,4 +100,3 @@
         {% endcall %}
       </form>
 {% endblock %}
-
