@@ -12,7 +12,6 @@
 
 {% set length = form.model.claimAmountRows.length %}
 {% set claimAmountError = form.errorFor('claimAmountRows') %}
-
 {% block content %}
   {% if form.hasErrors() %}
     {{ errorSummary(form.getAllErrors(), t) }}
@@ -38,7 +37,7 @@
                 </p>
               {% endif %}
               <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop govuk-form-group">
-                <span id="claim-reason-column" class="govuk-label govuk-label--s">
+                <span id="claim-reason-heading" class="govuk-label govuk-label--s">
                   {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
                 </span>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
@@ -46,28 +45,16 @@
                 </p>
               </div>
               <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-                <span id="claim-amount-column" class="govuk-label govuk-label--s">
+                <span id="claim-amount-heading" class="govuk-label govuk-label--s">
                   {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}
                 </span>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
-            {% for claimAmountRow in form.model.claimAmountRows %}
-              <div
-                class="govuk-form-group claim-amount-row"
-                  role="group"
-                aria-labelledby="claim-amount-row-{{ loop.index }}"
-                data-row-index="{{ loop.index0 }}"
-              >
-                <span
-                  id="claim-amount-row-{{ loop.index }}"
-                  class="govuk-visually-hidden"
-                >
-                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ROW') }} {{ loop.index }}
-                </span>
-
-                {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
-              </div>
-            {% endfor %}
+              {% for claimAmountRow in form.model.claimAmountRows %}
+                <div role="group" aria-label="Row {{ loop.index }}">
+                  {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
+                </div>
+              {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
               {{ govukButton({
