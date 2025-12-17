@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
+
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -20,8 +21,7 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
-          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE') }} </h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.DESCRIPTION') }}</p>
           <p class="govuk-body">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.DONT_INCLUDE') }}</p>
           <ul class="govuk-list govuk-list--bullet">
@@ -30,10 +30,11 @@
           </ul>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}" aria-live="polite">
+            <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
               {% if claimAmountError %}
                 <p class="govuk-error-message">
-                  <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(claimAmountError) }}
+                  <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span>
+                  {{ t(claimAmountError) }}
                 </p>
               {% endif %}
               <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop govuk-form-group">
@@ -51,33 +52,7 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
-                <div role="group" aria-labelledby="row-label-{{ loop.index0 }}">
-                  <span id="row-label-{{ loop.index0 }}" class="govuk-visually-hidden">Row {{ loop.index }}</span>
-
-                  <div>
-                    <label for="reason-{{ loop.index0 }}" class="govuk-label govuk-label--s">
-                      {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
-                    </label>
-                    <input
-                      type="text"
-                      id="reason-{{ loop.index0 }}"
-                      name="claimAmountRows[{{ loop.index0 }}][reason]"
-                      value="{{ claimAmountRow.reason or '' }}"
-                      class="govuk-input">
-                  </div>
-
-                  <div>
-                    <label for="amount-{{ loop.index0 }}" class="govuk-label govuk-label--s">
-                      {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}
-                    </label>
-                    <input
-                      type="text"
-                      id="amount-{{ loop.index0 }}"
-                      name="claimAmountRows[{{ loop.index0 }}][amount]"
-                      value="{{ claimAmountRow.amount or '' }}"
-                      class="govuk-input">
-                  </div>
-                </div>
+                {{ claimAmount(claimAmountRow, loop.index0, form, t, loop.index) }}
               {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
@@ -110,24 +85,4 @@
       </div>
     </main>
   </div>
-
-  {# Focus newly added row's Reason input for screen reader #}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const container = document.getElementById('claimAmountRows');
-      const addButton = document.querySelector('.append-row');
-
-      addButton.addEventListener('click', function () {
-        // Small delay to ensure the new row is appended
-        setTimeout(() => {
-          const rows = container.querySelectorAll('[role="group"]');
-          if (rows.length === 0) return;
-
-          const newRow = rows[rows.length - 1];
-          const firstInput = newRow.querySelector('input[type="text"]');
-          if (firstInput) firstInput.focus();
-        }, 50);
-      });
-    });
-  </script>
 {% endblock %}
