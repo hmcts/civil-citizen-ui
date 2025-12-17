@@ -40,11 +40,11 @@
                   <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
                 </tr>
               {% endfor %}
+              </tbody>
               {% elseif pdfUrl %}
                 <a id="timeline-link" href="{{ pdfUrl }}" target="_blank" rel="noreferrer noopener"
                    class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
               {% endif %}
-              </tbody>
             </table>
           </div>
           <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t('PAGES.DEFENDANT_TIMELINE.ADD_YOUR_TIMELINE') }}</h2>
@@ -55,7 +55,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <span class="govuk-label--s">
+              <span id="timeline-date-heading" class="govuk-label--s">
                 {{ t('COMMON.DATE') }}
               </span>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
@@ -63,7 +63,7 @@
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <span class="govuk-label--s">
+              <span id="timeline-description-heading" class="govuk-label--s">
                 {{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}
               </span>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
@@ -71,7 +71,7 @@
               </p>
             </div>
             {% for timeline in form.model.rows %}
-              {{ timelineRow(timeline, loop.index0, form, t) }}
+              {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
             {% endfor %}
 
             {{ govukButton({
