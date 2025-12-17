@@ -18,7 +18,7 @@ const dependentUiFiles = new Set(
 );
 
 const pipelineTagMap = {
-  '@ui-prod': ['civil-citizen-ui: master'],
+  '@ui-prod': ['civil-citizen-ui: master', 'civil-citizen-ui: nightly', 'civil-citizen-ui: PR'],
   '@ui-nonprod': ['civil-citizen-ui: PR'],
   '@ui-nightly-prod': ['civil-citizen-ui: nightly'],
 };

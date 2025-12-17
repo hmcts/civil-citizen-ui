@@ -62,14 +62,14 @@ exports.config = {
       ignoreHTTPSErrors: true,
     },
     BrowserHelpers: {
-      require: 'src/test/functionalTests/helpers/browser_helper.js',
+      require: './src/test/functionalTests/helpers/browser_helper.js',
     },
   },
   include: {
-    api: 'src/test/functionalTests/specClaimHelpers/api/steps.js',
-    wa: 'src/test/functionalTests/specClaimHelpers/api/stepsWA.js',
-    noc: 'src/test/functionalTests/specClaimHelpers/api/steps_noc.js',
-    qm: 'src/test/functionalTests/specClaimHelpers/api/steps_qm.js',
+    api: './src/test/functionalTests/specClaimHelpers/api/steps.js',
+    wa: './src/test/functionalTests/specClaimHelpers/api/stepsWA.js',
+    noc: './src/test/functionalTests/specClaimHelpers/api/steps_noc.js',
+    qm: './src/test/functionalTests/specClaimHelpers/api/steps_qm.js',
   },
   plugins: {
     autoDelay: {
@@ -93,7 +93,7 @@ exports.config = {
     },
     failedAndNotExecutedTestFilesPlugin: {
       enabled: functional ?? false,
-      require: 'src/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin',
+      require: './src/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin',
     },
   },
   mocha: {
