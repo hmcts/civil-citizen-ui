@@ -399,7 +399,7 @@ function formatDependentFeature(scenarios) {
   scenarios.forEach(scenario => {
     const scenarioSteps = [
       ...(scenario.beforeSteps || []),
-      ...(scenario.collectedSteps || [])
+      ...(scenario.collectedSteps || []),
     ];
     scenarioSteps.forEach(step => {
       flattenedSteps.push(scenario.skipped ? `${step} (skipped)` : step);
