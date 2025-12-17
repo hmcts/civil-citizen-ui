@@ -360,3 +360,12 @@
   white-space: nowrap;
   width: 1px;
 }
+
+.multiple-row.civil-amount-breakdown-row {
+  margin-bottom: 30px;
+}
+
+// Optional: prevent extra space after the very last row
+.multiple-row.civil-amount-breakdown-row:last-child {
+  margin-bottom: 0;
+}
