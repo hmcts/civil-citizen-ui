@@ -15,6 +15,9 @@
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
           classes: 'govuk-visually-hidden'
         },
+          attributes: {
+            'aria-labelledby': 'claim-amount-row-' ~ (index + 1) ~ ' claim-reason-column'
+          },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
         } if form.hasFieldError( "claimAmountRows["+index+"][reason]")
@@ -36,6 +39,9 @@
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
           classes: 'govuk-visually-hidden'
         },
+          attributes: {
+            'aria-labelledby': 'claim-amount-row-' ~ (index + 1) ~ ' claim-amount-column'
+          },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
         } if form.hasFieldError( "claimAmountRows["+index+"][amount]")
