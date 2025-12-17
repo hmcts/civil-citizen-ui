@@ -50,11 +50,23 @@
                 </span>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
-              {% for claimAmountRow in form.model.claimAmountRows %}
-                <div class="govuk-form-group claim-amount-row" data-row-index="{{ loop.index0 }}">
+            {% for claimAmountRow in form.model.claimAmountRows %}
+              <div
+                class="govuk-form-group claim-amount-row"
+                data-row-index="{{ loop.index0 }}"
+                role="group"
+                aria-labelledby="claim-amount-row-{{ loop.index }}"
+              >
+                <span
+                  id="claim-amount-row-{{ loop.index }}"
+                  class="govuk-visually-hidden"
+                >
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ROW') }} {{ loop.index }}
+                </span>
+
                 {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
-                </div>
-              {% endfor %}
+              </div>
+            {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
               {{ govukButton({
