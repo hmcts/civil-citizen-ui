@@ -51,7 +51,9 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
+                <div class="govuk-form-group claim-amount-row" data-row-index="{{ loop.index0 }}">
                 {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
+                </div>
               {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
@@ -84,45 +86,4 @@
       </div>
     </main>
   </div>
-
-  <style>
-    /* Add spacing between dynamically added rows */
-    .row-container {
-      margin-bottom: 1rem;
-    }
-  </style>
-
-  <script>
-    (function () {
-      function getOrdinal(index) {
-        if (index === 0) return 'first';
-        if (index === 1) return 'second';
-        if (index === 2) return 'third';
-        return (index + 1) + 'th';
-      }
-
-      function updateAllClaimRowAccessibility() {
-        var container = document.getElementById('claimAmountRows');
-        if (!container) return;
-
-        var rows = container.querySelectorAll('.row-container');
-        rows.forEach(function (row, index) {
-          var ordinal = getOrdinal(index);
-          var label = row.querySelector('.govuk-visually-hidden');
-          if (label) {
-            label.textContent =
-              'What is the ' + ordinal + ' thing you are claiming for? ' +
-              'Amount for ' + ordinal + ' claim in pounds.';
-          }
-        });
-      }
-
-      document.addEventListener('DOMContentLoaded', updateAllClaimRowAccessibility);
-      document.addEventListener('click', function (e) {
-        if (e.target.closest('.append-row')) {
-          setTimeout(updateAllClaimRowAccessibility, 50);
-        }
-      });
-    })();
-  </script>
 {% endblock %}
