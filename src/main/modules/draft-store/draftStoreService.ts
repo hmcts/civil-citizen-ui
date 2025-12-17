@@ -26,7 +26,7 @@ export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror =
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
-const convertRedisDataToCivilClaimResponse = (data: string) => {
+const convertRedisDataToCivilClaimResponse = (data: string): any => {
   let jsonData = undefined;
   if (data) {
     try {
@@ -35,7 +35,8 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
       logger.error(`${(err as Error).stack || err}`);
     }
   }
-  return Object.assign(new CivilClaimResponse(), jsonData);
+  const civilClaimResponse = new CivilClaimResponse();
+  return Object.assign(civilClaimResponse, jsonData);
 };
 /**
  * Gets only case data.
@@ -49,30 +50,37 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
 };
 
 /**
- * Saves claim in Draft store. If the claim does not exist
- * it creates a new CivilClaimResponse object and passes the claim in parameter to it
+ * Saves claim in Draft store. If the claim does not exist,
+ * it creates a new CivilClaimResponse object and passes the claim in parameter to it,
  * then saves the new data in redis.
- * If claim exists then it updates the claim with the new claim passed in parameter
+ * If a claim exists, then it updates the claim with the new claim passed in parameter
  * @param claimId
  * @param claim
+ * @param doNotThrowError
  */
 export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  storedClaimResponse.case_data = claim;
+  storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
     await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
   }
 };
-
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
   return storedClaimResponse;
+};
+
+export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
+  const claimId = req.params.id;
+  const userId = (<AppRequest>req)?.session?.user?.id;
+  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
+  await deleteDraftClaimFromStore(redisKey);
 };
 
 export const deleteDraftClaimFromStore = async (claimId: string, field?: string): Promise<void> => {
@@ -107,7 +115,7 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return req.params.id + req.session.user?.id;
+  return req.params?.id + req.session.user?.id;
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {

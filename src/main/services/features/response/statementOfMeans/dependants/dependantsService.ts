@@ -1,4 +1,7 @@
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Validator} from 'class-validator';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
@@ -13,9 +16,9 @@ class DependantsService {
 
   public async getDependants(claimId: string): Promise<Dependants> {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.statementOfMeans?.dependants) {
-        return civilClaimResponse.case_data.statementOfMeans.dependants;
+      const claimData = await getCaseDataFromStore(claimId);
+      if (claimData?.statementOfMeans?.dependants) {
+        return claimData.statementOfMeans.dependants;
       }
       return new Dependants();
     } catch (error) {
@@ -26,16 +29,16 @@ class DependantsService {
 
   public async saveDependants(claimId: string, dependants: Dependants): Promise<Claim> {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.dependants = dependants;
+      const claimData = await getCaseDataFromStore(claimId);
+      if (claimData?.statementOfMeans) {
+        claimData.statementOfMeans.dependants = dependants;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.dependants = dependants;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
+        claimData.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
-      return civilClaimResponse.case_data;
+      await saveDraftClaim(claimId, claimData);
+      return claimData;
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
       throw error;

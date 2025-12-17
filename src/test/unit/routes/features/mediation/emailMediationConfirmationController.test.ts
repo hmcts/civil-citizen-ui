@@ -12,6 +12,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
+import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -20,6 +21,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 describe('Mediation Email Mediation Confirmation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const mockDraftClaimFromStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
   beforeAll(() => {
@@ -30,6 +32,15 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
   });
 
   beforeEach(() => {
+    mockDraftClaimFromStore.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = {emailAddress: 'test@test.com'};
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      const civilClaimResponse = new CivilClaimResponse();
+      civilClaimResponse.case_data = claim as unknown as CCDClaim;
+      return civilClaimResponse;
+    });
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
       claim.respondent1 = new Party();

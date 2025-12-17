@@ -41,9 +41,9 @@
                         <legend class="govuk-visually-hidden">{{ pageText }}</legend>
 
                     {% for unavailableDate in form.model.items %}
-                      {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true) }}
+                      {{ unavailableDateRow(unavailableDate, 'PAGES.UNAVAILABILITY_SELECT_DATES_MEDIATION.PAGE_TEXT', loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true) }}
                     {% else %}
-                      {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today, true) }}
+                      {{ unavailableDateRow(unavailableDate, 'PAGES.UNAVAILABILITY_SELECT_DATES_MEDIATION.PAGE_TEXT', 0, form.errorFor, t, {hidden:true}, today, true) }}
                     {% endfor %}
                     </fieldset>
 

@@ -10,6 +10,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Party} from '../../../../../../main/common/models/party';
 import {CaseRole} from 'form/models/caseRoles';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {AppSession, UserDetails} from '../../../../../../main/common/models/AppRequest';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
@@ -17,6 +18,7 @@ jest.mock('../../../../../../main/services/features/response/submission/compareA
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id:'1'};
+mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1234'}};
 
 const citizenBaseUrl: string = config.get('services.civilService.url');
 
@@ -38,7 +40,7 @@ describe('Submit response to ccd', ()=>{
   it('should submit response successfully when there are no errors', async ()=> {
     //Given
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1234/event')
       .reply(200, {});
     mockGetCaseData.mockImplementation(async () => {
       return claim;
@@ -69,7 +71,7 @@ describe('Submit response to ccd', ()=>{
       return claim;
     });
     nock(citizenBaseUrl)
-      .post('/cases/1/citizen/undefined/event')
+      .post('/cases/1/citizen/1234/event')
       .reply(500, {error:'error'});
     //Then
     await expect(submitResponse(mockedAppRequest)).rejects.toThrow(TestMessages.REQUEST_FAILED);
