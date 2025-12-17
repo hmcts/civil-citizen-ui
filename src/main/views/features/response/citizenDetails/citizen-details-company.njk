@@ -112,6 +112,9 @@
                 classes: "govuk-input--width-20",
                 id: "partyPhone",
                 name: "partyPhone",
+                label: {
+                text: t('PAGES.CITIZEN_PHONE.PAGE_TITLE')
+                    },
                 value: partyPhone.model.phone,
                 errorMessage: {
                   html: t(partyPhone.errorFor("phone"))
@@ -119,7 +122,8 @@
               }) }}
             {% endif %}
             {{ govukButton({
-              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+              attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
             }) }}
             {{ contactUsForHelp(t) }}
           </form>

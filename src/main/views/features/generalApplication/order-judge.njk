@@ -19,18 +19,18 @@
             {{ itemContent(content,t) }}
           {% endfor %}
 
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-labelledby="order-judge-heading">
             {{ csrfProtection(csrf) }}
             {% set typeError = form.errorFor('option') %}
             <div class="govuk-form-group">
 
-              <h1 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ENTER_THE_ORDER') }}</h1>
+              <h1 class="govuk-heading-s" id="order-judge-heading">{{ t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ENTER_THE_ORDER') }}</h1>
               {{ govukTextarea({
                 name: "text",
                 id: "text",
                 value: hintText,
                 attributes: {
-                  'aria-label': t("PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ENTER_THE_ORDER")
+                  'aria-describedby': 'order-judge-heading'
                 },
                 label: {
                   text: t("PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ENTER_THE_ORDER"),

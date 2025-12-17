@@ -13,10 +13,10 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper" id="main-content" role="main" aria-labelledby="page-heading">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.TOTAL_AMOUNT.TITLE') }}</h1>
+          <h1 id="page-heading" class="govuk-heading-l">{{ t('PAGES.TOTAL_AMOUNT.TITLE') }}</h1>
 
           {{ govukSummaryList({
             rows: [
@@ -64,7 +64,7 @@
           }) }}
 
           {% if form.hasHelpWithFees %}
-            <h3 class="govuk-heading-s">{{t('PAGES.TOTAL_AMOUNT.WE_WILL_REVIEW')}}</h3>
+            <h2 class="govuk-heading-s">{{t('PAGES.TOTAL_AMOUNT.WE_WILL_REVIEW')}}</h2>
             <ol class="govuk-list govuk-list--number">
               <li class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.IF_SUCCESSFUL')}}</li>
               <li class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.TOTAL_WOULD_BE_LOWER')}}</li>
@@ -106,15 +106,20 @@
           <p class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.YOU_DONT_HAVE_TO_PAY')}}</p>
 
           <p class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.ADDITIONAL_FEES')}}
-            <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/government/publications/fees-in-the-civil-and-family-courts-main-fees-ex50" class="govuk-link">{{t('PAGES.TOTAL_AMOUNT.FIND_OUT_MORE')}}</a>
+            <a class="govuk-link" target="_blank" rel="noopener noreferrer" href="https://www.gov.uk/government/publications/fees-in-the-civil-and-family-courts-main-fees-ex50">
+              {{t('PAGES.TOTAL_AMOUNT.FIND_OUT_MORE')}}
+            </a>
           </p>
 
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-describedby="form-submit-help">
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
+              <div id="form-submit-help" class="govuk-visually-hidden">
+                {{t('COMMON.BUTTONS.SAVE_AND_CONTINUE')}} - {{t('PAGES.TOTAL_AMOUNT.TITLE')}}
+              </div>
               {{ contactUsForHelp(t) }}
             </div>
           </form>

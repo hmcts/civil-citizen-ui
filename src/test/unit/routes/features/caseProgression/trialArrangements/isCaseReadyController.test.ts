@@ -11,7 +11,6 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -30,9 +29,6 @@ describe('Is case ready - On GET', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should render page successfully in English if cookie has correct values', async () => {
@@ -78,7 +74,6 @@ describe('Is case ready - On GET', () => {
 describe('Is case ready - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display error when neither Yes nor No were selected', async () => {
 
@@ -132,4 +127,3 @@ describe('Is case ready - on POST', () => {
   });
 
 });
-

@@ -36,9 +36,9 @@
      {% set object = '' %}
      {% if  content.data.variables %}
        {% set object = content.data.variables %}
-       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
+       <h2 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
      {% else %}
-       <h3 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
+       <h2 class="govuk-heading-s {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
      {% endif %}
   {% endif %}
 
@@ -46,9 +46,9 @@
     {% set object = '' %}
     {% if content.data.variables %}
       {% set object = content.data.variables %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</p>
+      <h2 class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text,object) }}</h2>
     {% else %}
-      <p class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</p>
+      <h2 class="govuk-body-l {{ content.data.classes }}">{{ t(content.data.text) }}</h2>
     {% endif %}
   {% endif %}
 
@@ -366,6 +366,10 @@
   {% if content.type === ClaimSummaryType.SELECT %}
     <div>
       <fieldset class="govuk-fieldset">
+        {% set selectLegend = t(content.data.text, content.data.variables) if content.data.variables else t(content.data.text) %}
+        <legend class="govuk-visually-hidden">
+          {{ selectLegend }}
+        </legend>
         {{ govukSelect({
           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
           name: content.data.category+'['+content.data.index+']['+content.data.field+']',

@@ -43,6 +43,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
@@ -56,8 +57,8 @@
                 {% if responseType === ResponseType.PART_ADMISSION %}
                   <p class="govuk-body-m"> {{ t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT_HINT_TEXT') }} </p>
                 {% else %}
-                   <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
-                   <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
+                  <p class="govuk-body-m">{{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT1') }} </p>
+                  <p class="govuk-body-m">  {{ t('PAGES.PAYMENT_OPTION.TOTAL_AMOUNT_HINT_TEXT2') }} </p>
                 {% endif %}
               {% endif %}
 
@@ -95,9 +96,12 @@
               } if form.hasFieldError('paymentType')
 
             }) }}
+            </fieldset>
+
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

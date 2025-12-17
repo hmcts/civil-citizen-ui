@@ -1,25 +1,34 @@
 import cookieManager from '@hmcts/cookie-manager';
 
-cookieManager.on('UserPreferencesLoaded', (preferences: Preferences) => {
+const pushCookiePreferencesEvent = (preferences: Preferences) => {
   const dataLayer = window.dataLayer || [];
   dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
+};
+
+const updateDynatracePreference = (preferences: Preferences) => {
+  const dtrum = window.dtrum;
+
+  if (dtrum === undefined) {
+    return;
+  }
+
+  if (preferences.apm === 'on') {
+    dtrum.enable();
+    dtrum.enableSessionReplay();
+  } else {
+    dtrum.disableSessionReplay();
+    dtrum.disable();
+  }
+};
+
+cookieManager.on('UserPreferencesLoaded', (preferences: Preferences) => {
+  pushCookiePreferencesEvent(preferences);
+  updateDynatracePreference(preferences);
 });
 
 cookieManager.on('UserPreferencesSaved', (preferences: Preferences) => {
-  const dataLayer = window.dataLayer || [];
-  const dtrum = window.dtrum;
-
-  dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
-
-  if (dtrum !== undefined) {
-    if (preferences.apm === 'on') {
-      dtrum.enable();
-      dtrum.enableSessionReplay();
-    } else {
-      dtrum.disableSessionReplay();
-      dtrum.disable();
-    }
-  }
+  pushCookiePreferencesEvent(preferences);
+  updateDynatracePreference(preferences);
 });
 
 const config = {

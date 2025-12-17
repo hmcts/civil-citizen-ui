@@ -19,7 +19,7 @@ class Response {
     I.seeInCurrentUrl('/response/your-details');
     seeInTitle('Company details');
     I.see('Confirm your details', 'h1.govuk-heading-l');
-    I.see('Your name and address were provided by the person, business or organisation claiming from you (the claimant).', 'p.govuk-body');
+    I.see('Your name and address were provided by the person, business or organisation claiming from you (the claimant).');
 
     I.see('Organisation name', 'h2.govuk-heading-m');
     I.see('Version 1', 'p.govuk-label');
@@ -27,7 +27,7 @@ class Response {
     I.seeElement('input.govuk-input#contactPerson');
 
     I.see('Company address', 'h2.govuk-heading-m');
-    I.see('If your address is not correct you can change it here.Any changes will be shared with the claimant when you submit your response.', 'p.govuk-body');
+    I.see('If your address is not correct you can change it here.Any changes will be shared with the claimant when you submit your response.');
     I.see('Building and street', 'label.govuk-label');
     I.seeElement('input[id="primaryAddress[addressLine1]"]');
     I.seeElement('input[id="primaryAddress[addressLine2]"]');
@@ -50,8 +50,8 @@ class Response {
     I.seeInCurrentUrl('/response/your-phone');
     seeInTitle('Your phone number');
     I.see('Enter a phone number (optional)', 'h1.govuk-heading-l');
-    I.see('We will only call you if we need more information about this claim.', 'p.govuk-body');
-    I.see('We\'ll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.', 'p.govuk-body');
+    I.see('We will only call you if we need more information about this claim.');
+    I.see('We\'ll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.');
     I.see('Use numbers only, for example, 01632960001.', 'div.govuk-hint');
     I.seeElement('input[id="telephoneNumber"]');
     I.fillField('#telephoneNumber', '07557777890');
@@ -192,7 +192,7 @@ class Response {
     seeInTitle('Why do you disagree?');
 
     I.see('Why do you disagree with the claim amount?', 'h1.govuk-heading-l');
-    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body');
+    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.');
 
     I.fillField('textarea[id="text"]', 'test');
 
@@ -267,21 +267,21 @@ class Response {
     seeInTitle('Free telephone mediation');
 
     I.see('Free telephone mediation', 'h1.govuk-heading-l');
-    I.see('We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.', 'p.govuk-body');
+    I.see('We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.');
 
     I.see('How free mediation works', 'h2.govuk-heading-m');
-    I.see('A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.', 'p.govuk-body');
+    I.see('A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.');
     I.see('Mediation can be quicker, cheaper and less stressful than going to court.', 'div.govuk-inset-text');
-    I.see('Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.', 'p.govuk-body');
-    I.see('The claimant must agree to mediation. We\'ll contact you within 28 days after the claimant\'s confirmation, to arrange a free appointment.', 'p.govuk-body');
-    I.see('Your mediation appointment will last for no more than an hour.', 'p.govuk-body');
-    I.see('Find out more about', 'p.govuk-body');
+    I.see('Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.');
+    I.see('The claimant must agree to mediation. We\'ll contact you within 28 days after the claimant\'s confirmation, to arrange a free appointment.');
+    I.see('Your mediation appointment will last for no more than an hour.');
+    I.see('Find out more about');
     I.see('free telephone mediation (opens in new tab).', 'a.govuk-link');
 
     I.see('Reaching a settlement', 'h2.govuk-heading-m');
-    I.see('If mediation is successful, you\'ll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.', 'p.govuk-body');
-    I.see('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.', 'p.govuk-body');
-    I.see('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.', 'p.govuk-body');
+    I.see('If mediation is successful, you\'ll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.');
+    I.see('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.');
+    I.see('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.');
     I.see('You will not have to wait longer for a court hearing if you choose mediation.', 'div.govuk-inset-text');
 
     I.see('I do not agree to free mediation', 'a.govuk-link');
@@ -307,7 +307,7 @@ class Response {
     seeInTitle('Determination without hearing');
     I.see('Determination without Hearing Questions', 'h1.govuk-heading-l');
     I.seeElement('//span[contains(., "Do you consider that this claim is suitable for determination without a hearing")]');
-    I.see('i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?','p.govuk-body');
+    I.see('i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?');
 
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     I.see('Tell us why', 'label.govuk-label');
@@ -317,10 +317,10 @@ class Response {
     I.seeInCurrentUrl('/directions-questionnaire/expert');
     seeInTitle('Using an expert');
     I.see('Using an expert', 'h1.govuk-heading-l');
-    I.see('It\'s rare for a judge to allow you to use an expert in a small claim. Most small claims don\'t need an expert.', 'p.govuk-body');
-    I.see('An expert is not a legal representative.', 'p.govuk-body');
+    I.see('It\'s rare for a judge to allow you to use an expert in a small claim. Most small claims don\'t need an expert.');
+    I.see('An expert is not a legal representative.');
 
-    I.see('An expert is not a legal representative.', 'p.govuk-body');
+    I.see('An expert is not a legal representative.');
     I.seeElement('input.link-button#expertYes');
     clickButton(buttonType.CONTINUE_WITHOUT_AN_EXPERT);
 
@@ -334,28 +334,28 @@ class Response {
     I.seeInCurrentUrl('/directions-questionnaire/other-witnesses');
     seeInTitle('Do you have other witnesses?');
     I.see('Do you have other witnesses?', 'h1.govuk-heading-l');
-    I.see('This is someone who can confirm your version of events.', 'p.govuk-body');
+    I.see('This is someone who can confirm your version of events.');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/cant-attend-hearing-in-next-12-months');
     seeInTitle('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?');
     I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 'h1.govuk-heading-l');
-    I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked', 'p.govuk-body');
+    I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/phone-or-video-hearing');
     seeInTitle('Do you want to ask for a telephone or video hearing?');
     I.see('Do you want to ask for a telephone or video hearing?', 'h1.govuk-heading-l');
-    I.see('The judge will decide if the hearing can be held by telephone or video.', 'p.govuk-body');
+    I.see('The judge will decide if the hearing can be held by telephone or video.');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/vulnerability');
     seeInTitle('Vulnerability questions');
     I.see('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 'h1.govuk-heading-l');
-    I.see('This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.', 'p.govuk-body');
+    I.see('This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
@@ -368,7 +368,7 @@ class Response {
     I.seeInCurrentUrl('/directions-questionnaire/court-location');
     seeInTitle('Specific court');
     I.see('Please select your preferred court hearing location.', 'h1.govuk-heading-l');
-    I.see('You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties\' circumstances when deciding where to hold the hearing. Find your nearest court by postcode :', 'p.govuk-body');
+    I.see('You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties\' circumstances when deciding where to hold the hearing. Find your nearest court by postcode :');
     I.see('Select a court', 'label.govuk-label');
 
     I.selectOption('select[name="courtLocation"]', 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ');
@@ -381,11 +381,11 @@ class Response {
     I.seeInCurrentUrl('/directions-questionnaire/welsh-language');
     seeInTitle('Welsh language');
     I.see('Welsh language', 'h1.govuk-heading-l');
-    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.', 'p.govuk-body');
+    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
 
-    I.see('What languages will you, your experts and your witnesses speak at the hearing?', 'p.govuk-body');
+    I.see('What languages will you, your experts and your witnesses speak at the hearing?');
     I.checkOption(`#${speakLanguage.ENGLISH}`);
-    I.see('What languages will the documents be provided in?', 'p.govuk-body');
+    I.see('What languages will the documents be provided in?');
     I.checkOption(`#${documentLanguage.ENGLISH}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
@@ -429,9 +429,9 @@ class Response {
     I.seeInCurrentUrl('/response/statement-of-means/intro');
     seeInTitle('Your financial details');
     I.see('Send Mr. Jan Clark your financial details', 'h1.govuk-heading-l');
-    I.see('\'You need to send \' Mr. Jan Clark your company or organisation\'s most recent statement of accounts.', 'p.govuk-body');
-    I.see('They\'ll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.', 'p.govuk-body');
-    I.see('If they reject your plan, the court will make a new plan based on your financial details.', 'p.govuk-body');
+    I.see('\'You need to send \' Mr. Jan Clark your company or organisation\'s most recent statement of accounts.');
+    I.see('They\'ll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.');
+    I.see('If they reject your plan, the court will make a new plan based on your financial details.');
     I.seeElement('a', 'Get Mr. Jan Clark \'s contact details.');
 
     clickButton(buttonType.CONTINUE);
@@ -483,9 +483,9 @@ class Response {
     I.seeInCurrentUrl('/response/check-and-send');
     seeInTitle('Check your answers');
     I.see('Statement of truth', 'h2.govuk-heading-m');
-    I.see('The information on this page forms your response. You can see it on the response form after you submit.', 'p.govuk-body');
-    I.see('When you\'re satisfied that your answers are accurate, you should tick to "sign" this statement of truth on the form', 'p.govuk-body');
-    I.see('You must hold a senior position in your organisation to sign the statement of truth.', 'p.govuk-body');
+    I.see('The information on this page forms your response. You can see it on the response form after you submit.');
+    I.see('When you\'re satisfied that your answers are accurate, you should tick to "sign" this statement of truth on the form');
+    I.see('You must hold a senior position in your organisation to sign the statement of truth.');
     I.see('Types of senior position', '.govuk-details__summary-text');
 
     I.see('Full name', 'label.govuk-label');

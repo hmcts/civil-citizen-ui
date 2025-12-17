@@ -29,13 +29,13 @@
         <form name="accounts" method="post" novalidate>
           {{ csrfProtection(csrf) }}
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label id="account-type-label" class="govuk-label--s">{{ t('COMMON.ACCOUNT_TYPE') }}</label>
+            <div id="account-type-label" class="govuk-label--s govuk-!-margin-bottom-3">{{ t('COMMON.ACCOUNT_TYPE') }}</div>
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label id="account-joint-label" class="govuk-label--s">{{ t('COMMON.BANK_JOINT_ACCOUNT') }}</label>
+            <div id="account-joint-label" class="govuk-label--s govuk-!-margin-bottom-3">{{ t('COMMON.BANK_JOINT_ACCOUNT') }}</div>
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label id="account-balance-label" class="govuk-label--s">{{ t('COMMON.BALANCE') }}</label>
+            <div id="account-balance-label" class="govuk-label--s govuk-!-margin-bottom-3">{{ t('COMMON.BALANCE') }}</div>
           </div>
           {% for account in form.model.accounts %}
             {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0, t, form.errorFor, formErrors) }}
@@ -61,4 +61,3 @@
     </main>
   </div>
 {% endblock %}
-

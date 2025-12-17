@@ -7,7 +7,6 @@ import {
   HEARING_FEE_CANCEL_JOURNEY,
 } from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -20,9 +19,6 @@ describe('Apply for help with fees', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   describe('on GET', () => {

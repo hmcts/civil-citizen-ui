@@ -11,6 +11,10 @@
 {% endblock %}
 
 {% set otherHtml %}
+  <fieldset class="govuk-fieldset govuk-!-margin-top-4">
+    <legend class="govuk-visually-hidden">
+      {{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.OTHER') }}
+    </legend>
   {{ govukRadios({
     idPrefix: "optionOther",
     name: "optionOther",
@@ -76,16 +80,16 @@
       text: t(typeError)
     } if typeError
   }) }}
-
+  </fieldset>
 {% endset %}
 
 {% block nestedContent %}
           {% if isQMEnabled %}
-            <h1 class="govuk-caption-l">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
+            <h1 class="govuk-caption-l" id="page-caption">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
           {% else %}
-            <h1 class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
+            <h1 class="govuk-caption-l" id="page-caption">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
           {% endif %}
-          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
+          <h1 class="govuk-heading-l" id="page-title">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
 
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.WHEN_YOU_REQUEST') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.APPLICATION_NOT_NEW') }}</p>
@@ -93,8 +97,12 @@
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.NEED_MULTIPLE_APPLICATIONS') }}</p>
           <h1 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ALL_APPLICATIONS') }}</h1>
 
-          <form method="post" novalidate>
+          <form method="post" novalidate aria-labelledby="page-title page-caption">
             {{ csrfProtection(csrf) }}
+              <fieldset class="govuk-fieldset govuk-!-margin-top-4">
+                <legend class="govuk-visually-hidden">
+                  {{ t('PAGES.GENERAL_APPLICATION.SUMMARY.TITLE') }}
+                </legend>
             {% set typeError = form.errorFor('option') %}
             <div class="govuk-form-group">
             {% if showCCJ === true %}
@@ -239,6 +247,7 @@
                             }) }}
               {% endif %}
             </div>
+            </fieldset>
             <div class="govuk-button-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.CONTINUE')
