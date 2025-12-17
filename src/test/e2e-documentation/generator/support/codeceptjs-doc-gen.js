@@ -397,8 +397,11 @@ function formatDependentFeature(scenarios) {
   const flattenedSteps = [...beforeSuite];
   const featureSkipped = scenarios.some(s => s.featureSkipped);
   scenarios.forEach(scenario => {
-    const steps = scenario.collectedSteps || [];
-    steps.forEach(step => {
+    const scenarioSteps = [
+      ...(scenario.beforeSteps || []),
+      ...(scenario.collectedSteps || [])
+    ];
+    scenarioSteps.forEach(step => {
       flattenedSteps.push(scenario.skipped ? `${step} (skipped)` : step);
     });
   });

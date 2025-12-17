@@ -61,7 +61,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   const responseToTheClaimNotif = responseToTheClaim(defendantName);
   await verifyNotificationTitleAndContent(legacyCaseReference, responseToTheClaimNotif.title, responseToTheClaimNotif.content);
   await I.click(responseToTheClaimNotif.nextSteps);
-}).tag('@noc');
+}).tag('@ui-noc');
 
 Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline', async ({
   I,
@@ -82,7 +82,7 @@ Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline'
 
   const nocForLipCaseGoesOfflineNotif = nocForLipCaseGoesOffline(defendantName);
   await verifyNotificationTitleAndContent(legacyCaseReference, nocForLipCaseGoesOfflineNotif.title, nocForLipCaseGoesOfflineNotif.content);
-}).tag('@noc');
+}).tag('@ui-noc');
 
 Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline', async ({
   I,
@@ -103,4 +103,4 @@ Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline'
 
   const nocForLipCaseGoesOfflineNotif = nocForLipCaseGoesOffline(defendantName);
   await verifyNotificationTitleAndContent(legacyCaseReference, nocForLipCaseGoesOfflineNotif.title, nocForLipCaseGoesOfflineNotif.content);
-}).tag('@noc');
+}).tag('@ui-noc');

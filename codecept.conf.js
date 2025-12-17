@@ -62,7 +62,7 @@ exports.config = {
       ignoreHTTPSErrors: true,
     },
     BrowserHelpers: {
-      require: 'src/test//functionalTests/helpers/browser_helper.js',
+      require: 'src/test/functionalTests/helpers/browser_helper.js',
     },
   },
   include: {

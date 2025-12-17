@@ -7,7 +7,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('QM - LIP - Claimant and Defendant Journey - Non Hearing').tag('@ui-nightly-prod @ui-qm');
 
-Before(async () => {
+BeforeSuite(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });

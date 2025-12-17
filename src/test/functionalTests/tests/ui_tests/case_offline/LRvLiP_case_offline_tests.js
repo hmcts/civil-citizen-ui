@@ -35,4 +35,4 @@ Scenario.skip('Case is taken offline after SDO for non early adopters', async ({
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.claimantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await api.caseProceedsInCaseman();
-}).tag('@case-progression @ui-prod');
+}).tag('@ui-case-progression @ui-prod');
