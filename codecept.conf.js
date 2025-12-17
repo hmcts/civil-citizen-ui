@@ -93,7 +93,7 @@ exports.config = {
     },
     failedAndNotExecutedTestFilesPlugin: {
       enabled: functional ?? false,
-      require: './src/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin',
+      require: './src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin',
     },
   },
   mocha: {
