@@ -12,6 +12,13 @@
           inputmode: "numeric",
           name: "date",
           describedBy: "timeline-date-heading",
+          fieldset: {
+            legend: {
+              text: t('COMMON.DATE') + " " + rowNumber,
+              classes: 'govuk-visually-hidden',
+              html: '<span class="govuk-visually-hidden">Row </span>' + rowNumber
+            }
+          },
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -52,7 +59,7 @@
           spellcheck: false,
           describedBy: "timeline-description-heading",
           label: {
-            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + rowNumber,
+            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " row " + rowNumber,
             classes: 'govuk-visually-hidden'
           },
           errorMessage: {
