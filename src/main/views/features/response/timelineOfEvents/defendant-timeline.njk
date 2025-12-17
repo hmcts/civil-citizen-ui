@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
+
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
@@ -43,7 +44,7 @@
               </tbody>
               {% elseif pdfUrl %}
                 <a id="timeline-link" href="{{ pdfUrl }}" target="_blank" rel="noreferrer noopener"
-                   class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+                class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
               {% endif %}
             </table>
           </div>
@@ -70,9 +71,13 @@
                 {{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}
               </p>
             </div>
+
+            <!-- ADD THIS WRAPPER - THIS IS THE ONLY CHANGE NEEDED -->
+            <div id="rows">
             {% for timeline in form.model.rows %}
               {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
             {% endfor %}
+            </div>
 
             {{ govukButton({
               text: t('COMMON.BUTTONS.ADD_ANOTHER_EVENT'),
