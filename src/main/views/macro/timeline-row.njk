@@ -3,106 +3,83 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% macro timelineRow(timelineModel, index, form, t, rowNumber) %}
-  <div class="row-container" data-row>
-    <div class="multiple-row">
-      <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-        {{ govukDateInput({
-          id: "rows-" + index + "-date",
-          name: "date",
-          fieldset: {
+<div class="row-container">
+  <div class="multiple-row">
+    <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+
+      {# Unique hidden heading for this row's date - used for aria-labelledby #}
+      <h3 id="date-row-heading-{{ index }}" class="govuk-visually-hidden">
+        {{ t('COMMON.DATE') }} {{ t('COMMON.ROW') }} {{ rowNumber }}
+      </h3>
+
+      {{ govukDateInput({
+        id: "rows-" + index + "-date",
+        type: "number",
+        inputmode: "numeric",
+        name: "date",
+       fieldset: {
+          attributes: {
+            "aria-labelledby": "date-row-heading-" + index
+          },
+          legend: {
+            text: t('COMMON.DATE'),
+            classes: "govuk-visually-hidden"
+          }
+        },
+        items: [
+          {
+            classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+            id: "rows-" + index + "-day",
+            label: t('COMMON.DAY'),
+            name: "rows[" + index + "][day]",
+            value: timelineModel.day,
+            max: 31,
             attributes: {
-              "data-date-fieldset": "true"
-            },
-            legend: {
-              text: t('COMMON.DATE') + " " + t('COMMON.ROW') + " " + rowNumber,
-              classes: "govuk-visually-hidden"
+              "aria-label": t('COMMON.DAY') + " " + t('COMMON.ROW') + " " + rowNumber
             }
           },
-          items: [
-            {
-              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
-              id: "rows-" + index + "-day",
-              label: t('COMMON.DAY'),
-              name: "rows[" + index + "][day]",
-              value: timelineModel.day,
-              max: 31
-            },
-            {
-              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
-              id: "rows-" + index + "-month",
-              label: t('COMMON.MONTH'),
-              name: "rows[" + index + "][month]",
-              value: timelineModel.month,
-              max: 12
-            },
-            {
-              classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
-              id: "rows-" + index + "-year",
-              label: t('COMMON.YEAR'),
-              name: "rows[" + index + "][year]",
-              value: timelineModel.year,
-              max: 9999
+          {
+            classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+            id: "rows-" + index + "-month",
+            label: t('COMMON.MONTH'),
+            name: "rows[" + index + "][month]",
+            value: timelineModel.month,
+            max: 12,
+            attributes: {
+              "aria-label": t('COMMON.MONTH') + " " + t('COMMON.ROW') + " " + rowNumber
             }
-          ],
-          errorMessage: {
-            text: t(form.errorFor("rows[" + index + "][date]"))
-          } if form.hasFieldError("rows[" + index + "][date]")
-        }) }}
-      </div>
-      <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-        {{ govukTextarea({
-          id: "rows[" + index + "][description]",
-          name: "rows[" + index + "][description]",
-          value: timelineModel.description,
-          classes: "govuk-grid-column-full",
-          spellcheck: false,
-          describedBy: "timeline-description-heading",
-          label: {
-            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + t('COMMON.ROW') + " " + rowNumber,
-            classes: 'govuk-visually-hidden'
           },
-          errorMessage: {
-            text: t(form.errorFor("rows[" + index + "][description]"))
-          } if form.hasFieldError("rows[" + index + "][description]")
-        }) }}
-      </div>
+          {
+            classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+            id: "rows-" + index + "-year",
+            label: t('COMMON.YEAR'),
+            name: "rows[" + index + "][year]",
+            value: timelineModel.year,
+            max: 9999,
+            attributes: {
+              "aria-label": t('COMMON.YEAR') + " " + t('COMMON.ROW') + " " + rowNumber
+            }
+          }
+        ],
+        errorMessage: { text: t(form.errorFor("rows[" + index + "][date]")) } if form.hasFieldError("rows[" + index + "][date]")
+      }) }}
+    </div>
+
+    <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+      {{ govukTextarea({
+        id: "rows[" + index + "][description]",
+        name: "rows[" + index + "][description]",
+        value: timelineModel.description,
+        classes: "govuk-grid-column-full",
+        spellcheck: false,
+        describedBy: "timeline-description-heading",
+        label: {
+          text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + t('COMMON.ROW') + " " + rowNumber,
+          classes: 'govuk-visually-hidden'
+        },
+        errorMessage: { text: t(form.errorFor("rows[" + index + "][description]")) } if form.hasFieldError("rows[" + index + "][description]")
+      }) }}
     </div>
   </div>
+</div>
 {% endmacro %}
-
-<script>
-  (function () {
-
-    function refreshTimelineRowAccessibility () {
-      const rows = document.querySelectorAll('[data-row]');
-
-      rows.forEach(function (row, index) {
-        const rowNumber = index + 1;
-        const fieldset = row.querySelector('[data-date-fieldset]');
-        if (!fieldset) return;
-
-        const legend = fieldset.querySelector('legend');
-        const labelText = '{{ t("COMMON.DATE") }} {{ t("COMMON.ROW") }} ' + rowNumber;
-
-        if (legend) {
-          legend.textContent = labelText;
-          fieldset.setAttribute('aria-label', labelText);
-        }
-
-        fieldset.setAttribute('aria-label', labelText);
-      });
-    }
-
-    // Initial load
-    document.addEventListener('DOMContentLoaded', refreshTimelineRowAccessibility);
-
-    // When "Add another event" button is clicked
-    document.addEventListener('click', function (e) {
-      if (e.target.closest('.append-row')) {
-        // Wait for the new row to be added to the DOM
-        setTimeout(refreshTimelineRowAccessibility, 0);
-      }
-    });
-
-  })();
-</script>
