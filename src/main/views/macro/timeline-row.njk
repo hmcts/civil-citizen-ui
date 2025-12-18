@@ -7,7 +7,7 @@
   <div class="multiple-row">
     <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
 
-      {# Unique hidden heading – this is the ONLY source of truth for the row number #}
+      {# Unique visually hidden heading for accessible grouping of the date fieldset #}
       <h3 id="date-row-heading-{{ index }}" class="govuk-visually-hidden">
         {{ t('COMMON.DATE') }} {{ t('COMMON.ROW') }} {{ rowNumber }}
       </h3>
@@ -65,7 +65,6 @@
         errorMessage: { text: t(form.errorFor("rows[" + index + "][date]")) } if form.hasFieldError("rows[" + index + "][date]")
       }) }}
     </div>
-
     <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
       {{ govukTextarea({
         id: "rows[" + index + "][description]",
@@ -84,3 +83,78 @@
   </div>
 </div>
 {% endmacro %}
+
+
+
+<div id="timeline-live-region" class="govuk-visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+(function () {
+  function refreshTimelineRowAccessibility() {
+    const rows = document.querySelectorAll('.row-container');
+    let lastRow = null;
+
+    rows.forEach(function (row, index) {
+      const rowNumber = index + 1;
+      const labelText = '{{ t("COMMON.DATE") }} {{ t("COMMON.ROW") }} ' + rowNumber;
+
+      // Update hidden heading used by aria-labelledby
+      const heading = row.querySelector('h3[id^="date-row-heading-"]');
+      if (heading) {
+        heading.textContent = labelText;
+      }
+
+      // Update aria-label on each date input (critical for reliable screen reader announcement)
+      const dayInput = row.querySelector('input[id$="-day"]');
+      const monthInput = row.querySelector('input[id$="-month"]');
+      const yearInput = row.querySelector('input[id$="-year"]');
+
+      if (dayInput) {
+        dayInput.setAttribute('aria-label', labelText + ' {{ t("COMMON.DAY") }}');
+      }
+      if (monthInput) {
+        monthInput.setAttribute('aria-label', labelText + ' {{ t("COMMON.MONTH") }}');
+      }
+      if (yearInput) {
+        yearInput.setAttribute('aria-label', labelText + ' {{ t("COMMON.YEAR") }}');
+      }
+
+      lastRow = row;
+    });
+
+    return lastRow;
+  }
+
+  function announceRowAdded(rowNumber) {
+    const liveRegion = document.getElementById('timeline-live-region');
+    if (liveRegion) {
+      liveRegion.textContent = '{{ t("COMMON.DATE") }} {{ t("COMMON.ROW") }} ' + rowNumber + ' added';
+    }
+  }
+
+  function focusFirstDateField(row) {
+    if (!row) return;
+    const firstInput = row.querySelector('input');
+    if (firstInput) {
+      firstInput.focus();
+    }
+  }
+
+  // Run on initial page load
+  document.addEventListener('DOMContentLoaded', refreshTimelineRowAccessibility);
+
+  // Run when "Add another event" button is clicked
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.append-row')) return;
+
+    setTimeout(function () {
+      const lastRow = refreshTimelineRowAccessibility();
+      const rows = document.querySelectorAll('.row-container');
+      const rowNumber = rows.length;
+
+      announceRowAdded(rowNumber);
+      focusFirstDateField(lastRow);
+    }, 0);
+  });
+})();
+</script>
