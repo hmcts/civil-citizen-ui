@@ -75,16 +75,7 @@
 
             <div id="rows">
               {% for timeline in form.model.rows %}
-                <div class="row-container">
-                  <div class="multiple-row">
-                    <!-- Single hidden row announcement for the entire row (uses same index as What happened) -->
-                    <div class="govuk-visually-hidden" aria-hidden="false">
-                      {{ t('COMMON.ROW') }} {{ loop.index }}
-                    </div>
-
-                    {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
-                  </div>
-                </div>
+                {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
               {% endfor %}
             </div>
 
