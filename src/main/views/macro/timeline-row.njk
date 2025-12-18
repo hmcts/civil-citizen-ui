@@ -14,7 +14,7 @@
           describedBy: "timeline-date-heading",
           fieldset: {
             legend: {
-              text: t('COMMON.DATE'),
+              text: t('COMMON.DATE') + " " + t('COMMON.ROW') + " " + rowNumber,
               classes: 'govuk-visually-hidden'
             }
           },
@@ -25,8 +25,7 @@
               label: t('COMMON.DAY'),
               name: "rows[" + index + "][day]",
               value: timelineModel.day,
-              max: 31,
-              html: '<span class="govuk-visually-hidden" aria-hidden="false">' + t('COMMON.ROW') + ' ' + rowNumber + '</span>'
+              max: 31
             },
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
@@ -34,8 +33,7 @@
               label: t('COMMON.MONTH'),
               name: "rows[" + index + "][month]",
               value: timelineModel.month,
-              max: 12,
-              html: '<span class="govuk-visually-hidden" aria-hidden="false">' + t('COMMON.ROW') + ' ' + rowNumber + '</span>'
+              max: 12
             },
             {
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
@@ -43,8 +41,7 @@
               label: t('COMMON.YEAR'),
               name: "rows[" + index + "][year]",
               value: timelineModel.year,
-              max: 9999,
-              html: '<span class="govuk-visually-hidden" aria-hidden="false">' + t('COMMON.ROW') + ' ' + rowNumber + '</span>'
+              max: 9999
             }
           ],
           errorMessage: {
