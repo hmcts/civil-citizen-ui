@@ -77,10 +77,10 @@
               {% for timeline in form.model.rows %}
                 <div class="row-container">
                   <div class="multiple-row">
-                    <!-- Hidden label for Date column row number (attached to Day field) -->
-                    <label for="rows-{{ loop.index0 }}-day" class="govuk-visually-hidden">
+                    <!-- Single hidden row announcement for the entire row (uses same index as What happened) -->
+                    <div class="govuk-visually-hidden" aria-hidden="false">
                       {{ t('COMMON.ROW') }} {{ loop.index }}
-                    </label>
+                    </div>
 
                     {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
                   </div>
