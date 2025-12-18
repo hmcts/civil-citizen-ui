@@ -7,7 +7,7 @@
   <div class="multiple-row">
     <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
 
-      {# Unique hidden heading for this row's date - used for aria-labelledby #}
+      {# Unique hidden heading – this is the ONLY source of truth for the row number #}
       <h3 id="date-row-heading-{{ index }}" class="govuk-visually-hidden">
         {{ t('COMMON.DATE') }} {{ t('COMMON.ROW') }} {{ rowNumber }}
       </h3>
@@ -17,13 +17,14 @@
         type: "number",
         inputmode: "numeric",
         name: "date",
-       fieldset: {
+        describedBy: "timeline-date-heading",
+        fieldset: {
           attributes: {
-            "aria-labelledby": "date-row-heading-" + index
+            "aria-labelledby": "date-row-heading-{{ index }}"
           },
           legend: {
             text: t('COMMON.DATE'),
-            classes: "govuk-visually-hidden"
+            classes: 'govuk-visually-hidden'
           }
         },
         items: [
@@ -35,7 +36,7 @@
             value: timelineModel.day,
             max: 31,
             attributes: {
-              "aria-label": t('COMMON.DAY') + " " + t('COMMON.ROW') + " " + rowNumber
+              "aria-label": t('COMMON.DATE') + " " + t('COMMON.ROW') + " " + rowNumber + " " + t('COMMON.DAY')
             }
           },
           {
@@ -46,7 +47,7 @@
             value: timelineModel.month,
             max: 12,
             attributes: {
-              "aria-label": t('COMMON.MONTH') + " " + t('COMMON.ROW') + " " + rowNumber
+              "aria-label": t('COMMON.DATE') + " " + t('COMMON.ROW') + " " + rowNumber + " " + t('COMMON.MONTH')
             }
           },
           {
@@ -57,7 +58,7 @@
             value: timelineModel.year,
             max: 9999,
             attributes: {
-              "aria-label": t('COMMON.YEAR') + " " + t('COMMON.ROW') + " " + rowNumber
+              "aria-label": t('COMMON.DATE') + " " + t('COMMON.ROW') + " " + rowNumber + " " + t('COMMON.YEAR')
             }
           }
         ],
