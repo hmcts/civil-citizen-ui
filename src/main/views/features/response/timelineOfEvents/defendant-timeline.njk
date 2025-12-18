@@ -75,7 +75,16 @@
 
             <div id="rows">
               {% for timeline in form.model.rows %}
-                {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
+                <div class="row-container">
+                  <div class="multiple-row">
+                    <!-- Hidden label for Date column row number (attached to Day field) -->
+                    <label for="rows-{{ loop.index0 }}-day" class="govuk-visually-hidden">
+                      {{ t('COMMON.ROW') }} {{ loop.index }}
+                    </label>
+
+                    {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
+                  </div>
+                </div>
               {% endfor %}
             </div>
 
