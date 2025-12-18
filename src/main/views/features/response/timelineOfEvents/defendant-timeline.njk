@@ -28,19 +28,19 @@
             <h2 class="govuk-heading-s">{{ t('PAGES.DEFENDANT_TIMELINE.THEIR_TIMELINE') }}</h2>
             <table class="govuk-table">
               {% if theirTimeline.length %}
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
-                <th scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              {% for event in theirTimeline %}
-                <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
-                  <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
-                </tr>
-              {% endfor %}
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
+                    <th scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% for event in theirTimeline %}
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
+                      <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+                    </tr>
+                  {% endfor %}
                 </tbody>
               {% elseif pdfUrl %}
                 <a id="timeline-link" href="{{ pdfUrl }}" target="_blank" rel="noreferrer noopener" class="govuk-link">
@@ -74,22 +74,8 @@
             </div>
 
             <div id="rows">
-            {% for timeline in form.model.rows %}
-                <div class="row-container" data-row-number="{{ loop.index }}">
-                  <div class="multiple-row">
-                    <!-- Hidden label for Date column - attached to Day field -->
-                    <label for="rows-{{ loop.index0 }}-day" class="govuk-visually-hidden">
-                      {{ t('COMMON.ROW') }} {{ loop.index }}
-                    </label>
-
-                    <!-- Hidden label for What happened column - attached to textarea -->
-                    <label for="rows[{{ loop.index0 }}][description]" class="govuk-visually-hidden">
-                      {{ t('COMMON.ROW') }} {{ loop.index }}
-                    </label>
-
-             {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
-                  </div>
-                </div>
+              {% for timeline in form.model.rows %}
+                {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
               {% endfor %}
             </div>
 
@@ -108,9 +94,7 @@
               value: form.model.comment,
               classes: "govuk-grid-column-full",
               spellcheck: false,
-              errorMessage: {
-                text: t(form.errorFor("comment"))
-              } if form.hasFieldError( "comment")
+              errorMessage: { text: t(form.errorFor("comment")) } if form.hasFieldError("comment")
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({

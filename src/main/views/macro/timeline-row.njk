@@ -11,7 +11,6 @@
           type: "number",
           inputmode: "numeric",
           name: "date",
-          describedBy: "timeline-date-heading",
           fieldset: {
             legend: {
               text: t('COMMON.DATE') + " " + rowNumber,
@@ -56,9 +55,8 @@
           value: timelineModel.description,
           classes: "govuk-grid-column-full",
           spellcheck: false,
-          describedBy: "timeline-description-heading",
           label: {
-            text: t('COMMON.ROW') + " " + rowNumber,
+            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + t('COMMON.ROW') + " " + rowNumber,
             classes: 'govuk-visually-hidden'
           },
           errorMessage: {
