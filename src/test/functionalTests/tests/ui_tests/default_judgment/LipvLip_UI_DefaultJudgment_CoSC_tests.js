@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let claimRef, notification, claimNumber, caseData;
 
-Feature('Create Lip v Lip claim -  Default Judgment').tag('@ui-dj');;
+Feature('Create Lip v Lip claim -  Default Judgment').tag('@ui-dj');
 
 Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api, I}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

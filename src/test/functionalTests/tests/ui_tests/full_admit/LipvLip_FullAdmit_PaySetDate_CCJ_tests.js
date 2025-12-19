@@ -7,12 +7,13 @@ const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e
 const {
   defendantResponseFullAdmitPayBySetDateDefendant,
   defendantResponseFullAdmitPayBySetDateClaimant,
-  claimantNotificationCCJRequested,
+  defendantResponseFullAdmitPayBySetDateClaimantCoSC,
+  defendantResponseConfirmYouHavePaidAJudgmentCCJDebt
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025';
+let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October 2025', notification;
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant').tag('@ui-full-admit @ui-nightly-prod');
 
