@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`div, input, textarea, select, label, fieldset, legend, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
@@ -71,12 +71,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function getLastRow(multipleRowElement) {
     const lastElementIndex = multipleRowElement.length - 1;
-    console.log('getLastRow last elements index : ' + lastElementIndex );
     return multipleRowElement[lastElementIndex];
   }
 
   function updateNewRow(addedRow) {
-    console.log('updating new row  ' );
     const newRow = getLastRow(addedRow);
     removeErrors(newRow);
   }
