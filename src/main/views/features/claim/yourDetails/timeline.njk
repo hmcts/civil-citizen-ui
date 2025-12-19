@@ -57,7 +57,6 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
               </div>
               {% for timeline in form.model.rows %}
-                    <span class="govuk-visually-hidden"> {{rowNumber}} +  ' - ' +  {{loop.index0}} +  ' - '   {{loop.index}} </span>
                 {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
               {% endfor %}
             </div>
