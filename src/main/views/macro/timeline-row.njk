@@ -11,39 +11,45 @@
           type: "number",
           inputmode: "numeric",
           name: "date",
-          describedBy: "timeline-date-heading",
-          fieldset: {
-              legend: {
-                html: '<span class="govuk-visually-hidden">' +
-                      t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + index +
-                      '</span>',
-                 classes: "govuk-fieldset__legend--m"
-              }
-            },
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
               id: "rows-" + index + "-day",
-              label: t('COMMON.DAY'),
               name: "rows[" + index + "][day]",
               value: timelineModel.day,
-              max: 31
+              max: 31,
+              label: {
+                text: t('COMMON.DAY')
+              },
+              hint: {
+                html: '<span class="govuk-visually-hidden">' + t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber + '</span>'
+              }
             },
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
               id: "rows-" + index + "-month",
-              label: t('COMMON.MONTH'),
               name: "rows[" + index + "][month]",
               value: timelineModel.month,
-              max: 12
+              max: 12,
+              label: {
+                text: t('COMMON.MONTH')
+              },
+              hint: {
+                html: '<span class="govuk-visually-hidden">' + t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber + '</span>'
+              }
             },
             {
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
               id: "rows-" + index + "-year",
-              label: t('COMMON.YEAR'),
               name: "rows[" + index + "][year]",
               value: timelineModel.year,
-              max: 9999
+              max: 9999,
+              label: {
+                text: t('COMMON.YEAR')
+              },
+              hint: {
+                html: '<span class="govuk-visually-hidden">' + t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber + '</span>'
+              }
             }
           ],
 
