@@ -20,10 +20,22 @@ document.addEventListener('DOMContentLoaded', function () {
   const radioButtonConditional = 'govuk-radios__conditional';
   const radioButtonConditionalClassName = '.govuk-radios__conditional';
   const appendRowButton = document.getElementsByClassName('append-row');
+  const appendTimelineRowButton = document.getElementsByClassName('append-timeline-row');
+
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
       event.preventDefault();
       cloneRow();
+      showRemoveButton();
+      addEventListenerToRemoveButtons();
+    });
+    addEventListenerToRemoveButtons();
+  }
+
+  if (elementExists(appendTimelineRowButton)) {
+    appendRowButton[0].addEventListener('click', (event) => {
+      event.preventDefault();
+      cloneTimelineRow();
       showRemoveButton();
       addEventListenerToRemoveButtons();
     });
@@ -45,6 +57,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       }
     });
+  }
+
+  function cloneTimelineRow() {
+    const rowContainerwElement = document.getElementsByClassName('row-container');
+    if (elementExists(rowContainerwElement)) {
+      const lastRow = getLastRow(rowContainerwElement);
+      console.log(`last row : ${lastRow}`);
+      const newRow = lastRow.cloneNode(true);
+      const children = newRow.children;
+      console.log(`children  : ${children}`);
+      Array.from(children).forEach((child) => {
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        updateInputs(elements);
+        removeErrors(child);
+      });
+      lastRow.parentNode.appendChild(newRow);
+      updateNewRow(document.getElementsByClassName('row-container'));
+    }
   }
 
   function cloneRow() {
