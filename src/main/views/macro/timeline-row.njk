@@ -13,13 +13,11 @@
           name: "date",
           describedBy: "timeline-date-heading",
           fieldset: {
-              legend: {
-                html: '<span class="govuk-visually-hidden">' +
-                      t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber +
-                      '</span>',
-                 classes: "govuk-fieldset__legend--m"
-              }
+             label: {
+             text: t('COMMON.DATE') + " " + t('COMMON.ROW') + " " + rowNumber,
+             classes: 'govuk-visually-hidden'
             },
+          },
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -46,6 +44,7 @@
               max: 9999
             }
           ],
+
           errorMessage: {
             text: t(form.errorFor("rows[" + index + "][date]"))
           } if form.hasFieldError("rows[" + index + "][date]")
