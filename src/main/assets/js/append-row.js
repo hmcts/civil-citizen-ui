@@ -71,10 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function getLastRow(multipleRowElement) {
     const lastElementIndex = multipleRowElement.length - 1;
+    console.log('getLastRow last elements index : ' + lastElementIndex );
     return multipleRowElement[lastElementIndex];
   }
 
   function updateNewRow(addedRow) {
+    console.log('updating new row  ' );
     const newRow = getLastRow(addedRow);
     removeErrors(newRow);
   }
