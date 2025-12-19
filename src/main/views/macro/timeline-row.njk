@@ -44,10 +44,11 @@
               max: 9999
             }
           ],
-          label: {
-                html: '<span class="govuk-visually-hidden">' + t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber + '</span>',
-                for: "rows-" + index + "-date"
-              },
+            label: {
+              text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
+              for: "rows-" + index + "-date",
+              classes: "govuk-label govuk-visually-hidden"
+            }
           errorMessage: {
             text: t(form.errorFor("rows[" + index + "][date]"))
           } if form.hasFieldError("rows[" + index + "][date]")
