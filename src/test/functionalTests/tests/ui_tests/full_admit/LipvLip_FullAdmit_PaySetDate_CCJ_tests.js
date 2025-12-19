@@ -17,7 +17,7 @@ let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant').tag('@ui-full-admit @ui-nightly-prod');
 
 // TODO undo when part payment journey is restored
-Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
   I,
   api,
 }) => {
@@ -30,20 +30,26 @@ Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by s
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
   await api.waitForFinishedBusinessProcess();
-  const defendantResponseFullAdmitPayBySetDateDefendantNotif = defendantResponseFullAdmitPayBySetDateDefendant(claimAmountAndFee, date);
-  await verifyNotificationTitleAndContent(claimNumber, defendantResponseFullAdmitPayBySetDateDefendantNotif.title, defendantResponseFullAdmitPayBySetDateDefendantNotif.content);
-  await I.click(defendantResponseFullAdmitPayBySetDateDefendantNotif.nextSteps);
+  notification = defendantResponseFullAdmitPayBySetDateDefendant(claimAmountAndFee, date);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await I.click(notification.nextSteps);
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  const defendantResponseFullAdmitPayBySetDateClaimantNotif = defendantResponseFullAdmitPayBySetDateClaimant(claimAmountAndFee);
-  await verifyNotificationTitleAndContent(claimNumber, defendantResponseFullAdmitPayBySetDateClaimantNotif.title, defendantResponseFullAdmitPayBySetDateClaimantNotif.content);
-  await I.click(defendantResponseFullAdmitPayBySetDateClaimantNotif.nextSteps);
-
+  notification = defendantResponseFullAdmitPayBySetDateClaimant(claimAmountAndFee, date);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await I.click(notification.nextSteps);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateCCJ(claimRef, claimNumber);
+  await I.click('Sign out');
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  notification = defendantResponseFullAdmitPayBySetDateClaimantCoSC();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await I.click(notification.nextSteps);
+  await ResponseToDefenceLipVsLipSteps.ConfirmThatYouHaveBeenpPaidforCoSC(claimRef, claimNumber);
+  await I.click('Sign out');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await api.waitForFinishedBusinessProcess();
-
-  if ('aat'.includes(config.runningEnv)){
-    const claimantNotificationCCJRequestedNotif = claimantNotificationCCJRequested();
-    await verifyNotificationTitleAndContent(claimNumber, claimantNotificationCCJRequestedNotif.title, claimantNotificationCCJRequestedNotif.content);
-  }
+  notification = defendantResponseConfirmYouHavePaidAJudgmentCCJDebt();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
+  await api.waitForFinishedBusinessProcess();
 }).tag('@ui-prod');

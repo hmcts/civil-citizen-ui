@@ -1,19 +1,19 @@
-const config = require('../../../config');
-const LoginSteps = require('../../commonFeatures/home/steps/login');
-const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const config = require('../../../../config');
+const LoginSteps = require('../../../commonFeatures/home/steps/login');
+const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const {
   defendantResponseFullAdmitPayBySetDateClaimantCoSC,
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ,
-} = require('../../specClaimHelpers/dashboardNotificationConstants');
-const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
+} = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let claimRef, notification, claimNumber, caseData;
 
-Feature('Create Lip v Lip claim -  Default Judgment @nightly');
+Feature('Create Lip v Lip claim -  Default Judgment').tag('@ui-dj');;
 
 Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api, I}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -37,4 +37,4 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@nightly');
+}).tag('@ui-prod');
