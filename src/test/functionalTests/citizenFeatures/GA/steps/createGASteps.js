@@ -1591,8 +1591,8 @@ class createGASteps {
 
     I.wait(5);
     await I.refreshPage();
-    await I.waitForClickable('View Applications', 5);
-    await I.click('.govuk-link >> text=View Applications');
+    await I.waitForClickable('View all applications to the court', 5);
+    await I.click('.govuk-link >> text=View all applications to the court');
     await I.amOnPage(`/case/${caseRef}/general-application/summary`);
     await I.see('Adjourn a hearing, Strike out');
     await I.see('Awaiting Respondent Response');

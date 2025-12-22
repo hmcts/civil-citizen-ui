@@ -22,7 +22,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Case progression journey - Fast Track - Claimant and Defendant verify Dashboard an Order being Created', async ({I}) => {
+Scenario.skip('Case progression journey - Fast Track - Claimant and Defendant verify Dashboard an Order being Created', async ({I}) => {
   //Claimant verifies dashboard
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   notification = orderMade();

@@ -16,8 +16,8 @@ nodejs:
   cpuRequests: 2500m
   memoryLimits: 2048Mi
   cpuLimits: 2500m
-  devcpuRequests: 500m
-  devmemoryRequests: 1Gi
+  devcpuRequests: 1000m
+  devmemoryRequests: 2Gi
   devcpuLimits: 2
   devmemoryLimits: 2Gi
   readinessDelay: 130

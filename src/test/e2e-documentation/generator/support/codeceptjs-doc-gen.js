@@ -425,13 +425,16 @@ function formatIndependentScenario(scenario) {
     ...(scenario.beforeSteps || []),
     ...(scenario.collectedSteps || []),
   ];
+  const decoratedSteps = allSteps.map(step =>
+    scenario.skipped ? `${step} (skipped)` : step,
+  );
   return {
     testName: scenario.testName,
     featureName: scenario.featureName,
     filePath: formatDisplayPath(scenario.filePath),
     independentScenario: boolToYesNo(true),
     ...tagMeta,
-    steps: allSteps,
+    steps: decoratedSteps,
     skipped: boolToYesNo(Boolean(scenario.skipped)),
   };
 }
