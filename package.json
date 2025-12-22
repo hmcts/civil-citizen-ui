@@ -49,7 +49,7 @@
     "@hmcts/nodejs-healthcheck": "^1.8.6",
     "@hmcts/nodejs-logging": "^4.0.4",
     "@hmcts/properties-volume": "^0.0.14",
-    "@ministryofjustice/frontend": "^1.6.3",
+    "@ministryofjustice/frontend": "^8.0.0",
     "@types/config": "^3.3.5",
     "@types/cookie-parser": "^1.4.3",
     "@types/csurf": "^1.9.36",
