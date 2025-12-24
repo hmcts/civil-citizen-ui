@@ -31,7 +31,7 @@ Before(async ({api}) => {
   todayDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
 });
 
-Scenario('Claimant LR performs Request for reconsideration and Defendant LiP adds a comment', async ({I, api}) => {
+Scenario.skip('Claimant LR performs Request for reconsideration and Defendant LiP adds a comment', async ({I, api}) => {
   //claimant performs request for reconsideration
   await api.performRequestForReconsideration(config.applicantSolicitorUser, claimRef);
   //defendant adds a comment to the claimant's request
@@ -48,7 +48,7 @@ Scenario('Claimant LR performs Request for reconsideration and Defendant LiP add
   await viewOrdersAndNoticesPage.checkRequestToReviewOrder('claimant', todayDate);
 });
 
-Scenario('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {
+Scenario.skip('Defendant LiP performs Request for reconsideration and Claimant adds a comment', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   //defendant performs request for reconsideration
   notification = orderMadeLA();

@@ -6,7 +6,7 @@ const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps')
 
 let claimRef, caseData, claimNumber;
 
-Feature('LR v Lip GA Creation Tests').tag('@ui-nightly-prod @ui-ga');
+Feature('LR v Lip GA Creation Tests').tag('@ui-ga');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
