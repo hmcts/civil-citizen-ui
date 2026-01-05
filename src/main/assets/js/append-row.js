@@ -49,7 +49,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function cloneRow() {
     const multipleRowElement = document.getElementsByClassName('multiple-row');
-    if (elementExists(multipleRowElement)) {
+    const rowContainerElement = document.getElementsByClassName('row-container');
+    if(elementExists(rowContainerElement)) {
+      console.log('row-container exists');
+      const lastRowContainer = getLastRow(rowContainerElement);
+      const newRowContainer = lastRowContainer.cloneNode(true);
+      const children = newRowContainer.children;
+      Array.from(children).forEach((child) => {
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        updateInputs(elements);
+        removeErrors(child);
+      });
+      lastRowContainer.parentNode.appendChild(newRowContainer);
+      updateNewRow(document.getElementsByClassName('row-container'));
+      if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
+        addCalculationEventListener();
+      }
+      if(elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
+        addTotalClaimAmountCalculationEventListener();
+      }
+    } else if (elementExists(multipleRowElement)) {
       const lastRow = getLastRow(multipleRowElement);
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
