@@ -137,17 +137,17 @@ Make sure all the paths in your application are covered by accessibility tests (
 ## Generating CodeceptJS E2E Test Documentation
 
 Generating the UI documentation JSON:
-1. `yarn test:generate:ui-docs` writes `src/test/e2e-documentation/results/codeceptjs-ui-tests.json`.  
+1. `yarn test:generate:ui-docs` writes `src/test/e2e-documentation/results/codeceptjs-ui-tests.json`.
    - Optional: pass a custom JSON file path as the first argument.
 
 Uploading to Confluence:
 1. Export `CONFLUENCE_PERSONAL_ACCESS_TOKEN`, `CONFLUENCE_BASE_URL`, and `CONFLUENCE_PAGE_ID`.
-2. `yarn test:confluence:ui-docs` updates the “UI Tests” table on the configured Confluence page.  
+2. `yarn test:confluence:ui-docs` updates the “UI Tests” table on the configured Confluence page.
    - Optional: pass a custom JSON file path as the first argument.
 
 Updating this README:
 1. `yarn test:readme:ui-docs` refreshes the section below using the latest JSON (or a custom path passed as the first argument).
-2. Commit the README changes if needed.  
+2. Commit the README changes if needed.
    - The `.github/workflows/update-readme-docs.yml` workflow (once added) can automate this on the default branch if desired.
 
 ### UI Test Documentation
@@ -395,3 +395,4 @@ npx @hmcts/dev-env@latest --template values.elasticsearch.preview.template.yaml 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
