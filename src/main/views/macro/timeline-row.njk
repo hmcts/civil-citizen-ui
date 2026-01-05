@@ -2,14 +2,8 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
-{% macro timelineRow(timelineModel, index, form, t) %}
+{% macro timelineRow(timelineModel, index, form, t, rowNumber) %}
   <div class="row-container">
-    <span
-      id="row-number-{{ index }}"
-      class="govuk-visually-hidden"
-    >
-      {{ t('COMMON.ROW') }} {{ index + 1 }}
-    </span>
     <div class="multiple-row">
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
         {{ govukDateInput({
@@ -17,10 +11,10 @@
           type: "number",
           inputmode: "numeric",
           name: "date",
-          describedBy: "row-number-" + index,
+          describedBy: "timeline-date-heading",
           fieldset: {
               legend: {
-                text: t('COMMON.DATE'),
+                text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + index,
                 classes: "govuk-visually-hidden"
               }
             },
@@ -50,6 +44,7 @@
               max: 9999
             }
           ],
+
           errorMessage: {
             text: t(form.errorFor("rows[" + index + "][date]"))
           } if form.hasFieldError("rows[" + index + "][date]")
@@ -62,14 +57,14 @@
           value: timelineModel.description,
           classes: "govuk-grid-column-full",
           spellcheck: false,
-          describedBy: "row-number-" + index,
+          describedBy: "timeline-description-heading",
           label: {
-            text: t('COMMON.TIMELINE.WHAT_HAPPENED'),
+            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + t('COMMON.ROW') + " " + rowNumber,
             classes: 'govuk-visually-hidden'
           },
           errorMessage: {
-            text: t(form.errorFor("rows["+index+"][description]"))
-          } if form.hasFieldError( "rows["+index+"][description]")
+            text: t(form.errorFor("rows[" + index + "][description]"))
+          } if form.hasFieldError("rows[" + index + "][description]")
         }) }}
       </div>
     </div>
