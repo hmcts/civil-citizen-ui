@@ -89,7 +89,7 @@ describe('create query conroller', () => {
       const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
       const date = new Date();
       const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes', 'year': (date.getFullYear() + 1).toString(),
-        'month': (date.getMonth() == 0 ? date.getMonth() + 1 : 1).toString(), 'day': (date.getDay() == 0 ? date.getDay() + 1 : 1).toString()};
+        'month': date.getMonth().toString(), 'day': date.getDay().toString()};
       const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send(data);
       expect(res.status).toBe(302);
       expect(saveQueryManagement).toHaveBeenCalled();
