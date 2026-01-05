@@ -162,8 +162,8 @@ describe('Confirm you have been paid', () => {
         .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
         .reply(200, claimId);
 
-      const month = today.getMonth();
-      const day = today.getDay();
+      const month = today.getMonth() == 0 ? today.getMonth() + 1 : 1;
+      const day = today.getDay() == 0 ? today.getDay() + 1 : 1;
       const year = today.getFullYear();
       const nextYear = year+1;
       const joIssueDate =   `${year}-${month}-${day-1}`;
