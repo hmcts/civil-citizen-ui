@@ -543,7 +543,7 @@ describe('Claimant Response Service', () => {
       it('should delete mediationCarm when claimant has settled', async () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
-        claim.claimantResponse.mediationCarm = { some: 'value' };
+        claim.claimantResponse.mediationCarm = { 'hasTelephoneMeditationAccessed': true };
 
         // force the condition
         jest.spyOn(claim, 'hasClaimantNotSettled').mockReturnValue(false);
@@ -554,7 +554,7 @@ describe('Claimant Response Service', () => {
         await saveClaimantResponse(
           'claimId',
           YesNo.YES,
-          'hasPartAdmittedBeenAccepted', // any value, not important here
+          'hasPartAdmittedBeenAccepted',
         );
 
         expect(claim.claimantResponse.mediationCarm).toBeUndefined();
@@ -564,7 +564,7 @@ describe('Claimant Response Service', () => {
       it('should not delete mediationCarm when claimant has not settled', async () => {
         const claim = new Claim();
         claim.claimantResponse = new ClaimantResponse();
-        claim.claimantResponse.mediationCarm = { some: 'value' };
+        claim.claimantResponse.mediationCarm = { 'hasTelephoneMeditationAccessed': false };
 
         jest.spyOn(claim, 'hasClaimantNotSettled').mockReturnValue(true);
 
