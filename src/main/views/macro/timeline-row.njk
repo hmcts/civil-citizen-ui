@@ -7,7 +7,9 @@
   <div class="row-container">
     <div class="multiple-row">
      <div id="rowCounter-{{ rowNumber }}" aria-live="polite">
-         {{ t('COMMON.ROW') }} {{ rowNumber }}
+                label: {
+                  text:  t('COMMON.ROW') + ' ' + rowNumber
+                }
      </div>
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
         {{ govukDateInput({
@@ -17,7 +19,7 @@
           name: "date",
           describedBy: "timeline-date-heading",
           fieldset: {
-              legend: {
+              label: {
                 text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
                 classes: "govuk-visually-hidden"
               }
