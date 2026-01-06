@@ -2,7 +2,8 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
-{% macro timelineRow(timelineModel, index, form, t, rowNumber) %}
+{% macro timelineRow(timelineModel, index, form, t) %}
+ {% set rowNumber = index + 1 %}
   <div class="row-container">
     <div class="multiple-row">
      <div id="rowCounter-{{ rowNumber }}" aria-live="polite">
