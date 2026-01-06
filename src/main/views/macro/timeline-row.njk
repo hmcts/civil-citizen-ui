@@ -5,7 +5,7 @@
 {% macro timelineRow(timelineModel, index, form, t, rowNumber) %}
   <div class="row-container">
     <div class="multiple-row">
-     <div id="rowCounter" aria-live="polite">
+     <div id="rowCounter-{{ rowNumber }}" aria-live="polite">
          {{ t('COMMON.ROW') }} {{ rowNumber }}
      </div>
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
