@@ -113,7 +113,7 @@ civil-general-applications:
     java:
       applicationPort: 4000
       releaseNameOverride: ${SERVICE_NAME}-civil-service
-      image: 'hmctspublic.azurecr.io/civil/service:latest'
+      image: 'hmctspublic.azurecr.io/civil/service:pr-7234'
       imagePullPolicy: Always
       ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
       devcpuRequests: 1000m
@@ -141,7 +141,7 @@ civil-general-applications:
               alias: CIVIL_PRD_ADMIN_PASSWORD
             - name: docmosis-api-key
               alias: docmosis.tornado.key
-            - name: gov-notify-pretends-api-key
+            - name: gov-notify-live-api-key
               alias: GOV_NOTIFY_API_KEY
             - name: sendgrid-api-key
               alias: SENDGRID_API_KEY
