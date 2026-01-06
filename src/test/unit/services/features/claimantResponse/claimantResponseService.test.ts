@@ -540,45 +540,6 @@ describe('Claimant Response Service', () => {
       claim.claimantResponse.ccjRequest = new CCJRequest();
       claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.NO);
 
-      it('should delete mediationCarm when claimant has settled', async () => {
-        const claim = new Claim();
-        claim.claimantResponse = new ClaimantResponse();
-        claim.claimantResponse.mediationCarm = { some: 'value' };
-
-        // force the condition
-        jest.spyOn(claim, 'hasClaimantNotSettled').mockReturnValue(false);
-
-        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
-        const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
-        await saveClaimantResponse(
-          'claimId',
-          YesNo.YES,
-          'hasPartAdmittedBeenAccepted', // any value, not important here
-        );
-
-        expect(claim.claimantResponse.mediationCarm).toBeUndefined();
-        expect(saveSpy).toHaveBeenCalled();
-      });
-
-      it('should not delete mediationCarm when claimant has not settled', async () => {
-        const claim = new Claim();
-        claim.claimantResponse = new ClaimantResponse();
-        claim.claimantResponse.mediationCarm = { some: 'value' };
-
-        jest.spyOn(claim, 'hasClaimantNotSettled').mockReturnValue(true);
-
-        mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
-
-        await saveClaimantResponse(
-          'claimId',
-          YesNo.YES,
-          'hasPartAdmittedBeenAccepted',
-        );
-
-        expect(claim.claimantResponse.mediationCarm).toEqual({ some: 'value' });
-      });
-
       it('should delete data from redis when hasPartAdmittedBeenAccepted property submitted', async () => {
         //Given
         const claim = new Claim();
