@@ -5,28 +5,17 @@
 {% macro timelineRow(timelineModel, index, form, t, rowNumber) %}
   <div class="row-container">
     <div class="multiple-row">
-
-      <span
-        id="timeline-row-status-{{ index }}"
-        class="govuk-visually-hidden"
-        aria-live="polite"
-      >
-        {{ t('COMMON.ROW') }} {{ rowNumber }}
-      </span>
-
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
         {{ govukDateInput({
           id: "rows-" + index + "-date",
           type: "number",
           inputmode: "numeric",
           name: "date",
-          describedBy: "timeline-row-status-" + index + " timeline-date-heading",
-          fieldset: {
-              legend: {
-                text: t('COMMON.DATE'),
-                classes: "govuk-visually-hidden"
-              }
-            },
+          describedBy: "timeline-date-heading",
+          label: {
+            text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
+            classes: 'govuk-visually-hidden'
+          },
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -66,9 +55,9 @@
           value: timelineModel.description,
           classes: "govuk-grid-column-full",
           spellcheck: false,
-          describedBy: "timeline-row-status-" + index + " timeline-description-heading",
+          describedBy: "timeline-description-heading",
           label: {
-            text: t('COMMON.TIMELINE.WHAT_HAPPENED'),
+            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + t('COMMON.ROW') + " " + rowNumber,
             classes: 'govuk-visually-hidden'
           },
           errorMessage: {
