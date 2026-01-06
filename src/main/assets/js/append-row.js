@@ -60,17 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('row-container'));
-
-      const rows = document.getElementsByClassName('row-container');
-      const newIndex = rows.length - 1;
-
-      const liveRegion = rows[newIndex].querySelector('[id^="timeline-row-status-"]');
-      if (liveRegion) {
-        liveRegion.id = `timeline-row-status-${newIndex}`;
-      }
-
-      announceRowNumber(newIndex, newIndex + 1);
-
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
       }
@@ -78,16 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
         addTotalClaimAmountCalculationEventListener();
       }
     }
-  }
-
-  function announceRowNumber(index, rowNumber) {
-    const el = document.getElementById(`timeline-row-status-${index}`);
-    if (!el) return;
-
-    el.textContent = '';
-    requestAnimationFrame(() => {
-      el.textContent = `Row ${rowNumber}`;
-    });
   }
 
   function getLastRow(multipleRowElement) {
