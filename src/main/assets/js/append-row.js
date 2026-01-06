@@ -54,12 +54,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, legend ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('row-container'));
+
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
       }
