@@ -576,7 +576,7 @@ describe('Claimant Response Service', () => {
           'hasPartAdmittedBeenAccepted',
         );
 
-        expect(claim.claimantResponse.mediationCarm).toEqual({ some: 'value' });
+        expect(claim.claimantResponse.mediationCarm).toEqual({ 'hasTelephoneMeditationAccessed': false });
       });
 
       it('should delete data from redis when hasPartAdmittedBeenAccepted property submitted', async () => {
