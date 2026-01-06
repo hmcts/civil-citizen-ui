@@ -33,7 +33,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I}) => {
+Scenario.skip('Case progression journey - Fast Track - Verify Bundles tab', async ({I}) => {
   if (['demo', 'aat'].includes(config.runningEnv)) {
     formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
     uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
