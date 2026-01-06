@@ -52,7 +52,7 @@
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
               </div>
               {% for claimAmountRow in form.model.claimAmountRows %}
-                {{ claimAmount(claimAmountRow, loop.index0, form, t, loop.index) }}
+                {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
               {% endfor %}
             </div>
             <div class="govuk-grid-column-full">
