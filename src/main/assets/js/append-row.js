@@ -76,17 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const newRowIndex = rowContainerElement.length;
     const legends = newRow.getElementsByClassName('timeline-date-legend-new');
-    if(legends.length > null ) {
-      const legend = legends[0];
-      legend.textContent = `Date Row ${newRowIndex}`;
-      legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
-      legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
-    }
-
-    const descriptions = newRow.getElementsByClassName('timeline-description-new');
-    if(descriptions.legend > 0) {
-      descriptions[0].textContent = `Row ${newRowIndex}`;
-    }
+    const legend = legends[0];
+    legend.textContent = `Date Row ${newRowIndex}`;
+    legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
+    legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
   }
 
   function getLastRow(multipleRowElement) {
