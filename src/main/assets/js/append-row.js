@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('row-container'));
 
-      updateLegendsRowCount1(rowContainerElement, newRow);
+      updateLegendsRowCount(rowContainerElement, newRow);
 
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function updateLegendsRowCount1(rowContainerElement, newRow) {
+  function updateLegendsRowCount(rowContainerElement, newRow) {
 
     const newRowIndex = rowContainerElement.length;
     const legends = newRow.getElementsByClassName('timeline-date-legend-new');
