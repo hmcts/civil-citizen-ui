@@ -38,7 +38,7 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, re
       if ((session as AppSession).user) {
         const user = (session as AppSession).user;
         const userid = user.id;
-        logger.info('Claim amount is updated for:', userid);
+        logger.info('Claim amount is updated for:', userid, req.body.totalAmount);
       }
       await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
     }
