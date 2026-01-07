@@ -54,12 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`div, input, textarea, select, label, legend ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('row-container'));
+
+      updateLegendsRowCount1(rowContainerElement, newRow);
 
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
@@ -67,6 +69,23 @@ document.addEventListener('DOMContentLoaded', function () {
       if(elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
         addTotalClaimAmountCalculationEventListener();
       }
+    }
+  }
+
+  function updateLegendsRowCount1(rowContainerElement, newRow) {
+
+    const newRowIndex = rowContainerElement.length;
+    const legends = newRow.getElementsByClassName('timeline-date-legend-new');
+    if(legends.length > null ) {
+      const legend = legends[0];
+      legend.textContent = `Date Row ${newRowIndex}`;
+      legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
+      legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
+    }
+
+    const descriptions = newRow.getElementsByClassName('timeline-description-new');
+    if(descriptions.legend > 0) {
+      descriptions[0].textContent = `Row ${newRowIndex}`;
     }
   }
 

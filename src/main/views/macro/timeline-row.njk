@@ -16,7 +16,7 @@
           fieldset: {
               legend: {
                 text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
-                classes: "govuk-visually-hidden"
+                classes: "govuk-visually-hidden timeline-date-legend-new"
               }
             },
           items: [
@@ -60,8 +60,8 @@
           spellcheck: false,
           describedBy: "timeline-description-heading",
           label: {
-            text: t('COMMON.TIMELINE.WHAT_HAPPENED') + " " + t('COMMON.ROW') + " " + rowNumber,
-            classes: 'govuk-visually-hidden'
+            text: t('COMMON.ROW') + " " + rowNumber,
+            classes: 'govuk-visually-hidden timeline-description-new'
           },
           errorMessage: {
             text: t(form.errorFor("rows[" + index + "][description]"))
