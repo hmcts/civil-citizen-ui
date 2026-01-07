@@ -24,12 +24,15 @@ export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentS
 
 export const getButtonsContents  = (claimId : string) => {
   return new PageSectionBuilder()
+    .addRawHtml(String.raw`</fieldset>`, '')
     .addButtonWithCancelLink('COMMON.BUTTONS.CONTINUE', '',false, constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL))
     .build();
 };
 
-export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, feeTypeFlag: boolean) => {
+export const getHelpApplicationFeeContinuePageContents = (lang: string, feeAmount: string, feeTypeFlag: boolean) => {
   const pageBuilder=new PageSectionBuilder();
+  const fieldsetHtml = String.raw`<fieldset class="govuk-fieldset"><legend class="govuk-visually-hidden">${t('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION', {lang})}</legend>`;
+
   if (feeTypeFlag) {
     pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
   } else{
@@ -46,6 +49,7 @@ export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, fee
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_PARTIALLY')
     .addSpan('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED_TITLE', '', 'govuk-!-font-weight-bold')
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED')
+    .addRawHtml(fieldsetHtml,'')
     .addTitle('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')
     .build();
   return pageBuilder.build();

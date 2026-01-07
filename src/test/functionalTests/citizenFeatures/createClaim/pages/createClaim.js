@@ -548,7 +548,7 @@ class CreateClaim {
     I.see('If the defendant pays you');
     I.see('You need to sign in to your account to tell us you\'ve been paid.');
     I.seeElement('//a[contains(text(),\'What did you think of this service?\')]');
-    I.see('Email', 'h3');
+    I.see('Email', 'h2');
     I.see('Telephone');
     I.see('0300 123 7050');
     I.seeElement('//a[.=\'Find out about call charges (opens in a new window)\']');

@@ -3,6 +3,8 @@ node_modules/
 .sass-cache
 *.css
 
+src/test/e2e-documentation/results
+
 ## Yarn
 .pnp.*
 .yarn/*
