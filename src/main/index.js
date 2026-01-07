@@ -8,6 +8,7 @@ import './assets/js/remove-error-content';
 import './assets/js/conditionally-hide-add-button';
 import './assets/js/mojAll';
 import './assets/js/select-toggle';
+import './assets/js/reindex-add-another-actions';
 import './assets/js/language-toggle';
 import { initAll } from 'govuk-frontend';
 import './modules/cookie/cookieConfig';

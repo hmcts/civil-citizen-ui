@@ -109,6 +109,9 @@
                      text:  t(content.data.text),
       name: 'action',
       value: content.data.category+'['+content.data.index+'][removeButton]',
+      attributes: {
+        'data-value': content.data.category+'[%index%][removeButton]'
+      },
       classes: content.data.classes,
       isStartButton: content.data.isStartButton
     }) }}
@@ -116,7 +119,7 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.NEW_TAB_BUTTON %}
-    <a target="_blank" role="button" draggable="false" class="govuk-button" data-module="govuk-button" href={{ content.data.href }}>
+    <a target="_blank" role="button" draggable="false" class="govuk-button" data-module="govuk-button" href="{{ content.data.href }}">
       {{ t(content.data.text) }}
     </a>
   {% endif %}
@@ -128,7 +131,7 @@
         {% set object = content.data.variables %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
       {% elif  content.data.externalLink %}
-         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>
+         <a class="govuk-link" rel="noreferrer noopener" target="_blank" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
       {% else %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
       {% endif %}
@@ -144,7 +147,7 @@
         {% set object = content.data.variables %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>.
         {% elif  content.data.externalLink %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }} rel="noreferrer noopener" target="_blank">{{ t(content.data.text) }}</a>.
+        <a class="govuk-link" rel="noreferrer noopener" target="_blank" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
       {% else %}
         <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
       {% endif %}
@@ -297,6 +300,9 @@
                           id: 'uploadFileButton',
                           name: 'action',
                           value: content.data.category+'['+content.data.index+'][uploadButton]',
+                          attributes: {
+                            'data-value': content.data.category+'[%index%][uploadButton]'
+                          },
            text: t('COMMON.SAVE_FILE'),
            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
          }) }}
@@ -400,7 +406,7 @@
         classes: content.data.classes,
         isStartButton: content.data.isStartButton
       }) }}
-      <a href={{ content.data.cancelHref }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+      <a href="{{ content.data.cancelHref }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
     </div>
   {% endif %}
 {% endmacro %}
