@@ -8,7 +8,7 @@ import {
   getClaimAmountBreakdownForm,
   saveClaimAmountBreakdownForm,
 } from 'services/features/claim/amount/claimAmountBreakdownService';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
@@ -34,8 +34,12 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, re
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const userid = req.session?.user?.id;
-      logger.info('Claim amount is updated for:', userid);
+      const session = req.session;
+      if ((session as AppSession).user) {
+        const user = (session as AppSession).user;
+        const userid = user.id;
+        logger.info('Claim amount is updated for:', userid);
+      }
       await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
     }
   } catch (error) {
