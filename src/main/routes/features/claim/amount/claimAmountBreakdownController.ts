@@ -12,6 +12,8 @@ import {AppRequest} from 'models/AppRequest';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimAmountBreakdownController');
 
 function renderView(form: GenericForm<AmountBreakdown>, res: Response) {
   res.render(viewPath, {form, pageTitle: 'PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE'});
