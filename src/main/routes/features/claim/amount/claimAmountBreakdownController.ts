@@ -8,10 +8,11 @@ import {
   getClaimAmountBreakdownForm,
   saveClaimAmountBreakdownForm,
 } from 'services/features/claim/amount/claimAmountBreakdownService';
-import {AppRequest, AppSession} from 'models/AppRequest';
+import {AppRequest} from 'models/AppRequest';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimAmountBreakdownController');
 
@@ -34,12 +35,8 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, re
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const session = req.session;
-      if ((session as AppSession).user) {
-        const user = (session as AppSession).user;
-        const userid = user.id;
-        logger.info('Claim amount is updated for:', userid, req.body.totalAmount);
-      }
+      const userid = (<AppRequest>req).session.user?.id;
+      logger.info(`Claim amount updated for user ${userid}, amount: ${req.body.totalAmount}`);
       await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
     }
   } catch (error) {
