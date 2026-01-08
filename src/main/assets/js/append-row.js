@@ -9,6 +9,22 @@
  */
 const {getCalculation, addCalculationEventListener} = require('./calculate-amount');
 const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-amount');
+const elementExists = element => element?.length > 0;
+const updateLegends = (rowContainerElement, newRow) => {
+  const newRowIndex = rowContainerElement.length;
+  const legends = newRow.getElementsByClassName('timeline-date-legend-new');
+  if (!elementExists(legends)) return;
+  const legend = legends[0];
+  console.log(legend.textContent);
+  legend.textContent = `Date Row ${newRowIndex}`;
+  legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
+  legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
+};
+
+const getLastRow = multipleRowElement => {
+  const lastElementIndex = multipleRowElement.length - 1;
+  return multipleRowElement[lastElementIndex];
+};
 
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
@@ -59,10 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         removeErrors(child);
       });
       lastRow.parentNode.appendChild(newRow);
-      updateNewRow(document.getElementsByClassName('row-container'));
-
-      updateLegendsRowCount(rowContainerElement, newRow);
-
+      updateNewRow(rowContainerElement);
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
       }
@@ -72,24 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function updateLegendsRowCount(rowContainerElement, newRow) {
-
-    const newRowIndex = rowContainerElement.length;
-    const legends = newRow.getElementsByClassName('timeline-date-legend-new');
-    const legend = legends[0];
-    legend.textContent = `Date Row ${newRowIndex}`;
-    legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
-    legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
-  }
-
-  function getLastRow(multipleRowElement) {
-    const lastElementIndex = multipleRowElement.length - 1;
-    return multipleRowElement[lastElementIndex];
-  }
-
   function updateNewRow(addedRow) {
     const newRow = getLastRow(addedRow);
     removeErrors(newRow);
+    updateLegends(addedRow, newRow);
   }
 
   function removeErrors(newRow) {
@@ -223,10 +222,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (elementExists(removeButton)) {
       Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
     }
-  }
-
-  function elementExists(element) {
-    return element?.length > 0;
   }
 
   function addEventToAddedCheckbox(checkbox) {
