@@ -99,7 +99,7 @@ class CreateClaimOCMC {
   }
 
   async verifyCompletingYourClaim() {
-    I.waitForContent('add information that significantly change your claim',60);
+    I.waitForContent('add information that significantly changes your claim',60);
     I.see('Get the details right', 'h1');
     I.see('change the name of anyone involved with the claim');
     I.see('change the basis of your claim - for example, saying goods were undelivered instead of faulty');
