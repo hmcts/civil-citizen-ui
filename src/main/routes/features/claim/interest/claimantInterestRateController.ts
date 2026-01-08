@@ -37,8 +37,8 @@ interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      logger.info(`Claim interest rate selection updated for user ${claimId}, sameRateInterestType: ${req.body.totalAmount},
-           differentRate: ${req.body.differentRate},reason: ${req.body.differentRate}`);
+      logger.info(`Claim interest rate selection updated for user ${claimId}, sameRateInterestType: ${req.body.sameRateInterestType},
+           differentRate: ${req.body.differentRate},reason: ${req.body.reason}`);
       await saveInterest(claimId,form.model, propertyName);
       res.redirect(CLAIM_INTEREST_DATE_URL);
     }

@@ -38,7 +38,7 @@ interestStartDateController.post(CLAIM_INTEREST_START_DATE_URL, (async (req: App
     } else {
       const appRequest = <AppRequest>req;
       const userId = appRequest.session?.user?.id;
-      logger.info(`interestStartDate updated for user ${userId}, InterestStartDate: ${form.model}`);
+      logger.info(`interestStartDate updated for user ${userId}, InterestStartDate: ${form.model.date}`);
       await saveInterest(userId, form.model, interestPropertyName);
       res.redirect(CLAIM_INTEREST_END_DATE_URL);
     }
