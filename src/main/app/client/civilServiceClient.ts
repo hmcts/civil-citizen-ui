@@ -208,7 +208,7 @@ export class CivilServiceClient {
       logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
       const claimFeeInPence = (response.data as ClaimFeeData).calculatedAmountInPence;
-      logger.info(`claim fee amount for user ${userid} is ${claimFeeInPence}`);
+      logger.info(`Claim fee of ${claimFeeInPence} calculated for user ${userid} based on claim amount ${amount}`);
       return response.data;
     } catch (err: unknown) {
       logger.error(`Error when getting claim fee data, req.params.id - ${req.params.id}`);
