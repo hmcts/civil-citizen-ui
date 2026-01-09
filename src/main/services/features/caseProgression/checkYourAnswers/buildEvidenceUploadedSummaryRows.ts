@@ -341,7 +341,7 @@ const getExpertOtherPartySummaryRows = (title: string, otherPartyTitle: string, 
 export const buildDocumentUploadedElement = (
   document: { caseDocument?: { documentName?: string; documentLink?: { document_binary_url?: string } } },
   claimId: string,
-  lang: string
+  lang: string,
 ): { title: string; value: string } | null => {
   const caseDocument = document.caseDocument;
   const documentName = caseDocument?.documentName;
