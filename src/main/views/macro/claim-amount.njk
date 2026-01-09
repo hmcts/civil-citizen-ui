@@ -40,6 +40,10 @@
           text: t('COMMON.CLAIM_AMOUNT') + " " + t('COMMON.ROW')  + " " + rowNumber,
           classes: "govuk-visually-hidden"
         },
+        hint: {
+          text: t('COMMON.CLAIM_AMOUNT_HINT_TEXT'),
+          classes: 'govuk-visually-hidden'
+        },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows[" + index + "][amount]"))
         } if form.hasFieldError("claimAmountRows[" + index + "][amount]")
