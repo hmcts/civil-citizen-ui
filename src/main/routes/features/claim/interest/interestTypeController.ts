@@ -11,6 +11,8 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('interestTypeController');
 const interestTypeController = Router();
 const interestTypeViewPath = 'features/claim/interest/interest-type';
 const propertyName = 'interestClaimOptions';
@@ -38,6 +40,7 @@ interestTypeController.post(CLAIM_INTEREST_TYPE_URL, (async (req: AppRequest | R
     if (interestTypeForm.hasErrors()) {
       renderView(interestTypeForm, res);
     } else {
+      logger.info(`interestType updated for user ${claimId}, interestType: ${interestTypeForm.model.interestType}`);
       await saveInterest(claimId, interestTypeForm.model.interestType, propertyName);
       if (interestTypeForm.model.interestType == InterestClaimOptionsType.SAME_RATE_INTEREST) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_INTEREST_RATE_URL));

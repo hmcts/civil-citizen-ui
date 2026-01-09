@@ -9,6 +9,8 @@ import {InterestEndDateType} from 'form/models/claimDetails';
 import {AppRequest} from 'models/AppRequest';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('interestEndDateController');
 const interestEndDateController = Router();
 const interestEndDateViewPath = 'features/claim/interest/interest-end-date';
 const dqPropertyName = 'interestEndDate';
@@ -39,7 +41,9 @@ interestEndDateController.post(CLAIM_INTEREST_END_DATE_URL, (async (req: AppRequ
       renderView(form, res);
     } else {
       const appRequest = <AppRequest>req;
-      await saveInterest(appRequest.session?.user?.id, form.model.option, dqPropertyName);
+      const userId = appRequest.session?.user?.id;
+      logger.info(`interestEndDate updated for user ${userId}, InterestEndDateType: ${form.model.option}`);
+      await saveInterest(userId, form.model.option, dqPropertyName);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {

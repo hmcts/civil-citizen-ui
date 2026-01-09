@@ -7,6 +7,8 @@ import {HowMuchContinueClaiming} from 'form/models/interest/howMuchContinueClaim
 import { SameRateInterestType } from 'form/models/claimDetails';
 import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('continueClaimingInterestController');
 const howMuchContinueClaimingController = Router();
 const howMuchContinueClaimingPath = 'features/claim/interest/how-much-continue-claiming';
 
@@ -35,6 +37,7 @@ howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH_URL, (async (req:
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
+      logger.info(`continueClaimingInterest updated for user ${caseId}, dailyInterestAmount: ${dailyInterestAmount}`);
       await saveInterest(caseId, form.model, howMuchContinueClaiming);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
