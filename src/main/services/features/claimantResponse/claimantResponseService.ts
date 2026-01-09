@@ -79,6 +79,9 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
 };
 
 function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
+  if (!claim.hasClaimantNotSettled()) {
+    delete claim.claimantResponse.mediationCarm;
+  }
   if (isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName)) {
     delete claim.claimantResponse.hasPartPaymentBeenAccepted;
     delete claim.claimantResponse.mediation;
@@ -96,7 +99,6 @@ function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, p
     delete claim.claimantResponse.mediation;
     delete claim.claimantResponse.directionQuestionnaire;
   }
-  delete claim.claimantResponse.mediationCarm;
   return claim;
 }
 
