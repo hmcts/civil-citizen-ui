@@ -121,7 +121,7 @@ class CreateClaim {
   }
 
   async verifyCompletingYourClaim() {
-    I.waitForContent('add information that significantly change your claim',60);
+    I.waitForContent('add information that significantly changes your claim',60);
     I.see('Get the details right', 'h1');
     I.see('You\'ll have to pay an additional fee if you want you:');
     I.see('change the name of anyone involved with the claim');
