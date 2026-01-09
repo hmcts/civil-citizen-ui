@@ -1,5 +1,6 @@
 import { Pact, Matchers } from '@pact-foundation/pact';
 import { CivilServiceClient } from '../../../main/app/client/civilServiceClient';
+import { GaServiceClient } from '../../../main/app/client/gaServiceClient';
 import { AppRequest } from '../../../main/common/models/AppRequest';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 
@@ -51,12 +52,14 @@ const createAppRequest = (): AppRequest =>
 
 describe('Civil Service fee payment contract', () => {
   let civilServiceClient: CivilServiceClient;
+  let gaServiceClient: GaServiceClient;
   let mockProvider: Pact;
 
   beforeEach(async () => {
     mockProvider = createMockProvider();
     await mockProvider.setup();
     civilServiceClient = new CivilServiceClient(mockProvider.mockService.baseUrl);
+    gaServiceClient = new GaServiceClient(mockProvider.mockService.baseUrl);
   });
 
   afterEach(async () => {
@@ -145,6 +148,96 @@ describe('Civil Service fee payment contract', () => {
         CLAIM_REFERENCE,
         PAYMENT_REFERENCE,
         FEE_TYPE,
+        request,
+      );
+
+      expect(response).toEqual(expect.objectContaining({
+        externalReference: '2023-1701090705688',
+        paymentReference: PAYMENT_REFERENCE,
+        status: 'Success',
+      }));
+    });
+  });
+
+  describe('Create payment request for general application claim issue fee', () => {
+    beforeEach(async () => {
+      await mockProvider.addInteraction({
+        state: 'Claim issue payment can be initiated for general application case 1234567890123456',
+        uponReceiving: 'a request to create a GovPay payment',
+        withRequest: {
+          method: 'POST',
+          path: `/fees/case/${CLAIM_REFERENCE}/ga/payment`,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ACCESS_TOKEN}`,
+          },
+          body: '',
+        },
+        willRespondWith: {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: {
+            externalReference: like('2023-1701090705688'),
+            paymentReference: like(PAYMENT_REFERENCE),
+            status: like('Initiated'),
+            nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
+            dateCreated: decimal(1701090906.313),
+          },
+        },
+      });
+    });
+
+    test('returns general application payment redirect information', async () => {
+      const request = createAppRequest();
+
+      const response = await gaServiceClient.getGaFeePaymentRedirectInformation(
+        CLAIM_REFERENCE,
+        request,
+      );
+
+      expect(response).toEqual(expect.objectContaining({
+        externalReference: '2023-1701090705688',
+        paymentReference: PAYMENT_REFERENCE,
+        status: 'Initiated',
+        nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
+      }));
+      expect(response.dateCreated).toEqual(expect.any(Number));
+    });
+  });
+
+  describe('Retrieve general application payment status for claim issue fee', () => {
+    beforeEach(async () => {
+      await mockProvider.addInteraction({
+        state: 'Payment status SUCCESS is available for general application payment RC-1701-0909-0602-0418',
+        uponReceiving: 'a request to retrieve GovPay payment status',
+        withRequest: {
+          method: 'GET',
+          path: `/fees/case/${CLAIM_REFERENCE}/ga/payment/${PAYMENT_REFERENCE}/status`,
+          headers: {
+            'Authorization': `Bearer ${ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+        },
+        willRespondWith: {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: {
+            externalReference: like('2023-1701090705688'),
+            paymentReference: like(PAYMENT_REFERENCE),
+            status: like('Success'),
+            paymentFor: like('claimissued'),
+            paymentAmount: like(200),
+          },
+        },
+      });
+    });
+
+    test('returns current general application payment status', async () => {
+      const request = createAppRequest();
+
+      const response = await gaServiceClient.getGaFeePaymentStatus(
+        CLAIM_REFERENCE,
+        PAYMENT_REFERENCE,
         request,
       );
 
