@@ -10,13 +10,15 @@
 const {getCalculation, addCalculationEventListener} = require('./calculate-amount');
 const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-amount');
 const elementExists = element => element?.length > 0;
+const replaceOrAppend = (s, d) =>
+  /\d/.test(s) ? s.replace(/\d+(?!.*\d)/, d) : s.replace(/\s*$/, ` ${d}`);
+
 const updateLegends = (rowContainerElement, newRow) => {
   const newRowIndex = rowContainerElement.length;
   const legends = newRow.getElementsByClassName('timeline-date-legend-new');
   if (!elementExists(legends)) return;
   const legend = legends[0];
-  console.log(legend.textContent);
-  legend.textContent = `Date Row ${newRowIndex}`;
+  legend.textContent = replaceOrAppend(legend.textContent, `${newRowIndex}`);
   legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
   legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
 };

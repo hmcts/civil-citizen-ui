@@ -3,7 +3,7 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% macro timelineRow(timelineModel, index, form, t) %}
- {% set rowNumber = index + 1 %}
+ {% set rowNumber = (index + 1) %}
   <div class="row-container">
     <div class="multiple-row">
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
@@ -15,9 +15,13 @@
           describedBy: "timeline-date-heading",
           fieldset: {
               legend: {
-                text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
+                text: t('COMMON.DATE') + ' ' .+ t('COMMON.ROW') + ' ' + rowNumber,
                 classes: "govuk-visually-hidden timeline-date-legend-new"
-              }
+              },
+              hint: {
+                text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
+                classes: 'govuk-visually-hidden'
+              },
             },
           items: [
             {
