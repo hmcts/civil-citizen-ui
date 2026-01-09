@@ -6,6 +6,7 @@ import {
   getDisclosureSummarySection,
   getExpertSummarySection, getTrialSummarySection,
   getWitnessSummarySection,
+  buildDocumentUploadedElement,
 } from 'services/features/caseProgression/checkYourAnswers/buildEvidenceUploadedSummaryRows';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {SummaryList, SummaryRow} from 'models/summaryList/summaryList';
@@ -180,6 +181,74 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       const actualSummaryRows = getTrialSummarySection(uploadDocumentsUserForm, false, '1234', 'en');
       //then
       expect(actualSummaryRows.sections[0]).toBeUndefined();
+    });
+  });
+
+  describe('buildDocumentUploadedElement', () => {
+    const claimId = '1234';
+    const lang = 'en';
+
+    test('should return document element when all data is present', () => {
+      // Given
+      const document = {
+        caseDocument: {
+          documentName: 'test.pdf',
+          documentLink: {
+            document_binary_url: 'http://test.com/test-binary-url/binary',
+          },
+        },
+      };
+
+      // When
+      const result = buildDocumentUploadedElement(document, claimId, lang);
+
+      // Then
+      expect(result).not.toBeNull();
+      expect(result.title).toBe('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED');
+      expect(result.value).toContain('test.pdf');
+      expect(result.value).toContain('test-binary-url');
+    });
+
+    test('should return null when binaryUrl is missing', () => {
+      // Given
+      const document = {
+        caseDocument: {
+          documentName: 'test.pdf',
+          documentLink: {},
+        },
+      };
+
+      // When
+      const result = buildDocumentUploadedElement(document as any, claimId, lang);
+
+      // Then
+      expect(result).toBeNull();
+    });
+
+    test('should return null when caseDocument is missing', () => {
+      // Given
+      const document = {};
+
+      // When
+      const result = buildDocumentUploadedElement(document, claimId, lang);
+
+      // Then
+      expect(result).toBeNull();
+    });
+
+    test('should return null when documentLink is missing', () => {
+      // Given
+      const document = {
+        caseDocument: {
+          documentName: 'test.pdf',
+        },
+      };
+
+      // When
+      const result = buildDocumentUploadedElement(document as any, claimId, lang);
+
+      // Then
+      expect(result).toBeNull();
     });
   });
 });
