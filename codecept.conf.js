@@ -1,5 +1,3 @@
-const testPath = './src/test';
-
 const { testFilesHelper } = require('./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js');
 const testConfig = require('./src/test/config.js');
 const {unAssignAllUsers} = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
@@ -16,15 +14,8 @@ const getTests = () => {
     return [...prevFailedTestFiles, ...prevNotExecutedTestFiles];
   }
 
-  if (process.env.ENVIRONMENT == 'aat')
-    return [`${testPath}/functionalTests/tests/prod/**/*.js`,
-      `${testPath}/functionalTests/tests/common/**/*.js`,
-      `${testPath}/e2eTests/tests/**/*.js`];
-
-  return [ `${testPath}/functionalTests/tests/nonprod/**/*.js`,
-    `${testPath}/functionalTests/tests/common/**/*.js`,
-    `${testPath}/functionalTests/tests/mainClaimWelsh/**/*.js`,
-    `${testPath}/e2eTests/tests/**/*.js`];
+  return [ './src/test/functionalTests/tests/{*,**/*}.js',
+    './src/test/e2eTests/tests/{*,**/*}.js'];
 };
 
 exports.config = {
@@ -71,14 +62,14 @@ exports.config = {
       ignoreHTTPSErrors: true,
     },
     BrowserHelpers: {
-      require: `${testPath}/functionalTests/helpers/browser_helper.js`,
+      require: './src/test/functionalTests/helpers/browser_helper.js',
     },
   },
   include: {
-    api: `${testPath}/functionalTests/specClaimHelpers/api/steps.js`,
-    wa: `${testPath}/functionalTests/specClaimHelpers/api/stepsWA.js`,
-    noc: `${testPath}/functionalTests/specClaimHelpers/api/steps_noc.js`,
-    qm: `${testPath}/functionalTests/specClaimHelpers/api/steps_qm.js`,
+    api: './src/test/functionalTests/specClaimHelpers/api/steps.js',
+    wa: './src/test/functionalTests/specClaimHelpers/api/stepsWA.js',
+    noc: './src/test/functionalTests/specClaimHelpers/api/steps_noc.js',
+    qm: './src/test/functionalTests/specClaimHelpers/api/steps_qm.js',
   },
   plugins: {
     autoDelay: {
@@ -102,7 +93,7 @@ exports.config = {
     },
     failedAndNotExecutedTestFilesPlugin: {
       enabled: functional ?? false,
-      require: `${testPath}/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin`,
+      require: './src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin',
     },
     allure: {
       enabled: true,

@@ -39,14 +39,13 @@
 
             {% for unavailableDate in form.model.items %}
               <div role="group" aria-label="{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }} {{ loop.index }}">
-                {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
+                {{ unavailableDateRow(unavailableDate, 'PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE', loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
               </div>
             {% else %}
               <div role="group" aria-label="{{ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE') }} 1">
-                {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today) }}
+                {{ unavailableDateRow(unavailableDate, 'PAGES.UNAVAILABLE_DATES_FOR_HEARING.TITLE', 0, form.errorFor, t, {hidden:true}, today) }}
               </div>
             {% endfor %}
-          </fieldset>
 
             {% endcall %}
 
