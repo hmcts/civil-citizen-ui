@@ -11,6 +11,7 @@ let claimNumber;
 Feature('Lip v Lip - Defendant Welsh - GA application').tag('@ui-nightly-prod');
 
 Before(async ({api}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
