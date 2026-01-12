@@ -15,7 +15,7 @@
         describedBy: "claim-reason-heading",
         label: {
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') + " " + t('COMMON.ROW') + " " + rowNumber,
-          classes: "govuk-visually-hidden"
+          classes: "govuk-visually-hidden table-row-legend-new"
         },
         errorMessage: {
           text: t(form.errorFor("claimAmountRows[" + index + "][reason]"))
@@ -38,7 +38,7 @@
           describedBy: "claim-amount-heading",
         label: {
           text: t('COMMON.CLAIM_AMOUNT') + " " + t('COMMON.ROW')  + " " + rowNumber,
-          classes: "govuk-visually-hidden"
+          classes: "govuk-visually-hidden table-row-legend-new"
         },
         hint: {
           text: t('COMMON.CLAIM_AMOUNT_HINT_TEXT'),
