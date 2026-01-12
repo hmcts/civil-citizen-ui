@@ -15,7 +15,6 @@ def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "DTSCCI-2820-fix"
-def ccdBranch = "DTSCCI-2820-stay-and-dismiss-event-available-in-all-state-after-payment"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
