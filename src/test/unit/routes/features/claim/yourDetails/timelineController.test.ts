@@ -25,7 +25,7 @@ describe('Claimant Timeline Controller', () => {
   });
 
   describe('on GET', () => {
-    it.skip('should render timeline page', async () => {
+    it('should render timeline page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -43,7 +43,7 @@ describe('Claimant Timeline Controller', () => {
   });
 
   describe('on POST', () => {
-    it.skip('should render timeline page if there are validation errors', async () => {
+    it('should render timeline page if there are validation errors', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CLAIM_TIMELINE_URL).send({rows: []}).expect((res) => {
         expect(res.status).toBe(200);
