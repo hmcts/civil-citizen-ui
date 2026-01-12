@@ -15,12 +15,13 @@ const replaceOrAppend = (s, d) =>
 
 const updateLegends = (rowContainerElement, newRow) => {
   const newRowIndex = rowContainerElement.length;
-  const legends = newRow.getElementsByClassName('timeline-date-legend-new');
+  const legends = newRow.getElementsByClassName('timeline-row-legend-new');
   if (!elementExists(legends)) return;
-  const legend = legends[0];
-  legend.textContent = replaceOrAppend(legend.textContent, `${newRowIndex}`);
-  legend.class = `govuk-fieldset__legend timeline-date-legend-${newRowIndex}`;
-  legend.setAttribute('id', `timeline-date-legend-${newRowIndex}`);
+  for (const legend of legends) {
+    legend.textContent = replaceOrAppend(legend.textContent, `${newRowIndex}`);
+    legend.class = `govuk-visually-hidden timeline-row-legend-${newRowIndex}`;
+    legend.setAttribute('id', `timeline-row-legend-${newRowIndex}`);
+  }
 };
 
 const getLastRow = multipleRowElement => {
