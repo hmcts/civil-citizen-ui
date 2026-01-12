@@ -75,7 +75,7 @@
 
             <div id="rows">
               {% for timeline in form.model.rows %}
-                {{ timelineRow(timeline, loop.index0, form, t, loop.index) }}
+                {{ timelineRow(timeline, loop.index0, form, t) }}
               {% endfor %}
             </div>
 
