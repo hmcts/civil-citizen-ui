@@ -16,7 +16,7 @@
           fieldset: {
               legend: {
                 text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
-                classes: "govuk-visually-hidden timeline-row-legend-new"
+                classes: "govuk-visually-hidden table-row-legend-new"
               },
               hint: {
                 text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
@@ -65,7 +65,7 @@
           describedBy: "timeline-description-heading",
           label: {
             text: t('COMMON.ROW') + " " + rowNumber,
-            classes: 'govuk-visually-hidden timeline-row-legend-new'
+            classes: 'govuk-visually-hidden table-row-legend-new'
           },
           errorMessage: {
             text: t(form.errorFor("rows[" + index + "][description]"))

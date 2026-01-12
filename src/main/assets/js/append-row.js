@@ -15,12 +15,12 @@ const replaceOrAppend = (s, d) =>
 
 const updateLegends = (rowContainerElement, newRow) => {
   const newRowIndex = rowContainerElement.length;
-  const legends = newRow.getElementsByClassName('timeline-row-legend-new');
+  const legends = newRow.getElementsByClassName('table-row-legend-new');
   if (!elementExists(legends)) return;
   for (const legend of legends) {
     legend.textContent = replaceOrAppend(legend.textContent, `${newRowIndex}`);
-    legend.class = `govuk-visually-hidden timeline-row-legend-${newRowIndex}`;
-    legend.setAttribute('id', `timeline-row-legend-${newRowIndex}`);
+    legend.class = `govuk-visually-hidden table-row-legend-${newRowIndex}`;
+    legend.setAttribute('id', `table-row-legend-${newRowIndex}`);
   }
 };
 
