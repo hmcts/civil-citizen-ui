@@ -58,6 +58,12 @@
                 type: "number",
                 inputmode: "numeric",
                 name: "firstPaymentDate",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.FIRST_PAYMENT_DATE'),
+                    classes: 'govuk-visually-hidden'
+                  }
+                },
                 hint: {
                   text: t('COMMON.DATE_EXAMPLE', {
                     date: exampleDate.getDate() + ' ' + exampleDate.getMonth() + ' ' + (exampleDate.getFullYear() - 18)

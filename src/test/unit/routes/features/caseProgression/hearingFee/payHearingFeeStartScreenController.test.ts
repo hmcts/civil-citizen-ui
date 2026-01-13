@@ -9,7 +9,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {FIXED_DATE} from '../../../../../utils/dateUtils';
 import {CaseRole} from 'form/models/caseRoles';
-import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import payHearingFeeStartScreenController from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
 
@@ -44,9 +43,6 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
         }
         return done();
       });
-  });
-  beforeEach(()=> {
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   afterEach(() => {
     jest.restoreAllMocks();

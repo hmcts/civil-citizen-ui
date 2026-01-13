@@ -15,8 +15,13 @@
           {{headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE' )}}
            <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.MADE_AWARE') }}</p>
           <form method="post" novalidate autocomplete="off">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE') }}
+              </legend>
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO'}) }}
+             </fieldset>
              <div class="govuk-button-group">
                {{ addButton(t, 'CONTINUE', cancelUrl) }}
             </div>

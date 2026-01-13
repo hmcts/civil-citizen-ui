@@ -121,7 +121,7 @@ class CreateClaim {
   }
 
   async verifyCompletingYourClaim() {
-    I.waitForContent('add information that significantly change your claim',60);
+    I.waitForContent('add information that significantly changes your claim',60);
     I.see('Get the details right', 'h1');
     I.see('You\'ll have to pay an additional fee if you want you:');
     I.see('change the name of anyone involved with the claim');
@@ -361,7 +361,7 @@ class CreateClaim {
     I.see('Hearing fee');
     I.see('£181');
     I.see('You don’t have to pay a hearing fee unless the claim goes to a hearing.');
-    I.seeElement(paths.links.find_out_more_about_court_fees);
+    I.see('Find out more about court fees');
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -548,7 +548,7 @@ class CreateClaim {
     I.see('If the defendant pays you');
     I.see('You need to sign in to your account to tell us you\'ve been paid.');
     I.seeElement('//a[contains(text(),\'What did you think of this service?\')]');
-    I.see('Email', 'h3');
+    I.see('Email', 'h2');
     I.see('Telephone');
     I.see('0300 123 7050');
     I.seeElement('//a[.=\'Find out about call charges (opens in a new window)\']');

@@ -39,6 +39,12 @@
                 type: "number",
                 inputmode: "numeric",
                 name: "dateOfBirth",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.CLAIMANT_SETTLE_DATE.TITLE'),
+                    classes: 'govuk-visually-hidden'
+                  }
+                },
                 hint: {
                   text: t('COMMON.DATE_EXAMPLE', {
                     date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() - 1)
