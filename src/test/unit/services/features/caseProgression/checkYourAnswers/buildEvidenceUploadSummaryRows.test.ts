@@ -15,7 +15,6 @@ import {
   getWitnessEvidenceSummaryRow,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSummaryRows';
 import {t} from 'i18next';
-
 jest.mock('i18next');
 
 const mockTranslate = t as jest.Mock;
@@ -51,6 +50,32 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       expect(actualSummaryRows.sections[0]).toEqual(expectedWitnessEvidenceSection.sections[0]);
     });
 
+    test('should log error when document link is undefined', () => {
+      //given
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      for( const documentRef of uploadDocumentsUserForm.documentsReferred) {
+        documentRef.caseDocument.documentLink = undefined;
+      }
+      //when
+      const actualSummaryRows = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
+      //then
+      const expectedWitnessEvidenceSection = {} as SummarySections;
+      expectedWitnessEvidenceSection.sections = [] as SummarySection[];
+      const witnessSummarySection = {} as SummarySection;
+      witnessSummarySection.summaryList = {} as SummaryList;
+      witnessSummarySection.summaryList.rows = [
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+1, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
+        getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
+      ] as SummaryRow[];
+      expectedWitnessEvidenceSection.sections.push(witnessSummarySection);
+
+      expect(actualSummaryRows.sections[0]).toEqual(expectedWitnessEvidenceSection.sections[0]);
+    });
+
     test('should return no summary rows for claimant values', () => {
       //given
       const uploadDocumentsUserForm = getMockEmptyUploadDocumentsUserForm();
@@ -59,6 +84,7 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       //then
       expect(actualSummaryRows.sections[0]).toBeUndefined();
     });
+
   });
   describe('getExpertSummary', () => {
     test('should return summary rows for all claimant values', () => {

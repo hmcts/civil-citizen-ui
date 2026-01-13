@@ -271,6 +271,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
                           DocumentName: ${document?.caseDocument?.documentName}
                           DocumentLink present: ${!!document?.caseDocument?.documentLink}
                           document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+      continue;
     }
     const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
