@@ -17,6 +17,8 @@ import {RequestHandler} from 'express';
 
 const claimInterestController = express.Router();
 const claimInterestPath = 'features/claim/interest/claim-interest';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimInterestController');
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(claimInterestPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.PAGE_TITLE'});
@@ -34,7 +36,7 @@ claimInterestController.get(CLAIM_INTEREST_URL, (async (req:AppRequest, res:expr
 
 claimInterestController.post(CLAIM_INTEREST_URL, (async (req: AppRequest & express.Request, res: express.Response, next: express.NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
+    const userId = req.session?.user?.id;
     const claimInterest = getClaimInterestForm(req.body.option);
     const form = new GenericForm(claimInterest);
     form.validateSync();
@@ -42,7 +44,8 @@ claimInterestController.post(CLAIM_INTEREST_URL, (async (req: AppRequest & expre
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveClaimInterest(caseId, form.model.option as YesNo);
+      logger.info(`Claim interest yesOrNo updated for user ${userId}, claimInterestOption: ${form.model.option}`);
+      await saveClaimInterest(userId, form.model.option as YesNo);
       (form.model.option === YesNo.YES) ?
         res.redirect(CLAIM_INTEREST_TYPE_URL) :
         res.redirect(CLAIM_HELP_WITH_FEES_URL);
