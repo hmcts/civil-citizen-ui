@@ -22,7 +22,8 @@ import {
   buildTitledSummaryRowValue,
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
-import logger from "@pact-foundation/pact-node/src/logger";
+import {Logger} from '@hmcts/nodejs-logging';
+const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const getDate = (date: string): string => formatStringDateSlash(date);
