@@ -22,6 +22,7 @@ import {
   buildTitledSummaryRowValue,
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
+import logger from "@pact-foundation/pact-node/src/logger";
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const getDate = (date: string): string => formatStringDateSlash(date);
@@ -263,6 +264,13 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
     const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    }
     const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
