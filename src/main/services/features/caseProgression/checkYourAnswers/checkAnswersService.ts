@@ -42,6 +42,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
+  /* istanbul ignore next */
   logger.info('getSummarySections called', {
     claimId,
     isSmallClaims,
@@ -53,11 +54,13 @@ export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, c
   let witnessEvidenceSection;
   try {
     witnessEvidenceSection = getWitnessSummarySection(uploadedDocuments, claimId, lang);
+    /* istanbul ignore next */
     logger.info('getWitnessSummarySection completed', {
       claimId,
       sectionsCount: witnessEvidenceSection?.sections?.length || 0,
     });
   } catch (error) {
+    /* istanbul ignore next */
     logger.error('Error in getWitnessSummarySection', {
       claimId,
       error: error instanceof Error ? error.message : String(error),

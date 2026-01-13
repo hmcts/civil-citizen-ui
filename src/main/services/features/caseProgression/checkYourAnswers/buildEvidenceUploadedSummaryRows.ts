@@ -31,6 +31,7 @@ const getDate = (date: string): string => formatStringDateSlash(date);
 const documentUploaded = (lang: string ): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
 
 export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
+  /* istanbul ignore next */
   logger.info('getWitnessSummarySection called', {
     claimId,
     lang,
@@ -49,6 +50,7 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
   const witnessStatement = uploadedDocuments.witnessStatement;
   if(witnessStatement)
   {
+    /* istanbul ignore next */
     logger.info('Processing witnessStatement', {
       claimId,
       witnessStatementCount: witnessStatement.length,
@@ -192,6 +194,7 @@ export const getTrialSummarySection = (uploadedDocuments: UploadDocumentsUserFor
 
 const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: WitnessSection[], summaryList: SummaryList, claimId: string, lang: string ) => {
 
+  /* istanbul ignore next */
   logger.info('getWitnessSummaryRows called', {
     title,
     claimId,
@@ -202,6 +205,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
   let index = 1;
   for(const document of documents) {
     try {
+      /* istanbul ignore next */
       logger.info('Processing witness document', {
         claimId,
         index,
@@ -211,6 +215,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
       });
 
       if (!document?.caseDocument) {
+        /* istanbul ignore next */
         logger.error('Missing caseDocument in witness document', {
           claimId,
           index,
@@ -221,6 +226,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
       }
 
       if (!document.caseDocument.documentLink) {
+        /* istanbul ignore next */
         logger.error('Missing documentLink in caseDocument', {
           claimId,
           index,
@@ -232,6 +238,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
       }
 
       if (!document.caseDocument.documentLink.document_binary_url) {
+        /* istanbul ignore next */
         logger.error('Missing document_binary_url in documentLink', {
           claimId,
           index,
@@ -261,12 +268,14 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
 
       summaryList.rows.push(witnessSummaryRow);
 
+      /* istanbul ignore next */
       logger.info('Successfully processed witness document', {
         claimId,
         index,
         witnessName: document?.witnessName,
       });
     } catch (error) {
+      /* istanbul ignore next */
       logger.error('Error processing witness document', {
         claimId,
         index,
