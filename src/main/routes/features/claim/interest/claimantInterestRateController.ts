@@ -11,6 +11,8 @@ import {getInterest, saveInterest} from 'services/features/claim/interest/intere
 const interestRateController = Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
 const propertyName = 'sameRateInterestSelection';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimantInterestRateController');
 
 function renderView(form: GenericForm<ClaimantInterestRate>, res: Response): void {
   res.render(interestRateViewPath, {form, pageTitle: 'PAGES.CLAIMANT_INTEREST_RATE.PAGE_TITLE'});
@@ -35,6 +37,8 @@ interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
+      logger.info(`Claim interest rate selection updated for user ${claimId}, sameRateInterestType: ${req.body.sameRateInterestType},
+           differentRate: ${req.body.differentRate},reason: ${req.body.reason}`);
       await saveInterest(claimId,form.model, propertyName);
       res.redirect(CLAIM_INTEREST_DATE_URL);
     }

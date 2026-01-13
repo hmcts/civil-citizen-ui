@@ -5,6 +5,8 @@ import {GenericForm} from 'form/models/genericForm';
 import {TotalInterest} from 'form/models/interest/totalInterest';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimTotalInterestController');
 const claimTotalInterestController = Router();
 const claimTotalInterestViewPath = 'features/claim/interest/total-claim-interest';
 const propertyName = 'totalInterest';
@@ -30,6 +32,7 @@ claimTotalInterestController.post(CLAIM_INTEREST_TOTAL_URL, (async (req: AppRequ
       res.render(claimTotalInterestViewPath, {form});
     } else {
       const appRequest = <AppRequest>req;
+      logger.info(`Claim total interest for user ${appRequest.session.user?.id}, totalInterest: ${req.body.amount}`);
       await saveInterest(appRequest.session?.user?.id, form.model, propertyName);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
