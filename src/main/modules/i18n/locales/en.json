@@ -33,6 +33,7 @@
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
     "CLAIM_AMOUNT": "Claim amount",
+    "CLAIM_AMOUNT_HINT_TEXT": "Enter Claim amount, in pounds.",
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
     "CLAIMANT": "Claimant",
@@ -76,6 +77,7 @@
     "YEAR": "Year",
     "YEARS": "Years",
     "YES": "Yes",
+    "ROW": "row",
     "OPENS_IN_NEW_TAB": "(opens in a new tab)",
     "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Confirm you've paid a judgment debt",
     "ADDRESS_FORM": {
