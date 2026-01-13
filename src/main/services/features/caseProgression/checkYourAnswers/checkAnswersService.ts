@@ -35,13 +35,39 @@ import {CaseEvent} from 'models/events/caseEvent';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersService');
+
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
+  logger.info('getSummarySections called', {
+    claimId,
+    isSmallClaims,
+    lang,
+    hasUploadedDocuments: !!uploadedDocuments,
+    uploadedDocumentsKeys: uploadedDocuments ? Object.keys(uploadedDocuments) : [],
+  });
+
+  let witnessEvidenceSection;
+  try {
+    witnessEvidenceSection = getWitnessSummarySection(uploadedDocuments, claimId, lang);
+    logger.info('getWitnessSummarySection completed', {
+      claimId,
+      sectionsCount: witnessEvidenceSection?.sections?.length || 0,
+    });
+  } catch (error) {
+    logger.error('Error in getWitnessSummarySection', {
+      claimId,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    throw error;
+  }
 
   return {
-    witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
+    witnessEvidenceSection,
     disclosureEvidenceSection: getDisclosureSummarySection(uploadedDocuments, claimId, lang),
     expertEvidenceSection: getExpertSummarySection(uploadedDocuments, claimId, lang),
     trialEvidenceSection: getTrialSummarySection(uploadedDocuments, isSmallClaims, claimId, lang),

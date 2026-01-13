@@ -23,11 +23,23 @@ import {
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
+
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const getDate = (date: string): string => formatStringDateSlash(date);
 const documentUploaded = (lang: string ): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
 
 export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
+  logger.info('getWitnessSummarySection called', {
+    claimId,
+    lang,
+    hasWitnessStatement: !!uploadedDocuments?.witnessStatement,
+    hasWitnessSummary: !!uploadedDocuments?.witnessSummary,
+    hasNoticeOfIntention: !!uploadedDocuments?.noticeOfIntention,
+    hasDocumentsReferred: !!uploadedDocuments?.documentsReferred,
+  });
+
   const witnessEvidenceSection = {} as SummarySections;
   witnessEvidenceSection.sections = [] as SummarySection[];
   const witnessSummarySection = {} as SummarySection;
@@ -37,6 +49,10 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
   const witnessStatement = uploadedDocuments.witnessStatement;
   if(witnessStatement)
   {
+    logger.info('Processing witnessStatement', {
+      claimId,
+      witnessStatementCount: witnessStatement.length,
+    });
     getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT',witnessStatement, witnessSummarySection.summaryList, claimId, lang);
   }
 
@@ -176,28 +192,92 @@ export const getTrialSummarySection = (uploadedDocuments: UploadDocumentsUserFor
 
 const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: WitnessSection[], summaryList: SummaryList, claimId: string, lang: string ) => {
 
+  logger.info('getWitnessSummaryRows called', {
+    title,
+    claimId,
+    documentsCount: documents?.length,
+    lang,
+  });
+
   let index = 1;
   for(const document of documents) {
+    try {
+      logger.info('Processing witness document', {
+        claimId,
+        index,
+        witnessName: document?.witnessName,
+        hasCaseDocument: !!document?.caseDocument,
+        caseDocumentKeys: document?.caseDocument ? Object.keys(document.caseDocument) : [],
+      });
 
-    const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
-    let witnessSummaryRow = {} as SummaryRow;
+      if (!document?.caseDocument) {
+        logger.error('Missing caseDocument in witness document', {
+          claimId,
+          index,
+          witnessName: document?.witnessName,
+          documentKeys: document ? Object.keys(document) : [],
+        });
+        continue;
+      }
 
-    const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
-    const dateElement = {
-      title: t(dateTitle, {lng: getLng(lang)}),
-      value: getDate(document.dateInputFields.date.toString()),
-    };
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+      if (!document.caseDocument.documentLink) {
+        logger.error('Missing documentLink in caseDocument', {
+          claimId,
+          index,
+          witnessName: document?.witnessName,
+          caseDocumentKeys: Object.keys(document.caseDocument),
+          caseDocument: JSON.stringify(document.caseDocument),
+        });
+        continue;
+      }
 
-    let sectionTitle = t(title, { lng: getLng(lang) });
-    sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
+      if (!document.caseDocument.documentLink.document_binary_url) {
+        logger.error('Missing document_binary_url in documentLink', {
+          claimId,
+          index,
+          witnessName: document?.witnessName,
+          documentLinkKeys: Object.keys(document.caseDocument.documentLink),
+          documentLink: JSON.stringify(document.caseDocument.documentLink),
+        });
+        continue;
+      }
+
+      const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
+      let witnessSummaryRow = {} as SummaryRow;
+
+      const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
+      const dateElement = {
+        title: t(dateTitle, {lng: getLng(lang)}),
+        value: getDate(document.dateInputFields.date.toString()),
+      };
+      const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+
+      let sectionTitle = t(title, { lng: getLng(lang) });
+      sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
+      const sectionValueList = [witnessNameElement, dateElement, documentElement];
+      const sectionValue = buildTitledSummaryRowValue(sectionValueList);
+
+      witnessSummaryRow = summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
+
+      summaryList.rows.push(witnessSummaryRow);
+
+      logger.info('Successfully processed witness document', {
+        claimId,
+        index,
+        witnessName: document?.witnessName,
+      });
+    } catch (error) {
+      logger.error('Error processing witness document', {
+        claimId,
+        index,
+        witnessName: document?.witnessName,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        document: JSON.stringify(document),
+      });
+      throw error;
+    }
     index++;
-    const sectionValueList = [witnessNameElement, dateElement, documentElement];
-    const sectionValue = buildTitledSummaryRowValue(sectionValueList);
-
-    witnessSummaryRow = summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
-
-    summaryList.rows.push(witnessSummaryRow);
   }
 };
 
