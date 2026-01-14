@@ -283,23 +283,123 @@ export class CivilServiceClient {
   }
 
   async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
+    const claimId = req.params?.id;
+    const userId = req.session?.user?.id;
+    /* istanbul ignore next */
+    logger.info('Starting document upload', {
+      claimId,
+      userId,
+      fileName: file?.originalname,
+      fileSize: file?.size,
+      mimeType: file?.mimetype,
+      fieldName: file?.fieldname,
+    });
     try {
       const formData = new FormData();
       formData.append('file', new Blob([file.buffer]) , file.originalname);
       const response= await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
         {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
+      
+      /* istanbul ignore next */
+      logger.info('Document upload API response received', {
+        claimId,
+        userId,
+        fileName: file?.originalname,
+        responseStatus: response?.status,
+        responseStatusText: response?.statusText,
+        hasResponseData: !!response?.data,
+        responseDataType: response?.data ? typeof response?.data : 'undefined',
+        isUint8Array: response?.data instanceof Uint8Array,
+        responseHeaders: response?.headers ? JSON.stringify(response.headers) : undefined,
+      });
+
       if (!response.data) {
+        /* istanbul ignore next */
+        logger.error('Document upload unsuccessful - no response data', {
+          claimId,
+          userId,
+          fileName: file?.originalname,
+        });
         throw new AssertionError({message: 'Document upload unsuccessful.'});
       }
+
+      let caseDocument: CaseDocument;
       if (response.data instanceof Uint8Array) {
         const decoder = new TextDecoder('utf-8');
         const decodedString = decoder.decode(response.data);
-        return JSON.parse(decodedString) as CaseDocument;
+        caseDocument = JSON.parse(decodedString) as CaseDocument;
+        /* istanbul ignore next */
+        logger.info('Document upload response parsed from Uint8Array', {
+          claimId,
+          userId,
+          fileName: file?.originalname,
+          decodedStringLength: decodedString?.length,
+        });
       } else {
-        return response.data as CaseDocument;
+        caseDocument = response.data as CaseDocument;
+        /* istanbul ignore next */
+        logger.info('Document upload response used directly', {
+          claimId,
+          userId,
+          fileName: file?.originalname,
+        });
       }
+
+      /* istanbul ignore next */
+      logger.info('Document upload successful - CaseDocument details', {
+        claimId,
+        userId,
+        fileName: file?.originalname,
+        caseDocument: {
+          createdBy: caseDocument?.createdBy,
+          documentName: caseDocument?.documentName,
+          documentSize: caseDocument?.documentSize,
+          documentType: caseDocument?.documentType,
+          createdDatetime: caseDocument?.createdDatetime,
+          ownedBy: caseDocument?.ownedBy,
+          hasDocumentLink: !!caseDocument?.documentLink,
+          documentLink: caseDocument?.documentLink ? {
+            document_url: caseDocument.documentLink?.document_url,
+            document_binary_url: caseDocument.documentLink?.document_binary_url,
+            document_filename: caseDocument.documentLink?.document_filename,
+            document_hash: caseDocument.documentLink?.document_hash,
+            allKeys: Object.keys(caseDocument.documentLink || {}),
+          } : null,
+        },
+        fullCaseDocument: JSON.stringify(caseDocument),
+      });
+
+      if (!caseDocument?.documentLink) {
+        /* istanbul ignore next */
+        logger.warn('CaseDocument missing documentLink', {
+          claimId,
+          userId,
+          fileName: file?.originalname,
+          caseDocumentKeys: caseDocument ? Object.keys(caseDocument) : [],
+          caseDocument: JSON.stringify(caseDocument),
+        });
+      } else if (!caseDocument.documentLink.document_binary_url) {
+        /* istanbul ignore next */
+        logger.warn('CaseDocument.documentLink missing document_binary_url', {
+          claimId,
+          userId,
+          fileName: file?.originalname,
+          documentLinkKeys: Object.keys(caseDocument.documentLink),
+          documentLink: JSON.stringify(caseDocument.documentLink),
+        });
+      }
+
+      return caseDocument;
     } catch (err: unknown) {
-      logger.error(`Error when uploading document, error - req.params.id - ${req.params.id}`);
+      /* istanbul ignore next */
+      logger.error('Error when uploading document', {
+        claimId,
+        userId,
+        fileName: file?.originalname,
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+        errorType: err?.constructor?.name,
+      });
       throw err;
     }
   }
