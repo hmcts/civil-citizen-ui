@@ -15,12 +15,15 @@ import {
   getWitnessEvidenceSummaryRow,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSummaryRows';
 import {t} from 'i18next';
+const {Logger} = require('@hmcts/nodejs-logging');
 jest.mock('i18next');
 
 const mockTranslate = t as jest.Mock;
 mockTranslate.mockImplementation((textToTranslate) => {
   return textToTranslate;
 });
+const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
+const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
 
 describe('buildEvidenceUploadedSummaryRows', () => {
 
@@ -52,6 +55,7 @@ describe('buildEvidenceUploadedSummaryRows', () => {
 
     test('should log error when document link is undefined', () => {
       //given
+
       const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
       for( const documentRef of uploadDocumentsUserForm.documentsReferred) {
         documentRef.caseDocument.documentLink = undefined;
@@ -72,8 +76,8 @@ describe('buildEvidenceUploadedSummaryRows', () => {
         getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE'+' '+2, 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'),
       ] as SummaryRow[];
       expectedWitnessEvidenceSection.sections.push(witnessSummarySection);
-
       expect(actualSummaryRows.sections[0]).toEqual(expectedWitnessEvidenceSection.sections[0]);
+      expect(loggerSpy).toHaveBeenCalled();
     });
 
     test('should return no summary rows for claimant values', () => {
