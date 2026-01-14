@@ -259,12 +259,6 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
   let index = 1;
   for(const document of documents) {
-    const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
-    let documentTypeSummaryRow = {} as SummaryRow;
-
-    const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
-    const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
-    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
     if(!document?.caseDocument?.documentLink?.document_binary_url){
       logger.error(`Document link is missing for document
                           ClaimId: ${claimId}
@@ -273,6 +267,12 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
                           document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
       continue;
     }
+    const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
+    let documentTypeSummaryRow = {} as SummaryRow;
+
+    const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
+    const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
+    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
     const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
