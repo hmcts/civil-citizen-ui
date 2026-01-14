@@ -362,7 +362,7 @@ export class CivilServiceClient {
             document_url: caseDocument.documentLink?.document_url,
             document_binary_url: caseDocument.documentLink?.document_binary_url,
             document_filename: caseDocument.documentLink?.document_filename,
-            document_hash: caseDocument.documentLink?.document_hash,
+            category_id: caseDocument.documentLink?.category_id,
             allKeys: Object.keys(caseDocument.documentLink || {}),
           } : null,
         },
