@@ -20,12 +20,12 @@ export class InterestStartDate {
     month: number;
 
   @Min(1872, {message: 'ERRORS.VALID_YEAR'})
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.TEXT_TOO_MANY'})
     year: number;
 
   @IsDefined({message: 'ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'})
   @IsNotEmpty({message: 'ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'})
-  @MaxLength(FREE_TEXT_1000_MAX_LENGTH, {message: 'ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'})
+  @MaxLength(FREE_TEXT_1000_MAX_LENGTH, {message: 'ERRORS.'})
     reason?: string;
 
   constructor(day?: string, month?: string, year?: string, reason?: string) {
