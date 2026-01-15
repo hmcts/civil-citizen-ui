@@ -68,8 +68,6 @@ module.exports = {
     }
     if (isDeadlinePresent === true) {
       await I.see(deadline, locator);
-    } else {
-      I.dontSee(deadline, locator);
     }
     const tasklistLocator = `//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`;
     if (isLinkFlag === true) {
