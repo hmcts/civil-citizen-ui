@@ -22,6 +22,8 @@ import {getClaimById} from 'modules/utilityService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('uploadDocumentsController');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -45,6 +47,8 @@ const upload = multer({
 });
 
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
+  const claimId = (req as AppRequest).params?.id;
+  const userId = (req as AppRequest).session?.user?.id;
   const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   const target = `${category}[${index}][fileUpload]`;
   const inputFile = (req.files as Express.Multer.File[]).filter(file =>
@@ -52,6 +56,18 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
   );
   if (inputFile[0]){
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
+    /* istanbul ignore next */
+    logger.info('Starting file upload process', {
+      claimId,
+      userId,
+      category,
+      index,
+      fileName: fileUpload?.originalname,
+      fileSize: fileUpload?.size,
+      mimeType: fileUpload?.mimetype,
+      fieldName: fileUpload?.fieldname,
+    });
+
     form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
     form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
 
@@ -62,7 +78,41 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      const caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = caseDocument;
+
+      /* istanbul ignore next */
+      logger.info('File upload completed and stored in form', {
+        claimId,
+        userId,
+        category,
+        index,
+        fileName: fileUpload?.originalname,
+        caseDocument: {
+          createdBy: caseDocument?.createdBy,
+          documentName: caseDocument?.documentName,
+          documentSize: caseDocument?.documentSize,
+          documentType: caseDocument?.documentType,
+          hasDocumentLink: !!caseDocument?.documentLink,
+          documentLink: caseDocument?.documentLink ? {
+            document_url: caseDocument.documentLink?.document_url,
+            document_binary_url: caseDocument.documentLink?.document_binary_url,
+            document_filename: caseDocument.documentLink?.document_filename,
+          } : null,
+        },
+      });
+    } else {
+      /* istanbul ignore next */
+      logger.warn('File upload validation failed', {
+        claimId,
+        userId,
+        category,
+        index,
+        fileName: fileUpload?.originalname,
+        sizeError: form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}`),
+        mimeTypeError: form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`),
+        generalError: form?.errorFor(`${errorFieldNamePrefix}`),
+      });
     }
   }
 }
