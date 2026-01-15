@@ -11,6 +11,8 @@ import {YesNo} from 'form/models/yesNo';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 import {getClaimInterestForm} from 'services/features/claim/interest/claimInterestService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('continueClaimingInterestController');
 const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';
 
@@ -39,6 +41,7 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (a
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
+      logger.info(`continueClaimingInterest option for user ${caseId}, option: ${form.model.option}`);
       await saveInterest(caseId, form.model.option as YesNo, 'continueClaimingInterest');
       (form.model.option === YesNo.YES) ?
         res.redirect(CLAIM_INTEREST_HOW_MUCH_URL) :

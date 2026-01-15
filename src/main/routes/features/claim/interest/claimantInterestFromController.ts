@@ -10,6 +10,8 @@ import {InterestClaimFromType} from '../../../../common/form/models/claimDetails
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimantInterestFromController');
 const claimantInterestFromController = Router();
 const claimantInterestFromViewPath = 'features/claim/interest/claimant-interest-from';
 const propertyName = 'interestClaimFrom';
@@ -37,6 +39,7 @@ claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, (async (req: AppReq
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
+      logger.info(`Claim interest option updated for user ${claimId}, interest option: ${req.body.option}`);
       await saveInterest(claimId, form.model.option, propertyName);
       if (form.model.option === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE) {
         res.redirect(CLAIM_HELP_WITH_FEES_URL);
