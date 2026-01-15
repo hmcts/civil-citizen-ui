@@ -22,6 +22,8 @@ import {getClaimById} from 'modules/utilityService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('uploadDocumentsController');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -61,8 +63,9 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
-
+      logger.info(`Uploading Single File: ${fileUpload.originalname} - Size: ${fileUpload.size} bytes - MimeType: ${fileUpload.mimetype}`);
       form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      logger.info(`Successfully uploaded File: ${fileUpload.originalname} - Document binary link present: ${!!form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument?.documentLink?.document_binary_url}`);
     }
   }
 }
