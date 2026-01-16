@@ -44,7 +44,7 @@ services:
     welshspeaker:
       telephone: CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE
   generalApplication:
-    url: CIVIL_GENERAL_APPLICATIONS_URL
+    url: CIVIL_SERVICE_URL
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
