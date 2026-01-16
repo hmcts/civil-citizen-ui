@@ -180,6 +180,13 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
 
   let index = 1;
   for(const document of documents) {
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    }
 
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let witnessSummaryRow = {} as SummaryRow;
@@ -207,6 +214,13 @@ const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: str
 
   let index = 1;
   for(const document of documents) {
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    }
 
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let expertSummaryRow = {} as SummaryRow;
@@ -236,6 +250,13 @@ const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSect
 
   let index = 1;
   for(const document of documents) {
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let documentTypeSummaryRow = {} as SummaryRow;
 
@@ -288,6 +309,13 @@ const getFileOnlySummaryRow = (title: string, documents: FileOnlySection[], summ
 
   let index = 1;
   for(const document of documents){
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let fileOnlySummaryRow = {} as SummaryRow;
 
@@ -309,6 +337,13 @@ const getExpertOtherPartySummaryRows = (title: string, otherPartyTitle: string, 
 
   let index = 1;
   for(const document of documents){
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let expertQuestionsSummaryRow = {} as SummaryRow;
     const otherPartyDocumentName = isQuestion ? document.questionDocumentName : document.otherPartyQuestionsDocumentName;
