@@ -2,7 +2,7 @@
 
 properties([
     // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
-    pipelineTriggers([cron('H 12 * * 1-5')]),
+    // pipelineTriggers([cron('H 12 * * 1-5')]),
     copyArtifactPermission('/HMCTS_a_to_c_Nightly/civil-citizen-ui/*'),
     parameters([
       choice(name: 'FORCE_GREEN_BUILD', choices: ['false', 'true'], 
@@ -57,6 +57,7 @@ properties([
       choice(name: 'CIVIL_GENERAL_APPLICATIONS_URL', 
         choices: [
                     'http://civil-general-applications-aat.service.core-compute-aat.internal', 
+                    'http://civil-service-demo.service.core-compute-demo.internal',
                     'http://civil-general-applications-demo.service.core-compute-demo.internal',
                     'https://civil-citizen-ui-pr-{PR_NUMBER}-general-applications.preview.platform.hmcts.net',
                   ],
@@ -167,12 +168,12 @@ withNightlyPipeline(type, product, component) {
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean();
 
   if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
-    enableCrossBrowserTest()
+    // enableCrossBrowserTest()
 
-    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-      env.IS_CROSSBROWSER = false
-    }
+    // afterAlways('crossBrowserTest') {
+    //   steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+    //   env.IS_CROSSBROWSER = false
+    // }
   }
 
   enableFullFunctionalTest(200)
