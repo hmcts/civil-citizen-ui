@@ -35,7 +35,7 @@ nodejs:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1896'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
@@ -113,7 +113,7 @@ civil-general-applications:
     java:
       applicationPort: 4000
       releaseNameOverride: ${SERVICE_NAME}-civil-service
-      image: 'hmctspublic.azurecr.io/civil/service:latest'
+      image: 'hmctspublic.azurecr.io/civil/service:pr-7321'
       imagePullPolicy: Always
       ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
       devcpuRequests: 1000m
