@@ -294,7 +294,15 @@ export class CivilServiceClient {
       if (response.data instanceof Uint8Array) {
         const decoder = new TextDecoder('utf-8');
         const decodedString = decoder.decode(response.data);
-        return JSON.parse(decodedString) as CaseDocument;
+        const uploadedCaseDocument = JSON.parse(decodedString) as CaseDocument;
+        if(!uploadedCaseDocument?.documentLink?.document_binary_url){
+          logger.error(`Document link is missing for document
+                          ClaimId: ${req.session?.claimId}
+                          DocumentName: ${uploadedCaseDocument?.documentName}
+                          DocumentLink present: ${!!uploadedCaseDocument?.documentLink}
+                          document_binary_url present: ${!!uploadedCaseDocument?.documentLink?.document_binary_url}`);
+        }
+        return uploadedCaseDocument;
       } else {
         return response.data as CaseDocument;
       }
