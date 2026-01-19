@@ -75,9 +75,9 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
           children: [{
             property: 'fileUpload',
             children: fileErrors,
-            constraints: fileErrors[0]?.constraints
-          }]
-        }]
+            constraints: fileErrors[0]?.constraints,
+          }],
+        }],
       };
       form.errors.push(nestedError as any);
     }
