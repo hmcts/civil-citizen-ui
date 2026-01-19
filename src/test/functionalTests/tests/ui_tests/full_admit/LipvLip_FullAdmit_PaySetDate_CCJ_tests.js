@@ -8,7 +8,7 @@ const {
   defendantResponseFullAdmitPayBySetDateDefendant,
   defendantResponseFullAdmitPayBySetDateClaimant,
   defendantResponseFullAdmitPayBySetDateClaimantCoSC,
-  defendantResponseConfirmYouHavePaidAJudgmentCCJDebt
+  defendantResponseConfirmYouHavePaidAJudgmentCCJDebt,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
