@@ -22,6 +22,8 @@ import {
   buildTitledSummaryRowValue,
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
@@ -346,6 +348,14 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
   let index = 1;
   for(const document of documents) {
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+      continue;
+    }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let documentTypeSummaryRow = {} as SummaryRow;
 
