@@ -223,6 +223,14 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyConfirmationScreenForFullAdmitCCJ(claimNumber);
   }
 
+  async ConfirmThatYouHaveBeenpPaidforCoSC()
+  {
+    await responseToDefence.ConfirmThatYouHaveBeenPaid();
+  }
+  async ConfirmYouHavePaidAJudgmentCCJDebt()
+  {
+    await responseToDefence.CertificateOfSatisfactionAndCancellation();
+  }
   async ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(caseReference, claimNumber)
   {
     await responseToDefence.open(caseReference);
