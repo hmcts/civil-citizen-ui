@@ -22,8 +22,7 @@ import {
   buildTitledSummaryRowValue,
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
-import {Logger} from '@hmcts/nodejs-logging';
-
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
