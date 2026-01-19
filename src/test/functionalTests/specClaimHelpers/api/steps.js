@@ -327,7 +327,7 @@ module.exports = {
   amendRespondent1ResponseDeadline: async (user) => {
     await apiRequest.setupTokens(user);
     let respondent1deadline ={};
-    respondent1deadline = {'respondent1ResponseDeadline':'2024-01-10T15:59:50'};
+    respondent1deadline = {'respondent1ResponseDeadline':'2025-11-19T15:59:50'};
     await testingSupport.updateCaseData(caseId, respondent1deadline);
     console.log('ResponseDeadline updated');
   },
