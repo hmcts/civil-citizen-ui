@@ -71,17 +71,38 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
   );
   if (inputFile){
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
-    form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
-    form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
-    form.validateSync();
-    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload; //release memory
-    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
-    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
-        && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
-        && !form?.errorFor(`${errorFieldNamePrefix}`)) {
-
+    
+    // Validate only the file object itself, not the entire form
+    // This prevents validation errors from other incomplete fields on the page
+    const Validator = require('class-validator').Validator;
+    const validator = new Validator();
+    const fileErrors = validator.validateSync(fileUpload);
+    
+    // If file validation passes, upload it
+    if (!fileErrors || fileErrors.length === 0) {
       form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+    } else {
+      // Store validation errors for this specific file field only
+      if (!form.errors) {
+        form.errors = [];
+      }
+      // Map file errors to the correct nested structure for display
+      const nestedError = {
+        property: category,
+        children: [{
+          property: index.toString(),
+          children: [{
+            property: 'fileUpload',
+            children: fileErrors,
+            constraints: fileErrors[0]?.constraints
+          }]
+        }]
+      };
+      form.errors.push(nestedError as any);
     }
+    
+    // Release memory
+    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload;
   }
 }
 
