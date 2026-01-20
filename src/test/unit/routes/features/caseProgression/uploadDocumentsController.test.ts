@@ -635,17 +635,21 @@ describe('on POST', () => {
       })
       .expect((res: express.Response) => {
         expect(res.status).toBe(200);
+        expect(saveCaseProgression).toHaveBeenCalled();
       });
   });
 
-  it('should return 500 error page for failure', async () => {
-    (getClaimById as jest.Mock).mockReturnValue(new Error());
-    (getUploadDocumentsForm as jest.Mock).mockReturnValue(undefined);
+  it('should save data even when form has errors if an action is present', async () => {
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
+    (getClaimById as jest.Mock).mockResolvedValue(new Claim());
+
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      .field('action', 'documentsForDisclosure[0][uploadButton]')
+      .expect((res: express.Response) => {
+        expect(res.status).toBe(200);
+        expect(saveCaseProgression).toHaveBeenCalled();
       });
   });
+
 });
