@@ -45,6 +45,11 @@ const upload = multer({
 });
 
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
+  /* istanbul ignore next */
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger('uploadDocumentsController');
+  logger.info(`[SAVE FILE] uploadSingleFile called: submitAction=${submitAction}, filesCount=${req.files?.length || 0}`);
+  
   await uploadSingleFileWithValidation(
     req,
     submitAction,
@@ -55,6 +60,9 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       findFileMethod: 'filter', // Case progression uses filter()[0]
     },
   );
+  
+  /* istanbul ignore next */
+  logger.info('[SAVE FILE] uploadSingleFileWithValidation completed');
 }
 
 async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
@@ -111,24 +119,40 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
   /* istanbul ignore next */
   const {Logger} = require('@hmcts/nodejs-logging');
   const logger = Logger.getLogger('uploadDocumentsController');
-  logger.info(`POST upload documents: claimId=${req.params.id}, action=${req.body?.action}`);
   
   try {
+    /* istanbul ignore next */
+    const filesInfo = req.files ? (req.files as Express.Multer.File[]).map(f => ({
+      fieldname: f.fieldname,
+      originalname: f.originalname,
+      mimetype: f.mimetype,
+      size: f.size,
+    })) : [];
+    logger.info(`[SAVE FILE BUTTON CLICKED] POST upload documents: claimId=${req.params.id}, action=${req.body?.action}, filesCount=${req.files?.length || 0}, files=${JSON.stringify(filesInfo)}`);
+    
     const claimId = req.params.id;
     const action = req.body.action;
+    
+    /* istanbul ignore next */
+    logger.info(`[SAVE FILE] Getting claim data: claimId=${claimId}`);
     const claim: Claim = await getClaimById(claimId, req, true);
+    
+    /* istanbul ignore next */
+    logger.info('[SAVE FILE] Building form from request');
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('[uploadButton]')) {
+      /* istanbul ignore next */
+      logger.info(`[SAVE FILE] Upload button action detected: action=${action}`);
       try {
         await uploadSingleFile(req, action, form);
+        /* istanbul ignore next */
+        logger.info('[SAVE FILE] uploadSingleFile completed successfully, rendering view');
       } catch (error) {
         /* istanbul ignore next */
         // If uploadSingleFile throws an error, catch it and add to form errors instead of redirecting to error page
-        const {Logger} = require('@hmcts/nodejs-logging');
-        const logger = Logger.getLogger('uploadDocumentsController');
         logger.error(`Error in uploadSingleFile: ${error?.message || error}`, error);
         
         // Ensure form has errors array
@@ -155,9 +179,13 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
         };
         form.errors.push(errorStructure as any);
       }
+      /* istanbul ignore next */
+      logger.info('[SAVE FILE] Rendering view after upload button action');
       return await renderView(res, claim, claimId, form);
     }
 
+    /* istanbul ignore next */
+    logger.info('[SAVE FILE] Not an upload button action, validating full form');
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(res, claim, claimId, form);
@@ -168,8 +196,6 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
   } catch (error) {
     /* istanbul ignore next */
     // Catch any unexpected errors and try to display on form if it's an upload action
-    const {Logger} = require('@hmcts/nodejs-logging');
-    const logger = Logger.getLogger('uploadDocumentsController');
     logger.error(`Unexpected error in upload documents POST: ${error?.message || error}`, error);
     
     // If this is an upload button action, try to show error on form instead of redirecting
