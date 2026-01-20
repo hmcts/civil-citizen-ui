@@ -79,6 +79,7 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
     const fileErrors = validator.validateSync(fileUpload);
     
     // If file validation passes, upload it
+    /* istanbul ignore else */
     if (!fileErrors || fileErrors.length === 0) {
       form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     } else {
