@@ -185,6 +185,15 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
+      steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
+      publishHTML([
+        allowMissing: false,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
+        reportDir: 'test-results/functional/allure-report',
+        reportFiles: 'index.html',
+        reportName: 'Nightly E2E Allure Report'
+      ])
       archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     }
   }
