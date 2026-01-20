@@ -117,7 +117,39 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('[uploadButton]')) {
-      await uploadSingleFile(req, action, form);
+      try {
+        await uploadSingleFile(req, action, form);
+      } catch (error) {
+        /* istanbul ignore next */
+        // If uploadSingleFile throws an error, catch it and add to form errors instead of redirecting to error page
+        const {Logger} = require('@hmcts/nodejs-logging');
+        const logger = Logger.getLogger('uploadDocumentsController');
+        logger.error(`Error in uploadSingleFile: ${error?.message || error}`, error);
+        
+        // Ensure form has errors array
+        if (!form.errors) {
+          form.errors = [];
+        }
+        
+        // Extract category and index from action to create proper error structure
+        const [category] = action.split(/[[\]]/).filter((word: string) => word !== '');
+        const errorStructure = {
+          property: category,
+          children: [{
+            property: category,
+            children: [{
+              property: '0',
+              children: [{
+                property: 'fileUpload',
+                constraints: {
+                  uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
+                },
+              }],
+            }],
+          }],
+        };
+        form.errors.push(errorStructure as any);
+      }
       return await renderView(res, claim, claimId, form);
     }
 

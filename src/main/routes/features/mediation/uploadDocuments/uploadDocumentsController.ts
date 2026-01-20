@@ -132,8 +132,37 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     } else if(action === 'add_another-documentsReferred'){
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
       return renderView(form, uploadDocuments, res, claimId, claim);
-    } else if (action?.includes('[uploadButton]')) {
-      await uploadSingleFile(req, res, claimId, action, form);
+    } else     if (action?.includes('[uploadButton]')) {
+      try {
+        await uploadSingleFile(req, res, claimId, action, form);
+      } catch (error) {
+        /* istanbul ignore next */
+        // If uploadSingleFile throws an error, catch it and add to form errors instead of redirecting to error page
+        const {Logger} = require('@hmcts/nodejs-logging');
+        const logger = Logger.getLogger('mediationUploadDocumentsController');
+        logger.error(`Error in uploadSingleFile: ${error?.message || error}`, error);
+        
+        // Ensure form has errors array
+        if (!form.errors) {
+          form.errors = [];
+        }
+        
+        // Extract category and index from action to create proper error structure
+        const [category] = action.split(/[[\]]/).filter((word: string) => word !== '');
+        const errorStructure = {
+          property: category,
+          children: [{
+            property: '0',
+            children: [{
+              property: 'fileUpload',
+              constraints: {
+                uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
+              },
+            }],
+          }],
+        };
+        form.errors.push(errorStructure as any);
+      }
       return renderView(form, uploadDocuments, res, claimId, claim);
     } else if (action?.includes('[removeButton]')) {
       removeItem(uploadDocumentsForm, action);
