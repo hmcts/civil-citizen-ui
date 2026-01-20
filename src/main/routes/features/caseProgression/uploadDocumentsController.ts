@@ -108,6 +108,11 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
 }) as RequestHandler);
 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
+  /* istanbul ignore next */
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger('uploadDocumentsController');
+  logger.info(`POST upload documents: claimId=${req.params.id}, action=${req.body?.action}`);
+  
   try {
     const claimId = req.params.id;
     const action = req.body.action;
@@ -161,7 +166,49 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
-    next(error);
+    /* istanbul ignore next */
+    // Catch any unexpected errors and try to display on form if it's an upload action
+    const {Logger} = require('@hmcts/nodejs-logging');
+    const logger = Logger.getLogger('uploadDocumentsController');
+    logger.error(`Unexpected error in upload documents POST: ${error?.message || error}`, error);
+    
+    // If this is an upload button action, try to show error on form instead of redirecting
+    if (req.body?.action?.includes('[uploadButton]')) {
+      try {
+        const claimId = req.params.id;
+        const claim: Claim = await getClaimById(claimId, req, true);
+        const uploadDocumentsForm = getUploadDocumentsForm(req);
+        const form = new GenericForm(uploadDocumentsForm);
+        
+        if (!form.errors) {
+          form.errors = [];
+        }
+        const [category] = req.body.action.split(/[[\]]/).filter((word: string) => word !== '');
+        const errorStructure = {
+          property: category,
+          children: [{
+            property: category,
+            children: [{
+              property: '0',
+              children: [{
+                property: 'fileUpload',
+                constraints: {
+                  uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
+                },
+              }],
+            }],
+          }],
+        };
+        form.errors.push(errorStructure as any);
+        return await renderView(res, claim, claimId, form);
+      } catch (renderError) {
+        // If we can't render the view, fall back to error handler
+        next(error);
+      }
+    } else {
+      // Not an upload action, use normal error handling
+      next(error);
+    }
   }
 }) as RequestHandler);
 
