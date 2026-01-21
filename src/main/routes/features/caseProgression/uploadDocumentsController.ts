@@ -55,17 +55,17 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
   );
   if (inputFile[0]){
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-    (form.model as any)[category][index].fileUpload = fileUpload;
-    (form.model as any)[category][index].caseDocument = undefined;
+    form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
+    form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
 
     form.validateSync();
-    delete (form.model as any)[category][index].fileUpload; //release memory
+    delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      (form.model as any)[category][index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     }
   }
 }
