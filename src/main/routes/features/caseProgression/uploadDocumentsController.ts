@@ -65,9 +65,73 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       /* istanbul ignore next */
       logger.info(`[SAVE FILE] File mapped: filename=${fileUpload.originalname}, size=${fileUpload.size}, mimetype=${fileUpload.mimetype}`);
       
+      // Check file type first before validation and upload
+      /* istanbul ignore next */
+      logger.info('[SAVE FILE] Checking file type (mimetype) before validation');
+      const allowedMimeTypes: string[] = [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word docx
+        'application/msword', // Word doc
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Excel xlsx
+        'application/vnd.ms-excel', // Excel xls
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint pptx
+        'application/vnd.ms-powerpoint', // PowerPoint ppt
+        'application/pdf',
+        'application/rtf',
+        'text/plain',
+        'text/csv',
+        'image/jpeg',
+        'image/png',
+        'image/bmp',
+        'image/tiff',
+        'text/rtf',
+      ];
+      
+      const isAllowedMimeType = fileUpload.mimetype && allowedMimeTypes.includes(fileUpload.mimetype);
+      
+      /* istanbul ignore next */
+      logger.info(`[SAVE FILE] File type check: mimetype=${fileUpload.mimetype}, isAllowed=${isAllowedMimeType}`);
+      
+      if (!isAllowedMimeType) {
+        /* istanbul ignore next */
+        logger.error(`[SAVE FILE] File type not allowed: mimetype=${fileUpload.mimetype}`);
+        
+        // Add file type error to form
+        if (!form.errors) {
+          form.errors = [];
+        }
+        
+        const fileTypeError = {
+          property: category,
+          children: [{
+            property: category,
+            children: [{
+              property: index,
+              children: [{
+                property: 'fileUpload',
+                children: [{
+                  property: 'mimetype',
+                  constraints: {
+                    isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
+                  },
+                }],
+              }],
+            }],
+          }],
+        };
+        form.errors.push(fileTypeError as any);
+        
+        /* istanbul ignore next */
+        logger.info('[SAVE FILE] File type error added to form. Error will be displayed to user: ERRORS.VALID_MIME_TYPE_FILE');
+        
+        // Don't proceed with validation or upload if file type is invalid
+        // The error has been added to form.errors, and the POST handler will render the view
+        // with this error, so the user will see the error message ERRORS.VALID_MIME_TYPE_FILE
+        return;
+      }
+      
       // Only validate the file object itself, not the entire form
       /* istanbul ignore next */
-      logger.info('[SAVE FILE] Validating file object (size and mimetype only)');
+      logger.info('[SAVE FILE] File type allowed, validating file object (size and mimetype only)');
       const Validator = require('class-validator').Validator;
       const validator = new Validator();
       const fileErrors = validator.validateSync(fileUpload);
@@ -221,10 +285,93 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
+// Wrap multer middleware to catch errors and handle them gracefully
+const multerMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  /* istanbul ignore next */
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger('uploadDocumentsController');
+  logger.info(`[MULTER MIDDLEWARE] Processing request: claimId=${req.params?.id}, contentType=${req.headers['content-type']}`);
+  
+  upload.any()(req, res, (err: any) => {
+    if (err) {
+      /* istanbul ignore next */
+      logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
+      
+      // Store multer error in request so we can handle it in the POST handler
+      (req as any).multerError = err;
+    } else {
+      /* istanbul ignore next */
+      logger.info(`[MULTER MIDDLEWARE] Multer processing complete: filesCount=${req.files?.length || 0}`);
+    }
+    next();
+  });
+};
+
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
+  /* istanbul ignore next */
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger('uploadDocumentsController');
+  
   try {
+    /* istanbul ignore next */
+    const filesInfo = req.files ? (req.files as Express.Multer.File[]).map(f => ({
+      fieldname: f.fieldname,
+      originalname: f.originalname,
+      mimetype: f.mimetype,
+      size: f.size,
+    })) : [];
+    logger.info(`[POST HANDLER] POST request received: claimId=${req.params.id}, action=${req.body?.action}, hasMulterError=${!!(req as any).multerError}, filesCount=${req.files?.length || 0}, files=${JSON.stringify(filesInfo)}`);
+    
     const claimId = req.params.id;
     const action = req.body.action;
+    
+    // Handle multer errors (e.g., file too large, invalid file type detected by multer)
+    if ((req as any).multerError) {
+      /* istanbul ignore next */
+      logger.error('[POST HANDLER] Multer error detected, handling gracefully');
+      const multerError = (req as any).multerError;
+      const claim: Claim = await getClaimById(claimId, req, true);
+      const uploadDocumentsForm = getUploadDocumentsForm(req);
+      const form = new GenericForm(uploadDocumentsForm);
+      
+      // Extract category and index from action if available
+      if (action?.includes('[uploadButton]')) {
+        const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+        
+        // Add multer error to form
+        if (!form.errors) {
+          form.errors = [];
+        }
+        
+        // Map multer error codes to appropriate error messages
+        let errorConstraint = 'ERRORS.FILE_UPLOAD_FAILED';
+        if (multerError.code === 'LIMIT_FILE_SIZE') {
+          errorConstraint = 'ERRORS.VALID_SIZE_FILE';
+        } else if (multerError.code === 'LIMIT_UNEXPECTED_FILE' || multerError.field) {
+          errorConstraint = 'ERRORS.VALID_MIME_TYPE_FILE';
+        }
+        
+        const multerErrorStructure = {
+          property: category,
+          children: [{
+            property: category,
+            children: [{
+              property: index,
+              children: [{
+                property: 'fileUpload',
+                constraints: {
+                  multerError: errorConstraint,
+                },
+              }],
+            }],
+          }],
+        };
+        form.errors.push(multerErrorStructure as any);
+        
+        return await renderView(res, claim, claimId, form);
+      }
+    }
+    
     const claim: Claim = await getClaimById(claimId, req, true);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
@@ -243,6 +390,8 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
+    /* istanbul ignore next */
+    logger.error(`[POST HANDLER] Unexpected error: ${error?.message || error}`, error);
     next(error);
   }
 }) as RequestHandler);
