@@ -146,39 +146,52 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     if (action?.includes('[uploadButton]')) {
       /* istanbul ignore next */
       logger.info(`[SAVE FILE] Upload button action detected: action=${action}`);
-      try {
-        await uploadSingleFile(req, action, form);
-        /* istanbul ignore next */
-        logger.info('[SAVE FILE] uploadSingleFile completed successfully, rendering view');
-      } catch (error) {
-        /* istanbul ignore next */
-        // If uploadSingleFile throws an error, catch it and add to form errors instead of redirecting to error page
-        logger.error(`Error in uploadSingleFile: ${error?.message || error}`, error);
-        
-        // Ensure form has errors array
-        if (!form.errors) {
-          form.errors = [];
-        }
-        
-        // Extract category and index from action to create proper error structure
-        const [category] = action.split(/[[\]]/).filter((word: string) => word !== '');
-        const errorStructure = {
-          property: category,
-          children: [{
+      
+      // Validate the entire form first to show all errors (including file type errors)
+      /* istanbul ignore next */
+      logger.info('[SAVE FILE] Validating entire form before upload');
+      form.validateSync();
+      
+      /* istanbul ignore next */
+      logger.info(`[SAVE FILE] Form validation complete: hasErrors=${form.hasErrors()}`);
+      
+      // Only proceed with file upload if form validation passed
+      if (!form.hasErrors()) {
+        try {
+          await uploadSingleFile(req, action, form);
+          /* istanbul ignore next */
+          logger.info('[SAVE FILE] uploadSingleFile completed successfully, rendering view');
+        } catch (error) {
+          /* istanbul ignore next */
+          // If uploadSingleFile throws an error, catch it and add to form errors instead of redirecting to error page
+          logger.error(`Error in uploadSingleFile: ${error?.message || error}`, error);
+          
+          // Ensure form has errors array
+          if (!form.errors) {
+            form.errors = [];
+          }
+          
+          // Extract category and index from action to create proper error structure
+          const [category] = action.split(/[[\]]/).filter((word: string) => word !== '');
+          const errorStructure = {
             property: category,
             children: [{
-              property: '0',
+              property: category,
               children: [{
-                property: 'fileUpload',
-                constraints: {
-                  uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
-                },
+                property: '0',
+                children: [{
+                  property: 'fileUpload',
+                  constraints: {
+                    uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
+                  },
+                }],
               }],
             }],
-          }],
-        };
-        form.errors.push(errorStructure as any);
+          };
+          form.errors.push(errorStructure as any);
+        }
       }
+      
       /* istanbul ignore next */
       logger.info('[SAVE FILE] Rendering view after upload button action');
       return await renderView(res, claim, claimId, form);
