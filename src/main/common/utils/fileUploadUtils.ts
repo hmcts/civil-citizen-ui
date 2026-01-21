@@ -96,3 +96,17 @@ export const extractCategoryAndIndex = (submitAction: string): [string, string] 
   const parts = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   return [parts[0], parts[1]];
 };
+
+export const createUploadOneFileError = () => {
+  return [{
+    target: {
+      fileUpload: '',
+      typeOfDocument: '',
+    },
+    value: '',
+    property: '',
+    constraints: {
+      isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
+    },
+  }];
+};

@@ -10,7 +10,6 @@ import {Claim} from 'models/claim';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import multer from 'multer';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
   getSummaryList,
@@ -25,14 +24,11 @@ import {
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
-const upload = multer({
-  limits: {
-    fileSize: Infinity,
-  },
-});
+const upload = createMulterUpload();
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, appId: string, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -100,18 +96,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     form.validateSync();
     if (form.hasFieldError('fileUpload') && (gaResponse?.uploadEvidenceDocuments === undefined ||
       gaResponse?.uploadEvidenceDocuments?.length === 0)) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));

@@ -22,7 +22,7 @@ import {
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {createMulterUpload} from 'common/utils/fileUploadUtils';
+import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -99,18 +99,7 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
     const form = new GenericForm(uploadDoc);
     form.validateSync();
     if (form.hasFieldError('fileUpload') && claim.generalApplication.uploadEvidenceForApplication.length === 0) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl),index));

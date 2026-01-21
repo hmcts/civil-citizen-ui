@@ -11,7 +11,7 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
-import {createMulterUpload} from 'common/utils/fileUploadUtils';
+import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
 
 const uploadAdditionalDocumentsController = Router();
 
@@ -57,19 +57,7 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, upl
       return res.redirect(`${currentUrl}`);
     }
     if (gaDetails.uploadAdditionalDocuments.length === 0) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       return res.redirect(`${currentUrl}`);
     }
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));

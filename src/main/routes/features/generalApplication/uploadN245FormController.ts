@@ -9,26 +9,21 @@ import {AppRequest} from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import {Claim} from 'models/claim';
-import multer from 'multer';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl, saveN245Form } from 'services/features/generalApplication/generalApplicationService';
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
+import {createMulterUpload} from 'common/utils/fileUploadUtils';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
 const removeDoc = 'REMOVE_DOC';
-const fileSize = Infinity;
 const selectedFile = 'selectedFile';
 const uploadButton = 'uploadButton';
 const pageTitle = 'PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE';
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const upload = createMulterUpload();
 
 uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {

@@ -9,16 +9,12 @@ import {
   getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import multer from 'multer';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {createMulterUpload} from 'common/utils/fileUploadUtils';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
-const upload = multer({
-  limits: {
-    fileSize: Infinity,
-  },
-});
+const upload = createMulterUpload();
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
