@@ -138,7 +138,7 @@
     {
       "request": {
         "method": "GET",
-        "urlPattern": "/cases/1732014426677369/applications",
+        "urlPattern": "/cases/1732014426677369/ga/applications",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
@@ -198,7 +198,7 @@
     {
       "request": {
         "method": "POST",
-        "urlPattern": "/fees/case/1732018301268558/payment",
+        "urlPattern": "/fees/case/1732018301268558/ga/payment",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
