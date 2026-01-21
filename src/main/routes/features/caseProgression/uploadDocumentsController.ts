@@ -24,11 +24,11 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   createMulterErrorMiddleware,
-  isAllowedMimeType,
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
 } from 'common/utils/fileUploadUtils';
+import {ALLOWED_MIME_TYPES} from 'form/validators/isAllowedMimeType';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -58,7 +58,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       
       /* istanbul ignore next */
       logger.info('[SAVE FILE] Checking file type (mimetype) before validation');
-      const fileTypeAllowed = isAllowedMimeType(fileUpload.mimetype);
+      const fileTypeAllowed = fileUpload.mimetype && ALLOWED_MIME_TYPES.includes(fileUpload.mimetype);
       
       /* istanbul ignore next */
       logger.info(`[SAVE FILE] File type check: mimetype=${fileUpload.mimetype}, isAllowed=${fileTypeAllowed}`);

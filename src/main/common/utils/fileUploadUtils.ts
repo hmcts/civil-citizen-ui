@@ -1,26 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
+import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
 const multer = require('multer');
-
-export const FILE_SIZE_LIMIT = 100 * 1024 * 1024; // 100MB in bytes
-
-export const ALLOWED_MIME_TYPES: string[] = [
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-  'application/vnd.ms-powerpoint',
-  'application/pdf',
-  'application/rtf',
-  'text/plain',
-  'text/csv',
-  'image/jpeg',
-  'image/png',
-  'image/bmp',
-  'image/tiff',
-  'text/rtf',
-];
 
 export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
   const storage = multer.memoryStorage({
@@ -57,10 +38,6 @@ export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsControl
       next();
     });
   };
-};
-
-export const isAllowedMimeType = (mimetype: string): boolean => {
-  return mimetype && ALLOWED_MIME_TYPES.includes(mimetype);
 };
 
 export const createFileUploadError = (
