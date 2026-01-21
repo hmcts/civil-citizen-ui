@@ -100,6 +100,10 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
           form.errors = [];
         }
         
+        // Create error structure that matches what errorFor expects
+        // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
+        // errorFor looks for errors with constraints at the matching property level
+        // We need constraints at the fileUpload level, and also nested for the full path
         const fileTypeError = {
           property: category,
           children: [{
@@ -108,6 +112,11 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
               property: index,
               children: [{
                 property: 'fileUpload',
+                // Add constraint at fileUpload level so errorFor can find it
+                constraints: {
+                  isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
+                },
+                // Also include nested structure for completeness
                 children: [{
                   property: 'mimetype',
                   constraints: {
