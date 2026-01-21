@@ -118,17 +118,30 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
             logger.info(`[SAVE FILE] Mimetype error from validator: property=${mimetypeError.property}, constraints=${JSON.stringify(mimetypeError.constraints)}`);
             
             // Create error structure matching class-validator's format
-            // This structure will work with errorFor because it matches what validateSync produces
+            // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
+            // When getAllErrors(category) is called:
+            // 1. getErrors(category) creates FormValidationError with property="category[category]" (from error.property=category, parentProperty=category)
+            // 2. getNestedErrors(category) calls getAllChildrenErrors(error, category) where error.property=category
+            // 3. getAllChildrenErrors processes: parentProperty=category, error.property=category → errorProperty="category[category]"
+            // 4. Then processes children with parentProperty="category[category]"
+            // So we need the structure to produce: category[category][index][fileUpload]
+            // If we have: {property: category, children: [{property: category, children: [{property: index, ...}]}]}
+            // It creates: category[category] → category[category][category] → category[category][category][index] (WRONG - extra category!)
+            // We need: {property: category, children: [{property: index, children: [{property: fileUpload, ...}]}]}
+            // But that would create: category[category] → category[category][index] → category[category][index][fileUpload] (missing one category?)
+            // Actually, looking at the logs, the path has THREE category levels, so the structure must have category twice
+            // Let me check what class-validator actually produces when validating the form...
+            // Actually, I think the issue is that getErrors creates "category[category]" and then getAllChildrenErrors processes children
+            // So we need: {property: category, children: [{property: index, ...}]} to get category[category][index]
+            // But the view expects category[category][index], so we need the structure to match
+            // Let's try removing one category level:
             const fileTypeError = {
               property: category,
               children: [{
-                property: category,
+                property: index, // Skip the nested category level
                 children: [{
-                  property: index,
-                  children: [{
-                    property: 'fileUpload',
-                    children: [mimetypeError], // Use the error from class-validator
-                  }],
+                  property: 'fileUpload',
+                  children: [mimetypeError],
                 }],
               }],
             };
@@ -183,19 +196,17 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         form.errors = [];
         
         // Create error structure matching the form's expected format
+        // Remove one nested category level to match expected path: category[category][index][fileUpload]
         const nestedError = {
           property: category,
           children: [{
-            property: category,
+            property: index, // Skip nested category level - getErrors already creates category[category]
             children: [{
-              property: index,
-              children: [{
-                property: 'fileUpload',
-                children: fileErrors.map((error: any) => ({
-                  property: error.property,
-                  constraints: error.constraints,
-                })),
-              }],
+              property: 'fileUpload',
+              children: fileErrors.map((error: any) => ({
+                property: error.property,
+                constraints: error.constraints,
+              })),
             }],
           }],
         };
