@@ -45,25 +45,129 @@ const upload = multer({
 });
 
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
+  /* istanbul ignore next */
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger('uploadDocumentsController');
+  
   const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   const target = `${category}[${index}][fileUpload]`;
   const inputFile = (req.files as Express.Multer.File[]).filter(file =>
     file.fieldname === target,
   );
+  
+  /* istanbul ignore next */
+  logger.info(`[SAVE FILE] uploadSingleFile called: category=${category}, index=${index}, target=${target}, fileFound=${!!inputFile[0]}`);
+  
   if (inputFile[0]){
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-    form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
-    form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
-
-    form.validateSync();
-    delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
-    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
-    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
-      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
-      && !form?.errorFor(`${errorFieldNamePrefix}`)) {
-
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+    try {
+      const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
+      
+      /* istanbul ignore next */
+      logger.info(`[SAVE FILE] File mapped: filename=${fileUpload.originalname}, size=${fileUpload.size}, mimetype=${fileUpload.mimetype}`);
+      
+      // Only validate the file object itself, not the entire form
+      /* istanbul ignore next */
+      logger.info('[SAVE FILE] Validating file object (size and mimetype only)');
+      const Validator = require('class-validator').Validator;
+      const validator = new Validator();
+      const fileErrors = validator.validateSync(fileUpload);
+      
+      /* istanbul ignore next */
+      logger.info(`[SAVE FILE] File validation complete: hasErrors=${!!fileErrors && fileErrors.length > 0}, errorCount=${fileErrors?.length || 0}`);
+      
+      if (fileErrors && fileErrors.length > 0) {
+        /* istanbul ignore next */
+        logger.error(`[SAVE FILE] File validation failed: errors=${JSON.stringify(fileErrors.map((e: any) => ({property: e.property, constraints: e.constraints})))}`);
+        
+        // Add file validation errors to form
+        if (!form.errors) {
+          form.errors = [];
+        }
+        
+        // Create error structure matching the form's expected format
+        const nestedError = {
+          property: category,
+          children: [{
+            property: category,
+            children: [{
+              property: index,
+              children: [{
+                property: 'fileUpload',
+                children: fileErrors.map((error: any) => ({
+                  property: error.property,
+                  constraints: error.constraints,
+                })),
+              }],
+            }],
+          }],
+        };
+        form.errors.push(nestedError as any);
+      } else {
+        // File validation passed, proceed with upload
+        /* istanbul ignore next */
+        logger.info('[SAVE FILE] File validation passed, uploading to API');
+        
+        try {
+          form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+          /* istanbul ignore next */
+          logger.info(`[SAVE FILE] File uploaded successfully: documentName=${form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument?.documentName}`);
+        } catch (uploadError) {
+          /* istanbul ignore next */
+          logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
+          
+          // Add API upload error to form
+          if (!form.errors) {
+            form.errors = [];
+          }
+          const apiError = {
+            property: category,
+            children: [{
+              property: category,
+              children: [{
+                property: index,
+                children: [{
+                  property: 'fileUpload',
+                  constraints: {
+                    uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
+                  },
+                }],
+              }],
+            }],
+          };
+          form.errors.push(apiError as any);
+        }
+      }
+      
+      // Release memory - remove fileUpload from model
+      delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload;
+    } catch (error) {
+      /* istanbul ignore next */
+      logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
+      
+      // Add unexpected error to form
+      if (!form.errors) {
+        form.errors = [];
+      }
+      const unexpectedError = {
+        property: category,
+        children: [{
+          property: category,
+          children: [{
+            property: index,
+            children: [{
+              property: 'fileUpload',
+              constraints: {
+                unexpectedError: 'ERRORS.FILE_UPLOAD_FAILED',
+              },
+            }],
+          }],
+        }],
+      };
+      form.errors.push(unexpectedError as any);
     }
+  } else {
+    /* istanbul ignore next */
+    logger.warn(`[SAVE FILE] No file found for upload: target=${target}`);
   }
 }
 
