@@ -120,7 +120,9 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         
         // Create error structure that matches what errorFor expects
         // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
-        // errorFor looks for errors with constraints at the matching property level
+        // errorFor processes errors recursively through getAllChildrenErrors
+        // The path built will be: category[category][index][fileUpload]
+        // We need constraints at the fileUpload level (not nested in children) so errorFor can find it
         const fileTypeError = {
           property: category,
           children: [{
@@ -129,28 +131,47 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
               property: index,
               children: [{
                 property: 'fileUpload',
-                // Add constraint at fileUpload level so errorFor can find it
+                // Constraints must be at fileUpload level (not in nested children)
+                // This is what errorFor will find when checking the path
                 constraints: {
                   isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
                 },
-                // Also include nested structure for completeness
-                children: [{
-                  property: 'mimetype',
-                  constraints: {
-                    isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
-                  },
-                }],
               }],
             }],
           }],
         };
-        form.errors.push(fileTypeError as any);
+        
+        // Check if this error already exists to prevent duplicates
+        const errorExists = form.errors?.some((existingError: any) => {
+          if (existingError.property === category && existingError.children?.[0]?.property === category) {
+            const existingIndex = existingError.children[0].children?.[0]?.property;
+            const existingFileUpload = existingError.children[0].children?.[0].children?.[0]?.property;
+            const hasMimeTypeError = existingError.children[0].children?.[0].children?.[0]?.constraints?.isAllowedMimeType;
+            return existingIndex === index && existingFileUpload === 'fileUpload' && hasMimeTypeError;
+          }
+          return false;
+        });
+        
+        if (!errorExists) {
+          form.errors.push(fileTypeError as any);
+          /* istanbul ignore next */
+          logger.info('[SAVE FILE] File type error added to form.errors');
+        } else {
+          /* istanbul ignore next */
+          logger.warn('[SAVE FILE] File type error already exists in form.errors, skipping duplicate');
+        }
         
         /* istanbul ignore next */
-        // Verify the error can be found by errorFor
+        // Verify the error can be found by errorFor - this helps debug if the structure is correct
         const expectedErrorPath = `${category}[${category}][${index}][fileUpload]`;
         const foundError = form.errorFor(expectedErrorPath, category);
-        logger.info(`[SAVE FILE] File type error added to form. Error will be displayed to user: ERRORS.VALID_MIME_TYPE_FILE. ErrorFor check: path=${expectedErrorPath}, found=${!!foundError}, message=${foundError || 'NOT FOUND'}`);
+        logger.info(`[SAVE FILE] File type error verification: path=${expectedErrorPath}, found=${!!foundError}, message=${foundError || 'NOT FOUND'}, totalErrors=${form.errors?.length || 0}`);
+        
+        // Log all errors to help debug duplicates
+        if (form.errors && form.errors.length > 0) {
+          /* istanbul ignore next */
+          logger.info(`[SAVE FILE] All form errors: ${JSON.stringify(form.errors.map((e: any) => ({property: e.property, hasChildren: !!e.children, childrenCount: e.children?.length || 0})))}`);
+        }
         
         // Don't proceed with validation or upload if file type is invalid
         // The error has been added to form.errors, and the POST handler will render the view
