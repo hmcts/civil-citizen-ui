@@ -4,28 +4,12 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import {ALLOWED_MIME_TYPES} from 'common/utils/fileUploadUtils';
 
 @ValidatorConstraint({ name: 'isAllowedMimeType', async: false })
 export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface {
   validate(value: any) {
-    const allowedMimeTypes: string[] = [
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Word docx
-      'application/msword', // Word doc
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Excel xlsx
-      'application/vnd.ms-excel', // Excel xls
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint pptx
-      'application/vnd.ms-powerpoint', // PowerPoint ppt
-      'application/pdf',
-      'application/rtf',
-      'text/plain',
-      'text/csv',
-      'image/jpeg',
-      'image/png',
-      'image/bmp',
-      'image/tiff',
-      'text/rtf',
-    ];
-    if (value && allowedMimeTypes.includes(value)) {
+    if (value && ALLOWED_MIME_TYPES.includes(value)) {
       return true;
     }
     return false;

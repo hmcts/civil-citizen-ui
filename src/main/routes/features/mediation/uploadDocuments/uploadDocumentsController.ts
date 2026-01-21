@@ -32,26 +32,13 @@ import {
   getDocumentsForDocumentsReferred,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {createMulterUpload, extractCategoryAndIndex} from 'common/utils/fileUploadUtils';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
 const TYPE_OF_DOCUMENTS_PROPERTY_NAME = 'typeOfDocuments';
 
-const multer = require('multer');
-const fileSize = Infinity;
-
-const storage = multer.memoryStorage({
-  limits: {
-    fileSize: fileSize,
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const upload = createMulterUpload();
 
 const partyInformation = (claim: Claim) =>  {
   return {
@@ -64,7 +51,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsForm>) {
-  const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
+  const [category, index] = extractCategoryAndIndex(submitAction);
   const target = `${category}[${index}][fileUpload]`;
   const inputFile = (req.files as Express.Multer.File[]).find(file =>
     file.fieldname === target,
@@ -74,7 +61,7 @@ async function uploadSingleFile(req: Request, res: Response, claimId: string, su
     form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
     form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
     form.validateSync();
-    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload; //release memory
+    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload;
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
         && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)

@@ -7,7 +7,6 @@ import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {CreateQuery} from 'models/queryManagement/createQuery';
-import multer from 'multer';
 import {
   getCancelUrl,
   getSummaryList,
@@ -17,15 +16,11 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMulterUpload} from 'common/utils/fileUploadUtils';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
-const fileSize = Infinity;
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const upload = createMulterUpload();
 
 async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);

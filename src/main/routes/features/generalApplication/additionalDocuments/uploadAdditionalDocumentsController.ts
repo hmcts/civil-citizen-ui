@@ -6,22 +6,17 @@ import {
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
 } from 'routes/urls';
-import multer from 'multer';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
+import {createMulterUpload} from 'common/utils/fileUploadUtils';
 
 const uploadAdditionalDocumentsController = Router();
 
 const viewPath = 'features/generalApplication/additionalDocuments/upload-additional-documents';
-const fileSize = Infinity;
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const upload = createMulterUpload();
 
 uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {

@@ -22,34 +22,25 @@ import {getClaimById} from 'modules/utilityService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  createMulterErrorMiddleware,
+  isAllowedMimeType,
+  createFileUploadError,
+  getMulterErrorConstraint,
+  extractCategoryAndIndex,
+} from 'common/utils/fileUploadUtils';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
-const multer = require('multer');
-const fileSize = Infinity;
-
-const storage = multer.memoryStorage({
-  limits: {
-    fileSize: fileSize,
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: fileSize,
-  },
-});
-
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
   /* istanbul ignore next */
   const {Logger} = require('@hmcts/nodejs-logging');
   const logger = Logger.getLogger('uploadDocumentsController');
   
-  const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
+  const [category, index] = extractCategoryAndIndex(submitAction);
   const target = `${category}[${index}][fileUpload]`;
   const inputFile = (req.files as Express.Multer.File[]).filter(file =>
     file.fieldname === target,
@@ -67,30 +58,12 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       
       /* istanbul ignore next */
       logger.info('[SAVE FILE] Checking file type (mimetype) before validation');
-      const allowedMimeTypes: string[] = [
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'application/vnd.ms-powerpoint',
-        'application/pdf',
-        'application/rtf',
-        'text/plain',
-        'text/csv',
-        'image/jpeg',
-        'image/png',
-        'image/bmp',
-        'image/tiff',
-        'text/rtf',
-      ];
-      
-      const isAllowedMimeType = fileUpload.mimetype && allowedMimeTypes.includes(fileUpload.mimetype);
+      const fileTypeAllowed = isAllowedMimeType(fileUpload.mimetype);
       
       /* istanbul ignore next */
-      logger.info(`[SAVE FILE] File type check: mimetype=${fileUpload.mimetype}, isAllowed=${isAllowedMimeType}`);
+      logger.info(`[SAVE FILE] File type check: mimetype=${fileUpload.mimetype}, isAllowed=${fileTypeAllowed}`);
       
-      if (!isAllowedMimeType) {
+      if (!fileTypeAllowed) {
         /* istanbul ignore next */
         logger.error(`[SAVE FILE] File type not allowed: mimetype=${fileUpload.mimetype}`);
         
@@ -109,19 +82,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
             /* istanbul ignore next */
             logger.info(`[SAVE FILE] Mimetype error from validator: property=${mimetypeError.property}, constraints=${JSON.stringify(mimetypeError.constraints)}`);
             
-            const fileTypeError = {
-              property: category,
-              children: [{
-                property: index,
-                children: [{
-                  property: 'fileUpload',
-                  constraints: {
-                    isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
-                  },
-                }],
-              }],
-            };
-            
+            const fileTypeError = createFileUploadError(category, index, 'isAllowedMimeType', 'ERRORS.VALID_MIME_TYPE_FILE');
             form.errors.push(fileTypeError as any);
             /* istanbul ignore next */
             logger.info(`[SAVE FILE] File type error added to form.errors. Error structure: category=${category}, index=${index}`);
@@ -158,18 +119,12 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
         const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
         
-        const nestedError = {
-          property: category,
-          children: [{
-            property: index,
-            children: [{
-              property: 'fileUpload',
-              constraints: firstConstraintValue ? {
-                [firstConstraintKey]: firstConstraintValue,
-              } : undefined,
-            }],
-          }],
-        };
+        const nestedError = createFileUploadError(
+          category,
+          index,
+          firstConstraintKey || 'validationError',
+          firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED',
+        );
         form.errors.push(nestedError as any);
         /* istanbul ignore next */
         logger.info(`[SAVE FILE] File validation errors added to form.errors. Error structure: category=${category}, index=${index}, errorCount=${fileErrors.length}`);
@@ -184,7 +139,6 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
           logger.info(`[SAVE FILE] File error ${idx}: property=${error.property}, constraints=${JSON.stringify(error.constraints)}`);
         });
       } else {
-        // File validation passed, proceed with upload
         /* istanbul ignore next */
         logger.info('[SAVE FILE] File validation passed, uploading to API');
         
@@ -200,18 +154,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
           if (!form.errors) {
             form.errors = [];
           }
-          const apiError = {
-            property: category,
-            children: [{
-              property: index,
-              children: [{
-                property: 'fileUpload',
-                constraints: {
-                  uploadError: 'ERRORS.FILE_UPLOAD_FAILED',
-                },
-              }],
-            }],
-          };
+          const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
           form.errors.push(apiError as any);
         }
       }
@@ -225,18 +168,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       if (!form.errors) {
         form.errors = [];
       }
-      const unexpectedError = {
-        property: category,
-        children: [{
-          property: index,
-          children: [{
-            property: 'fileUpload',
-            constraints: {
-              unexpectedError: 'ERRORS.FILE_UPLOAD_FAILED',
-            },
-          }],
-        }],
-      };
+      const unexpectedError = createFileUploadError(category, index, 'unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
       form.errors.push(unexpectedError as any);
     }
   } else {
@@ -295,27 +227,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   }
 }) as RequestHandler);
 
-// Wrap multer middleware to catch errors and handle them gracefully
-const multerMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  /* istanbul ignore next */
-  const {Logger} = require('@hmcts/nodejs-logging');
-  const logger = Logger.getLogger('uploadDocumentsController');
-  logger.info(`[MULTER MIDDLEWARE] Processing request: claimId=${req.params?.id}, contentType=${req.headers['content-type']}`);
-  
-  upload.any()(req, res, (err: any) => {
-    if (err) {
-      /* istanbul ignore next */
-      logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
-      
-      // Store multer error in request so we can handle it in the POST handler
-      (req as any).multerError = err;
-    } else {
-      /* istanbul ignore next */
-      logger.info(`[MULTER MIDDLEWARE] Multer processing complete: filesCount=${req.files?.length || 0}`);
-    }
-    next();
-  });
-};
+const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController');
 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
   /* istanbul ignore next */
@@ -343,33 +255,15 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       const uploadDocumentsForm = getUploadDocumentsForm(req);
       const form = new GenericForm(uploadDocumentsForm);
       
-      // Extract category and index from action if available
       if (action?.includes('[uploadButton]')) {
-        const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+        const [category, index] = extractCategoryAndIndex(action);
         
         if (!form.errors) {
           form.errors = [];
         }
         
-        let errorConstraint = 'ERRORS.FILE_UPLOAD_FAILED';
-        if (multerError.code === 'LIMIT_FILE_SIZE') {
-          errorConstraint = 'ERRORS.VALID_SIZE_FILE';
-        } else if (multerError.code === 'LIMIT_UNEXPECTED_FILE' || multerError.field) {
-          errorConstraint = 'ERRORS.VALID_MIME_TYPE_FILE';
-        }
-        
-        const multerErrorStructure = {
-          property: category,
-          children: [{
-            property: index,
-            children: [{
-              property: 'fileUpload',
-              constraints: {
-                multerError: errorConstraint,
-              },
-            }],
-          }],
-        };
+        const errorConstraint = getMulterErrorConstraint(multerError);
+        const multerErrorStructure = createFileUploadError(category, index, 'multerError', errorConstraint);
         form.errors.push(multerErrorStructure as any);
         
         return await renderView(res, claim, claimId, form);

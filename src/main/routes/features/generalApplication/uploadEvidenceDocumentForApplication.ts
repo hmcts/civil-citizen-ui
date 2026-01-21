@@ -14,7 +14,6 @@ import {
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import multer from 'multer';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {
@@ -23,15 +22,11 @@ import {
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {createMulterUpload} from 'common/utils/fileUploadUtils';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
-const fileSize = Infinity;
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const upload = createMulterUpload();
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
