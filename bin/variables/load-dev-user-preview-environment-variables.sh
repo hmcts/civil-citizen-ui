@@ -25,5 +25,5 @@ export CCD_API_GATEWAY_S2S_SECRET=$(az keyvault secret show --vault-name s2s-aat
 export S2S_SECRET=$(az keyvault secret show --vault-name civil-aat --name microservicekey-civil-service --query value -o tsv)
 # definition placeholders
 export CCD_DEF_CASE_SERVICE_BASE_URL=$CIVIL_SERVICE_URL
-export CCD_DEF_GEN_APP_SERVICE_BASE_URL=$GENERAL_APPLICATIONS_URL
+export CCD_DEF_GEN_APP_SERVICE_BASE_URL=$CIVIL_SERVICE_URL
 export HEALTH_WORK_ALLOCATION_TASK_API=TBD

@@ -170,6 +170,27 @@ module.exports = {
     };
   },
 
+  defendantResponseFullAdmitPayBySetDateClaimantCoSC: () => {
+    return {
+      title: 'A judgment against the defendant has been made',
+      content: ['The defendant should now pay you according to the terms of the judgment.'],
+      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+  defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The judgment formalises the payment plan you’ve agreed with the claimant.'],
+      //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+  defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['make an application to set aside (remove) or vary the judgment'],
+      //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
   //CIV-13035
   //Notice.AAA6.ClaimantIntent.RequestedCCJ.Claimant
   claimantNotificationCCJRequested: () => {
@@ -195,7 +216,7 @@ module.exports = {
   claimantNotificationFullAdmitPayImmediately: (amount) => {
     return {
       title: 'Response to the claim',
-      content: [`Sir John Doe has offered to pay £${amount}`, 
+      content: [`Sir John Doe has offered to pay £${amount}`,
         'If you accept, the payment must be received in your account within 5 working days, if not you can request a County Court Judgment.',
       ],
       nextSteps: 'View and respond',
@@ -582,7 +603,7 @@ module.exports = {
   },
   nocForLipCaseGoesOffline: (clientName) => {
     return {
-      title: clientName + ' has assigned a legal representative to act on their behalf',
+      title: clientName + ' has asked for a legal representative to act on their behalf',
       content: 'This claim will now move offline and you must submit your intention to proceed by using form',
     };
   },
