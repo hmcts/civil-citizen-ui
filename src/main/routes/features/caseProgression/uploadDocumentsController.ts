@@ -55,17 +55,17 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
   );
   if (inputFile[0]){
     const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-    form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
-    form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
+    (form.model as any)[category][index].fileUpload = fileUpload;
+    (form.model as any)[category][index].caseDocument = undefined;
 
     form.validateSync();
-    delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
+    delete (form.model as any)[category][index].fileUpload; //release memory
     const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
     if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      (form.model as any)[category][index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
     }
   }
 }
@@ -124,9 +124,17 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
   try {
     const claimId = req.params.id;
     const action = req.body.action;
-    logger.info(`Upload documents request received for claimId: ${claimId}, action: ${action}`);
-
+    const userid = (<AppRequest>req).session.user?.id;
     const claim: Claim = await getClaimById(claimId, req, true);
+
+    logger.info('Upload documents request received from civil-citizen-ui', {
+      claimId,
+      userid,
+      userRole: claim.isClaimant ? 'claimant' : claim.isDefendant ? 'defendant' : 'unknown',
+      action,
+      timestamp: new Date().toISOString(),
+    });
+
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
 
@@ -137,7 +145,13 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     }
 
     if (action) {
-      logger.info(`Action detected in uploadDocumentsController for claimId: ${claimId}, action: ${action}`);
+      logger.info('Action detected in uploadDocumentsController', {
+        claimId,
+        userid,
+        userRole: claim.isClaimant ? 'claimant' : claim.isDefendant ? 'defendant' : 'unknown',
+        action,
+        timestamp: new Date().toISOString(),
+      });
       await saveCaseProgression(req, form.model, isClaimant);
       return await renderView(res, claim, claimId, form);
     }
@@ -147,11 +161,15 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     if (form.hasErrors()) {
       logger.warn('Upload documents form validation failed', {
         claimId,
+        userid,
+        userRole: claim.isClaimant ? 'claimant' : claim.isDefendant ? 'defendant' : 'unknown',
+        action,
+        timestamp: new Date().toISOString(),
         errors: form.getErrors?.() ?? 'validation errors present',
       });
       await renderView(res, claim, claimId, form);
     } else {
-      logger.info(`Form valid, saving case progression and redirecting for claimId: ${claimId}`);
+      logger.info(`Form valid for user: ${userid}, saving case progression and redirecting for claimId: ${claimId}`);
       await saveCaseProgression(req,form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
