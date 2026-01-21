@@ -95,89 +95,72 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         /* istanbul ignore next */
         logger.error(`[SAVE FILE] File type not allowed: mimetype=${fileUpload.mimetype}`);
         
-        // Set fileUpload in model to prevent @IsNotEmpty from triggering
-        // We set caseDocument to undefined so the file exists but hasn't been uploaded
+        // Set fileUpload in model so class-validator can validate it and create proper error structure
         form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
         form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
         
-        // Clear any existing errors for this field to avoid duplicates
-        if (form.errors) {
-          form.errors = form.errors.filter((error: any) => {
-            // Remove errors that match this category and index
-            const errorCategory = error.property;
-            if (errorCategory === category && error.children) {
-              const errorCategoryChild = error.children[0]?.property;
-              if (errorCategoryChild === category && error.children[0]?.children) {
-                const errorIndex = error.children[0].children[0]?.property;
-                return errorIndex !== index;
-              }
-            }
-            return true;
-          });
-        } else {
-          form.errors = [];
-        }
+        // IMPORTANT: Clear ALL existing form errors when clicking "Save file"
+        // This ensures only file upload errors are shown, not errors from other fields
+        form.errors = [];
         
-        // Create error structure that matches what errorFor expects
-        // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
-        // errorFor processes errors recursively through getAllChildrenErrors
-        // The path built will be: category[category][index][fileUpload]
-        // We need constraints at the fileUpload level (not nested in children) so errorFor can find it
-        const fileTypeError = {
-          property: category,
-          children: [{
-            property: category,
-            children: [{
-              property: index,
+        // Use class-validator to validate the fileUpload object - this creates the proper error structure
+        // that matches what form.validateSync() would create, ensuring errorFor can find it
+        const Validator = require('class-validator').Validator;
+        const validator = new Validator();
+        const fileValidationErrors = validator.validateSync(fileUpload);
+        
+        if (fileValidationErrors && fileValidationErrors.length > 0) {
+          // Find the mimetype error specifically
+          const mimetypeError = fileValidationErrors.find((e: any) => e.property === 'mimetype');
+          
+          if (mimetypeError) {
+            /* istanbul ignore next */
+            logger.info(`[SAVE FILE] Mimetype error from validator: property=${mimetypeError.property}, constraints=${JSON.stringify(mimetypeError.constraints)}`);
+            
+            // Create error structure matching class-validator's format
+            // This structure will work with errorFor because it matches what validateSync produces
+            const fileTypeError = {
+              property: category,
               children: [{
-                property: 'fileUpload',
-                // Constraints must be at fileUpload level (not in nested children)
-                // This is what errorFor will find when checking the path
-                constraints: {
-                  isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
-                },
+                property: category,
+                children: [{
+                  property: index,
+                  children: [{
+                    property: 'fileUpload',
+                    children: [mimetypeError], // Use the error from class-validator
+                  }],
+                }],
               }],
-            }],
-          }],
-        };
-        
-        // Check if this error already exists to prevent duplicates
-        const errorExists = form.errors?.some((existingError: any) => {
-          if (existingError.property === category && existingError.children?.[0]?.property === category) {
-            const existingIndex = existingError.children[0].children?.[0]?.property;
-            const existingFileUpload = existingError.children[0].children?.[0].children?.[0]?.property;
-            const hasMimeTypeError = existingError.children[0].children?.[0].children?.[0]?.constraints?.isAllowedMimeType;
-            return existingIndex === index && existingFileUpload === 'fileUpload' && hasMimeTypeError;
+            };
+            
+            form.errors.push(fileTypeError as any);
+            /* istanbul ignore next */
+            logger.info(`[SAVE FILE] File type error added to form.errors (all other errors cleared). Error structure: category=${category}, index=${index}`);
+            
+            // Debug: Verify errorFor can find the error
+            const expectedErrorPath = `${category}[${category}][${index}][fileUpload]`;
+            const foundError = form.errorFor(expectedErrorPath, category);
+            /* istanbul ignore next */
+            logger.info(`[SAVE FILE] ErrorFor verification: path=${expectedErrorPath}, found=${!!foundError}, message=${foundError || 'NOT FOUND'}`);
+            
+            // Debug: Check what getAllErrors returns for this category
+            const allErrorsForCategory = form.getAllErrors(category);
+            /* istanbul ignore next */
+            logger.info(`[SAVE FILE] getAllErrors(${category}) returned ${allErrorsForCategory.length} errors`);
+            allErrorsForCategory.forEach((error: any, idx: number) => {
+              /* istanbul ignore next */
+              logger.info(`[SAVE FILE] Error ${idx}: property="${error.property}", hasConstraints=${!!error.constraints}, text="${error.text || ''}"`);
+            });
+          } else {
+            /* istanbul ignore next */
+            logger.warn(`[SAVE FILE] File validation errors found but no mimetype error: ${JSON.stringify(fileValidationErrors.map((e: any) => e.property))}`);
           }
-          return false;
-        });
-        
-        if (!errorExists) {
-          form.errors.push(fileTypeError as any);
-          /* istanbul ignore next */
-          logger.info('[SAVE FILE] File type error added to form.errors');
-        } else {
-          /* istanbul ignore next */
-          logger.warn('[SAVE FILE] File type error already exists in form.errors, skipping duplicate');
-        }
-        
-        /* istanbul ignore next */
-        // Verify the error can be found by errorFor - this helps debug if the structure is correct
-        const expectedErrorPath = `${category}[${category}][${index}][fileUpload]`;
-        const foundError = form.errorFor(expectedErrorPath, category);
-        logger.info(`[SAVE FILE] File type error verification: path=${expectedErrorPath}, found=${!!foundError}, message=${foundError || 'NOT FOUND'}, totalErrors=${form.errors?.length || 0}`);
-        
-        // Log all errors to help debug duplicates
-        if (form.errors && form.errors.length > 0) {
-          /* istanbul ignore next */
-          logger.info(`[SAVE FILE] All form errors: ${JSON.stringify(form.errors.map((e: any) => ({property: e.property, hasChildren: !!e.children, childrenCount: e.children?.length || 0})))}`);
         }
         
         // Don't proceed with validation or upload if file type is invalid
-        // The error has been added to form.errors, and the POST handler will render the view
-        // with this error, so the user will see the error message ERRORS.VALID_MIME_TYPE_FILE
+        // Only file upload errors are in form.errors, so only those will be displayed
         // Note: We keep fileUpload in the model so @IsNotEmpty doesn't trigger when clicking "Save file"
-        // When clicking "Continue", @IsNotEmpty will still validate empty fields (which is correct)
+        // When clicking "Continue", form.validateSync() will validate all fields and show all errors
         return;
       }
       
@@ -195,10 +178,9 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         /* istanbul ignore next */
         logger.error(`[SAVE FILE] File validation failed: errors=${JSON.stringify(fileErrors.map((e: any) => ({property: e.property, constraints: e.constraints})))}`);
         
-        // Add file validation errors to form
-        if (!form.errors) {
-          form.errors = [];
-        }
+        // IMPORTANT: Clear ALL existing form errors when clicking "Save file"
+        // This ensures only file upload errors are shown, not errors from other fields
+        form.errors = [];
         
         // Create error structure matching the form's expected format
         const nestedError = {
@@ -218,6 +200,20 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
           }],
         };
         form.errors.push(nestedError as any);
+        /* istanbul ignore next */
+        logger.info(`[SAVE FILE] File validation errors added to form.errors (all other errors cleared). Error structure: category=${category}, index=${index}, errorCount=${fileErrors.length}`);
+        
+        // Debug: Verify errorFor can find the errors
+        const expectedErrorPath = `${category}[${category}][${index}][fileUpload]`;
+        const foundError = form.errorFor(expectedErrorPath, category);
+        /* istanbul ignore next */
+        logger.info(`[SAVE FILE] ErrorFor verification: path=${expectedErrorPath}, found=${!!foundError}, message=${foundError || 'NOT FOUND'}`);
+        
+        // Debug: Log all file errors that were added
+        fileErrors.forEach((error: any, idx: number) => {
+          /* istanbul ignore next */
+          logger.info(`[SAVE FILE] File error ${idx}: property=${error.property}, constraints=${JSON.stringify(error.constraints)}`);
+        });
       } else {
         // File validation passed, proceed with upload
         /* istanbul ignore next */
