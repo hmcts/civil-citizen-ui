@@ -130,14 +130,12 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     logger.info('Upload documents request received from civil-citizen-ui', {
       claimId,
       userid,
-      userRole: claim.isClaimant ? 'claimant' : claim.isDefendant ? 'defendant' : 'unknown',
       action,
       timestamp: new Date().toISOString(),
     });
 
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
-
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('[uploadButton]')) {
@@ -151,7 +149,6 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
       logger.info('Action detected in uploadDocumentsController', {
         claimId,
         userid,
-        userRole: claim.isClaimant ? 'claimant' : claim.isDefendant ? 'defendant' : 'unknown',
         action,
         timestamp: new Date().toISOString(),
       });
@@ -165,7 +162,6 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
       logger.warn('Upload documents form validation failed', {
         claimId,
         userid,
-        userRole: claim.isClaimant ? 'claimant' : claim.isDefendant ? 'defendant' : 'unknown',
         action,
         timestamp: new Date().toISOString(),
         errors: form.getErrors?.() ?? 'validation errors present',
