@@ -135,12 +135,19 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
             // So we need: {property: category, children: [{property: index, ...}]} to get category[category][index]
             // But the view expects category[category][index], so we need the structure to match
             // Let's try removing one category level:
+            // Create error structure - errorFor requires constraints at the fileUpload level
+            // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
             const fileTypeError = {
               property: category,
               children: [{
                 property: index, // Skip the nested category level
                 children: [{
                   property: 'fileUpload',
+                  // Add constraints at fileUpload level so errorFor can find it
+                  constraints: {
+                    isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
+                  },
+                  // Also include nested mimetype error for completeness
                   children: [mimetypeError],
                 }],
               }],
@@ -197,12 +204,24 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         
         // Create error structure matching the form's expected format
         // Remove one nested category level to match expected path: category[category][index][fileUpload]
+        // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
+        // errorFor requires constraints at the matching property level, so we need constraints at fileUpload level
+        // Find the first error's constraint message to use at fileUpload level
+        const firstError = fileErrors[0];
+        const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
+        const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
+        
         const nestedError = {
           property: category,
           children: [{
             property: index, // Skip nested category level - getErrors already creates category[category]
             children: [{
               property: 'fileUpload',
+              // Add constraints at fileUpload level so errorFor can find it
+              constraints: firstConstraintValue ? {
+                [firstConstraintKey]: firstConstraintValue,
+              } : undefined,
+              // Also include nested errors for completeness
               children: fileErrors.map((error: any) => ({
                 property: error.property,
                 constraints: error.constraints,
