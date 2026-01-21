@@ -95,15 +95,32 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         /* istanbul ignore next */
         logger.error(`[SAVE FILE] File type not allowed: mimetype=${fileUpload.mimetype}`);
         
-        // Add file type error to form
-        if (!form.errors) {
+        // Set fileUpload in model to prevent @IsNotEmpty from triggering
+        // We set caseDocument to undefined so the file exists but hasn't been uploaded
+        form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
+        form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
+        
+        // Clear any existing errors for this field to avoid duplicates
+        if (form.errors) {
+          form.errors = form.errors.filter((error: any) => {
+            // Remove errors that match this category and index
+            const errorCategory = error.property;
+            if (errorCategory === category && error.children) {
+              const errorCategoryChild = error.children[0]?.property;
+              if (errorCategoryChild === category && error.children[0]?.children) {
+                const errorIndex = error.children[0].children[0]?.property;
+                return errorIndex !== index;
+              }
+            }
+            return true;
+          });
+        } else {
           form.errors = [];
         }
         
         // Create error structure that matches what errorFor expects
         // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
         // errorFor looks for errors with constraints at the matching property level
-        // We need constraints at the fileUpload level, and also nested for the full path
         const fileTypeError = {
           property: category,
           children: [{
@@ -130,11 +147,16 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         form.errors.push(fileTypeError as any);
         
         /* istanbul ignore next */
-        logger.info('[SAVE FILE] File type error added to form. Error will be displayed to user: ERRORS.VALID_MIME_TYPE_FILE');
+        // Verify the error can be found by errorFor
+        const expectedErrorPath = `${category}[${category}][${index}][fileUpload]`;
+        const foundError = form.errorFor(expectedErrorPath, category);
+        logger.info(`[SAVE FILE] File type error added to form. Error will be displayed to user: ERRORS.VALID_MIME_TYPE_FILE. ErrorFor check: path=${expectedErrorPath}, found=${!!foundError}, message=${foundError || 'NOT FOUND'}`);
         
         // Don't proceed with validation or upload if file type is invalid
         // The error has been added to form.errors, and the POST handler will render the view
         // with this error, so the user will see the error message ERRORS.VALID_MIME_TYPE_FILE
+        // Note: We keep fileUpload in the model so @IsNotEmpty doesn't trigger when clicking "Save file"
+        // When clicking "Continue", @IsNotEmpty will still validate empty fields (which is correct)
         return;
       }
       
