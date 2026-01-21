@@ -3,7 +3,10 @@ import {ApplicantOrRespondent, ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import {
+  objectToMap, populateDashboardValues,
+  replaceDashboardPlaceholders,
+} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
@@ -87,15 +90,15 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
+    const mappedValues = await populateDashboardValues(claim, claimId);
     for (const item of dashboard.items) {
       for (const task of item.tasks) {
-        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
-        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
-        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
-        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, mappedValues);
+        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, mappedValues);
+        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, mappedValues);
+        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, mappedValues);
       }
     }
-
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
@@ -132,21 +135,22 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     : new Map<string, DashboardNotificationList>();
 
   if (dashboardNotifications) {
+    const mappedValues = await populateDashboardValues(claim, claimId);
     for (const notification of dashboardNotifications.items) {
-      notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
-      notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
+      notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
+      notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
     }
     for (const [gaRef, value] of applicantNotifications) {
       for (const notification of value.items) {
-        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
       dashboardNotifications.items.push(...(value?.items ?? []));
     }
     for (const [gaRef, value] of respondentNotifications) {
       for (const notification of value.items) {
-        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
       dashboardNotifications.items.push(...(value?.items ?? []));
     }

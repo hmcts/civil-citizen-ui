@@ -64,13 +64,10 @@ import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
-export const replaceDashboardPlaceholders = async (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<string> => {
-
-  const valuesMap = await setDashboardValues(claim, claimId, notification, lng, appId);
+export const replaceDashboardPlaceholders = async (textToReplace: string, valuesMap: Map<string, string>): Promise<string> => {
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
-
   return textToReplace;
 };
 
@@ -81,7 +78,7 @@ function getRedirectUrlForViewHearing(claim: Claim, claimId: string) {
   return VIEW_THE_HEARING_URL.replace(':id', claimId);
 }
 
-const setDashboardValues = async (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<Map<string, string>> => {
+export const populateDashboardValues = async (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Promise<Map<string, string>> => {
 
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
