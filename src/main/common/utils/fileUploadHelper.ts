@@ -54,7 +54,7 @@ export async function uploadSingleFileWithValidation<T extends Record<string, an
       /* istanbul ignore next */
       // Validate only the file object itself, not the entire form
       // This prevents validation errors from other incomplete fields on the page
-      logger.info(`[FILE UPLOAD HELPER] Starting file validation`);
+      logger.info('[FILE UPLOAD HELPER] Starting file validation');
       const Validator = require('class-validator').Validator;
       const validator = new Validator();
       const fileErrors = validator.validateSync(fileUpload);
@@ -65,10 +65,10 @@ export async function uploadSingleFileWithValidation<T extends Record<string, an
       // If file validation passes, upload it
       if (!fileErrors || fileErrors.length === 0) {
         /* istanbul ignore next */
-        logger.info(`[FILE UPLOAD HELPER] Validation passed, starting API upload`);
+        logger.info('[FILE UPLOAD HELPER] Validation passed, starting API upload');
         try {
           /* istanbul ignore next */
-          logger.info(`[FILE UPLOAD HELPER] Calling API to upload document`);
+          logger.info('[FILE UPLOAD HELPER] Calling API to upload document');
           form.model[category as keyof T][+index].caseDocument = await civilServiceClient.uploadDocument(<AppRequest>req, fileUpload);
           /* istanbul ignore next */
           logger.info(`[FILE UPLOAD HELPER] API upload successful: category=${category}, index=${index}, documentName=${form.model[category as keyof T][+index].caseDocument?.documentName}`);
