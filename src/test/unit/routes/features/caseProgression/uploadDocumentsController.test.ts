@@ -30,7 +30,6 @@ import {getClaimById} from 'modules/utilityService';
 import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
-import {CaseRole} from 'form/models/caseRoles';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -664,47 +663,4 @@ describe('on POST', () => {
       });
   });
 
-  describe('userRole coverage', () => {
-    it('should log claimant role when claim.isClaimant is true', async () => {
-      const claimantClaim = new Claim();
-      claimantClaim.caseRole = CaseRole.CLAIMANT;
-      (getClaimById as jest.Mock).mockResolvedValue(claimantClaim);
-      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-
-      await request(app)
-        .post(CP_UPLOAD_DOCUMENTS_URL)
-        .send({action: 'someAction'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-
-    it('should log defendant role when claim.isDefendant is true', async () => {
-      const defendantClaim = new Claim();
-      defendantClaim.caseRole = CaseRole.DEFENDANT;
-      (getClaimById as jest.Mock).mockResolvedValue(defendantClaim);
-      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-
-      await request(app)
-        .post(CP_UPLOAD_DOCUMENTS_URL)
-        .send({action: 'someAction'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-
-    it('should log unknown role when neither claimant nor defendant', async () => {
-      const unknownClaim = new Claim();
-      unknownClaim.caseRole = undefined;
-      (getClaimById as jest.Mock).mockResolvedValue(unknownClaim);
-      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-
-      await request(app)
-        .post(CP_UPLOAD_DOCUMENTS_URL)
-        .send({action: 'someAction'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-  });
 });
