@@ -137,6 +137,7 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
             // Let's try removing one category level:
             // Create error structure - errorFor requires constraints at the fileUpload level
             // The view checks: form?.errorFor(`${category}[${category}][${index}][fileUpload]`, category)
+            // We only need constraints at fileUpload level, not nested children, to avoid duplicate errors in summary
             const fileTypeError = {
               property: category,
               children: [{
@@ -144,11 +145,10 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
                 children: [{
                   property: 'fileUpload',
                   // Add constraints at fileUpload level so errorFor can find it
+                  // Don't include nested children to avoid duplicate errors in error summary
                   constraints: {
                     isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE',
                   },
-                  // Also include nested mimetype error for completeness
-                  children: [mimetypeError],
                 }],
               }],
             };
@@ -218,14 +218,10 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
             children: [{
               property: 'fileUpload',
               // Add constraints at fileUpload level so errorFor can find it
+              // Don't include nested children to avoid duplicate errors in error summary
               constraints: firstConstraintValue ? {
                 [firstConstraintKey]: firstConstraintValue,
               } : undefined,
-              // Also include nested errors for completeness
-              children: fileErrors.map((error: any) => ({
-                property: error.property,
-                constraints: error.constraints,
-              })),
             }],
           }],
         };
