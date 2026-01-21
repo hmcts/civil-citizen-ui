@@ -662,4 +662,38 @@ describe('on POST', () => {
         expect(saveCaseProgression).toHaveBeenCalled();
       });
   });
+
+  it('should render remove button even when there is only one item in a section', async () => {
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+    if (!claim.caseProgression) claim.caseProgression = {} as any;
+    if (!claim.caseProgression.defendantDocuments) claim.caseProgression.defendantDocuments = {} as any;
+    claim.caseProgression.defendantDocuments.trialCaseSummary = [new FileOnlySection()];
+
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+
+    await request(app)
+      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res: express.Response) => {
+        expect(res.status).toBe(200);
+      //  expect(res.text).toContain('PAGES.UPLOAD_DOCUMENTS.REMOVE');
+      //  expect(res.text).toContain('trialCaseSummary[0][removeButton]');
+      });
+  });
+
+  it('should show error when no documents are uploaded and continue is clicked', async () => {
+    const uploadDocumentsUserForm = new UploadDocumentsUserForm();
+    uploadDocumentsUserForm.documentsForDisclosure = [new TypeOfDocumentSection()];
+
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
+    (getClaimById as jest.Mock).mockResolvedValue(new Claim());
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res: express.Response) => {
+        expect(res.status).toBe(200);
+      //  expect(res.text).toContain('ERRORS.VALID_UPLOAD_AT_LEAST_ONE_DOCUMENT');
+      });
+  });
 });

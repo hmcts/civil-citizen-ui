@@ -8,149 +8,152 @@
 
 {% set pageTitle = t('PAGES.EVIDENCE.PAGE_TITLE') %}
 
-{% block nestedContent %}
-    {% set rowNumberToShowRemoveButton = 2 %}
-    {% set witnessContentLength = witnessContent.length %}
-    {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
-    {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
-    {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
-    {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT_WITH_SAVE_FILE') %}
-    {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS.TITLE') %}
-    {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
-    {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
-    {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
-    {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form and form.hasErrors() %}
+        {{ errorSummary(form.getAllErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_DOCUMENTS.TITLE') }}</h1>
+        </div>
+      </div>
 
       <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
-        <div id="content"></div>
+
+        <div class="caseProgression">
+          <div id="content"></div>
 
           {% for content in uploadDocumentsContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
-          <p class="govuk-body-m">{{ paragraph }}</p>
+          <h2 class="govuk-heading-s">{{ t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') }}</h2>
+          <p class="govuk-body-m">{{ t('PAGES.UPLOAD_DOCUMENTS.FORMAT_WITH_SAVE_FILE') }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
 
           {% if disclosureContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ disclosure }}</h2>
+            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') }}</h2>
             {% for disclosureSections in disclosureContent %}
-            <div class="row-container">
-              <div data-module="moj-add-another">
-                {% for section in disclosureSections %}
-                <div class="moj-add-another__item moj-add-another__title">
-                  {{ claimSummaryContent({
-                  contentSections: section.contentSections
-                  }, t) }}
+              <div class="row-container">
+                <div data-module="moj-add-another">
+                  {% for section in disclosureSections %}
+                    <div class="moj-add-another__item moj-add-another__title">
+                      {{ claimSummaryContent({
+                        contentSections: section.contentSections
+                      }, t) }}
+                    </div>
+                  {% endfor %}
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      name: 'action',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-disclosure-list'
+                      }
+                    }) }}
+                  </div>
+                  <hr class="govuk-section-break--s govuk-section-break--visible">
                 </div>
-                {% endfor %}
-                <div class="moj-button-action">
-                      {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        name: 'action',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-disclosure-list'
-                        }
-                      }) }}
-                </div>
-                <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
-            </div>
             {% endfor %}
           {% endif %}
 
           {% if witnessContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ witness }}</h2>
+            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_DOCUMENTS.WITNESS.TITLE') }}</h2>
             {% for witnessSections in witnessContent %}
-            <div class="row-container">
-              <div data-module="moj-add-another">
-                {% for section in witnessSections %}
-                <div class="moj-add-another__item moj-add-another__title">
-                  {{ claimSummaryContent({
-                  contentSections: section.contentSections
-                  }, t) }}
+              <div class="row-container">
+                <div data-module="moj-add-another">
+                  {% for section in witnessSections %}
+                    <div class="moj-add-another__item moj-add-another__title">
+                      {{ claimSummaryContent({
+                        contentSections: section.contentSections
+                      }, t) }}
+                    </div>
+                  {% endfor %}
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-witness-list'
+                      }
+                    }) }}
+                  </div>
+                  <hr class="govuk-section-break--s govuk-section-break--visible">
                 </div>
-                {% endfor %}
-                <div class="moj-button-action">
-                      {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-witness-list'
-                        }
-                      }) }}
-                </div>
-                <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
-            </div>
             {% endfor %}
           {% endif %}
 
           {% if expertContent.length > 0 %}
-            <h2 class="govuk-heading-l">{{ expert }}</h2>
+            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') }}</h2>
             {% for expertSections in expertContent %}
-            <div class="row-container">
-              <div data-module="moj-add-another">
-                {% for section in expertSections %}
-                <div class="moj-add-another__item moj-add-another__title">
-                  {{ claimSummaryContent({
-                  contentSections: section.contentSections
-                  }, t) }}
+              <div class="row-container">
+                <div data-module="moj-add-another">
+                  {% for section in expertSections %}
+                    <div class="moj-add-another__item moj-add-another__title">
+                      {{ claimSummaryContent({
+                        contentSections: section.contentSections
+                      }, t) }}
+                    </div>
+                  {% endfor %}
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-expert-list'
+                      }
+                    }) }}
+                  </div>
+                  <hr class="govuk-section-break--s govuk-section-break--visible">
                 </div>
-                {% endfor %}
-                <div class="moj-button-action">
-                      {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-expert-list'
-                        }
-                      }) }}
-                </div>
-                <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
-            </div>
             {% endfor %}
           {% endif %}
 
           {% if trialContent.length > 0 %}
             {% if isSmallClaims %}
-              <h2 class="govuk-heading-l">{{ hearing }}</h2>
+              <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') }}</h2>
             {% else %}
-              <h2 class="govuk-heading-l">{{ trial }}</h2>
+              <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') }}</h2>
             {% endif %}
             {% for trialSections in trialContent %}
-            <div class="row-container">
-              <div data-module="moj-add-another">
-                {% for section in trialSections %}
-                <div class="moj-add-another__item moj-add-another__title">
-                  {{ claimSummaryContent({
-                  contentSections: section.contentSections
-                  }, t) }}
+              <div class="row-container">
+                <div data-module="moj-add-another">
+                  {% for section in trialSections %}
+                    <div class="moj-add-another__item moj-add-another__title">
+                      {{ claimSummaryContent({
+                        contentSections: section.contentSections
+                      }, t) }}
+                    </div>
+                  {% endfor %}
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-trial-list'
+                      }
+                    }) }}
+                  </div>
+                  <hr class="govuk-section-break--s govuk-section-break--visible">
                 </div>
-                {% endfor %}
-                <div class="moj-button-action">
-                      {{ govukButton({
-                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-trial-list'
-                        }
-                      }) }}
-                </div>
-                <hr class="govuk-section-break--s govuk-section-break--visible">
               </div>
-            </div>
             {% endfor %}
           {% endif %}
 
           <br>
-        {{ addButton(t, 'CONTINUE',cancelUrl) }}
-
+          {{ addButton(t, 'CONTINUE', cancelUrl) }}
+        </div>
       </form>
+    </main>
+  </div>
 {% endblock %}

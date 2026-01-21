@@ -20,6 +20,8 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {Type} from 'class-transformer';
 
 export class UploadDocumentsUserForm {
+  [key: string]: string | TypeOfDocumentSection[] | FileOnlySection[] | WitnessSection[] | WitnessSummarySection[] | ExpertSection[] | ReferredToInTheStatementSection[] | undefined;
+  action?: string;
   @ValidateNested({each: true})
   @IsArray()
   @Type(() => TypeOfDocumentSection)

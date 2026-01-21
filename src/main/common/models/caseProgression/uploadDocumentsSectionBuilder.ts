@@ -66,14 +66,15 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addRemoveSectionButton(showRemoveButton = false, category?: string, index = 0) {
+  addRemoveSectionButton(showRemoveButton = false, category?: string, index = 0, classes = 'govuk-button govuk-button--secondary') {
     if (showRemoveButton) {
       const titleSection = ({
         type: ClaimSummaryType.REMOVE_BUTTON,
         data: {
           category: category,
           index: index,
-          classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
+          text: 'PAGES.UPLOAD_DOCUMENTS.REMOVE',
+          classes: classes,
         },
       });
       this._claimSummarySections.push(titleSection);

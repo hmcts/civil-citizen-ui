@@ -195,7 +195,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   const trialCosts = getFormSection<FileOnlySection>(req.body.trialCosts, bindRequestToFileOnlySectionObj);
   const trialDocumentary = getFormSection<TypeOfDocumentSection>(req.body.trialDocumentary, bindRequestToTypeOfDocumentSectionObj);
 
-  return new UploadDocumentsUserForm(
+  const form = new UploadDocumentsUserForm(
     documentsForDisclosure,
     documentsList,
     witnessStatement,
@@ -212,6 +212,8 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
     trialCosts,
     trialDocumentary,
   );
+  form.action = req.body.action;
+  return form;
 };
 
 const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[] => {

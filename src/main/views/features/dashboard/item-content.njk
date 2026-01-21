@@ -103,17 +103,15 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.REMOVE_BUTTON %}
-  <div>
+  <div class="{{ 'govuk-!-margin-top-3 govuk-!-margin-bottom-3' if 'govuk-!-display-inline' not in content.data.classes }}">
     {{ govukButton({
-                     href: content.data.href,
-                     text:  t(content.data.text),
       name: 'action',
       value: content.data.category+'['+content.data.index+'][removeButton]',
+      text: t(content.data.text),
       attributes: {
         'data-value': content.data.category+'[%index%][removeButton]'
       },
-      classes: content.data.classes,
-      isStartButton: content.data.isStartButton
+      classes: content.data.classes
     }) }}
   </div>
   {% endif %}
@@ -306,6 +304,16 @@
            text: t('COMMON.SAVE_FILE'),
            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
          }) }}
+             {{ govukButton({
+               id: 'removeButton',
+               name: 'action',
+               value: content.data.category+'['+content.data.index+'][removeButton]',
+               attributes: {
+                 'data-value': content.data.category+'[%index%][removeButton]'
+               },
+                text: t('PAGES.UPLOAD_DOCUMENTS.REMOVE'),
+                classes: "govuk-button--secondary govuk-!-margin-left-9"
+             }) }}
     </div>
     {{ govukInput({
        id: content.data.category+'['+content.data.index+'][caseDocument]',

@@ -2,33 +2,12 @@
 @import './task-list';
 @import './citizen-ui-colours';
 
-.moj-add-another {
-  &__remove-button {
-    display: none;
-  }
-}
 
 .caseProgression {
   .moj-add-another__item {
     margin: 0;
     padding: 0;
     position: relative;
-  }
-
-  .moj-add-another__remove-button {
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 10px;
-    width: auto;
-    color: transparent;
-    font-size: 0;
-
-    &::after {
-      content: 'Remove section';
-      font-size: 19px;
-      color: $govuk-remove-section-text-colour;
-    }
   }
 }
 

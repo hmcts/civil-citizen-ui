@@ -28,6 +28,8 @@ export interface ClaimSummaryItem {
   tableRows?: TableCell[][];
   title?: string;
   externalLink?: boolean;
+  category?: string;
+  index?: number;
 }
 
 /**
