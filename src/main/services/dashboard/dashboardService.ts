@@ -140,14 +140,14 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
       notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
       notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
     }
-    for (const [gaRef, value] of applicantNotifications) {
+    for (const [_, value] of applicantNotifications) {
       for (const notification of value.items) {
         notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
         notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
       dashboardNotifications.items.push(...(value?.items ?? []));
     }
-    for (const [gaRef, value] of respondentNotifications) {
+    for (const [_, value] of respondentNotifications) {
       for (const notification of value.items) {
         notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
         notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
