@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "DTSCCI-2820"
+def ccdBranch = "DTSCCI-2820-fix"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
