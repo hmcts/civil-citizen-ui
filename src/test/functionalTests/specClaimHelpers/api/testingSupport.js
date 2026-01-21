@@ -88,7 +88,7 @@ module.exports = {
 
     await retry(() => {
       return restHelper.request(
-        `${config.url.generalApplication}/testing-support/case/${caseId}/business-process/ga`,
+        `${config.url.generalApplication}/testing-support/case/${caseId}/business-process`,
         {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`,
