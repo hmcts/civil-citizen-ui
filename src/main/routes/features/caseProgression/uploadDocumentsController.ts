@@ -27,6 +27,7 @@ import {
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
@@ -34,64 +35,11 @@ const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
-const {Validator} = require('class-validator');
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('uploadDocumentsController');
-const validator = new Validator();
 
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
-  const [category, index] = extractCategoryAndIndex(submitAction);
-  const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).filter(file =>
-    file.fieldname === target,
-  );
-  
-  if (inputFile[0]){
-    try {
-      const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-      form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
-      
-      if (!form.errors) {
-        form.errors = [];
-      }
-      
-      const fileErrors = validator.validateSync(fileUpload);
-      
-      if (fileErrors && fileErrors.length > 0) {
-        const firstError = fileErrors[0];
-        const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
-        const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
-        
-        const nestedError = createFileUploadError(
-          category,
-          index,
-          firstConstraintKey || 'validationError',
-          firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED',
-        );
-        form.errors.push(nestedError as any);
-      } else {
-        try {
-          form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-        } catch (uploadError) {
-          logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
-          
-          const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
-          form.errors.push(apiError as any);
-        }
-      }
-      
-      delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload;
-    } catch (error) {
-      logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
-      
-      if (!form.errors) {
-        form.errors = [];
-      }
-      const unexpectedError = createFileUploadError(category, index, 'unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
-      form.errors.push(unexpectedError as any);
-    }
-  }
+  await uploadAndValidateFile(req, submitAction, form, civilServiceClientForDocRetrieve, 'uploadDocumentsController');
 }
 
 async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {

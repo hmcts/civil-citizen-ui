@@ -32,7 +32,7 @@ import {
   getDocumentsForDocumentsReferred,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {createMulterUpload, extractCategoryAndIndex} from 'common/utils/fileUploadUtils';
+import {createMulterUpload, extractCategoryAndIndex, uploadAndValidateFile} from 'common/utils/fileUploadUtils';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
@@ -51,25 +51,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsForm>) {
-  const [category, index] = extractCategoryAndIndex(submitAction);
-  const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).find(file =>
-    file.fieldname === target,
-  );
-  if (inputFile){
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
-    form.model[category as keyof UploadDocumentsForm][+index].fileUpload = fileUpload;
-    form.model[category as keyof UploadDocumentsForm][+index].caseDocument = undefined;
-    form.validateSync();
-    delete form.model[category as keyof UploadDocumentsForm][+index].fileUpload;
-    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
-    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
-        && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
-        && !form?.errorFor(`${errorFieldNamePrefix}`)) {
-
-      form.model[category as keyof UploadDocumentsForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-    }
-  }
+  await uploadAndValidateFile(req, submitAction, form, civilServiceClientForDocRetrieve, 'mediationUploadDocumentsController');
 }
 
 function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:UploadDocuments,res: Response, claimId: string, claim: Claim) {

@@ -80,3 +80,79 @@ export const createUploadOneFileError = () => {
     },
   }];
 };
+
+export const uploadAndValidateFile = async (
+  req: Request,
+  submitAction: string,
+  form: {model: Record<string, any[]>, errors?: any[]},
+  civilServiceClient: {uploadDocument: (req: Request, file: any) => Promise<any>},
+  loggerName = 'uploadDocumentsController',
+): Promise<void> => {
+  const {Validator} = require('class-validator');
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger(loggerName);
+  const validator = new Validator();
+  const {TypeOfDocumentSectionMapper} = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
+
+  const [category, index] = extractCategoryAndIndex(submitAction);
+  const target = `${category}[${index}][fileUpload]`;
+  const inputFile = (req.files as Express.Multer.File[]).find((file: Express.Multer.File) =>
+    file.fieldname === target,
+  );
+
+  if (!inputFile) {
+    return;
+  }
+
+  try {
+    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
+    const categoryModel = form.model[category];
+    if (categoryModel && categoryModel[+index]) {
+      categoryModel[+index].fileUpload = fileUpload;
+      categoryModel[+index].caseDocument = undefined;
+    }
+
+    if (!form.errors) {
+      form.errors = [];
+    }
+
+    const fileErrors = validator.validateSync(fileUpload);
+
+    if (fileErrors && fileErrors.length > 0) {
+      const firstError = fileErrors[0];
+      const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
+      const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
+
+      const nestedError = createFileUploadError(
+        category,
+        index,
+        firstConstraintKey || 'validationError',
+        firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED',
+      );
+      form.errors.push(nestedError);
+    } else {
+      try {
+        if (categoryModel && categoryModel[+index]) {
+          categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
+        }
+      } catch (uploadError) {
+        logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
+
+        const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
+        form.errors.push(apiError);
+      }
+    }
+
+    if (categoryModel && categoryModel[+index]) {
+      delete categoryModel[+index].fileUpload;
+    }
+  } catch (error) {
+    logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
+
+    if (!form.errors) {
+      form.errors = [];
+    }
+    const unexpectedError = createFileUploadError(category, index, 'unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
+    form.errors.push(unexpectedError);
+  }
+};
