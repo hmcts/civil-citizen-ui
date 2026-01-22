@@ -28,7 +28,6 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
 } from 'common/utils/fileUploadUtils';
-import {ALLOWED_MIME_TYPES} from 'form/validators/isAllowedMimeType';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -50,32 +49,16 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
   if (inputFile[0]){
     try {
       const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-      const fileTypeAllowed = fileUpload.mimetype && ALLOWED_MIME_TYPES.includes(fileUpload.mimetype);
+      form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
       
-      if (!fileTypeAllowed) {
-        form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
-        form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
+      if (!form.errors) {
         form.errors = [];
-        
-        const fileValidationErrors = validator.validateSync(fileUpload);
-        
-        if (fileValidationErrors && fileValidationErrors.length > 0) {
-          const mimetypeError = fileValidationErrors.find((e: any) => e.property === 'mimetype');
-          
-          if (mimetypeError) {
-            const fileTypeError = createFileUploadError(category, index, 'isAllowedMimeType', 'ERRORS.VALID_MIME_TYPE_FILE');
-            form.errors.push(fileTypeError as any);
-          }
-        }
-        
-        return;
       }
       
       const fileErrors = validator.validateSync(fileUpload);
       
       if (fileErrors && fileErrors.length > 0) {
-        form.errors = [];
-        
         const firstError = fileErrors[0];
         const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
         const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
@@ -93,9 +76,6 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
         } catch (uploadError) {
           logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
           
-          if (!form.errors) {
-            form.errors = [];
-          }
           const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
           form.errors.push(apiError as any);
         }
