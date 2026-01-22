@@ -41,7 +41,7 @@ def copyPrevFailedAndNotExecutedTestFilesJson() {
   }
 }
 
-def copyPreviousAllureHistory(historyDir, resultsDir) {
+def copyPreviousAllureHistory() {
   def buildFound = false
   def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
   def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
@@ -49,9 +49,6 @@ def copyPreviousAllureHistory(historyDir, resultsDir) {
 
   while (!buildFound && buildNumber > minBuildNumber) {
     try {
-      // Ensure the directory exists
-      sh "mkdir -p ${targetDir}"
-
       copyArtifacts(
         projectName: env.JOB_NAME,
         selector: specific("${buildNumber}"),
@@ -225,7 +222,7 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
-    copyPreviousAllureHistory('allure-report/history', 'test-results/functional/allure-results')
+    copyPreviousAllureHistory();
     if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
@@ -278,8 +275,9 @@ withPipeline(type, product, component) {
 
 
   before('functionalTest:aat') {
-    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     copyPrevFailedAndNotExecutedTestFilesJson();
+    copyPreviousAllureHistory();
   }
 
   afterAlways('functionalTest:aat') {
