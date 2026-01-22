@@ -11,7 +11,7 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "dtscci-3617"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
