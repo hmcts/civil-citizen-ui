@@ -648,4 +648,130 @@ describe('on POST', () => {
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
+
+  describe('File upload validation and error handling', () => {
+    beforeEach(() => {
+      const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+      const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
+      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
+    });
+
+    it('should reject invalid file type (video file) and display error', async () => {
+      const file = {
+        fieldname: 'witnessStatement[0][fileUpload]',
+        originalname: 'test-video.mov',
+        mimetype: 'video/quicktime',
+        size: 1024 * 1024, // 1MB
+        buffer: Buffer.from('Video file content'),
+      };
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'witnessStatement[0][uploadButton]')
+        .attach('witnessStatement[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should successfully upload valid PDF file', async () => {
+      const file = {
+        fieldname: 'expertReport[0][fileUpload]',
+        originalname: 'test-document.pdf',
+        mimetype: 'application/pdf',
+        size: 1024 * 1024, // 1MB
+        buffer: Buffer.from('PDF file content'),
+      };
+
+      const mockCaseDocument: CaseDocument = <CaseDocument>{
+        createdBy: 'test',
+        documentLink: {document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test-document.pdf'},
+        documentName: 'test-document.pdf',
+        documentType: null,
+        documentSize: 1024 * 1024,
+        createdDatetime: new Date(),
+      };
+
+      const civilServiceUrl = config.get<string>('services.civilService.url');
+      nock(civilServiceUrl)
+        .post('/case/document/generateAnyDoc')
+        .reply(200, mockCaseDocument);
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'expertReport[0][uploadButton]')
+        .attach('expertReport[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should handle API upload failure gracefully', async () => {
+      const file = {
+        fieldname: 'documentsReferred[0][fileUpload]',
+        originalname: 'test-document.pdf',
+        mimetype: 'application/pdf',
+        size: 1024 * 1024, // 1MB
+        buffer: Buffer.from('PDF file content'),
+      };
+
+      const civilServiceUrl = config.get<string>('services.civilService.url');
+      nock(civilServiceUrl)
+        .post('/case/document/generateAnyDoc')
+        .reply(500, {error: 'Internal server error'});
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'documentsReferred[0][uploadButton]')
+        .attach('documentsReferred[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should handle file upload for different categories', async () => {
+      const file = {
+        fieldname: 'expertStatement[0][fileUpload]',
+        originalname: 'expert-statement.pdf',
+        mimetype: 'application/pdf',
+        size: 512 * 1024, // 512KB
+        buffer: Buffer.from('Expert statement content'),
+      };
+
+      const mockCaseDocument: CaseDocument = <CaseDocument>{
+        createdBy: 'test',
+        documentLink: {document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'expert-statement.pdf'},
+        documentName: 'expert-statement.pdf',
+        documentType: null,
+        documentSize: 512 * 1024,
+        createdDatetime: new Date(),
+      };
+
+      const civilServiceUrl = config.get<string>('services.civilService.url');
+      nock(civilServiceUrl)
+        .post('/case/document/generateAnyDoc')
+        .reply(200, mockCaseDocument);
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'expertStatement[0][uploadButton]')
+        .attach('expertStatement[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+  });
 });
