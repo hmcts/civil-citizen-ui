@@ -89,27 +89,34 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], upload.single('selec
       summaryRows: [],
     });
 
+  if (action === 'uploadButton') {
+    await uploadSelectedFile(req, createQuery);
+    
+    if (req.session?.fileUpload) {
+      const parsedData = JSON.parse(req.session.fileUpload);
+      const formWithErrors = new GenericForm(createQuery, parsedData);
+      await getSummaryList(formattedSummary, req);
+      return await renderView(formWithErrors, claim, claimId, res, formattedSummary, req);
+    }
+    
+    return res.redirect(`${currentUrl}`);
+  }
+
+  if (action?.includes('[deleteFile]')) {
+    const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
+    await removeSelectedDocument(req,  Number(index) - 1, createQuery );
+    return res.redirect(`${currentUrl}`);
+  }
+
   form.validateSync();
 
   if (form.hasErrors()) {
     await getSummaryList(formattedSummary, req);
     return await renderView(form, claim, claimId, res, formattedSummary, req);
-  } else {
-
-    if (action === 'uploadButton') {
-      await uploadSelectedFile(req, createQuery);
-      return res.redirect(`${currentUrl}`);
-    }
-
-    if (action?.includes('[deleteFile]')) {
-      const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
-      await removeSelectedDocument(req,  Number(index) - 1, createQuery );
-      return res.redirect(`${currentUrl}`);
-    }
-
-    await saveQueryManagement(claimId, createQuery, 'createQuery', req);
-    res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
   }
+
+  await saveQueryManagement(claimId, createQuery, 'createQuery', req);
+  res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
 }));
 
 export default createQueryController;

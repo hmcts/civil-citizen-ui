@@ -85,26 +85,35 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('selectedFi
         summaryRows: [],
       });
 
+    if (action === 'uploadButton') {
+      await uploadSelectedFile(req, sendFollowUpQuery, true);
+      
+      if (req.session?.fileUpload) {
+        const parsedData = JSON.parse(req.session.fileUpload);
+        const formWithErrors = new GenericForm(sendFollowUpQuery, parsedData);
+        await getSummaryList(formattedSummary, req, true);
+        return await renderView(formWithErrors, claimId, res, formattedSummary, req);
+      }
+      
+      return res.redirect(`${currentUrl}`);
+    }
+
+    if (action?.includes('[deleteFile]')) {
+      const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
+      await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery, true);
+      return res.redirect(`${currentUrl}`);
+    }
+
     form.validateSync();
 
     if (form.hasErrors()) {
       await getSummaryList(formattedSummary, req, true);
       return await renderView(form, claimId, res, formattedSummary, req);
-    } else {
-      if (action === 'uploadButton') {
-        await uploadSelectedFile(req, sendFollowUpQuery, true);
-        return res.redirect(`${currentUrl}`);
-      }
-
-      if (action?.includes('[deleteFile]')) {
-        const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
-        await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery, true);
-        return res.redirect(`${currentUrl}`);
-      }
-      sendFollowUpQuery.parentId = queryId;
-      await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
-      return res.redirect(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId));
     }
+
+    sendFollowUpQuery.parentId = queryId;
+    await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
+    return res.redirect(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId));
   } catch (error) {
     next(error);
   }
