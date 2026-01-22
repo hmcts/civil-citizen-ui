@@ -10,7 +10,7 @@ import {
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
 jest.mock('multer', () => {
-  const mockMulter = jest.fn(() => ({
+  const mockMulter: any = jest.fn(() => ({
     any: jest.fn(() => jest.fn()),
   }));
   mockMulter.memoryStorage = jest.fn(() => ({}));
@@ -21,7 +21,7 @@ describe('fileUploadUtils', () => {
   describe('createMulterUpload', () => {
     it('should create multer instance with default file size limit', () => {
       const multer = require('multer');
-      const upload = createMulterUpload();
+      createMulterUpload();
 
       expect(multer).toHaveBeenCalledWith({
         storage: {},
@@ -39,7 +39,7 @@ describe('fileUploadUtils', () => {
     it('should create multer instance with custom file size limit', () => {
       const multer = require('multer');
       const customLimit = 50 * 1024 * 1024; // 50MB
-      const upload = createMulterUpload(customLimit);
+      createMulterUpload(customLimit);
 
       expect(multer).toHaveBeenCalledWith({
         storage: {},
