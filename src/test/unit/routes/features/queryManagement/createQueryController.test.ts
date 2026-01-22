@@ -82,18 +82,21 @@ describe('create query conroller', () => {
       jest.resetAllMocks();
     });
 
-    // it('should redirect on successful form', async () => {
-    //   mockGetClaimById.mockImplementation(async () => {
-    //     return new Claim();
-    //   });
-    //   const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
-    //   const date = new Date();
-    //   const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes', 'year': (date.getFullYear() + 1).toString(),
-    //     'month': date.getMonth().toString(), 'day': date.getDay().toString()};
-    //   const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send(data);
-    //   expect(res.status).toBe(302);
-    //   expect(saveQueryManagement).toHaveBeenCalled();
-    // });
+    it('should redirect on successful form', async () => {
+      mockGetClaimById.mockImplementation(async () => {
+        return new Claim();
+      });
+      const saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
+      const date = new Date();
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear() + 1;
+      const data = {'messageSubject': 'test sub', 'messageDetails': 'test body', 'isHearingRelated': 'yes', 'year': year.toString(),
+        'month': month.toString(), 'day': day.toString()};
+      const res = await request(app).post(QUERY_MANAGEMENT_CREATE_QUERY).send(data);
+      expect(res.status).toBe(302);
+      expect(saveQueryManagement).toHaveBeenCalled();
+    });
 
     it('should render the page with errors for the missing fields', async () => {
       mockGetClaimById.mockImplementation(async () => {
