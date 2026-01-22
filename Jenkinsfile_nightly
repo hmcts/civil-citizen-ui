@@ -105,6 +105,31 @@ def copyPrevFailedAndNotExecutedTestFilesJson() {
   }
 }
 
+def copyPreviousAllureHistory() {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  def targetDir = "test-results/functional/allure-results/history"
+
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts(
+        projectName: env.JOB_NAME,
+        selector: specific("${buildNumber}"),
+        filter: "test-results/functional/allure-report/history/*",
+        target: targetDir,
+        flatten: true
+      )
+      
+      buildFound = true
+      echo "Successfully imported Allure history from build ${buildNumber}"
+    } catch (Exception error) {
+      echo "Allure history artifact not found in build ${buildNumber}. Trying previous..."
+      buildNumber--
+    }
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
@@ -179,6 +204,7 @@ withNightlyPipeline(type, product, component) {
 
   if(!forceGreenBuild) {
     before('fullFunctionalTest') {
+      copyPreviousAllureHistory();
       if(runPrevFailedAndNotExecutedTestFiles) {
         copyPrevFailedAndNotExecutedTestFilesJson()
       }
