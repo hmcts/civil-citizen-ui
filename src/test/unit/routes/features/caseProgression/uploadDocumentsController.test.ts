@@ -815,7 +815,6 @@ describe('on POST', () => {
 
       // Mock TypeOfDocumentSectionMapper to throw an error
       const TypeOfDocumentSectionMapper = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
-      const originalMap = TypeOfDocumentSectionMapper.TypeOfDocumentSectionMapper.mapMulterFileToSingleFile;
       jest.spyOn(TypeOfDocumentSectionMapper.TypeOfDocumentSectionMapper, 'mapMulterFileToSingleFile').mockImplementationOnce(() => {
         throw new Error('Unexpected mapping error');
       });
