@@ -20,20 +20,13 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
 
 export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsController') => {
   return (req: Request, res: Response, next: NextFunction) => {
-    /* istanbul ignore next */
-    const {Logger} = require('@hmcts/nodejs-logging');
-    const logger = Logger.getLogger(loggerName);
-    logger.info(`[MULTER MIDDLEWARE] Processing request: claimId=${req.params?.id}, contentType=${req.headers['content-type']}`);
-    
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
     upload.any()(req, res, (err: any) => {
       if (err) {
-        /* istanbul ignore next */
+        const {Logger} = require('@hmcts/nodejs-logging');
+        const logger = Logger.getLogger(loggerName);
         logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
         (req as any).multerError = err;
-      } else {
-        /* istanbul ignore next */
-        logger.info(`[MULTER MIDDLEWARE] Multer processing complete: filesCount=${req.files?.length || 0}`);
       }
       next();
     });
