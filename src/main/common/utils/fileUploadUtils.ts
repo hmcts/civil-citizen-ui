@@ -84,7 +84,7 @@ export const createUploadOneFileError = () => {
 export const uploadAndValidateFile = async (
   req: Request,
   submitAction: string,
-  form: {model: Record<string, any[]>, errors?: any[]},
+  form: {model: Record<string, any>, errors?: any[]},
   civilServiceClient: {uploadDocument: (req: Request, file: any) => Promise<any>},
   loggerName = 'uploadDocumentsController',
 ): Promise<void> => {

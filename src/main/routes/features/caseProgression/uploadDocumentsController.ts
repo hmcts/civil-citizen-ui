@@ -19,7 +19,6 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 import {AppRequest} from 'common/models/AppRequest';
 import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
-import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
