@@ -41,6 +41,27 @@ def copyPrevFailedAndNotExecutedTestFilesJson() {
   }
 }
 
+def copyPreviousAllureHistory(historyDir, resultsDir) {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts(
+        projectName: env.JOB_NAME,
+        selector: specific("${buildNumber}"),
+        filter: "**/${historyDir}/**",
+        target: "${resultsDir}",
+      )
+      sh "mv ${resultsDir}/${historyDir} ${resultsDir}/history"
+      buildFound = true
+    } catch (Exception error) {
+      echo "artifact not found: " + error.toString()
+      buildNumber--
+    }
+  }
+}
+
 def getFunctionalTestsGroups() {
   def githubApi = new GithubAPI(this)
   def functionalTestGroups = []
@@ -197,6 +218,7 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    copyPreviousAllureHistory('allure-report/history', 'test-results/functional/allure-results')
     if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
