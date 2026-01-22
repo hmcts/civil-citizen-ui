@@ -50,11 +50,13 @@ def copyPreviousAllureHistory(historyDir, resultsDir) {
       copyArtifacts(
         projectName: env.JOB_NAME,
         selector: specific("${buildNumber}"),
-        filter: "**/${historyDir}/**",
-        target: "${resultsDir}",
+        filter: "test-results/functional/allure-report/history/*",
+        target: "test-results/functional/allure-results/history",
+        flatten: true
       )
       sh "mv ${resultsDir}/${historyDir} ${resultsDir}/history"
       buildFound = true
+      echo "Successfully imported Allure history from build ${buildNumber}"
     } catch (Exception error) {
       echo "artifact not found: " + error.toString()
       buildNumber--
