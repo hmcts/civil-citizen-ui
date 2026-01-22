@@ -33,6 +33,7 @@ import {
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaOnline} from 'services/commons/generalApplicationHelper';
 import {CaseState} from 'form/models/claimDetails';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -90,13 +91,16 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
-    const mappedValues = dashboard.items?.length ? await populateDashboardValues(claim, claimId) : new Map<string, string>();
-    for (const item of dashboard.items) {
-      for (const task of item.tasks) {
-        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, mappedValues);
-        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, mappedValues);
-        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, mappedValues);
-        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, mappedValues);
+    if(dashboard.items?.length) {
+      const fullAdmitPayImmediatelyPaymentAmount = (await getTotalAmountWithInterestAndFees(claim)).toString();
+      const mappedValues = await populateDashboardValues(claim, claimId, fullAdmitPayImmediatelyPaymentAmount);
+      for (const item of dashboard.items) {
+        for (const task of item.tasks) {
+          task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, mappedValues);
+          task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, mappedValues);
+          task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, mappedValues);
+          task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, mappedValues);
+        }
       }
     }
     return dashboard;
@@ -135,20 +139,23 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     : new Map<string, DashboardNotificationList>();
 
   if (dashboardNotifications) {
-    const mappedValues = await populateDashboardValues(claim, claimId);
+    const fullAdmitPayImmediatelyPaymentAmount = (await getTotalAmountWithInterestAndFees(claim)).toString();
     for (const notification of dashboardNotifications.items) {
+      const mappedValues = await populateDashboardValues(claim, claimId,fullAdmitPayImmediatelyPaymentAmount, notification, lng);
       notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
       notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
     }
-    for (const [_, value] of applicantNotifications) {
+    for (const [gaRef, value] of applicantNotifications) {
       for (const notification of value.items) {
+        const mappedValues = await populateDashboardValues(claim, claimId, fullAdmitPayImmediatelyPaymentAmount, notification, lng, gaRef);
         notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
         notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
       dashboardNotifications.items.push(...(value?.items ?? []));
     }
-    for (const [_, value] of respondentNotifications) {
+    for (const [gaRef, value] of respondentNotifications) {
       for (const notification of value.items) {
+        const mappedValues = await populateDashboardValues(claim, claimId, fullAdmitPayImmediatelyPaymentAmount, notification, lng, gaRef);
         notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
         notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
