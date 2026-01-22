@@ -273,6 +273,17 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
     });
 
+    it('should set fileUpload error in session when no documents are uploaded', async () => {
+      claim.generalApplication.uploadAdditionalDocuments = [];
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+
+      expect(res.status).toBe(302);
+      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+    });
+
     it('should handle errors', async () => {
       (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
 
