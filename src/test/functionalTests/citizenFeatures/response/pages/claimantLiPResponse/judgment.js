@@ -11,10 +11,7 @@ const fields = {
 class Judgment {
   async raiseDefaultJudgment(claimRef) {
     await this.defendantDoB(claimRef);
-    await this.hasDefendantPaid();
-    await this.judgmentAmount();
-    await this.paymentOptions();
-    await this.checkYourAnswers();
+    await this.paymentOptionsForDJFlow();
     await this.confirmationPage();
   }
 
@@ -27,10 +24,18 @@ class Judgment {
   }
 
   async defendantDoB(claimRef){
+    await I.click('.table-link');
+    await I.waitForText('Wait for defendant to respond');
     await I.amOnPage('/case/' + claimRef + '/ccj/date-of-birth');
+    await I.wait(10);
     await I.waitForContent('Do you know the defendant\'s date of birth?', 60);
     await I.click(fields.no);
     await I.click('Save and continue');
+    await I.waitForContent('Has the defendant paid some of the amount owed?', 60);
+    await I.click(fields.no);
+    await I.click('Save and continue');
+    await I.waitForContent('Judgment amount', 60);
+    await I.click('Continue');
   }
 
   async hasDefendantPaid(judgmentByAdmissions, claimRef){
@@ -43,6 +48,7 @@ class Judgment {
     await I.waitForContent('Amount already paid', 60);
     await I.fillField(fields.amount, '100');
     await I.click('Save and continue');
+    await I.click('Continue');
   }
 
   async judgmentAmount(){
@@ -63,6 +69,16 @@ class Judgment {
     await I.see('I would like the defendant to pay:');
     await I.click(fields.payImmediately);
     await I.click('Save and continue');
+  }
+
+  async paymentOptionsForDJFlow(){
+    await I.waitForContent('Payment Options', 60);
+    await I.see('I would like the defendant to pay:');
+    await I.click(fields.payImmediately);
+    await I.click('Save and continue');
+    await I.waitForContent('Check your answers', 60);
+    await I.click(fields.signed);
+    await I.click('Sign and submit');
   }
 
   async checkYourAnswers(){

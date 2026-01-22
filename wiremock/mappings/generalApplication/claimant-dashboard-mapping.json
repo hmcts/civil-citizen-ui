@@ -80,7 +80,7 @@
     {
       "request": {
         "method": "GET",
-        "urlPattern": "/cases/1730984188221535/applications",
+        "urlPattern": "/cases/1730984188221535/ga/applications",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
@@ -215,7 +215,7 @@
     {
       "request": {
         "method": "POST",
-        "urlPattern": "/fees/case/1731322828021511/payment",
+        "urlPattern": "/fees/case/1731322828021511/ga/payment",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
@@ -236,7 +236,7 @@
     {
       "request": {
         "method": "GET",
-        "urlPattern": "/fees/case/.*?/payment/.*?/status",
+        "urlPattern": "/fees/case/.*?/ga/payment/.*?/status",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
