@@ -90,7 +90,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
-    const mappedValues = await populateDashboardValues(claim, claimId);
+    const mappedValues = dashboard.items?.length ? await populateDashboardValues(claim, claimId) : new Map<string, string>();
     for (const item of dashboard.items) {
       for (const task of item.tasks) {
         task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, mappedValues);
