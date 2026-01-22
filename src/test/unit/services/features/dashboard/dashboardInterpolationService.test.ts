@@ -26,7 +26,7 @@ describe('dashboardInterpolationService', () => {
     const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
 
-    const dashboardValues = await populateDashboardValues(claim, '123');
+    const dashboardValues = await populateDashboardValues(claim, '123', '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceDynamic, dashboardValues);
     const textExpectedDynamic = 'You have 28 days left.';
 
@@ -45,7 +45,7 @@ describe('dashboardInterpolationService', () => {
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
     const dashboardNotification = new DashboardNotification('456', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, '123', dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, '123', '2000', dashboardNotification);
     const textReplacedRedirect = await replaceDashboardPlaceholders(textToReplaceRedirect, dashboardValues);
     const textExpectedRedirect = '/notification/456/redirect/VIEW_ORDERS_AND_NOTICES/123';
 
@@ -55,7 +55,7 @@ describe('dashboardInterpolationService', () => {
   it('should replace dynamic text with nothing when claim is empty', async () => {
     const claim: Claim = new Claim();
 
-    const dashboardValues = await populateDashboardValues(claim, '123');
+    const dashboardValues = await populateDashboardValues(claim, '123', '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceDynamic, dashboardValues);
     const textExpectedDynamic = 'You have  days left.';
 
@@ -65,7 +65,7 @@ describe('dashboardInterpolationService', () => {
   it('should replace dynamic text with nothing when claim is undefined', async () => {
     const claim: Claim = new Claim();
 
-    const dashboardValues = await populateDashboardValues(claim, '123');
+    const dashboardValues = await populateDashboardValues(claim, '123', '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceDynamic, dashboardValues);
     const textExpectedDynamic = 'You have  days left.';
 
@@ -92,7 +92,7 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS}';
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
@@ -113,7 +113,7 @@ describe('dashboardInterpolationService', () => {
     };
     const textToReplaceUrl = '{MEDIATION_SUCCESSFUL_URL}';
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
@@ -125,7 +125,7 @@ describe('dashboardInterpolationService', () => {
     claim.id = '1710172392502478';
     const textToReplaceUrl = '{CLAIMANT_RESPONSE_TASK_LIST}';
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpectedDynamic = '/case/1710172392502478/claimant-response/task-list';
 
@@ -151,7 +151,7 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_SETTLEMENT_AGREEMENT}';
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
@@ -177,7 +177,7 @@ describe('dashboardInterpolationService', () => {
     }];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '64 KB';
 
@@ -190,7 +190,7 @@ describe('dashboardInterpolationService', () => {
     claim.systemGeneratedCaseDocuments = [];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
 
@@ -202,7 +202,7 @@ describe('dashboardInterpolationService', () => {
     claim.id = '123';
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/case-progression/apply-help-with-fees/start';
 
@@ -215,7 +215,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{PAY_HEARING_FEE_URL_REDIRECT}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/notification/1234/redirect/PAY_HEARING_FEE_URL/123';
 
@@ -231,7 +231,7 @@ describe('dashboardInterpolationService', () => {
     params.set('orderDocument', undefined);
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/view-orders-and-notices';
 
@@ -248,7 +248,7 @@ describe('dashboardInterpolationService', () => {
     } as any;
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/order-doc-id';
 
@@ -282,7 +282,7 @@ describe('dashboardInterpolationService', () => {
     } as any;
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/hidden-doc-id';
 
@@ -295,7 +295,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/evidence-upload-documents';
 
@@ -311,7 +311,7 @@ describe('dashboardInterpolationService', () => {
     params.set('judgmentDocument', undefined);
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/view-the-judgment';
 
@@ -354,7 +354,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{VIEW_MEDIATION_DOCUMENTS}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/mediation/view-mediation-documents';
 
@@ -371,7 +371,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
@@ -388,7 +388,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
@@ -404,7 +404,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
 
@@ -419,7 +419,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/qm/view-query';
 
@@ -450,7 +450,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/view-documents/123';
 
@@ -465,7 +465,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
 
@@ -480,7 +480,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
 
@@ -510,7 +510,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/view-documents/123';
 
@@ -525,7 +525,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
 
@@ -540,7 +540,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
 
@@ -555,7 +555,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/general-application/application-type?linkFrom=start';
 
@@ -571,7 +571,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/submit-application-offline';
 
@@ -616,7 +616,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/view-documents/123';
 
@@ -632,7 +632,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
 
@@ -648,7 +648,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
 
@@ -663,7 +663,7 @@ describe('dashboardInterpolationService', () => {
     const params: Map<string, object> = new Map<string, object>();
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
 
-    const dashboardValues = await populateDashboardValues(claim, claim.id, dashboardNotification);
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
     const textExpected = '/case/123/view-the-hearing';
 
