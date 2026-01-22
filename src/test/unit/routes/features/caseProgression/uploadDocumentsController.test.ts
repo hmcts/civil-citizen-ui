@@ -773,5 +773,100 @@ describe('on POST', () => {
           expect(res.status).toBe(200);
         });
     });
+
+    it('should handle file validation errors when file size exceeds limit', async () => {
+      const file = {
+        fieldname: 'documentsReferred[0][fileUpload]',
+        originalname: 'large-file.pdf',
+        mimetype: 'application/pdf',
+        size: 1024, // Small buffer to pass multer
+        buffer: Buffer.from('Small buffer'),
+      };
+
+      // Mock TypeOfDocumentSectionMapper to return a FileUpload with invalid size
+      const TypeOfDocumentSectionMapper = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
+      const originalMap = TypeOfDocumentSectionMapper.TypeOfDocumentSectionMapper.mapMulterFileToSingleFile;
+      jest.spyOn(TypeOfDocumentSectionMapper.TypeOfDocumentSectionMapper, 'mapMulterFileToSingleFile').mockImplementationOnce((multerFile: any) => {
+        const fileUpload = originalMap(multerFile);
+        fileUpload.size = 101 * 1024 * 1024; // 101MB - exceeds limit
+        return fileUpload;
+      });
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'documentsReferred[0][uploadButton]')
+        .attach('documentsReferred[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should handle unexpected errors during file upload', async () => {
+      const file = {
+        fieldname: 'witnessStatement[0][fileUpload]',
+        originalname: 'test.pdf',
+        mimetype: 'application/pdf',
+        size: 1024,
+        buffer: Buffer.from('Test content'),
+      };
+
+      // Mock TypeOfDocumentSectionMapper to throw an error
+      const TypeOfDocumentSectionMapper = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
+      const originalMap = TypeOfDocumentSectionMapper.TypeOfDocumentSectionMapper.mapMulterFileToSingleFile;
+      jest.spyOn(TypeOfDocumentSectionMapper.TypeOfDocumentSectionMapper, 'mapMulterFileToSingleFile').mockImplementationOnce(() => {
+        throw new Error('Unexpected mapping error');
+      });
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'witnessStatement[0][uploadButton]')
+        .attach('witnessStatement[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should handle multer error when action includes uploadButton and file size exceeds limit', async () => {
+      const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+      const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
+      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'documentsReferred[0][uploadButton]')
+        .attach('documentsReferred[0][fileUpload]', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should handle case when no file is found for upload', async () => {
+      const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+      const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
+      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'documentsReferred[0][uploadButton]')
+        // No file attached
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
   });
 });

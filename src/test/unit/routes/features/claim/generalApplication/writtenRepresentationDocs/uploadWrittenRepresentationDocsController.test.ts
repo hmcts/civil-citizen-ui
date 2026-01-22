@@ -6,7 +6,7 @@ import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL } from 'routes/urls';
+import { GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL } from 'routes/urls';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
@@ -228,6 +228,34 @@ describe('General Application - uploadWrittenRepresentationDocsController.ts', (
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should set fileUpload error in session when no documents uploaded and form has fileUpload error', async () => {
+      mockGADocDataFromStore.mockResolvedValueOnce([]);
+      await request(app)
+        .post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL)
+        .field('action', 'continue')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header['location']).toContain(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
+        });
+    });
+
+    it('should redirect to CYA page when documents are uploaded successfully', async () => {
+      const uploadDocuments = [
+        {
+          caseDocument: mockCaseDocument,
+          fileUpload: {} as FileUpload,
+        },
+      ];
+      mockGADocDataFromStore.mockResolvedValueOnce(uploadDocuments);
+      await request(app)
+        .post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL)
+        .field('action', 'continue')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header['location']).toContain(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL);
         });
     });
   });

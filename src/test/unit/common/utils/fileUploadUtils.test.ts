@@ -198,6 +198,13 @@ describe('fileUploadUtils', () => {
 
       expect(result).toBe('ERRORS.FILE_UPLOAD_FAILED');
     });
+
+    it('should return FILE_UPLOAD_FAILED when error code is not LIMIT_FILE_SIZE or LIMIT_UNEXPECTED_FILE and no field property', () => {
+      const error = {code: 'OTHER_ERROR_CODE'};
+      const result = getMulterErrorConstraint(error);
+
+      expect(result).toBe('ERRORS.FILE_UPLOAD_FAILED');
+    });
   });
 
   describe('extractCategoryAndIndex', () => {
