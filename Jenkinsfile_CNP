@@ -45,20 +45,25 @@ def copyPreviousAllureHistory(historyDir, resultsDir) {
   def buildFound = false
   def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
   def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  def targetDir = "test-results/functional/allure-results/history"
+
   while (!buildFound && buildNumber > minBuildNumber) {
     try {
+      // Ensure the directory exists
+      sh "mkdir -p ${targetDir}"
+
       copyArtifacts(
         projectName: env.JOB_NAME,
         selector: specific("${buildNumber}"),
         filter: "test-results/functional/allure-report/history/*",
-        target: "test-results/functional/allure-results/history",
+        target: targetDir,
         flatten: true
       )
-      sh "mv ${resultsDir}/${historyDir} ${resultsDir}/history"
+      
       buildFound = true
       echo "Successfully imported Allure history from build ${buildNumber}"
     } catch (Exception error) {
-      echo "artifact not found: " + error.toString()
+      echo "Allure history artifact not found in build ${buildNumber}. Trying previous..."
       buildNumber--
     }
   }
