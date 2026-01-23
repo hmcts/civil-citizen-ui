@@ -5925,6 +5925,7 @@
     "VALID_CHOOSE_THE_FILE": "Dewiswch y ffeil yr hoffech ei llwytho",
     "VALID_MIME_TYPE_FILE": "Rhaid i ddogfennau fod ar ffurf Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF",
     "VALID_SIZE_FILE": "Rhaid i ddogfennau fod yn llai na 100MB",
+    "FILE_UPLOAD_FAILED": "Bu problem wrth lwytho'ch ffeil. Rhowch gynnig arall arni.",
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch oes os yw rhywun yn fregus mewn ffordd y mae angen i’r llys ei hystyried",
     "QUESTION_2_REQUIRED": "Dywedwch wrthym pwy sy'n agored i niwed a pha gefnogaeth sydd ei hangen arnynt",
