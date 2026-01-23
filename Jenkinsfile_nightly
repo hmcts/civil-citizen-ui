@@ -5,65 +5,65 @@ properties([
     pipelineTriggers([cron('H 12 * * 1-5')]),
     copyArtifactPermission('/HMCTS_a_to_c_Nightly/civil-citizen-ui/*'),
     parameters([
-      choice(name: 'FORCE_GREEN_BUILD', choices: ['false', 'true'], 
+      choice(name: 'FORCE_GREEN_BUILD', choices: ['false', 'true'],
         description: 'Should force pipeline to go green by not running any functional tests'),
-      choice(name: 'RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES', choices: ['false', 'true'], 
+      choice(name: 'RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES', choices: ['false', 'true'],
         description: 'Runs the failed test files and test files that were not executed, contained within the \'testFilesReport.json\', from the latest previous pipeline run'),
       choice(name: 'ENVIRONMENT', choices: ['aat', 'demo', 'preview'],
-        description: 'Environment to test'), 
+        description: 'Environment to test'),
       string(name: 'PR_NUMBER',
         defaultValue: '', description: 'PR Number of deployed environment to be used to run tests against'),
-      choice(name: 'TEST_URL', 
+      choice(name: 'TEST_URL',
         choices: [
-                    'https://civil-citizen-ui.aat.platform.hmcts.net', 
+                    'https://civil-citizen-ui.aat.platform.hmcts.net',
                     'https://moneyclaims.demo.platform.hmcts.net',
                     'https://civil-citizen-ui-pr-{PR_NUMBER}.preview.platform.hmcts.net/'
-                  ], 
+                  ],
         description: 'The URL you want to run tests against'),
-      choice(name: 'EXUI_URL', 
+      choice(name: 'EXUI_URL',
         choices: [
-                    'https://manage-case.aat.platform.hmcts.net', 
-                    'https://manage-case.demo.platform.hmcts.net', 
+                    'https://manage-case.aat.platform.hmcts.net',
+                    'https://manage-case.demo.platform.hmcts.net',
                     'https://manage-case-int.demo.platform.hmcts.net',
-                    'https://manage-case-int1.demo.platform.hmcts.net', 
+                    'https://manage-case-int1.demo.platform.hmcts.net',
                     'https://manage-case-int2.demo.platform.hmcts.net',
                     'https://manage-case-wa-int.demo.platform.hmcts.net',
                     'https://manage-case-caa-assigned-case-view.demo.platform.hmcts.net',
                     'https://xui-civil-citizen-ui-pr-{PR_NUMBER}.preview.platform.hmcts.net',
                   ],
         description: 'The URL you want to run the full functional tests against'),
-      choice(name: 'IDAM_API_URL', choices: ['https://idam-api.aat.platform.hmcts.net', 'https://idam-api.demo.platform.hmcts.net'], 
+      choice(name: 'IDAM_API_URL', choices: ['https://idam-api.aat.platform.hmcts.net', 'https://idam-api.demo.platform.hmcts.net'],
         description: 'The URL of idam api'),
       choice(name: 'IDAM_WEB_URL', choices: ['https://idam-web-public.aat.platform.hmcts.net', 'https://idam-web-public.demo.platform.hmcts.net'],
         description: 'The URL of idam web'),
-      choice(name: 'DM_STORE_URL', choices: ['http://dm-store-aat.service.core-compute-aat.internal', 'http://dm-store-demo.service.core-compute-demo.internal'], 
+      choice(name: 'DM_STORE_URL', choices: ['http://dm-store-aat.service.core-compute-aat.internal', 'http://dm-store-demo.service.core-compute-demo.internal'],
         description: 'The URL of dm store'),
-      choice(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', choices: ['http://rpe-service-auth-provider-aat.service.core-compute-aat.internal', 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal'], 
+      choice(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', choices: ['http://rpe-service-auth-provider-aat.service.core-compute-aat.internal', 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal'],
         description: 'The URL of service auth provider'),
-      choice(name: 'CCD_DATA_STORE_URL', 
+      choice(name: 'CCD_DATA_STORE_URL',
         choices: [
-                    'http://ccd-data-store-api-aat.service.core-compute-aat.internal', 
+                    'http://ccd-data-store-api-aat.service.core-compute-aat.internal',
                     'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
                     'https://ccd-data-store-api-civil-citizen-ui-pr-{PR_NUMBER}.preview.platform.hmcts.net',
-                  ], 
+                  ],
         description: 'The URL of ccd data store'),
-      choice(name: 'CIVIL_SERVICE_URL', 
+      choice(name: 'CIVIL_SERVICE_URL',
         choices: [
-                    'http://civil-service-aat.service.core-compute-aat.internal', 
+                    'http://civil-service-aat.service.core-compute-aat.internal',
                     'http://civil-service-demo.service.core-compute-demo.internal',
                     'https://civil-citizen-ui-pr-{PR_NUMBER}-civil-service.preview.platform.hmcts.net',
                   ],
         description: 'The URL of civil service'),
-      choice(name: 'CIVIL_GENERAL_APPLICATIONS_URL', 
+      choice(name: 'CIVIL_GENERAL_APPLICATIONS_URL',
         choices: [
-                    'http://civil-general-applications-aat.service.core-compute-aat.internal', 
-                    'http://civil-general-applications-demo.service.core-compute-demo.internal',
-                    'https://civil-citizen-ui-pr-{PR_NUMBER}-general-applications.preview.platform.hmcts.net',
+                    'http://civil-service-aat.service.core-compute-aat.internal',
+                    'http://civil-service-demo.service.core-compute-demo.internal',
+                    'https://civil-citizen-ui-pr-{PR_NUMBER}-civil-service.preview.platform.hmcts.net',
                   ],
         description: 'The URL of GA service'),
-      choice(name: 'AAC_API_URL', 
+      choice(name: 'AAC_API_URL',
         choices: [
-                    'http://aac-manage-case-assignment-aat.service.core-compute-aat.internal', 
+                    'http://aac-manage-case-assignment-aat.service.core-compute-aat.internal',
                     'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal',
                     'https://manage-case-assignment-civil-citizen-ui-pr-{PR_NUMBER}.preview.platform.hmcts.net'
                   ],
@@ -185,6 +185,15 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
+      steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
+      publishHTML([
+        allowMissing: false,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
+        reportDir: 'test-results/functional/allure-report',
+        reportFiles: 'index.html',
+        reportName: 'Nightly E2E Allure Report'
+      ])
       archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
     }
   }
