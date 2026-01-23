@@ -652,4 +652,32 @@ describe('on POST', () => {
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
+
+  it('should remove document when removeButton action is triggered', async () => {
+    // Arrange
+    const formWithMultipleDocs = new UploadDocumentsUserForm();
+
+    formWithMultipleDocs.documentsForDisclosure = [
+      new TypeOfDocumentSection(),
+      new TypeOfDocumentSection(),
+    ];
+
+    // Make sure splice can happen
+    formWithMultipleDocs.documentsForDisclosure[0].typeOfDocument = 'Doc 1';
+    formWithMultipleDocs.documentsForDisclosure[1].typeOfDocument = 'Doc 2';
+
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithMultipleDocs);
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+
+    // Act
+    const response = await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send({
+        action: 'documentsForDisclosure[0][removeButton]',
+      });
+
+    // Assert
+    expect(response.status).toBe(200);
+  });
+
 });
