@@ -134,7 +134,13 @@ export const uploadAndValidateFile = async (
       try {
         if (categoryModel && categoryModel[+index]) {
           categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
-          logger.info(`[SAVE FILE] File upload response: ${JSON.stringify(categoryModel[+index].caseDocument)}`);
+          
+          if (!categoryModel[+index].caseDocument?.documentLink) {
+            logger.error(`[SAVE FILE] File upload response missing documentLink: ${JSON.stringify(categoryModel[+index].caseDocument)}`);
+            const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
+            form.errors.push(apiError);
+            categoryModel[+index].caseDocument = undefined;
+          }
         }
       } catch (uploadError) {
         logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
