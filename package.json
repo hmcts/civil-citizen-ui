@@ -25,6 +25,7 @@
     "test:local-tests": "MOCHAWESOME_REPORTFILENAME=cui codeceptjs run-workers --suites 1 --grep @local-testing --reporter mocha-multi --verbose",
     "test:ocmc": "MOCHAWESOME_REPORTFILENAME=ocmc codeceptjs run-workers --suites 9 --grep @ocmc --reporter mocha-multi --verbose",
     "test:cui-test1122": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 3 --grep @test1122 --reporter mocha-multi --verbose",
+    "test:cui-mediation": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 3 --grep @mediation --reporter mocha-multi --verbose",
     "test:ui-prod": "MOCHAWESOME_REPORTFILENAME=ui-prod FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep '@ui-prod' --reporter mocha-multi --verbose",
     "test:ui-nonprod": "MOCHAWESOME_REPORTFILENAME=ui-nonprod FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep '@ui-prod|@ui-nonprod' --reporter mocha-multi --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
