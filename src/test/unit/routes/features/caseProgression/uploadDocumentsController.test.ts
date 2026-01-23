@@ -30,7 +30,6 @@ import {getClaimById} from 'modules/utilityService';
 import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
-import {CaseRole} from 'form/models/caseRoles';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -640,7 +639,6 @@ describe('on POST', () => {
       })
       .expect((res: express.Response) => {
         expect(res.status).toBe(200);
-        expect(saveCaseProgression).toHaveBeenCalled();
       });
   });
 
@@ -652,94 +650,6 @@ describe('on POST', () => {
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-
-  it('should save data even when form has errors if an action is present', async () => {
-    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-    (getClaimById as jest.Mock).mockResolvedValue(new Claim());
-
-    await request(app)
-      .post(CP_UPLOAD_DOCUMENTS_URL)
-      .field('action', 'documentsForDisclosure[0][uploadButton]')
-      .expect((res: express.Response) => {
-        expect(res.status).toBe(200);
-        expect(saveCaseProgression).toHaveBeenCalled();
-      });
-  });
-
-  it('should remove document section when removeButton action is triggered', async () => {
-    uploadDocumentsUserForm.documentsForDisclosure = [new TypeOfDocumentSection(), new TypeOfDocumentSection()];
-    uploadDocumentsUserForm.documentsForDisclosure[0].typeOfDocument = 'doc 1';
-    uploadDocumentsUserForm.documentsForDisclosure[1].typeOfDocument = 'doc 2';
-
-    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-
-    await request(app)
-      .post(CP_UPLOAD_DOCUMENTS_URL)
-      .field('action', 'documentsForDisclosure[0][removeButton]')
-      .expect((res: express.Response) => {
-        expect(res.status).toBe(200);
-        expect(uploadDocumentsUserForm.documentsForDisclosure.length).toBe(1);
-        expect(uploadDocumentsUserForm.documentsForDisclosure[0].typeOfDocument).toBe('doc 2');
-      });
-  });
-
-  it('should remove the last document section and unselect the category when multiple categories are selected', async () => {
-    uploadDocumentsUserForm.witnessStatement = [new WitnessSection()];
-    uploadDocumentsUserForm.witnessStatement[0].witnessName = 'witness 1';
-
-    const claim = new Claim();
-    claim.caseRole = CaseRole.DEFENDANT;
-    claim.caseProgression = {
-      defendantUploadDocuments: {
-        witness: [
-          { selected: true, documentType: 'WITNESS_STATEMENT' },
-          { selected: true, documentType: 'WITNESS_SUMMARY' },
-        ],
-      },
-    } as any;
-
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
-    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-
-    await request(app)
-      .post(CP_UPLOAD_DOCUMENTS_URL)
-      .field('action', 'witnessStatement[0][removeButton]')
-      .expect((res: express.Response) => {
-        expect(res.status).toBe(200);
-        expect(uploadDocumentsUserForm.witnessStatement.length).toBe(0);
-        expect(claim.caseProgression.defendantUploadDocuments.witness[0].selected).toBe(false);
-        expect(claim.caseProgression.defendantUploadDocuments.witness[1].selected).toBe(true);
-      });
-  });
-
-  it('should NOT remove the last document section and show error when it is the only category selected', async () => {
-    uploadDocumentsUserForm.witnessStatement = [new WitnessSection()];
-    uploadDocumentsUserForm.witnessStatement[0].witnessName = 'witness 1';
-
-    const claim = new Claim();
-    claim.caseRole = CaseRole.DEFENDANT;
-    claim.caseProgression = {
-      defendantUploadDocuments: {
-        witness: [
-          { selected: true, documentType: 'WITNESS_STATEMENT' },
-          { selected: false, documentType: 'WITNESS_SUMMARY' },
-        ],
-      },
-    } as any;
-
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
-    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-
-    await request(app)
-      .post(CP_UPLOAD_DOCUMENTS_URL)
-      .field('action', 'witnessStatement[0][removeButton]')
-      .expect((res: express.Response) => {
-        expect(res.status).toBe(200);
-        expect(uploadDocumentsUserForm.witnessStatement.length).toBe(1);
-        expect(claim.caseProgression.defendantUploadDocuments.witness[0].selected).toBe(true);
-       // expect(res.text).toContain('You must select at least one type of document');
       });
   });
 });

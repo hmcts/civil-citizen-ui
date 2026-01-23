@@ -22,7 +22,7 @@ import {getClaimById} from 'modules/utilityService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+//import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -143,39 +143,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
       await uploadSingleFile(req, action, form);
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
-      const uploadDocuments = claim.isClaimant() ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
-
-      const typeMap: any = {
-        documentsForDisclosure: 'DOCUMENTS_FOR_DISCLOSURE', disclosureList: 'DISCLOSURE_LIST',
-        witnessStatement: 'WITNESS_STATEMENT', witnessSummary: 'WITNESS_SUMMARY', noticeOfIntention: 'NOTICE_OF_INTENTION', documentsReferred: 'DOCUMENTS_REFERRED',
-        expertReport: 'EXPERT_REPORT', expertStatement: 'STATEMENT', questionsForExperts: 'QUESTIONS_FOR_EXPERTS', answersForExperts: 'ANSWERS_FOR_EXPERTS',
-        trialCaseSummary: 'CASE_SUMMARY', trialSkeletonArgument: 'SKELETON_ARGUMENT', trialAuthorities: 'AUTHORITIES', trialCosts: 'COSTS', trialDocumentary: 'DOCUMENTARY',
-      };
-
-      if ((form.model as any)[category].length > 1) {
-        (form.model as any)[category].splice(Number(index), 1);
-      } else {
-        const selectedCount = (uploadDocuments.disclosure?.filter((i: any) => i.selected).length || 0) +
-          (uploadDocuments.witness?.filter((i: any) => i.selected).length || 0) +
-          (uploadDocuments.expert?.filter((i: any) => i.selected).length || 0) +
-          (uploadDocuments.trial?.filter((i: any) => i.selected).length || 0);
-
-        if (selectedCount > 1) {
-          (form.model as any)[category].splice(Number(index), 1);
-          const item = [...(uploadDocuments.disclosure || []), ...(uploadDocuments.witness || []), ...(uploadDocuments.expert || []), ...(uploadDocuments.trial || [])]
-            .find((i: any) => i.documentType === typeMap[category]);
-          if (item) {
-            item.selected = false;
-            logger.info(`Unselected category ${category} for claimId: ${claimId} as all documents were removed`);
-          }
-        } else {
-          form.errors = [{
-            target: form.model,
-            property: 'checkboxGrp',
-            constraints: { atLeastOneCheckboxSelectedValidator: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_UPLOAD' },
-          } as any];
-        }
-      }
+      (form.model as any)[category].splice(Number(index), 1);
     }
 
     if (action) {
@@ -186,16 +154,6 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
         timestamp: new Date().toISOString(),
       });
       await saveCaseProgression(req, form.model, isClaimant);
-
-      const claimToSave: Claim = await getClaimById(claimId, req, true);
-      if (claimToSave.isClaimant()) {
-        claimToSave.caseProgression.claimantUploadDocuments = claim.caseProgression.claimantUploadDocuments;
-      } else {
-        claimToSave.caseProgression.defendantUploadDocuments = claim.caseProgression.defendantUploadDocuments;
-      }
-      const redisKey = generateRedisKey(<AppRequest>req);
-      await saveDraftClaim(redisKey, claimToSave);
-
       return await renderView(res, claim, claimId, form);
     }
 
