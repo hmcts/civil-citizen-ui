@@ -134,6 +134,7 @@ export const uploadAndValidateFile = async (
       try {
         if (categoryModel && categoryModel[+index]) {
           categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
+          logger.info(`[SAVE FILE] File upload response: ${JSON.stringify(categoryModel[+index].caseDocument)}`);
         }
       } catch (uploadError) {
         logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
