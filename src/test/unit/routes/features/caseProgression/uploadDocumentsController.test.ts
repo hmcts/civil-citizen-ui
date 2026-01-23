@@ -49,10 +49,6 @@ jest.mock('services/features/caseProgression/caseProgressionService', () => ({
   getUploadDocumentsForm: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreService', () => ({
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
-}));
 
 const caseDoc:CaseDocument = {documentLink:{document_url:'http://test',document_binary_url:'http://test/binary',document_filename:'test.png'},documentName:'test.png',documentType:EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE,documentSize:86349,createdDatetime:new Date(2023, 11, 11),createdBy:'test'};
 const disclosureUpload = {documentsForDisclosure:
@@ -216,8 +212,8 @@ describe('on POST', () => {
 
   beforeEach(() => {
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
-    const claim: Claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
   });
   it('should display documentForDisclosure validation error when invalid', async () => {
 
