@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
 {% from "../dashboard/item-content.njk" import itemContent %}
@@ -21,6 +22,7 @@
     {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
     {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
+    <div class="caseProgression">
       <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
@@ -38,21 +40,31 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in disclosureSections %}
-                <div class="moj-add-another__item moj-add-another__title">
+                {% call govukFieldset({
+                classes: 'moj-add-another__item',
+                legend: {
+                classes: 'moj-add-another__title',
+                isPageHeading: false,
+                text: section.heading or ''
+                }
+                }) %}
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                </div>
+                {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
+                    {% if disclosureSections[0].contentSections[0].data.category == 'documentsForDisclosure' %}
+                      {% set actionValue = 'add_another-disclosure' %}
+                    {% else %}
+                      {% set actionValue = 'add_another-disclosureList' %}
+                    {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                         name: 'action',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-disclosure-list'
-                        }
+                        value: actionValue,
+                        type: 'submit'
                       }) }}
                 </div>
                 <hr class="govuk-section-break--s govuk-section-break--visible">
@@ -67,20 +79,35 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in witnessSections %}
-                <div class="moj-add-another__item moj-add-another__title">
+                {% call govukFieldset({
+                classes: 'moj-add-another__item',
+                legend: {
+                classes: 'moj-add-another__title',
+                isPageHeading: false,
+                text: section.heading or ''
+                }
+                }) %}
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                </div>
+                {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
+                    {% if witnessSections[0].contentSections[0].data.category == 'witnessStatement' %}
+                      {% set actionValue = 'add_another-witness' %}
+                    {% elif witnessSections[0].contentSections[0].data.category == 'witnessSummary' %}
+                      {% set actionValue = 'add_another-witnessSummary' %}
+                    {% elif witnessSections[0].contentSections[0].data.category == 'noticeOfIntention' %}
+                      {% set actionValue = 'add_another-noticeOfIntention' %}
+                    {% else %}
+                      {% set actionValue = 'add_another-documentsReferred' %}
+                    {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-witness-list'
-                        }
+                        name: 'action',
+                        value: actionValue,
+                        type: 'submit'
                       }) }}
                 </div>
                 <hr class="govuk-section-break--s govuk-section-break--visible">
@@ -95,20 +122,35 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in expertSections %}
-                <div class="moj-add-another__item moj-add-another__title">
+                {% call govukFieldset({
+                classes: 'moj-add-another__item',
+                legend: {
+                classes: 'moj-add-another__title',
+                isPageHeading: false,
+                text: section.heading or ''
+                }
+                }) %}
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                </div>
+                {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
+                    {% if expertSections[0].contentSections[0].data.category == 'expertReport' %}
+                      {% set actionValue = 'add_another-expertReport' %}
+                    {% elif expertSections[0].contentSections[0].data.category == 'expertStatement' %}
+                      {% set actionValue = 'add_another-expertStatement' %}
+                    {% elif expertSections[0].contentSections[0].data.category == 'questionsForExperts' %}
+                      {% set actionValue = 'add_another-questionsForExperts' %}
+                    {% else %}
+                      {% set actionValue = 'add_another-answersForExperts' %}
+                    {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-expert-list'
-                        }
+                        name: 'action',
+                        value: actionValue,
+                        type: 'submit'
                       }) }}
                 </div>
                 <hr class="govuk-section-break--s govuk-section-break--visible">
@@ -127,20 +169,37 @@
             <div class="row-container">
               <div data-module="moj-add-another">
                 {% for section in trialSections %}
-                <div class="moj-add-another__item moj-add-another__title">
+                {% call govukFieldset({
+                classes: 'moj-add-another__item',
+                legend: {
+                classes: 'moj-add-another__title',
+                isPageHeading: false,
+                text: section.heading or ''
+                }
+                }) %}
                   {{ claimSummaryContent({
                   contentSections: section.contentSections
                   }, t) }}
-                </div>
+                {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
+                    {% if trialSections[0].contentSections[0].data.category == 'trialCaseSummary' %}
+                      {% set actionValue = 'add_another-trialCaseSummary' %}
+                    {% elif trialSections[0].contentSections[0].data.category == 'trialSkeletonArgument' %}
+                      {% set actionValue = 'add_another-trialSkeletonArgument' %}
+                    {% elif trialSections[0].contentSections[0].data.category == 'trialAuthorities' %}
+                      {% set actionValue = 'add_another-trialAuthorities' %}
+                    {% elif trialSections[0].contentSections[0].data.category == 'trialCosts' %}
+                      {% set actionValue = 'add_another-trialCosts' %}
+                    {% else %}
+                      {% set actionValue = 'add_another-trialDocumentary' %}
+                    {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
                         classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                        type: 'button',
-                        attributes: {
-                          'id': 'add-another-trial-list'
-                        }
+                        name: 'action',
+                        value: actionValue,
+                        type: 'submit'
                       }) }}
                 </div>
                 <hr class="govuk-section-break--s govuk-section-break--visible">
@@ -153,4 +212,5 @@
         {{ addButton(t, 'CONTINUE',cancelUrl) }}
 
       </form>
+    </div>
 {% endblock %}

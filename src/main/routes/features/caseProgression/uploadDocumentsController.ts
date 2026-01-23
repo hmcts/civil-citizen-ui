@@ -12,7 +12,11 @@ import {
 } from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {
+  getUploadDocumentsForm,
+  saveCaseProgression,
+  addAnother,
+} from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
@@ -139,7 +143,10 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
-    if (action?.includes('[uploadButton]')) {
+    if (action?.includes('add_another-')) {
+      addAnother(uploadDocumentsForm, action);
+      return renderView(res, claim, claimId, form);
+    } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
