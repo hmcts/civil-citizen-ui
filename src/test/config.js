@@ -30,7 +30,6 @@ module.exports = {
     idamApi:  'https://idam-api.aat.platform.hmcts.net',
     idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-3591-civil-service.preview.platform.hmcts.net',*/
-<<<<<<< HEAD
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
     // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
@@ -50,20 +49,6 @@ module.exports = {
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
     civilService: 'https://civil-citizen-ui-pr-7171-civil-service.preview.platform.hmcts.net',
     caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-7171.preview.platform.hmcts.net',
-
-=======
-    manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
-    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
-    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
-    dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
-    idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
-    idamWeb: process.env.IDAM_WEB_URL || 'https://idam-web-public.demo.platform.hmcts.net',
-    civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
-    generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-    caseAssignmentService: process.env.AAC_API_URL || 'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal',
-    wiremockServiceE2e: 'http://localhost:1111',
->>>>>>> c2ee8d01f659b552c3f89b4ca0405f0e18bc252c
   },
   getDomain: (url) => new URL(url).host,
   s2s: {
