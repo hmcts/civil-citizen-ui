@@ -1939,12 +1939,13 @@ __metadata:
   linkType: hard
 
 "@hmcts/info-provider@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "@hmcts/info-provider@npm:1.2.3"
+  version: 1.4.0
+  resolution: "@hmcts/info-provider@npm:1.4.0"
   dependencies:
-    express: "npm:^4.21.2"
-    js-yaml: "npm:^4.1.0"
-  checksum: 10/cc712b89bb7021e2d30e885dd303609b74bcf5f98463651b9078d634e3ca5a0bf94fbf913eab7f9a8002b919e22a989c80dbd542a3d4578d3b154b4b2fc0ba07
+    js-yaml: "npm:^4.1.1"
+  peerDependencies:
+    express: ">=4"
+  checksum: 10/c73658a9b384488a3495d33b504ee90fd12206e39d60b11d66c1b0fc5ac5a70b49a1272709799cb3b3afcaebf41306461a0c032c90141bca4c354a288112af9e
   languageName: node
   linkType: hard
 
