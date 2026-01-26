@@ -43,9 +43,9 @@
                 {% call govukFieldset({
                 classes: 'moj-add-another__item',
                 legend: {
-                classes: 'moj-add-another__title',
+                classes: 'moj-add-another__title govuk-visually-hidden',
                 isPageHeading: false,
-                text: section.heading or ''
+                text: disclosure
                 }
                 }) %}
                   {{ claimSummaryContent({
@@ -82,9 +82,9 @@
                 {% call govukFieldset({
                 classes: 'moj-add-another__item',
                 legend: {
-                classes: 'moj-add-another__title',
+                classes: 'moj-add-another__title govuk-visually-hidden',
                 isPageHeading: false,
-                text: section.heading or ''
+                text: witness
                 }
                 }) %}
                   {{ claimSummaryContent({
@@ -125,9 +125,9 @@
                 {% call govukFieldset({
                 classes: 'moj-add-another__item',
                 legend: {
-                classes: 'moj-add-another__title',
+                classes: 'moj-add-another__title govuk-visually-hidden',
                 isPageHeading: false,
-                text: section.heading or ''
+                text: expert
                 }
                 }) %}
                   {{ claimSummaryContent({
@@ -172,9 +172,9 @@
                 {% call govukFieldset({
                 classes: 'moj-add-another__item',
                 legend: {
-                classes: 'moj-add-another__title',
+                classes: 'moj-add-another__title govuk-visually-hidden',
                 isPageHeading: false,
-                text: section.heading or ''
+                text: hearing if isSmallClaims else trial
                 }
                 }) %}
                   {{ claimSummaryContent({
