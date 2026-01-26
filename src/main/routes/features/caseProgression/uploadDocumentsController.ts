@@ -26,7 +26,6 @@ import {getClaimById} from 'modules/utilityService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-//import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
