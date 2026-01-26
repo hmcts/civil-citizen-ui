@@ -16,6 +16,8 @@ import {
 } from 'common/utils/fileUploadUtils';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {t} from 'i18next';
+import {ValidationError} from 'class-validator';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -93,17 +95,13 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, multerMiddleware, (async 
     if ((req as any).multerError && action === 'uploadButton') {
       const multerError = (req as any).multerError;
       const errorConstraint = getMulterErrorConstraint(multerError);
-      const errorStructure = [{
-        target: {
-          fileUpload: '',
-        },
-        property: 'fileUpload',
-        constraints: {
-          multerError: errorConstraint,
-        },
-        text: errorConstraint,
-      }];
-      const translatedErrors = translateErrors(errorStructure, t);
+      const validationError = new ValidationError();
+      validationError.property = 'fileUpload';
+      validationError.constraints = {
+        multerError: errorConstraint,
+      };
+      const formValidationError = new FormValidationError(validationError);
+      const translatedErrors = translateErrors([formValidationError], t);
       req.session.fileUpload = JSON.stringify(translatedErrors);
       return res.redirect(`${currentUrl}`);
     }
