@@ -120,5 +120,47 @@ describe('Send follow query controller', () => {
           expect(spyRemoveSelectedDocument).toHaveBeenCalled();
         });
     });
+
+    it('should handle multer error when action is uploadButton and file size exceeds limit', async () => {
+      const queryManagement = new QueryManagement();
+      queryManagementMock.mockResolvedValue(queryManagement);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(QM_FOLLOW_UP_MESSAGE)
+        .field('action', 'uploadButton')
+        .field('messageDetails', 'test body')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
+    it('should handle multer error with LIMIT_FILE_SIZE code', async () => {
+      const queryManagement = new QueryManagement();
+      queryManagementMock.mockResolvedValue(queryManagement);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(QM_FOLLOW_UP_MESSAGE)
+        .field('action', 'uploadButton')
+        .field('messageDetails', 'test body')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
   });
 });

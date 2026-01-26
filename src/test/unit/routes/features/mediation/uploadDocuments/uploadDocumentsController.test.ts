@@ -337,5 +337,51 @@ describe('Mediation upload your documents Controller', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+
+    it('should handle multer error when action includes uploadButton and file size exceeds limit', async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
+      claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+      mockGetCaseData.mockImplementation(async () => claim);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .field('action', 'documentsForYourStatement[0][uploadButton]')
+        .attach('documentsForYourStatement[0][fileUpload]', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    it('should handle multer error for documentsReferred when file size exceeds limit', async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
+      claim.mediationUploadDocuments = new UploadDocuments(TYPE_OF_DOCUMENTS);
+      mockGetCaseData.mockImplementation(async () => claim);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .field('action', 'documentsForDocumentsReferred[0][uploadButton]')
+        .attach('documentsForDocumentsReferred[0][fileUpload]', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
   });
 });
