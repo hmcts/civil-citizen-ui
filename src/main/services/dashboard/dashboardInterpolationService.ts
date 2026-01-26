@@ -103,7 +103,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   );
   const systemGeneratedDocOrAwaitingTranslation = (type: DocumentType): string => {
     const docId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, type);
-    return docId ? caseDocViewUrl(docId) : dashboardHomeWithTranslationError(claim, claimId);
+    return docId ? caseDocViewUrl(claimId, docId) : dashboardHomeWithTranslationError(claim, claimId);
   };
 
   valuesMap.set('{VIEW_CLAIM_URL}', replaceId(CLAIM_DETAILS_URL, claimId));
