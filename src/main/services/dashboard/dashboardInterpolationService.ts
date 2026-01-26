@@ -96,12 +96,22 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
   const welshGaEnabled = await isGaForWelshEnabled();
+  const viewHearingUrl = getRedirectUrlForViewHearing(claim, claimId);
+  const viewHearingFormDocumentId = getHearingDocumentsCaseDocumentIdByType(
+    claim?.caseProgressionHearing?.hearingDocuments,
+    DocumentType.HEARING_FORM,
+  );
+  const systemGeneratedDocOrAwaitingTranslation = (type: DocumentType): string => {
+    const docId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, type);
+    return docId ? caseDocViewUrl(docId) : dashboardHomeWithTranslationError(claim, claimId);
+  };
+
   valuesMap.set('{VIEW_CLAIM_URL}', replaceId(CLAIM_DETAILS_URL, claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', replaceId(VIEW_CLAIMANT_INFO, claimId));
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', replaceId(VIEW_RESPONSE_TO_CLAIM, claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', replaceId(VIEW_DEFENDANT_INFO, claimId));
-  valuesMap.set('{VIEW_HEARINGS}', replaceId(getRedirectUrlForViewHearing(claim,claimId), claimId));
-  valuesMap.set('{VIEW_THE_HEARING_URL}', replaceId( getRedirectUrlForViewHearing(claim, claimId), claimId));
+  valuesMap.set('{VIEW_HEARINGS}', viewHearingUrl);
+  valuesMap.set('{VIEW_THE_HEARING_URL}', viewHearingUrl);
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', replaceId(UPLOAD_YOUR_DOCUMENTS_URL, claimId));
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', replaceId(CP_FINALISE_TRIAL_ARRANGEMENTS_URL, claimId));
   valuesMap.set('{PAY_HEARING_FEE}', replaceId(PAY_HEARING_FEE_URL, claimId));
@@ -109,9 +119,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', replaceId(VIEW_ORDERS_AND_NOTICES_URL, claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', replaceId(VIEW_THE_JUDGMENT_URL, claimId));
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_HEARING_NOTICE}', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)
-    ? caseDocViewUrl(claimId, getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM))
-    : dashboardHomeWithTranslationError(claim, claimId));
+  valuesMap.set('{VIEW_HEARING_NOTICE}', viewHearingFormDocumentId ? caseDocViewUrl(claimId, viewHearingFormDocumentId) : dashboardHomeWithTranslationError(claim, claimId));
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', caseDocViewUrl(claimId, getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', caseDocViewUrl(claimId, getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', caseDocViewUrl(claimId, getSettlementAgreementDocumentId(claim)));
@@ -145,9 +153,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}', replaceId(EVIDENCE_UPLOAD_DOCUMENTS_URL,claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', replaceId(REQUEST_FOR_RECONSIDERATION_URL,claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', replaceId(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,claimId));
-  valuesMap.set('{VIEW_SDO_DOCUMENT}', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)
-    ? caseDocViewUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER))
-    : dashboardHomeWithTranslationError(claim, claimId));
+  valuesMap.set('{VIEW_SDO_DOCUMENT}', systemGeneratedDocOrAwaitingTranslation(DocumentType.SDO_ORDER));
   valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', (claim.isAnyPartyBilingual() && !welshGaEnabled) ? replaceId(GA_SUBMIT_OFFLINE, claimId) : replaceId(APPLICATION_TYPE_URL, claimId) + `?linkFrom=${LinKFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', replaceId(VIEW_MEDIATION_DOCUMENTS,claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', replaceId(CONFIRM_YOU_HAVE_BEEN_PAID_URL,claimId));
