@@ -16,11 +16,16 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {createMulterUpload} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  getMulterErrorConstraint,
+} from 'common/utils/fileUploadUtils';
+import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {t} from 'i18next';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('createQueryController');
 
 async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
@@ -63,60 +68,82 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
   await renderView(form, claim, claimId, res, formattedSummary, req);
 }));
 
-createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], upload.single('selectedFile'),(async (req:AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
-  const action = req.body.action;
-  const claim = await getClaimById(claimId, req, true);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
-  const existingQuery = claim.queryManagement?.createQuery;
-  let year;
-  let month;
-  let day;
-  if(req.body['isHearingRelated'] === 'yes'){
-    year = req.body['year'] ;
-    month = req.body['month'];
-    day = req.body['day'];
-  }
-  const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated'], year, month, day);
-  if (existingQuery) {
-    createQuery.uploadedFiles = existingQuery.uploadedFiles;
-  }
-  const form = new GenericForm(createQuery);
-
-  const formattedSummary = summarySection(
-    {
-      title: '',
-      summaryRows: [],
-    });
-
-  if (action === 'uploadButton') {
-    await uploadSelectedFile(req, createQuery);
-    
-    if (req.session?.fileUpload) {
-      const parsedData = JSON.parse(req.session.fileUpload);
-      const formWithErrors = new GenericForm(createQuery, parsedData);
-      await getSummaryList(formattedSummary, req);
-      return await renderView(formWithErrors, claim, claimId, res, formattedSummary, req);
+createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (async (req:AppRequest, res: Response, next: NextFunction) => {
+  try {
+    const claimId = req.params.id;
+    const action = req.body.action;
+    const claim = await getClaimById(claimId, req, true);
+    const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
+    const existingQuery = claim.queryManagement?.createQuery;
+    let year;
+    let month;
+    let day;
+    if(req.body['isHearingRelated'] === 'yes'){
+      year = req.body['year'] ;
+      month = req.body['month'];
+      day = req.body['day'];
     }
+    const createQuery = new CreateQuery(req.body['messageSubject'], req.body['messageDetails'], req.body['isHearingRelated'], year, month, day);
+    if (existingQuery) {
+      createQuery.uploadedFiles = existingQuery.uploadedFiles;
+    }
+    const form = new GenericForm(createQuery);
+
+    const formattedSummary = summarySection(
+      {
+        title: '',
+        summaryRows: [],
+      });
+
+    if ((req as any).multerError && action === 'uploadButton') {
+      const multerError = (req as any).multerError;
+      const errorConstraint = getMulterErrorConstraint(multerError);
+      const errorStructure = [{
+        target: {
+          fileUpload: '',
+        },
+        property: 'fileUpload',
+        constraints: {
+          multerError: errorConstraint,
+        },
+        text: errorConstraint,
+      }];
+      const translatedErrors = translateErrors(errorStructure, t);
+      req.session.fileUpload = JSON.stringify(translatedErrors);
+      return res.redirect(`${currentUrl}`);
+    }
+
+    if (action === 'uploadButton') {
+      await uploadSelectedFile(req, createQuery);
     
-    return res.redirect(`${currentUrl}`);
+      if (req.session?.fileUpload) {
+        const parsedData = JSON.parse(req.session.fileUpload);
+        const formWithErrors = new GenericForm(createQuery, parsedData);
+        await getSummaryList(formattedSummary, req);
+        return await renderView(formWithErrors, claim, claimId, res, formattedSummary, req);
+      }
+    
+      return res.redirect(`${currentUrl}`);
+    }
+
+    if (action?.includes('[deleteFile]')) {
+      const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
+      await removeSelectedDocument(req,  Number(index) - 1, createQuery );
+      return res.redirect(`${currentUrl}`);
+    }
+
+    form.validateSync();
+
+    if (form.hasErrors()) {
+      await getSummaryList(formattedSummary, req);
+      return await renderView(form, claim, claimId, res, formattedSummary, req);
+    }
+
+    await saveQueryManagement(claimId, createQuery, 'createQuery', req);
+    res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
+  } catch (error) {
+    next(error);
   }
-
-  if (action?.includes('[deleteFile]')) {
-    const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
-    await removeSelectedDocument(req,  Number(index) - 1, createQuery );
-    return res.redirect(`${currentUrl}`);
-  }
-
-  form.validateSync();
-
-  if (form.hasErrors()) {
-    await getSummaryList(formattedSummary, req);
-    return await renderView(form, claim, claimId, res, formattedSummary, req);
-  }
-
-  await saveQueryManagement(claimId, createQuery, 'createQuery', req);
-  res.redirect(constructResponseUrlWithIdParams(claimId, QM_CYA));
 }));
 
 export default createQueryController;

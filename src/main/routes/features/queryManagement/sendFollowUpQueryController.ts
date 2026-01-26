@@ -10,11 +10,16 @@ import {
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {createMulterUpload} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  getMulterErrorConstraint,
+} from 'common/utils/fileUploadUtils';
+import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {t} from 'i18next';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('sendFollowUpQueryController');
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
@@ -65,7 +70,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   }
 }));
 
-sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const queryId = req.params.queryId;
@@ -84,6 +89,24 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('selectedFi
         title: '',
         summaryRows: [],
       });
+
+    if ((req as any).multerError && action === 'uploadButton') {
+      const multerError = (req as any).multerError;
+      const errorConstraint = getMulterErrorConstraint(multerError);
+      const errorStructure = [{
+        target: {
+          fileUpload: '',
+        },
+        property: 'fileUpload',
+        constraints: {
+          multerError: errorConstraint,
+        },
+        text: errorConstraint,
+      }];
+      const translatedErrors = translateErrors(errorStructure, t);
+      req.session.fileUpload = JSON.stringify(translatedErrors);
+      return res.redirect(`${currentUrl}`);
+    }
 
     if (action === 'uploadButton') {
       await uploadSelectedFile(req, sendFollowUpQuery, true);

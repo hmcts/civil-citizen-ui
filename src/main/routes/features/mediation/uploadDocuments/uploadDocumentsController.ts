@@ -31,13 +31,17 @@ import {
   getDocumentsForDocumentsReferred,
 } from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {createMulterUpload, uploadAndValidateFile} from 'common/utils/fileUploadUtils';
+import {
+  uploadAndValidateFile,
+  createMulterErrorMiddleware,
+  createFileUploadError,
+  getMulterErrorConstraint,
+  extractCategoryAndIndex,
+} from 'common/utils/fileUploadUtils';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
 const TYPE_OF_DOCUMENTS_PROPERTY_NAME = 'typeOfDocuments';
-
-const upload = createMulterUpload();
 
 const partyInformation = (claim: Claim) =>  {
   return {
@@ -48,6 +52,8 @@ const partyInformation = (claim: Claim) =>  {
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+
+const multerMiddleware = createMulterErrorMiddleware('mediationUploadDocumentsController');
 
 async function uploadSingleFile(req: Request, res: Response, claimId: string, submitAction: string, form: GenericForm<UploadDocumentsForm>) {
   await uploadAndValidateFile(req, submitAction, form, civilServiceClientForDocRetrieve, 'mediationUploadDocumentsController');
@@ -93,7 +99,7 @@ mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: 
   }
 }) as RequestHandler);
 
-mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(), (async (req, res, next) => {// nosonar
+mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddleware, (async (req, res, next) => {// nosonar
   try {
     const claimId = req.params.id;
     const action = req.body.action;
@@ -102,6 +108,24 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS,upload.any(),
     const uploadDocuments = getUploadDocuments(claim);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
+
+    if ((req as any).multerError) {
+      const multerError = (req as any).multerError;
+      
+      if (action?.includes('[uploadButton]')) {
+        const [category, index] = extractCategoryAndIndex(action);
+        
+        if (!form.errors) {
+          form.errors = [];
+        }
+        
+        const errorConstraint = getMulterErrorConstraint(multerError);
+        const multerErrorStructure = createFileUploadError(category, index, 'multerError', errorConstraint);
+        form.errors.push(multerErrorStructure as any);
+        
+        return renderView(form, uploadDocuments, res, claimId, claim);
+      }
+    }
 
     if (action === 'add_another-yourStatement') {
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT);
