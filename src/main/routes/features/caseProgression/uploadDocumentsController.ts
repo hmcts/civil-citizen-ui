@@ -95,7 +95,7 @@ const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController'
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
   const claimId = req.params.id;
   const action = req.body.action;
-  const userId = (req as AppRequest)?.session?.user?.id;
+  const userid = (req as AppRequest)?.session?.user?.id;
   try {
     if ((req as any).multerError) {
       const multerError = (req as any).multerError;
@@ -114,11 +114,28 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
         const multerErrorStructure = createFileUploadError(category, index, 'multerError', errorConstraint);
         form.errors.push(multerErrorStructure as any);
         
+        logger.warn('Multer error detected in uploadDocumentsController', {
+          claimId,
+          userid,
+          action,
+          errorCode: multerError?.code,
+          errorField: multerError?.field,
+          timestamp: new Date().toISOString(),
+        });
+        
         return await renderView(res, claim, claimId, form);
       }
     }
     
     const claim: Claim = await getClaimById(claimId, req, true);
+
+    logger.info('Upload documents request received from civil-citizen-ui', {
+      claimId,
+      userid,
+      action,
+      timestamp: new Date().toISOString(),
+    });
+
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
@@ -129,14 +146,23 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
     }
 
     form.validateSync();
+
     if (form.hasErrors()) {
+      logger.warn('Upload documents form validation failed', {
+        claimId,
+        userid,
+        action,
+        timestamp: new Date().toISOString(),
+        errors: form.getErrors?.() ?? 'validation errors present',
+      });
       await renderView(res, claim, claimId, form);
     } else {
+      logger.info(`Form valid for user: ${userid}, saving case progression and redirecting for claimId: ${claimId}`);
       await saveCaseProgression(req, form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
-    logger.error(`[POST HANDLER] Unexpected error (claimId=${claimId}, userId=${userId}): ${error?.message || error}`, error);
+    logger.error(`[POST HANDLER] Unexpected error (claimId=${claimId}, userId=${userid}): ${error?.message || error}`, error);
     next(error);
   }
 }) as RequestHandler);
