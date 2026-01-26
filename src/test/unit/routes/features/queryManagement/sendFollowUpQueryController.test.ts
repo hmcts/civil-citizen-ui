@@ -129,17 +129,17 @@ describe('Send follow query controller', () => {
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
       largeBuffer.fill('x');
 
-      await request(app)
+      const response = await request(app)
         .post(QM_FOLLOW_UP_MESSAGE)
         .field('action', 'uploadButton')
         .field('messageDetails', 'test body')
         .attach('selectedFile', largeBuffer, {
           filename: 'large-file.pdf',
           contentType: 'application/pdf',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
         });
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBeDefined();
     });
 
     it('should handle multer error with LIMIT_FILE_SIZE code', async () => {
@@ -150,17 +150,17 @@ describe('Send follow query controller', () => {
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
       largeBuffer.fill('x');
 
-      await request(app)
+      const response = await request(app)
         .post(QM_FOLLOW_UP_MESSAGE)
         .field('action', 'uploadButton')
         .field('messageDetails', 'test body')
         .attach('selectedFile', largeBuffer, {
           filename: 'large-file.pdf',
           contentType: 'application/pdf',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
         });
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBeDefined();
     });
   });
 });

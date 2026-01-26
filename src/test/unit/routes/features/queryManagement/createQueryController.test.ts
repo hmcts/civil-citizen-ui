@@ -155,7 +155,7 @@ describe('create query conroller', () => {
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
       largeBuffer.fill('x');
 
-      await request(app)
+      const response = await request(app)
         .post(QUERY_MANAGEMENT_CREATE_QUERY)
         .field('action', 'uploadButton')
         .field('messageSubject', 'test sub')
@@ -164,10 +164,10 @@ describe('create query conroller', () => {
         .attach('selectedFile', largeBuffer, {
           filename: 'large-file.pdf',
           contentType: 'application/pdf',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
         });
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBeDefined();
     });
 
     it('should handle multer error with LIMIT_FILE_SIZE code', async () => {
@@ -179,7 +179,7 @@ describe('create query conroller', () => {
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
       largeBuffer.fill('x');
 
-      await request(app)
+      const response = await request(app)
         .post(QUERY_MANAGEMENT_CREATE_QUERY)
         .field('action', 'uploadButton')
         .field('messageSubject', 'test sub')
@@ -188,10 +188,10 @@ describe('create query conroller', () => {
         .attach('selectedFile', largeBuffer, {
           filename: 'large-file.pdf',
           contentType: 'application/pdf',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
         });
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBeDefined();
     });
   });
 });
