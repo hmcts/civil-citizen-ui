@@ -25,11 +25,15 @@ import {
   removeSelectedDocument,
   uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
-import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  handleMulterError,
+  createUploadOneFileError,
+} from 'common/utils/fileUploadUtils';
 
 const uploadDocumentsDirectionsOrderController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsDirectionsOrderController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, req: AppRequest, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -72,11 +76,18 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
   }
 }) as RequestHandler);
 
-uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id:claimId } = req.params;
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+
+    if (req.body.action === 'uploadButton') {
+      const multerErrors = handleMulterError(req);
+      if (multerErrors) {
+        return res.redirect(`${currentUrl}`);
+      }
+    }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req);

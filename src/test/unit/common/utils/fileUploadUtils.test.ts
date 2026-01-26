@@ -6,6 +6,8 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   createUploadOneFileError,
+  handleMulterError,
+  handleMulterErrorForForm,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
@@ -16,6 +18,18 @@ jest.mock('multer', () => {
   mockMulter.memoryStorage = jest.fn(() => ({}));
   return mockMulter;
 });
+
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+  use: jest.fn(),
+}));
+
+jest.mock('services/features/generalApplication/uploadEvidenceDocumentService', () => ({
+  translateErrors: (errors: any[]) => errors.map((error) => ({
+    ...error,
+    text: error.text || error.constraints?.[Object.keys(error.constraints || {})[0]] || 'Translated error',
+  })),
+}));
 
 describe('fileUploadUtils', () => {
   describe('createMulterUpload', () => {
@@ -245,6 +259,146 @@ describe('fileUploadUtils', () => {
           isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
         },
       }]);
+    });
+  });
+
+  describe('handleMulterError', () => {
+    let mockReq: Partial<Request>;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockReq = {
+        session: {},
+      };
+    });
+
+    it('should return null when no multer error exists', () => {
+      const result = handleMulterError(mockReq as Request);
+      expect(result).toBeNull();
+      expect(mockReq.session?.fileUpload).toBeUndefined();
+    });
+
+    it('should handle multer error and store in session', () => {
+      const multerError = {
+        code: 'LIMIT_FILE_SIZE',
+        message: 'File too large',
+      };
+      (mockReq as any).multerError = multerError;
+
+      const result = handleMulterError(mockReq as Request);
+
+      expect(result).not.toBeNull();
+      expect(Array.isArray(result)).toBe(true);
+      expect(mockReq.session?.fileUpload).toBeDefined();
+      const sessionData = JSON.parse(mockReq.session?.fileUpload as string);
+      expect(sessionData).toBeInstanceOf(Array);
+      expect(sessionData.length).toBeGreaterThan(0);
+      expect(sessionData[0]).toHaveProperty('property', 'fileUpload');
+    });
+
+    it('should handle multer error with LIMIT_UNEXPECTED_FILE code', () => {
+      const multerError = {
+        code: 'LIMIT_UNEXPECTED_FILE',
+        message: 'Unexpected file',
+      };
+      (mockReq as any).multerError = multerError;
+
+      const result = handleMulterError(mockReq as Request);
+
+      expect(result).not.toBeNull();
+      expect(mockReq.session?.fileUpload).toBeDefined();
+    });
+
+    it('should handle multer error with unknown code', () => {
+      const multerError = {
+        code: 'UNKNOWN_ERROR',
+        message: 'Unknown error',
+      };
+      (mockReq as any).multerError = multerError;
+
+      const result = handleMulterError(mockReq as Request);
+
+      expect(result).not.toBeNull();
+      expect(mockReq.session?.fileUpload).toBeDefined();
+    });
+
+    it('should handle multer error without session', () => {
+      const multerError = {
+        code: 'LIMIT_FILE_SIZE',
+        message: 'File too large',
+      };
+      const reqWithoutSession = {multerError} as any;
+      delete reqWithoutSession.session;
+
+      const result = handleMulterError(reqWithoutSession as Request);
+
+      expect(result).not.toBeNull();
+      expect(Array.isArray(result)).toBe(true);
+    });
+  });
+
+  describe('handleMulterErrorForForm', () => {
+    let mockReq: Partial<Request>;
+    let mockForm: {errors?: any[]};
+
+    beforeEach(() => {
+      mockReq = {};
+      mockForm = {};
+    });
+
+    it('should return false when no multer error exists', () => {
+      const result = handleMulterErrorForForm(mockReq as Request, 'documentsReferred[0][uploadButton]', mockForm);
+      expect(result).toBe(false);
+      expect(mockForm.errors).toBeUndefined();
+    });
+
+    it('should return false when action does not include uploadButton', () => {
+      (mockReq as any).multerError = {code: 'LIMIT_FILE_SIZE'};
+      const result = handleMulterErrorForForm(mockReq as Request, 'someOtherAction', mockForm);
+      expect(result).toBe(false);
+    });
+
+    it('should handle multer error and add to form errors', () => {
+      const multerError = {
+        code: 'LIMIT_FILE_SIZE',
+        message: 'File too large',
+      };
+      (mockReq as any).multerError = multerError;
+
+      const result = handleMulterErrorForForm(mockReq as Request, 'documentsReferred[0][uploadButton]', mockForm);
+
+      expect(result).toBe(true);
+      expect(mockForm.errors).toBeDefined();
+      expect(mockForm.errors?.length).toBe(1);
+      expect(mockForm.errors?.[0].property).toBe('documentsReferred');
+      expect(mockForm.errors?.[0].children).toBeDefined();
+    });
+
+    it('should initialize errors array if it does not exist', () => {
+      const multerError = {
+        code: 'LIMIT_FILE_SIZE',
+        message: 'File too large',
+      };
+      (mockReq as any).multerError = multerError;
+      mockForm.errors = undefined;
+
+      handleMulterErrorForForm(mockReq as Request, 'witnessStatement[1][uploadButton]', mockForm);
+
+      expect(mockForm.errors).toBeDefined();
+      expect(mockForm.errors?.length).toBe(1);
+    });
+
+    it('should handle different categories and indices', () => {
+      const multerError = {
+        code: 'LIMIT_FILE_SIZE',
+        message: 'File too large',
+      };
+      (mockReq as any).multerError = multerError;
+
+      handleMulterErrorForForm(mockReq as Request, 'expertReport[2][uploadButton]', mockForm);
+
+      expect(mockForm.errors?.[0].property).toBe('expertReport');
+      expect(mockForm.errors?.[0].children?.[0].property).toBe('2');
     });
   });
 });

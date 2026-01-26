@@ -222,6 +222,40 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+
+    it('should handle multer error when file size exceeds limit', async () => {
+      const file = {
+        fieldname: 'selectedFile',
+        originalname: 'test.text',
+        mimetype: 'text/plain',
+        size: 123,
+        buffer: Buffer.from('Test file content'),
+      };
+      const mockCaseDocument: CaseDocument = <CaseDocument>{
+        createdBy: 'test',
+        documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
+        documentName: 'name',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date(),
+      };
+      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
   });
 });
 

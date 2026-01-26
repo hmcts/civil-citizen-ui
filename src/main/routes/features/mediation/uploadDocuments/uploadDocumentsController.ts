@@ -34,9 +34,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {
   uploadAndValidateFile,
   createMulterErrorMiddleware,
-  createFileUploadError,
-  getMulterErrorConstraint,
-  extractCategoryAndIndex,
+  handleMulterErrorForForm,
 } from 'common/utils/fileUploadUtils';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
@@ -109,22 +107,8 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
 
-    if ((req as any).multerError) {
-      const multerError = (req as any).multerError;
-      
-      if (action?.includes('[uploadButton]')) {
-        const [category, index] = extractCategoryAndIndex(action);
-        
-        if (!form.errors) {
-          form.errors = [];
-        }
-        
-        const errorConstraint = getMulterErrorConstraint(multerError);
-        const multerErrorStructure = createFileUploadError(category, index, 'multerError', errorConstraint);
-        form.errors.push(multerErrorStructure as any);
-        
-        return renderView(form, uploadDocuments, res, claimId, claim);
-      }
+    if (handleMulterErrorForForm(req, action, form)) {
+      return renderView(form, uploadDocuments, res, claimId, claim);
     }
 
     if (action === 'add_another-yourStatement') {

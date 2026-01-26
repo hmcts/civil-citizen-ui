@@ -1,5 +1,9 @@
 import {Request, Response, NextFunction} from 'express';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
+import {ValidationError} from 'class-validator';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {t} from 'i18next';
 
 const multer = require('multer');
 
@@ -79,6 +83,64 @@ export const createUploadOneFileError = () => {
       isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
     },
   }];
+};
+
+/**
+ * Handles multer errors by converting them to form validation errors and storing in session.
+ * Returns the translated errors if a multer error exists, null otherwise.
+ * 
+ * @param req - Express request object
+ * @returns Translated form validation errors if multer error exists, null otherwise
+ */
+export const handleMulterError = (req: Request): any[] | null => {
+  if (!(req as any).multerError) {
+    return null;
+  }
+
+  const multerError = (req as any).multerError;
+  const errorConstraint = getMulterErrorConstraint(multerError);
+  const validationError = new ValidationError();
+  validationError.property = 'fileUpload';
+  validationError.constraints = {
+    multerError: errorConstraint,
+  };
+  const formValidationError = new FormValidationError(validationError);
+  const translatedErrors = translateErrors([formValidationError], t);
+  
+  if ((req as any).session) {
+    (req as any).session.fileUpload = JSON.stringify(translatedErrors);
+  }
+  
+  return translatedErrors;
+};
+
+/**
+ * Handles multer errors for controllers that use nested form error structures (like mediation).
+ * Creates a nested error structure and adds it to form.errors.
+ * Returns true if multer error was handled, false otherwise.
+ * 
+ * @param req - Express request object
+ * @param action - The action string from request body
+ * @param form - The form object with errors array
+ * @returns True if multer error was handled, false otherwise
+ */
+export const handleMulterErrorForForm = (req: Request, action: string, form: {errors?: any[]}): boolean => {
+  if (!(req as any).multerError || !action?.includes('[uploadButton]')) {
+    return false;
+  }
+
+  const multerError = (req as any).multerError;
+  const [category, index] = extractCategoryAndIndex(action);
+  
+  if (!form.errors) {
+    form.errors = [];
+  }
+  
+  const errorConstraint = getMulterErrorConstraint(multerError);
+  const multerErrorStructure = createFileUploadError(category, index, 'multerError', errorConstraint);
+  form.errors.push(multerErrorStructure as any);
+  
+  return true;
 };
 
 export const uploadAndValidateFile = async (

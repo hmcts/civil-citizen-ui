@@ -15,15 +15,17 @@ import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
-import {createMulterUpload} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  handleMulterError,
+} from 'common/utils/fileUploadUtils';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
 const removeDoc = 'REMOVE_DOC';
-const selectedFile = 'selectedFile';
 const uploadButton = 'uploadButton';
 const pageTitle = 'PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('uploadN245FormController');
 
 uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -56,7 +58,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
   }
 }) as RequestHandler);
 
-uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -66,6 +68,26 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     const contentList = getUploadFormContent(lng);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
+
+    if (req.body.action === uploadButton) {
+      const multerErrors = handleMulterError(req);
+      if (multerErrors) {
+        const uploadedN245Details = claim.generalApplication?.uploadN245Form || new UploadGAFiles();
+        const form = new GenericForm(uploadedN245Details, multerErrors);
+        const documentName = uploadedN245Details.caseDocument?.documentName;
+        return res.render(viewPath, {
+          currentUrl,
+          documentName,
+          form,
+          claimId,
+          cancelUrl,
+          backLinkUrl,
+          contentList,
+          pageTitle,
+        });
+      }
+    }
+
     if (req.body.action === uploadButton) {
       const { form, documentName } = await uploadSelectedFile(req, claim);
       return res.render(viewPath, {

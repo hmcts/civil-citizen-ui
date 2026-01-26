@@ -289,5 +289,28 @@ describe('General Application - upload evidence docs to support application', ()
         });
     });
 
+    it('should handle multer error when file size exceeds limit', async () => {
+      claim = new Claim();
+      claim.id = 'id';
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
+      mockDataFromStore.mockResolvedValue(claim);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'))
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
   });
 });

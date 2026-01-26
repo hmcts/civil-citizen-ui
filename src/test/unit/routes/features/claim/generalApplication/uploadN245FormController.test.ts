@@ -138,5 +138,23 @@ describe('General Application - upload n245 form', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+
+    it('should handle multer error when file size exceeds limit', async () => {
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(GA_UPLOAD_N245_FORM_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE'));
+        });
+    });
   });
 });

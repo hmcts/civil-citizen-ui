@@ -11,12 +11,16 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
-import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  handleMulterError,
+  createUploadOneFileError,
+} from 'common/utils/fileUploadUtils';
 
 const uploadAdditionalDocumentsController = Router();
 
 const viewPath = 'features/generalApplication/additionalDocuments/upload-additional-documents';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('uploadAdditionalDocumentsController');
 
 uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -46,12 +50,20 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
   }
 }) as RequestHandler);
 
-uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id: claimId } = req.params;
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
+
+    if (req.body.action === 'uploadButton') {
+      const multerErrors = handleMulterError(req);
+      if (multerErrors) {
+        return res.redirect(`${currentUrl}`);
+      }
+    }
+
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, claim);
       return res.redirect(`${currentUrl}`);

@@ -259,5 +259,24 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
           expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL);
         });
     });
+
+    it('should handle multer error when file size exceeds limit', async () => {
+      mockGADocDataFromStore.mockResolvedValueOnce([]);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
   });
 });

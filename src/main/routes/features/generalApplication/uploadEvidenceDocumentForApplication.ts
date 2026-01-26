@@ -22,11 +22,15 @@ import {
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  handleMulterError,
+  createUploadOneFileError,
+} from 'common/utils/fileUploadUtils';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('uploadEvidenceDocumentsForApplicationController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -74,7 +78,7 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
   }
 }) as RequestHandler);
 
-uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const index  = queryParamNumber(req, 'index');
@@ -90,6 +94,13 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
         title: '',
         summaryRows: [],
       });
+
+    if (req.body.action === 'uploadButton') {
+      const multerErrors = handleMulterError(req);
+      if (multerErrors) {
+        return res.redirect(`${currentUrl}`);
+      }
+    }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, formattedSummary, claimId);

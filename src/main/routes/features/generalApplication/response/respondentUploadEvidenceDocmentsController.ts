@@ -24,11 +24,15 @@ import {
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddleware,
+  handleMulterError,
+  createUploadOneFileError,
+} from 'common/utils/fileUploadUtils';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddleware('respondentUploadEvidenceDocumentsController');
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, appId: string, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -73,7 +77,7 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
   }
 }) as RequestHandler);
 
-respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKeyForGA = generateRedisKeyForGA(req);
@@ -85,6 +89,13 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
         title: '',
         summaryRows: [],
       });
+
+    if (req.body.action === 'uploadButton') {
+      const multerErrors = handleMulterError(req);
+      if (multerErrors) {
+        return res.redirect(`${currentUrl}`);
+      }
+    }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, formattedSummary, claimId, req.params.appId);

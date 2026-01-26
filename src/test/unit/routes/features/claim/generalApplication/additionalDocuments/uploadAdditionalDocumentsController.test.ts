@@ -293,5 +293,24 @@ describe('uploadAdditionalDocumentsController', () => {
 
       expect(res.status).toBe(500);
     });
+
+    it('should handle multer error when file size exceeds limit', async () => {
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+
+      // Create a buffer that exceeds the 100MB limit to trigger multer error
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024); // 101MB
+      largeBuffer.fill('x');
+
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        });
+
+      expect(res.status).toBe(302);
+      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+    });
   });
 });
