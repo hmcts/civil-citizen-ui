@@ -18,9 +18,9 @@ class ClaimantUpdate {
   async viewAndRespondToClaim(claimRef, notification) {
     console.log('notification..', notification);
     I.amOnPage('/dashboard/' + claimRef + '/claimant');
-      await verifyNotificationTitleAndContent('', notification.title, notification.content);
-      I.click(notification.nextSteps);
-    } 
+    await verifyNotificationTitleAndContent('', notification.title, notification.content);
+    I.click(notification.nextSteps);
+  } 
   
   async startUploadDocs() {
     await I.waitForVisible(selectors.titleClass, config.WaitForText);
