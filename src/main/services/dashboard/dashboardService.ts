@@ -33,8 +33,6 @@ import {
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaOnline} from 'services/commons/generalApplicationHelper';
 import {CaseState} from 'form/models/claimDetails';
-import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -45,7 +43,7 @@ const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
   new DashboardTaskList('Applications to the court', '', []),
   new DashboardTaskList('Messages to the court', '', []));
 
-export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, totalAmountWithInterestAndFees: string, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isNroForGaLip = await isCuiGaNroEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
@@ -92,8 +90,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     if(dashboard.items?.length) {
-      const fullAdmitPayImmediatelyPaymentAmount = (await getTotalAmountWithInterestAndFees(claim)).toString();
-      const mappedValues = await populateDashboardValues(claim, claimId, fullAdmitPayImmediatelyPaymentAmount);
+      const mappedValues = await populateDashboardValues(claim, claimId, totalAmountWithInterestAndFees);
       for (const item of dashboard.items) {
         for (const task of item.tasks) {
           task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, mappedValues);
@@ -109,7 +106,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   }
 };
 
-export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
+export const getNotifications = async (claimId: string, claim: Claim, totalAmountWithInterestAndFees: string, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
   const mainClaimNotificationIds: string[] = [];
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   dashboardNotifications.items?.forEach(notification => mainClaimNotificationIds.push(notification.id));
@@ -139,15 +136,14 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     : new Map<string, DashboardNotificationList>();
 
   if (dashboardNotifications) {
-    const fullAdmitPayImmediatelyPaymentAmount = (await getTotalAmountWithInterestAndFees(claim)).toString();
     for (const notification of dashboardNotifications.items) {
-      const mappedValues = await populateDashboardValues(claim, claimId,fullAdmitPayImmediatelyPaymentAmount, notification, lng);
+      const mappedValues = await populateDashboardValues(claim, claimId,totalAmountWithInterestAndFees, notification, lng);
       notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
       notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
     }
     for (const [gaRef, value] of applicantNotifications) {
       for (const notification of value.items) {
-        const mappedValues = await populateDashboardValues(claim, claimId, fullAdmitPayImmediatelyPaymentAmount, notification, lng, gaRef);
+        const mappedValues = await populateDashboardValues(claim, claimId, totalAmountWithInterestAndFees, notification, lng, gaRef);
         notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
         notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
@@ -155,7 +151,7 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     }
     for (const [gaRef, value] of respondentNotifications) {
       for (const notification of value.items) {
-        const mappedValues = await populateDashboardValues(claim, claimId, fullAdmitPayImmediatelyPaymentAmount, notification, lng, gaRef);
+        const mappedValues = await populateDashboardValues(claim, claimId, totalAmountWithInterestAndFees, notification, lng, gaRef);
         notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
         notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }

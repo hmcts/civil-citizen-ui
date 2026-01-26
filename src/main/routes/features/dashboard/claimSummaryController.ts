@@ -36,6 +36,7 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -58,9 +59,10 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
+      const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+      const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
-      const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
+      const dashboardTaskList = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);

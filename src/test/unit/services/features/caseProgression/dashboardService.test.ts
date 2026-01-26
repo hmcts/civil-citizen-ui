@@ -144,6 +144,7 @@ describe('dashboardService', () => {
       const claimantDashboard = await getDashboardForm(
         ClaimantOrDefendant.DEFENDANT
         , claim
+        ,'2000'
         , '1234567890'
         , appReq
         , false
@@ -198,6 +199,7 @@ describe('dashboardService', () => {
       const claimantDashboard = await getDashboardForm(
         ClaimantOrDefendant.DEFENDANT
         , claim
+        , '2000'
         , '1234567890'
         , appReq
         , false
@@ -243,6 +245,7 @@ describe('dashboardService', () => {
       const claimantDashboard = await getDashboardForm(
         ClaimantOrDefendant.DEFENDANT
         , claim
+        , '2000'
         , '1234567890'
         , appReq
         , false
@@ -295,6 +298,7 @@ describe('dashboardService', () => {
       const claimantDashboard = await getDashboardForm(
         ClaimantOrDefendant.DEFENDANT
         , claim
+        , '2000'
         , '1234567890'
         , appReq
         , false
@@ -338,6 +342,7 @@ describe('dashboardService', () => {
       const claimantDashboard = await getDashboardForm(
         ClaimantOrDefendant.DEFENDANT
         , claim
+        , '2000'
         , '1234567890'
         , appReq
         , false
@@ -458,7 +463,7 @@ describe('dashboardService', () => {
       jest.spyOn(CivilServiceClient.prototype, 'retrieveGaNotification').mockResolvedValueOnce(respondentNotifications);
 
       //When
-      const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq, 'en');
+      const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, '2000', ClaimantOrDefendant.DEFENDANT, appReq, 'en');
 
       //Then
       expect(claimantNotifications.items).toEqual(allNotificationInfo);
