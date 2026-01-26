@@ -635,6 +635,7 @@ describe('on POST', () => {
       })
       .expect((res: express.Response) => {
         expect(res.status).toBe(200);
+        expect(saveCaseProgression).toHaveBeenCalled();
       });
   });
 
