@@ -268,14 +268,14 @@ describe('fileUploadUtils', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       mockReq = {
-        session: {},
+        session: {} as any,
       };
     });
 
     it('should return null when no multer error exists', () => {
       const result = handleMulterError(mockReq as Request);
       expect(result).toBeNull();
-      expect(mockReq.session?.fileUpload).toBeUndefined();
+      expect((mockReq.session as any)?.fileUpload).toBeUndefined();
     });
 
     it('should handle multer error and store in session', () => {
@@ -289,8 +289,8 @@ describe('fileUploadUtils', () => {
 
       expect(result).not.toBeNull();
       expect(Array.isArray(result)).toBe(true);
-      expect(mockReq.session?.fileUpload).toBeDefined();
-      const sessionData = JSON.parse(mockReq.session?.fileUpload as string);
+      expect((mockReq.session as any)?.fileUpload).toBeDefined();
+      const sessionData = JSON.parse((mockReq.session as any)?.fileUpload as string);
       expect(sessionData).toBeInstanceOf(Array);
       expect(sessionData.length).toBeGreaterThan(0);
       expect(sessionData[0]).toHaveProperty('property', 'fileUpload');
@@ -306,7 +306,7 @@ describe('fileUploadUtils', () => {
       const result = handleMulterError(mockReq as Request);
 
       expect(result).not.toBeNull();
-      expect(mockReq.session?.fileUpload).toBeDefined();
+      expect((mockReq.session as any)?.fileUpload).toBeDefined();
     });
 
     it('should handle multer error with unknown code', () => {
@@ -319,7 +319,7 @@ describe('fileUploadUtils', () => {
       const result = handleMulterError(mockReq as Request);
 
       expect(result).not.toBeNull();
-      expect(mockReq.session?.fileUpload).toBeDefined();
+      expect((mockReq.session as any)?.fileUpload).toBeDefined();
     });
 
     it('should handle multer error without session', () => {
