@@ -24,7 +24,7 @@ import {
 import {
   DateInputFields, ExpertSection, FileOnlySection, ReferredToInTheStatementSection,
   TypeOfDocumentSection,
-  UploadDocumentsUserForm, WitnessSection, WitnessSummarySection
+  UploadDocumentsUserForm, WitnessSection, WitnessSummarySection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
