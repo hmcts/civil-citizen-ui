@@ -275,11 +275,14 @@ describe('fileUploadUtils', () => {
     const mockReq = {
       files: [{ fieldname: 'documentsReferred[0][fileUpload]', originalname: 'test.pdf', mimetype: 'application/pdf', size: 1024, buffer: Buffer.from('x') }],
     } as any;
-    const form = { model: { documentsReferred: [{ fileUpload: undefined, caseDocument: undefined }] }, errors: [] as any[] };
+    const form = {
+      model: { documentsReferred: [{ fileUpload: undefined as any, caseDocument: undefined as any }] },
+      errors: [] as any[],
+    };
     const mockUploadDocument = jest.fn();
 
     beforeEach(() => {
-      form.model = { documentsReferred: [{ fileUpload: undefined, caseDocument: undefined }] };
+      form.model = { documentsReferred: [{ fileUpload: undefined as any, caseDocument: undefined as any }] };
       form.errors = [];
       mockUploadDocument.mockReset();
       const {Validator} = require('class-validator');
