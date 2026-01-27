@@ -54,9 +54,10 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% if disclosureSections[0].contentSections[0].data.category == 'documentsForDisclosure' %}
+                    {% set category = disclosureSections[0].contentSections[0].data.category %}
+                    {% if category == 'documentsForDisclosure' %}
                       {% set actionValue = 'add_another-disclosure' %}
-                    {% else %}
+                    {% elif category == 'disclosureList' %}
                       {% set actionValue = 'add_another-disclosureList' %}
                     {% endif %}
                       {{ govukButton({
@@ -93,13 +94,14 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% if witnessSections[0].contentSections[0].data.category == 'witnessStatement' %}
+                    {% set category = witnessSections[0].contentSections[0].data.category %}
+                    {% if category == 'witnessStatement' %}
                       {% set actionValue = 'add_another-witness' %}
-                    {% elif witnessSections[0].contentSections[0].data.category == 'witnessSummary' %}
+                    {% elif category == 'witnessSummary' %}
                       {% set actionValue = 'add_another-witnessSummary' %}
-                    {% elif witnessSections[0].contentSections[0].data.category == 'noticeOfIntention' %}
+                    {% elif category == 'noticeOfIntention' %}
                       {% set actionValue = 'add_another-noticeOfIntention' %}
-                    {% else %}
+                    {% elif category == 'documentsReferred' %}
                       {% set actionValue = 'add_another-documentsReferred' %}
                     {% endif %}
                       {{ govukButton({
@@ -136,13 +138,14 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% if expertSections[0].contentSections[0].data.category == 'expertReport' %}
+                    {% set category = expertSections[0].contentSections[0].data.category %}
+                    {% if category == 'expertReport' %}
                       {% set actionValue = 'add_another-expertReport' %}
-                    {% elif expertSections[0].contentSections[0].data.category == 'expertStatement' %}
+                    {% elif category == 'expertStatement' %}
                       {% set actionValue = 'add_another-expertStatement' %}
-                    {% elif expertSections[0].contentSections[0].data.category == 'questionsForExperts' %}
+                    {% elif category == 'questionsForExperts' %}
                       {% set actionValue = 'add_another-questionsForExperts' %}
-                    {% else %}
+                    {% elif category == 'answersForExperts' %}
                       {% set actionValue = 'add_another-answersForExperts' %}
                     {% endif %}
                       {{ govukButton({
@@ -183,15 +186,16 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% if trialSections[0].contentSections[0].data.category == 'trialCaseSummary' %}
+                    {% set category = trialSections[0].contentSections[0].data.category %}
+                    {% if category == 'trialCaseSummary' %}
                       {% set actionValue = 'add_another-trialCaseSummary' %}
-                    {% elif trialSections[0].contentSections[0].data.category == 'trialSkeletonArgument' %}
+                    {% elif category == 'trialSkeletonArgument' %}
                       {% set actionValue = 'add_another-trialSkeletonArgument' %}
-                    {% elif trialSections[0].contentSections[0].data.category == 'trialAuthorities' %}
+                    {% elif category == 'trialAuthorities' %}
                       {% set actionValue = 'add_another-trialAuthorities' %}
-                    {% elif trialSections[0].contentSections[0].data.category == 'trialCosts' %}
+                    {% elif category == 'trialCosts' %}
                       {% set actionValue = 'add_another-trialCosts' %}
-                    {% else %}
+                    {% elif category == 'trialDocumentary' %}
                       {% set actionValue = 'add_another-trialDocumentary' %}
                     {% endif %}
                       {{ govukButton({
