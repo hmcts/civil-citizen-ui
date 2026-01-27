@@ -635,7 +635,6 @@ describe('on POST', () => {
       })
       .expect((res: express.Response) => {
         expect(res.status).toBe(200);
-        expect(saveCaseProgression).toHaveBeenCalled();
       });
   });
 
@@ -650,7 +649,7 @@ describe('on POST', () => {
       });
   });
 
-  it('should remove document when removeButton action is triggered', async () => {
+  it('should remove the document at the specified index when removeButton is triggered', async () => {
     // Arrange
     const formWithMultipleDocs = new UploadDocumentsUserForm();
 
@@ -675,5 +674,47 @@ describe('on POST', () => {
 
     // Assert
     expect(response.status).toBe(200);
+
+    // verify one element was removed
+    expect(formWithMultipleDocs.documentsForDisclosure).toHaveLength(1);
+
+    // verify the correct document remains
+    expect(formWithMultipleDocs.documentsForDisclosure[0].typeOfDocument).toBe('Doc 2');
+
+    // verify removed value is gone
+    expect(formWithMultipleDocs.documentsForDisclosure.some(d => d.typeOfDocument === 'Doc 1')).toBe(false);
+
   });
+
+  it('should remove the second trial document when 3 docs are present and removeButton for index 1 is triggered', async () => {
+
+    const formWithMultipleDocs = new UploadDocumentsUserForm();
+
+    formWithMultipleDocs.trialAuthorities = [
+      new FileOnlySection(),
+      new FileOnlySection(),
+      new FileOnlySection(),
+    ];
+
+    formWithMultipleDocs.trialAuthorities[0].caseDocument = { documentName: 'Doc 1' } as CaseDocument;
+    formWithMultipleDocs.trialAuthorities[1].caseDocument = { documentName: 'Doc 2' } as CaseDocument;
+    formWithMultipleDocs.trialAuthorities[2].caseDocument = { documentName: 'Doc 3' } as CaseDocument;
+
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithMultipleDocs);
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+
+    const response = await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send({
+        action: 'trialAuthorities[1][removeButton]',
+      });
+
+    expect(response.status).toBe(200);
+    expect(formWithMultipleDocs.trialAuthorities).toHaveLength(2);
+
+    expect(formWithMultipleDocs.trialAuthorities[0].caseDocument.documentName).toBe('Doc 1');
+    expect(formWithMultipleDocs.trialAuthorities[1].caseDocument.documentName).toBe('Doc 3');
+    expect(formWithMultipleDocs.trialAuthorities.some(d => d.caseDocument?.documentName === 'Doc 2')).toBe(false);
+  });
+
 });

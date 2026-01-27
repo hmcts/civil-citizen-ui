@@ -27,7 +27,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('supportRequiredService');
+const logger = Logger.getLogger('caseProgressionService');
 
 export const getDocuments = async (redisKey: string): Promise<UploadDocuments> => {
   try {
@@ -217,6 +217,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
 export const addAnother = (uploadDocuments: UploadDocumentsUserForm, action: string ) => {
   const [ actionValue ] = action.split(/[[\]]/).filter((word: string) => word !== '');
   const category = actionValue.split('-')[1];
+  logger.info(`adding new category: ${category}`);
   if (category === 'disclosure') {
     uploadDocuments.documentsForDisclosure.push(new TypeOfDocumentSection());
   } else if (category === 'disclosureList') {
