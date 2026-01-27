@@ -57,6 +57,9 @@ describe('Respond to Claim - Claim Reference Controller', () => {
 
     it('should redirect and set cookie value', async () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
+      nock(civilServiceUrl)
+        .get('/assignment/reference/' + validClaimNumberV2 + '/defendant-link-status')
+        .reply(200, 'false');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV2}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
@@ -114,6 +117,9 @@ describe('Respond to Claim - Claim Reference Controller', () => {
 
     it('should redirect and update cookie value', async () => {
       app.request.cookies = {eligibility: {foo: 'blah', claimReference: validClaimNumberV2}};
+      nock(civilServiceUrl)
+        .get('/assignment/reference/' + validClaimNumberV2 + '/defendant-link-status')
+        .reply(200, 'false');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV2}).expect((res) => {
         expect(res.status).toBe(302);
         expect(app.request.cookies.eligibility.foo).toBe('blah');
