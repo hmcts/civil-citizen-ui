@@ -137,20 +137,22 @@ describe('Send follow query controller', () => {
 
     it('should render view with file upload errors when session.fileUpload is set after upload', async () => {
       queryManagementMock.mockResolvedValue(new QueryManagement());
+      const getSummaryListSpy = jest.spyOn(QueryManagementService, 'getSummaryList').mockResolvedValue(undefined);
       const uploadSelectedFileSpy = jest.spyOn(QueryManagementService, 'uploadSelectedFile').mockImplementation(async (req: any) => {
         req.session = req.session || {};
         req.session.fileUpload = JSON.stringify([{ fieldName: 'fileUpload', text: 'File is too large', href: '#fileUpload' }]);
       });
-      const smallBuffer = Buffer.from('small');
 
       const res = await request(app)
         .post(QM_FOLLOW_UP_MESSAGE)
-        .field('action', 'uploadButton')
-        .field('messageDetails', 'test')
-        .attach('fileUpload', smallBuffer, { filename: 'doc.pdf', contentType: 'application/pdf' });
+        .send({
+          action: 'uploadButton',
+          messageDetails: 'test',
+        });
 
       expect(res.status).toBe(200);
       expect(uploadSelectedFileSpy).toHaveBeenCalled();
+      expect(getSummaryListSpy).toHaveBeenCalled();
     });
   });
 });
