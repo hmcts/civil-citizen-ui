@@ -41,6 +41,31 @@ def copyPrevFailedAndNotExecutedTestFilesJson() {
   }
 }
 
+def copyPreviousAllureHistory() {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  def targetDir = "test-results/functional/allure-results/history"
+
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts(
+        projectName: env.JOB_NAME,
+        selector: specific("${buildNumber}"),
+        filter: "test-results/functional/allure-report/history/*",
+        target: targetDir,
+        flatten: true
+      )
+      
+      buildFound = true
+      echo "Successfully imported Allure history from build ${buildNumber}"
+    } catch (Exception error) {
+      echo "Allure history artifact not found in build ${buildNumber}. Trying previous..."
+      buildNumber--
+    }
+  }
+}
+
 def getFunctionalTestsGroups() {
   def githubApi = new GithubAPI(this)
   def functionalTestGroups = []
@@ -197,6 +222,7 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    copyPreviousAllureHistory();
     if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
@@ -249,8 +275,9 @@ withPipeline(type, product, component) {
 
 
   before('functionalTest:aat') {
-    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     copyPrevFailedAndNotExecutedTestFilesJson();
+    copyPreviousAllureHistory();
   }
 
   afterAlways('functionalTest:aat') {
