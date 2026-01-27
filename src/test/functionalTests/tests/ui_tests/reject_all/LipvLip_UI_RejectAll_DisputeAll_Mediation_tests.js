@@ -6,16 +6,16 @@ const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefend
 const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
-const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant');
 
-Scenario('Verify the Eligibility Check journey R2', async () => {
+Scenario('01 Verify the Eligibility Check journey R2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('Create Claim', async ({api}) => {
+Scenario('02 Create Claim', async ({ api }) => {
   const isCrossBrowser = process.env.IS_CROSSBROWSER;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -39,11 +39,11 @@ Scenario('Create Claim', async ({api}) => {
   }
 }).retry(1).tag('@crossbrowser');
 
-Scenario('Assign case to defendant', async ({api}) => {
+Scenario('03 Assign case to defendant', async ({ api }) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('Defendant responds with Rejected All', async ({I, api}) => {
+Scenario('04 Defendant responds with Rejected All', async ({ I, api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
@@ -61,7 +61,7 @@ Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
+Scenario('05 Claimant responds as Disputed By Claimant', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
