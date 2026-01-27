@@ -69,7 +69,15 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      const uploadedDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      logger.info('Document uploaded successfully', {
+        claimId: req.params.id,
+        target,
+        documentName: uploadedDocument?.documentName,
+        hasDocumentLink: !!uploadedDocument?.documentLink,
+        hasBinaryUrl: !!uploadedDocument?.documentLink?.document_binary_url,
+      });
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = uploadedDocument;
     }
   }
 }
