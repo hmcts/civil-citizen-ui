@@ -16,7 +16,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Respond to Claim - Claim Reference Controller', () => {
-  const validClaimNumberV1 = '123mc123';
+  const validClaimNumberV1 = '123JE123';
   const validClaimNumberV2 = '123DC123';
   const civilServiceUrl = config.get<string>('services.civilService.url');
 
@@ -64,7 +64,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       });
     });
 
-    it('should redirect and set cookie value for OCMC case when case ia already linked', async () => {
+    it('should redirect and set cookie value when case is already linked', async () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
@@ -76,7 +76,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       });
     });
 
-    it('should redirect and set cookie value for OCMC case when case ia not linked', async () => {
+    it('should redirect and set cookie value when case is not linked', async () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
@@ -88,7 +88,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       });
     });
 
-    it('should redirect and set cookie value for Civil case when case ia already linked', async () => {
+    it('should redirect and set cookie value for Civil case when case is already linked', async () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
@@ -100,7 +100,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       });
     });
 
-    it('should redirect and set cookie value for Civil case when case ia not linked', async () => {
+    it('should redirect and set cookie value for Civil case when case is not linked', async () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       nock(civilServiceUrl)
         .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
