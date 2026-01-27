@@ -120,5 +120,37 @@ describe('Send follow query controller', () => {
           expect(spyRemoveSelectedDocument).toHaveBeenCalled();
         });
     });
+
+    it('should redirect when multer error on file upload (file too large)', async () => {
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+
+      const res = await request(app)
+        .post(QM_FOLLOW_UP_MESSAGE)
+        .field('action', 'uploadButton')
+        .field('messageDetails', 'test')
+        .attach('fileUpload', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+
+      expect(res.status).toBe(302);
+    });
+
+    it('should render view with file upload errors when session.fileUpload is set after upload', async () => {
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const uploadSelectedFileSpy = jest.spyOn(QueryManagementService, 'uploadSelectedFile').mockImplementation(async (req: any) => {
+        req.session = req.session || {};
+        req.session.fileUpload = JSON.stringify([{ fieldName: 'fileUpload', text: 'File is too large', href: '#fileUpload' }]);
+      });
+      const smallBuffer = Buffer.from('small');
+
+      const res = await request(app)
+        .post(QM_FOLLOW_UP_MESSAGE)
+        .field('action', 'uploadButton')
+        .field('messageDetails', 'test')
+        .attach('fileUpload', smallBuffer, { filename: 'doc.pdf', contentType: 'application/pdf' });
+
+      expect(res.status).toBe(200);
+      expect(uploadSelectedFileSpy).toHaveBeenCalled();
+    });
   });
 });

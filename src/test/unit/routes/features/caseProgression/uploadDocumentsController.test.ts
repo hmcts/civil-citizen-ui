@@ -867,5 +867,26 @@ describe('on POST', () => {
           expect(res.status).toBe(200);
         });
     });
+
+    it('should fall through when multer error but action does not include uploadButton', async () => {
+      const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+      const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+      (getClaimById as jest.Mock).mockResolvedValue(Object.assign(new Claim(), claim));
+      (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
+
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'save')
+        .attach('documentsReferred[0][fileUpload]', largeBuffer, {
+          filename: 'large-file.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
   });
 });

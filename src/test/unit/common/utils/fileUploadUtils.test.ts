@@ -6,6 +6,7 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   createUploadOneFileError,
+  uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
@@ -16,6 +17,28 @@ jest.mock('multer', () => {
   mockMulter.memoryStorage = jest.fn(() => ({}));
   return mockMulter;
 });
+
+jest.mock('class-validator', () => {
+  const actual = jest.requireActual('class-validator');
+  return {
+    ...actual,
+    Validator: jest.fn().mockImplementation(() => ({
+      validateSync: jest.fn().mockReturnValue([]),
+    })),
+  };
+});
+
+jest.mock('services/features/caseProgression/TypeOfDocumentSectionMapper', () => ({
+  TypeOfDocumentSectionMapper: {
+    mapMulterFileToSingleFile: jest.fn().mockReturnValue({
+      fieldname: 'test',
+      originalname: 'test.pdf',
+      mimetype: 'application/pdf',
+      size: 1024,
+      buffer: Buffer.from('x'),
+    }),
+  },
+}));
 
 describe('fileUploadUtils', () => {
   describe('createMulterUpload', () => {
@@ -245,6 +268,69 @@ describe('fileUploadUtils', () => {
           isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
         },
       }]);
+    });
+  });
+
+  describe('uploadAndValidateFile', () => {
+    const mockReq = {
+      files: [{ fieldname: 'documentsReferred[0][fileUpload]', originalname: 'test.pdf', mimetype: 'application/pdf', size: 1024, buffer: Buffer.from('x') }],
+    } as any;
+    const form = { model: { documentsReferred: [{ fileUpload: undefined, caseDocument: undefined }] }, errors: [] as any[] };
+    const mockUploadDocument = jest.fn();
+
+    beforeEach(() => {
+      form.model = { documentsReferred: [{ fileUpload: undefined, caseDocument: undefined }] };
+      form.errors = [];
+      mockUploadDocument.mockReset();
+      const {Validator} = require('class-validator');
+      Validator.mockImplementation(() => ({ validateSync: jest.fn().mockReturnValue([]) }));
+      const {TypeOfDocumentSectionMapper} = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
+      TypeOfDocumentSectionMapper.mapMulterFileToSingleFile.mockReturnValue({ fieldname: 'test', originalname: 'test.pdf', mimetype: 'application/pdf', size: 1024, buffer: Buffer.from('x') });
+    });
+
+    it('should return early when no matching file in req.files', async () => {
+      const reqNoFile = { files: [{ fieldname: 'other[0][fileUpload]' }] } as any;
+      await uploadAndValidateFile(reqNoFile, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+      expect(form.errors).toHaveLength(0);
+      expect(mockUploadDocument).not.toHaveBeenCalled();
+    });
+
+    it('should push validation error when validateSync returns errors', async () => {
+      const {Validator} = require('class-validator');
+      Validator.mockImplementation(() => ({
+        validateSync: jest.fn().mockReturnValue([{ constraints: { isFileSize: 'ERRORS.VALID_SIZE_FILE' } }]),
+      }));
+      await uploadAndValidateFile(mockReq, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+      expect(form.errors).toHaveLength(1);
+      expect(form.errors[0].property).toBe('documentsReferred');
+      expect(form.errors[0].children[0].children[0].constraints.isFileSize).toBe('ERRORS.VALID_SIZE_FILE');
+      expect(mockUploadDocument).not.toHaveBeenCalled();
+    });
+
+    it('should push uploadError when uploadDocument returns response without documentLink', async () => {
+      mockUploadDocument.mockResolvedValue({});
+      await uploadAndValidateFile(mockReq, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+      expect(form.errors).toHaveLength(1);
+      const inner = form.errors[0].children?.[0]?.children?.[0];
+      expect(inner?.constraints?.uploadError).toBe('ERRORS.FILE_UPLOAD_FAILED');
+    });
+
+    it('should push uploadError when uploadDocument throws', async () => {
+      mockUploadDocument.mockRejectedValue(new Error('API error'));
+      await uploadAndValidateFile(mockReq, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+      expect(form.errors).toHaveLength(1);
+      const inner = form.errors[0].children?.[0]?.children?.[0];
+      expect(inner?.constraints?.uploadError).toBe('ERRORS.FILE_UPLOAD_FAILED');
+    });
+
+    it('should push unexpectedError when mapMulterFileToSingleFile throws', async () => {
+      const {TypeOfDocumentSectionMapper} = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
+      TypeOfDocumentSectionMapper.mapMulterFileToSingleFile.mockImplementation(() => {
+        throw new Error('Mapping error');
+      });
+      await uploadAndValidateFile(mockReq, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+      expect(form.errors).toHaveLength(1);
+      expect(form.errors[0].children[0].children[0].constraints.unexpectedError).toBe('ERRORS.FILE_UPLOAD_FAILED');
     });
   });
 });
