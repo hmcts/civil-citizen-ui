@@ -110,6 +110,26 @@ export class OidcMiddleware {
           const responseData = await getOidcResponse(redirectUri, req.query.code);
           req.session.user = app.locals.user = getUserDetails(responseData);
           req.session.issuedAt = getSessionIssueTime(responseData);
+
+          /* istanbul ignore next -- investigation logging for IDAM/session debugging */
+          logger.info('IDAM investigation: tokens (masked)', { // NOSONAR
+            access_token_suffix: responseData?.access_token ? `***${responseData.access_token.slice(-4)}` : undefined,
+            id_token_suffix: responseData?.id_token ? `***${responseData.id_token.slice(-4)}` : undefined,
+          });
+          /* istanbul ignore next -- investigation logging for IDAM/session debugging */
+          logger.info('IDAM investigation: user details from IDAM', { // NOSONAR
+            id: req.session.user?.id,
+            email: req.session.user?.email,
+            givenName: req.session.user?.givenName,
+            familyName: req.session.user?.familyName,
+            roles: req.session.user?.roles,
+          });
+          /* istanbul ignore next -- investigation logging for Redis session key */
+          logger.info('IDAM investigation: Redis/session', { // NOSONAR
+            sessionId: (req as Request & { sessionID?: string }).sessionID,
+            cookieName: 'citizen-ui-session',
+          });
+
           logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
           if (app.locals.assignClaimURL || req.session.assignClaimURL) {
             const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);

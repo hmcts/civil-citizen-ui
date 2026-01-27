@@ -14,6 +14,9 @@ import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('utilityService');
+
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -93,7 +96,11 @@ export const getClaimBusinessProcess = async (claimId: string, req: Request): Pr
 
 export const getRedisStoreForSession = () => {
   const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-  const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.session.redis.port')}`;
+  const host = config.get('services.session.redis.host');
+  const port = config.get('services.session.redis.port');
+  const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${host}:${port}`;
+  /* istanbul ignore next -- investigation logging for Redis session store */
+  logger.info('Redis session store created', { host, port, prefix: 'citizen-ui-session:', ttl: 86400 }); // NOSONAR
   return new RedisStore({
     client: new Redis(connectionString),
     prefix: 'citizen-ui-session:',

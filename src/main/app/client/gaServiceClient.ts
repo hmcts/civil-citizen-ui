@@ -40,6 +40,19 @@ export class GaServiceClient {
         baseURL,
       });
     }
+    this.client.interceptors.request.use((config) => {
+      const authHeader = config.headers?.['Authorization'] ?? config.headers?.['authorization'];
+      if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+        /* istanbul ignore next -- investigation logging for API calls with token */
+        logger.info('GA API call with token', { // NOSONAR
+          method: config.method,
+          url: config.url,
+          baseURL: config.baseURL,
+          token_suffix: authHeader.length > 13 ? `***${authHeader.slice(-4)}` : '***',
+        });
+      }
+      return config;
+    });
   }
 
   getConfig(req: AppRequest) {

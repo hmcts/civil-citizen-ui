@@ -3,6 +3,8 @@ import {LoggerInstance} from 'winston';
 import RedisStore from 'connect-redis';
 
 const Redis = require('ioredis-mock');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('e2eConfiguration');
 
 const REDIS_DATA = require('./redisData.json');
 const GA_REDIS_DATA = require('./gaRedisData.json');
@@ -36,6 +38,8 @@ export class DraftStoreCliente2e {
 }
 
 export const getRedisStoreForSessione2e = () => {
+  /* istanbul ignore next -- investigation logging for Redis session store */
+  logger.info('Redis session store created (e2e mock)', { prefix: 'citizen-ui-session:', ttl: 86400 }); // NOSONAR
   return new RedisStore({
     client: new Redis(),
     prefix: 'citizen-ui-session:',
