@@ -25,11 +25,8 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
-  getMulterErrorConstraint,
 } from 'common/utils/fileUploadUtils';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {t} from 'i18next';
+import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -98,19 +95,8 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
         summaryRows: [],
       });
 
-    if ((req as any).multerError && req.body.action === 'uploadButton') {
-      const multerError = (req as any).multerError;
-      const errorConstraint = getMulterErrorConstraint(multerError);
-      const errorStructure: FormValidationError[] = [
-        new FormValidationError({
-          target: { fileUpload: '' },
-          property: 'fileUpload',
-          constraints: { multerError: errorConstraint },
-        }),
-      ];
-      const translatedErrors = translateErrors(errorStructure, t);
-      req.session.fileUpload = JSON.stringify(translatedErrors);
-      return res.redirect(`${currentUrl}`);
+    if (redirectIfMulterError(req, res, currentUrl)) {
+      return;
     }
 
     if (req.body.action === 'uploadButton') {

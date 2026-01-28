@@ -15,13 +15,8 @@ import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
-import {
-  createMulterErrorMiddlewareForSingleField,
-  getMulterErrorConstraint,
-} from 'common/utils/fileUploadUtils';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {t} from 'i18next';
+import { createMulterErrorMiddlewareForSingleField } from 'common/utils/fileUploadUtils';
+import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
@@ -78,19 +73,8 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
-    if ((req as any).multerError && req.body.action === uploadButton) {
-      const multerError = (req as any).multerError;
-      const errorConstraint = getMulterErrorConstraint(multerError);
-      const errorStructure: FormValidationError[] = [
-        new FormValidationError({
-          target: { fileUpload: '' },
-          property: 'fileUpload',
-          constraints: { multerError: errorConstraint },
-        }),
-      ];
-      const translatedErrors = translateErrors(errorStructure, t);
-      req.session.fileUpload = JSON.stringify(translatedErrors);
-      return res.redirect(`${currentUrl}`);
+    if (redirectIfMulterError(req, res, currentUrl)) {
+      return;
     }
 
     if (req.body.action === uploadButton) {

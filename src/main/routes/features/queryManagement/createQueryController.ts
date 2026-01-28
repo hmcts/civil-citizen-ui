@@ -16,13 +16,8 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {
-  createMulterErrorMiddleware,
-  getMulterErrorConstraint,
-} from 'common/utils/fileUploadUtils';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {t} from 'i18next';
+import { createMulterErrorMiddleware } from 'common/utils/fileUploadUtils';
+import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
@@ -96,19 +91,8 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (a
         summaryRows: [],
       });
 
-    if ((req as any).multerError && action === 'uploadButton') {
-      const multerError = (req as any).multerError;
-      const errorConstraint = getMulterErrorConstraint(multerError);
-      const errorStructure: FormValidationError[] = [
-        new FormValidationError({
-          target: { fileUpload: '' },
-          property: 'fileUpload',
-          constraints: { multerError: errorConstraint },
-        }),
-      ];
-      const translatedErrors = translateErrors(errorStructure, t);
-      req.session.fileUpload = JSON.stringify(translatedErrors);
-      return res.redirect(`${currentUrl}`);
+    if (redirectIfMulterError(req, res, currentUrl)) {
+      return;
     }
 
     if (action === 'uploadButton') {

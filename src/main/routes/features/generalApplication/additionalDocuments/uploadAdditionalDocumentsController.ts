@@ -14,11 +14,8 @@ import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSele
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
-  getMulterErrorConstraint,
 } from 'common/utils/fileUploadUtils';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {t} from 'i18next';
+import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadAdditionalDocumentsController = Router();
 
@@ -60,19 +57,8 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, mul
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
 
-    if ((req as any).multerError && req.body.action === 'uploadButton') {
-      const multerError = (req as any).multerError;
-      const errorConstraint = getMulterErrorConstraint(multerError);
-      const errorStructure: FormValidationError[] = [
-        new FormValidationError({
-          target: { fileUpload: '' },
-          property: 'fileUpload',
-          constraints: { multerError: errorConstraint },
-        }),
-      ];
-      const translatedErrors = translateErrors(errorStructure, t);
-      req.session.fileUpload = JSON.stringify(translatedErrors);
-      return res.redirect(`${currentUrl}`);
+    if (redirectIfMulterError(req, res, currentUrl)) {
+      return;
     }
 
     if (req.body.action === 'uploadButton') {
