@@ -1,7 +1,7 @@
 const { testFilesHelper } = require('./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js');
 const testConfig = require('./src/test/config.js');
-const {unAssignAllUsers} = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
-const {deleteAllIdamTestUsers} = require('./src/test/functionalTests/specClaimHelpers/api/idamHelper');
+const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
+const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaimHelpers/api/idamHelper');
 const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {
@@ -14,7 +14,7 @@ const getTests = () => {
     return [...prevFailedTestFiles, ...prevNotExecutedTestFiles];
   }
 
-  return [ './src/test/functionalTests/tests/{*,**/*}.js',
+  return ['./src/test/functionalTests/tests/{*,**/*}.js',
     './src/test/e2eTests/tests/{*,**/*}.js'];
 };
 
@@ -44,7 +44,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: true,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       browser: 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
@@ -52,9 +52,9 @@ exports.config = {
       waitForAction: 500,
       video: true,
       trace: true,
-      contextOptions : {
-        recordVideo:{
-          dir:'failed-videos',
+      contextOptions: {
+        recordVideo: {
+          dir: 'failed-videos',
         },
       },
       waitForNavigation: 'networkidle',
@@ -120,7 +120,7 @@ exports.config = {
         stdout: '-',
         options: {
           reportDir: process.env.REPORT_DIR || 'test-results/functional',
-          reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME+'-'+new Date().getTime()}`,
+          reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME + '-' + new Date().getTime()}`,
           inlineAssets: true,
           overwrite: false,
           json: false,
