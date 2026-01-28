@@ -251,6 +251,17 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(uploadSelectedFile).toHaveBeenCalledWith(expect.anything(), claim);
     });
 
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-additional-documents');
+    });
+
     it('should redirect to CYA page if documents are uploaded', async () => {
       const additionalDocument = new UploadAdditionalDocument();
       additionalDocument.typeOfDocument = 'testt';

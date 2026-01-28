@@ -201,6 +201,17 @@ describe('General Application - uploadWrittenRepresentationDocsController.ts', (
         });
     });
 
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('written-representation');
+    });
+
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)

@@ -195,6 +195,17 @@ describe('General Application - upload evidence docs to support application', ()
         });
     });
 
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-documents');
+    });
+
     it.each([
       GA_UPLOAD_DOCUMENTS_URL,
       GA_UPLOAD_DOCUMENTS_COSC_URL,

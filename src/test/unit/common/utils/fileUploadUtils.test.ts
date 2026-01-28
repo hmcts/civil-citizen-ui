@@ -2,6 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import {
   createMulterUpload,
   createMulterErrorMiddleware,
+  createMulterErrorMiddlewareForSingleField,
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
@@ -13,6 +14,7 @@ import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 jest.mock('multer', () => {
   const mockMulter: any = jest.fn(() => ({
     any: jest.fn(() => jest.fn()),
+    single: jest.fn(() => (req: any, res: any, callback: any) => callback(null)),
   }));
   mockMulter.memoryStorage = jest.fn(() => ({}));
   return mockMulter;
@@ -153,6 +155,54 @@ describe('fileUploadUtils', () => {
       const middleware = createMulterErrorMiddleware();
       middleware(mockReq as Request, mockRes as Response, mockNext);
 
+      expect(mockNext).toHaveBeenCalled();
+    });
+  });
+
+  describe('createMulterErrorMiddlewareForSingleField', () => {
+    let mockReq: Partial<Request>;
+    let mockRes: Partial<Response>;
+    let mockNext: NextFunction;
+
+    beforeEach(() => {
+      mockReq = {
+        params: {id: '123'},
+        headers: {'content-type': 'multipart/form-data'},
+      };
+      mockRes = {};
+      mockNext = jest.fn();
+    });
+
+    it('should call next when no multer error occurs', () => {
+      const multer = require('multer');
+      const mockSingleMiddleware = jest.fn((req: any, res: any, callback: any) => callback(null));
+      const mockMulterInstance = {
+        any: jest.fn(),
+        single: jest.fn(() => mockSingleMiddleware),
+      };
+      multer.mockReturnValue(mockMulterInstance);
+
+      const middleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'testLogger');
+      middleware(mockReq as Request, mockRes as Response, mockNext);
+
+      expect(mockNext).toHaveBeenCalled();
+      expect((mockReq as any).multerError).toBeUndefined();
+    });
+
+    it('should set multerError on request when multer error occurs', () => {
+      const multer = require('multer');
+      const multerError = { code: 'LIMIT_FILE_SIZE', message: 'File too large', field: 'selectedFile' };
+      const mockSingleMiddleware = jest.fn((req: any, res: any, callback: any) => callback(multerError));
+      const mockMulterInstance = {
+        any: jest.fn(),
+        single: jest.fn(() => mockSingleMiddleware),
+      };
+      multer.mockReturnValue(mockMulterInstance);
+
+      const middleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'testLogger');
+      middleware(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual(multerError);
       expect(mockNext).toHaveBeenCalled();
     });
   });
