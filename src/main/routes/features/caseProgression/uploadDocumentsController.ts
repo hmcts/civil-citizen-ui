@@ -30,15 +30,12 @@ import {
 } from 'common/utils/fileUploadUtils';
 
 const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('server');
+const logger = Logger.getLogger('uploadDocumentsController');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
-
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('uploadDocumentsController');
 
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
   await uploadAndValidateFile(req, submitAction, form, civilServiceClientForDocRetrieve, 'uploadDocumentsController');
