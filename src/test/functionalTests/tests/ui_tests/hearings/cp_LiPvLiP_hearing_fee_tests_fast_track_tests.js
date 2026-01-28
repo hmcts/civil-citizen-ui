@@ -61,7 +61,7 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);
-  await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+  await HearingFeeSteps.payHearingFeeJourney(feeAmount);
   await api.waitForFinishedBusinessProcess();
   notification = hearingFeePaidFull();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);

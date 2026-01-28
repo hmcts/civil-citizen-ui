@@ -23,6 +23,9 @@ import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/Typ
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('server');
+
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
@@ -121,24 +124,53 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
   try {
     const claimId = req.params.id;
     const action = req.body.action;
+    const userid = (<AppRequest>req).session.user?.id;
     const claim: Claim = await getClaimById(claimId, req, true);
+
+    logger.info('Upload documents request received from civil-citizen-ui', {
+      claimId,
+      userid,
+      action,
+      timestamp: new Date().toISOString(),
+    });
+
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
+    }
+
+    if (action) {
+      logger.info('Action detected in uploadDocumentsController', {
+        claimId,
+        userid,
+        action,
+        timestamp: new Date().toISOString(),
+      });
+      await saveCaseProgression(req, form.model, isClaimant);
       return await renderView(res, claim, claimId, form);
     }
 
     form.validateSync();
+
     if (form.hasErrors()) {
+      logger.warn('Upload documents form validation failed', {
+        claimId,
+        userid,
+        action,
+        timestamp: new Date().toISOString(),
+        errors: form.getErrors?.() ?? 'validation errors present',
+      });
       await renderView(res, claim, claimId, form);
     } else {
+      logger.info(`Form valid for user: ${userid}, saving case progression and redirecting for claimId: ${claimId}`);
       await saveCaseProgression(req,form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
+    logger.error(`error occurred in POST call in uploadDocumentsController  : ${error}`);
     next(error);
   }
 }) as RequestHandler);
