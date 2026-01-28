@@ -33,6 +33,29 @@ export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsControl
   };
 };
 
+/**
+ * Multer error middleware for a single file field (e.g. 'selectedFile').
+ * On error (e.g. LIMIT_FILE_SIZE), sets req.multerError and continues so the handler can show a validation message.
+ * On success, req.file is set as with multer.single(fieldName).
+ */
+export const createMulterErrorMiddlewareForSingleField = (
+  fieldName: string,
+  loggerName = 'uploadDocumentsController',
+) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const upload = createMulterUpload(FILE_SIZE_LIMIT);
+    upload.single(fieldName)(req, res, (err: any) => {
+      if (err) {
+        const {Logger} = require('@hmcts/nodejs-logging');
+        const logger = Logger.getLogger(loggerName);
+        logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
+        (req as any).multerError = err;
+      }
+      next();
+    });
+  };
+};
+
 export const createFileUploadError = (
   category: string,
   index: string | number,

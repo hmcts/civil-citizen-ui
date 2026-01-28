@@ -24,11 +24,18 @@ import {
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {createMulterUpload, createUploadOneFileError} from 'common/utils/fileUploadUtils';
+import {
+  createMulterErrorMiddlewareForSingleField,
+  createUploadOneFileError,
+  getMulterErrorConstraint,
+} from 'common/utils/fileUploadUtils';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {t} from 'i18next';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
-const upload = createMulterUpload();
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'respondentUploadEvidenceDocumentsController');
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, appId: string, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -73,7 +80,7 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
   }
 }) as RequestHandler);
 
-respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKeyForGA = generateRedisKeyForGA(req);
@@ -85,6 +92,21 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
         title: '',
         summaryRows: [],
       });
+
+    if ((req as any).multerError && req.body.action === 'uploadButton') {
+      const multerError = (req as any).multerError;
+      const errorConstraint = getMulterErrorConstraint(multerError);
+      const errorStructure: FormValidationError[] = [
+        new FormValidationError({
+          target: { fileUpload: '' },
+          property: 'fileUpload',
+          constraints: { multerError: errorConstraint },
+        }),
+      ];
+      const translatedErrors = translateErrors(errorStructure, t);
+      req.session.fileUpload = JSON.stringify(translatedErrors);
+      return res.redirect(`${currentUrl}`);
+    }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, formattedSummary, claimId, req.params.appId);
