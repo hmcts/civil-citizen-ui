@@ -101,7 +101,7 @@ window.$ = $;
 
       const addressList = data;
 
-      $(global.this).parent().find('select').closest('.govuk-!-display-none').removeClass('govuk-!-display-none');
+      $(global.this).parent().find('select').closest('.govuk-visually-hidden').removeClass('govuk-visually-hidden');
       $(global.this).parent().find('select').on('change', function () {
         global.this = $(this).parents(POSTCODE_CONTAINER_CALSS);
         findSelectedAddress(addressList, $(this).find(':selected').val());
