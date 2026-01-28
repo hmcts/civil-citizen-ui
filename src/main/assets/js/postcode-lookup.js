@@ -80,7 +80,7 @@ window.$ = $;
 
     showPostcodeError: (flag) => {
       const postcodeErrorContainer = $(global.this).parent().find('.govuk-error-message');
-      flag === true ? postcodeErrorContainer.removeClass('govuk-visually-hidden') : postcodeErrorContainer.addClass('govuk-visually-hidden');
+      flag === true ? postcodeErrorContainer.removeClass('govuk-!-display-none') : postcodeErrorContainer.addClass('govuk-!-display-none');
     },
   };
 
@@ -101,7 +101,7 @@ window.$ = $;
 
       const addressList = data;
 
-      $(global.this).parent().find('select').closest('.govuk-visually-hidden').removeClass('govuk-visually-hidden');
+      $(global.this).parent().find('select').closest('.govuk-!-display-none').removeClass('govuk-!-display-none');
       $(global.this).parent().find('select').on('change', function () {
         global.this = $(this).parents(POSTCODE_CONTAINER_CALSS);
         findSelectedAddress(addressList, $(this).find(':selected').val());
@@ -181,8 +181,10 @@ window.$ = $;
     const toggleForm = (flag) => {
       let container = getFormContainer();
       let addressManuallyHref = getAnchorElement();
-      flag ? container.removeClass('govuk-visually-hidden') : container.addClass('govuk-visually-hidden');
-      flag ? addressManuallyHref.addClass('govuk-visually-hidden') : addressManuallyHref.removeClass('govuk-visually-hidden');
+      flag ? container.removeClass('govuk-!-display-none') : container.addClass('govuk-!-display-none');
+      flag ? addressManuallyHref.addClass('govuk-!-display-none') : addressManuallyHref.removeClass('govuk-!-display-none');
+      flag ? container.attr('aria-hidden', 'false') : container.attr('aria-hidden', 'true');
+      flag ? addressManuallyHref.attr('aria-hidden', 'true') : addressManuallyHref.attr('aria-hidden', 'false');
     };
 
     const getFormContainer = () => $(global.this).parent().find('.address-form');
