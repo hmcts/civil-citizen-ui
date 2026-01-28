@@ -38,7 +38,7 @@ const getMessageSubject = (subject: string, claimId: string, lng: string) => {
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_SUBJECT', {lng}),
     subject,
-    withFragment(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), 'messageSubject'),
+    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
@@ -47,14 +47,14 @@ const getMessageDescription = (messageDetails: string, claimId: string, lng: str
     return [summaryRow(
       t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
       messageDetails,
-      withFragment(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId), 'messageDetails'),
+      constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId),
       t('COMMON.BUTTONS.CHANGE', {lng}))];
   }
 
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
     messageDetails,
-    withFragment(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), 'messageDetails'),
+    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
@@ -62,7 +62,7 @@ const getMessageAboutHearing = (aboutHearing: string, claimId: string, lng: stri
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_ABOUT_HEARING', {lng}),
     yesNoFormatter4(aboutHearing as YesNo, lng),
-    withFragment(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), 'isHearingRelated'),
+    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
 };
 
@@ -73,7 +73,7 @@ const getHearingDate = (hearingRelated: string, hearingDate: Date, claimId: stri
     return [summaryRow(
       t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_HEARING_DATE', {lng}),
       formatDateToFullDate(hearingDate, lng),
-      withFragment(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), 'day'),
+      constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
       t('COMMON.BUTTONS.CHANGE', {lng}))];
   } else return [];
 };
@@ -83,18 +83,14 @@ const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: stri
     return [summaryRow(
       t('PAGES.QM.SEND_MESSAGE_CYA.ATTACHMENTS', {lng}),
       buildDocLink(uploadedFiles, claimId, lng),
-      withFragment(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId), 'selectedFile'),
+      constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId),
       t('COMMON.BUTTONS.CHANGE', {lng}))];
   }
   return [summaryRow(
     t('PAGES.QM.SEND_MESSAGE_CYA.ATTACHMENTS', {lng}),
     buildDocLink(uploadedFiles, claimId, lng),
-    withFragment(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), 'selectedFile'),
+    constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
     t('COMMON.BUTTONS.CHANGE', {lng}))];
-};
-
-const withFragment = (url: string, fragment: string): string => {
-  return `${url}#${fragment}`;
 };
 
 export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
