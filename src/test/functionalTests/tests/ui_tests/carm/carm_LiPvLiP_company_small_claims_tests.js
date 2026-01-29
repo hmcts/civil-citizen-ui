@@ -26,7 +26,7 @@ Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('LiP Defendant Response with Reject all claim', async ({ api }) => {
+Scenario('01 LiP Defendant Response with Reject all claim', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -64,7 +64,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LiP Claimant Response with Reject all claim', async ({ api }) => {
+Scenario('02 LiP Claimant Response with Reject all claim', async ({ api }) => {
   paidDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(paymentDate);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid(500, paidDate));
@@ -85,13 +85,13 @@ Scenario('LiP Claimant Response with Reject all claim', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Caseworker perform mediation unsuccessful', async ({ api }) => {
+Scenario('03 Caseworker perform mediation unsuccessful', async ({ api }) => {
   // Take Mediation Unsuccessful
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LiP claimant uploads mediation documents', async ({ api }) => {
+Scenario('04 LiP claimant uploads mediation documents', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationUnsuccessfulClaimant1NonAttendanceNotif = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);
@@ -127,7 +127,7 @@ Scenario('LiP claimant uploads mediation documents', async ({ api }) => {
   await ClaimantResponseSteps.ViewMediationDocs();
 });
 
-Scenario('LiP defendant uploads mediation documents', async ({ api }) => {
+Scenario('05 LiP defendant uploads mediation documents', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const mediationUnsuccessfulClaimant1NonAttendanceNotif = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);
