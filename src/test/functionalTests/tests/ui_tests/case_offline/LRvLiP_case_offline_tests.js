@@ -9,7 +9,7 @@ let caseData, claimNumber, claimRef, notification;
 
 Feature('LR v Lip - Case Offline Tests').tag('@ui-case-offline');
 
-Before(async ({api}) => {
+Before(async ({ api }) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -20,18 +20,18 @@ Before(async ({api}) => {
 });
 
 //This needs investigation
-Scenario.skip('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
+Scenario.skip('01 Case is offline after caseworker performs Case proceeds in caseman event', async ({ api }) => {
   await api.caseProceedsInCaseman();
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
 });
 
 //This needs investigation
-Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
+Scenario.skip('02 Case is taken offline after SDO for non early adopters', async ({ api }) => {
   notification = caseOfflineAfterSDO();
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM', false);
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'smallClaimsTrack');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.claimantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await api.caseProceedsInCaseman();
