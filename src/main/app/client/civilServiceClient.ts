@@ -291,13 +291,23 @@ export class CivilServiceClient {
       if (!response.data) {
         throw new AssertionError({message: 'Document upload unsuccessful.'});
       }
+
+      let caseDocument: CaseDocument;
       if (response.data instanceof Uint8Array) {
         const decoder = new TextDecoder('utf-8');
         const decodedString = decoder.decode(response.data);
-        return JSON.parse(decodedString) as CaseDocument;
+        caseDocument = JSON.parse(decodedString) as CaseDocument;
       } else {
-        return response.data as CaseDocument;
+        caseDocument = response.data as CaseDocument;
       }
+
+      if (!caseDocument?.documentLink?.document_binary_url) {
+        logger.error(`Uploaded document is missing binary URL.
+          ClaimId: ${req.params.id}
+          DocumentName: ${caseDocument?.documentName}
+          ResponseData: ${JSON.stringify(response.data)}`);
+      }
+      return caseDocument;
     } catch (err: unknown) {
       logger.error(`Error when uploading document, error - req.params.id - ${req.params.id}`);
       throw err;
