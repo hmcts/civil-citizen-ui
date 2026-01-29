@@ -62,7 +62,7 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);
-  await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+  await HearingFeeSteps.payHearingFeeJourney(feeAmount);
   await api.waitForFinishedBusinessProcess();
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);

@@ -7,16 +7,16 @@ const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/respons
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
-const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@ui-part-admit @ui-nightly-prod');
 
-Scenario('Verify the Eligibility Check journey', async () => {
+Scenario('01 Verify the Eligibility Check journey', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('Create Claim by claimant', async ({api}) => {
+Scenario('02 Create Claim by claimant', async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -36,11 +36,11 @@ Scenario('Create Claim by claimant', async ({api}) => {
   console.log('The value of the Security Code :', securityCode);
 }).retry(1);
 
-Scenario('Assign case to defendant', async ({api}) => {
+Scenario('03 Assign case to defendant', async ({ api }) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('Defendant responds with part admit', async ({api}) => {
+Scenario('04 Defendant responds with part admit', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
@@ -66,7 +66,7 @@ Scenario('Defendant responds with part admit', async ({api}) => {
 }).retry(1);
 
 // TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('Claimant responds as Accepted Repayment Plan By Claimant', async ({api}) => {
+Scenario.skip('05 Claimant responds as Accepted Repayment Plan By Claimant', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
