@@ -12,7 +12,7 @@ BeforeSuite(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Claimant sends non-hearing message to court', async ({ api, I }) => {
+Scenario('01 Claimant sends non-hearing message to court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
   console.log('Non-hearing QM claim created:', claimRef);
 
@@ -37,7 +37,7 @@ Scenario('Claimant sends non-hearing message to court', async ({ api, I }) => {
   await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
 });
 
-Scenario('Defendant sends non-hearing message to court', async ({ I }) => {
+Scenario('02 Defendant sends non-hearing message to court', async ({ I }) => {
   const subject = 'Defendant query';
   const message = 'Defendant Test message';
   const isHearingRelated = false;
