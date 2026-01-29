@@ -180,6 +180,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
 
   let index = 1;
   for(const document of documents) {
+
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let witnessSummaryRow = {} as SummaryRow;
 
@@ -188,13 +189,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
       title: t(dateTitle, {lng: getLng(lang)}),
       value: getDate(document.dateInputFields.date.toString()),
     };
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document?.caseDocument?.documentName, claimId, document?.caseDocument?.documentLink?.document_binary_url)};
-
-    if (!document?.caseDocument?.documentLink?.document_binary_url) {
-      logger.error(`Document binary URL is missing for witness document in summary rows.
-        ClaimId: ${claimId}
-        DocumentName: ${document?.caseDocument?.documentName}`);
-    }
+    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -212,6 +207,7 @@ const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: str
 
   let index = 1;
   for(const document of documents) {
+
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let expertSummaryRow = {} as SummaryRow;
 
@@ -221,13 +217,7 @@ const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: str
       title: t(dateTitle, {lng: getLng(lang)}),
       value: getDate(document.dateInputFields.date.toString()),
     };
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document?.caseDocument?.documentName, claimId, document?.caseDocument?.documentLink?.document_binary_url)};
-
-    if (!document?.caseDocument?.documentLink?.document_binary_url) {
-      logger.error(`Document binary URL is missing for expert document in summary rows.
-        ClaimId: ${claimId}
-        DocumentName: ${document?.caseDocument?.documentName}`);
-    }
+    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -251,13 +241,7 @@ const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSect
 
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
     const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document?.caseDocument?.documentName, claimId, document?.caseDocument?.documentLink?.document_binary_url)};
-
-    if (!document?.caseDocument?.documentLink?.document_binary_url) {
-      logger.error(`Document binary URL is missing for document type in summary rows.
-        ClaimId: ${claimId}
-        DocumentName: ${document?.caseDocument?.documentName}`);
-    }
+    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -275,19 +259,21 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
   let index = 1;
   for(const document of documents) {
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Document link is missing for document
+                          ClaimId: ${claimId}
+                          DocumentName: ${document?.caseDocument?.documentName}
+                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
+                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+      continue;
+    }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let documentTypeSummaryRow = {} as SummaryRow;
 
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
     const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document?.caseDocument?.documentName, claimId, document?.caseDocument?.documentLink?.document_binary_url)};
-
-    if (!document?.caseDocument?.documentLink?.document_binary_url) {
-      logger.error(`Document binary URL is missing for document referred to in summary rows.
-        ClaimId: ${claimId}
-        DocumentName: ${document?.caseDocument?.documentName}`);
-    }
+    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -308,13 +294,7 @@ const getFileOnlySummaryRow = (title: string, documents: FileOnlySection[], summ
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let fileOnlySummaryRow = {} as SummaryRow;
 
-    const documentUploadedElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document?.caseDocument?.documentName, claimId, document?.caseDocument?.documentLink?.document_binary_url)};
-
-    if (!document?.caseDocument?.documentLink?.document_binary_url) {
-      logger.error(`Document binary URL is missing for file only document in summary rows.
-        ClaimId: ${claimId}
-        DocumentName: ${document?.caseDocument?.documentName}`);
-    }
+    const documentUploadedElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -339,13 +319,7 @@ const getExpertOtherPartySummaryRows = (title: string, otherPartyTitle: string, 
     const expertNameElement: TitledSummaryRowElement = {title: t('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', { lng: getLng(lang) }), value: document.expertName};
     const otherPartyElement: TitledSummaryRowElement = {title: t('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', { lng: getLng(lang) }), value: document.otherPartyName};
     const otherPartyDocumentElement: TitledSummaryRowElement = {title: t(otherPartyTitle, {lng: getLng(lang)}), value: otherPartyDocumentName};
-    const documentUploadedElement: TitledSummaryRowElement = {title:documentUploaded(lang), value: formatDocumentViewURL(document?.caseDocument?.documentName, claimId, document?.caseDocument?.documentLink?.document_binary_url)};
-
-    if (!document?.caseDocument?.documentLink?.document_binary_url) {
-      logger.error(`Document binary URL is missing for expert other party document in summary rows.
-        ClaimId: ${claimId}
-        DocumentName: ${document?.caseDocument?.documentName}`);
-    }
+    const documentUploadedElement: TitledSummaryRowElement = {title:documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
