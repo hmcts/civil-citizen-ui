@@ -61,9 +61,20 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  viewDefendantResponseFullAdmit(caseId, repaymentOption) {
+  async dismissCookieBannerIfVisible() {
+    try {
+      await I.waitForVisible('#cookie-banner-accept-button', 3);
+      I.click('#cookie-banner-accept-button');
+      I.wait(1);
+    } catch (e) {
+      // Cookie banner not visible, continue
+    }
+  }
+
+  async viewDefendantResponseFullAdmit(caseId, repaymentOption) {
     I.amOnPage(`/case/${caseId}/claimant-response/task-list`);
     I.click(paths.links.view_defendants_response);
+    await this.dismissCookieBannerIfVisible();
     this.verifyDefendantsResponseFullAdmitPayByRepaymentPlan(repaymentOption);
     I.waitForContent('The defendant’s response');
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response`);

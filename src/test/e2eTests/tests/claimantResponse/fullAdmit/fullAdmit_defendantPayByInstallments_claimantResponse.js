@@ -6,7 +6,7 @@ Feature('Full admit defendant pay by installments - @claimantResponse').tag('@e2
 Scenario('claimant accepts full admit and payment plan and formalises with CCJ', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777731;
-    ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
+    await ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
     ClaimantResponseSteps.acceptOrRejectFullAdmitInstalmentsRepaymentPlan(caseId, 'Yes');
     ClaimantResponseSteps.formaliseRepayment(caseId, 'Request a CCJ');
     ClaimantResponseSteps.requestCCJ(caseId, true);
@@ -20,7 +20,7 @@ Scenario('claimant accepts full admit and payment plan and formalises with CCJ',
 Scenario.skip('claimant accepts full admit and payment plan and formalises with SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777732;
-    ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
+    await ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
     ClaimantResponseSteps.acceptOrRejectFullAdmitInstalmentsRepaymentPlan(caseId, 'Yes');
     ClaimantResponseSteps.formaliseRepayment(caseId, 'Sign a settlement agreement');
     ClaimantResponseSteps.signSettlementAgreement(caseId, 'installments');
@@ -44,7 +44,7 @@ Scenario('Defendant signs SSA', async () => {
 Scenario('Claimant rejects full admit - proposes alternate repayment plan', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777734;
-    ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
+    await ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
     ClaimantResponseSteps.acceptOrRejectFullAdmitInstalmentsRepaymentPlan(caseId);
     ClaimantResponseSteps.proposeAlternativePaymentPlanInstallments(caseId);
     ClaimantResponseSteps.checkAndSubmit(caseId);
