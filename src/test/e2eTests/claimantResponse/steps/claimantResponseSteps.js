@@ -66,6 +66,14 @@ class ClaimantResponseSteps {
       await I.waitForVisible('#cookie-banner-accept-button', 3);
       I.click('#cookie-banner-accept-button');
       I.wait(1);
+      // After accepting, the "You've accepted..." message appears with "Hide this message" – click it to fully dismiss
+      try {
+        await I.waitForVisible('#cookie-banner-hide-button', 2);
+        I.click('#cookie-banner-hide-button');
+        I.wait(1);
+      } catch (hideErr) {
+        // Hide button not visible, continue
+      }
     } catch (e) {
       // Cookie banner not visible, continue
     }
