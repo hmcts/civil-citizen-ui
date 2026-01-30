@@ -6,7 +6,7 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 export const getCancelYourUpload = (claimId: string, claim: Claim) => {
   return new UploadYourDocumentsSectionBuilder()
-    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
+    .addMicroText('COMMON.MEDIATION')
     .addMainTitle('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE')
     .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
