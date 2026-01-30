@@ -1,7 +1,5 @@
 const I = actor();
 const config = require('../../../../../config');
-
-const { isDashboardServiceToggleEnabled } = require('../../../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent} = require('../../../../specClaimHelpers/e2e/dashboardHelper');
 
 const selectors = {
@@ -20,16 +18,10 @@ class ClaimantUpdate {
   async viewAndRespondToClaim(claimRef, notification) {
     console.log('notification..', notification);
     I.amOnPage('/dashboard/' + claimRef + '/claimant');
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (isDashboardServiceEnabled) {
-      await verifyNotificationTitleAndContent('', notification.title, notification.content);
-      I.click(notification.nextSteps);
-    } else {
-      I.waitForContent('Response to the claim', config.WaitForText);
-      I.click('View and respond');
-    }
-  }
-
+    await verifyNotificationTitleAndContent('', notification.title, notification.content);
+    I.click(notification.nextSteps);
+  } 
+  
   async startUploadDocs() {
     await I.waitForVisible(selectors.titleClass, config.WaitForText);
     I.waitForVisible(selectors.contentClass, config.WaitForText);
