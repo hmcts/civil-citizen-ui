@@ -2,14 +2,14 @@ const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const {caseOffline, caseOfflineAfterSDO} = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { caseOffline, caseOfflineAfterSDO } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
 Feature('Lip v Lip - Case Offline Tests').tag('@ui-case-offline');
 
-Before(async ({api}) => {
+Before(async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -21,7 +21,7 @@ Before(async ({api}) => {
 });
 
 //This needs investigation
-Scenario.skip('Case is offline after caseworker performs Case proceeds in caseman event', async ({api}) => {
+Scenario.skip('01 Case is offline after caseworker performs Case proceeds in caseman event', async ({ api }) => {
 
   await api.caseProceedsInCaseman();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -31,7 +31,7 @@ Scenario.skip('Case is offline after caseworker performs Case proceeds in casema
 }).tag('@ui-prod');
 
 //This needs investigation
-Scenario.skip('Case is offline after solicitor performs notice of change on behalf of defendant', async ({noc}) => {
+Scenario.skip('02 Case is offline after solicitor performs notice of change on behalf of defendant', async ({ noc }) => {
   // After Noc for full defence case remains online
   // onlineNotification = caseOnline();
   await noc.requestNoticeOfChangeForLipRespondent(claimRef, config.applicantSolicitorUser);
@@ -40,11 +40,11 @@ Scenario.skip('Case is offline after solicitor performs notice of change on beha
 }).tag('@ui-noc');
 
 //This needs investigation
-Scenario.skip('Case is taken offline after SDO for non early adopters', async ({api}) => {
+Scenario.skip('03 Case is taken offline after SDO for non early adopters', async ({ api }) => {
   notification = caseOfflineAfterSDO();
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION', '', false);
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'smallClaimsTrack');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
