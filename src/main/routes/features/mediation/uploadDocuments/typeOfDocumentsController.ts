@@ -57,6 +57,7 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
 mediationTypeOfDocumentsController.get(MEDIATION_TYPE_OF_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    req.session.previousUrl = req.originalUrl;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);

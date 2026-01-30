@@ -59,6 +59,7 @@ function renderView(uploadDocuments: UploadDocuments, res: Response, form: Gener
 mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    req.session.previousUrl = req.originalUrl;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
