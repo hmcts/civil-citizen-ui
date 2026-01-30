@@ -486,7 +486,7 @@ class ClaimantResponseSteps {
     I.waitForContent('Sir John Doe admits they owe all the money you’ve claimed.',60);
     I.see('The defendant’s response','h1');
     if(option === 'bySetDate'){
-      I.waitForContent("This is the total amount you'll be paid", 15);
+      I.waitForContent('This is the total amount you\'ll be paid', 15);
       I.see('including the claim fee and interest if applicable.');
       I.see('They’ve offered to pay you this by');
       I.click(paths.links.see_their_financial_details);
