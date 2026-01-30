@@ -290,30 +290,20 @@ const parseCaseDocument = (request: Record<string, unknown>): CaseDocument | und
   const CASE_DOCUMENT = 'caseDocument';
   const rawCaseDoc = request?.[CASE_DOCUMENT];
   if (rawCaseDoc === undefined || rawCaseDoc === null || rawCaseDoc === '') {
-    logger.error('Case document is missing in request');
+    logger.error('Case document is missing');
     return undefined;
   }
-  let parsed: CaseDocument;
   if (typeof rawCaseDoc === 'string') {
     try {
       logger.info(`Parsing case document: ${rawCaseDoc}`);
-      parsed = JSON.parse(rawCaseDoc) as CaseDocument;
+      return JSON.parse(rawCaseDoc) as CaseDocument;
     } catch (err: unknown){
       const message = err instanceof Error ? err.message : String(err);
       logger.error(`Error parsing case document: ${message}`);
       return undefined;
     }
-  } else {
-    parsed = rawCaseDoc as CaseDocument;
   }
-
-  if (parsed && !parsed.documentLink?.document_binary_url) {
-    logger.error(`Parsed case document is missing binary URL.
-      ParsedObject: ${JSON.stringify(parsed)}
-      RawCaseDoc: ${typeof rawCaseDoc === 'string' ? rawCaseDoc : JSON.stringify(rawCaseDoc)}`);
-  }
-
-  return parsed;
+  return rawCaseDoc as CaseDocument;
 };
 
 type DateCtor<T> = new (day?: string, month?: string, year?: string) => T;
