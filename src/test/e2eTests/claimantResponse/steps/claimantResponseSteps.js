@@ -487,8 +487,8 @@ class ClaimantResponseSteps {
     I.see('The defendant’s response','h1');
     if(option === 'bySetDate'){
       I.waitForContent('This is the total amount you\'ll be paid', 15);
-      I.see('including the claim fee and interest if applicable.');
-      I.see('They’ve offered to pay you this by');
+      I.waitForContent('including the claim fee and interest if applicable.', 10);
+      I.waitForContent('They\'ve offered to pay you this by', 10);
       I.click(paths.links.see_their_financial_details);
       I.see('Bank and savings accounts');
       I.see('Type of account');
@@ -500,8 +500,8 @@ class ClaimantResponseSteps {
       I.see('Children');
     } else{
       I.waitForContent('They\'ve offered to pay you this in instalments.', 15);
-      I.see('How they want to pay?');
-      I.see('The defendant suggested this repayment plan:');
+      I.waitForContent('How they want to pay?', 10);
+      I.waitForContent('The defendant suggested this repayment plan:', 10);
       I.see('Regular payments of');
       I.see('Frequency of payments');
       I.see('First payment date');
