@@ -8,7 +8,7 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
@@ -37,6 +37,9 @@ function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
 
   documentSection.push(getTrialListClaimant(claim, lang));
   documentSection.push(getTrialListDefendant(claim, lang));
+
+  documentSection.push(getAdditionalListClaimant(claim, lang));
+  documentSection.push(getAdditionalListDefendant(claim, lang));
 
   documentSection.push(addSeparation());
   documentSection.push(addButton(claim, lang));
@@ -136,6 +139,28 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
+function getAdditionalListClaimant(claim: Claim, lang: string): ClaimSummarySection {
+
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.ADDITIONAL_DOCUMENTS';
+  const additionalList = claim.caseProgression?.defendantUploadDocuments?.otherManaged;
+
+  return {
+    type: ClaimSummaryType.HTML,
+    data: {html: getAdditionalDocumentHTML(additionalList, additionalDocumentHeading, claim, true, lang)},
+  };
+}
+
+function getAdditionalListDefendant(claim: Claim, lang: string): ClaimSummarySection {
+
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.ADDITIONAL_DOCUMENTS';
+  const additionalList = claim.caseProgression?.defendantUploadDocuments?.otherManaged;
+
+  return {
+    type: ClaimSummaryType.HTML,
+    data: {html: getAdditionalDocumentHTML(additionalList, additionalDocumentHeading, claim, false, lang)},
+  };
+}
+
 function addSeparation(): ClaimSummarySection {
   return {
     type: ClaimSummaryType.HTML,
@@ -193,8 +218,30 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
   return documentsHTML;
 }
 
+function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Claim, isClaimant: boolean, lang: string) {
+
+  let documentsHTML = '';
+  if (rows?.length > 0) {
+    orderDocumentNewestToOldest(rows);
+    const header = t(title, {lng: lang});
+    documentsHTML = documentsHTML.concat('<h2 class="govuk-body"><span class="govuk-body govuk-!-font-weight-bold">' + header + '</span></h2>');
+    documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
+    for (const upload of rows) {
+
+      const documentTypeName = isClaimant? t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT', {lng: lang}): t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT', {lng: lang});
+
+      documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
+      documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
+      documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getEvidenceDocumentLinkAlignedToRight(upload, claim.id));
+      documentsHTML = documentsHTML.concat('</div>');
+    }
+    documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">');
+  }
+  return documentsHTML;
+}
+
 function getDocumentTypeName(isClaimant: boolean,
-  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial,
+  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload,
   lang: string) {
   let key: string;
   switch (documentType) {

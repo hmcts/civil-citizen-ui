@@ -77,6 +77,7 @@ export enum DocumentUri {
   MEDIATION_AGREEMENT = 'mediation_agreement',
   TRIAL_READY_DOCUMENT = 'trial-ready-document',
   JUDGE_FINAL_ORDER = 'JUDGE_FINAL_ORDER',
+
 }
 
 export enum EvidenceUploadWitness {
@@ -101,4 +102,7 @@ export enum EvidenceUploadTrial {
   AUTHORITIES='AUTHORITIES',
   COSTS='COSTS',
   DOCUMENTARY='DOCUMENTARY'
+}
+export enum OtherManageUpload {
+  OTHER_MANAGE_DOCUMENT = 'other-manage-document',
 }

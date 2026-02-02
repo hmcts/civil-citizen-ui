@@ -10,6 +10,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
+  OtherManageUpload,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
@@ -105,6 +106,11 @@ const applicantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
 
   caseProgression.claimantUploadDocuments.trial = uploadApplicantTrialDocuments;
 
+  caseProgression.claimantUploadDocuments.otherManaged = [] as UploadDocumentTypes[];
+  const uploadApplicantHearingDocuments = [] as UploadDocumentTypes[];
+  convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadApplicantHearingDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+  caseProgression.claimantUploadDocuments.otherManaged = uploadApplicantHearingDocuments;
+
   return caseProgression.claimantUploadDocuments;
 };
 
@@ -147,6 +153,11 @@ const defendantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
 
   caseProgression.defendantUploadDocuments.trial = uploadDefendantTrialDocuments;
 
+  caseProgression.defendantUploadDocuments.otherManaged = [] as UploadDocumentTypes[];
+  const uploadApplicantHearingDocuments = [] as UploadDocumentTypes[];
+  convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadApplicantHearingDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+  caseProgression.defendantUploadDocuments.otherManaged = uploadApplicantHearingDocuments;
+
   return caseProgression.defendantUploadDocuments;
 };
 
@@ -180,7 +191,7 @@ const courtOfficerOrders =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[]
 };
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
-  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial) => {
+  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) => {
 
   if(ccdList != null)
   {

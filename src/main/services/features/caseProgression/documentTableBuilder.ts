@@ -90,3 +90,12 @@ export function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTy
 
   return documentsWithDates;
 }
+
+export function orderAdditionalDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
+
+  documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
+    return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;
+  });
+
+  return documentsWithDates;
+}
