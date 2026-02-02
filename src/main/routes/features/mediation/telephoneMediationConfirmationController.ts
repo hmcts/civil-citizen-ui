@@ -59,7 +59,10 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_GALLAI_NA_ALLAI'));
+    const messageKey = isClaimantResponse
+      ? 'ERRORS.MEDIATION_PHONE_CONFIRMATION_REQUIRED_CLAIMANT'
+      : 'ERRORS.MEDIATION_PHONE_CONFIRMATION_REQUIRED_RESPONDENT';
+    const form = new GenericForm(new GenericYesNo(req.body.option, messageKey));
     await form.validate();
     if (form.hasErrors()) {
       const partyPhone = await getPartyPhone(redisKey, isClaimantResponse);

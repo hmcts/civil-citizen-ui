@@ -79,7 +79,8 @@ describe('rejectAllOfClaim', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.OPTION_REQUIRED_RESPONSE);
+          const expectedMessage = TestMessages.REJECT_ALL_REASON_REQUIRED.replace('[CLAIMANT]', 'Mr. Jan Clark');
+          expect(res.text).toContain(expectedMessage);
           expect(res.text).toContain('govuk-error-message');
         });
     });

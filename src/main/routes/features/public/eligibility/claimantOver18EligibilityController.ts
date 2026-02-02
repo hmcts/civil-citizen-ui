@@ -25,7 +25,7 @@ claimantOver18EligibilityController.get(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res)
 });
 
 claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_VARIATION_2'));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIMANT_OVER_18_REQUIRED'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {

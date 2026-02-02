@@ -23,7 +23,7 @@ someUsefulInfoFeesController.get(ELIGIBILITY_INFORMATION_FEES_URL, (req, res) =>
 });
 
 someUsefulInfoFeesController.post(ELIGIBILITY_INFORMATION_FEES_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CONTINUE_HELP_WITH_FEES_REQUIRED'));
   genericYesNoForm.validateSync();
   if (genericYesNoForm.hasErrors()) {
     renderView(genericYesNoForm, res);

@@ -88,7 +88,7 @@ describe('Claimant Response - Settle Claim Controller', () => {
     it('should return error on empty post', async () => {
       await request(app).post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Please select yes or no');
+        expect(res.text).toContain('Select if you want to settle the claim for the [£] the defendant has paid or not?');
       });
     });
 

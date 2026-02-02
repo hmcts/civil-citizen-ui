@@ -6,7 +6,7 @@ import {
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_GUIDANCE_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
   mockCivilClaim,
   mockCivilClaimDefendantCaseProgression,
@@ -55,7 +55,7 @@ describe('Expert Report Details Controller', () => {
     it('should return page with error message on empty post', async () => {
       await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
+        expect(res.text).toContain(TestMessages.EXPERT_REPORT_DETAILS_REQUIRED);
       });
     });
 

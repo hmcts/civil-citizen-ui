@@ -1,11 +1,17 @@
 import {IsDefined} from 'class-validator';
-import {PartyType} from '../../../models/partyType';
+import {ValidationArgs} from '../genericForm';
+import {PartyType} from 'models/partyType';
 
 export class PartyTypeSelection {
-  @IsDefined({message: 'ERRORS.VALID_CHOOSE'})
+  messageName?: string;
+
+  @IsDefined({message: (args: ValidationArgs<PartyTypeSelection>): string => {
+    return args.object.messageName || 'ERRORS.VALID_CHOOSE';
+  }})
     option?: PartyType;
 
-  constructor(option?: PartyType) {
+  constructor(option?: PartyType, messageName?: string) {
     this.option = option;
+    this.messageName = messageName;
   }
 }

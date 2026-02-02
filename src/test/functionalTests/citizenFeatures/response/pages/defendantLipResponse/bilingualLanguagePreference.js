@@ -38,7 +38,7 @@ class BilingualLanguagePreference {
     await I.see('You must choose which language to use to respond to this claim');
     await I.click('Save and continue');
     await I.see('There was a problem');
-    await I.see('Select Welsh if you want to respond to this claim in Welsh');
+    await I.see('Select which language you want to respond to this claim in');
   }
 }
 

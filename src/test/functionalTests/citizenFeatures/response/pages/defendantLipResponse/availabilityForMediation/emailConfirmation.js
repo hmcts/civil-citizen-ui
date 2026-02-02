@@ -13,7 +13,7 @@ class EmailConfirmation {
   async confirmEmail() {
     await I.waitForContent('Can the mediation team use', config.WaitForText);
     await I.click('Save and continue');
-    await I.see('Choose option: Yes or No');
+    await I.see('Select if the mediation team can contact you on [email] about your mediation appointment or not');
     await I.click(fields.yesButton);
     contactUs.verifyContactUs();
     await I.click('Save and continue');

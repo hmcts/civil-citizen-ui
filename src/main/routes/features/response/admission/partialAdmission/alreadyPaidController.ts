@@ -19,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, (async (req, res, next: NextFunction) => {
   try {
-    const alreadyPaidForm = new GenericForm(new GenericYesNo(await partialAdmissionService.getClaimAlreadyPaid(generateRedisKey(<AppRequest>req))));
+    const alreadyPaidForm = new GenericForm(new GenericYesNo(await partialAdmissionService.getClaimAlreadyPaid(generateRedisKey(<AppRequest>req)), 'ERRORS.ALREADY_PAID_REQUIRED'));
     renderView(alreadyPaidForm, res);
   } catch (error) {
     next(error);
@@ -28,7 +28,7 @@ alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, (async (req, res, next: Next
 
 alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, (async (req, res, next: NextFunction) => {
   try {
-    const alreadyPaidForm = new GenericForm(new GenericYesNo(req.body.option));
+    const alreadyPaidForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.ALREADY_PAID_REQUIRED'));
     await alreadyPaidForm.validate();
 
     if (alreadyPaidForm.hasErrors()) {

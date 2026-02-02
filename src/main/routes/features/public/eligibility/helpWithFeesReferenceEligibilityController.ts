@@ -1,10 +1,10 @@
 import {Response, Router} from 'express';
 import {
   ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 const helpWithFeesReferenceEligibilityController = Router();
 const helpWithFeesViewPath = 'features/public/eligibility/help-with-fees-reference';
@@ -21,7 +21,7 @@ helpWithFeesReferenceEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_REFERE
 });
 
 helpWithFeesReferenceEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_COMMON'));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.ELIGIBILITY_HWF_REFERENCE_REQUIRED'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {

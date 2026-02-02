@@ -53,7 +53,7 @@ describe('Claim Interest page', () => {
     it('should return error message when no option selected', async () => {
       await request(app).post(CLAIM_INTEREST_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
+        expect(res.text).toContain(TestMessages.CLAIM_INTEREST_REQUIRED);
       });
     });
 
@@ -85,4 +85,3 @@ describe('Claim Interest page', () => {
     });
   });
 });
-
