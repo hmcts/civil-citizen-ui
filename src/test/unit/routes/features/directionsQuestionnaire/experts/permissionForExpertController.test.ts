@@ -6,9 +6,10 @@ import {
   DQ_EXPERT_CAN_STILL_EXAMINE_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
   PERMISSION_FOR_EXPERT_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -51,7 +52,7 @@ describe('Permission For Expert Controller', () => {
     it('should return permission for expert page on empty post', async () => {
       await request(app).post(PERMISSION_FOR_EXPERT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
+        expect(res.text).toContain(t('ERRORS.PERMISSION_FOR_EXPERT_REQUIRED'));
       });
     });
 

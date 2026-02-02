@@ -5,10 +5,11 @@ import {app} from '../../../../../../../main/app';
 import {
   CITIZEN_ALREADY_PAID_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 
@@ -53,7 +54,7 @@ describe('Already Paid Controller', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
+          expect(res.text).toContain(t('ERRORS.ALREADY_PAID_REQUIRED'));
         });
     });
 
