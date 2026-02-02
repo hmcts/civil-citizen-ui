@@ -2,7 +2,7 @@ export const enum TestMessages {
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
   ARE_YOU_DISABLED = 'Are you disabled?',
   ARE_YOU_SEVERELY_DISABLED = 'Are you severely disabled?',
-  AT_LEAST_ONE_ROW = 'Enter at least one row',
+  AT_LEAST_ONE_ROW = 'Enter at least one event in the timeline',
   CHOOSE_YOUR_RESPONSE = 'Choose your response',
   CLAIMANT_PARTY_TYPE_REQUIRED = 'Select who you are claiming as',
   CLAIM_INTEREST_REQUIRED = 'Select if you want to claim interest or not',

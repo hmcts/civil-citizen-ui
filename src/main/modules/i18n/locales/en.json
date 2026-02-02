@@ -5738,7 +5738,7 @@
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
     "ENTER_TELEPHONE_NUMBER": "Enter telephone number",
-    "ONE_ROW_REQUIRED": "Enter at least one row",
+    "ONE_ROW_REQUIRED": "Enter at least one event in the timeline",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAID_AMOUNT_NOT_GREATER": "Paid amount cannot be greater than or equal to admitted amount",
