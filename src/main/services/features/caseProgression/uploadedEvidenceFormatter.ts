@@ -2,7 +2,7 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {t} from 'i18next';
 import {
@@ -16,7 +16,7 @@ import {alignText} from 'form/models/alignText';
 
 export class UploadedEvidenceFormatter {
 
-  static  getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial, lang: string) {
+  static  getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload, lang: string) {
     let documentName: string;
 
     switch(documentType)
@@ -64,6 +64,9 @@ export class UploadedEvidenceFormatter {
         documentName = t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS', {lng: lang});
         break;
       case EvidenceUploadTrial.DOCUMENTARY:
+        documentName = t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE', {lng: lang});
+        break;
+      case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
         documentName = t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE', {lng: lang});
         break;
     }
