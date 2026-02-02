@@ -15482,17 +15482,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:13.15.26":
+"validator@npm:>=13.15.22":
   version: 13.15.26
   resolution: "validator@npm:13.15.26"
   checksum: 10/22488ae718ca724eda81b7c8bf505005d4d70cb6ff9a319f48fd897a31d40fd9a2971af4a3288667a04c56b4f95912555495519d54a5d8d63c2572bf4970081a
-  languageName: node
-  linkType: hard
-
-"validator@npm:^13.6.0, validator@npm:^13.7.0":
-  version: 13.15.20
-  resolution: "validator@npm:13.15.20"
-  checksum: 10/498f9b201dda7b09207bbc13606e6f90595987eab9e3a60fc5b8d8d96141c9351192aea56d392c78640e2462770eedccf545cf13b2ef43e87d73a755ba485c5d
   languageName: node
   linkType: hard
 
