@@ -31,9 +31,9 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     const defendantUploadDocuments = defendantDocuments(ccdClaim);
 
     caseProgression.claimantUploadDocuments =
-      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial);
+      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, applicantUploadDocuments.otherManaged);
     caseProgression.defendantUploadDocuments =
-      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial);
+      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, applicantUploadDocuments.otherManaged);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
 
@@ -107,9 +107,9 @@ const applicantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
   caseProgression.claimantUploadDocuments.trial = uploadApplicantTrialDocuments;
 
   caseProgression.claimantUploadDocuments.otherManaged = [] as UploadDocumentTypes[];
-  const uploadApplicantHearingDocuments = [] as UploadDocumentTypes[];
-  convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadApplicantHearingDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
-  caseProgression.claimantUploadDocuments.otherManaged = uploadApplicantHearingDocuments;
+  const uploadApplicantOtherDocuments = [] as UploadDocumentTypes[];
+  convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadApplicantOtherDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+  caseProgression.claimantUploadDocuments.otherManaged = uploadApplicantOtherDocuments;
 
   return caseProgression.claimantUploadDocuments;
 };
@@ -154,9 +154,9 @@ const defendantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
   caseProgression.defendantUploadDocuments.trial = uploadDefendantTrialDocuments;
 
   caseProgression.defendantUploadDocuments.otherManaged = [] as UploadDocumentTypes[];
-  const uploadApplicantHearingDocuments = [] as UploadDocumentTypes[];
-  convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadApplicantHearingDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
-  caseProgression.defendantUploadDocuments.otherManaged = uploadApplicantHearingDocuments;
+  const uploadApplicantOtherDocuments = [] as UploadDocumentTypes[];
+  convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadApplicantOtherDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+  caseProgression.defendantUploadDocuments.otherManaged = uploadApplicantOtherDocuments;
 
   return caseProgression.defendantUploadDocuments;
 };

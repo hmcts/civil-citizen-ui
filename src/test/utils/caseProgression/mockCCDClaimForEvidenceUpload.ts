@@ -3,7 +3,7 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {
   UploadEvidenceDocumentType,
@@ -145,6 +145,12 @@ export const mockReferredDocument = {
   createdDatetime: new Date(0),
 };
 
+export const mockOtherManageDocument = {
+  witnessOptionUploadDate: new Date(0),
+  witnessOptionDocument: getMockDocument(),
+  createdDatetime: new Date(0),
+};
+
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {
     documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
@@ -181,6 +187,7 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     caseDocumentUploadDateRes: new Date('1970-01-01T00:00:00.000Z'),
     trialReadyApplicant: YesNoUpperCamelCase.NO,
     trialReadyRespondent1: YesNoUpperCamelCase.YES,
+    manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
   };
 }
 
@@ -232,7 +239,7 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
   return ccdClaim;
 }
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial)
+function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload)
   : UploadEvidenceElementCCD[] {
 
   const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
@@ -262,6 +269,9 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
     case EvidenceUploadTrial.COSTS:
     case EvidenceUploadTrial.DOCUMENTARY:
       uploadEvidenceElementCCD.value = mockTypeDocument;
+      break;
+    case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
+      uploadEvidenceElementCCD.value = mockOtherManageDocument;
       break;
   }
 
