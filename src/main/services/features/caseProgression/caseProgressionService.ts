@@ -247,8 +247,7 @@ export const addAnother = (uploadDocuments: UploadDocumentsUserForm, action: str
   } else if (category === 'trialCosts') {
     uploadDocuments.trialCosts.push(new FileOnlySection());
   } else if (category === 'trialDocumentary') {
-    uploadDocuments.trialDocumentary.push(new TypeOfDocumentSection());
-  }
+    uploadDocuments.trialDocumentary.push(new TypeOfDocumentSection());}
 };
 
 const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[] => {
