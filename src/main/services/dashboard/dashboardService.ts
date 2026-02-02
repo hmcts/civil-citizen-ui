@@ -3,7 +3,10 @@ import {ApplicantOrRespondent, ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import {
+  objectToMap, populateDashboardValues,
+  replaceDashboardPlaceholders,
+} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
@@ -30,7 +33,6 @@ import {
 import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {isGaOnline} from 'services/commons/generalApplicationHelper';
 import {CaseState} from 'form/models/claimDetails';
-
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -41,7 +43,7 @@ const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
   new DashboardTaskList('Applications to the court', '', []),
   new DashboardTaskList('Messages to the court', '', []));
 
-export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
+export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, totalAmountWithInterestAndFees: string, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
   const isNroForGaLip = await isCuiGaNroEnabled();
   const welshGaEnabled = await isGaForWelshEnabled();
@@ -87,22 +89,24 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
-    for (const item of dashboard.items) {
-      for (const task of item.tasks) {
-        task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
-        task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
-        task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
-        task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
+    if(dashboard.items?.length) {
+      const mappedValues = await populateDashboardValues(claim, claimId, totalAmountWithInterestAndFees);
+      for (const item of dashboard.items) {
+        for (const task of item.tasks) {
+          task.taskNameEn = await replaceDashboardPlaceholders(task.taskNameEn, mappedValues);
+          task.taskNameCy = await replaceDashboardPlaceholders(task.taskNameCy, mappedValues);
+          task.hintTextEn = await replaceDashboardPlaceholders(task.hintTextEn, mappedValues);
+          task.hintTextCy = await replaceDashboardPlaceholders(task.hintTextCy, mappedValues);
+        }
       }
     }
-
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
   }
 };
 
-export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
+export const getNotifications = async (claimId: string, claim: Claim, totalAmountWithInterestAndFees: string, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
   const mainClaimNotificationIds: string[] = [];
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   dashboardNotifications.items?.forEach(notification => mainClaimNotificationIds.push(notification.id));
@@ -133,20 +137,23 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
 
   if (dashboardNotifications) {
     for (const notification of dashboardNotifications.items) {
-      notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
-      notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
+      const mappedValues = await populateDashboardValues(claim, claimId,totalAmountWithInterestAndFees, notification, lng);
+      notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
+      notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
     }
     for (const [gaRef, value] of applicantNotifications) {
       for (const notification of value.items) {
-        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+        const mappedValues = await populateDashboardValues(claim, claimId, totalAmountWithInterestAndFees, notification, lng, gaRef);
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
       dashboardNotifications.items.push(...(value?.items ?? []));
     }
     for (const [gaRef, value] of respondentNotifications) {
       for (const notification of value.items) {
-        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
-        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
+        const mappedValues = await populateDashboardValues(claim, claimId, totalAmountWithInterestAndFees, notification, lng, gaRef);
+        notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);
+        notification.descriptionCy = await replaceDashboardPlaceholders(notification.descriptionCy, mappedValues);
       }
       dashboardNotifications.items.push(...(value?.items ?? []));
     }
