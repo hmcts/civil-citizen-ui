@@ -21,8 +21,7 @@ const paths = {
     have_you_been_paid: '//a[contains(text(), \'Have you been paid the\')]',
     settle_the_claim_for: '//a[contains(text(), \'Settle the claim for\')]',
     propose_alternative_plan: '//a[contains(text(), \'Propose an alternative repayment plan\')]',
-    // GOV.UK details component renders the summary text in <summary>; match by text so both span and summary work
-    see_their_financial_details: '//summary[contains(.,\'See their financial details\')] | //span[contains(.,\'See their financial details\')]',
+    see_their_financial_details: '//span[contains(.,\'See their financial details\')]',
   },
   fields: {
     paymentAmount: 'input[id="paymentAmount"]',
@@ -62,28 +61,9 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async dismissCookieBannerIfVisible() {
-    try {
-      await I.waitForVisible('#cookie-banner-accept-button', 3);
-      I.click('#cookie-banner-accept-button');
-      I.wait(1);
-      // After accepting, the "You've accepted..." message appears with "Hide this message" – click it to fully dismiss
-      try {
-        await I.waitForVisible('#cookie-banner-hide-button', 2);
-        I.click('#cookie-banner-hide-button');
-        I.wait(1);
-      } catch (hideErr) {
-        // Hide button not visible, continue
-      }
-    } catch (e) {
-      // Cookie banner not visible, continue
-    }
-  }
-
-  async viewDefendantResponseFullAdmit(caseId, repaymentOption) {
+  viewDefendantResponseFullAdmit(caseId, repaymentOption) {
     I.amOnPage(`/case/${caseId}/claimant-response/task-list`);
     I.click(paths.links.view_defendants_response);
-    await this.dismissCookieBannerIfVisible();
     this.verifyDefendantsResponseFullAdmitPayByRepaymentPlan(repaymentOption);
     I.waitForContent('The defendant’s response');
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response`);
@@ -487,11 +467,10 @@ class ClaimantResponseSteps {
     I.waitForContent('Sir John Doe admits they owe all the money you’ve claimed.',60);
     I.see('The defendant’s response','h1');
     if(option === 'bySetDate'){
-      I.waitForContent('This is the total amount you\'ll be paid', 15);
-      I.waitForContent('including the claim fee and interest if applicable.', 10);
-      I.waitForContent('They\'ve offered to pay you this by', 10);
-      I.waitForContent('See their financial details', 5);
-      I.click('See their financial details');
+      I.see('This is the total amount you’ll be paid,');
+      I.see('including the claim fee and interest if applicable.');
+      I.see('They’ve offered to pay you this by');
+      I.click(paths.links.see_their_financial_details);
       I.see('Bank and savings accounts');
       I.see('Type of account');
       I.see('Balance');
@@ -501,17 +480,15 @@ class ClaimantResponseSteps {
       I.see('Where are they living?');
       I.see('Children');
     } else{
-      I.waitForContent('They\'ve offered to pay you this in instalments.', 15);
-      I.waitForContent('How they want to pay?', 10);
-      I.waitForContent('The defendant suggested this repayment plan:', 10);
-      I.waitForContent('Regular payments of', 10);
+      I.see('They\'ve offered to pay you this in instalments.');
+      I.see('How they want to pay?');
+      I.see('The defendant suggested this repayment plan:');
       I.see('Regular payments of');
       I.see('Frequency of payments');
       I.see('First payment date');
       I.see('Final payment date');
       I.see('Length of repayment plan');
-      I.waitForContent('See their financial details', 5);
-      I.click('See their financial details');
+      I.click(paths.links.see_their_financial_details);
       I.see('Bank and savings accounts');
       I.see('Do they have a job?');
       I.see('Do they receive any income?');
