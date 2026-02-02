@@ -21,7 +21,8 @@ const paths = {
     have_you_been_paid: '//a[contains(text(), \'Have you been paid the\')]',
     settle_the_claim_for: '//a[contains(text(), \'Settle the claim for\')]',
     propose_alternative_plan: '//a[contains(text(), \'Propose an alternative repayment plan\')]',
-    see_their_financial_details: '//span[contains(.,\'See their financial details\')]',
+    // GOV.UK details component renders the summary text in <summary>; match by text so both span and summary work
+    see_their_financial_details: '//summary[contains(.,\'See their financial details\')] | //span[contains(.,\'See their financial details\')]',
   },
   fields: {
     paymentAmount: 'input[id="paymentAmount"]',
@@ -489,7 +490,8 @@ class ClaimantResponseSteps {
       I.waitForContent('This is the total amount you\'ll be paid', 15);
       I.waitForContent('including the claim fee and interest if applicable.', 10);
       I.waitForContent('They\'ve offered to pay you this by', 10);
-      I.click(paths.links.see_their_financial_details);
+      I.waitForContent('See their financial details', 5);
+      I.click('See their financial details');
       I.see('Bank and savings accounts');
       I.see('Type of account');
       I.see('Balance');
@@ -502,12 +504,14 @@ class ClaimantResponseSteps {
       I.waitForContent('They\'ve offered to pay you this in instalments.', 15);
       I.waitForContent('How they want to pay?', 10);
       I.waitForContent('The defendant suggested this repayment plan:', 10);
+      I.waitForContent('Regular payments of', 10);
       I.see('Regular payments of');
       I.see('Frequency of payments');
       I.see('First payment date');
       I.see('Final payment date');
       I.see('Length of repayment plan');
-      I.click(paths.links.see_their_financial_details);
+      I.waitForContent('See their financial details', 5);
+      I.click('See their financial details');
       I.see('Bank and savings accounts');
       I.see('Do they have a job?');
       I.see('Do they receive any income?');
