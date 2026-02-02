@@ -3,7 +3,6 @@ const EligibilityCheck = require('../pages/eligibilityCheck');
 const EligibilityCheckOCMC = require('../pages/eligibilityCheckOCMC');
 const CreateClaim = require('../pages/createClaim');
 const CreateClaimOCMC = require('../pages/createClaimOCMC');
-const {isMintiToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const eligibilityCheck = new EligibilityCheck();
 const eligibilityCheckOCMC = new EligibilityCheckOCMC();
@@ -53,13 +52,8 @@ class CreateClaimSteps {
   }
 
   async EligibilityCheckStepsForClaimCreation() {
-    const isMintiOn = await isMintiToggleEnabled();
     await eligibilityCheck.open();
-    if (isMintiOn) {
-      await eligibilityCheck.eligibilityKnownClaimAmount();
-    } else {
-      await eligibilityCheck.eligibilityClaimValue();
-    }
+    await eligibilityCheck.eligibilityKnownClaimAmount();
     await eligibilityCheck.eligibilitySingleDefendant();
     await eligibilityCheck.eligibilityDefendantAddress();
     await eligibilityCheck.eligibilityClaimType();
