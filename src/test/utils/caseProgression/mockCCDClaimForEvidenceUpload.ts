@@ -146,10 +146,11 @@ export const mockReferredDocument = {
 };
 
 export const mockOtherManageDocument = {
-  witnessOptionUploadDate: new Date(0),
-  witnessOptionDocument: getMockDocument(),
+  typeOfDocument: 'type',
+  documentIssuedDate: new Date(0),
+  documentUpload: getMockDocument(),
   createdDatetime: new Date(0),
-};
+} as UploadEvidenceDocumentType;
 
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {
