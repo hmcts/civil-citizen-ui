@@ -23,28 +23,22 @@ export function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSumma
 
 function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
 
-  const documentSection = [] as ClaimSummarySection[];
-  documentSection.push(addParagraph(lang));
-
-  documentSection.push(getDisclosureClaimant(claim, lang));
-  documentSection.push(getDisclosureDefendant(claim, lang));
-
-  documentSection.push(getWitnessSummaryClaimant(claim, lang));
-  documentSection.push(getWitnessSummaryDefendant(claim, lang));
-
-  documentSection.push(getExpertListClaimant(claim, lang));
-  documentSection.push(getExpertListDefendant(claim, lang));
-
-  documentSection.push(getTrialListClaimant(claim, lang));
-  documentSection.push(getTrialListDefendant(claim, lang));
-
-  documentSection.push(getAdditionalListClaimant(claim, lang));
-  documentSection.push(getAdditionalListDefendant(claim, lang));
-
-  documentSection.push(addSeparation());
-  documentSection.push(addButton(claim, lang));
-
-  return {contentSections: documentSection, hasDivider: false};
+  const sections: ClaimSummarySection[] = [
+    addParagraph(lang),
+    getDisclosureClaimant(claim, lang),
+    getDisclosureDefendant(claim, lang),
+    getWitnessSummaryClaimant(claim, lang),
+    getWitnessSummaryDefendant(claim, lang),
+    getExpertListClaimant(claim, lang),
+    getExpertListDefendant(claim, lang),
+    getTrialListClaimant(claim, lang),
+    getTrialListDefendant(claim, lang),
+    getAdditionalListClaimant(claim, lang),
+    getAdditionalListDefendant(claim, lang),
+    addSeparation(),
+    addButton(claim, lang),
+  ];
+  return {contentSections: sections, hasDivider: false};
 }
 
 function getDisclosureClaimant(claim: Claim, lang: string): ClaimSummarySection {
