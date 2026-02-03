@@ -79,7 +79,7 @@ describe('rejectAllOfClaim', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(/Select why you(?:'|\u2019|&#39;|&apos;)t believe you owe Mr\. Jan Clark any money/);
+          expect(res.text).toMatch(/Select why you don(?:'|\u2019|&#39;|&apos;)t believe you owe Mr\. Jan Clark any money/);
           expect(res.text).toContain('govuk-error-message');
         });
     });
