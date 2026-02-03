@@ -9,7 +9,7 @@ import {
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {formatEvidenceDocumentAlignedViewURL, formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {alignText} from 'form/models/alignText';
@@ -86,7 +86,7 @@ export class UploadedEvidenceFormatter {
     return formatEvidenceDocumentAlignedViewURL(documentName, claimId, documentBinary, alignText.ALIGN_TO_THE_RIGHT);
   }
 
-  static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType) {
+  static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
     if(caseDocument instanceof UploadEvidenceDocumentType)
     {
       return caseDocument.documentUpload.document_filename;
@@ -99,9 +99,13 @@ export class UploadedEvidenceFormatter {
     {
       return caseDocument.expertDocument.document_filename;
     }
+    else if (caseDocument instanceof UploadOtherDocumentType)
+    {
+      return caseDocument.documentUpload.document_filename;
+    }
   }
 
-  static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType) {
+  static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
     if(caseDocument instanceof UploadEvidenceDocumentType)
     {
       return caseDocument.documentUpload.document_binary_url;
@@ -109,6 +113,10 @@ export class UploadedEvidenceFormatter {
     else if(caseDocument instanceof  UploadEvidenceWitness)
     {
       return caseDocument.witnessOptionDocument.document_binary_url;
+    }
+    else if(caseDocument instanceof  UploadOtherDocumentType)
+    {
+      return caseDocument.documentUpload.document_binary_url;
     }
     else
     {
