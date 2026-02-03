@@ -31,7 +31,7 @@ describe('UploadedEvidenceFormatter', () => {
     const documentTypeToNameMap = getDocumentTypeToName();
 
     //when-then
-    documentTypeToNameMap.forEach((key: string, value: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | UploadOtherDocumentType) => {
+    documentTypeToNameMap.forEach((key: string, value: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) => {
       //when
       const actualTypeName = UploadedEvidenceFormatter.getDocumentTypeName(value, lang);
 
