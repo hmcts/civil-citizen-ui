@@ -35,6 +35,7 @@ import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreServ
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -75,13 +76,14 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
         await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
       }
+      const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
+      const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
-      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+      const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
         = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
