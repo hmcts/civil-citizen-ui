@@ -4,13 +4,13 @@ import {
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {getMockDocument} from '../../../../utils/mockDocument';
 import * as documentUrlFormatter from 'common/utils/formatDocumentURL';
@@ -31,7 +31,7 @@ describe('UploadedEvidenceFormatter', () => {
     const documentTypeToNameMap = getDocumentTypeToName();
 
     //when-then
-    documentTypeToNameMap.forEach((key: string, value: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) => {
+    documentTypeToNameMap.forEach((key: string, value: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | UploadOtherDocumentType) => {
       //when
       const actualTypeName = UploadedEvidenceFormatter.getDocumentTypeName(value, lang);
 
@@ -80,6 +80,20 @@ describe('UploadedEvidenceFormatter', () => {
       //given
       const caseDocument = new UploadEvidenceDocumentType(null,'type', date, document, date);
       const uploadedDocument = new UploadDocumentTypes(false, caseDocument, EvidenceUploadDisclosure.DISCLOSURE_LIST, null);
+
+      //when
+      const urlSpy = jest.spyOn(documentUrlFormatter, 'formatDocumentViewURL');
+      UploadedEvidenceFormatter.getDocumentLink(uploadedDocument, claimId);
+
+      //then
+      expect(urlSpy).toBeCalledWith(document.document_filename, claimId, document.document_binary_url);
+
+    });
+
+    it('should find filename & binary from UploadOtherDocumentType files', () => {
+      //given
+      const caseDocument = new UploadOtherDocumentType('other', date, document, date);
+      const uploadedDocument = new UploadDocumentTypes(false, caseDocument, OtherManageUpload.OTHER_MANAGE_DOCUMENT, null);
 
       //when
       const urlSpy = jest.spyOn(documentUrlFormatter, 'formatDocumentViewURL');
