@@ -87,6 +87,10 @@ export class UploadedEvidenceFormatter {
     return formatEvidenceDocumentAlignedViewURL(documentName, claimId, documentBinary, alignText.ALIGN_TO_THE_RIGHT);
   }
 
+  static getOtherDocumentLinkAlignedToRight(documentName: string, documentBinary: string, claimId: string) : string {
+    return formatEvidenceDocumentAlignedViewURL(documentName, claimId, documentBinary, alignText.ALIGN_TO_THE_RIGHT);
+  }
+
   static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
     const document = UploadedEvidenceFormatter.getDocument(caseDocument);
     return document?.document_filename;
