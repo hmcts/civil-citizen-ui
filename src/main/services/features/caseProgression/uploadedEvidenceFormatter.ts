@@ -87,41 +87,31 @@ export class UploadedEvidenceFormatter {
   }
 
   static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
-    if(caseDocument instanceof UploadEvidenceDocumentType)
-    {
-      return caseDocument.documentUpload.document_filename;
+    const document = UploadedEvidenceFormatter.getDocument(caseDocument);
+    return document.document_filename;
+  }
+
+  static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
+    if (caseDocument instanceof UploadEvidenceWitness) {
+      return caseDocument.witnessOptionDocument;
     }
-    else if(caseDocument instanceof  UploadEvidenceWitness)
-    {
-      return caseDocument.witnessOptionDocument.document_filename;
+    if (caseDocument instanceof UploadEvidenceExpert) {
+      return caseDocument.expertDocument;
     }
-    else if (caseDocument instanceof UploadEvidenceExpert)
-    {
-      return caseDocument.expertDocument.document_filename;
+    if (caseDocument instanceof UploadEvidenceDocumentType || caseDocument instanceof UploadOtherDocumentType) {
+      return caseDocument.documentUpload;
     }
-    else if (caseDocument instanceof UploadOtherDocumentType)
-    {
-      return caseDocument.documentUpload.document_filename;
-    }
+    throw new Error('Unsupported case document type');
   }
 
   static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
-    if(caseDocument instanceof UploadEvidenceDocumentType)
-    {
-      return caseDocument.documentUpload.document_binary_url;
-    }
-    else if(caseDocument instanceof  UploadEvidenceWitness)
-    {
-      return caseDocument.witnessOptionDocument.document_binary_url;
-    }
-    else if(caseDocument instanceof  UploadOtherDocumentType)
-    {
-      return caseDocument.documentUpload.document_binary_url;
-    }
-    else
-    {
-      return caseDocument.expertDocument.document_binary_url;
-    }
+    const document =
+      caseDocument instanceof UploadEvidenceWitness
+        ? caseDocument.witnessOptionDocument
+        : caseDocument instanceof UploadEvidenceExpert
+          ? caseDocument.expertDocument
+          : caseDocument.documentUpload;
+    return document.document_binary_url;
   }
 
 }
