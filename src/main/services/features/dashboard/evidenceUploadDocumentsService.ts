@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {t} from 'i18next';
-import {UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {UploadDocumentTypes, UploadOtherDocumentType} from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 import {
@@ -226,7 +226,10 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
 
       documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
       documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
-      documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getEvidenceDocumentLinkAlignedToRight(upload, claim.id));
+      const document = upload.caseDocument as UploadOtherDocumentType;
+      const documentName = document.documentUpload.document_filename;
+      const documentBinary = document.documentUpload.document_binary_url;
+      documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
       documentsHTML = documentsHTML.concat('</div>');
     }
     documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">');

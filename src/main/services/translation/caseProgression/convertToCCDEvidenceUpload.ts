@@ -34,6 +34,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
     ccdClaim.documentAuthorities = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.AUTHORITIES);
     ccdClaim.documentCosts = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.COSTS);
     ccdClaim.documentEvidenceForTrial = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY);
+    ccdClaim.documentEvidenceForTrial = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.otherManaged, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
     ccdClaim.caseDocumentUploadDate = new Date();
   } else {
     ccdClaim.documentDisclosureListRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.disclosure, EvidenceUploadDisclosure.DISCLOSURE_LIST);
@@ -51,6 +52,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
     ccdClaim.documentAuthoritiesRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.AUTHORITIES);
     ccdClaim.documentCostsRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.COSTS);
     ccdClaim.documentEvidenceForTrialRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY);
+    ccdClaim.documentEvidenceForTrial = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.otherManaged, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
     ccdClaim.caseDocumentUploadDateRes = new Date();
   }
 
