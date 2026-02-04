@@ -101,7 +101,7 @@ export class UploadedEvidenceFormatter {
     if (caseDocument instanceof UploadEvidenceDocumentType || caseDocument instanceof UploadOtherDocumentType) {
       return caseDocument.documentUpload;
     }
-    throw new Error('Unsupported case document type');
+    return caseDocument['documentUpload'];
   }
 
   static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
