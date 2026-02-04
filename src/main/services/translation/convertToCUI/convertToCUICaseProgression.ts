@@ -3,7 +3,7 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
   UploadDocumentTypes, UploadEvidenceDocumentType,
-  UploadEvidenceElementCCD, UploadEvidenceExpert, UploadEvidenceWitness,
+  UploadEvidenceElementCCD, UploadEvidenceExpert, UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
@@ -204,12 +204,14 @@ const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiLi
   }
 };
 
-const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert => {
+const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType => {
 
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
     documentType = documentType as UploadEvidenceDocumentType;
-    documentType = new UploadEvidenceDocumentType(documentType.witnessOptionName, documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime);
+    if (!(documentType instanceof UploadOtherDocumentType)) {
+      documentType = new UploadEvidenceDocumentType(documentType?.witnessOptionName, documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime);
+    }
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
