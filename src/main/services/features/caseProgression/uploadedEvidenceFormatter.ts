@@ -13,6 +13,7 @@ import {
 } from 'models/caseProgression/uploadDocumentsType';
 import {formatEvidenceDocumentAlignedViewURL, formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {alignText} from 'form/models/alignText';
+import {Document} from "models/document/document";
 
 export class UploadedEvidenceFormatter {
 
@@ -91,7 +92,7 @@ export class UploadedEvidenceFormatter {
     return document?.document_filename;
   }
 
-  static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
+  static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType): Document {
     if (caseDocument instanceof UploadEvidenceWitness) {
       return caseDocument.witnessOptionDocument;
     }
@@ -105,13 +106,8 @@ export class UploadedEvidenceFormatter {
   }
 
   static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
-    const document =
-      caseDocument instanceof UploadEvidenceWitness
-        ? caseDocument.witnessOptionDocument
-        : caseDocument instanceof UploadEvidenceExpert
-          ? caseDocument.expertDocument
-          : caseDocument.documentUpload;
-    return document.document_binary_url;
+    const document = UploadedEvidenceFormatter.getDocument(caseDocument);
+    return document?.document_binary_url? document?.document_binary_url : '';
   }
 
 }
