@@ -3,14 +3,14 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {v4 as uuidv4} from 'uuid';
 import {CCDClaim} from 'models/civilClaimResponse';
@@ -58,7 +58,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
 };
 
 const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
-  evidenceType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) : UploadEvidenceElementCCD[] => {
+  evidenceType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) : UploadEvidenceElementCCD[] => {
 
   if(!evidenceList) return undefined;
 
@@ -73,7 +73,7 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
         continue;
       }
 
-      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
+      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType| UploadOtherDocumentType;
       id = null;
 
       switch (element.documentType) {
@@ -97,6 +97,9 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
         case EvidenceUploadTrial.COSTS:
         case EvidenceUploadTrial.DOCUMENTARY:
           evidenceItem = element.caseDocument as UploadEvidenceDocumentType;
+          break;
+        case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
+          evidenceItem = element.caseDocument as UploadOtherDocumentType;
           break;
       }
       id = element.uuid == null ? uuidv4() : element.uuid ;
