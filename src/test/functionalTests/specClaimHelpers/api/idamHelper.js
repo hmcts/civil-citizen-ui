@@ -7,7 +7,7 @@ const idamUsersCreated = new Set();
 
 const loginEndpoint = config.idamStub.enabled ? 'oauth2/token' : 'loginUser';
 const idamUrl = config.idamStub.enabled ? config.idamStub.url : config.url.idamApi;
-const idamTestSupportUrl = config.idamStub.enabled ? config.idamStub.url : 'https://idam-testing-support-api.aat.platform.hmcts.net';
+const idamTestSupportUrl = config.idamStub.enabled ? config.idamStub.url : config.url.idamTestSupportApi;
 const adminUser = config.idamStub.enabled ? config.idamStub.url : config.ctscAdmin;
 
 async function getAccessTokenFromIdam(user) {

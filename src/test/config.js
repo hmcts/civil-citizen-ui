@@ -23,6 +23,7 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
+    idamTestSupportApi: 'https://idam-testing-support-api.aat.platform.hmcts.net',
     /*manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
