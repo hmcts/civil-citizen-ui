@@ -77,7 +77,7 @@ export class UploadedEvidenceFormatter {
     const documentName = UploadedEvidenceFormatter.getDocumentFilename(document.caseDocument);
     const documentBinary = UploadedEvidenceFormatter.getDocumentBinaryUrl(document.caseDocument);
 
-    return formatDocumentViewURL(documentName, claimId, documentBinary);
+    return documentName && documentBinary ? formatDocumentViewURL(documentName, claimId, documentBinary) : '';
   }
 
   static getEvidenceDocumentLinkAlignedToRight(document: UploadDocumentTypes, claimId: string) : string {
@@ -88,7 +88,7 @@ export class UploadedEvidenceFormatter {
 
   static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
     const document = UploadedEvidenceFormatter.getDocument(caseDocument);
-    return document.document_filename;
+    return document?.document_filename;
   }
 
   static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
@@ -101,7 +101,7 @@ export class UploadedEvidenceFormatter {
     if (caseDocument instanceof UploadEvidenceDocumentType || caseDocument instanceof UploadOtherDocumentType) {
       return caseDocument.documentUpload;
     }
-    return caseDocument['documentUpload'];
+    return undefined;
   }
 
   static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
