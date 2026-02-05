@@ -208,22 +208,23 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
 
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
-    documentType = documentType as UploadEvidenceDocumentType;
-    if (!(documentType instanceof UploadOtherDocumentType)) {
-      documentType = new UploadEvidenceDocumentType(documentType?.witnessOptionName, documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime);
+    if (documentType instanceof UploadEvidenceDocumentType) {
+      const document = documentType as UploadEvidenceDocumentType;
+      documentType = new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
     } else {
-      documentType = new UploadOtherDocumentType(documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime);
+      const document = documentType as UploadOtherDocumentType;
+      documentType = new UploadOtherDocumentType(document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
     }
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
-    documentType = documentType as UploadEvidenceWitness;
-    documentType = new UploadEvidenceWitness(documentType.witnessOptionName, documentType.witnessOptionUploadDate, documentType.witnessOptionDocument, documentType.createdDatetime);
+    const document = documentType as UploadEvidenceWitness;
+    documentType = new UploadEvidenceWitness(document.witnessOptionName, document.witnessOptionUploadDate, document.witnessOptionDocument, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.EXPERT in documentType)
   {
-    documentType = documentType as UploadEvidenceExpert;
-    documentType = new UploadEvidenceExpert(documentType.expertOptionName, documentType.expertOptionExpertise, documentType.expertOptionExpertises, documentType.expertOptionOtherParty, documentType.expertDocumentQuestion, documentType.expertDocumentAnswer, documentType.expertOptionUploadDate, documentType.expertDocument, documentType.createdDatetime);
+    const document = documentType as UploadEvidenceExpert;
+    documentType = new UploadEvidenceExpert(document.expertOptionName, document.expertOptionExpertise, document.expertOptionExpertises, document.expertOptionOtherParty, document.expertDocumentQuestion, document.expertDocumentAnswer, document.expertOptionUploadDate, document.expertDocument, document.createdDatetime);
   }
   return documentType;
 };
