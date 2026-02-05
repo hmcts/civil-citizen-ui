@@ -91,7 +91,7 @@ describe('Claim Details - Help With Fees', () => {
         .send({option: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
+          expect(res.text).toContain(t('ERRORS.CLAIM_HWF_REFERENCE_SELECTION_REQUIRED'));
         });
     });
 

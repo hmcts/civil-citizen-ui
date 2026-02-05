@@ -8,6 +8,7 @@ import {
   MEDIATION_NEXT_3_MONTHS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
@@ -131,7 +132,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
+          expect(res.text).toContain(t('ERRORS.MEDIATION_EMAIL_CONFIRMATION_REQUIRED_RESPONDENT'));
         });
     });
 
