@@ -61,7 +61,7 @@ describe('Evidence upload documents', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('View documents');
           expect(res.text).toContain('Hearing');
-          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
+          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. 10 days before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
 
@@ -82,7 +82,7 @@ describe('Evidence upload documents', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('View documents');
           expect(res.text).toContain('Hearing');
-          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
+          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. 10 days before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
         });
     });
   });
