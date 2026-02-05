@@ -16,12 +16,6 @@ async function getAccessTokenFromIdam(user) {
     .then(response => response.json()).then(data => data.access_token);
 }
 
-async function getAccessTokenToCreateUser() {
-  return restHelper.retriedRequest(
-    `${idamUrl}/${loginEndpoint}?username=${encodeURIComponent(adminUser.email)}&password=${adminUser.password}`, {'Content-Type': 'application/x-www-form-urlencoded'})
-    .then(response => response.json()).then(data => data.access_token);
-}
-
 async function accessToken(user) {
   console.log('User logged in', user.email);
   if (idamTokenCache.get(user.email) != null) {
@@ -46,7 +40,7 @@ async function addIdamUserToBeDeletedList(userEmail) {
 
 async function createAccount(email, password) {
   try {
-    const token = await getAccessTokenToCreateUser();
+    const token = await accessToken(adminUser);
     let body = {'password': password, 'user': {'email': email, 'forename': 'forename', 'surname': 'surname', 'displayName': 'displayName', 'roleNames': ['citizen']}};
     await restHelper.request(`${idamTestSupportUrl}/test/idam/users`, {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}, body);
 
@@ -61,7 +55,7 @@ async function createAccount(email, password) {
 
 async function deleteAccount(email) {
   try {
-    const token = await getAccessTokenToCreateUser();
+    const token = await accessToken(adminUser);
     let method = 'DELETE';
     await restHelper.request(`${idamTestSupportUrl}/test/idam/users/${email}`, {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}, undefined, method);
 

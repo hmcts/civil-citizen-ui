@@ -23,7 +23,6 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    idamTestSupportApi: 'https://idam-testing-support-api.aat.platform.hmcts.net',
     /*manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
@@ -36,6 +35,7 @@ module.exports = {
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
     dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
     idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
+    idamTestSupportApi: process.env.IDAM_TEST_URL || 'https://idam-testing-support-api.demo.platform.hmcts.net',
     idamWeb: process.env.IDAM_WEB_URL || 'https://idam-web-public.demo.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
     waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
