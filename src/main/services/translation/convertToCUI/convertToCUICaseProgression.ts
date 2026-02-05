@@ -210,21 +210,21 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   {
     if (documentType instanceof UploadEvidenceDocumentType) {
       const document = documentType as UploadEvidenceDocumentType;
-      documentType = new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
+      return new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
     } else {
       const document = documentType as UploadOtherDocumentType;
-      documentType = new UploadOtherDocumentType(document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
+      return new UploadOtherDocumentType(document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
     }
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
     const document = documentType as UploadEvidenceWitness;
-    documentType = new UploadEvidenceWitness(document.witnessOptionName, document.witnessOptionUploadDate, document.witnessOptionDocument, document.createdDatetime);
+    return new UploadEvidenceWitness(document.witnessOptionName, document.witnessOptionUploadDate, document.witnessOptionDocument, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.EXPERT in documentType)
   {
     const document = documentType as UploadEvidenceExpert;
-    documentType = new UploadEvidenceExpert(document.expertOptionName, document.expertOptionExpertise, document.expertOptionExpertises, document.expertOptionOtherParty, document.expertDocumentQuestion, document.expertDocumentAnswer, document.expertOptionUploadDate, document.expertDocument, document.createdDatetime);
+    return new UploadEvidenceExpert(document.expertOptionName, document.expertOptionExpertise, document.expertOptionExpertises, document.expertOptionOtherParty, document.expertDocumentQuestion, document.expertDocumentAnswer, document.expertOptionUploadDate, document.expertDocument, document.createdDatetime);
   }
   return documentType;
 };
