@@ -5737,7 +5737,7 @@
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Enter a valid number",
     "ENTER_TELEPHONE_NUMBER": "Enter telephone number",
-    "ONE_ROW_REQUIRED": "Enter at least one event in the timeline",
+    "ONE_ROW_REQUIRED": "Enter date and what happened for at least one event",
     "OPTION_REQUIRED": "Please select one reason",
     "PAID_AMOUNT_NOT_GREATER": "Paid amount cannot be greater than or equal to admitted amount",
     "PAGE_NOT_FOUND": "Page Not Found",
