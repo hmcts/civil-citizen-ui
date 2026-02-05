@@ -13,7 +13,7 @@ import {
 } from 'models/caseProgression/uploadDocumentsType';
 import {formatEvidenceDocumentAlignedViewURL, formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {alignText} from 'form/models/alignText';
-import {Document} from "models/document/document";
+import {Document} from 'models/document/document';
 
 export class UploadedEvidenceFormatter {
 
