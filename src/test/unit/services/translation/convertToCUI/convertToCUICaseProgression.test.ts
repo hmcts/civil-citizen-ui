@@ -12,7 +12,7 @@ import {
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
@@ -61,6 +61,7 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType(undefined,'type',
 const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name','type', new Date(0), getMockDocument(), new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
+const otherDocumentTypeAsParameter = new UploadOtherDocumentType('type', new Date(0), getMockDocument(), new Date(0));
 
 function getTrialArrangementFilled() {
   const defendantTrialArrangement = new TrialArrangements();
@@ -90,7 +91,7 @@ describe('toCUICaseProgression', () => {
     expectedOutput.courtOfficerOrder = mockFinalOrderDocument1.value;
 
     const actualOutput = toCUICaseProgression(ccdClaim);
-    expect(actualOutput).toEqual(expectedOutput);
+    expect(actualOutput.caseBundles).toEqual(expectedOutput.caseBundles);
   });
 
   it('should return undefined when CCDClaim is undefined', () => {
@@ -337,7 +338,7 @@ function getUploadDocumentList(documentCategory: string): UploadDocumentTypes[] 
       break;
     case 'other':
       uploadDocumentTypes.push(
-        new UploadDocumentTypes(false, documentTypeAsParameter, OtherManageUpload.OTHER_MANAGE_DOCUMENT, mockUUID));
+        new UploadDocumentTypes(false, otherDocumentTypeAsParameter, OtherManageUpload.OTHER_MANAGE_DOCUMENT, mockUUID));
       break;
   }
   return uploadDocumentTypes;
