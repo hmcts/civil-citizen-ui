@@ -50,6 +50,12 @@
             {{ govukRadios({
               idPrefix: "option",
               name: "option",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.TITLE'),
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: SameRateInterestType.SAME_RATE_INTEREST_8_PC,

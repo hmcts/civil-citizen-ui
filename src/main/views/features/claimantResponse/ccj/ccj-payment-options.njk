@@ -26,6 +26,12 @@
             {{ govukRadios({
               idPrefix: "type",
               name: "type",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.CCJ_PAYMENT_TYPE.TITLE'),
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: PaymentOptionType.IMMEDIATELY,
