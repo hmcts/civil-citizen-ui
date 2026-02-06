@@ -9,7 +9,7 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
@@ -146,11 +146,11 @@ export const mockReferredDocument = {
 };
 
 export const mockOtherManageDocument = {
-  typeOfDocument: 'type',
-  documentIssuedDate: new Date(0),
-  documentUpload: getMockDocument(),
+  documentType: 'type',
+  documentName: 'name',
+  documentLink: getMockDocument(),
   createdDatetime: new Date(0),
-} as UploadEvidenceDocumentType;
+} as UploadOtherDocumentType;
 
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {

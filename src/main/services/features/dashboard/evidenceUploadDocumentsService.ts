@@ -228,7 +228,7 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
       documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
       const document = upload.caseDocument as UploadOtherDocumentType;
       const documentName = document.documentLink?.document_filename;
-      const documentBinary = document.documentLink.document_binary_url;
+      const documentBinary = document.documentLink?.document_binary_url;
       documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
       documentsHTML = documentsHTML.concat('</div>');
     }
