@@ -129,7 +129,7 @@
     "allure-js-commons": "^3.4.2",
     "babel-loader": "^9.1.0",
     "chai": "4.3.6",
-    "codeceptjs": "3.4.1",
+    "codeceptjs": "3.7.6",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "debug": "^4.3.4",
