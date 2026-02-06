@@ -6,22 +6,21 @@ import {
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
 } from 'routes/urls';
-import multer from 'multer';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
+import {
+  createMulterErrorMiddlewareForSingleField,
+  createUploadOneFileError,
+} from 'common/utils/fileUploadUtils';
+import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadAdditionalDocumentsController = Router();
 
 const viewPath = 'features/generalApplication/additionalDocuments/upload-additional-documents';
-const fileSize = Infinity;
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadAdditionalDocumentsController');
 
 uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -51,30 +50,23 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
   }
 }) as RequestHandler);
 
-uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id: claimId } = req.params;
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
+
+    if (redirectIfMulterError(req, res, currentUrl)) {
+      return;
+    }
+
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, claim);
       return res.redirect(`${currentUrl}`);
     }
     if (gaDetails.uploadAdditionalDocuments.length === 0) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       return res.redirect(`${currentUrl}`);
     }
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
