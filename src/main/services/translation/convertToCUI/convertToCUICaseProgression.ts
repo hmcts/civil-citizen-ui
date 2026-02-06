@@ -208,13 +208,8 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
 
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
-    if (documentType instanceof UploadEvidenceDocumentType) {
-      const document = documentType as UploadEvidenceDocumentType;
-      return new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
-    } else {
-      const document = documentType as UploadOtherDocumentType;
-      return new UploadOtherDocumentType(document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
-    }
+    const document = documentType as UploadEvidenceDocumentType;
+    return new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
@@ -225,6 +220,11 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   {
     const document = documentType as UploadEvidenceExpert;
     return new UploadEvidenceExpert(document.expertOptionName, document.expertOptionExpertise, document.expertOptionExpertises, document.expertOptionOtherParty, document.expertDocumentQuestion, document.expertDocumentAnswer, document.expertOptionUploadDate, document.expertDocument, document.createdDatetime);
+  }
+  else if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in documentType)
+  {
+    const document = documentType as UploadOtherDocumentType;
+    return new UploadOtherDocumentType(document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
   }
   return documentType;
 };
