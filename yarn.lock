@@ -5246,22 +5246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:4.3.6":
-  version: 4.3.6
-  resolution: "chai@npm:4.3.6"
-  dependencies:
-    assertion-error: "npm:^1.1.0"
-    check-error: "npm:^1.0.2"
-    deep-eql: "npm:^3.0.1"
-    get-func-name: "npm:^2.0.0"
-    loupe: "npm:^2.3.1"
-    pathval: "npm:^1.1.1"
-    type-detect: "npm:^4.0.5"
-  checksum: 10/29c754d12b5fc5e7d555c2b51c69b55cb2b8a95dfff812e39775ced0ee5081de3f5de4b256959d2df133ea37a648ec381d20138376b02a3a84762c4f72746081
-  languageName: node
-  linkType: hard
-
-"chai@npm:^4.3.6":
+"chai@npm:4.5.0, chai@npm:^4.3.6":
   version: 4.5.0
   resolution: "chai@npm:4.5.0"
   dependencies:
@@ -5334,7 +5319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-error@npm:^1.0.2, check-error@npm:^1.0.3":
+"check-error@npm:^1.0.3":
   version: 1.0.3
   resolution: "check-error@npm:1.0.3"
   dependencies:
@@ -5466,7 +5451,7 @@ __metadata:
     applicationinsights: "npm:^2.9.5"
     axios: "npm:^1.12.2"
     babel-loader: "npm:^9.1.0"
-    chai: "npm:4.3.6"
+    chai: "npm:4.5.0"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.0"
     codeceptjs: "npm:3.4.1"
@@ -6366,15 +6351,6 @@ __metadata:
     babel-plugin-macros:
       optional: true
   checksum: 10/e5277f6268f288649503125b781a7b7a2c9b22d011139688c0b3619fe40121e600eb1f077c891938d4b2428bdb6326cc3c77a763e4b1cc681bd9666ab1bad2a1
-  languageName: node
-  linkType: hard
-
-"deep-eql@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "deep-eql@npm:3.0.1"
-  dependencies:
-    type-detect: "npm:^4.0.0"
-  checksum: 10/d8f8e141ece42b7945ca85f08094c80540ed277bcea268b0da1801cfa5b001e164d2548c8d7ba17e935f001da401ccb33a1b6d2005713f1684a0e7dadc4e52d1
   languageName: node
   linkType: hard
 
@@ -8032,7 +8008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-func-name@npm:^2.0.0, get-func-name@npm:^2.0.1, get-func-name@npm:^2.0.2":
+"get-func-name@npm:^2.0.1, get-func-name@npm:^2.0.2":
   version: 2.0.2
   resolution: "get-func-name@npm:2.0.2"
   checksum: 10/3f62f4c23647de9d46e6f76d2b3eafe58933a9b3830c60669e4180d6c601ce1b4aa310ba8366143f55e52b139f992087a9f0647274e8745621fa2af7e0acf13b
@@ -10817,7 +10793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loupe@npm:^2.3.1, loupe@npm:^2.3.6":
+"loupe@npm:^2.3.6":
   version: 2.3.7
   resolution: "loupe@npm:2.3.7"
   dependencies:
@@ -15074,7 +15050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-detect@npm:^4.0.0, type-detect@npm:^4.0.5, type-detect@npm:^4.1.0":
+"type-detect@npm:^4.0.0, type-detect@npm:^4.1.0":
   version: 4.1.0
   resolution: "type-detect@npm:4.1.0"
   checksum: 10/e363bf0352427a79301f26a7795a27718624c49c576965076624eb5495d87515030b207217845f7018093adcbe169b2d119bb9b7f1a31a92bfbb1ab9639ca8dd
