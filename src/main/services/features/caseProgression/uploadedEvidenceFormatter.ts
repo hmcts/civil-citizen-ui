@@ -103,8 +103,11 @@ export class UploadedEvidenceFormatter {
     if (caseDocument instanceof UploadEvidenceExpert) {
       return caseDocument.expertDocument;
     }
-    if (caseDocument instanceof UploadEvidenceDocumentType || caseDocument instanceof UploadOtherDocumentType) {
+    if (caseDocument instanceof UploadEvidenceDocumentType) {
       return caseDocument.documentUpload;
+    }
+    if (caseDocument instanceof UploadOtherDocumentType) {
+      return caseDocument.documentLink;
     }
     return undefined;
   }

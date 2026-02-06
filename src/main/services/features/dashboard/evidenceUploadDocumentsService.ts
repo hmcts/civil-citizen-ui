@@ -227,8 +227,8 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
       documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
       documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
       const document = upload.caseDocument as UploadOtherDocumentType;
-      const documentName = document.documentUpload?.document_filename;
-      const documentBinary = document.documentUpload.document_binary_url;
+      const documentName = document.documentLink?.document_filename;
+      const documentBinary = document.documentLink.document_binary_url;
       documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
       documentsHTML = documentsHTML.concat('</div>');
     }

@@ -61,7 +61,7 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType(undefined,'type',
 const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name','type', new Date(0), getMockDocument(), new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), getMockDocument(), new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), getMockDocument(), new Date(0));
-const otherDocumentTypeAsParameter = new UploadOtherDocumentType('type', new Date(0), getMockDocument(), new Date(0));
+const otherDocumentTypeAsParameter = new UploadOtherDocumentType('type', 'name', getMockDocument(), new Date(0));
 
 function getTrialArrangementFilled() {
   const defendantTrialArrangement = new TrialArrangements();

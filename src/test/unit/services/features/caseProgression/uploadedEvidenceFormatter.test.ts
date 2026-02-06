@@ -92,7 +92,7 @@ describe('UploadedEvidenceFormatter', () => {
 
     it('should find filename & binary from UploadOtherDocumentType files', () => {
       //given
-      const caseDocument = new UploadOtherDocumentType('other', date, document, date);
+      const caseDocument = new UploadOtherDocumentType('other', 'date', document, date);
       const uploadedDocument = new UploadDocumentTypes(false, caseDocument, OtherManageUpload.OTHER_MANAGE_DOCUMENT, null);
 
       //when
