@@ -27,7 +27,7 @@ describe('getEvidenceUploadContent', () => {
     // When
     const result = getEvidenceUploadContent(claim, lang);
     expect(result).toHaveLength(1);
-    expect(result[0].contentSections).toHaveLength(11);
+    expect(result[0].contentSections).toHaveLength(13);
     expect(result[0].contentSections[0]).toEqual(evidenceUploadText);
     expect(result[0].contentSections[1]).toEqual(disclosureHTML);
   });
