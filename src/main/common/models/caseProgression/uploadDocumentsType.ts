@@ -117,15 +117,15 @@ export class  UploadEvidenceDocumentType{
 }
 
 export class  UploadOtherDocumentType{
-  typeOfDocument?: string;
-  documentIssuedDate?: Date;
-  documentUpload: Document;
+  documentType?: string;
+  documentName?: string;
+  documentLink: Document;
   createdDatetime: Date;
 
-  constructor(typeOfDocument: string, documentIssuedDate: Date, documentUpload: Document, createdDatetime: Date) {
-    this.typeOfDocument = typeOfDocument;
-    this.documentIssuedDate = documentIssuedDate;
-    this.documentUpload = documentUpload;
+  constructor(documentType: string, documentName: string, documentLink: Document, createdDatetime: Date) {
+    this.documentType = documentType;
+    this.documentName = documentName;
+    this.documentLink = documentLink;
     this.createdDatetime = new Date(createdDatetime);
   }
 }
