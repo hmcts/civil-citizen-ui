@@ -5494,7 +5494,7 @@
     "APPLICATION_TYPE_REQUIRED": "Select an application",
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
-    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_NUMBER_REQUIRED": "Enter your valid claim number from the letter or email we sent you - it has 3 numbers then the letters MC then 3 numbers, for example 305MC126",
     "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Please select: Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
