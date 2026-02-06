@@ -12,7 +12,11 @@ import {
 } from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {
+  getUploadDocumentsForm,
+  saveCaseProgression,
+  addAnother,
+} from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
@@ -65,7 +69,15 @@ async function uploadSingleFile(req: Request, submitAction: string, form: Generi
       && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
       && !form?.errorFor(`${errorFieldNamePrefix}`)) {
 
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      const uploadedDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+      logger.info('Document uploaded successfully', {
+        claimId: req.params.id,
+        target,
+        documentName: uploadedDocument?.documentName,
+        hasDocumentLink: !!uploadedDocument?.documentLink,
+        hasBinaryUrl: !!uploadedDocument?.documentLink?.document_binary_url,
+      });
+      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = uploadedDocument;
     }
   }
 }
@@ -138,8 +150,14 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (re
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
-    if (action?.includes('[uploadButton]')) {
+    if (action?.includes('add_another-')) {
+      addAnother(uploadDocumentsForm, action);
+      return renderView(res, claim, claimId, form);
+    } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
+    } else if (action?.includes('[removeButton]')) {
+      const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+      (form.model as any)[category].splice(Number(index), 1);
     }
 
     if (action) {
