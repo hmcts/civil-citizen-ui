@@ -135,7 +135,7 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
 
 function getAdditionalListClaimant(claim: Claim, lang: string): ClaimSummarySection {
 
-  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.ADDITIONAL_DOCUMENTS';
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.CLAIM_DOCUMENTS';
   const additionalList = claim.caseProgression?.defendantUploadDocuments?.otherManaged;
 
   return {
@@ -146,7 +146,7 @@ function getAdditionalListClaimant(claim: Claim, lang: string): ClaimSummarySect
 
 function getAdditionalListDefendant(claim: Claim, lang: string): ClaimSummarySection {
 
-  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.ADDITIONAL_DOCUMENTS';
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.CLAIM_DOCUMENTS';
   const additionalList = claim.caseProgression?.defendantUploadDocuments?.otherManaged;
 
   return {

@@ -2105,7 +2105,7 @@
       "DOCUMENTS": "Documents",
       "DOCUMENT_HEADERS": {
         "COMMON": {
-          "ADDITIONAL_DOCUMENTS": "Additional Documents"
+          "CLAIM_DOCUMENTS": "Claim documents"
         },
         "CLAIMANT": {
           "ANSWERS_TO_QUESTIONS": "Claimant answers to questions asked by other party",
