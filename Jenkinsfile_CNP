@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "DTSCCI-3561-3573"
+def ccdBranch = "DTSCCI-3546-3574"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
@@ -56,7 +56,7 @@ def copyPreviousAllureHistory() {
         target: targetDir,
         flatten: true
       )
-      
+
       buildFound = true
       echo "Successfully imported Allure history from build ${buildNumber}"
     } catch (Exception error) {
