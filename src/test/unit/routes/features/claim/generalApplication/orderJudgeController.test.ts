@@ -57,6 +57,7 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(ORDER_JUDGE_URL)
+        .type('form')
         .send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -67,6 +68,7 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(ORDER_JUDGE_URL)
+        .type('form')
         .send({text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -78,10 +80,25 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(ORDER_JUDGE_URL)
+        .type('form')
         .send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    /**
+     * DTSCCI-2852 WAF bypass: POST with Content-Type application/json must be rejected
+     * with 415 so the same payload sent as JSON cannot bypass WAF (url-encoded gets 403).
+     */
+    it('should return 415 when POST sends application/json (form-only route)', async () => {
+      await request(app)
+        .post(ORDER_JUDGE_URL)
+        .set('Content-Type', 'application/json')
+        .send({text: '<b>test</b>', _csrf: 'token'})
+        .expect((res) => {
+          expect(res.status).toBe(415);
         });
     });
   });

@@ -19,6 +19,7 @@ import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {restrictFormContentType} from 'modules/security/restrictFormContentType';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
@@ -127,6 +128,10 @@ app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Reject application/json on form submission routes to prevent WAF bypass (DTSCCI-2852).
+// Must run before body parsers so JSON payloads are not processed.
+app.use(restrictFormContentType);
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
