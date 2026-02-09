@@ -153,10 +153,10 @@ const defendantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
 
   caseProgression.defendantUploadDocuments.trial = uploadDefendantTrialDocuments;
 
-  caseProgression.defendantUploadDocuments.otherManaged = [] as UploadDocumentTypes[];
+  /*caseProgression.defendantUploadDocuments.otherManaged = [] as UploadDocumentTypes[];
   const uploadDefendantDocuments = [] as UploadDocumentTypes[];
   convertToUploadDocumentTypes(ccdClaim.manageDocuments, uploadDefendantDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
-  caseProgression.defendantUploadDocuments.otherManaged = uploadDefendantDocuments;
+  caseProgression.defendantUploadDocuments.otherManaged = uploadDefendantDocuments;*/
 
   return caseProgression.defendantUploadDocuments;
 };
