@@ -27,7 +27,7 @@ const DOUBLE_NEWLINE_FIELDS = new Set([
   'tags',
   'pipelineTags',
   'pipelines',
-  'functionalTestGroups'
+  'functionalTestGroups',
 ]);
 
 // Generic formatter with special rules

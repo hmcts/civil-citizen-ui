@@ -7,7 +7,6 @@ const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/l
 const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const {claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
-const partAdmit = 'partial-admission';
 const rejectAll = 'rejectAll';
 
 let claimRef, caseData, claimNumber, securityCode, paidDate;

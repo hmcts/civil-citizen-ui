@@ -3,16 +3,10 @@ const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
-const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
-const {claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const partAdmit = 'partial-admission';
-const rejectAll = 'rejectAll';
 
-let claimRef, caseData, claimNumber, securityCode, paidDate;
-const currentDate = new Date();
-const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
+let claimRef, caseData, claimNumber, securityCode;
 
 Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@ui-nightly-prod @ui-multi-track');
 

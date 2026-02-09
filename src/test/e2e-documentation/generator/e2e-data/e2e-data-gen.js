@@ -14,7 +14,7 @@ const dependentUiList = require('../support/dependent-ui-features');
 const dependentApiList = require('../support/dependent-api-features');
 
 const dependentApiFiles = new Set(
-  dependentApiList.map(p => p.replace(/\\/g, '/'))
+  dependentApiList.map(p => p.replace(/\\/g, '/')),
 );
 const dependentUiFiles = new Set(
   dependentUiList.map(p => p.replace(/\\/g, '/')),
@@ -197,8 +197,6 @@ function extractHelperSteps(fn) {
       }
     }
   }
-
-
 
   if (commentRanges.length) {
     const actorTarget = actorStepObjects.join('|');

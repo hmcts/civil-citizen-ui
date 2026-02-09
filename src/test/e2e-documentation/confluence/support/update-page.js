@@ -3,12 +3,12 @@ const axios = require('axios');
 const {
   CONFLUENCE_PERSONAL_ACCESS_TOKEN,
   CONFLUENCE_BASE_URL,
-  CONFLUENCE_PAGE_ID
+  CONFLUENCE_PAGE_ID,
 } = process.env;
 
 const headers = {
   Authorization: `Bearer ${CONFLUENCE_PERSONAL_ACCESS_TOKEN}`,
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
 };
 
 // Match ANY <h2>…</h2>
@@ -63,7 +63,7 @@ async function updateConfluencePage({ jsonPath, targetHeadingText, generateConfl
 
     const res = await axios.get(
       `${CONFLUENCE_BASE_URL}/confluence/rest/api/content/${CONFLUENCE_PAGE_ID}?expand=body.storage,version`,
-      { headers }
+      { headers },
     );
 
     const page = res.data;
@@ -112,15 +112,15 @@ async function updateConfluencePage({ jsonPath, targetHeadingText, generateConfl
       body: {
         storage: {
           value: updatedContent,
-          representation: 'storage'
-        }
-      }
+          representation: 'storage',
+        },
+      },
     };
 
     const updateRes = await axios.put(
       `${CONFLUENCE_BASE_URL}/confluence/rest/api/content/${CONFLUENCE_PAGE_ID}`,
       payload,
-      { headers }
+      { headers },
     );
 
     console.log('Page updated successfully:', updateRes.status);
