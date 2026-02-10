@@ -119,7 +119,7 @@ Scenario.skip('04 LiP claimant uploads mediation documents', async ({ api }) => 
   await UploadDocSteps.CheckAndSendMediationDocs('Claimant');
   await UploadDocSteps.VerifyConfirmationPage();
   await api.waitForFinishedBusinessProcess();
-  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);
+  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulNOTClaimant1NonContactableNotif.title, mediationUnsuccessfulNOTClaimant1NonContactableNotif.content);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   taskListItem = uploadMediationDocuments();
