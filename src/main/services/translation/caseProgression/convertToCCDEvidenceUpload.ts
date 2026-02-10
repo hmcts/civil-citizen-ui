@@ -3,14 +3,16 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadEvidenceWitness,
+  UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness, OtherManageUpload,
+  EvidenceUploadWitness,
+  OtherManageUpload,
 } from 'models/document/documentType';
 import {v4 as uuidv4} from 'uuid';
 import {CCDClaim} from 'models/civilClaimResponse';
