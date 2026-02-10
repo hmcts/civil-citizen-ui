@@ -5,7 +5,7 @@ const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/l
 const UploadDocSteps = require('../../../citizenFeatures/response/steps/uploadDocSteps');
 const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
-const { claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid, mediationUnsuccessfulNOTClaimant1NonContactable } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid, mediationUnsuccessfulNOTClaimant1NonContactable, mediationUnsuccessfulClaimant1NonAttendance } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const { viewMediationDocuments, uploadMediationDocuments } = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
