@@ -139,7 +139,7 @@ function getAdditionalList(claim: Claim, lang: string): ClaimSummarySection {
 
   return {
     type: ClaimSummaryType.HTML,
-    data: {html: getAdditionalDocumentHTML(additionalList, additionalDocumentHeading, claim, true, lang)},
+    data: {html: getAdditionalDocumentHTML(additionalList, additionalDocumentHeading, claim, lang)},
   };
 }
 
@@ -200,7 +200,7 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
   return documentsHTML;
 }
 
-function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Claim, isClaimant: boolean, lang: string) {
+function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Claim, lang: string) {
 
   let documentsHTML = '';
   if (rows?.length > 0) {
@@ -210,8 +210,7 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
     documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
     for (const upload of rows) {
 
-      const documentTypeName = isClaimant? t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT', {lng: lang}): t('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT', {lng: lang});
-
+      const documentTypeName = t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', {lng: lang});
       documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
       documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
       const document = upload.caseDocument as UploadOtherDocumentType;
