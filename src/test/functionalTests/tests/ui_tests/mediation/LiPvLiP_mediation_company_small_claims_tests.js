@@ -14,7 +14,7 @@ const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 const carmEnabled = true;
-let claimRef = '1770738876753964', caseData, claimNumber, securityCode, taskListItem, paidDate;
+let claimRef, caseData, claimNumber, securityCode, taskListItem, paidDate;
 
 const currentDate = new Date();
 const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
