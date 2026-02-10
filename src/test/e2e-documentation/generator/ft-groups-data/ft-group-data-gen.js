@@ -147,8 +147,8 @@ function deriveGroupsFromTests(testRecords) {
       }
       const [, tagType, groupName] = match;
       const pipeline = tagType === 'ui'
-        ? ['civil-ccd-definition: PR']
-        : ['civil-service: PR', 'civil-camunda-bpmn-definition: PR'];
+        ? ['civil-citizen-ui: PR']
+        : ['Not used'];
       const key = tag;
       if (!groups.has(key)) {
         groups.set(key, {
