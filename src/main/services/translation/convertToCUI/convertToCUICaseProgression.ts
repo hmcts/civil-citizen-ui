@@ -33,7 +33,7 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.claimantUploadDocuments =
       new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, applicantUploadDocuments.otherManaged);
     caseProgression.defendantUploadDocuments =
-      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, defendantUploadDocuments.otherManaged);
+      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, applicantUploadDocuments.otherManaged);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
 

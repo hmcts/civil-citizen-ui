@@ -33,8 +33,7 @@ function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
     getExpertListDefendant(claim, lang),
     getTrialListClaimant(claim, lang),
     getTrialListDefendant(claim, lang),
-    getAdditionalListClaimant(claim, lang),
-    //getAdditionalListDefendant(claim, lang),
+    getAdditionalList(claim, lang),
     addSeparation(),
     addButton(claim, lang),
   ];
@@ -133,7 +132,7 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
-function getAdditionalListClaimant(claim: Claim, lang: string): ClaimSummarySection {
+function getAdditionalList(claim: Claim, lang: string): ClaimSummarySection {
 
   const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.CLAIM_DOCUMENTS';
   const additionalList = claim.caseProgression?.defendantUploadDocuments?.otherManaged;
