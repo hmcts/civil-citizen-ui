@@ -891,6 +891,9 @@ describe('on POST', () => {
   });
 
   it('should save data even when form has errors if an action is present', async () => {
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const claim: Claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data as Claim);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);
     await request(app)
