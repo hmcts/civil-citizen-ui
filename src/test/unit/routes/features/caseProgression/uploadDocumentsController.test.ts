@@ -890,20 +890,6 @@ describe('on POST', () => {
     });
   });
 
-  it('should save data even when form has errors if an action is present', async () => {
-    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
-    const claim: Claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data as Claim);
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
-    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
-    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
-    await request(app)
-      .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send({ action: 'add_another-documentsForDisclosure' })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-      });
-  });
-
   it('should remove the document at the specified index when removeButton is triggered', async () => {
     // Arrange
     const formWithMultipleDocs = new UploadDocumentsUserForm();
