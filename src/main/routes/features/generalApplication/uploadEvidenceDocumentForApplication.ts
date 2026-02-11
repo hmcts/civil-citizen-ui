@@ -25,6 +25,8 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
@@ -62,10 +64,9 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
         title: '',
         summaryRows: [],
       });
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
       const index = req.query.id;
@@ -108,6 +109,7 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
     form.validateSync();
     if (form.hasFieldError('fileUpload') && claim.generalApplication.uploadEvidenceForApplication.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl),index));

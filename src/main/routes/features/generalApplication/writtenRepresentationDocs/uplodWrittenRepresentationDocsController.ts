@@ -22,6 +22,8 @@ import { getSummaryList } from 'services/features/generalApplication/writtenRepr
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
@@ -52,10 +54,9 @@ uploadDocumentsForRequestWrittenRepresentation.get(GA_UPLOAD_WRITTEN_REPRESENTAT
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection({ title: '', summaryRows: [] });
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
       const index = req.query.id;
@@ -74,12 +75,12 @@ uploadDocumentsForRequestWrittenRepresentation.post(GA_UPLOAD_WRITTEN_REPRESENTA
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION)) {
       return;
     }
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req);
+      await uploadSelectedFile(req, FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION);
       return res.redirect(`${currentUrl}`);
     }
     const uploadDoc = new UploadGAFiles();
@@ -87,6 +88,7 @@ uploadDocumentsForRequestWrittenRepresentation.post(GA_UPLOAD_WRITTEN_REPRESENTA
     form.validateSync();
     if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL));

@@ -15,7 +15,7 @@ import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
-import { createMulterErrorMiddlewareForSingleField } from 'common/utils/fileUploadUtils';
+import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadN245FormController = Router();
@@ -37,10 +37,9 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
     let documentName = uploadedN245Details.caseDocument?.documentName;
     const cancelUrl = await getCancelUrl(claimId, claim);
     let form = new GenericForm(uploadedN245Details);
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req.session.fileUpload);
-      form = new GenericForm(uploadedN245Details, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadedN245Details, fileUploadErrors);
     }
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
     const backLinkUrl = BACK_URL;
@@ -73,7 +72,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245)) {
       return;
     }
 

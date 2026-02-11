@@ -10,12 +10,12 @@ import {
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import { createMulterErrorMiddleware } from 'common/utils/fileUploadUtils';
+import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
-const multerMiddleware = createMulterErrorMiddleware('sendFollowUpQueryController');
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'sendFollowUpQueryController');
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
@@ -53,10 +53,9 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
         title: '',
         summaryRows: [],
       });
-    if (req.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(sendFollowQuery, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(sendFollowQuery, fileUploadErrors);
     }
 
     await getSummaryList(formattedSummary, req,  true);
@@ -86,16 +85,16 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, multerMiddleware, (async 
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP)) {
       return;
     }
 
     if (action === 'uploadButton') {
       await uploadSelectedFile(req, sendFollowUpQuery, true);
       
-      if (req.session?.fileUpload) {
-        const parsedData = JSON.parse(req.session.fileUpload);
-        const formWithErrors = new GenericForm(sendFollowUpQuery, parsedData);
+      const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP);
+      if (fileUploadErrors?.length) {
+        const formWithErrors = new GenericForm(sendFollowUpQuery, fileUploadErrors);
         await getSummaryList(formattedSummary, req, true);
         return await renderView(formWithErrors, claimId, res, formattedSummary, req);
       }

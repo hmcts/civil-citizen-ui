@@ -14,6 +14,8 @@ import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSele
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
@@ -32,10 +34,9 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
     const gaDetails = claim.generalApplication;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
 
-    if (req.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadedDocument, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadedDocument, fileUploadErrors);
     }
     if (req.query?.indexId) {
       const index = req.query.indexId;
@@ -57,7 +58,7 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, mul
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS)) {
       return;
     }
 
@@ -67,6 +68,7 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, mul
     }
     if (gaDetails.uploadAdditionalDocuments.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS;
       return res.redirect(`${currentUrl}`);
     }
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));

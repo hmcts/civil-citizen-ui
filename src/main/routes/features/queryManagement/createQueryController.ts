@@ -16,12 +16,12 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import { createMulterErrorMiddleware } from 'common/utils/fileUploadUtils';
+import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
-const multerMiddleware = createMulterErrorMiddleware('createQueryController');
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'createQueryController');
 
 async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
@@ -54,10 +54,9 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
       summaryRows: [],
     });
 
-  if (req.session?.fileUpload) {
-    const parsedData = JSON.parse(req?.session?.fileUpload);
-    form = new GenericForm(createQuery, parsedData);
-    req.session.fileUpload = undefined;
+  const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_CREATE_QUERY);
+  if (fileUploadErrors?.length) {
+    form = new GenericForm(createQuery, fileUploadErrors);
   }
 
   await getSummaryList(formattedSummary, req);
@@ -91,16 +90,16 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (a
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.QM_CREATE_QUERY)) {
       return;
     }
 
     if (action === 'uploadButton') {
       await uploadSelectedFile(req, createQuery);
     
-      if (req.session?.fileUpload) {
-        const parsedData = JSON.parse(req.session.fileUpload);
-        const formWithErrors = new GenericForm(createQuery, parsedData);
+      const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_CREATE_QUERY);
+      if (fileUploadErrors?.length) {
+        const formWithErrors = new GenericForm(createQuery, fileUploadErrors);
         await getSummaryList(formattedSummary, req);
         return await renderView(formWithErrors, claim, claimId, res, formattedSummary, req);
       }

@@ -3,6 +3,46 @@ import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
 const multer = require('multer');
 
+export const FILE_UPLOAD_SOURCE = {
+  QM_CREATE_QUERY: 'qm_create_query',
+  QM_SEND_FOLLOW_UP: 'qm_send_follow_up',
+  GA_UPLOAD_EVIDENCE: 'ga_upload_evidence',
+  GA_UPLOAD_N245: 'ga_upload_n245',
+  GA_ADDITIONAL_DOCUMENTS: 'ga_additional_documents',
+  GA_DIRECTIONS_ORDER: 'ga_directions_order',
+  GA_ADDITIONAL_INFO: 'ga_additional_info',
+  GA_RESPONDENT_UPLOAD: 'ga_respondent_upload',
+  GA_WRITTEN_REPRESENTATION: 'ga_written_representation',
+} as const;
+
+/** Returns file upload errors only if session.fileUploadSource matches; otherwise clears and returns null. */
+export function getFileUploadErrorsForSource(req: { session?: { fileUpload?: string; fileUploadSource?: string } }, source: string): unknown[] | null {
+  const session = req.session;
+  if (!session?.fileUpload) return null;
+  if (session.fileUploadSource !== source) {
+    session.fileUpload = undefined;
+    session.fileUploadSource = undefined;
+    return null;
+  }
+  try {
+    const errors = JSON.parse(session.fileUpload) as unknown[];
+    session.fileUpload = undefined;
+    session.fileUploadSource = undefined;
+    return errors;
+  } catch {
+    session.fileUpload = undefined;
+    session.fileUploadSource = undefined;
+    return null;
+  }
+}
+
+export function clearFileUploadSession(req: { session?: { fileUpload?: string; fileUploadSource?: string } }): void {
+  if (req.session) {
+    req.session.fileUpload = undefined;
+    req.session.fileUploadSource = undefined;
+  }
+}
+
 export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
   const storage = multer.memoryStorage({
     limits: {

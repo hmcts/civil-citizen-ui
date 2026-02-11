@@ -27,6 +27,8 @@ import {
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
@@ -63,8 +65,9 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
         title: '',
         summaryRows: [],
       });
-    if (req?.session?.fileUpload) {
-      form = parseFileUploadToForm(req, uploadEvidenceDocuments);
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadEvidenceDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
       const index = req.query.id;
@@ -90,7 +93,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD)) {
       return;
     }
 
@@ -105,6 +108,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     if (form.hasFieldError('fileUpload') && (gaResponse?.uploadEvidenceDocuments === undefined ||
       gaResponse?.uploadEvidenceDocuments?.length === 0)) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
@@ -114,9 +118,4 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
   }
 }) as RequestHandler);
 
-function parseFileUploadToForm (req : AppRequest, uploadEvidenceDocuments: UploadGAFiles) : GenericForm<UploadGAFiles>{
-  const parsedData = JSON.parse(req?.session?.fileUpload);
-  req.session.fileUpload = undefined;
-  return new GenericForm(uploadEvidenceDocuments, parsedData);
-}
 export default respondentUploadEvidenceDocumentsController;

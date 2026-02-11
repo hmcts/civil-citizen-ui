@@ -130,7 +130,7 @@ describe('Send follow query controller', () => {
         .post(QM_FOLLOW_UP_MESSAGE)
         .field('action', 'uploadButton')
         .field('messageDetails', 'test')
-        .attach('fileUpload', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
 
       expect(res.status).toBe(302);
     });

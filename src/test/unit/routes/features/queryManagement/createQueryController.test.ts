@@ -157,7 +157,7 @@ describe('create query conroller', () => {
         .field('messageSubject', 'test')
         .field('messageDetails', 'test')
         .field('isHearingRelated', 'no')
-        .attach('fileUpload', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
 
       expect(res.status).toBe(302);
     });

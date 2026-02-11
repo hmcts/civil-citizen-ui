@@ -28,6 +28,8 @@ import {
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
@@ -60,10 +62,9 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection({title: '', summaryRows: []});
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
       const index = req.query.id;
@@ -82,12 +83,12 @@ uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDE
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER)) {
       return;
     }
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req);
+      await uploadSelectedFile(req, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER);
       return res.redirect(`${currentUrl}`);
     }
     const uploadDoc = new UploadGAFiles();
@@ -95,6 +96,7 @@ uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDE
     form.validateSync();
     if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));

@@ -22,6 +22,8 @@ import {
 import {
   createMulterErrorMiddlewareForSingleField,
   createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
@@ -53,10 +55,9 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONA
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection({title: '', summaryRows: []});
 
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
       const index = req.query.id;
@@ -75,12 +76,12 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO)) {
       return;
     }
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req);
+      await uploadSelectedFile(req, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO);
       return res.redirect(`${currentUrl}`);
     }
     const uploadDoc = new UploadGAFiles();
@@ -88,6 +89,7 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
     form.validateSync();
     if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
