@@ -11,6 +11,7 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {Session} from 'express-session';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -128,7 +129,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
@@ -150,7 +151,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
@@ -171,7 +172,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {

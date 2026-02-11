@@ -10,6 +10,7 @@ import {GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, GA_UPLOAD_DOCUMENT_DIRECTIONS_O
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import {Session} from 'express-session';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -132,7 +133,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
         .expect((res) => {
@@ -154,7 +155,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
         .expect((res) => {
@@ -175,7 +176,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
         .expect((res) => {

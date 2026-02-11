@@ -5,6 +5,7 @@ import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { app } from '../../../../../../main/app';
 import {
   BACK_URL,
@@ -121,7 +122,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -143,7 +144,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -164,7 +165,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {

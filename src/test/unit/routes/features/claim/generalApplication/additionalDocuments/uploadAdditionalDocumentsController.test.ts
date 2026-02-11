@@ -1,6 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { app } from '../../../../../../../main/app';
 import {
   getClaimDetailsById,
@@ -218,7 +219,7 @@ describe('uploadAdditionalDocumentsController', () => {
       (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
       (getSummaryList as jest.Mock).mockReturnValue({});
       (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
-      app.request.session = { fileUpload: JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS } as unknown as Session;
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
         .expect((res) => {

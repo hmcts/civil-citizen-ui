@@ -1,3 +1,4 @@
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
@@ -106,7 +107,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           href: '#fileUpload[mimetype]',
         },
       ];
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD } as unknown as Session;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
@@ -128,7 +129,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           href: '#fileUpload[size]',
         },
       ];
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD } as unknown as Session;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
@@ -149,7 +150,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           href: '#fileUpload',
         },
       ];
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD } as unknown as Session;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
