@@ -172,7 +172,6 @@ export const uploadAndValidateFile = async (
     const categoryModel = form.model[category];
     if (categoryModel && categoryModel[+index]) {
       categoryModel[+index].fileUpload = fileUpload;
-      categoryModel[+index].caseDocument = undefined;
     }
 
     if (!form.errors) {
