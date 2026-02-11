@@ -893,9 +893,10 @@ describe('on POST', () => {
   it('should save data even when form has errors if an action is present', async () => {
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     (getClaimById as jest.Mock).mockResolvedValue(new Claim());
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send({ action: 'documentsForDisclosure[0][uploadButton]' })
+      .send({ action: 'add_another-documentsForDisclosure' })
       .expect((res) => {
         expect(res.status).toBe(200);
       });
