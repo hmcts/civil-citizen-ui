@@ -1,6 +1,5 @@
 import {AppRequest} from 'models/AppRequest';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {GenericForm} from 'form/models/genericForm';

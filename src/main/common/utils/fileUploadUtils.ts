@@ -1,4 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
+import {ValidationError} from 'class-validator';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
 const multer = require('multer');
@@ -16,7 +17,7 @@ export const FILE_UPLOAD_SOURCE = {
 } as const;
 
 /** Returns file upload errors only if session.fileUploadSource matches; otherwise clears and returns null. */
-export function getFileUploadErrorsForSource(req: { session?: { fileUpload?: string; fileUploadSource?: string } }, source: string): unknown[] | null {
+export function getFileUploadErrorsForSource(req: { session?: { fileUpload?: string; fileUploadSource?: string } }, source: string): ValidationError[] | null {
   const session = req.session;
   if (!session?.fileUpload) return null;
   if (session.fileUploadSource !== source) {
@@ -25,7 +26,7 @@ export function getFileUploadErrorsForSource(req: { session?: { fileUpload?: str
     return null;
   }
   try {
-    const errors = JSON.parse(session.fileUpload) as unknown[];
+    const errors = JSON.parse(session.fileUpload) as ValidationError[];
     session.fileUpload = undefined;
     session.fileUploadSource = undefined;
     return errors;
