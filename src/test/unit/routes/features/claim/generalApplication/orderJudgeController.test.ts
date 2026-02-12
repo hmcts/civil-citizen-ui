@@ -57,7 +57,7 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(ORDER_JUDGE_URL)
-        .send({text: 'test'})
+        .type('form').send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -67,7 +67,7 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(ORDER_JUDGE_URL)
-        .send({text: ''})
+        .type('form').send({text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ENTER_ORDER_JUDGE'));
@@ -78,7 +78,7 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(ORDER_JUDGE_URL)
-        .send({text: 'test'})
+        .type('form').send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
