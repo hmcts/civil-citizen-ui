@@ -11,7 +11,7 @@ const {
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, camundaEvent, expectedState;
 
-Feature('Lip v LR e2e Tests').tag('@ui-noc');
+Feature('Lip v LR e2e Tests').tag('@ui-nightly-prod @ui-noc');
 
 Before(async ({ I, api }) => {
   selectedHWF = false;
@@ -96,7 +96,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit', async ({
   camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
   expectedState = 'PROCEEDS_IN_HERITAGE_SYSTEM';
   await api.defendantLRResponse(config.defendantSolicitorUser, 'PART_ADMISSION', camundaEvent, expectedState);
-}).tag('@ui-nightly-prod');
+});
 
 Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim', async ({
   I,
