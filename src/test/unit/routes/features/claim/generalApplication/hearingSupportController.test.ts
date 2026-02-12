@@ -58,7 +58,7 @@ describe('General Application - Hearing support', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(GA_HEARING_SUPPORT_URL)
-        .send({requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
+        .type('form').send({requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
           signLanguageContent: 'test1', languageContent: 'test2', otherContent: 'test3'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -69,7 +69,7 @@ describe('General Application - Hearing support', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(GA_HEARING_SUPPORT_URL)
-        .send({requiredSupport: SupportType.OTHER_SUPPORT, signLanguageContent: '', languageContent: '', otherContent: ''})
+        .type('form').send({requiredSupport: SupportType.OTHER_SUPPORT, signLanguageContent: '', languageContent: '', otherContent: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.MISSING_OTHER'));
@@ -80,7 +80,7 @@ describe('General Application - Hearing support', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(GA_HEARING_SUPPORT_URL)
-        .send({requiredSupport: [SupportType.STEP_FREE_ACCESS, SupportType.HEARING_LOOP]})
+        .type('form').send({requiredSupport: [SupportType.STEP_FREE_ACCESS, SupportType.HEARING_LOOP]})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

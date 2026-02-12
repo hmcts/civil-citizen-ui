@@ -72,7 +72,7 @@ describe('General Application - Application hearing arrangements', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_HEARING_ARRANGEMENT_URL)
-        .send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing'})
+        .type('form').send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -82,7 +82,7 @@ describe('General Application - Application hearing arrangements', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_HEARING_ARRANGEMENT_URL)
-        .send({option: null, reasonForPreferredHearingType: null})
+        .type('form').send({option: null, reasonForPreferredHearingType: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.CHOOSE_HEARING_TYPE'));
@@ -96,7 +96,7 @@ describe('General Application - Application hearing arrangements', () => {
       });
       await request(app)
         .post(GA_HEARING_ARRANGEMENT_URL)
-        .send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing' })
+        .type('form').send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing' })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

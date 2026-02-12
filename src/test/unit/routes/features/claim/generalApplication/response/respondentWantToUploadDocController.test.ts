@@ -78,7 +78,7 @@ describe('General Application - Respondent want to upload document ', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL))
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -88,7 +88,7 @@ describe('General Application - Respondent want to upload document ', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL))
-        .send({option: null})
+        .type('form').send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION'));
@@ -101,7 +101,7 @@ describe('General Application - Respondent want to upload document ', () => {
       });
       await request(app)
         .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
-        .send({option:YesNo.NO })
+        .type('form').send({option:YesNo.NO })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

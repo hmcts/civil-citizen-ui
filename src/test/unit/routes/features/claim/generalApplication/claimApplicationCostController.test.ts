@@ -67,7 +67,7 @@ describe('General Application - Application cost', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_CLAIM_APPLICATION_COST_URL)
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -77,7 +77,7 @@ describe('General Application - Application cost', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_CLAIM_APPLICATION_COST_URL)
-        .send({option: null})
+        .type('form').send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
@@ -90,7 +90,7 @@ describe('General Application - Application cost', () => {
       });
       await request(app)
         .post(GA_CLAIM_APPLICATION_COST_URL)
-        .send({option:YesNo.NO })
+        .type('form').send({option:YesNo.NO })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

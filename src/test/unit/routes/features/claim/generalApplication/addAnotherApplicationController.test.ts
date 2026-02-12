@@ -66,7 +66,7 @@ describe('General Application - add another application', () => {
     it('should save the value and redirect', async () => {
       await request(app)
         .post(GA_ADD_ANOTHER_APPLICATION_URL)
-        .send({ option: 'yes' })
+        .type('form').send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -75,7 +75,7 @@ describe('General Application - add another application', () => {
     it('should return errors on no input', async () => {
       await request(app)
         .post(GA_ADD_ANOTHER_APPLICATION_URL)
-        .send({ option: null })
+        .type('form').send({ option: null })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.WANT_TO_ADD_ANOTHER_APPLICATION'));

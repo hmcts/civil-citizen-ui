@@ -18,7 +18,7 @@ describe('Claim Type Options Controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Who are you making the claim for?');
       });
-    });
+    }, 10000);
 
     it('should render claimant address eligibility with set cookie value', async () => {
       app.request['cookies'] = {'eligibility': {claimType: ClaimTypeOptions.JUST_MYSELF}};

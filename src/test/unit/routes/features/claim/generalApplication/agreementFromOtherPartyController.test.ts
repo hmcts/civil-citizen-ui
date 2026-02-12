@@ -74,7 +74,7 @@ describe('General Application - Application type', () => {
 
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -84,7 +84,7 @@ describe('General Application - Application type', () => {
 
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .send({option: null})
+        .type('form').send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
@@ -98,7 +98,7 @@ describe('General Application - Application type', () => {
 
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

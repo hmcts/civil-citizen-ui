@@ -19,6 +19,11 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/csrf', () => ({
+  CSRFToken: class {
+    enableFor(): void {}
+  },
+}));
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => {
@@ -164,7 +169,9 @@ describe('Defendant details controller', () => {
         });
         await request(app)
           .post(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL)
-          .send({firstName: '', lastName: ''}).expect((res) => {
+          .set('Cookie', 'eligibilityCompleted=true')
+          .send({firstName: '', lastName: ''})
+          .expect((res) => {
             expect(res.status).toBe(200);
             expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
             expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);

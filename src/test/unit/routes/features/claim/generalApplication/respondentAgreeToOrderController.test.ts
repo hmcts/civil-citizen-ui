@@ -82,7 +82,7 @@ describe('General Application - Respondent Agree to order', () => {
     it('should save the value and redirect', async () => {
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_AGREE_TO_ORDER_URL))
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -91,7 +91,7 @@ describe('General Application - Respondent Agree to order', () => {
     it('should return errors on no input', async () => {
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_AGREE_TO_ORDER_URL))
-        .send({option: null})
+        .type('form').send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.AGREE_TO_ORDER_NOT_SELECTED'));
@@ -106,7 +106,7 @@ describe('General Application - Respondent Agree to order', () => {
 
       await request(app)
         .post(GA_AGREE_TO_ORDER_URL)
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

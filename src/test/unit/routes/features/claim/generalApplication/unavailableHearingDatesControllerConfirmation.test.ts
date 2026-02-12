@@ -70,7 +70,7 @@ describe('General Application - Unavailable hearing dates confirmation', () => {
 
       await request(app)
         .post(GA_UNAVAILABILITY_CONFIRMATION_URL)
-        .send({option: 'yes'})
+        .type('form').send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(GA_UNAVAILABLE_HEARING_DATES_URL);
@@ -82,7 +82,7 @@ describe('General Application - Unavailable hearing dates confirmation', () => {
 
       await request(app)
         .post(GA_UNAVAILABILITY_CONFIRMATION_URL)
-        .send({option: 'no'})
+        .type('form').send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(GA_HEARING_SUPPORT_URL);
@@ -106,7 +106,7 @@ describe('General Application - Unavailable hearing dates confirmation', () => {
       });
       await request(app)
         .post(GA_UNAVAILABILITY_CONFIRMATION_URL)
-        .send()
+        .type('form').send()
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

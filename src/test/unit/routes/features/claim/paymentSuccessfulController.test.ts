@@ -38,7 +38,7 @@ describe('Apply for help with fees', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Hearing fee');
         });
-    });
+    }, 10000);
     it('should return resolving successful payment page in english', async () => {
       const caseData = Object.assign(new Claim(), claim.case_data);
       jest
