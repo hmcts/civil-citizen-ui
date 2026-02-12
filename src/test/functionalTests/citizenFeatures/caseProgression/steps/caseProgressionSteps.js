@@ -7,7 +7,6 @@ const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/wh
 const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
 const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
 const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadYourDocumentsConfirmation');
-const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -42,15 +41,6 @@ const buttons = {
 class CaseProgressionSteps {
 
   async initiateUploadEvidenceJourney(claimRef, claimType, partyType, claimAmount, dateUploaded, language = 'en') {
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (!isDashboardServiceEnabled) {
-      console.log('The value of the Claim Reference : '+claimRef);
-      if (partyType === 'LiPvLiP') {
-        I.amOnPage('/case/' + claimRef + '/case-progression/upload-your-documents');
-      } else {
-        latestUpdateTab.nextAction('Upload documents');
-      }
-    }
     await uploadYourDocumentsIntroduction.verifyPageContent(claimRef, claimAmount, language);
     await uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
     whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimRef, claimAmount, claimType);
@@ -68,17 +58,13 @@ class CaseProgressionSteps {
     checkYourAnswers.nextAction(buttons.submit[language]);
     uploadYourDocumentsConfirmation.verifyPageContent();
     uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
-    if (isDashboardServiceEnabled) {
-      if (claimType === 'FastTrack') {
-        claimAmount = '£15,000.00';
-      } else {
-        claimAmount = '£1,500.00';
-      }
-      await viewDocumentsPage.verifyPageContent(claimRef, claimAmount, dateUploaded, claimType, partyType);
-      await viewDocumentsPage.nextAction('Close and return to case overview');
+    if (claimType === 'FastTrack') {
+      claimAmount = '£15,000.00';
     } else {
-      documentsTab.verifyLatestUpdatePageContent(claimType);
+      claimAmount = '£1,500.00';
     }
+    await viewDocumentsPage.verifyPageContent(claimRef, claimAmount, dateUploaded, claimType, partyType);
+    await viewDocumentsPage.nextAction('Close and return to case overview');
   }
 
   initiateHearingNoticeJourney(claimRef) {

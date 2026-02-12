@@ -11,6 +11,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 import {getNotifications} from 'services/dashboard/dashboardService';
 import {ClaimantOrDefendant} from 'models/partyType';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -30,7 +31,8 @@ const renderView = async (res: Response, userId: string, claimId: string, claim:
 
 async function recordNotificationClickForQueryResponse(claim: Claim, claimId: string, req: Request, lang: any) {
   const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
-  const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
+  const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+  const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
   if (dashboardNotifications) {
     const qmNotif = dashboardNotifications.items.filter(item => item.descriptionEn.includes('The court has responded to a message on your case.')
       || item.descriptionEn.includes('There has been a message sent on your case.'));
