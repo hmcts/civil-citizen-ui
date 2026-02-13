@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { restrictFormContentType } from 'modules/security/restrictFormContentType';
 
+/** Mock req.get to satisfy Express overload (set-cookie returns string[], other headers string) */
+const mockGet = (value: string | undefined): Request['get'] => jest.fn(() => value) as unknown as Request['get'];
+
 describe('restrictFormContentType', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -17,7 +20,7 @@ describe('restrictFormContentType', () => {
   });
 
   it('calls next() for GET requests', () => {
-    req = { method: 'GET', path: '/case/123/general-application/order-judge', get: jest.fn() };
+    req = { method: 'GET', path: '/case/123/general-application/order-judge', get: mockGet(undefined) };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
     expect(res.status).not.toHaveBeenCalled();
@@ -27,7 +30,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'POST',
       path: '/claim/something',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'application/json' : undefined)),
+      get: mockGet('application/json'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
@@ -38,7 +41,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'POST',
       path: '/case/123/general-application/order-judge',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'application/json' : undefined)),
+      get: mockGet('application/json'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).not.toHaveBeenCalled();
@@ -50,7 +53,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'POST',
       path: '/case/123/general-application/order-judge',
-      get: jest.fn(() => undefined),
+      get: mockGet(undefined),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).not.toHaveBeenCalled();
@@ -61,7 +64,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'POST',
       path: '/case/123/general-application/order-judge',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'application/x-www-form-urlencoded' : undefined)),
+      get: mockGet('application/x-www-form-urlencoded'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
@@ -72,7 +75,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'POST',
       path: '/case/123/general-application/upload-documents',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'multipart/form-data; boundary=----' : undefined)),
+      get: mockGet('multipart/form-data; boundary=----'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
@@ -83,7 +86,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'POST',
       path: '/case/123/response/general-application/456/agree-to-order',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'application/json' : undefined)),
+      get: mockGet('application/json'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).not.toHaveBeenCalled();
@@ -94,7 +97,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'PUT',
       path: '/case/123/general-application/some-path',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'application/x-www-form-urlencoded' : undefined)),
+      get: mockGet('application/x-www-form-urlencoded'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).toHaveBeenCalled();
@@ -105,7 +108,7 @@ describe('restrictFormContentType', () => {
     req = {
       method: 'PATCH',
       path: '/case/123/general-application/some-path',
-      get: jest.fn((h: string) => (h === 'Content-Type' ? 'application/json' : undefined)),
+      get: mockGet('application/json'),
     };
     restrictFormContentType(req as Request, res as Response, next);
     expect(next).not.toHaveBeenCalled();
