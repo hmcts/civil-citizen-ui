@@ -2,9 +2,9 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 
 import {
-  CANCEL_URL,
   MEDIATION_TYPE_OF_DOCUMENTS,
   MEDIATION_UPLOAD_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
   START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
 
@@ -50,15 +50,14 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
     claimId: caseNumberPrettify(claimId),
     partyInformation: partyInformation(claim),
     backLinkUrl : constructResponseUrlWithIdParams(claimId, START_MEDIATION_UPLOAD_FILES),
-    cancelUrl: CANCEL_URL
-      .replace(':id', claimId)
-      .replace(':propertyName', 'mediationUploadDocuments'),
+    cancelUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CANCEL),
   });
 }
 
 mediationTypeOfDocumentsController.get(MEDIATION_TYPE_OF_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    req.session.previousUrl = req.originalUrl;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);

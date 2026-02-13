@@ -1,7 +1,7 @@
 import {
-  CANCEL_URL,
   MEDIATION_TYPE_OF_DOCUMENTS,
   MEDIATION_UPLOAD_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
   MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -81,15 +81,14 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
     partyInformation: partyInformation(claim),
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
-    cancelUrl: CANCEL_URL
-      .replace(':id', claimId)
-      .replace(':propertyName', 'mediationUploadDocuments'),
+    cancelUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CANCEL),
   });
 }
 
 mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    req.session.previousUrl = req.originalUrl;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const uploadDocuments = getUploadDocuments(claim);
@@ -129,15 +128,25 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
 
     if (action === 'add_another-yourStatement') {
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT);
-      return renderView(form, uploadDocuments, res, claimId, claim);
     } else if(action === 'add_another-documentsReferred'){
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
-      return renderView(form, uploadDocuments, res, claimId, claim);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, res, claimId, action, form);
-      return renderView(form, uploadDocuments, res, claimId, claim);
     } else if (action?.includes('[removeButton]')) {
       removeItem(uploadDocumentsForm, action);
+    }
+
+    if (action) {
+      // set upload documents with new data
+      const yourStatement = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT);
+      if(yourStatement){
+        yourStatement.uploadDocuments = uploadDocumentsForm.documentsForYourStatement;
+      }
+      const documentsForReferred = uploadDocuments.typeOfDocuments.find((item) => item.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
+      if(documentsForReferred){
+        documentsForReferred.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
+      }
+      await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
       return renderView(form, uploadDocuments, res, claimId, claim);
     }
 
