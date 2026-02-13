@@ -210,7 +210,7 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
     documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
     for (const upload of rows) {
 
-      const documentTypeName = t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS', {lng: lang});
+      const documentTypeName = t('PAGES.CLAIM_SUMMARY.DOCUMENTS_FOR_CLAIM', {lng: lang});
       documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
       documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
       const document = upload.caseDocument as UploadOtherDocumentType;
