@@ -86,8 +86,8 @@ servicebus:
       - name: jrd-topic
         subscriptionNeeded: yes
 
-global:
-  jobKind: CronJob
+#global:
+#  jobKind: CronJob
 
 wa:
   enabled: true
@@ -129,7 +129,7 @@ wa:
         MESSAGE_PROCESSING_POLL_INTERVAL_MILLISECONDS: 2000
         MESSAGE_PROCESSING_THREAD_POOL_SIZE: 5
         MESSAGE_READINESS_POLL_INTERVAL_MILLISECONDS: 500
-        MESSAGE_READINESS_THREAD_POOL_SIZE: 2             
+        MESSAGE_READINESS_THREAD_POOL_SIZE: 2
         RESILIENCE_RETRY_MAX_ATTEMPTS: 10
         RESILIENCE_RETRY_BACK_OFF_DELAY: 5000
         RESILIENCE_RETRY_BACK_OFF_MAX_DELAY: 15000
