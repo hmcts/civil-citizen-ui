@@ -14,46 +14,42 @@ const claimAmount = '£1,500';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Small Claims').tag('@ui-nightly-prod');
+Feature('Case progression journey - Verify Bundle - Small Claims').tag('@ui-nightly-prod @ui-bundles');
 
 Before(async ({api}) => {
-  if (['demo', 'aat'].includes(config.runningEnv)) {
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
-    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
-    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
-    await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
-    await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
-    await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
-    await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
-    await api.performBundleGeneration(config.hearingCenterAdminWithRegionId2, claimRef);
-    await api.waitForFinishedBusinessProcess();
-  }
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
+  await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
+  await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
+  await api.performBundleGeneration(config.hearingCenterAdminWithRegionId2, claimRef);
+  await api.waitForFinishedBusinessProcess();
 });
 
 Scenario.skip('Case progression journey - Small Claims - Verify Bundles tab', async ({I, api}) => {
-  if (['demo', 'aat'].includes(config.runningEnv)) {
-    formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
-    uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
-    //verify as claimant
-    notification = bundleReady();
-    await api.waitForFinishedBusinessProcess();
-    await I.wait(10);
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-    taskListItem = viewTheBundle();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-    I.click(taskListItem.title);
-    viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
-    //verify as defendant
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-    I.click(taskListItem.title);
-    viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
-  }
+  formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
+  uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
+  //verify as claimant
+  notification = bundleReady();
+  await api.waitForFinishedBusinessProcess();
+  await I.wait(10);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  taskListItem = viewTheBundle();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+  I.click(taskListItem.title);
+  viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
+  //verify as defendant
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+  I.click(taskListItem.title);
+  viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
 });
