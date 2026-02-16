@@ -291,9 +291,6 @@
              html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
-           javascript: true,
-           chooseFilesButtonText: t('COMMON.CHOOSE_FILE'),
-           noFileChosenText: t('COMMON.NO_FILE_CHOSEN'),
            attributes: {
               'data-name': content.data.category+'[%index%]['+content.data.field+']',
               'data-id': content.data.category+'[%index%]['+content.data.field+']'
@@ -333,10 +330,7 @@
            name: content.data.name,
            label: {
              html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</br></br>'
-           },
-           javascript: true,
-           chooseFilesButtonText: t('COMMON.CHOOSE_FILE'),
-           noFileChosenText: t('COMMON.NO_FILE_CHOSEN')
+           }
         }) }}
     </div>
   {% endif %}

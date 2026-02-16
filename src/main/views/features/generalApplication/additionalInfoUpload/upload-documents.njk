@@ -28,10 +28,7 @@
         label: {
           html: '<strong>' + t('COMMON.UPLOAD_FILE_LABEL') +'</strong>'
         },
-        errorMessage: { text: t(errors.text) } if t(errors.text) else '',
-        javascript: true,
-        chooseFilesButtonText: t('COMMON.CHOOSE_FILE'),
-        noFileChosenText: t('COMMON.NO_FILE_CHOSEN')
+        errorMessage: { text: t(errors.text) } if t(errors.text) else ''
       }) }}
       {{ govukButton({
         id: 'uploadFileButton',

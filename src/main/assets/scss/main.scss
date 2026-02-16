@@ -21,14 +21,6 @@
     right: 0;
     top: 10px;
     width: auto;
-    color: transparent;
-    font-size: 0;
-
-    &::after {
-      content: 'Remove section';
-      font-size: 19px;
-      color: $govuk-remove-section-text-colour;
-    }
   }
 }
 

@@ -5,8 +5,6 @@
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "SAVE_FILE": "Save file",
-    "CHOOSE_FILE": "Choose File",
-    "NO_FILE_CHOSEN": "No file chosen",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "View documents",
     "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
