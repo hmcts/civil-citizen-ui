@@ -47,7 +47,10 @@
                 label: {
                   html: '<strong>' + t('COMMON.SAVE_FILE') +'</strong>'
                 },
-                errorMessage: { text: t(uploadErrorMsg) } if uploadErrorMsg else ''
+                errorMessage: { text: t(uploadErrorMsg) } if uploadErrorMsg else '',
+                javascript: true,
+                chooseFilesButtonText: t('COMMON.CHOOSE_FILE'),
+                noFileChosenText: t('COMMON.NO_FILE_CHOSEN')
              }) }}
             {{ govukButton({
               id: 'uploadFileButton',

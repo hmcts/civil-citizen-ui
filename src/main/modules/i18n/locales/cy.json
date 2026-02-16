@@ -5,6 +5,8 @@
     "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Uwchlwytho ffeil",
     "SAVE_FILE": "Cadw ffeil",
+    "CHOOSE_FILE": "Dewis Ffeil",
+    "NO_FILE_CHOSEN": "Dim ffeil wedi'i dewis",
     "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DATE_UPLOADED": "Dyddiad uwchlwytho [{{ uploadedDate }}]",

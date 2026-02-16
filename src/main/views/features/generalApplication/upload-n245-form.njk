@@ -31,7 +31,10 @@
                   },
                   errorMessage: {
                      text: t(errors.text)
-                  } if errors
+                  } if errors,
+                  javascript: true,
+                  chooseFilesButtonText: t('COMMON.CHOOSE_FILE'),
+                  noFileChosenText: t('COMMON.NO_FILE_CHOSEN')
               }) }}
       {{ govukButton({
                           id: 'uploadFileButton',
