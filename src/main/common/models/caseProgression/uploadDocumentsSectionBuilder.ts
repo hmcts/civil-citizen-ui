@@ -74,6 +74,8 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
           category: category,
           index: index,
           classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
+          text: 'PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION',
+          href: '#',
         },
       });
       this._claimSummarySections.push(titleSection);
