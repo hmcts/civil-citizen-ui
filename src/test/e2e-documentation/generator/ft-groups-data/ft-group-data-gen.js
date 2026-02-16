@@ -146,15 +146,15 @@ function deriveGroupsFromTests(testRecords) {
         return;
       }
       const [, tagType, groupName] = match;
-      const pipeline = tagType === 'ui'
-        ? ['civil-ccd-definition: PR']
-        : ['civil-service: PR', 'civil-camunda-bpmn-definition: PR'];
+      const pipeline = ['civil-citizen-ui: PR'];
       const key = tag;
       if (!groups.has(key)) {
         groups.set(key, {
           functionalTestGroup: functionalGroupDisplayNames[groupName] || groupName,
           tag,
-          githubLabelName: `pr_ft_${groupName}`,
+          githubLabelName: tagType === 'ui'
+            ? `pr_ft_ui_${groupName}`
+            : `pr_ft_api_${groupName}`,
           pipeline,
           folderPaths: new Set(),
           steps: [],

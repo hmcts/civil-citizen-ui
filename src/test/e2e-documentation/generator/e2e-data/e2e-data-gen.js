@@ -23,16 +23,18 @@ function formatDisplayPath(posixPath) {
 function deriveTagMetadata(tags) {
   const pipelines = new Set();
   const functionalTags = [];
-  const functionalGroups = [];
+  const functionalGroups = new Set();
 
   tags.forEach(tag => {
     if (pipelineTagMap[tag]) {
       pipelineTagMap[tag].forEach(p => pipelines.add(p));
     } else if (isFunctionalTag(tag)) {
       functionalTags.push(tag);
-      const rawGroup = tag.replace(/^@(ui|api)-/, '');
-      if (rawGroup) {
-        functionalGroups.push(`pr_ft_${rawGroup}`);
+      const match = /^@(ui|api)-(.+)$/u.exec(tag);
+      if (match) {
+        const [, tagType, rawGroup] = match;
+        const labelPrefix = tagType === 'ui' ? 'pr_ft_ui_' : 'pr_ft_api_';
+        functionalGroups.add(`${labelPrefix}${rawGroup}`);
       }
     }
   });
@@ -41,7 +43,7 @@ function deriveTagMetadata(tags) {
     tags,
     pipelines: Array.from(pipelines),
     functionalTestGroupTags: functionalTags,
-    functionalTestGroups: functionalGroups,
+    functionalTestGroups: Array.from(functionalGroups),
   };
 }
 

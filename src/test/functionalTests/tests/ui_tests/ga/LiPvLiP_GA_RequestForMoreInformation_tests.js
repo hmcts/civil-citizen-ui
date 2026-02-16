@@ -11,7 +11,7 @@ const {
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
-Feature('LipvLip Applicant GA creation e2e tests - Request for more info').tag('@ui-nightly-prod @ui-ga');
+Feature('LipvLip Applicant GA creation e2e tests - Request for more info').tag('@civil-citizen-nightly @ui-ga');
 
 Before(async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
