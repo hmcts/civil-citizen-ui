@@ -24,7 +24,7 @@ export const buildDisclosureDocumentSection = (section: TypeOfDocumentSection = 
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', documentsForDisclosure, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForDisclosure))
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDateErrors, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForDisclosure, 'date', section?.dateInputFields?.dateDay.toString(), section?.dateInputFields?.dateMonth.toString(), section?.dateInputFields?.dateYear.toString(), index , 'dateInputFields')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDisclosure, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, documentsForDisclosure), section?.caseDocument)
-    .addRemoveSectionButton(form?.model.documentsForDisclosure?.length > 1 || false, documentsForDisclosure, index)
+    .addRemoveSectionButton(documentsForDisclosure, index)
     .build();
 };
 
@@ -33,6 +33,6 @@ export const buildDisclosureListSection = (section: FileOnlySection = null, inde
   return new UploadDocumentsSectionBuilder()
     .addSubTitle('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST', {}, 'govuk-!-width-three-quarters')
     .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', disclosureList, fileUpload, index,section?.fileUpload?.fieldname, form?.errorFor(`${errorFieldNamePrefix}[${fileUpload}]`, disclosureList), section?.caseDocument)
-    .addRemoveSectionButton(form?.model.disclosureList?.length > 1 || false, disclosureList, index)
+    .addRemoveSectionButton(disclosureList, index)
     .build();
 };
