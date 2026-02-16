@@ -35,6 +35,7 @@ civil-service:
             disabled: true
   xui-webapp:
     nodejs:
+      image: hmctspublic.azurecr.io/xui/webapp:pr-4946-6822033-20260216155451
       environment:
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
         SERVICES_ROLE_ASSIGNMENT_MAPPING_API: https://am-org-role-mapping-service-${SERVICE_FQDN}
@@ -86,8 +87,8 @@ servicebus:
       - name: jrd-topic
         subscriptionNeeded: yes
 
-#global:
-#  jobKind: CronJob
+global:
+  jobKind: CronJob
 
 wa:
   enabled: true
@@ -100,6 +101,18 @@ wa:
   wa:
     postgresql:
       enabled: false
+  wa-message-cron-service:
+    job:
+      schedule: "*/1 * * * *"
+  wa-initiation-batch:
+    job:
+      schedule: "*/1 * * * *"
+  wa-reconfiguration-batch:
+    job:
+      schedule: "*/1 * * * *"
+  wa-termination-batch:
+    job:
+      schedule: "*/1 * * * *"
   wa-case-event-handler:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
@@ -125,15 +138,6 @@ wa:
         AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
-        AZURE_SERVICE_BUS_CONCURRENT_SESSIONS: 2
-        MESSAGE_PROCESSING_POLL_INTERVAL_MILLISECONDS: 2000
-        MESSAGE_PROCESSING_THREAD_POOL_SIZE: 5
-        MESSAGE_READINESS_POLL_INTERVAL_MILLISECONDS: 500
-        MESSAGE_READINESS_THREAD_POOL_SIZE: 2
-        RESILIENCE_RETRY_MAX_ATTEMPTS: 10
-        RESILIENCE_RETRY_BACK_OFF_DELAY: 5000
-        RESILIENCE_RETRY_BACK_OFF_MAX_DELAY: 15000
-        RESILIENCE_RETRY_BACK_OFF_RANDOM: true
   wa-task-monitor:
     java:
       ingressHost: wa-task-monitor-${SERVICE_FQDN}
