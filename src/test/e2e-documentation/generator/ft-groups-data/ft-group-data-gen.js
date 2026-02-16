@@ -153,8 +153,8 @@ function deriveGroupsFromTests(testRecords) {
           functionalTestGroup: functionalGroupDisplayNames[groupName] || groupName,
           tag,
           githubLabelName: tagType === 'ui'
-            ? `pr_ft_ui_${groupName}`
-            : `pr_ft_api_${groupName}`,
+            ? `pr_ft_ui-${groupName}`
+            : `pr_ft_api-${groupName}`,
           pipeline,
           folderPaths: new Set(),
           steps: [],

@@ -33,7 +33,7 @@ function deriveTagMetadata(tags) {
       const match = /^@(ui|api)-(.+)$/u.exec(tag);
       if (match) {
         const [, tagType, rawGroup] = match;
-        const labelPrefix = tagType === 'ui' ? 'pr_ft_ui_' : 'pr_ft_api_';
+        const labelPrefix = tagType === 'ui' ? 'pr_ft_ui-' : 'pr_ft_api-';
         functionalGroups.add(`${labelPrefix}${rawGroup}`);
       }
     }
