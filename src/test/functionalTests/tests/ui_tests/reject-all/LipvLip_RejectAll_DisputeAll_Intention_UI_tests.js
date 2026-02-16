@@ -9,7 +9,7 @@ let claimRef, claimType;
 let caseData;
 let claimNumber;
 
-Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track').tag('@ui-nightly-prod @ui-reject-all');
+Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track').tag('@civil-citizen-nightly @ui-reject-all');
 
 Scenario('Response with RejectAll-DisputeAll Small claims', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

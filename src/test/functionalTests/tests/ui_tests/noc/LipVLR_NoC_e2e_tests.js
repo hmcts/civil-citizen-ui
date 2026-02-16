@@ -11,7 +11,7 @@ const {
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, camundaEvent, expectedState;
 
-Feature('Lip v LR e2e Tests').tag('@ui-nightly-prod @ui-noc');
+Feature('Lip v LR e2e Tests').tag('@civil-citizen-nightly @ui-noc');
 
 Before(async ({ I, api }) => {
   selectedHWF = false;
