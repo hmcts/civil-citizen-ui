@@ -16,7 +16,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Negative Scenarios for Defendant Response').tag('@civil-citizen-nightly @ui-part-admit');
+Feature('Negative Scenarios for Defendant Response').tag('@ui-nightly-prod @ui-part-admit');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

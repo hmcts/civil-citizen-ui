@@ -13,7 +13,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber, defendantName;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@civil-citizen-nightly @ui-part-admit');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@ui-nightly-prod @ui-part-admit');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,
