@@ -22,6 +22,16 @@
     top: 10px;
     width: auto;
   }
+
+  /* Show only our "Remove section" button; hide any MOJ-injected "Remove" button */
+  .moj-add-another__remove-button:not([data-remove-section]) {
+    display: none !important;
+  }
+
+  /* Hide remove button when only one row */
+  .moj-add-another__item:only-of-type .moj-add-another__remove-button {
+    display: none;
+  }
 }
 
 .govuk-section-break--visible--l {
