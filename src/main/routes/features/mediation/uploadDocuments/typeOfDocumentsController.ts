@@ -4,7 +4,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {
   MEDIATION_TYPE_OF_DOCUMENTS,
   MEDIATION_UPLOAD_DOCUMENTS,
-  MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
+  DEFENDANT_SUMMARY_URL,
   START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
 
@@ -50,7 +50,7 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
     claimId: caseNumberPrettify(claimId),
     partyInformation: partyInformation(claim),
     backLinkUrl : constructResponseUrlWithIdParams(claimId, START_MEDIATION_UPLOAD_FILES),
-    cancelUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CANCEL),
+    cancelUrl: constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL),
   });
 }
 
