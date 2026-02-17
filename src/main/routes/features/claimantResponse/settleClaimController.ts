@@ -29,8 +29,6 @@ function renderView(
   res.render(settleClaimViewPath, {form, paidAmount, isPaidInFull, formatValues});
 }
 
-let paidAmount: number;
-
 settleClaimController.get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: AppRequest, res, next: NextFunction) => {
   try {
     const claim: Claim = await getCaseDataFromStore(generateRedisKey(req));
