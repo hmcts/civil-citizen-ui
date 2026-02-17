@@ -15,7 +15,7 @@
     <main class="govuk-main-wrapper" role="main">
       <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE') }}</h1>
       <p class="govuk-body-m">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.ENTER_CLAIM') }}</p>
-      <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.FIRST_CONTACT_CLAIM_REFERENCE.EXAMPLE_TEXT') }}</p>
+      <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.EXAMPLE_TEXT') }}</p>
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
@@ -44,7 +44,7 @@
             {% set content %}
               <p class="govuk-body">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_INFO_ONE') }}</p>
               <p class="govuk-body">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_INFO_TWO') }}
-                {{ externalLink(t, 'PAGES.CONTACT_WEBCHAT.HELP_TEXT_URL', 'https://www.gov.uk/', false) }}
+                {{ externalLink(t, 'PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_URL', 'https://www.gov.uk/', false) }}
                 {{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_INFO_THREE') }}</p>
             {% endset -%}
 
