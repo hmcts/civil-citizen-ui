@@ -23,6 +23,7 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 import {AppRequest} from 'common/models/AppRequest';
 import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
@@ -122,7 +123,30 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       }
     }
 
-    const claim: Claim = await getClaimById(claimId, req, true);
+    const uploadDocumentsForm = getUploadDocumentsForm(req);
+    const form = new GenericForm(uploadDocumentsForm);
+
+    if (action?.includes('[uploadButton]')) {
+      await uploadSingleFile(req, action, form);
+    }
+
+    let claim: Claim;
+    try {
+      claim = await getClaimById(claimId, req, true);
+    } catch (getClaimError) {
+      if (form.errors?.length) {
+        const cachedClaim = await getCaseDataFromStore(generateRedisKey(req as AppRequest), true);
+        if (cachedClaim && !cachedClaim.isEmpty()) {
+          claim = cachedClaim;
+          logger.warn(`[POST] getClaimById failed but using cached claim for upload error display (claimId=${claimId})`);
+        } else {
+          throw getClaimError;
+        }
+      } else {
+        throw getClaimError;
+      }
+    }
+
     const userid = (req as AppRequest)?.session?.user?.id;
 
     logger.info('Upload documents request received from civil-citizen-ui', {
@@ -132,15 +156,11 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       timestamp: new Date().toISOString(),
     });
 
-    const uploadDocumentsForm = getUploadDocumentsForm(req);
-    const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('add_another-')) {
       addAnother(uploadDocumentsForm, action);
       return renderView(res, claim, claimId, form);
-    } else if (action?.includes('[uploadButton]')) {
-      await uploadSingleFile(req, action, form);
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
       (form.model as any)[category].splice(Number(index), 1);
