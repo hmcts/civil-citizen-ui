@@ -3171,9 +3171,14 @@
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
-      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "ENTER_CLAIM": "This is an 8-character number and is on the email or letter we sent you. It has 3 numbers then the letters MC then 3 numbers, for example 305MC126",
       "PAGE_TITLE": "Enter your claim number",
-      "TITLE": "Enter your claim number"
+      "TITLE": "Enter your claim number",
+      "HELP_TEXT_TITLE": "If your claim number does not work or follow this format",
+      "HELP_TEXT_INFO_ONE": "If you have a claim number with a different format it's likely you're in the wrong place. Check the email or letter you got when you heard about the claim against you.",
+      "HELP_TEXT_INFO_TWO": "Make sure you follow the right link to respond to the money claim or ",
+      "HELP_TEXT_URL":"read more guidance on GOV.UK.",
+      "HELP_TEXT_INFO_THREE": " If your claim number still does not work then get in touch."
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Claim number",

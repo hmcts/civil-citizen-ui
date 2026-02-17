@@ -38,6 +38,19 @@
               } if form.hasFieldError('claimReferenceValue')
             }) }}
 
+            {% from "govuk/components/details/macro.njk" import govukDetails %}
+
+            {% set content %}
+              <p class="govuk-body">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_INFO_ONE') }}</p>
+              <p class="govuk-body">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_INFO_TWO') }}
+                {{ externalLink(t, 'PAGES.CONTACT_WEBCHAT.HELP_TEXT_URL', 'https://www.gov.uk/', false) }}
+                {{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_INFO_THREE') }}</p>
+            {% endset -%}
+
+            {{ govukDetails({
+              summaryText: t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.HELP_TEXT_TITLE'),
+              html: content
+            }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

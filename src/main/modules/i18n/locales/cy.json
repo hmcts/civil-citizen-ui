@@ -3171,12 +3171,17 @@
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Rhif hawlio",
-      "ENTER_CLAIM": "Rhowch y rhif hawlio o'r e-bost neu'r llythyr a anfonwyd gennym.",
-      "PAGE_TITLE": "Nodwch rif eich hawliad",
-      "TITLE": "Nodwch rif eich hawliad"
+      "ENTER_CLAIM": "Mae hwn yn rhif 8 nod ac mae ar yr e-bost neu'r llythyr a anfonwyd atoch chi. Mae ganddo 3 rhif yna y llythrennau MC yna 3 rhif, er enghraifft 305MC126",
+      "PAGE_TITLE": "Rhowch rif eich hawliad",
+      "TITLE": "Rhowch rif eich hawliad",
+      "HELP_TEXT_TITLE": "Os nad yw rhif eich hawliad yn gweithio neu'n dilyn y fformat hwn",
+      "HELP_TEXT_INFO_ONE": "Os oes gennych rif hawliad gyda fformat gwahanol, mae'n debygol eich bod yn y lle anghywir. Gwiriwch yr e-bost neu'r llythyr a gawsoch pan glywsoch am yr hawliad yn eich erbyn.",
+      "HELP_TEXT_INFO_TWO": "Gwnewch yn siŵr eich bod yn dilyn y ddolen gywir i ymateb i'r hawliad am arian neu i ",
+      "HELP_TEXT_URL":"ddarllen mwy o ganllawiau ar GOV.UK.",
+      "HELP_TEXT_INFO_THREE": " Os nad yw'ch rhif hawliad yn gweithio o hyd, cysylltwch â ni."
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
-      "CLAIM_NUMBER": "Rhif hawlio",
+      "CLAIM_NUMBER": "Rhif hawliad",
       "FIND_OUT": "Dysgwch am sut rydym yn defnyddio ac yn storio eich ",
       "HEADER": "Manylion yr hawliad",
       "PAGE_TITLE": "Manylion yr hawliad",
@@ -5494,7 +5499,7 @@
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
-    "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
+    "CLAIM_NUMBER_REQUIRED": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost a anfonwyd atoch – mae ganddo 3 rhif yna y llythrennau MC ac yna 3 rhif, er enghraifft 305MC126",
     "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg os ydych eisiau creu'r hawliad hwn yn Gymraeg",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Dewiswch: Unwaith y bydd eich cais yn cael ei gyflwyno, ni fyddwch yn gallu gwneud unrhyw newidiadau. Ni fydd eich hawliad yn cael ei gyhoeddi a’i anfon at y partïon eraill nes eich bod wedi talu ffi’r hawliad.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
