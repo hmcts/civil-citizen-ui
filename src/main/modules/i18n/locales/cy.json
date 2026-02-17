@@ -3178,8 +3178,8 @@
       "HELP_TEXT_TITLE": "Os nad yw rhif eich hawliad yn gweithio neu'n dilyn y fformat hwn",
       "HELP_TEXT_INFO_ONE": "Os oes gennych rif hawliad gyda fformat gwahanol, mae'n debygol eich bod yn y lle anghywir. Gwiriwch yr e-bost neu'r llythyr a gawsoch pan glywsoch am yr hawliad yn eich erbyn.",
       "HELP_TEXT_INFO_TWO": "Gwnewch yn siŵr eich bod yn dilyn y ddolen gywir i ymateb i'r hawliad am arian neu i ",
-      "HELP_TEXT_URL":"ddarllen mwy o ganllawiau ar GOV.UK.",
-      "HELP_TEXT_INFO_THREE": " Os nad yw'ch rhif hawliad yn gweithio o hyd, cysylltwch â ni."
+      "HELP_TEXT_URL":"ddarllen mwy o ganllawiau ar GOV.UK",
+      "HELP_TEXT_INFO_THREE": ". Os nad yw'ch rhif hawliad yn gweithio o hyd, cysylltwch â ni."
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Rhif hawliad",
