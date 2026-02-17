@@ -11,7 +11,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Extended Response Time').tag('@ui-nightly-prod @ui-deadline-extension');
+Feature('Extended Response Time').tag('@civil-citizen-nightly @ui-deadline-extension');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
