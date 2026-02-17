@@ -13,14 +13,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getErrors(), t) }}
-      {% endif %}
-      <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE') }}</h1>
-      <p class="govuk-body-m">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.ENTER_CLAIM') }}</p>
-
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+          {% if form.hasErrors() %}
+            {{ errorSummary(form.getErrors(), t, null, null, 'ERRORS.THERE_IS_A_PROBLEM') }}
+          {% endif %}
+          <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE') }}</h1>
+          <p class="govuk-body-m">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.ENTER_CLAIM') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukInput({
