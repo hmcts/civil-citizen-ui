@@ -9,7 +9,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/respons
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimType, claimRef, caseData;
 
-Feature('Create Lip v Lip claim - Rejected All By Defendant welsh').tag('@ui-nightly-prod @ui-welsh');
+Feature('Create Lip v Lip claim - Rejected All By Defendant welsh').tag('@civil-citizen-nightly @ui-welsh');
 
 Scenario('Create Lip v Lip claim - Rejected All By Defendant welsh', async ({api}) => {
   claimType = 'SmallClaims';

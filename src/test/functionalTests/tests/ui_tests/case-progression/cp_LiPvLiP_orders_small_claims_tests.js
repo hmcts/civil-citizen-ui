@@ -8,7 +8,7 @@ const { ordersAndNotices } = require('../../../specClaimHelpers/dashboardTasklis
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem, notification;
 
-Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims').tag('@ui-nightly-prod @ui-orders');
+Feature('Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Small Claims').tag('@civil-citizen-nightly @ui-orders');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
