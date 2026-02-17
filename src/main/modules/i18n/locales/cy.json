@@ -3171,6 +3171,7 @@
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Rhif hawlio",
+      "EXAMPLE_TEXT": "Er enghraifft, 305MC126",
       "ENTER_CLAIM": "Mae hwn yn rhif 8 nod ac mae ar yr e-bost neu'r llythyr a anfonwyd atoch chi. Mae ganddo 3 rhif yna y llythrennau MC yna 3 rhif, er enghraifft 305MC126",
       "PAGE_TITLE": "Rhowch rif eich hawliad",
       "TITLE": "Rhowch rif eich hawliad",

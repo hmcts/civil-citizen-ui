@@ -14,7 +14,7 @@
     <main class="govuk-main-wrapper" role="main">
       <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE') }}</h1>
       <p class="govuk-body-m">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.ENTER_CLAIM') }}</p>
-
+      <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.FIRST_CONTACT_CLAIM_REFERENCE.EXAMPLE_TEXT') }}</p>
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}

@@ -3171,6 +3171,7 @@
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
+      "EXAMPLE_TEXT": "For example, 305MC126",
       "ENTER_CLAIM": "This is an 8-character number and is on the email or letter we sent you. It has 3 numbers then the letters MC then 3 numbers, for example 305MC126",
       "PAGE_TITLE": "Enter your claim number",
       "TITLE": "Enter your claim number",
