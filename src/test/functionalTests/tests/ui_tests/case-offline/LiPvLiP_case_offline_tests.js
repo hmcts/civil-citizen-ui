@@ -7,7 +7,7 @@ const { caseOffline, caseOfflineAfterSDO } = require('../../../specClaimHelpers/
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, notification;
 
-Feature('Lip v Lip - Case Offline Tests').tag('@ui-case-offline');
+Feature('Lip v Lip - Case Offline Tests').tag('@ui-case-offline @civil-citizen-nightly');
 
 Before(async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -28,7 +28,7 @@ Scenario.skip('01 Case is offline after caseworker performs Case proceeds in cas
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-}).tag('@ui-prod');
+}).tag('@civil-citizen-master @civil-citizen-pr');
 
 //This needs investigation
 Scenario.skip('02 Case is offline after solicitor performs notice of change on behalf of defendant', async ({ noc }) => {

@@ -19,9 +19,9 @@ const dependentUiFiles = new Set(
 );
 
 const pipelineTagMap = {
-  '@ui-prod': ['civil-citizen-ui: master', 'civil-citizen-ui: nightly', 'civil-citizen-ui: PR'],
-  '@ui-nonprod': ['civil-citizen-ui: PR'],
-  '@ui-nightly-prod': ['civil-citizen-ui: nightly'],
+  '@civil-citizen-master': ['civil-citizen-ui: master'],
+  '@civil-citizen-pr': ['civil-citizen-ui: PR'],
+  '@civil-citizen-nightly': ['civil-citizen-ui: nightly'],
 };
 
 const pipelineTagSet = new Set(Object.keys(pipelineTagMap));
@@ -47,6 +47,7 @@ const ignoredStepMethods = new Set([
   'retrieveCaseData',
   'click',
   'waitForFinishedBusinessProcess',
+  'VerifyClaimOnDashboard',
 ]);
 const ignoredStepObjects = new Set(['LoginSteps']);
 
@@ -88,7 +89,7 @@ function normaliseTag(token) {
   }
   trimmed = trimmed.replace(/[;,]+$/, '');
   if (!trimmed.startsWith('@')) {
-    if (trimmed.startsWith('e2e-') || trimmed.startsWith('api-') || pipelineTagSet.has(`@${trimmed}`)) {
+    if (trimmed.startsWith('e2e-') || trimmed.startsWith('api-') || trimmed.startsWith('civil-citizen-') || pipelineTagSet.has(`@${trimmed}`)) {
       trimmed = `@${trimmed}`;
     }
   }

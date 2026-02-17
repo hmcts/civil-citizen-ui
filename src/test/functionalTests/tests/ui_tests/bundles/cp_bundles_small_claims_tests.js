@@ -13,7 +13,7 @@ const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@ui-nightly-prod @ui-bundles');
+Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-nightly @ui-bundles');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

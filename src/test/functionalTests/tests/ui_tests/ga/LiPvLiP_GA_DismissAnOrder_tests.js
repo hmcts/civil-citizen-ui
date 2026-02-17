@@ -10,7 +10,7 @@ const {
 
 let claimRef, claimType, caseData, claimNumber, gaID, courtResponseType;
 
-Feature('LipvLip Applicant GA creation e2e tests - Dismiss an Order').tag('@ui-nightly-prod @ui-ga');
+Feature('LipvLip Applicant GA creation e2e tests - Dismiss an Order').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-ga');
 
 Before(async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -46,4 +46,4 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   const orderMadeGANotif = orderMadeGA();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content);
   await I.click(orderMadeGANotif.nextSteps);
-}).tag('@ui-nonprod');
+});

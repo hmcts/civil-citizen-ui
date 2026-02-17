@@ -5,7 +5,7 @@ const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefend
 
 let claimRef, caseData, claimNumber;
 
-Feature('QM - LIP - Claimant and Defendant Journey - Non Hearing').tag('@ui-nightly-prod @ui-qm');
+Feature('QM - LIP - Claimant and Defendant Journey - Non Hearing').tag('@civil-citizen-nightly @ui-qm');
 
 BeforeSuite(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

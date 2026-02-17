@@ -9,7 +9,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/respons
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimType, claimRef, caseData;
 
-Feature('Create Lip v Lip claim - Rejected All By claimant document welsh').tag('@ui-nightly-prod @ui-welsh');
+Feature('Create Lip v Lip claim - Rejected All By claimant document welsh').tag('@civil-citizen-nightly @ui-welsh');
 
 Scenario('Create Lip v Lip claim - Rejected All By claimant document welsh', async ({api}) => {
   claimType = 'SmallClaims';
@@ -53,4 +53,4 @@ Scenario('Create Lip v Lip claim - Rejected All By claimant document welsh', asy
   await api.submitUploadTranslatedDoc('CLAIMANT_INTENTION');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await CitizenDashboardSteps.VerifyStatusOnDashboard('Your mediation appointment will be arranged within', statusCell);
-}).tag('@ui-prod');
+}).tag('@civil-citizen-master @civil-citizen-pr');
