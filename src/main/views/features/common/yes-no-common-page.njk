@@ -20,7 +20,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set optionErrorKey = form.errorFor('option') %}
-      {% set optionErrorText = optionErrorKey ? t(optionErrorKey) : '' %}
+      {% set optionErrorText = t(optionErrorKey) if optionErrorKey else '' %}
       {% if optionErrorKey and formatValues %}
         {% for fmt in formatValues %}
           {% if fmt.keyError == optionErrorKey %}

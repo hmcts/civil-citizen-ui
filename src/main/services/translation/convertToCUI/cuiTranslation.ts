@@ -35,7 +35,6 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantR
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
-import {convertToPound} from 'services/translation/claim/moneyConversation';
 import {
   ApplicationTypeOption,
   selectedApplicationTypeByOptions,
@@ -168,7 +167,7 @@ function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
 
 function toCUIApplicant1RepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan  {
   return {
-    paymentAmount : convertToPound(ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec),
+    paymentAmount : ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec,
     repaymentFrequency : toCUIRepaymentPlanFrequency(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
     firstRepaymentDate : new Date(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
   };
