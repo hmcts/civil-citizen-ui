@@ -20,7 +20,7 @@ const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const emailMediationConfirmationController = Router();
 const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_EMAIL_CONFIRMATION.';
 
-const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: Response, req: Request, partyEmail: string): void => {
+const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: Response, req: Request, partyEmail: string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyEmail: partyEmail });
@@ -28,15 +28,16 @@ const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: R
     yes : 'COMMON.VARIATION_7.YES',
     no: 'COMMON.VARIATION_7.NO',
   };
-  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText, variation, isCarm:true });
+  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText, variation, isCarm:true, formatValues });
 };
 
 const getPartyEmail = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
   const claim = await getDraftClaimFromStore(redisKey);
-  if (isClaimantResponse) {
-    return claim.case_data.applicant1.emailAddress.emailAddress;
-  }
-  return claim.case_data.respondent1.emailAddress.emailAddress;
+  const party = isClaimantResponse ? claim.case_data?.applicant1 : claim.case_data?.respondent1;
+  return party?.emailAddress?.emailAddress
+    || party?.partyEmail
+    || (isClaimantResponse ? claim.case_data?.claimantUserDetails?.email : undefined)
+    || '';
 };
 
 emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
@@ -66,7 +67,12 @@ emailMediationConfirmationController.post(MEDIATION_EMAIL_CONFIRMATION_URL, (asy
     await form.validate();
     if (form.hasErrors()) {
       const partyEmail = await getPartyEmail(redisKey, isClaimantResponse);
-      renderView(form, res, req, partyEmail);
+      const formatValues = [{
+        keyError: messageKey,
+        keyToReplace: '[email]',
+        valueToReplace: partyEmail,
+      }];
+      renderView(form, res, req, partyEmail, formatValues);
     } else {
       await saveMediationCarm(redisKey, form.model, 'isMediationEmailCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL))

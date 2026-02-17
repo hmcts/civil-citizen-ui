@@ -163,7 +163,7 @@ export const enum TestMessages {
   VALID_YES_OR_NO_OPTION = 'Select Yes to settle the claim',
   WATER_AMOUNT_ERROR = 'Enter how much you pay for Water',
   WHO_EMPLOYS_YOU = 'Who employs you?',
-  VALID_NEXT_12MONTHS_CANNOT_HEARING = 'Select if there are any dates in the next 3 months when you, your experts or witnesses can\'t attend mediation',
+  VALID_NEXT_12MONTHS_CANNOT_HEARING = 'Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing',
   DEFENDANT_PARTY_TYPE_REQUIRED = 'Select who you are claiming against',
   VALID_AMOUNT_BREAKDOWN = 'Enter an amount of money',
   VALID_DATE_IN_PAST = 'Enter date before',

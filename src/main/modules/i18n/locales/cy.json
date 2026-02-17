@@ -5512,7 +5512,7 @@
     "REJECT_ALL_REASON_REQUIRED": "Dewis Pam nad ydych yn credu bod unrhyw arian yn ddyledus i’r [CLAIMANT] gennych chi",
     "TOTAL_INTEREST_AMOUNT_REQUIRED": "Nodwch gyfanswm swm y llog",
     "CLAIM_HWF_REFERENCE_SELECTION_REQUIRED": "Dewiswch a oes gennych gyfeirnod Help i Dalu Ffioedd neu beidio",
-    "DETERMINATION_WITHOUT_HEARING_REQUIRED": "Dewiswch a ydych yn ystyried bod yr hawliad hwn yn addas i’w benderfynu heb wrandawiad neu beidio",
+    "DETERMINATION_WITHOUT_HEARING_REQUIRED": "Dewiswch a ydych chi'n ystyried bod y gwrandawiad hwn yn addas i'w benderfynu heb wrandawiad ai peidio",
     "EXPERT_REPORT_DETAILS_REQUIRED": "Dewiswch a oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod neu beidio",
     "EXPERT_REPORT_DETAILS_REQUIRED_CLAIMANT": "Dewiswch a oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod neu beidio",
     "PERMISSION_FOR_EXPERT_REQUIRED": "Dewiswch a ydych eisiau gofyn am ganiatâd y llys i ddefnyddio arbenigwr neu beidio",
@@ -5785,7 +5785,7 @@
       "SELECT_COURT_LOCATION": "Dewiswch lys"
     },
     "SPECIFY_A_REASON": "Rhaid nodi rheswm",
-    "TELL_US_WHY": "Dywedwch wrthym pam ydych yn ystyried bod yr hawliad hwn yn addas i’w benderfynu heb gynnal gwrandawiad",
+    "TELL_US_WHY": "Nodwch pam rydych chi'n ystyried nad yw'r hawliad hwn yn addas i'w benderfynu heb wrandawiad",
     "TELL_US_WHY_UNAVAILABLE": "Dywedwch wrthym pam nad ydych chi, eich arbenigwyr neu eich tystion yn gallu mynychu gwrandawiad",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Tynnu'r ffynhonnell incwm hon",
@@ -5895,7 +5895,7 @@
     "VALID_INTEREST_TYPE_OPTION": "Dewiswch sut ydych chi am hawlio llog",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_NAME": "Rhowch enw",
-    "VALID_CANT_ATTEND_HEARING": "Dewiswch a oes unrhyw ddyddiadau yn y 3 mis nesaf pan na allwch chi, eich arbenigwyr neu’ch tystion fynychu apwyntiad cyfryngu",
+    "VALID_CANT_ATTEND_HEARING": "Dewiswch oes os oes unrhyw ddyddiadau yn y 12 mis nesaf pan na allwch chi, eich arbenigwyr neu dystion fynd i wrandawiad?",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Ni all y rhif fod yn uwch na'r rhif ar y dudalen flaenorol",
     "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",

@@ -86,9 +86,16 @@ describe('Claimant Response - Settle Claim Controller', () => {
     });
 
     it('should return error on empty post', async () => {
+      jest.spyOn(claim, 'isPartialAdmissionPaid').mockReturnValue(true);
+      jest.spyOn(claim, 'isFullDefence').mockReturnValue(false);
+      jest.spyOn(claim, 'hasPaidInFull').mockReturnValue(false);
+      jest.spyOn(claim, 'partialAdmissionPaidAmount').mockReturnValue(20);
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
       await request(app).post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Select if you want to settle the claim for the [£] the defendant has paid or not?');
+        expect(res.text).toContain('Select if you want to settle the claim for the £20 the defendant has paid or not?');
       });
     });
 

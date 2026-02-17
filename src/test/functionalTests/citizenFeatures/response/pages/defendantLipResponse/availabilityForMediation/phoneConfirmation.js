@@ -49,7 +49,9 @@ class PhoneConfirmation {
   async enterPhoneDetails() {
     I.waitForContent('Can the mediator use ', config.WaitForText);
     I.click('Save and continue');
-    I.see('Select if the mediator can call you on [phone number] for your mediation appointment or not');
+    I.see('Select if the mediator can call you on');
+    I.see('for your mediation appointment or not');
+    I.dontSee('[phone number]');
     I.click(fields.yesButton);
     contactUs.verifyContactUs();
     await I.click('Save and continue');

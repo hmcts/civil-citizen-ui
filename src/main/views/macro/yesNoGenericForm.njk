@@ -47,7 +47,7 @@ for example {noHtml:'<span>you clicked on no</span>' #}
       }
     ],
     errorMessage: {
-      html: t(form.errorFor(name))
+      html: params.errorMessageText if params.errorMessageText else t(form.errorFor(name))
     } if form.hasFieldError(name)
   }) }}
 {% endmacro %}

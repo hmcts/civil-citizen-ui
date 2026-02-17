@@ -9,7 +9,7 @@ import {
   getMediationCarm,
   saveMediationCarm,
 } from 'services/features/response/mediation/mediationService';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -19,7 +19,7 @@ const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const emailMediationConfirmationController = Router();
 const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_PHONE_CONFIRMATION.';
 
-const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, partyPhone: string): void => {
+const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, partyPhone: string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang, partyPhone: partyPhone});
@@ -28,15 +28,17 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
     no: 'COMMON.VARIATION_7.NO',
   };
 
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation, isCarm: true});
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation, isCarm: true, formatValues});
 };
 
 const getPartyPhone = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
-  const claim = await getCaseDataFromStore(redisKey);
-  if (isClaimantResponse) {
-    return claim.applicant1.partyPhone.phone;
-  }
-  return claim.respondent1.partyPhone.phone;
+  const claim = await getDraftClaimFromStore(redisKey);
+  const party = isClaimantResponse ? claim.case_data?.applicant1 : claim.case_data?.respondent1;
+  const partyPhone = party?.partyPhone;
+  const phone = typeof partyPhone === 'string' ? partyPhone : partyPhone?.phone;
+  return phone
+    || (isClaimantResponse ? claim.case_data?.contactNumberFromClaimantResponse : undefined)
+    || '';
 };
 
 emailMediationConfirmationController.get(MEDIATION_PHONE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
@@ -66,7 +68,12 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
     await form.validate();
     if (form.hasErrors()) {
       const partyPhone = await getPartyPhone(redisKey, isClaimantResponse);
-      renderView(form, res, req, partyPhone);
+      const formatValues = [{
+        keyError: messageKey,
+        keyToReplace: isClaimantResponse ? '[number]' : '[phone number]',
+        valueToReplace: partyPhone,
+      }];
+      renderView(form, res, req, partyPhone, formatValues);
     } else {
       await saveMediationCarm(redisKey, form.model, 'isMediationPhoneCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL))

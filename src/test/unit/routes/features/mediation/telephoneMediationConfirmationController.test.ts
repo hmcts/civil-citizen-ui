@@ -7,11 +7,11 @@ import {
   MEDIATION_PHONE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
+import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -22,6 +22,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockDraftClaimFromStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
 
   beforeAll(() => {
     nock(idamUrl)
@@ -37,6 +38,15 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
       claim.respondent1.partyPhone = {phone: '111111'};
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       return claim;
+    });
+    mockDraftClaimFromStore.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.partyPhone = {phone: '111111'};
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      const civilClaimResponse = new CivilClaimResponse();
+      civilClaimResponse.case_data = claim as unknown as CCDClaim;
+      return civilClaimResponse;
     });
   });
 
@@ -72,6 +82,15 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
           claim.applicant1.partyPhone = {phone: '111111'};
           claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
           return claim;
+        });
+        mockDraftClaimFromStore.mockImplementation(async () => {
+          const claim = new Claim();
+          claim.applicant1 = new Party();
+          claim.applicant1.partyPhone = {phone: '111111'};
+          claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+          const civilClaimResponse = new CivilClaimResponse();
+          civilClaimResponse.case_data = claim as unknown as CCDClaim;
+          return civilClaimResponse;
         });
       });
 
@@ -120,7 +139,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.MEDIATION_PHONE_CONFIRMATION_REQUIRED_RESPONDENT'));
+          expect(res.text).toContain('Select if the mediator can call you on 111111 for your mediation appointment or not');
         });
     });
 

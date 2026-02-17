@@ -19,8 +19,14 @@ const settleClaimViewPath = 'features/claimantResponse/settle-claim';
 const claimantResponsePropertyName = 'hasPartPaymentBeenAccepted';
 const claimantResponseFulladmitStatesPaid = 'hasFullDefenceStatesPaidClaimSettled';
 
-function renderView(form: GenericForm<GenericYesNo>, res: Response, paidAmount: number, isPaidInFull: boolean): void {
-  res.render(settleClaimViewPath, {form, paidAmount, isPaidInFull});
+function renderView(
+  form: GenericForm<GenericYesNo>,
+  res: Response,
+  paidAmount: number,
+  isPaidInFull: boolean,
+  formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[],
+): void {
+  res.render(settleClaimViewPath, {form, paidAmount, isPaidInFull, formatValues});
 }
 
 let paidAmount: number;
@@ -42,7 +48,13 @@ settleClaimController.post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL, async (req: Reque
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SETTLE_CLAIM_REQUIRED'));
     form.validateSync();
     if (form.hasErrors()) {
-      renderView(form, res, paidAmount, null);
+      const paidAmountValue = getPaidAmount(claim);
+      const formatValues = typeof paidAmountValue === 'number' ? [{
+        keyError: 'ERRORS.SETTLE_CLAIM_REQUIRED',
+        keyToReplace: '[£]',
+        valueToReplace: `£${paidAmountValue}`,
+      }] : undefined;
+      renderView(form, res, paidAmountValue, claim.hasPaidInFull(), formatValues);
     } else {
       claim.isFullDefence() && claim.hasPaidInFull() ?
         await saveClaimantResponse(redisKey, form.model, claimantResponseFulladmitStatesPaid) :
