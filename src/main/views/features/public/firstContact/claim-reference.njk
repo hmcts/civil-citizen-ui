@@ -13,12 +13,11 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE') }}</h1>
-      <p class="govuk-body-m">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.ENTER_CLAIM') }}</p>
-      <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.EXAMPLE_TEXT') }}</p>
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
+      <h1 class="govuk-heading-l">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE') }}</h1>
+      <p class="govuk-body-m">{{ t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.ENTER_CLAIM') }}</p>
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -30,9 +29,13 @@
               value: form.model.claimReferenceValue,
               type: "text",
               classes: "govuk-!-width-one-half",
-              spellcheck: false,
+              spellcheck: false,]zqq
               label: {
-                text: t("PAGES.FIRST_CONTACT_CLAIM_REFERENCE.CLAIM_NUMBER")
+                text: t("PAGES.FIRST_CONTACT_CLAIM_REFERENCE.CLAIM_NUMBER"),
+                classes: "govuk-label--s"
+              },
+              hint: {
+                text: t("PAGES.FIRST_CONTACT_CLAIM_REFERENCE.EXAMPLE_TEXT")
               },
               errorMessage: {
                 text:t(form.errorFor('claimReferenceValue'))
