@@ -33,12 +33,26 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
 
 const getPartyPhone = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
   const claim = await getDraftClaimFromStore(redisKey);
-  const party = isClaimantResponse ? claim.case_data?.applicant1 : claim.case_data?.respondent1;
+  const caseData = claim?.case_data;
+  const party = isClaimantResponse ? caseData?.applicant1 : caseData?.respondent1;
   const partyPhone = party?.partyPhone;
-  const phone = typeof partyPhone === 'string' ? partyPhone : partyPhone?.phone;
-  return phone
-    || (isClaimantResponse ? claim.case_data?.contactNumberFromClaimantResponse : undefined)
-    || '';
+  const directPartyPhone = typeof partyPhone === 'string' ? partyPhone : partyPhone?.phone;
+  if (directPartyPhone) {
+    return directPartyPhone;
+  }
+  if (!isClaimantResponse) {
+    return '';
+  }
+
+  const companyTelephoneNumber = caseData?.claimantResponse?.mediation?.companyTelephoneNumber;
+  const companyPhone = companyTelephoneNumber?.option === YesNo.YES
+    ? companyTelephoneNumber?.mediationPhoneNumberConfirmation
+    : companyTelephoneNumber?.mediationPhoneNumber;
+  if (companyPhone) {
+    return companyPhone;
+  }
+
+  return caseData?.claimantResponse?.mediation?.canWeUse?.mediationPhoneNumber || '';
 };
 
 emailMediationConfirmationController.get(MEDIATION_PHONE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {

@@ -14,8 +14,6 @@ import {CaseState} from 'form/models/claimDetails';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {ClaimantResponse} from 'models/claimantResponse';
-import {Mediation} from 'models/mediation/mediation';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -230,17 +228,16 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
         return claim;
       });
       mockDraftClaimFromStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        const claimantResponse = new ClaimantResponse();
-        const mediation = new Mediation();
-        mediation.canWeUse = {mediationPhoneNumber: '333333'};
-        claimantResponse.mediation = mediation;
-        claim.claimantResponse = claimantResponse;
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = claim as unknown as CCDClaim;
-        return civilClaimResponse;
+        return {
+          case_data: {
+            ccdState: CaseState.AWAITING_APPLICANT_INTENTION,
+            claimantResponse: {
+              mediation: {
+                canWeUse: {mediationPhoneNumber: '333333'},
+              },
+            },
+          } as unknown as CCDClaim,
+        } as CivilClaimResponse;
       });
 
       await request(app)

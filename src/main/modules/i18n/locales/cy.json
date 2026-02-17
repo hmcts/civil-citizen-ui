@@ -5508,7 +5508,7 @@
     "CLAIM_INTEREST_REQUIRED": "Dewiswch a ydych eisiau hawlio llog neu beidio",
     "RESPONSE_TYPE_REQUIRED": "Dewiswch sut byddwch yn ymateb i’r hawliad",
     "ALREADY_PAID_REQUIRED": "Dewiswch a ydych wedi talu i’r Hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych neu beidio",
-    "SETTLE_CLAIM_REQUIRED": "Dewiswch a ydych eisiau setlo’r hawliad am y £ mae’r diffynnydd wedi talu neu beidio.",
+    "SETTLE_CLAIM_REQUIRED": "Dewiswch a ydych eisiau setlo’r hawliad am y [£] mae’r diffynnydd wedi talu neu beidio.",
     "REJECT_ALL_REASON_REQUIRED": "Dewis Pam nad ydych yn credu bod unrhyw arian yn ddyledus i’r [CLAIMANT] gennych chi",
     "TOTAL_INTEREST_AMOUNT_REQUIRED": "Nodwch gyfanswm swm y llog",
     "CLAIM_HWF_REFERENCE_SELECTION_REQUIRED": "Dewiswch a oes gennych gyfeirnod Help i Dalu Ffioedd neu beidio",
