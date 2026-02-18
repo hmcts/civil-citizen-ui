@@ -69,8 +69,11 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
-      const index = req.query.id;
-      await removeSelectedDocument(redisKey, Number(index)-1);
+      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
+      const currentPage = isConfirmYouPaidCCJAppType(claim) ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
+      const baseUrl = constructResponseUrlWithIdParams(claimId, currentPage);
+      const redirectUrl = req.query?.lang ? `${baseUrl}?lang=${req.query.lang}` : baseUrl;
+      return res.redirect(redirectUrl);
     }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary, index);
