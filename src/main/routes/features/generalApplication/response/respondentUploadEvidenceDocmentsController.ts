@@ -70,8 +70,10 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
       form = new GenericForm(uploadEvidenceDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
-      const index = req.query.id;
-      await removeDocumentFromRedis(redisKeyForGA, Number(index) - 1);
+      await removeDocumentFromRedis(redisKeyForGA, Number(req.query.id) - 1);
+      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
+      return res.redirect(redirectUrl);
     }
     await getSummaryList(formattedSummary, redisKeyForGA, claimId, req.params.appId);
     await renderView(req, form, claim, claimId, res, req.params.appId, formattedSummary);

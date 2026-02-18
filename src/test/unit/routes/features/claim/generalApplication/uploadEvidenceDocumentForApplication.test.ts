@@ -101,13 +101,15 @@ describe('General Application - upload evidence docs to support application', ()
       claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
       claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
       const currentDocuments = 2;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENTS_URL+'?id=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
-          expect(claim.generalApplication.uploadEvidenceForApplication.length).toBe(currentDocuments - 1);
-        });
+      const res = await request(app).get(GA_UPLOAD_DOCUMENTS_URL + '?id=1');
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBeDefined();
+      expect(res.header.location).not.toContain('?id=1');
+      expect(claim.generalApplication.uploadEvidenceForApplication.length).toBe(currentDocuments - 1);
+      const redirectPath = res.header.location.startsWith('http') ? new URL(res.header.location).pathname : res.header.location;
+      const pageRes = await request(app).get(redirectPath);
+      expect(pageRes.status).toBe(200);
+      expect(pageRes.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
     });
 
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {

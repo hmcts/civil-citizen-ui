@@ -186,7 +186,8 @@ describe('uploadAdditionalDocumentsController', () => {
 
       const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({ indexId: 1 });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
       expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0);
     });
 
