@@ -108,13 +108,15 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
     });
 
     it('should remove the 2nd file from list', async () => {
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id=2')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
-          expect(res.text).toContain(uploadDocuments[0].caseDocument.documentName);
-        });
+      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL + '?id=2');
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBeDefined();
+      expect(res.header.location).not.toContain('?id=2');
+      const redirectPath = res.header.location.startsWith('http') ? new URL(res.header.location).pathname : res.header.location;
+      const pageRes = await request(app).get(redirectPath);
+      expect(pageRes.status).toBe(200);
+      expect(pageRes.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
+      expect(pageRes.text).toContain(uploadDocuments[0].caseDocument.documentName);
     });
 
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
