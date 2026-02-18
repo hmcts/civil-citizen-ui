@@ -191,7 +191,7 @@ class Documents {
 
   verifyDocumentSectionContent() {
     I.see('Upload documents', 'h3');
-    I.see('Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
+    I.see('Read and save all documents uploaded by the parties involved in the claim. 10 days before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
   }
 }
 
