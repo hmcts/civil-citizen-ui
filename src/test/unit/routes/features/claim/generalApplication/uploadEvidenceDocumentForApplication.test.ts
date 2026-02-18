@@ -5,6 +5,7 @@ import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { app } from '../../../../../../main/app';
 import {
   BACK_URL,
@@ -121,7 +122,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -143,7 +144,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -164,7 +165,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -193,6 +194,17 @@ describe('General Application - upload evidence docs to support application', ()
           expect(res.status).toBe(302);
           expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
         });
+    });
+
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-documents');
     });
 
     it.each([

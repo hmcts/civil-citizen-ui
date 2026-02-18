@@ -19,6 +19,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -68,7 +69,8 @@ const captionMap: Partial<Record<WhatToDoTypeOption, string>> = {
 
 export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQuery | SendFollowUpQuery, isFollowUp = false): Promise<void> => {
   try {
-    const uploadQMAdditionalFile = await createUploadDocLinks(req);
+    const source = isFollowUp ? FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP : FILE_UPLOAD_SOURCE.QM_CREATE_QUERY;
+    const uploadQMAdditionalFile = await createUploadDocLinks(req, source);
     await saveDocumentToUploaded(req, uploadQMAdditionalFile, createQuery, isFollowUp);
   } catch (err) {
     logger.error(err);
@@ -76,7 +78,7 @@ export const uploadSelectedFile = async (req: AppRequest, createQuery: CreateQue
   }
 };
 
-export const createUploadDocLinks = async (req: AppRequest) => {
+export const createUploadDocLinks = async (req: AppRequest, fileUploadSource: string) => {
   const uploadQMAdditionalFile = new UploadQMAdditionalFile();
   const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
   uploadQMAdditionalFile.fileUpload = fileUpload;
@@ -88,6 +90,7 @@ export const createUploadDocLinks = async (req: AppRequest) => {
   } else {
     const errors = translateErrors(form.getAllErrors(), t);
     req.session.fileUpload = JSON.stringify(errors);
+    req.session.fileUploadSource = fileUploadSource;
   }
   return uploadQMAdditionalFile;
 };

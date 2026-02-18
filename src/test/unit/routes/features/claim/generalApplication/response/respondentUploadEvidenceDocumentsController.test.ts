@@ -1,3 +1,4 @@
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
@@ -106,7 +107,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           href: '#fileUpload[mimetype]',
         },
       ];
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD } as unknown as Session;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
@@ -128,7 +129,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           href: '#fileUpload[size]',
         },
       ];
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD } as unknown as Session;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
@@ -149,7 +150,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           href: '#fileUpload',
         },
       ];
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD } as unknown as Session;
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
@@ -179,6 +180,17 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           expect(res.status).toBe(302);
           expect(res.text).toContain(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
         });
+    });
+
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-documents');
     });
 
     it('should throw the error if user click continue button without uploading a file', async () => {
