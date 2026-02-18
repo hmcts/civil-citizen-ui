@@ -67,8 +67,10 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
-      const index = req.query.id;
-      await removeSelectedDocument(redisKey, Number(index)-1);
+      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
+      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
+      return res.redirect(redirectUrl);
     }
     await getSummaryList(formattedSummary, redisKey, claimId, appId);
     await renderView(form, claim, claimId, appId, req, res, formattedSummary);
