@@ -26,14 +26,14 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <div class="govuk-!-margin-bottom-8">
-              <span id="page-title" class="govuk-visually-hidden">{{ title }}</span>
+              <span id="page-title" class="govuk-visually-hidden">{{ t(title) }}</span>
               {{ createPageTitle(title,t) }}
               {{ createPageTitle(componentText,t, 'm') }}
             <form method="post" novalidate aria-describedby="page-title">
               {{ csrfProtection(csrf) }}
               <fieldset class="govuk-fieldset">
                 <legend class="govuk-visually-hidden">
-                  {{ title }}
+                  {{ t(title) }}
                 </legend>
                 {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_8.YES', no: 'COMMON.VARIATION_8.NO'}) }}
               </fieldset>
