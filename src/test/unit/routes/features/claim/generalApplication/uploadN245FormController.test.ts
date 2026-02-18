@@ -94,6 +94,18 @@ describe('General Application - upload n245 form', () => {
           expect(res.text).toContain('You need to choose a file before clicking');
         });
     });
+
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(GA_UPLOAD_N245_FORM_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-n245-form');
+    });
+
     it('should save the file and display', async () => {
       const file = {
         fieldname: 'selectedFile',

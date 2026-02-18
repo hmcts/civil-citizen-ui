@@ -105,8 +105,8 @@
   {% if content.type === ClaimSummaryType.REMOVE_BUTTON %}
   <div>
     {{ govukButton({
-                     href: content.data.href,
-                     text:  t(content.data.text),
+      href: content.data.href,
+      text:  t(content.data.text),
       name: 'action',
       value: content.data.category+'['+content.data.index+'][removeButton]',
       attributes: {

@@ -6,10 +6,11 @@ import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL} from 'routes/urls';
+import {GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL} from 'routes/urls';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import {Session} from 'express-session';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -132,7 +133,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
         .expect((res) => {
@@ -154,7 +155,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
         .expect((res) => {
@@ -175,7 +176,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
         .expect((res) => {
@@ -206,6 +207,17 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         });
     });
 
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-documents-directions-order');
+    });
+
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
@@ -233,6 +245,34 @@ describe('General Application - uploadDocumentsDirectionsOrderController.ts', ()
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should set fileUpload error in session when no documents uploaded and form has fileUpload error', async () => {
+      mockGADocDataFromStore.mockResolvedValueOnce([]);
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
+        .field('action', 'continue')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+        });
+    });
+
+    it('should redirect to CYA page when documents are uploaded successfully', async () => {
+      const uploadDocuments = [
+        {
+          caseDocument: mockCaseDocument,
+          fileUpload: {} as FileUpload,
+        },
+      ];
+      mockGADocDataFromStore.mockResolvedValueOnce(uploadDocuments);
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
+        .field('action', 'continue')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL);
         });
     });
   });
