@@ -14,7 +14,7 @@ const claimAmount = '£15,000.00';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Fast Track').tag('@ui-nightly-prod @ui-bundles');
+Feature('Case progression journey - Verify Bundle - Fast Track').tag('@civil-citizen-nightly @ui-bundles');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
