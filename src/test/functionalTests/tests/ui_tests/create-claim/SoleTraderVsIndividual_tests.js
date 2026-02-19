@@ -15,7 +15,7 @@ const {
 let caseData,legacyCaseReference,caseRef,claimInterestFlag,StandardInterest,selectedHWF,claimAmount = 1600,
   claimFee = 115;
 
-Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@ui-create-claim');
+Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@civil-citizen-nightly @ui-create-claim');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({ I, api }) => {
   selectedHWF = false;
@@ -87,7 +87,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
   await I.click(payClaimFeeNotif.nextSteps);
   await steps.verifyAndPayClaimFee(claimAmount, claimFee, standardInterestAmount);
   await api.waitForFinishedBusinessProcess();
-}).tag('@ui-prod');
+}).tag('@civil-citizen-master @civil-citizen-pr');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable interest - with hwf', async ({ api }) => {
   selectedHWF = true;

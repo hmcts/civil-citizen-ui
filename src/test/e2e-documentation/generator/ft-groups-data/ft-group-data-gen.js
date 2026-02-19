@@ -146,15 +146,15 @@ function deriveGroupsFromTests(testRecords) {
         return;
       }
       const [, tagType, groupName] = match;
-      const pipeline = tagType === 'ui'
-        ? ['civil-citizen-ui: PR']
-        : ['Not used'];
+      const pipeline = ['civil-citizen-ui: PR'];
       const key = tag;
       if (!groups.has(key)) {
         groups.set(key, {
           functionalTestGroup: functionalGroupDisplayNames[groupName] || groupName,
           tag,
-          githubLabelName: `pr_ft_${groupName}`,
+          githubLabelName: tagType === 'ui'
+            ? `pr_ft_ui-${groupName}`
+            : `pr_ft_api-${groupName}`,
           pipeline,
           folderPaths: new Set(),
           steps: [],

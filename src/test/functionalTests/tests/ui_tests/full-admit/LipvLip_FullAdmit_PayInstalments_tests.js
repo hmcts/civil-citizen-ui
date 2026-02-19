@@ -15,7 +15,7 @@ const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, instalmentAmount = 100, date = '1 October 2025';
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant').tag('@ui-nightly-prod @ui-full-admit');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant').tag('@civil-citizen-nightly @ui-full-admit');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
 Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by instalments', async ({I, api}) => {

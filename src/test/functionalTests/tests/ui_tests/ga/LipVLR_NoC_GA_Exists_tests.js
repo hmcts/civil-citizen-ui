@@ -8,7 +8,7 @@ const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e
 
 let claimRef, claimType, caseData, legacyCaseReference, defendantName;
 
-Feature('Lip v Lip with GA and perform NoC').tag('@ui-nightly-prod @ui-ga @ui-noc');
+Feature('Lip v Lip with GA and perform NoC').tag('@civil-citizen-nightly @ui-ga @ui-noc');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
