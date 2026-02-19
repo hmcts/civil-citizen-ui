@@ -25,7 +25,7 @@ const pipelineTagMap = {
 };
 
 const pipelineTagSet = new Set(Object.keys(pipelineTagMap));
-const actorStepObjects = ['wa', 'api', 'noc', 'qm'];
+const actorStepObjects = ['wa', 'api', 'noc', 'qm', 'steps'];
 const ignoredObjectMethodPrefixes = ['verify', 'click', 'fill'];
 const standaloneStepPrefixes = ['verify'];
 const ignoredStepMethods = new Set([
