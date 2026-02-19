@@ -16,12 +16,12 @@ monitor_action_group = {
 
 monitor_metric_alerts = {
   "aat-civil-citizen-ui-draft-store-cpu-warning" = {
-    description         = "AAT Civil Citizen UI draft store CPU usage equal to or above 65%",
-    severity            = 2,
-    enabled             = true,
-    frequency           = "PT1M",
-    autoMitigate        = true,
-    window_size         = "PT5M"
+    description  = "AAT Civil Citizen UI draft store CPU usage equal to or above 65%",
+    severity     = 2,
+    enabled      = true,
+    frequency    = "PT1M",
+    autoMitigate = true,
+    window_size  = "PT5M"
     criteria = {
       allOf = [
         {
@@ -41,12 +41,12 @@ monitor_metric_alerts = {
     ]
   }
   "aat-civil-citizen-ui-draft-store-cpu-critical" = {
-    description         = "AAT Civil Citizen UI draft store CPU usage equal to or above 75%",
-    severity            = 0,
-    enabled             = true,
-    frequency           = "PT1M",
-    autoMitigate        = true,
-    window_size         = "PT5M"
+    description  = "AAT Civil Citizen UI draft store CPU usage equal to or above 75%",
+    severity     = 0,
+    enabled      = true,
+    frequency    = "PT1M",
+    autoMitigate = true,
+    window_size  = "PT5M"
     criteria = {
       allOf = [
         {
@@ -66,12 +66,12 @@ monitor_metric_alerts = {
     ]
   }
   "aat-civil-citizen-ui-draft-store-memory-warning" = {
-    description         = "AAT Civil Citizen UI draft store memory usage equal to or above 65%",
-    severity            = 2,
-    enabled             = true,
-    frequency           = "PT5M",
-    autoMitigate        = true,
-    window_size         = "PT15M"
+    description  = "AAT Civil Citizen UI draft store memory usage equal to or above 65%",
+    severity     = 2,
+    enabled      = true,
+    frequency    = "PT5M",
+    autoMitigate = true,
+    window_size  = "PT15M"
     criteria = {
       allOf = [
         {
@@ -91,12 +91,12 @@ monitor_metric_alerts = {
     ]
   }
   "aat-civil-citizen-ui-draft-store-memory-critical" = {
-    description         = "AAT Civil Citizen UI draft store memory usage equal to or above 75%",
-    severity            = 0,
-    enabled             = true,
-    frequency           = "PT5M",
-    autoMitigate        = true,
-    window_size         = "PT15M"
+    description  = "AAT Civil Citizen UI draft store memory usage equal to or above 75%",
+    severity     = 0,
+    enabled      = true,
+    frequency    = "PT5M",
+    autoMitigate = true,
+    window_size  = "PT15M"
     criteria = {
       allOf = [
         {

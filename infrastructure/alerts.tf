@@ -33,16 +33,16 @@ resource "azurerm_monitor_action_group" "civil-ci-action-group" {
 }
 
 resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
-  for_each             = var.monitor_metric_alerts
-  name                 = each.key
+  for_each            = var.monitor_metric_alerts
+  name                = each.key
   resource_group_name = local.draft_store_resource_group_name
-  description          = try(each.value.description, null)
-  severity             = try(each.value.severity, null)
-  enabled              = try(each.value.enabled, null)
-  frequency            = try(each.value.frequency, null)
-  window_size          = try(each.value.window_size, null)
-  auto_mitigate        = try(each.value.autoMitigate, null)
-  scopes               = [data.azurerm_redis_cache.draft_store.id]
+  description         = try(each.value.description, null)
+  severity            = try(each.value.severity, null)
+  enabled             = try(each.value.enabled, null)
+  frequency           = try(each.value.frequency, null)
+  window_size         = try(each.value.window_size, null)
+  auto_mitigate       = try(each.value.autoMitigate, null)
+  scopes              = [data.azurerm_redis_cache.draft_store.id]
 
   dynamic "criteria" {
     for_each = try(each.value.criteria, {})
