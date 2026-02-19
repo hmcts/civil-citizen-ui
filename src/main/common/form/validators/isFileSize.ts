@@ -5,6 +5,8 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
+export const FILE_SIZE_LIMIT = 100 * 1024 * 1024; // 100MB in bytes
+
 @ValidatorConstraint({ name: 'fileSizeValidator', async: false })
 export class FileSizeValidator implements ValidatorConstraintInterface {
   validate(size: number) {
@@ -12,8 +14,7 @@ export class FileSizeValidator implements ValidatorConstraintInterface {
       return true;
     }
 
-    const fileSizeLimit = 100 * 1024 * 1024; // 100MB in bytes
-    return size <= fileSizeLimit;
+    return size <= FILE_SIZE_LIMIT;
   }
 
 }
