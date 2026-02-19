@@ -22,18 +22,16 @@ monitor_metric_alerts = {
     frequency    = "PT1M",
     autoMitigate = true,
     window_size  = "PT5M"
-    criteria = {
-      allOf = [
-        {
-          operator             = "GreaterThanOrEqual",
-          threshold            = 65,
-          metricNamespace      = "Microsoft.Cache/Redis",
-          metricName           = "percentProcessorTime",
-          aggregation          = "Maximum",
-          skipMetricValidation = false,
-        }
-      ]
-    }
+    criteria = [
+      {
+        operator             = "GreaterThanOrEqual",
+        threshold            = 65,
+        metricNamespace      = "Microsoft.Cache/Redis",
+        metricName           = "percentProcessorTime",
+        aggregation          = "Maximum",
+        skipMetricValidation = false,
+      }
+    ]
     action = [
       {
         action_group_name = "civil-ci-slack-alert"
@@ -47,18 +45,16 @@ monitor_metric_alerts = {
     frequency    = "PT1M",
     autoMitigate = true,
     window_size  = "PT5M"
-    criteria = {
-      allOf = [
-        {
-          operator             = "GreaterThanOrEqual",
-          threshold            = 75,
-          metricNamespace      = "Microsoft.Cache/Redis",
-          metricName           = "percentProcessorTime",
-          aggregation          = "Maximum",
-          skipMetricValidation = false,
-        }
-      ]
-    }
+    criteria = [
+      {
+        operator             = "GreaterThanOrEqual",
+        threshold            = 75,
+        metricNamespace      = "Microsoft.Cache/Redis",
+        metricName           = "percentProcessorTime",
+        aggregation          = "Maximum",
+        skipMetricValidation = false,
+      }
+    ]
     action = [
       {
         action_group_name = "civil-ci-slack-alert"
@@ -72,18 +68,16 @@ monitor_metric_alerts = {
     frequency    = "PT5M",
     autoMitigate = true,
     window_size  = "PT15M"
-    criteria = {
-      allOf = [
-        {
-          operator             = "GreaterThanOrEqual",
-          threshold            = 65,
-          metricNamespace      = "Microsoft.Cache/Redis",
-          metricName           = "usedmemorypercentage",
-          aggregation          = "Maximum",
-          skipMetricValidation = false,
-        }
-      ]
-    }
+    criteria = [
+      {
+        operator             = "GreaterThanOrEqual",
+        threshold            = 65,
+        metricNamespace      = "Microsoft.Cache/Redis",
+        metricName           = "usedmemorypercentage",
+        aggregation          = "Maximum",
+        skipMetricValidation = false,
+      }
+    ]
     action = [
       {
         action_group_name = "civil-ci-slack-alert"
@@ -97,18 +91,16 @@ monitor_metric_alerts = {
     frequency    = "PT5M",
     autoMitigate = true,
     window_size  = "PT15M"
-    criteria = {
-      allOf = [
-        {
-          operator             = "GreaterThanOrEqual",
-          threshold            = 75,
-          metricNamespace      = "Microsoft.Cache/Redis",
-          metricName           = "usedmemorypercentage",
-          aggregation          = "Maximum",
-          skipMetricValidation = false,
-        }
-      ]
-    }
+    criteria = [
+      {
+        operator             = "GreaterThanOrEqual",
+        threshold            = 75,
+        metricNamespace      = "Microsoft.Cache/Redis",
+        metricName           = "usedmemorypercentage",
+        aggregation          = "Maximum",
+        skipMetricValidation = false,
+      }
+    ]
     action = [
       {
         action_group_name = "civil-ci-slack-alert"
