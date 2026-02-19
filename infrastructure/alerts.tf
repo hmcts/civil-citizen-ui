@@ -4,11 +4,11 @@ data "azurerm_key_vault_secret" "civil_ci_alert_slack_webhook" {
 }
 
 locals {
-  draft_store_resource_group_name = "rs-${var.product}-${var.component}-draft-store-${var.env}"
+  draft_store_resource_group_name = "${var.product}-${var.component}-draft-store-${var.env}"
   civil_ci_alert_slack_webhook_url = data.azurerm_key_vault_secret.civil_ci_alert_slack_webhook.value
 }
 
-resource "azurerm_monitor_action_group" "this" {
+resource "azurerm_monitor_action_group" "civil-ci-action-group" {
   for_each            = var.monitor_action_group
   name                = each.key
   resource_group_name = local.draft_store_resource_group_name
@@ -24,7 +24,8 @@ resource "azurerm_monitor_action_group" "this" {
   }
 }
 
-resource "azurerm_monitor_metric_alert" "this" {
+resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
+  resource_group_name = local.draft_store_resource_group_name
   for_each             = var.monitor_metric_alerts
   name                 = each.key
   description          = each.value.description
