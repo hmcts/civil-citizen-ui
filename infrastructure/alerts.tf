@@ -4,7 +4,7 @@ data "azurerm_key_vault_secret" "civil_ci_alert_slack_webhook" {
 }
 
 locals {
-  draft_store_resource_group_name = "rs-${var.product}-${var.component}-draft-store-${var.env}"
+  draft_store_resource_group_name  = "rs-${var.product}-${var.component}-draft-store-${var.env}"
   civil_ci_alert_slack_webhook_url = data.azurerm_key_vault_secret.civil_ci_alert_slack_webhook.value
 }
 
@@ -38,12 +38,12 @@ resource "azurerm_monitor_metric_alert" "this" {
   criteria {
     all_of {
       metric_criteria {
-        metric_namespace     = each.value.criteria.allOf[0].metricNamespace
-        metric_name          = each.value.criteria.allOf[0].metricName
-        name                 = each.value.criteria.allOf[0].name
-        threshold            = each.value.criteria.allOf[0].threshold
-        operator             = each.value.criteria.allOf[0].operator
-        aggregation          = each.value.criteria.allOf[0].aggregation
+        metric_namespace       = each.value.criteria.allOf[0].metricNamespace
+        metric_name            = each.value.criteria.allOf[0].metricName
+        name                   = each.value.criteria.allOf[0].name
+        threshold              = each.value.criteria.allOf[0].threshold
+        operator               = each.value.criteria.allOf[0].operator
+        aggregation            = each.value.criteria.allOf[0].aggregation
         skip_metric_validation = each.value.criteria.allOf[0].skipMetricValidation
       }
     }

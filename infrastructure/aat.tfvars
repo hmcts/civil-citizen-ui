@@ -7,9 +7,9 @@ capacity = "1"
 #================================================================================================
 monitor_action_group = {
   "civil-ci-slack-alert" = {
-    short_name        = "civilci"
+    short_name = "civilci"
     webhook_receiver = [
-      { name        = "civil-ci-alerts-web-hook" }
+      { name = "civil-ci-alerts-web-hook" }
     ]
   }
 }
