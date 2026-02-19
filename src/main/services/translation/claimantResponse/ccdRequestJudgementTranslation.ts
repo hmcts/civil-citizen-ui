@@ -63,8 +63,10 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
   const ccjJudgmentLipInterest = claim.hasInterest() ? await calculateInterestToDate(claim) : 0;
   const ccjJudgmentAmountClaimFee = claimFee ? claimFee.toString(): null;
+  const ccjPaymentPaidSomeOption= toCCDYesNo(claimantAcceptedPaidAmount?.option);
+
   return {
-    ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
+    ccjPaymentPaidSomeOption,
     ccjPaymentPaidSomeAmount,
     ccjJudgmentAmountClaimFee,
     ccjJudgmentLipInterest: ccjJudgmentLipInterest.toString(),
@@ -81,8 +83,10 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
   const ccjJudgmentLipInterest = claim.hasInterest() ? await calculateInterestToDate(claim) : 0;
   const paymentOption = claimantResponse.ccjRequest?.ccjPaymentOption?.type;
+  const ccjPaymentPaidSomeOption= toCCDYesNo(claimantAcceptedPaidAmount?.option);
+
   return {
-    ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),
+    ccjPaymentPaidSomeOption,
     ccjPaymentPaidSomeAmount,
     ccjJudgmentAmountClaimFee: claimFee.toString(),
     ccjJudgmentLipInterest: ccjJudgmentLipInterest.toString(),
