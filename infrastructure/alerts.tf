@@ -4,7 +4,7 @@ data "azurerm_key_vault_secret" "civil_ci_alert_slack_webhook" {
 }
 
 locals {
-  draft_store_resource_group_name  = "${var.product}-${var.component}-${var.env}"
+  draft_store_resource_group_name  = "${var.product}-${var.component}-draft-store-cache-${var.env}"
   civil_ci_alert_slack_webhook_url = data.azurerm_key_vault_secret.civil_ci_alert_slack_webhook.value
 }
 
