@@ -38,6 +38,7 @@ const civilClaimResponseMock: string = JSON.stringify(otherWitnessMock);
 const mockOtherWitnesses = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMock)),
+  expireat: jest.fn(() => Promise.resolve({})),
 };
 
 describe('Other Witnesses', () => {
