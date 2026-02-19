@@ -44,7 +44,6 @@ civil-service:
       environment:
         SERVICES_CCD_DATA_STORE_API: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
         HEARINGS_JURISDICTIONS: CIVIL
-        LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
         SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-java
         ENABLE_HEARING_DATA_SOURCE_HEADERS: "true"
         PREVIEW_DEPLOYMENT_ID: "civil-${CHANGE_ID}"
@@ -58,7 +57,6 @@ civil-service:
         SERVICES_PRD_LOCATION_API: http://rd-location-ref-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_JUDICIAL_API: http://rd-judicial-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_COMMONDATA_API: http://rd-commondata-api-aat.service.core-compute-aat.internal
-        SERVICES_DOCUMENTS_API_V2: http://${SERVICE_NAME}-cdam
         HEALTH_ROLE_ASSIGNMENT_API: http://${SERVICE_NAME}-am-role-assignment-service/health
         GLOBAL_SEARCH_SERVICES: IA,CIVIL,PRIVATELAW,PUBLICLAW,SSCS
         FEATURE_WORKALLOCATION_ENABLED: true
