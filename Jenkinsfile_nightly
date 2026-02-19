@@ -1,8 +1,6 @@
 #!groovy
 
 properties([
-    // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
-    pipelineTriggers([cron('H 12 * * 1-5')]),
     copyArtifactPermission('/HMCTS_a_to_c_Nightly/civil-citizen-ui/*'),
     parameters([
       choice(name: 'FORCE_GREEN_BUILD', choices: ['false', 'true'],
