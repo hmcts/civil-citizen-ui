@@ -11,7 +11,7 @@ const {
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName, camundaEvent, expectedState;
 
-Feature('Lip v LR e2e Tests').tag('@ui-nightly-prod @ui-noc');
+Feature('Lip v LR e2e Tests').tag('@civil-citizen-nightly @ui-noc');
 
 Before(async ({ I, api }) => {
   selectedHWF = false;
@@ -54,7 +54,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
   expectedState = 'AWAITING_APPLICANT_INTENTION';
   await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent, expectedState);
-}).tag('@ui-prod');
+}).tag('@civil-citizen-master @civil-citizen-pr');
 
 Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   I,
