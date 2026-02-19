@@ -8,15 +8,23 @@ locals {
   civil_ci_alert_slack_webhook_url = data.azurerm_key_vault_secret.civil_ci_alert_slack_webhook.value
 }
 
+# Resolve the Redis Cache resource ID from the module outputs
+# `host_name` is like "<redis-name>.redis.cache.windows.net" — take the first segment as the resource name
+# Then fetch the Redis resource to obtain its ARM ID for alert scopes
+data "azurerm_redis_cache" "draft_store" {
+  name                = split(".", module.citizen-ui-draft-store.host_name)[0]
+  resource_group_name = local.draft_store_resource_group_name
+}
+
 resource "azurerm_monitor_action_group" "civil-ci-action-group" {
   for_each            = var.monitor_action_group
   name                = each.key
   resource_group_name = local.draft_store_resource_group_name
-  short_name          = each.value.short_name
+  short_name          = try(each.value.short_name, null)
   tags                = var.common_tags
 
   dynamic "webhook_receiver" {
-    for_each = each.value.webhook_receiver
+    for_each = try(each.value.webhook_receiver, [])
     content {
       name        = webhook_receiver.value.name
       service_uri = local.civil_ci_alert_slack_webhook_url
@@ -34,14 +42,13 @@ resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
   frequency            = try(each.value.frequency, null)
   window_size          = try(each.value.window_size, null)
   auto_mitigate        = try(each.value.autoMitigate, null)
-  scopes               = [module.citizen-ui-draft-store.id]
+  scopes               = [data.azurerm_redis_cache.draft_store.id]
 
   dynamic "criteria" {
     for_each = try(each.value.criteria, {})
     content {
       metric_namespace       = criteria.value.metricNamespace
       metric_name            = criteria.value.metricName
-      name                   = criteria.value.name
       threshold              = criteria.value.threshold
       operator               = criteria.value.operator
       aggregation            = criteria.value.aggregation

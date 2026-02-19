@@ -27,7 +27,6 @@ monitor_metric_alerts = {
         {
           operator             = "GreaterThanOrEqual",
           threshold            = 65,
-          name                 = "Metric1",
           metricNamespace      = "Microsoft.Cache/Redis",
           metricName           = "percentProcessorTime",
           aggregation          = "Maximum",
@@ -53,7 +52,6 @@ monitor_metric_alerts = {
         {
           operator             = "GreaterThanOrEqual",
           threshold            = 75,
-          name                 = "Metric1",
           metricNamespace      = "Microsoft.Cache/Redis",
           metricName           = "percentProcessorTime",
           aggregation          = "Maximum",
@@ -79,7 +77,6 @@ monitor_metric_alerts = {
         {
           operator             = "GreaterThanOrEqual",
           threshold            = 65,
-          name                 = "Metric1",
           metricNamespace      = "Microsoft.Cache/Redis",
           metricName           = "usedmemorypercentage",
           aggregation          = "Maximum",
@@ -105,7 +102,6 @@ monitor_metric_alerts = {
         {
           operator             = "GreaterThanOrEqual",
           threshold            = 75,
-          name                 = "Metric1",
           metricNamespace      = "Microsoft.Cache/Redis",
           metricName           = "usedmemorypercentage",
           aggregation          = "Maximum",
