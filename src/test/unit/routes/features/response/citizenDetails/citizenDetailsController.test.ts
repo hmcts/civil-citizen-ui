@@ -3,6 +3,7 @@ import config from 'config';
 import request from 'supertest';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {buildAddress} from '../../../../../utils/mockClaim';
@@ -17,10 +18,12 @@ import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkl
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
+jest.mock('../../../../../../main/services/features/claim/yourDetails/phoneService'); 
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
 const mockSaveRespondent = saveDefendantProperty as jest.Mock;
+const mockSaveTelephone = saveTelephone as jest.Mock; 
 
 const claim = new Claim();
 
@@ -99,6 +102,10 @@ describe('Confirm Details page', () => {
     const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
     getCaseDataFromStoreSpy(mockClaim);
     carmToggleSpy(true);
+
+    // prevent real Redis calls
+    mockSaveRespondent.mockResolvedValue(undefined);
+    mockSaveTelephone.mockResolvedValue(undefined); 
   });
 
   describe('on Exception', () => {
