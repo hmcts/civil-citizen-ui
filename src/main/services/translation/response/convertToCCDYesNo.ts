@@ -1,7 +1,10 @@
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
+const { Logger } = require('@hmcts/nodejs-logging');
+
 export const toCCDYesNo = (value: YesNo | string) => {
+  Logger.info(`Converting ${value} to CCD YesNo`);
   if (value) {
     return value === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO;
   }
