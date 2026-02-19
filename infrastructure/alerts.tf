@@ -25,40 +25,39 @@ resource "azurerm_monitor_action_group" "civil-ci-action-group" {
 }
 
 resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
-  resource_group_name = local.draft_store_resource_group_name
   for_each             = var.monitor_metric_alerts
   name                 = each.key
-  description          = each.value.description
-  severity             = each.value.severity
-  enabled              = each.value.enabled
-  evaluation_frequency = each.value.evaluationFrequency
-  window_duration      = each.value.window_size
-  auto_mitigate        = each.value.autoMitigate
+  resource_group_name = local.draft_store_resource_group_name
+  description          = try(each.value.description, null)
+  severity             = try(each.value.severity, null)
+  enabled              = try(each.value.enabled, null)
+  frequency            = try(each.value.frequency, null)
+  window_size          = try(each.value.window_size, null)
+  auto_mitigate        = try(each.value.autoMitigate, null)
   scopes               = [module.citizen-ui-draft-store.id]
 
-  criteria {
-    all_of {
-      metric_criteria {
-        metric_namespace       = each.value.criteria.allOf[0].metricNamespace
-        metric_name            = each.value.criteria.allOf[0].metricName
-        name                   = each.value.criteria.allOf[0].name
-        threshold              = each.value.criteria.allOf[0].threshold
-        operator               = each.value.criteria.allOf[0].operator
-        aggregation            = each.value.criteria.allOf[0].aggregation
-        skip_metric_validation = each.value.criteria.allOf[0].skipMetricValidation
-      }
+  dynamic "criteria" {
+    for_each = try(each.value.criteria, {})
+    content {
+      metric_namespace       = criteria.value.metricNamespace
+      metric_name            = criteria.value.metricName
+      name                   = criteria.value.name
+      threshold              = criteria.value.threshold
+      operator               = criteria.value.operator
+      aggregation            = criteria.value.aggregation
+      skip_metric_validation = criteria.value.skipMetricValidation
     }
   }
 
   dynamic "action" {
-    for_each = each.value.action
+    for_each = try(each.value.action, [])
     content {
-      action_group_id = azurerm_monitor_action_group.this[action.value.action_group_name].id
+      action_group_id = azurerm_monitor_action_group.civil-ci-action-group[action.value.action_group_name].id
     }
   }
 
   depends_on = [
-    azurerm_monitor_action_group.this,
+    azurerm_monitor_action_group.civil-ci-action-group,
     module.citizen-ui-draft-store,
   ]
 }
