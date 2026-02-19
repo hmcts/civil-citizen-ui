@@ -9,26 +9,22 @@ import {AppRequest} from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import {Claim} from 'models/claim';
-import multer from 'multer';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl, saveN245Form } from 'services/features/generalApplication/generalApplicationService';
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
+import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
+import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
 const removeDoc = 'REMOVE_DOC';
-const fileSize = Infinity;
 const selectedFile = 'selectedFile';
 const uploadButton = 'uploadButton';
 const pageTitle = 'PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE';
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const multerMiddleware = createMulterErrorMiddlewareForSingleField(selectedFile, 'uploadN245FormController');
 
 uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -40,7 +36,11 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
     const uploadedN245Details = claim.generalApplication?.uploadN245Form || new UploadGAFiles();
     let documentName = uploadedN245Details.caseDocument?.documentName;
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const form = new GenericForm(uploadedN245Details);
+    let form = new GenericForm(uploadedN245Details);
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadedN245Details, fileUploadErrors);
+    }
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
     const backLinkUrl = BACK_URL;
     if (req.query?.action === removeDoc) {
@@ -61,7 +61,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
   }
 }) as RequestHandler);
 
-uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -71,6 +71,11 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     const contentList = getUploadFormContent(lng);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
+
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245)) {
+      return;
+    }
+
     if (req.body.action === uploadButton) {
       const { form, documentName } = await uploadSelectedFile(req, claim);
       return res.render(viewPath, {
