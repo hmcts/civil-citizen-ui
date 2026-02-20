@@ -84,7 +84,7 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
       claimId,
       JSON.stringify(storedClaimResponse),
       {
-        EXAT: expirySeconds
+        EXAT: expirySeconds,
       });
   }
 };
