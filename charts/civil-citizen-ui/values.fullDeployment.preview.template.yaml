@@ -52,8 +52,6 @@ civil-service:
         SERVICES_EM_ANNO_API: http://${SERVICE_NAME}-ccd-api-gw
         SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
         SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-        SERVICES_HEARINGS_COMPONENT_API: http://jurisdiction-hearings-api-aat.service.core-compute-aat.internal
-        SERVICES_HMC_HEARINGS_COMPONENT_API: http://${SERVICE_NAME}-hmc-cft-hearing-service
         SERVICES_PRD_LOCATION_API: http://rd-location-ref-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_JUDICIAL_API: http://rd-judicial-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_COMMONDATA_API: http://rd-commondata-api-aat.service.core-compute-aat.internal
