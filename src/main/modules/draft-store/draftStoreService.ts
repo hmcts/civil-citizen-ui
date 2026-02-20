@@ -68,27 +68,22 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   const draftStoreClient = app.locals.draftStoreClient;
   const ttl = await draftStoreClient.ttl(claimId);
   logger.info(`saveDraftClaim..claim.draftClaimCreatedAt set to ${claim.draftClaimCreatedA}`);
-    if (ttl > 0) {
-
-   logger.info(`saveDraftClaim..claim.tt set to ${ttl}`);
+  if (ttl > 0) {
+    logger.info(`saveDraftClaim..claim.tt set to ${ttl}`);
     // TTL already exists — preserve it
     await draftStoreClient.set(
       claimId,
       JSON.stringify(storedClaimResponse),
-      'KEEPTTL'
-    );
+      'KEEPTTL');
   } else {
     // No TTL — set a new one
     const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
-    
     logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}`);
-    
     await draftStoreClient.set(
       claimId,
       JSON.stringify(storedClaimResponse),
       'EXAT',
-      calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate)
-    );
+      calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate));
   }
 };
 const createNewCivilClaimResponse = (claimId: string) => {
