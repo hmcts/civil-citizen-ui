@@ -191,7 +191,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
-    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim), "KEEPTTL");
+    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim), 'KEEPTTL');
   });
 
   describe('findClaimIdsbyUserId', () => {
