@@ -15,7 +15,6 @@ def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
-def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -73,6 +72,14 @@ def getFunctionalTestsGroups() {
     functionalTestGroups.add(label.substring(6, label.length()))
   }
   return functionalTestGroups.join(",")
+}
+
+def getCivilCcdDefinitionBranch() {
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
+    return label.minus("civilDefinitionBranch:").trim()
+  }
+  return "master"
 }
 
 def getCivilServiceImage() {
@@ -206,8 +213,8 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
-          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${getCivilCcdDefinitionBranch()}
+          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
           ./bin/add-org-roles-to-users.sh
         """
   }
@@ -264,8 +271,8 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
-      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
+      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${getCivilCcdDefinitionBranch()}
+      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
     """
     setUrls("aat")
   }
