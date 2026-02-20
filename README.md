@@ -129,6 +129,8 @@ The standard preview deployment, i.e. without the github label present, intends 
 
 `civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 
+`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview.
+
 
 ```bash
 $ yarn test:crossbrowser
