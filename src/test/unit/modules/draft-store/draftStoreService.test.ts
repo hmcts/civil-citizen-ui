@@ -227,4 +227,42 @@ describe('Draft store service to save and retrieve claim', () => {
       expect(loggerSpy).toHaveBeenCalledWith('Failed to find claim IDs by userId', mockError);
     });
   });
+
+  it('should set expiry using ttl when draftClaimCreatedAt is not present and ttl is -1', async () => {
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
+    draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const spyTtl = jest.spyOn(app.locals.draftStoreClient, 'ttl');
+    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+    claim.draftClaimCreatedAt = undefined as any;
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(spyTtl).toBeCalledWith(CLAIM_ID);
+    expect(spyExpireat).toBeCalled();
+  });
+
+  it('should not reset expiry when ttl is already set', async () => {
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(120);
+    draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const spyTtl = jest.spyOn(app.locals.draftStoreClient, 'ttl');
+    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+    claim.draftClaimCreatedAt = undefined as any;
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(spyTtl).toBeCalledWith(CLAIM_ID);
+    expect(spyExpireat).toBeCalled();
+  });
 });
