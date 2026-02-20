@@ -7,7 +7,7 @@ civil-service:
       HMC_HEARINGS_TOPIC_NAME: "hmc-to-cft-aat"
       HMC_HEARINGS_TOPIC_SUBSCRIPTION_NAME: "${SERVICE_NAME}-hmcsb-civil"
       HMC_HEARINGS_TOPIC_NAMESPACE: "hmc-servicebus-aat"
-      ROLE_ASSIGNMENT_URL: ${ROLE_ASSIGNMENT_URL}
+      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
   camunda-bpm:
     enabled: false
   ccd:
