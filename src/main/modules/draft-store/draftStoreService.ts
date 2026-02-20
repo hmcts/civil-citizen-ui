@@ -80,9 +80,6 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
     const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
     const expirySeconds = calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate);
     logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}... expirySeconds..${expirySeconds}`);
-    if (isNaN(expirySeconds)) {
-      throw new Error('Invalid expiry timestamp for Redis EXAT');
-    }
     await draftStoreClient.set(
       claimId,
       JSON.stringify(storedClaimResponse),
