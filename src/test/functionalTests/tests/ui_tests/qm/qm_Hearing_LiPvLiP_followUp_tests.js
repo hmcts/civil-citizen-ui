@@ -7,7 +7,7 @@ const { PUBLIC_QUERY } = require('../../../specClaimHelpers/fixtures/queryTypes'
 let caseData, claimNumber;
 const claimType = 'SmallClaims';
 
-Feature('QM - LIP - Follow up tests').tag('@ui-nightly-prod @ui-qm');
+Feature('QM - LIP - Follow up tests').tag('@civil-citizen-nightly @ui-qm');
 
 Before(async () => {
   await Promise.all([
@@ -59,4 +59,4 @@ Scenario('Claimant and Defendant send message to court and follow up and admin c
   await I.click(claimNumber);
   console.log(`Opened claim dashboard for user: ${config.defendantCitizenUser.email}`);
   await ResponseSteps.verifyClosedQuery('Defendant Query');
-}).tag('@ui-prod');
+}).tag('@civil-citizen-master @civil-citizen-pr');
