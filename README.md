@@ -121,14 +121,13 @@ Running Preview pipeline :
 
 ## Github Labels
 
-For manual testing:
-
 `enable_keep_helm` is necessary so the Jenkins pipeline doesn't delete the deployment at the end of it.
 
-`prValues: fullDeployment` is recommended, otherwise the vast majority of downstream components calls will be just mocked responses,
+`pr-values: fullDeployment` is recommended, otherwise the vast majority of downstream components calls will be just mocked responses,
 effectively turning off some functionality like Hearings. Also, some often required components won't be active like Elasticsearch
 The standard preview deployment, i.e. without the github label present, intends to serve FT performance.
 
+`civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 
 
 ```bash

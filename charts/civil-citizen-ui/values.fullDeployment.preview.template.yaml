@@ -46,7 +46,7 @@ civil-service:
         HEARINGS_JURISDICTIONS: CIVIL
         SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-java
         ENABLE_HEARING_DATA_SOURCE_HEADERS: "true"
-        PREVIEW_DEPLOYMENT_ID: "civil-${CHANGE_ID}"
+        PREVIEW_DEPLOYMENT_ID: "civil-cui-${CHANGE_ID}"
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
         SERVICES_ROLE_ASSIGNMENT_MAPPING_API: https://am-org-role-mapping-service-${SERVICE_FQDN}
         SERVICES_EM_ANNO_API: http://${SERVICE_NAME}-ccd-api-gw
@@ -97,7 +97,7 @@ hmcsb:
           - name: "servicefilter"
             filterType: SqlFilter
             sqlFilter:
-              sqlExpression: "hmctsServiceId IN ('AAA7','AAA6') AND hmctsDeploymentId = 'civil-${CHANGE_ID}'"
+              sqlExpression: "hmctsServiceId IN ('AAA7','AAA6') AND hmctsDeploymentId = 'civil-cui-${CHANGE_ID}'"
 
 servicebus:
   enabled: true
