@@ -66,7 +66,7 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
     logger.info(`saveDraftClaim..draftStoreDataExpiryDate set to ${draftStoreDataExpiryDate}..claimid.. ${claimId}`);
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   } else {
-    logger.info(`saveDraftClaim..in else block`);
+    logger.info('saveDraftClaim..in else block');
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
