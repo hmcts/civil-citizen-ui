@@ -39,6 +39,7 @@ const mockOtherWitnesses = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMock)),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 describe('Other Witnesses', () => {

@@ -62,6 +62,7 @@ const mockCivilClaimClaimantIntentionNotSettle = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseClaimantIntentionMockNotSettle))),
   del: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimClaimantIntention = {
@@ -69,6 +70,7 @@ const mockCivilClaimClaimantIntention = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseClaimantIntentMock))),
   del: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 const mockCivilClaimFastTrack = {
   set: jest.fn(() => Promise.resolve({})),
@@ -174,6 +176,7 @@ const mockCivilClaimApplicantCompanyType = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantCompany))),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimApplicantIndividualType = {
@@ -216,6 +219,7 @@ const mockClaimantClaims = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(claimantClaimsMock))),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimWithExpertAndWitness = {
@@ -230,6 +234,7 @@ const mockCivilClaimDocumentUploaded = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDocumentUploadedMock))),
   del: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const mockDefendantResponseSmallClaimFullReject = {
@@ -261,6 +266,7 @@ const mockCivilClaimDocumentClaimantUploaded = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseDocumentUploadedClaimantMock))),
   del: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 export {
