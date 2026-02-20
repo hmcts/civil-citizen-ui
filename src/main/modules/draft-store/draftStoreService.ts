@@ -83,8 +83,9 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
     await draftStoreClient.set(
       claimId,
       JSON.stringify(storedClaimResponse),
-      'EXAT',
-      expirySeconds);
+      {
+        EXAT: expirySeconds
+      });
   }
 };
 const createNewCivilClaimResponse = (claimId: string) => {
