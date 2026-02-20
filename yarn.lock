@@ -5464,7 +5464,7 @@ __metadata:
     allure-commandline: "npm:^2.29.0"
     allure-js-commons: "npm:^3.4.2"
     applicationinsights: "npm:^2.9.5"
-    axios: "npm:^1.12.2"
+    axios: "npm:^1.13.5"
     babel-loader: "npm:^9.1.0"
     chai: "npm:4.3.6"
     class-transformer: "npm:^0.5.1"
