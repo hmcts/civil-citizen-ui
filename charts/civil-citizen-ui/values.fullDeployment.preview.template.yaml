@@ -44,7 +44,7 @@ civil-service:
       environment:
         SERVICES_CCD_DATA_STORE_API: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
         HEARINGS_JURISDICTIONS: CIVIL
-        SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-java
+        SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-civil-service
         ENABLE_HEARING_DATA_SOURCE_HEADERS: "true"
         PREVIEW_DEPLOYMENT_ID: "civil-cui-${CHANGE_ID}"
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
