@@ -60,28 +60,36 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  */
 export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
-  let draftStoreDataExpiryDate;
   if (isUndefined(storedClaimResponse.case_data)) {
-    draftStoreDataExpiryDate = new Date();
-    logger.info(`saveDraftClaim..draftStoreDataExpiryDate set to ${draftStoreDataExpiryDate}..claimid.. ${claimId}`);
+    logger.info(`saveDraftClaim..not in draftstore..claimid.. ${claimId}`);
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  const ttl = await draftStoreClient.ttl(claimId);
   logger.info(`saveDraftClaim..claim.draftClaimCreatedAt set to ${claim.draftClaimCreatedA}`);
-  if (claim.draftClaimCreatedAt) {
-    draftStoreDataExpiryDate = claim.draftClaimCreatedAt;
-    logger.info(`saveDraftClaim..claim.draftClaimCreatedA-draftStoreDataExpiryDate set to ${draftStoreDataExpiryDate}..claimid.. ${claimId}`);
-  } else if (draftStoreDataExpiryDate === undefined) {
-    const ttl = await draftStoreClient.ttl(claimId);
-    if (ttl === -1) {
-      logger.info('saveDraftClaim..ttl not set');
-      draftStoreDataExpiryDate = new Date();
-      logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${draftStoreDataExpiryDate}`);
-    }
+    if (ttl > 0) {
+
+   logger.info(`saveDraftClaim..claim.tt set to ${ttl}`);
+    // TTL already exists — preserve it
+    await draftStoreClient.set(
+      claimId,
+      JSON.stringify(storedClaimResponse),
+      'KEEPTTL'
+    );
+  } else {
+    // No TTL — set a new one
+    const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
+    
+    logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}`);
+    
+    await draftStoreClient.set(
+      claimId,
+      JSON.stringify(storedClaimResponse),
+      'EXAT',
+      calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate)
+    );
   }
-  await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(draftStoreDataExpiryDate));
 };
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
