@@ -67,7 +67,7 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
   const ttl = await draftStoreClient.ttl(claimId);
-  logger.info(`saveDraftClaim..claim.draftClaimCreatedAt set to ${claim.draftClaimCreatedA}`);
+  logger.info(`saveDraftClaim..claim.draftClaimCreatedAt set to ${claim.draftClaimCreatedAt}`);
   if (ttl > 0) {
     logger.info(`saveDraftClaim..claim.tt set to ${ttl}`);
     // TTL already exists — preserve it
@@ -78,12 +78,16 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   } else {
     // No TTL — set a new one
     const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
-    logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}`);
+    const expirySeconds = calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate);
+    logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}... expirySeconds..${expirySeconds}`);
+    if (isNaN(expirySeconds)) {
+      throw new Error('Invalid expiry timestamp for Redis EXAT');
+    }
     await draftStoreClient.set(
       claimId,
       JSON.stringify(storedClaimResponse),
       'EXAT',
-      calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate));
+      expirySeconds);
   }
 };
 const createNewCivilClaimResponse = (claimId: string) => {
