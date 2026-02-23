@@ -9,16 +9,13 @@ import {
   getCancelUrl, getQueryManagement, getSummaryList, removeSelectedDocument, saveQueryManagement, uploadSelectedFile,
 } from 'services/features/queryManagement/queryManagementService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import multer from 'multer';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
+import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
-const upload = multer({
-  limits: {
-    fileSize: Infinity,
-  },
-});
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'sendFollowUpQueryController');
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
   const cancelUrl = getCancelUrl(req.params.id);
@@ -56,10 +53,9 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
         title: '',
         summaryRows: [],
       });
-    if (req.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(sendFollowQuery, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(sendFollowQuery, fileUploadErrors);
     }
 
     await getSummaryList(formattedSummary, req,  true);
@@ -69,7 +65,7 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
   }
 }));
 
-sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const queryId = req.params.queryId;
@@ -89,26 +85,39 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, upload.single('selectedFi
         summaryRows: [],
       });
 
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP)) {
+      return;
+    }
+
+    if (action === 'uploadButton') {
+      await uploadSelectedFile(req, sendFollowUpQuery, true);
+      
+      const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP);
+      if (fileUploadErrors?.length) {
+        const formWithErrors = new GenericForm(sendFollowUpQuery, fileUploadErrors);
+        await getSummaryList(formattedSummary, req, true);
+        return await renderView(formWithErrors, claimId, res, formattedSummary, req);
+      }
+      
+      return res.redirect(`${currentUrl}`);
+    }
+
+    if (action?.includes('[deleteFile]')) {
+      const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
+      await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery, true);
+      return res.redirect(`${currentUrl}`);
+    }
+
     form.validateSync();
 
     if (form.hasErrors()) {
       await getSummaryList(formattedSummary, req, true);
       return await renderView(form, claimId, res, formattedSummary, req);
-    } else {
-      if (action === 'uploadButton') {
-        await uploadSelectedFile(req, sendFollowUpQuery, true);
-        return res.redirect(`${currentUrl}`);
-      }
-
-      if (action?.includes('[deleteFile]')) {
-        const index = action.split(/[[\]]/).find((word: string) => word !== '')[0];
-        await removeSelectedDocument(req,  Number(index) - 1, sendFollowUpQuery, true);
-        return res.redirect(`${currentUrl}`);
-      }
-      sendFollowUpQuery.parentId = queryId;
-      await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
-      return res.redirect(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId));
     }
+
+    sendFollowUpQuery.parentId = queryId;
+    await saveQueryManagement(claimId, sendFollowUpQuery, 'sendFollowUpQuery', req);
+    return res.redirect(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId));
   } catch (error) {
     next(error);
   }

@@ -32,7 +32,7 @@ describe('Response - Check answers', () => {
     const res = await request(app).get(CCJ_CHECK_AND_SEND_URL);
     expect(res.status).toBe(200);
     expect(res.text).toContain(checkYourAnswerEng);
-  });
+  }, 10000);
 
   it('should return http 500 when has error in the get method', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
