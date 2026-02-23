@@ -6,11 +6,12 @@ import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL} from 'routes/urls';
+import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL} from 'routes/urls';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {Session} from 'express-session';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -107,13 +108,15 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
     });
 
     it('should remove the 2nd file from list', async () => {
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id=2')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
-          expect(res.text).toContain(uploadDocuments[0].caseDocument.documentName);
-        });
+      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL + '?id=2');
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBeDefined();
+      expect(res.header.location).not.toContain('?id=2');
+      const redirectPath = res.header.location.startsWith('http') ? new URL(res.header.location).pathname : res.header.location;
+      const pageRes = await request(app).get(redirectPath);
+      expect(pageRes.status).toBe(200);
+      expect(pageRes.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
+      expect(pageRes.text).toContain(uploadDocuments[0].caseDocument.documentName);
     });
 
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
@@ -128,7 +131,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
@@ -150,7 +153,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
@@ -171,7 +174,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         },
       ];
 
-      app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_INFO } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
@@ -202,6 +205,17 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         });
     });
 
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-documents-for-addln-info');
+    });
+
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
@@ -229,6 +243,34 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should set fileUpload error in session when no documents uploaded and form has fileUpload error', async () => {
+      mockGADocDataFromStore.mockResolvedValueOnce([]);
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
+        .field('action', 'continue')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+        });
+    });
+
+    it('should redirect to CYA page when documents are uploaded successfully', async () => {
+      const uploadDocuments = [
+        {
+          caseDocument: mockCaseDocument,
+          fileUpload: {} as FileUpload,
+        },
+      ];
+      mockGADocDataFromStore.mockResolvedValueOnce(uploadDocuments);
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
+        .field('action', 'continue')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL);
         });
     });
   });

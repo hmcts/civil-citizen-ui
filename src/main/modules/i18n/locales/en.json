@@ -5929,6 +5929,7 @@
     "VALID_CHOOSE_THE_FILE": "Choose the file you want to upload",
     "VALID_MIME_TYPE_FILE": "Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF",
     "VALID_SIZE_FILE": "Document must be less than 100MB",
+    "FILE_UPLOAD_FAILED": "There was a problem uploading this file. Please try again.",
     "VALID_WHY_FROM_PARTICULAR_DATE": "You need to explain why you are claiming",
     "QUESTION_1_REQUIRED": "Select yes if someone is vulnerable in a way that the court needs to consider",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
