@@ -21,14 +21,11 @@
     right: 0;
     top: 10px;
     width: auto;
-    color: transparent;
-    font-size: 0;
+  }
 
-    &::after {
-      content: 'Remove section';
-      font-size: 19px;
-      color: $govuk-remove-section-text-colour;
-    }
+  /* Hide remove button when only one row */
+  .moj-add-another__item:only-of-type .moj-add-another__remove-button {
+    display: none;
   }
 }
 
