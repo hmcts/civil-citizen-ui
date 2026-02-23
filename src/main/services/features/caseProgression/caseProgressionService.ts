@@ -27,7 +27,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('supportRequiredService');
+const logger = Logger.getLogger('caseProgressionService');
 
 export const getDocuments = async (redisKey: string): Promise<UploadDocuments> => {
   try {
@@ -212,6 +212,42 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
     trialCosts,
     trialDocumentary,
   );
+};
+
+export const addAnother = (uploadDocuments: UploadDocumentsUserForm, action: string ) => {
+  const [ actionValue ] = action.split(/[[\]]/).filter((word: string) => word !== '');
+  const category = actionValue.split('-')[1];
+  logger.info(`adding new category: ${category}`);
+  if (category === 'disclosure') {
+    uploadDocuments.documentsForDisclosure.push(new TypeOfDocumentSection());
+  } else if (category === 'disclosureList') {
+    uploadDocuments.disclosureList.push(new FileOnlySection());
+  } else if (category === 'witness') {
+    uploadDocuments.witnessStatement.push(new WitnessSection());
+  } else if (category === 'witnessSummary') {
+    uploadDocuments.witnessSummary.push(new WitnessSummarySection());
+  } else if (category === 'noticeOfIntention') {
+    uploadDocuments.noticeOfIntention.push(new WitnessSection());
+  } else if (category === 'documentsReferred') {
+    uploadDocuments.documentsReferred.push(new ReferredToInTheStatementSection());
+  } else if (category === 'expertReport') {
+    uploadDocuments.expertReport.push(new ExpertSection());
+  } else if (category === 'expertStatement') {
+    uploadDocuments.expertStatement.push(new ExpertSection());
+  } else if (category === 'questionsForExperts') {
+    uploadDocuments.questionsForExperts.push(new ExpertSection());
+  } else if (category === 'answersForExperts') {
+    uploadDocuments.answersForExperts.push(new ExpertSection());
+  } else if (category === 'trialCaseSummary') {
+    uploadDocuments.trialCaseSummary.push(new FileOnlySection());
+  } else if (category === 'trialSkeletonArgument') {
+    uploadDocuments.trialSkeletonArgument.push(new FileOnlySection());
+  } else if (category === 'trialAuthorities') {
+    uploadDocuments.trialAuthorities.push(new FileOnlySection());
+  } else if (category === 'trialCosts') {
+    uploadDocuments.trialCosts.push(new FileOnlySection());
+  } else if (category === 'trialDocumentary') {
+    uploadDocuments.trialDocumentary.push(new TypeOfDocumentSection());}
 };
 
 const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[] => {
