@@ -122,8 +122,8 @@ civil-service:
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       CMC_DB_PORT: 5432
-      CMC_DB_HOST: civil-preview.postgres.database.azure.com
-      CMC_DB_NAME: pr-${CHANGE_ID}-cmc
+      CMC_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
+      CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
       CMC_DB_USERNAME: ${POSTGRES_USER}
       REFERENCE_DATABASE_MIGRATION: true
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
@@ -164,11 +164,12 @@ civil-service:
       devmemoryLimits: 1Gi
       environment:
         CAMUNDA_API_AUTH_ENABLED: false
-        CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
-        CAMUNDA_DB_NAME: pr-${CHANGE_ID}-camunda
+        CAMUNDA_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
+        CAMUNDA_DB_NAME: "pr-${CHANGE_ID}-camunda"
         CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
         CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
         S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       secrets:
         CAMUNDA_DB_PASSWORD:
           secretRef: postgres
@@ -209,7 +210,7 @@ civil-service:
 
     postgresql:
       enabled: true
-      flexibleserver: civil-preview
+      flexibleserver: "civil-preview"
       setup:
         databases:
           - name: "pr-${CHANGE_ID}-cmc"
@@ -317,6 +318,12 @@ civil-service:
       persistence:
         enabled: false
       extraEnvs:
+        - name: DATA_STORE_PASS
+          value: hmcts
+        - name: DATA_STORE_URL
+          value: "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?sslmode=require&stringtype=unspecified"
+        - name: DATA_STORE_USER
+          value: hmcts
         - name: ES_HOSTS
           value: "${SERVICE_NAME}-es-master"
       extraInitContainers: |
@@ -354,7 +361,7 @@ civil-service:
         01_input.conf: |
           input  {
             jdbc {
-              jdbc_connection_string => "jdbc:postgresql://sscs-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require"
+              jdbc_connection_string => "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
               jdbc_user => "hmcts"
               jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
               jdbc_validate_connection => true
