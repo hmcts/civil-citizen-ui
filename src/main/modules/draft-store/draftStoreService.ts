@@ -82,10 +82,9 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
     logger.info(`saveDraftClaim..ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}... expirySeconds..${expirySeconds}`);
     await draftStoreClient.set(
       claimId,
-      JSON.stringify(storedClaimResponse),
-      {
-        EXAT: expirySeconds,
-      });
+      JSON.stringify(storedClaimResponse));
+    await draftStoreClient.expireat(claimId, expirySeconds);
+    logger.info(`saveDraftClaim..after save ttl..draftStoreDataExpiryDate set to ${expiryBaseDate}..claimid.. ${claimId}... expirySeconds..${expirySeconds}`);
   }
 };
 const createNewCivilClaimResponse = (claimId: string) => {
