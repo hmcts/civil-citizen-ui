@@ -12,7 +12,6 @@
 - [Functional Test Group Documentation (UI)](#functional-test-group-documentation-ui)
 - [Functional Test Group Documentation (API)](#functional-test-group-documentation-api)
 
-
 ## Getting Started
 
 ### Prerequisites
@@ -120,18 +119,16 @@ $ yarn test:e2e
 
 Running Preview pipeline :
 
-## Github Labels
+Raise a PR and add below labels to run the pipeline without any issues
+```bash
+pr-values:elasticsearch
+```
+Add "enable_keep_helm" label to retain helm release on preview
+Add "pr-values:enableNotifyEmails" label to be able to send live notifications on the PR
 
-`enable_keep_helm` is necessary so the Jenkins pipeline doesn't delete the deployment at the end of it.
+Running Crossbrowser tests:
 
-`pr-values: fullDeployment` is recommended, otherwise the vast majority of downstream components calls will be just mocked responses,
-effectively turning off some functionality like Hearings. Also, some often required components won't be active like Elasticsearch
-The standard preview deployment, i.e. without the github label present, intends to serve FT performance.
-
-`civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
-
-`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview.
-
+Install saucelabs on local machine
 
 ```bash
 $ yarn test:crossbrowser
