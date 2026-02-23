@@ -11,6 +11,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import { t } from 'i18next';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -67,6 +68,7 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD;
     }
   } catch(error) {
     logger.error(error);
