@@ -24,7 +24,6 @@ nodejs:
         - civil-citizen-ui-token-key
         - name: launch-darkly-sdk-key-non-prod
           alias: LAUNCH_DARKLY_SDK_KEY
-
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
@@ -250,7 +249,7 @@ civil-service:
         image: hmctspublic.azurecr.io/am/role-assignment-service:latest
         ingressHost: am-role-assignment-${SERVICE_FQDN}
         environment:
-          ROLE_ASSIGNMENT_DB_HOST: '{{ .Values.global.postgresHostname $}}'
+          ROLE_ASSIGNMENT_DB_HOST: "{{ .Values.global.postgresHostname }}"
           CCD_DATA_STORE_URL: http://${SERVICE_NAME}-ccd-data-store-api
           ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer,sscs,fis_hmc_api,et_cos,civil_service,civil_general_applications
           RUN_LD_ON_STARTUP: false
@@ -603,7 +602,7 @@ civil-service:
         S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
         DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
         CDAM_URL: http://${SERVICE_NAME}-cdam
-        SPRING_DATASOURCE_HOST: '{{ .Values.global.postgresHostname $}}'
+        SPRING_DATASOURCE_HOST: "{{ .Values.global.postgresHostname }}"
         SPRING_DATASOURCE_NAME: "{{ tpl .Values.global.databaseNamePrefix $}}emstitch"
         SPRING_DATASOURCE_PORT: 5432
         SPRING_DATASOURCE_USERNAME: "{{ tpl .Values.global.postgresUsername $}}"
