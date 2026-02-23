@@ -61,11 +61,11 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(5);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
-    expect(actualTrialContent[1][0].contentSections.length).toEqual(2);
-    expect(actualTrialContent[2][0].contentSections.length).toEqual(2);
-    expect(actualTrialContent[3][0].contentSections.length).toEqual(2);
-    expect(actualTrialContent[4][0].contentSections.length).toEqual(4);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(3);
+    expect(actualTrialContent[1][0].contentSections.length).toEqual(3);
+    expect(actualTrialContent[2][0].contentSections.length).toEqual(3);
+    expect(actualTrialContent[3][0].contentSections.length).toEqual(3);
+    expect(actualTrialContent[4][0].contentSections.length).toEqual(5);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
     expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
@@ -116,7 +116,7 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(3);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY');
   });
@@ -151,7 +151,7 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(3);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON');
   });
@@ -186,7 +186,7 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(3);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
   });
@@ -221,7 +221,7 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(3);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS');
   });
@@ -256,7 +256,7 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(1);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(4);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(5);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.DOCUMENTARY');
   });
@@ -418,8 +418,8 @@ describe('Trial service', () => {
     //Then
     expect(actualTrialContent.length).toEqual(2);
 
-    expect(actualTrialContent[0][0].contentSections.length).toEqual(4);
-    expect(actualTrialContent[1][0].contentSections.length).toEqual(2);
+    expect(actualTrialContent[0][0].contentSections.length).toEqual(5);
+    expect(actualTrialContent[1][0].contentSections.length).toEqual(3);
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY');
     expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
