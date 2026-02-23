@@ -209,21 +209,7 @@ civil-service:
       s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
     postgresql:
-      enabled: true
-      flexibleserver: "civil-preview"
-      setup:
-        databases:
-          - name: "pr-${CHANGE_ID}-cmc"
-          - name: "pr-${CHANGE_ID}-data-store"
-          - name: "pr-${CHANGE_ID}-definition-store"
-          - name: "pr-${CHANGE_ID}-camunda"
-          - name: "pr-${CHANGE_ID}-role-assignment"
-          - name: "pr-${CHANGE_ID}-wa-task-management-api"
-          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa_workflow_api"
-          - name: "pr-${CHANGE_ID}-cft_task_db"
-          - name: "pr-${CHANGE_ID}-cft_task_db_replica"
-          - name: "pr-${CHANGE_ID}-emstitch"
+      enabled: false
 
     ccd-api-gateway-web:
       nodejs:
@@ -659,3 +645,20 @@ civil-service:
         CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
         CASE_DOCUMENT_AM_API_S2S_SECRET: ${CASE_DOCUMENT_AM_API_S2S_SECRET}
       keyVaults: [ ]
+
+postgresql:
+  enabled: true
+  flexibleserver: "civil-preview"
+  setup:
+    databases:
+      - name: "pr-${CHANGE_ID}-cmc"
+      - name: "pr-${CHANGE_ID}-data-store"
+      - name: "pr-${CHANGE_ID}-definition-store"
+      - name: "pr-${CHANGE_ID}-camunda"
+      - name: "pr-${CHANGE_ID}-role-assignment"
+      - name: "pr-${CHANGE_ID}-wa-task-management-api"
+      - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+      - name: "pr-${CHANGE_ID}-wa_workflow_api"
+      - name: "pr-${CHANGE_ID}-cft_task_db"
+      - name: "pr-${CHANGE_ID}-cft_task_db_replica"
+      - name: "pr-${CHANGE_ID}-emstitch"
