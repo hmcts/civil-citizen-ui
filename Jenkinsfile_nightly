@@ -54,13 +54,6 @@ properties([
                     'https://civil-citizen-ui-pr-{PR_NUMBER}-civil-service.preview.platform.hmcts.net',
                   ],
         description: 'The URL of civil service'),
-      choice(name: 'CIVIL_GENERAL_APPLICATIONS_URL',
-        choices: [
-                    'http://civil-service-aat.service.core-compute-aat.internal',
-                    'http://civil-service-demo.service.core-compute-demo.internal',
-                    'https://civil-citizen-ui-pr-{PR_NUMBER}-civil-service.preview.platform.hmcts.net',
-                  ],
-        description: 'The URL of GA service'),
       choice(name: 'AAC_API_URL',
         choices: [
                     'http://aac-manage-case-assignment-aat.service.core-compute-aat.internal',
@@ -105,6 +98,31 @@ def copyPrevFailedAndNotExecutedTestFilesJson() {
   }
 }
 
+def copyPreviousAllureHistory() {
+  def buildFound = false
+  def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
+  def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
+  def targetDir = "test-results/functional/allure-results/history"
+
+  while (!buildFound && buildNumber > minBuildNumber) {
+    try {
+      copyArtifacts(
+        projectName: env.JOB_NAME,
+        selector: specific("${buildNumber}"),
+        filter: "test-results/functional/allure-report/history/*",
+        target: targetDir,
+        flatten: true
+      )
+
+      buildFound = true
+      echo "Successfully imported Allure history from build ${buildNumber}"
+    } catch (Exception error) {
+      echo "Allure history artifact not found in build ${buildNumber}. Trying previous..."
+      buildNumber--
+    }
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
@@ -144,7 +162,6 @@ withNightlyPipeline(type, product, component) {
   def exuiUrl = resolvePreviewUrl(params.EXUI_URL, 'EXUI_URL')
   def ccdDataStoreUrl = resolvePreviewUrl(params.CCD_DATA_STORE_URL, 'CCD_DATA_STORE_URL')
   def civilServiceUrl = resolvePreviewUrl(params.CIVIL_SERVICE_URL, 'CIVIL_SERVICE_URL')
-  def civilGeneralApplicationsUrl = resolvePreviewUrl(params.CIVIL_GENERAL_APPLICATIONS_URL, 'CIVIL_GENERAL_APPLICATIONS_URL')
   def aacApiUrl = resolvePreviewUrl(params.AAC_API_URL, 'AAC_API_URL')
 
   env.TEST_URL = testUrl
@@ -155,7 +172,6 @@ withNightlyPipeline(type, product, component) {
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = params.SERVICE_AUTH_PROVIDER_API_BASE_URL
   env.CCD_DATA_STORE_URL = ccdDataStoreUrl
   env.CIVIL_SERVICE_URL = civilServiceUrl
-  env.CIVIL_GENERAL_APPLICATIONS_URL = civilGeneralApplicationsUrl
   env.AAC_API_URL = aacApiUrl
   env.TESTS_FOR_ACCESSIBILITY = false
   overrideVaultEnvironments([
@@ -163,8 +179,8 @@ withNightlyPipeline(type, product, component) {
   ])
   loadVaultSecrets(secrets)
 
-  boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean();
-  boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean();
+  boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean()
+  boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean()
 
   if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
     enableCrossBrowserTest()
@@ -179,6 +195,7 @@ withNightlyPipeline(type, product, component) {
 
   if(!forceGreenBuild) {
     before('fullFunctionalTest') {
+      copyPreviousAllureHistory()
       if(runPrevFailedAndNotExecutedTestFiles) {
         copyPrevFailedAndNotExecutedTestFilesJson()
       }

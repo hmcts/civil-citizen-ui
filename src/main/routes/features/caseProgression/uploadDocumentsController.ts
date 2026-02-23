@@ -12,59 +12,37 @@ import {
 } from 'services/features/caseProgression/disclosureService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {
+  getUploadDocumentsForm,
+  saveCaseProgression,
+  addAnother,
+} from 'services/features/caseProgression/caseProgressionService';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {AppRequest} from 'common/models/AppRequest';
 import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
-import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  createMulterErrorMiddleware,
+  createFileUploadError,
+  getMulterErrorConstraint,
+  extractCategoryAndIndex,
+  uploadAndValidateFile,
+} from 'common/utils/fileUploadUtils';
+
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('uploadDocumentsController');
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
 
-const multer = require('multer');
-const fileSize = Infinity;
-
-const storage = multer.memoryStorage({
-  limits: {
-    fileSize: fileSize,
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: fileSize,
-  },
-});
-
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
-  const [category, index] = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
-  const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).filter(file =>
-    file.fieldname === target,
-  );
-  if (inputFile[0]){
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile[0] as Express.Multer.File);
-    form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload = fileUpload;
-    form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = undefined;
-
-    form.validateSync();
-    delete form.model[category as keyof UploadDocumentsUserForm][+index].fileUpload; //release memory
-    const errorFieldNamePrefix = `${category}[${category}][${index}][fileUpload]`;
-    if (!form?.errorFor(`${errorFieldNamePrefix}[size]`, `${category}` )
-      && !form?.errorFor(`${errorFieldNamePrefix}[mimetype]`, `${category}`)
-      && !form?.errorFor(`${errorFieldNamePrefix}`)) {
-
-      form.model[category as keyof UploadDocumentsUserForm][+index].caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-    }
-  }
+  await uploadAndValidateFile(req, submitAction, form, civilServiceClientForDocRetrieve, 'uploadDocumentsController');
 }
 
 async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
@@ -72,8 +50,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
   const currentUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
-  if(!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments)
-  {
+  if (!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments) {
     form = new GenericForm(claim.caseProgression?.defendantDocuments);
   } else if (claim.isClaimant() && !form && claim.caseProgression?.claimantDocuments) {
     form = new GenericForm(claim.caseProgression?.claimantDocuments);
@@ -117,28 +94,87 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   }
 }) as RequestHandler);
 
-uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, upload.any(), (async (req, res, next) => {
+const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController');
+
+uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
+  const claimId = req.params.id;
+  const action = req.body.action;
+  const userId = (req as AppRequest)?.session?.user?.id;
   try {
-    const claimId = req.params.id;
-    const action = req.body.action;
+    if ((req as any).multerError) {
+      const multerError = (req as any).multerError;
+      const claim: Claim = await getClaimById(claimId, req, true);
+      const uploadDocumentsForm = getUploadDocumentsForm(req);
+      const form = new GenericForm(uploadDocumentsForm);
+
+      if (action?.includes('[uploadButton]')) {
+        const [category, index] = extractCategoryAndIndex(action);
+
+        if (!form.errors) {
+          form.errors = [];
+        }
+
+        const errorConstraint = getMulterErrorConstraint(multerError);
+        const multerErrorStructure = createFileUploadError(category, index, 'multerError', errorConstraint);
+        form.errors.push(multerErrorStructure as any);
+
+        return await renderView(res, claim, claimId, form);
+      }
+    }
+
     const claim: Claim = await getClaimById(claimId, req, true);
+    const userid = (req as AppRequest)?.session?.user?.id;
+
+    logger.info('Upload documents request received from civil-citizen-ui', {
+      claimId,
+      userid,
+      action,
+      timestamp: new Date().toISOString(),
+    });
+
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
-    if (action?.includes('[uploadButton]')) {
+    if (action?.includes('add_another-')) {
+      addAnother(uploadDocumentsForm, action);
+      return renderView(res, claim, claimId, form);
+    } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
+    } else if (action?.includes('[removeButton]')) {
+      const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
+      (form.model as any)[category].splice(Number(index), 1);
+    }
+
+    if (action) {
+      logger.info('Action detected in uploadDocumentsController', {
+        claimId,
+        userid,
+        action,
+        timestamp: new Date().toISOString(),
+      });
+      await saveCaseProgression(req, form.model, isClaimant);
       return await renderView(res, claim, claimId, form);
     }
 
     form.validateSync();
+
     if (form.hasErrors()) {
+      logger.warn('Upload documents form validation failed', {
+        claimId,
+        userid,
+        action,
+        timestamp: new Date().toISOString(),
+        errors: form.getErrors?.() ?? 'validation errors present',
+      });
       await renderView(res, claim, claimId, form);
     } else {
-      await saveCaseProgression(req,form.model, isClaimant);
+      logger.info(`Form valid for user: ${userid}, saving case progression and redirecting for claimId: ${claimId}`);
+      await saveCaseProgression(req, form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {
+    logger.error(`[POST HANDLER] Unexpected error (claimId=${claimId}, userId=${userId}): ${error?.message || error}`, error);
     next(error);
   }
 }) as RequestHandler);
