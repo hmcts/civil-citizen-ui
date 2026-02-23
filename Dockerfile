@@ -1,5 +1,5 @@
 # ---- Base image ----
-FROM hmctspublic.azurecr.io/base/node:18-alpine as base
+FROM hmctspublic.azurecr.io/base/node:24-alpine as base
 COPY --chown=hmcts:hmcts . .
 RUN yarn workspaces focus --all --production \
   && yarn cache clean

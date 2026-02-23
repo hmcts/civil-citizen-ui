@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "start": "NODE_ENV=production ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
@@ -69,7 +69,7 @@
     "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.2.0",
     "@types/multer": "^1.4.7",
-    "@types/node": "^18.11.10",
+    "@types/node": "^22.0.0",
     "@types/nunjucks": "^3.2.1",
     "@types/require-directory": "^2.1.1",
     "@types/serve-favicon": "^2.5.1",
