@@ -124,7 +124,6 @@ civil-service:
       CMC_DB_PORT: 5432
       CMC_DB_HOST: civil-preview.postgres.database.azure.com
       CMC_DB_NAME: pr-${CHANGE_ID}-cmc
-      CMC_DB_CONNECTION_OPTIONS: '?sslmode=require'
       CMC_DB_USERNAME: ${POSTGRES_USER}
       REFERENCE_DATABASE_MIGRATION: true
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
@@ -153,23 +152,6 @@ civil-service:
         key: PASSWORD
         disabled: false
 
-    postgresql:
-      enabled: true
-      flexibleserver: civil-preview
-      setup:
-        databases:
-          - name: "pr-${CHANGE_ID}-cmc"
-          - name: "pr-${CHANGE_ID}-data-store"
-          - name: "pr-${CHANGE_ID}-definition-store"
-          - name: "pr-${CHANGE_ID}-camunda"
-          - name: "pr-${CHANGE_ID}-role-assignment"
-          - name: "pr-${CHANGE_ID}-wa-task-management-api"
-          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa_workflow_api"
-          - name: "pr-${CHANGE_ID}-cft_task_db"
-          - name: "pr-${CHANGE_ID}-cft_task_db_replica"
-          - name: "pr-${CHANGE_ID}-emstitch"
-
   camunda-bpm:
     enabled: true
     java:
@@ -187,7 +169,6 @@ civil-service:
         CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
         CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
         S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       secrets:
         CAMUNDA_DB_PASSWORD:
           secretRef: postgres
@@ -204,8 +185,6 @@ civil-service:
       definitionImporter:
         enabled: false
       s2s:
-        enabled: false
-      postgresql:
         enabled: false
       userProfileImporter:
         enabled: false
@@ -224,9 +203,26 @@ civil-service:
       idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
       postgresUsername: hmcts
       postgresSecret: postgres
-      postgresHostname: civil-preview.postgres.database.azure.com
+      postgresHostname: "civil-preview.postgres.database.azure.com"
       databaseNamePrefix: "pr-${CHANGE_ID}-"
       s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+
+    postgresql:
+      enabled: true
+      flexibleserver: civil-preview
+      setup:
+        databases:
+          - name: "pr-${CHANGE_ID}-cmc"
+          - name: "pr-${CHANGE_ID}-data-store"
+          - name: "pr-${CHANGE_ID}-definition-store"
+          - name: "pr-${CHANGE_ID}-camunda"
+          - name: "pr-${CHANGE_ID}-role-assignment"
+          - name: "pr-${CHANGE_ID}-wa-task-management-api"
+          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+          - name: "pr-${CHANGE_ID}-wa_workflow_api"
+          - name: "pr-${CHANGE_ID}-cft_task_db"
+          - name: "pr-${CHANGE_ID}-cft_task_db_replica"
+          - name: "pr-${CHANGE_ID}-emstitch"
 
     ccd-api-gateway-web:
       nodejs:
@@ -281,7 +277,6 @@ civil-service:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
           DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
-          DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
           DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
           DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service,hmc_cft_hearing_service
           IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
@@ -543,6 +538,7 @@ civil-service:
         JURISDICTIONS: CIVIL
         LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
+
   idam-pr:
     releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
     enabled: true
@@ -551,6 +547,7 @@ civil-service:
         - https://${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
       XUI:
         - https://xui-${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
+
   aac-manage-case-assignment:
     enabled: true
     java:
@@ -595,7 +592,6 @@ civil-service:
         CDAM_URL: http://${SERVICE_NAME}-cdam
         SPRING_DATASOURCE_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         SPRING_DATASOURCE_NAME: "{{ tpl .Values.global.databaseNamePrefix $}}emstitch"
-        SPRING_DATASOURCE_OPTIONS: "?ssl=disable"
         SPRING_DATASOURCE_PORT: 5432
         SPRING_DATASOURCE_USERNAME: "{{ tpl .Values.global.postgresUsername $}}"
         ENABLE_DB_MIGRATE: true
