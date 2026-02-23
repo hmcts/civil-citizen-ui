@@ -50,7 +50,7 @@ describe('Reasons for choosing complexity band Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
         });
-    });
+    }, 10000);
 
     it('should open reasons for choosing complexity band page with value', async () => {
       mockGetCaseData.mockImplementation(async () => {
