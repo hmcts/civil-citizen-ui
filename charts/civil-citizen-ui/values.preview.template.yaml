@@ -99,7 +99,6 @@ civil-service:
       IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       MANAGE_CASE_UI_BASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
       SPRING_SECURITY_ENABLED: true
-      CMC_DB_PORT: 5432
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/jwks
       AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
@@ -122,10 +121,10 @@ civil-service:
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
-      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
-      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
+      CMC_DB_PORT: 5432
+      CMC_DB_HOST: civil-preview.postgres.database.azure.com
+      CMC_DB_NAME: pr-${CHANGE_ID}-cmc
       CMC_DB_USERNAME: ${POSTGRES_USER}
-      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       REFERENCE_DATABASE_MIGRATION: true
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
@@ -147,42 +146,12 @@ civil-service:
       DASHBOARD_API_URL: http://${SERVICE_NAME}-civil-service
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
+    secrets:
+      CMC_DB_PASSWORD:
+        secretRef: postgres
+        key: PASSWORD
+        disabled: false
 
-    postgresql:
-      enabled: true
-      releaseNameOverride: ${SERVICE_NAME}-postgresql
-      image:
-        registry: hmctspublic.azurecr.io
-        repository: imported/bitnami/postgresql
-        tag: '11.6.0'
-      primary:
-        persistence:
-          enabled: false
-        resources:
-          requests:
-            cpu: 500m
-            memory: 2048Mi
-        podAnnotations:
-          cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
-        initdb:
-          scripts:
-            init.sql: |
-              CREATE DATABASE cmc WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "wa-task-management-api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "wa_workflow_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "cft_task_db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "cft_task_db_replica" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "role-assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-              CREATE DATABASE "emstitch" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      auth:
-        username: ${POSTGRES_USER}
-        password: ${POSTGRES_PASSWORD}
-        postgresPassword: ${POSTGRES_PASSWORD}
   camunda-bpm:
     enabled: true
     java:
@@ -195,13 +164,17 @@ civil-service:
       devmemoryLimits: 1Gi
       environment:
         CAMUNDA_API_AUTH_ENABLED: false
-        CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
-        CAMUNDA_DB_NAME: camunda
+        CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
+        CAMUNDA_DB_NAME: pr-${CHANGE_ID}-camunda
         CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
-        CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
         CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
         S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-        CAMUNDA_DB_CONN_OPTIONS: ""
+      secrets:
+        CAMUNDA_DB_PASSWORD:
+          secretRef: postgres
+          key: PASSWORD
+          disabled: false
+
   ccd:
     enabled: true
     ccd:
@@ -212,8 +185,6 @@ civil-service:
       definitionImporter:
         enabled: false
       s2s:
-        enabled: false
-      postgresql:
         enabled: false
       userProfileImporter:
         enabled: false
@@ -231,10 +202,27 @@ civil-service:
       idamApiUrl: https://idam-api.aat.platform.hmcts.net
       idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
       postgresUsername: hmcts
-      postgresPassword: ${POSTGRES_PASSWORD}
       postgresSecret: postgres
-      postgresHostname: ${SERVICE_NAME}-postgresql
+      postgresHostname: "civil-preview.postgres.database.azure.com"
+      databaseNamePrefix: "pr-${CHANGE_ID}-"
       s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+
+    postgresql:
+      enabled: true
+      flexibleserver: civil-preview
+      setup:
+        databases:
+          - name: "pr-${CHANGE_ID}-cmc"
+          - name: "pr-${CHANGE_ID}-data-store"
+          - name: "pr-${CHANGE_ID}-definition-store"
+          - name: "pr-${CHANGE_ID}-camunda"
+          - name: "pr-${CHANGE_ID}-role-assignment"
+          - name: "pr-${CHANGE_ID}-wa-task-management-api"
+          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+          - name: "pr-${CHANGE_ID}-wa_workflow_api"
+          - name: "pr-${CHANGE_ID}-cft_task_db"
+          - name: "pr-${CHANGE_ID}-cft_task_db_replica"
+          - name: "pr-${CHANGE_ID}-emstitch"
 
     ccd-api-gateway-web:
       nodejs:
@@ -260,9 +248,7 @@ civil-service:
         image: hmctspublic.azurecr.io/am/role-assignment-service:latest
         ingressHost: am-role-assignment-${SERVICE_FQDN}
         environment:
-          RELEASE_REVISION: "{{ .Release.Revision }}"
-          ROLE_ASSIGNMENT_DB_PASSWORD: ${POSTGRES_PASSWORD}
-          ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+          ROLE_ASSIGNMENT_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
           CCD_DATA_STORE_URL: http://${SERVICE_NAME}-ccd-data-store-api
           ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer,sscs,fis_hmc_api,et_cos,civil_service,civil_general_applications
           RUN_LD_ON_STARTUP: false
@@ -290,11 +276,9 @@ civil-service:
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
-          DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
-          DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
-          DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+          DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
           DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
-          DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service
+          DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service,hmc_cft_hearing_service
           IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
           IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
           OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
@@ -310,9 +294,9 @@ civil-service:
         ingressHost: ccd-data-store-api-${SERVICE_FQDN}
         secrets:
           DATA_STORE_DB_PASSWORD:
-            secretRef: "{{ .Values.global.postgresSecret }}"
+            secretRef: postgres
             key: PASSWORD
-            disabled: true
+            disabled: false
 
     elasticsearch:
       nameOverride: ${SERVICE_NAME}-es
@@ -324,44 +308,182 @@ civil-service:
         requests:
           cpu: "25m"
           memory: "512Mi"
+
     logstash:
-      image: hmctspublic.azurecr.io/ccd/logstash
-      imageTag: "latest"
+      image: hmctspublic.azurecr.io/imported/logstash/logstash
+      imageTag: "7.16.1"
+      imagePullPolicy: "IfNotPresent"
+      logstashJavaOpts: -Xmx1g -Xms512M
+      persistence:
+        enabled: false
       extraEnvs:
-        - name: DATA_STORE_URL
-          value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-        - name: DATA_STORE_USER
-          value: ${POSTGRES_USER}
-        - name: DATA_STORE_PASS
-          value: ${POSTGRES_PASSWORD}
-        - name: DB_URL
-          value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-        - name: DB_USER
-          value: ${POSTGRES_USER}
-        - name: DB_PWD
-          value: ${POSTGRES_PASSWORD}
         - name: ES_HOSTS
-          value: http://${SERVICE_NAME}-es-master:9200
-        - name: ES_DATA_NODES_URL
-          value: http://${SERVICE_NAME}-es-master:9200
-        - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
-          value: http://${SERVICE_NAME}-es-master:9200
-        - name: ES_URL
-          value: http://${SERVICE_NAME}-es-master:9200
-      resources:
-        requests:
-          cpu: "500m"
-          memory: "1024Mi"
-        limits:
-          cpu: "2500m"
-          memory: "1024Mi"
-      configTpl:
-        db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
-        db.user: ${POSTGRES_USER}
-        db.pwd: ${POSTGRES_PASSWORD}
-        es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
-      livenessProbe:
-        initialDelaySeconds: 90
+          value: "${SERVICE_NAME}-es-master"
+      extraInitContainers: |
+        - name: download-postgres-jdbc
+          image: hmctspublic.azurecr.io/curl:7.70.0
+          command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.3.3.jar', '-o', '/logstash-lib/postgresql.jar']
+          volumeMounts:
+          - name: logstash-lib
+            mountPath: /logstash-lib
+      extraVolumes: |
+        - name: logstash-lib
+          emptyDir: {}
+        - name: database-secret-volume
+          secret:
+            secretName: postgres
+      extraVolumeMounts: |
+        - name: logstash-lib
+          mountPath: /usr/share/logstash/ccd
+        - name: database-secret-volume
+          mountPath: /etc/logstash/secrets
+          readOnly: true
+      logstashConfig:
+        logstash.yml: |
+          http.host: 0.0.0.0
+          xpack.monitoring.enabled: false
+          queue.type: persisted
+          dead_letter_queue.enable: true
+        pipelines.yml: |
+          - pipeline.id: main
+            path.config: "/usr/share/logstash/pipeline/{01_input,02_filter,03_output}.conf"
+            pipeline.workers: 4
+            pipeline.batch.size: 500
+            queue.type: persisted
+      logstashPipeline:
+        01_input.conf: |
+          input  {
+            jdbc {
+              jdbc_connection_string => "jdbc:postgresql://sscs-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require"
+              jdbc_user => "hmcts"
+              jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
+              jdbc_validate_connection => true
+              jdbc_validation_timeout => "1"
+              jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
+              jdbc_driver_class => "org.postgresql.Driver"
+              jdbc_default_timezone => "UTC"
+              statement => "UPDATE case_data SET marked_by_logstash = true WHERE marked_by_logstash = false RETURNING id, created_date, last_modified, jurisdiction, case_type_id, state, last_state_modified_date, data::TEXT as json_data, data_classification::TEXT as json_data_classification, reference, security_classification, supplementary_data::TEXT as json_supplementary_data"
+              clean_run => false
+              schedule => "* * * * * *"
+            }
+          }
+        02_filter.conf: |
+          filter{
+            json{
+                source => "json_data"
+                target => "data"
+                remove_field => ["json_data"]
+                }
+
+                json{
+                    source => "json_supplementary_data"
+                    target => "supplementary_data"
+                    remove_field => ["json_supplementary_data"]
+                }
+
+                json{
+                    source => "json_data_classification"
+                    target => "data_classification"
+                    remove_field => ["json_data_classification"]
+                }
+
+                if [data][SearchCriteria] {
+                    clone {
+                        clones => ["SearchCriteria"]
+                    }
+                }
+
+                if [type] == "SearchCriteria" {
+                    if [data][SearchCriteria] {
+                        mutate {
+                          rename => {"[data][SearchCriteria]" => "[data_new][SearchCriteria]" }
+                        }
+                    }
+                    if [data][caseManagementLocation] {
+                        mutate {
+                          rename => {"[data][caseManagementLocation]" => "[data_new][caseManagementLocation]" }
+                        }
+                    }
+                    if [data][CaseAccessCategory] {
+                      mutate {
+                          rename => {"[data][CaseAccessCategory]" => "[data_new][CaseAccessCategory]" }
+                      }
+                    }
+                    if [data][caseNameHmctsInternal] {
+                        mutate {
+                          rename => {"[data][caseNameHmctsInternal]" => "[data_new][caseNameHmctsInternal]" }
+                        }
+                    }
+                    if [data][caseManagementCategory] {
+                        mutate {
+                          rename => {"[data][caseManagementCategory]" => "[data_new][caseManagementCategory]" }
+                        }
+                    }
+                    if [supplementary_data][HMCTSServiceId] {
+                        mutate {
+                          rename => {"[supplementary_data][HMCTSServiceId]" => "[supplementary_data_new][HMCTSServiceId]" }
+                        }
+                    }
+                    if [data_classification][SearchCriteria] {
+                        mutate {
+                          rename => {"[data_classification][SearchCriteria]" => "[data_classification_new][SearchCriteria]" }
+                        }
+                    }
+                    if [data_classification][CaseAccessCategory] {
+                      mutate {
+                            rename => {"[data_classification][CaseAccessCategory]" => "[data_classification_new][CaseAccessCategory]" }
+                      }
+                    }
+                    if [data_classification][caseManagementLocation] {
+                      mutate {
+                          rename => {"[data_classification][caseManagementLocation]" => "[data_classification_new][caseManagementLocation]" }
+                      }
+                    }
+                    if [data_classification][caseNameHmctsInternal] {
+                        mutate {
+                          rename => {"[data_classification][caseNameHmctsInternal]" => "[data_classification_new][caseNameHmctsInternal]" }
+                        }
+                    }
+
+                    if [data_classification][caseManagementCategory] {
+                        mutate {
+                          rename => {"[data_classification][caseManagementCategory]" => "[data_classification_new][caseManagementCategory]" }
+                        }
+                    }
+                    mutate { remove_field =>[ "data" ,"supplementary_data", "data_classification", "last_state_modified_date", "type","last_modified", "created_date" ] }
+
+                    mutate {
+                            rename => { "[data_new]" => "data" }
+                            rename => { "[supplementary_data_new]"  => "supplementary_data" }
+                            rename => { "[data_classification_new]"  => "data_classification" }
+                    }
+
+                    mutate {
+                      add_field => { "index_id" => "global_search" }
+                    }
+                    mutate {
+                      lowercase => [ "index_id" ]
+                    }
+                } else {
+                    mutate {
+                        add_field => { "index_id" => "%{case_type_id}_cases" }
+                  }
+                mutate {
+                  lowercase => [ "index_id" ]
+                }
+                }
+          }
+        03_output.conf: |
+          output {
+              elasticsearch {
+                  hosts => ["${SERVICE_NAME}-es-master"]
+                  sniffing => false
+                  index => "%{[index_id]}"
+                  document_type => "_doc"
+                  document_id => "%{id}"
+                  timeout => 60
+              }
+          }
 
     ccd-definition-store-api:
       java:
@@ -371,8 +493,7 @@ civil-service:
         devmemoryLimits: 4096Mi
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
-          DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
-          DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+          DEFINITION_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
           DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
           DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
           WELSH_TRANSLATION_ENABLED: false
@@ -380,18 +501,14 @@ civil-service:
           ELASTIC_SEARCH_ENABLED: true
           ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
           ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
-          DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
         secrets:
           DEFINITION_STORE_DB_PASSWORD:
-            secretRef: "{{ .Values.global.postgresSecret }}"
+            secretRef: postgres
             key: PASSWORD
-            disabled: true
+            disabled: false
         keyVaults: [ ]
         ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
 
-    postgresql:
-      persistence:
-        enabled: false
   xui-webapp:
     enabled: true
     memoryLimits: 1Gi
@@ -421,6 +538,7 @@ civil-service:
         JURISDICTIONS: CIVIL
         LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
+
   idam-pr:
     releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
     enabled: true
@@ -429,6 +547,7 @@ civil-service:
         - https://${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
       XUI:
         - https://xui-${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
+
   aac-manage-case-assignment:
     enabled: true
     java:
@@ -457,6 +576,7 @@ civil-service:
         NOTIFY_MCA_API_KEY: ${NOTIFY_MCA_API_KEY}
       autoscaling:
         enabled: false
+
   em-stitching:
     enabled: true
     java:
@@ -470,16 +590,19 @@ civil-service:
         S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
         DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
         CDAM_URL: http://${SERVICE_NAME}-cdam
-        SPRING_DATASOURCE_HOST: ${SERVICE_NAME}-postgresql
-        SPRING_DATASOURCE_NAME: emstitch
-        SPRING_DATASOURCE_OPTIONS: "?ssl=disable"
+        SPRING_DATASOURCE_HOST: '{{ tpl .Values.global.postgresHostname $}}'
+        SPRING_DATASOURCE_NAME: "{{ tpl .Values.global.databaseNamePrefix $}}emstitch"
         SPRING_DATASOURCE_PORT: 5432
-        SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-        SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+        SPRING_DATASOURCE_USERNAME: "{{ tpl .Values.global.postgresUsername $}}"
         ENABLE_DB_MIGRATE: true
         RUN_DB_MIGRATION_ON_STARTUP: true
         FLYWAY_POSTGRESQL_TRANSACTIONAL_LOCK: false
         LOGGING_LEVEL_UK_GOV_HMCTS_REFORM_EM: DEBUG
+      secrets:
+        SPRING_DATASOURCE_PASSWORD:
+          secretRef: postgres
+          key: PASSWORD
+          disabled: false
       keyVaults:
         em-stitching:
           resourceGroup: em-stitching
@@ -512,6 +635,7 @@ civil-service:
               alias: S2S_KEY
             - name: notification-api-key
               alias: NOTIFICATION_API_KEY
+
   ccd-case-document-am-api:
     enabled: true
     java:
