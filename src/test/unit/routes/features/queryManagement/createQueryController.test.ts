@@ -145,5 +145,22 @@ describe('create query conroller', () => {
           expect(spyRemoveSelectedDocument).toHaveBeenCalled();
         });
     });
+
+    it('should redirect when multer error on file upload (file too large)', async () => {
+      mockGetClaimById.mockImplementation(async () => new Claim());
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+
+      const res = await request(app)
+        .post(QUERY_MANAGEMENT_CREATE_QUERY)
+        .field('action', 'uploadButton')
+        .field('messageSubject', 'test')
+        .field('messageDetails', 'test')
+        .field('isHearingRelated', 'no')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+
+      expect(res.status).toBe(302);
+    });
+
   });
 });
