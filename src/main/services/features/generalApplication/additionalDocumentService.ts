@@ -7,6 +7,7 @@ import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStore
 import { TypeOfDocumentSectionMapper } from '../caseProgression/TypeOfDocumentSectionMapper';
 import { GenericForm } from 'common/form/models/genericForm';
 import { translateErrors } from './uploadEvidenceDocumentService';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { t } from 'i18next';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
@@ -67,6 +68,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
   } else {
     const errors = translateErrors(form.getAllErrors(), t);
     req.session.fileUpload = JSON.stringify(errors);
+    req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS;
   }
 };
 

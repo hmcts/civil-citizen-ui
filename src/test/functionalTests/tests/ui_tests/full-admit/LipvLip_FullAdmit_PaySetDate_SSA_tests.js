@@ -20,7 +20,7 @@ let claimRef;
 let caseData;
 let claimNumber;
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant').tag('@ui-nightly-prod @ui-full-admit');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant').tag('@civil-citizen-nightly @ui-full-admit');
 
 // TODO undo this once the stop from choosing settlement agreement is removed
 Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant', async ({

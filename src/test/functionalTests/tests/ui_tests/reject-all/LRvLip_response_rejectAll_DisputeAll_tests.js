@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll').tag('@ui-nightly-prod @ui-reject-all');
+Feature('Response with RejectAll and DisputeAll').tag('@civil-citizen-nightly @ui-reject-all');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
