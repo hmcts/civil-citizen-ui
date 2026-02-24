@@ -1,0 +1,1 @@
+{"value":"ajv","children":{"ID":1113429,"Issue":"ajv has ReDoS when using `$data` option","URL":"https://github.com/advisories/GHSA-2g4f-4pwh-qvx6","Severity":"moderate","Vulnerable Versions":">=7.0.0-alpha.0 <8.18.0","Tree Versions":["8.17.1"],"Dependents":["table@npm:6.8.2"]}}
