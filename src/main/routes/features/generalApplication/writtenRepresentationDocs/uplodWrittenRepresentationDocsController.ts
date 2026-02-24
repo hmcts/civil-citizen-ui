@@ -10,7 +10,6 @@ import { Claim } from 'models/claim';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimById } from 'modules/utilityService';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import multer from 'multer';
 import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { summarySection, SummarySection } from 'models/summaryList/summarySections';
@@ -20,15 +19,17 @@ import {
   uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import { getSummaryList } from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
+import {
+  createMulterErrorMiddlewareForSingleField,
+  createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
+} from 'common/utils/fileUploadUtils';
+import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadDocumentsForRequestWrittenRepresentation = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
-const fileSize = Infinity;
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadDocumentsForRequestWrittenRepresentation');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -53,14 +54,15 @@ uploadDocumentsForRequestWrittenRepresentation.get(GA_UPLOAD_WRITTEN_REPRESENTAT
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection({ title: '', summaryRows: [] });
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
-      const index = req.query.id;
-      await removeSelectedDocument(redisKey, Number(index) - 1);
+      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
+      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
+      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
+      return res.redirect(redirectUrl);
     }
     await getSummaryList(formattedSummary, redisKey, constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL));
     await renderView(form, claim, claimId, appId, res, formattedSummary);
@@ -69,32 +71,26 @@ uploadDocumentsForRequestWrittenRepresentation.get(GA_UPLOAD_WRITTEN_REPRESENTAT
   }
 }) as RequestHandler);
 
-uploadDocumentsForRequestWrittenRepresentation.post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadDocumentsForRequestWrittenRepresentation.post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id: claimId } = req.params;
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
 
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION)) {
+      return;
+    }
+
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req);
+      await uploadSelectedFile(req, FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION);
       return res.redirect(`${currentUrl}`);
     }
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
     form.validateSync();
     if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_WRITTEN_REPRESENTATION;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL));

@@ -62,10 +62,10 @@ describe('Expert service', () => {
     //Then
     expect(actualExpertContent.length).toEqual(4);
 
-    expect(actualExpertContent[0][0].contentSections.length).toEqual(5);
-    expect(actualExpertContent[1][0].contentSections.length).toEqual(5);
-    expect(actualExpertContent[2][0].contentSections.length).toEqual(5);
-    expect(actualExpertContent[3][0].contentSections.length).toEqual(5);
+    expect(actualExpertContent[0][0].contentSections.length).toEqual(6);
+    expect(actualExpertContent[1][0].contentSections.length).toEqual(6);
+    expect(actualExpertContent[2][0].contentSections.length).toEqual(6);
+    expect(actualExpertContent[3][0].contentSections.length).toEqual(6);
 
     expect(actualExpertContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_REPORT');
     expect(actualExpertContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.EXPERT.JOINT_STATEMENT');
