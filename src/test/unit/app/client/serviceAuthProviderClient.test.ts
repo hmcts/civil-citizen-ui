@@ -1,7 +1,7 @@
 import axios, {AxiosInstance} from 'axios';
 import config from 'config';
 import {generateServiceToken, ServiceAuthProviderClient} from '../../../../main/app/client/serviceAuthProviderClient';
-import {authenticator} from 'otplib';
+import {generateSync} from 'otplib';
 
 jest.mock('axios');
 jest.mock('otplib');
@@ -27,7 +27,7 @@ describe('Service Authorisation Provider Client', () => {
 
   it('should throw error when service token generation fails', async () => {
     //When
-    (authenticator.generate as jest.Mock).mockImplementation(() => {
+    (generateSync as jest.Mock).mockImplementation(() => {
       throw new Error('OTP Generation Error');
     });
 
