@@ -295,6 +295,7 @@ export const MEDIATION_TYPE_OF_DOCUMENTS = `${MEDIATION_URL}/type-of-documents`;
 export const MEDIATION_UPLOAD_DOCUMENTS = `${MEDIATION_URL}/upload-documents`;
 export const MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND = `${MEDIATION_URL}/check-and-send`;
 export const MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = `${MEDIATION_URL}/confirmation`;
+export const MEDIATION_UPLOAD_DOCUMENTS_CANCEL = `${MEDIATION_UPLOAD_DOCUMENTS}/cancel-document-upload`;
 export const DASHBOARD_NOTIFICATION_REDIRECT = '/notification/:notificationId/redirect/:locationName/:id';
 export const MEDIATION_SERVICE_EXTERNAL = 'https://www.gov.uk/guidance/small-claims-mediation-service';
 export const BUNDLES_URL = `${BASE_CASE_URL}/bundle-overview`;
