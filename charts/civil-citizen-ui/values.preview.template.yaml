@@ -180,6 +180,7 @@ civil-service:
       devcpuLimits: 1
       devmemoryLimits: 1Gi
       environment:
+        CAMUNDA_API_AUTH_ENABLED: false
         CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
         CAMUNDA_DB_USER_NAME: hmcts
         CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
