@@ -120,4 +120,25 @@
     </div>
   </main>
 </div>
+
+<script nonce="{{ nonceValue }}">
+(() => {
+  const summary = document.querySelector('.govuk-error-summary');
+  if (!summary) return;
+
+  summary.addEventListener('click', e => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const el = document.getElementById(link.hash.slice(1));
+    if (!el) return;
+
+    setTimeout(() => {
+      el.scrollIntoView({ block: 'start' });
+      window.scrollBy(0, -160);
+    });
+  });
+})();
+</script>
+
 {% endblock %}
