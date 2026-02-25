@@ -68,3 +68,11 @@ featureToggles:
 cookieMaxAge:
   __name: SESSION_COOKIE_MAX_AGE
   __format: number
+uploadRateLimit:
+  enabled: UPLOAD_RATE_LIMIT_ENABLED
+  maxRequests:
+    __name: UPLOAD_RATE_LIMIT_MAX_REQUESTS
+    __format: number
+  windowSeconds:
+    __name: UPLOAD_RATE_LIMIT_WINDOW_SECONDS
+    __format: number

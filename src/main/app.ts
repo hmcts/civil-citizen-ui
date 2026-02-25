@@ -27,6 +27,7 @@ import {
   BASE_GENERAL_APPLICATION_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_URL, BREATHING_SPACE_INFO_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, COSC_FINAL_PAYMENT_DATE_URL,
+  CP_UPLOAD_DOCUMENTS_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DASHBOARD_CLAIMANT_URL,
@@ -79,7 +80,7 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   INFORM_OTHER_PARTIES_URL,
-  IS_CASE_READY_URL, MEDIATION_PHONE_CONFIRMATION_URL,
+  IS_CASE_READY_URL, MEDIATION_PHONE_CONFIRMATION_URL, MEDIATION_UPLOAD_DOCUMENTS,
   ORDER_JUDGE_URL,
   PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
@@ -112,6 +113,7 @@ import {contactUsGuard} from 'routes/guards/contactUsGuard';
 import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
 import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
 import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
+import {createUploadRateLimitGuard} from 'routes/guards/uploadRateLimitGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -306,6 +308,26 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
+
+const uploadRateLimitEnabled = config.get<boolean>('uploadRateLimit.enabled');
+if (uploadRateLimitEnabled) {
+  const maxRequests = config.get<number>('uploadRateLimit.maxRequests');
+  const windowMs = config.get<number>('uploadRateLimit.windowSeconds') * 1000;
+  app.use([
+    QUERY_MANAGEMENT_CREATE_QUERY,
+    QM_FOLLOW_UP_MESSAGE,
+    CP_UPLOAD_DOCUMENTS_URL,
+    MEDIATION_UPLOAD_DOCUMENTS,
+    GA_UPLOAD_N245_FORM_URL,
+    GA_UPLOAD_DOCUMENTS_URL,
+    GA_UPLOAD_DOCUMENTS_COSC_URL,
+    GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+    GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
+    GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
+    GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
+    GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
+  ], createUploadRateLimitGuard(maxRequests, windowMs));
+}
 
 if(env !== 'test') {
   app.use(contactUsGuard);
