@@ -9,6 +9,7 @@ import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import logger from "@pact-foundation/pact-node/src/logger";
 
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
@@ -36,7 +37,10 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
 });
 
 judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
-  res.redirect(constructResponseUrlWithIdParams(req.params.id, CCJ_PAYMENT_OPTIONS_URL));
+  const claimId = req.params.id;
+  const claim = await getCaseDataFromStore(generateRedisKey(req));
+  logger.info(claim.claimantResponse);
+  res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAYMENT_OPTIONS_URL));
 });
 
 export default judgmentAmountSummaryController;
