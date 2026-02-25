@@ -11,11 +11,11 @@ import uk.gov.hmcts.contino.AppPipelineDsl
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
+def camundaBranch = "DTSCCI-3924-GA-Dashboard-Notification-Migration"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
-def generalappCCDBranch = "master"
+def generalappCCDBranch = "DTSCCI-3924_GA_Dashboard_Notification"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
