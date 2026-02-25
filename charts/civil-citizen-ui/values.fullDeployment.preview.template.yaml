@@ -449,11 +449,11 @@ wa:
         POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa-workflow-api"
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
         CAMUNDA_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
-    secrets:
-      POSTGRES_PASSWORD:
-        secretRef: "{{ .Values.global.postgresSecret }}"
-        key: PASSWORD
-        disabled: true
+      secrets:
+        POSTGRES_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
 
   camunda-bpm:
     java:
