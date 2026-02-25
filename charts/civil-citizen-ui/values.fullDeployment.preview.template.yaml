@@ -417,10 +417,7 @@ wa:
         POSTGRES_CONNECTION_OPTIONS: "?currentSchema=cft_task_db&stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
         POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft-task-db"
-        POSTGRES_REPLICA_PORT: 5432
         POSTGRES_USERNAME: hmcts
-        SPRING_PROFILES_ACTIVE: "preview"
-        WA_S2S_AUTHORIZED_SERVICES: ccd,ccd_data,ccd_gw,ccd_ps,iac,wa_task_management_api,xui_webapp,wa_task_monitor,camunda_bpm,wa_workflow_api,wa_case,civil_service
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
