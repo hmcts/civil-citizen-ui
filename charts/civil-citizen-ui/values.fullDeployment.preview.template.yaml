@@ -1,21 +1,5 @@
 civil-service:
 
-  global:
-    ccdStitchUrl: http://${SERVICE_NAME}-emstitch
-    ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
-    ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
-    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
-    ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
-    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
-    idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    postgresUsername: hmcts
-    postgresSecret: postgres
-    postgresHostname: civil-preview.postgres.database.azure.com
-    databaseNamePrefix: "pr-${CHANGE_ID}-"
-    postgresPassword: ${POSTGRES_PASSWORD}
-    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-
   java:
     environment:
       TASK_MANAGEMENT_ENABLED: true
@@ -395,14 +379,6 @@ wa:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
       releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
-      secrets:
-        AZURE_SERVICE_BUS_CONNECTION_STRING:
-          secretRef: civil-sb-preview
-          key: connectionString
-        POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
       environment:
         CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
         CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
@@ -414,7 +390,17 @@ wa:
         AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
         #AZURE_SERVICE_BUS_TOPIC_NAME: servicebus-topic-{{ .Release.Name }}-asb-ccd-case-events
         AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
+        POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa-case-event-handler"
+      secrets:
+        AZURE_SERVICE_BUS_CONNECTION_STRING:
+          secretRef: civil-sb-preview
+          key: connectionString
+        POSTGRES_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
 
   wa-task-monitor:
     java:
