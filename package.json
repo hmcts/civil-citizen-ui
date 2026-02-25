@@ -136,6 +136,7 @@
     "allure-codeceptjs": "^3.4.2",
     "allure-commandline": "^2.29.0",
     "allure-js-commons": "^3.4.2",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.0",
     "chai": "4.3.6",
     "codeceptjs": "3.4.1",

@@ -1,13 +1,22 @@
 /**
- * @jest-environment jsdom
+ * Uses manual JSDOM setup instead of @jest-environment jsdom to avoid
+ * virtualConsole.sendTo incompatibility with jsdom 28.
  */
+const {JSDOM} = require('jsdom');
 
 describe('reindex-add-another-actions', () => {
   const scriptPath = '../../../../main/assets/js/reindex-add-another-actions.js';
+  let dom: InstanceType<typeof JSDOM>;
+
+  beforeAll(() => {
+    dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {runScripts: 'dangerously'});
+    (global as unknown as { window: Window }).window = dom.window;
+    (global as unknown as { document: Document }).document = dom.window.document;
+  });
 
   beforeEach(() => {
     // Reset DOM between tests
-    document.body.innerHTML = '';
+    dom.window.document.body.innerHTML = '';
     jest.resetModules();
     jest.useFakeTimers();
   });
@@ -34,7 +43,7 @@ describe('reindex-add-another-actions', () => {
     // Load the script (IIFE) and fire DOMContentLoaded to attach listeners
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require(scriptPath);
-    document.dispatchEvent(new Event('DOMContentLoaded'));
+    document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
   }
 
   it('reindexes action buttons in the newly added last item using data-value templates', () => {
@@ -46,7 +55,7 @@ describe('reindex-add-another-actions', () => {
     expect(addBtn).not.toBeNull();
 
     // Click add: the script will schedule a setTimeout(…, 0) and then reindex the last item.
-    addBtn!.dispatchEvent(new MouseEvent('click'));
+    addBtn!.dispatchEvent(new dom.window.MouseEvent('click'));
 
     // Simulate MoJ component having cloned a new row as the last item (index 1)
     const newItem = document.createElement('div');
@@ -79,7 +88,7 @@ describe('reindex-add-another-actions', () => {
     const container = document.getElementById('container-1')!;
     const addBtn = document.getElementById('add-btn-1')!;
 
-    addBtn.dispatchEvent(new MouseEvent('click'));
+    addBtn.dispatchEvent(new dom.window.MouseEvent('click'));
 
     // Append a new item that has no action buttons with data-value
     const newItem = document.createElement('div');
