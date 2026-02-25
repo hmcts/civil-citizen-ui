@@ -78,8 +78,8 @@ civil-service:
           - name: "pr-${CHANGE_ID}-role-assignment"
           - name: "pr-${CHANGE_ID}-wa-task-management-api"
           - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa_workflow_api"
-          - name: "pr-${CHANGE_ID}-cft_task_db"
+          - name: "pr-${CHANGE_ID}-wa-workflow-api"
+          - name: "pr-${CHANGE_ID}-cft-task-db"
           - name: "pr-${CHANGE_ID}-emstitch"
 
     am-role-assignment-service:
@@ -430,7 +430,7 @@ wa:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         POSTGRES_CONNECTION_OPTIONS: "?currentSchema=cft_task_db&stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
-        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft_task_db"
+        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft-task-db"
         POSTGRES_REPLICA_PORT: 5432
         POSTGRES_USERNAME: hmcts
         SPRING_PROFILES_ACTIVE: "preview"
@@ -446,7 +446,7 @@ wa:
       environment:
         DB_READER_USERNAME: hmcts
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
-        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa_workflow_api"
+        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa-workflow-api"
         POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
         CAMUNDA_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
     secrets:
