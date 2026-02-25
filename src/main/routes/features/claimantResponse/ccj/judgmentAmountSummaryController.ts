@@ -9,7 +9,7 @@ import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import logger from "@pact-foundation/pact-node/src/logger";
+import logger from '@pact-foundation/pact-node/src/logger';
 
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
