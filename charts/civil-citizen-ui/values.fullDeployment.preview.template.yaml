@@ -1,19 +1,4 @@
 civil-service:
-  global:
-    ccdStitchUrl: http://${SERVICE_NAME}-emstitch
-    ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
-    ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
-    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
-    ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
-    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
-    idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    postgresUsername: hmcts
-    postgresSecret: postgres
-    postgresHostname: civil-preview.postgres.database.azure.com
-    databaseNamePrefix: "pr-${CHANGE_ID}-"
-    postgresPassword: ${POSTGRES_PASSWORD}
-    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   java:
     environment:
@@ -51,10 +36,9 @@ civil-service:
               - name: AppInsightsInstrumentationKey
                 alias: azure.application-insights.instrumentation-key
         environment:
-          DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
-          DATA_STORE_DB_NAME: "data-store"
-          DATA_STORE_DB_USERNAME: hmcts
-          DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+          DATA_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}data-store"
+          DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
+          DATA_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
           DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
           CCD_CASE_EVENTS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
         secrets:
@@ -62,9 +46,9 @@ civil-service:
             secretRef: civil-sb-preview
             key: connectionString
           DATA_STORE_DB_PASSWORD:
-            secretRef: postgres
+            secretRef: "{{ .Values.global.postgresSecret }}"
             key: PASSWORD
-            disabled: true
+            disabled: false
 
     postgresql:
       enabled: true
@@ -117,7 +101,6 @@ civil-service:
             secretRef: "{{ .Values.global.postgresSecret }}"
             key: PASSWORD
             disabled: false
-
 
     logstash:
       image: hmctspublic.azurecr.io/imported/logstash/logstash
@@ -392,15 +375,10 @@ global:
 
 wa:
   enabled: true
-  global:
-    postgresUsername: hmcts
-    postgresSecret: postgres
-    postgresHost: ${SERVICE_NAME}-postgresql
-  #    postgresHost: civil-preview.postgres.database.azure.com
-  #    databaseNamePrefix: "pr-${CHANGE_ID}-"
   wa:
     postgresql:
       enabled: false
+
   wa-case-event-handler:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
@@ -424,56 +402,54 @@ wa:
         AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
         #AZURE_SERVICE_BUS_TOPIC_NAME: servicebus-topic-{{ .Release.Name }}-asb-ccd-case-events
         AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
+        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+
   wa-task-monitor:
     java:
       ingressHost: wa-task-monitor-${SERVICE_FQDN}
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+
   wa-task-management-api:
     java:
       ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
-        POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
-        POSTGRES_REPLICA_HOST: "{{ .Release.Name }}-postgresql"
+        POSTGRES_CONNECTION_OPTIONS: "?currentSchema=cft_task_db&stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
+        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft_task_db"
         POSTGRES_REPLICA_PORT: 5432
-        POSTGRES_NAME: "cft_task_db"
-        POSTGRES_REPLICA_NAME: "cft_task_db_replica"
-        POSTGRES_USERNAME: postgres
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        REPLICATION_USERNAME: postgres
-        REPLICATION_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_USERNAME: hmcts
         SPRING_PROFILES_ACTIVE: "preview"
-        DB_READER_USERNAME: postgres
         WA_S2S_AUTHORIZED_SERVICES: ccd,ccd_data,ccd_gw,ccd_ps,iac,wa_task_management_api,xui_webapp,wa_task_monitor,camunda_bpm,wa_workflow_api,wa_case,civil_service
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: true
+
   wa-workflow-api:
     java:
       environment:
-        DB_READER_USERNAME: "hmcts"
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
+        DB_READER_USERNAME: hmcts
+        POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
+        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa_workflow_api"
+        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
         CAMUNDA_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
     secrets:
       POSTGRES_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
         disabled: true
+
   camunda-bpm:
     java:
       environment:
         CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
         CAMUNDA_DB_USER_NAME: hmcts
         CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-        CAMUNDA_DB_NAME: "pr-${CHANGE_ID}-camunda"
+        CAMUNDA_DB_NAME: "{{ .Values.global.databaseNamePrefix }}camunda"
         TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         CAMUNDA_API_AUTH_ENABLED: false
       secrets:

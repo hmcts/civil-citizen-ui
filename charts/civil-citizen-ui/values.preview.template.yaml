@@ -221,11 +221,6 @@ civil-service:
           - name: "pr-${CHANGE_ID}-definition-store"
           - name: "pr-${CHANGE_ID}-camunda"
           - name: "pr-${CHANGE_ID}-role-assignment"
-          - name: "pr-${CHANGE_ID}-wa-task-management-api"
-          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa_workflow_api"
-          - name: "pr-${CHANGE_ID}-cft_task_db"
-          - name: "pr-${CHANGE_ID}-cft_task_db_replica"
           - name: "pr-${CHANGE_ID}-emstitch"
 
     ccd-api-gateway-web:
