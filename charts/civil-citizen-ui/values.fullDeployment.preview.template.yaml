@@ -400,7 +400,7 @@ wa:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: true
+          disabled: false
 
   wa-task-monitor:
     java:
@@ -425,7 +425,7 @@ wa:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: true
+          disabled: false
 
   wa-workflow-api:
     java:
@@ -439,7 +439,7 @@ wa:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: true
+          disabled: false
 
   camunda-bpm:
     java:
