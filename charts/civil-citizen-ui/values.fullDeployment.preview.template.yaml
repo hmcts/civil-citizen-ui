@@ -304,7 +304,6 @@ civil-service:
 
   xui-webapp:
     nodejs:
-      image: hmctspublic.azurecr.io/xui/webapp:pr-4912
       environment:
         SERVICES_CCD_DATA_STORE_API: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
         HEARINGS_JURISDICTIONS: CIVIL
