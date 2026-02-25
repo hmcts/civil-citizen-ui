@@ -6402,12 +6402,11 @@ __metadata:
   linkType: hard
 
 "deep-equal-in-any-order@npm:^2.0.2":
-  version: 2.0.6
-  resolution: "deep-equal-in-any-order@npm:2.0.6"
+  version: 2.2.0
+  resolution: "deep-equal-in-any-order@npm:2.2.0"
   dependencies:
-    lodash.mapvalues: "npm:^4.6.0"
-    sort-any: "npm:^2.0.0"
-  checksum: 10/c975530c2455a15c835306bf388e9c5f7a79b6a45ff0c9c9c5c3ba089c36613ffa7b5b63031ec666e5209f7c7b035155039575d6b7c9876b9cfb7b410af3de2f
+    sort-any: "npm:^4.0.0"
+  checksum: 10/de8fc4f7596498b3e512c272390b96bfb558306f119dc1c555290ae5ded9285366e496ae58de73ba590f826a8569bbdf36c11aaa8dbe0542108e3ea2453a434f
   languageName: node
   linkType: hard
 
@@ -10743,13 +10742,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.mapvalues@npm:^4.6.0":
-  version: 4.6.0
-  resolution: "lodash.mapvalues@npm:4.6.0"
-  checksum: 10/566032abaacbc5dc7e74673e589830d2694ec03dc979ac134c93985b47409ac845cbd4eea3786cc0b4db4e80d726a32c1119af63d0151520e27789568aa76bd2
-  languageName: node
-  linkType: hard
-
 "lodash.memoize@npm:^4.1.2":
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
@@ -14045,12 +14037,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sort-any@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "sort-any@npm:2.0.0"
-  dependencies:
-    lodash: "npm:^4.17.21"
-  checksum: 10/d2dc6cc4f56298ce50b13ce6aafd8bf16010a8f8d0ae75345e8424118ac2cc017a8ffea0eedd136dd67751c09e7b0edb09c959d052ed7ed02afcfbab63c68277
+"sort-any@npm:^4.0.0":
+  version: 4.0.7
+  resolution: "sort-any@npm:4.0.7"
+  checksum: 10/1349aff564521dd3096dd7054598a612939693716f71b56759b2a58bf63a3e50ea390c8ee24db0ed5013d41d0e5030481685d317fe7ac9b66b2b4d3658f380ee
   languageName: node
   linkType: hard
 
