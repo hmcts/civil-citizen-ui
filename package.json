@@ -180,6 +180,7 @@
     "wiremock-standalone": "^3.2.1"
   },
   "resolutions": {
+    "table/ajv": "^8.18.0",
     "@babel/runtime": "^7.26.10",
     "brace-expansion": "^2.0.2",
     "cookie": "^0.7.2",
