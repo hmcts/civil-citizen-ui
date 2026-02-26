@@ -92,3 +92,7 @@ webChat:
 featureToggles:
   settlementAgreementEnabled: false
 cookieMaxAge: 5400000
+uploadRateLimit:
+  enabled: true
+  maxRequests: 20
+  windowSeconds: 60
