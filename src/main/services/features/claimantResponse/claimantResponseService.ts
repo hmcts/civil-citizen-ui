@@ -63,7 +63,7 @@ function setClaimantResponseValue(
   value: unknown,
 ): void {
   const cr: any = claim.claimantResponse as any;
-
+  logger.info(`Setting claimant response property ${parentPropertyName} ${propertyName} to ${value}`);
   if (!parentPropertyName) {
     cr[propertyName] = value;
     return;
