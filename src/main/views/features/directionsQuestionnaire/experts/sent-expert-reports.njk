@@ -31,6 +31,12 @@
             {{ govukRadios({
               idPrefix: "sentExpertReportsOptions",
               name: "sentExpertReportsOptions",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.SENT_EXPERT_REPORTS.TITLE'),
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: YesNoNotReceived.YES,

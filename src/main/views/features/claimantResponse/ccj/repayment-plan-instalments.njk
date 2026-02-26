@@ -109,6 +109,12 @@
               {{ govukRadios({
                 idPrefix: "paymentFrequency",
                 name: "paymentFrequency",
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.HOW_OFTEN'),
+                    classes: 'govuk-visually-hidden'
+                  }
+                },
                 items: [
                   {
                     value: TransactionSchedule.WEEK,

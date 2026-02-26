@@ -43,12 +43,14 @@
         } if form.errorFor('messageSubject')
       }) }}
 
+      <h2 class="govuk-heading-s">{{ t('PAGES.QM.QUERY_FORM.BODY_TITLE') }}</h2>
       {{ govukTextarea({
         id: 'messageDetails',
         name: 'messageDetails',
         value: form.model.messageDetails,
         label: {
-          text: t('PAGES.QM.QUERY_FORM.BODY_TITLE')
+          text: t('PAGES.QM.QUERY_FORM.BODY_TITLE'),
+          classes: 'govuk-visually-hidden'
         },
         hint: {
           text: t('PAGES.QM.QUERY_FORM.BODY_HINT')
@@ -130,12 +132,13 @@
               } if form.errorFor('isHearingRelated')
             }) }}
       <div class="govuk-inset-text">
+        <h2 class="govuk-heading-s">{{ t('PAGES.QM.QUERY_FORM.DOCUMENTS_TITLE') }}</h2>
         {{ govukFileUpload({
           id: idValue,
           name: "selectedFile",
           label: {
             text: t('PAGES.QM.QUERY_FORM.DOCUMENTS_TITLE'),
-            classes: 'govuk-heading-s govuk-!-font-weight-bold'
+            classes: 'govuk-visually-hidden'
           },
           hint: {
             html: t('PAGES.QM.QUERY_FORM.DOCUMENTS_HINT')
@@ -166,7 +169,6 @@
                 <dd class="govuk-summary-list__actions">
                   <button type="submit"
                           class="link-button"
-                          id="deleteFile"
                           name="action"
                           value="[{{ row.value.html }}][deleteFile]">
                     {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}
@@ -176,7 +178,7 @@
               </div>
           </dl>
         {% endfor %}
-          </br>
+          <br>
       {% endif %}
 
 

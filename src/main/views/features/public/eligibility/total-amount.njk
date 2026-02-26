@@ -28,6 +28,12 @@
             {{ govukRadios({
               idPrefix: "totalAmount",
               name: "totalAmount",
+              fieldset: {
+                legend: {
+                  text: title,
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: TotalAmountOptions.OVER_25000,
