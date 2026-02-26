@@ -181,9 +181,7 @@
   },
   "resolutions": {
     "@babel/runtime": "^7.26.10",
-    "@isaacs/brace-expansion": "^5.0.1",
     "brace-expansion": "^2.0.2",
-    "minimatch": "^10.2.1",
     "cookie": "^0.7.2",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
