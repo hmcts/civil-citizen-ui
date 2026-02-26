@@ -1,7 +1,7 @@
 #!groovy
 properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
-]);
+])
 
 @Library("Infrastructure")
 import uk.gov.hmcts.contino.AppPipelineConfig
@@ -56,7 +56,7 @@ def copyPreviousAllureHistory() {
         target: targetDir,
         flatten: true
       )
-      
+
       buildFound = true
       echo "Successfully imported Allure history from build ${buildNumber}"
     } catch (Exception error) {
@@ -129,11 +129,12 @@ def secrets = [
   ]
 ]
 
-def setUrls(suffix){
+def setUrls(suffix) {
   env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
   env.IDAM_WEB_URL = "https://idam-web-public.aat.platform.hmcts.net"
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-  if("${suffix}" == 'aat') {
+
+  if (suffix == 'aat') {
     env.CCD_DATA_STORE_URL = "https://civil-cui-data-store-staging.aat.platform.hmcts.net"
     env.URL="https://civil-cui-xui-staging.aat.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
@@ -176,7 +177,7 @@ withPipeline(type, product, component) {
     env.ENVIRONMENT = "preview"
     env.A11Y_CHUNKS=4
     env.NODE_OPTIONS= "--max-old-space-size=8192"
-    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
     loadVaultSecrets(secrets)
@@ -185,7 +186,7 @@ withPipeline(type, product, component) {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     env.ENVIRONMENT="aat"
     env.NODE_OPTIONS= "--max-old-space-size=8192"
-    env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     loadVaultSecrets(secrets)
   }
   onDemo {
@@ -222,11 +223,11 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
-    copyPreviousAllureHistory();
+    copyPreviousAllureHistory()
     if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
-      copyPrevFailedAndNotExecutedTestFilesJson();
+      copyPrevFailedAndNotExecutedTestFilesJson()
     }
   }
 
@@ -248,7 +249,7 @@ withPipeline(type, product, component) {
       try {
         yarnBuilder.yarn('tests:a11y:parallel')
       } catch (Exception error) {
-        throw error;
+        throw error
       } finally {
         echo 'Archiving artifacts...'
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/accessibility-report/**/*'
@@ -266,7 +267,7 @@ withPipeline(type, product, component) {
       ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
       ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
     """
-    setUrls("aat");
+    setUrls("aat")
   }
 
   afterAlways('smoketest:aat') {
@@ -276,8 +277,8 @@ withPipeline(type, product, component) {
 
   before('functionalTest:aat') {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
-    copyPrevFailedAndNotExecutedTestFilesJson();
-    copyPreviousAllureHistory();
+    copyPrevFailedAndNotExecutedTestFilesJson()
+    copyPreviousAllureHistory()
   }
 
   afterAlways('functionalTest:aat') {

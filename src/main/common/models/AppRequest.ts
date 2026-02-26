@@ -29,6 +29,7 @@ export interface AppSession extends Session {
   claimIssueTasklist: boolean;
   firstContact: FirstContact;
   fileUpload: string;
+  fileUploadSource?: string;
   issuedAt: number;
   dashboard: Dashboard;
   history?: string[];
