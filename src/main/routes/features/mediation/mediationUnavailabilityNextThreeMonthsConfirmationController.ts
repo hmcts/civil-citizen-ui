@@ -46,7 +46,7 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_
 mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const optionSelected = req.body.option;
-    const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.VALID_YES_NO_OPTION_CARM_OES_NAC_OES'));
+    const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_REQUIRED'));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);

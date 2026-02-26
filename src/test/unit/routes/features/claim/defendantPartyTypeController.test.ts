@@ -99,7 +99,7 @@ describe('Defendant party type controller', () => {
         .send({foo: 'blah'})
         .expect((response: Response) => {
           expect(response.status).toBe(200);
-          expect(response.text).toContain(TestMessages.CHOOSE_YOUR_RESPONSE);
+          expect(response.text).toContain(TestMessages.DEFENDANT_PARTY_TYPE_REQUIRED);
         });
     });
 

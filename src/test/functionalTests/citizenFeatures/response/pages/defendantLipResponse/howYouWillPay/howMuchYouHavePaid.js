@@ -53,7 +53,7 @@ class HowMuchYouHavePaid {
       await I.see('Enter a valid day');
       await I.see('Enter a valid month');
       await I.see('Enter a valid year');
-      await I.see('Enter text explaining how you paid');
+      await I.see('Enter how you paid this amount');
       //invalid date, month & year
       await I.fillField(fields.day, dayError.toString());
       await I.fillField(fields.month, monthError.toString());
@@ -73,7 +73,7 @@ class HowMuchYouHavePaid {
       await I.see('Enter a valid day');
       await I.see('Enter a valid month');
       await I.see('Enter a valid year');
-      await I.see('Enter text explaining how you paid');
+      await I.see('Enter how you paid this amount');
       //invalid date, month & year
       await I.fillField(fields.day, dayError.toString());
       await I.fillField(fields.month, monthError.toString());

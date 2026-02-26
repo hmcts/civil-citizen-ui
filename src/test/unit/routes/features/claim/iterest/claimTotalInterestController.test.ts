@@ -70,8 +70,8 @@ describe('Claim Total Interest Controller', () => {
 
       await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '', reason: ''}).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter a valid amount');
-        expect(res.text).toContain('You must tell us how you calculated the amount');
+        expect(res.text).toContain('Enter total interest amount');
+        expect(res.text).toContain('Enter how you calculated the amount');
       });
     });
 

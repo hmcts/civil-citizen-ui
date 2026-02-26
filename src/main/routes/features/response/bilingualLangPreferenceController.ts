@@ -45,7 +45,7 @@ bilingualLangPreferenceController.get(
 
 bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SELECT_WELSH_AND_ENGLISH_OPTION'));
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.RESPONSE_LANGUAGE_REQUIRED'));
     form.validateSync();
     if (form.hasErrors()) {
       await renderView(form, res);

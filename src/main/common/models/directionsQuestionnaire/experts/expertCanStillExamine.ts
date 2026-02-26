@@ -1,9 +1,9 @@
 import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
-import {FREE_TEXT_MAX_LENGTH} from '../../../form/validators/validationConstraints';
-import {YesNo} from '../../../form/models/yesNo';
+import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
+import {YesNo} from 'form/models/yesNo';
 
 export class ExpertCanStillExamine {
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
+  @IsDefined({message: 'ERRORS.EXPERT_CAN_STILL_EXAMINE_REQUIRED'})
     option?: YesNo;
 
   @ValidateIf(o => o.option === YesNo.YES)

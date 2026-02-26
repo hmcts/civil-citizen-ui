@@ -50,7 +50,7 @@ class ResponseTypePage {
     await I.waitForContent('How do you respond to the claim?', config.WaitForText);
     await I.click('Save and continue');
     await I.see('There was a problem');
-    await I.see('Choose your response');
+    await I.see('Select how you respond to the claim');
     switch (responseType){
       case 'partial-admission':{
         await I.click(fields.responsePartAdmit);
@@ -58,7 +58,7 @@ class ResponseTypePage {
         await I.see('Have you paid the claimant the amount you admit you owe?');
         await I.click('Save and continue');
         await I.see('There was a problem');
-        await I.see('Choose option: Yes or No');
+        await I.see('Select if you have paid the claimant what you admit you owe or not');
         break;
       }
       case 'rejectAll':{
@@ -66,7 +66,7 @@ class ResponseTypePage {
         await I.click('Save and continue');
         await I.click('Save and continue');
         await I.see('There was a problem');
-        await I.see('Please select a response');
+        await I.see('Select why you don\'t believe you owe Test Inc any money');
         break;
       }
     }

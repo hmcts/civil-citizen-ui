@@ -19,15 +19,24 @@
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set optionErrorKey = form.errorFor('option') %}
+      {% set optionErrorText = t(optionErrorKey) if optionErrorKey else '' %}
+      {% if optionErrorKey and formatValues %}
+        {% for fmt in formatValues %}
+          {% if fmt.keyError == optionErrorKey %}
+            {% set optionErrorText = optionErrorText | replace(fmt.keyToReplace, fmt.valueToReplace) %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
       {% if form.hasErrors() %}
-        {{ errorSummary(form.getErrors(), t) }}
+        {{ errorSummary(form.getErrors(), t, formatValues) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <div class="govuk-!-margin-bottom-8">
             <form method="post" novalidate>
              {{ csrfProtection(csrf) }}
-                {{ yesNoRadioButton(t, 'option', 'option', pageText, form, pageHintText, {classes: 'govuk-radios', yes: variation.yes, no: variation.no}) }}
+                {{ yesNoRadioButton(t, 'option', 'option', pageText, form, pageHintText, {classes: 'govuk-radios', yes: variation.yes, no: variation.no, errorMessageText: optionErrorText}) }}
                 {{ govukButton({
                   text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
                 }) }}

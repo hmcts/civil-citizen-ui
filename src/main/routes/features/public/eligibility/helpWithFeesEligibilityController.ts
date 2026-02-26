@@ -3,10 +3,10 @@ import {
   ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 const helpWithFeesEligibilityController = Router();
 const helpWithFeesEligibilityViewPath = 'features/public/eligibility/help-with-fees';
@@ -23,7 +23,7 @@ helpWithFeesEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_URL, (req: Requ
 });
 
 helpWithFeesEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_URL, async (req: Request, res: Response) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.HELP_WITH_FEES_REQUIRED'));
   await genericYesNoForm.validate();
 
   if (genericYesNoForm.hasErrors()) {

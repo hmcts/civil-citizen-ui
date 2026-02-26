@@ -9,7 +9,7 @@ import {
   getMediationCarm,
   saveMediationCarm,
 } from 'services/features/response/mediation/mediationService';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -19,7 +19,7 @@ const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const emailMediationConfirmationController = Router();
 const MEDIATION_EMAIL_CONFIRMATION_PAGE = 'PAGES.MEDIATION_PHONE_CONFIRMATION.';
 
-const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, partyPhone: string): void => {
+const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request, partyPhone: string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]): void => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, {lng: lang, partyPhone: partyPhone});
@@ -28,15 +28,31 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
     no: 'COMMON.VARIATION_7.NO',
   };
 
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation, isCarm: true});
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation, isCarm: true, formatValues});
 };
 
 const getPartyPhone = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
-  const claim = await getCaseDataFromStore(redisKey);
-  if (isClaimantResponse) {
-    return claim.applicant1.partyPhone.phone;
+  const claim = await getDraftClaimFromStore(redisKey);
+  const caseData = claim?.case_data;
+  const party = isClaimantResponse ? caseData?.applicant1 : caseData?.respondent1;
+  const partyPhone = party?.partyPhone;
+  const directPartyPhone = typeof partyPhone === 'string' ? partyPhone : partyPhone?.phone;
+  if (directPartyPhone) {
+    return directPartyPhone;
   }
-  return claim.respondent1.partyPhone.phone;
+  if (!isClaimantResponse) {
+    return '';
+  }
+
+  const companyTelephoneNumber = caseData?.claimantResponse?.mediation?.companyTelephoneNumber;
+  const companyPhone = companyTelephoneNumber?.option === YesNo.YES
+    ? companyTelephoneNumber?.mediationPhoneNumberConfirmation
+    : companyTelephoneNumber?.mediationPhoneNumber;
+  if (companyPhone) {
+    return companyPhone;
+  }
+
+  return caseData?.claimantResponse?.mediation?.canWeUse?.mediationPhoneNumber || '';
 };
 
 emailMediationConfirmationController.get(MEDIATION_PHONE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
@@ -59,11 +75,19 @@ emailMediationConfirmationController.post(MEDIATION_PHONE_CONFIRMATION_URL, (asy
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimantResponse = claim.isClaimantIntentionPending();
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_GALLAI_NA_ALLAI'));
+    const messageKey = isClaimantResponse
+      ? 'ERRORS.MEDIATION_PHONE_CONFIRMATION_REQUIRED_CLAIMANT'
+      : 'ERRORS.MEDIATION_PHONE_CONFIRMATION_REQUIRED_RESPONDENT';
+    const form = new GenericForm(new GenericYesNo(req.body.option, messageKey));
     await form.validate();
     if (form.hasErrors()) {
       const partyPhone = await getPartyPhone(redisKey, isClaimantResponse);
-      renderView(form, res, req, partyPhone);
+      const formatValues = [{
+        keyError: messageKey,
+        keyToReplace: isClaimantResponse ? '[number]' : '[phone number]',
+        valueToReplace: partyPhone,
+      }];
+      renderView(form, res, req, partyPhone, formatValues);
     } else {
       await saveMediationCarm(redisKey, form.model, 'isMediationPhoneCorrect');
       (req.body.option === YesNo.NO) ? res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL))
