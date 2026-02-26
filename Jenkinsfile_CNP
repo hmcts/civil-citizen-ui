@@ -83,6 +83,14 @@ def getCivilServiceImage() {
   return "latest"
 }
 
+def getCivilCcdDefinitionBranch() {
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
+    return label.minus("civilDefinitionBranch:").trim()
+  }
+  return "master"
+}
+
 def secrets = [
   'rpx-${env}': [
     secret('mc-idam-client-secret', 'IDAM_CLIENT_SECRET'),
@@ -180,6 +188,9 @@ withPipeline(type, product, component) {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
+    def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
+    ccdBranch = civilCcdDefinitionBranch
+    generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
   }
   onMaster {
