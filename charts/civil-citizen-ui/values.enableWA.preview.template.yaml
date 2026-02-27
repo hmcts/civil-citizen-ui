@@ -100,6 +100,18 @@ wa:
   wa:
     postgresql:
       enabled: false
+  wa-message-cron-service:
+    job:
+      schedule: "*/1 * * * *"
+  wa-initiation-batch:
+    job:
+      schedule: "*/1 * * * *"
+  wa-reconfiguration-batch:
+    job:
+      schedule: "*/1 * * * *"
+  wa-termination-batch:
+    job:
+      schedule: "*/1 * * * *"
   wa-case-event-handler:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
