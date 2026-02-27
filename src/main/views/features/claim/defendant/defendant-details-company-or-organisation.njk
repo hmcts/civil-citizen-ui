@@ -9,7 +9,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
-{% set correspondenceAddressClass = 'govuk-visually-hidden' %}
+{% set correspondenceAddressClass = 'govuk-!-display-none' %}
 {% if defendantType === partyType.COMPANY %}
   {% set pageTitle = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.COMPANY') %}
   {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_NAME') %}

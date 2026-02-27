@@ -10,7 +10,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/citizen-telephone.njk" import citizenTelephone %}
 {% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
-{% set correspondenceAddressClass = 'govuk-visually-hidden' %}
+{% set correspondenceAddressClass = 'govuk-!-display-none' %}
 {% set addressTitle = t('PAGES.COMPANY_DETAILS.ORGANISATION_ADDRESS') if respondent.type === partyType.ORGANISATION else t('PAGES.COMPANY_DETAILS.COMPANY_ADDRESS') %}
 
 
