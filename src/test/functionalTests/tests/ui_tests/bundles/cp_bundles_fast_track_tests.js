@@ -31,8 +31,8 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario.skip('Case progression journey - Fast Track - Verify Bundles tab', async ({I}) => {
-  if (['demo', 'aat'].includes(config.runningEnv)) {
+Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I}) => {
+  // if (['demo', 'aat'].includes(config.runningEnv)) {
     formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
     uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
     notification = bundleReady();
@@ -42,4 +42,4 @@ Scenario.skip('Case progression journey - Fast Track - Verify Bundles tab', asyn
     I.click(taskListItem.title);
     viewBundlePage.verifyPageContent(formattedCaseId, '£15,000.00', uploadDate, partyType);
   }
-});
+);
