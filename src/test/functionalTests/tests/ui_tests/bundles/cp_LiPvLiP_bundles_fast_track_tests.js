@@ -33,7 +33,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario.skip('Case progression journey - Fast Track - Verify Bundles tab', async ({I, api}) => {
+Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I, api}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   //verify as claimant
