@@ -33,7 +33,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario.skip('Case progression journey - Small Claims - Verify Bundles tab', async ({I, api}) => {
+Scenario('Case progression journey - Small Claims - Verify Bundles tab', async ({I, api}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   //verify as claimant

@@ -32,7 +32,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario.skip('Case progression journey - Small Claims - Verify Bundles Page', async ({I}) => {
+Scenario('Case progression journey - Small Claims - Verify Bundles Page', async ({I}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   notification = bundleReady();
