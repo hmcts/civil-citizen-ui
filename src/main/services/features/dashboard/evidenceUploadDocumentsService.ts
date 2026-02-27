@@ -1,14 +1,14 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {t} from 'i18next';
-import {UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {UploadDocumentTypes, UploadOtherDocumentType} from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
@@ -23,25 +23,21 @@ export function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSumma
 
 function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
 
-  const documentSection = [] as ClaimSummarySection[];
-  documentSection.push(addParagraph(lang));
-
-  documentSection.push(getDisclosureClaimant(claim, lang));
-  documentSection.push(getDisclosureDefendant(claim, lang));
-
-  documentSection.push(getWitnessSummaryClaimant(claim, lang));
-  documentSection.push(getWitnessSummaryDefendant(claim, lang));
-
-  documentSection.push(getExpertListClaimant(claim, lang));
-  documentSection.push(getExpertListDefendant(claim, lang));
-
-  documentSection.push(getTrialListClaimant(claim, lang));
-  documentSection.push(getTrialListDefendant(claim, lang));
-
-  documentSection.push(addSeparation());
-  documentSection.push(addButton(claim, lang));
-
-  return {contentSections: documentSection, hasDivider: false};
+  const sections: ClaimSummarySection[] = [
+    addParagraph(lang),
+    getDisclosureClaimant(claim, lang),
+    getDisclosureDefendant(claim, lang),
+    getWitnessSummaryClaimant(claim, lang),
+    getWitnessSummaryDefendant(claim, lang),
+    getExpertListClaimant(claim, lang),
+    getExpertListDefendant(claim, lang),
+    getTrialListClaimant(claim, lang),
+    getTrialListDefendant(claim, lang),
+    getAdditionalList(claim, lang),
+    addSeparation(),
+    addButton(claim, lang),
+  ];
+  return {contentSections: sections, hasDivider: false};
 }
 
 function getDisclosureClaimant(claim: Claim, lang: string): ClaimSummarySection {
@@ -136,6 +132,17 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
+function getAdditionalList(claim: Claim, lang: string): ClaimSummarySection {
+
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.CLAIM_DOCUMENTS';
+  const additionalList = claim.caseProgression?.defendantUploadDocuments?.otherManaged;
+
+  return {
+    type: ClaimSummaryType.HTML,
+    data: {html: getAdditionalDocumentHTML(additionalList, additionalDocumentHeading, claim, lang)},
+  };
+}
+
 function addSeparation(): ClaimSummarySection {
   return {
     type: ClaimSummaryType.HTML,
@@ -193,8 +200,32 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
   return documentsHTML;
 }
 
+function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Claim, lang: string) {
+
+  let documentsHTML = '';
+  if (rows?.length > 0) {
+    orderDocumentNewestToOldest(rows);
+    const header = t(title, {lng: lang});
+    documentsHTML = documentsHTML.concat('<h2 class="govuk-body"><span class="govuk-body govuk-!-font-weight-bold">' + header + '</span></h2>');
+    documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
+    for (const upload of rows) {
+
+      const documentTypeName = t('PAGES.CLAIM_SUMMARY.DOCUMENTS_FOR_CLAIM', {lng: lang});
+      documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
+      documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
+      const document = upload.caseDocument as UploadOtherDocumentType;
+      const documentName = document.documentLink?.document_filename;
+      const documentBinary = document.documentLink?.document_binary_url;
+      documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
+      documentsHTML = documentsHTML.concat('</div>');
+    }
+    documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">');
+  }
+  return documentsHTML;
+}
+
 function getDocumentTypeName(isClaimant: boolean,
-  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial,
+  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload,
   lang: string) {
   let key: string;
   switch (documentType) {

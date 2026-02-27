@@ -2,21 +2,22 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {t} from 'i18next';
 import {
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {formatEvidenceDocumentAlignedViewURL, formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {alignText} from 'form/models/alignText';
+import {Document} from 'models/document/document';
 
 export class UploadedEvidenceFormatter {
 
-  static  getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial, lang: string) {
+  static  getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload, lang: string) {
     let documentName: string;
 
     switch(documentType)
@@ -66,6 +67,9 @@ export class UploadedEvidenceFormatter {
       case EvidenceUploadTrial.DOCUMENTARY:
         documentName = t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE', {lng: lang});
         break;
+      case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
+        documentName = t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE', {lng: lang});
+        break;
     }
     return documentName;
   }
@@ -74,7 +78,7 @@ export class UploadedEvidenceFormatter {
     const documentName = UploadedEvidenceFormatter.getDocumentFilename(document.caseDocument);
     const documentBinary = UploadedEvidenceFormatter.getDocumentBinaryUrl(document.caseDocument);
 
-    return formatDocumentViewURL(documentName, claimId, documentBinary);
+    return documentName && documentBinary ? formatDocumentViewURL(documentName, claimId, documentBinary) : '';
   }
 
   static getEvidenceDocumentLinkAlignedToRight(document: UploadDocumentTypes, claimId: string) : string {
@@ -83,34 +87,34 @@ export class UploadedEvidenceFormatter {
     return formatEvidenceDocumentAlignedViewURL(documentName, claimId, documentBinary, alignText.ALIGN_TO_THE_RIGHT);
   }
 
-  static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType) {
-    if(caseDocument instanceof UploadEvidenceDocumentType)
-    {
-      return caseDocument.documentUpload.document_filename;
-    }
-    else if(caseDocument instanceof  UploadEvidenceWitness)
-    {
-      return caseDocument.witnessOptionDocument.document_filename;
-    }
-    else if (caseDocument instanceof UploadEvidenceExpert)
-    {
-      return caseDocument.expertDocument.document_filename;
-    }
+  static getOtherDocumentLinkAlignedToRight(documentName: string, documentBinary: string, claimId: string) : string {
+    return formatEvidenceDocumentAlignedViewURL(documentName, claimId, documentBinary, alignText.ALIGN_TO_THE_RIGHT);
   }
 
-  static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType) {
-    if(caseDocument instanceof UploadEvidenceDocumentType)
-    {
-      return caseDocument.documentUpload.document_binary_url;
+  static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
+    const document = UploadedEvidenceFormatter.getDocument(caseDocument);
+    return document?.document_filename;
+  }
+
+  static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType): Document {
+    if (caseDocument instanceof UploadEvidenceWitness) {
+      return caseDocument.witnessOptionDocument;
     }
-    else if(caseDocument instanceof  UploadEvidenceWitness)
-    {
-      return caseDocument.witnessOptionDocument.document_binary_url;
+    if (caseDocument instanceof UploadEvidenceExpert) {
+      return caseDocument.expertDocument;
     }
-    else
-    {
-      return caseDocument.expertDocument.document_binary_url;
+    if (caseDocument instanceof UploadEvidenceDocumentType) {
+      return caseDocument.documentUpload;
     }
+    if (caseDocument instanceof UploadOtherDocumentType) {
+      return caseDocument.documentLink;
+    }
+    return undefined;
+  }
+
+  static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
+    const document = UploadedEvidenceFormatter.getDocument(caseDocument);
+    return document?.document_binary_url? document?.document_binary_url : '';
   }
 
 }

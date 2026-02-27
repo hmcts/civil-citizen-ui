@@ -4,6 +4,7 @@ import {
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
   UploadEvidenceWitness,
+  UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
@@ -11,6 +12,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
+  OtherManageUpload,
 } from 'models/document/documentType';
 import {v4 as uuidv4} from 'uuid';
 import {CCDClaim} from 'models/civilClaimResponse';
@@ -34,6 +36,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
     ccdClaim.documentAuthorities = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.AUTHORITIES);
     ccdClaim.documentCosts = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.COSTS);
     ccdClaim.documentEvidenceForTrial = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY);
+    ccdClaim.manageDocuments = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.otherManaged, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
     ccdClaim.caseDocumentUploadDate = new Date();
   } else {
     ccdClaim.documentDisclosureListRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.disclosure, EvidenceUploadDisclosure.DISCLOSURE_LIST);
@@ -51,6 +54,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
     ccdClaim.documentAuthoritiesRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.AUTHORITIES);
     ccdClaim.documentCostsRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.COSTS);
     ccdClaim.documentEvidenceForTrialRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY);
+    ccdClaim.manageDocuments = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.otherManaged, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
     ccdClaim.caseDocumentUploadDateRes = new Date();
   }
 
@@ -58,7 +62,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
 };
 
 const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
-  evidenceType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial) : UploadEvidenceElementCCD[] => {
+  evidenceType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) : UploadEvidenceElementCCD[] => {
 
   if(!evidenceList) return undefined;
 
@@ -73,7 +77,7 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
         continue;
       }
 
-      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
+      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType| UploadOtherDocumentType;
       id = null;
 
       switch (element.documentType) {
@@ -97,6 +101,9 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
         case EvidenceUploadTrial.COSTS:
         case EvidenceUploadTrial.DOCUMENTARY:
           evidenceItem = element.caseDocument as UploadEvidenceDocumentType;
+          break;
+        case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
+          evidenceItem = element.caseDocument as UploadOtherDocumentType;
           break;
       }
       id = element.uuid == null ? uuidv4() : element.uuid ;

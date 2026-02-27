@@ -2103,7 +2103,11 @@
       "DISCLOSURE_DOCUMENTS": "datgeliad",
       "DOCUMENTARY_EVIDENCE": "Tystiolaeth ddogfennol",
       "DOCUMENTS": "Dogfennau",
+      "DOCUMENTS_FOR_CLAIM": "Dogfennau ar gyfer yr Hawliad",
       "DOCUMENT_HEADERS": {
+        "COMMON": {
+          "CLAIM_DOCUMENTS": "Dogfennau’r hawliad"
+        },
         "CLAIMANT": {
           "ANSWERS_TO_QUESTIONS": "Hawlydd atebion i’r cwestiynau a ofynnwyd gan y parti arall",
           "CASE_SUMMARY": "Crynodeb o achos yr hawlydd",
