@@ -18,4 +18,9 @@ module "citizen-ui-draft-store" {
   sku_name                      = var.sku_name
   family                        = var.family
   capacity                      = var.capacity
+  redis_configuration {
+    maxmemory_reserved              = var.maxmemory_reserved
+    maxfragmentationmemory_reserved = var.maxfragmentationmemory_reserved
+    maxmemory_delta                 = var.maxmemory_delta
+  }
 }
