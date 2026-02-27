@@ -33,43 +33,15 @@ const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> =
 
 const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId, true);
-    if (claim.claimantResponse) {
-      if (parentPropertyName && claim.claimantResponse[parentPropertyName]) {
-        claim.claimantResponse[parentPropertyName][claimantResponsePropertyName] = value;
-      } else if (parentPropertyName && !claim.claimantResponse[parentPropertyName]) {
-        claim.claimantResponse[parentPropertyName] = {[claimantResponsePropertyName]: value};
-      } else {
-        claim.claimantResponse[claimantResponsePropertyName] = value;
-      }
-    } else {
-      const claimantResponse: any = new ClaimantResponse();
-      if (parentPropertyName) {
-        claimantResponse[parentPropertyName] = {[claimantResponsePropertyName]: value};
-      } else {
-        claimantResponse[claimantResponsePropertyName] = value;
-      }
+    const claim = await getCaseDataFromStore(claimId, true);
 
-      claim.claimantResponse = claimantResponse;
-    }
+    ensureClaimantResponseExists(claim);
+    setClaimantResponseValue(claim, parentPropertyName, claimantResponsePropertyName, value);
+
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-    if (claimantResponse.suggestedPaymentIntention) {
-      if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByDate) {
-        delete claim.claimantResponse.suggestedPaymentIntention?.repaymentPlan;
-      }
-      if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByInstalments) {
-        delete claim.claimantResponse?.suggestedPaymentIntention?.paymentDate;
-      }
-    }
-    if (claim.hasClaimantRejectedDefendantPaid()) {
-      logger.info('Removing hasPartPaymentBeenAccepted and rejectionReason fields from redis because of changing hasDefendantPaidYou from Yes to No');
-      delete claim.claimantResponse?.hasPartPaymentBeenAccepted;
-      delete claim.claimantResponse?.rejectionReason;
-    }
-    if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() || claim.hasClaimantAcceptedDefendantResponse()) {
-      logger.info('Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes');
-      delete claim.claimantResponse?.rejectionReason;
-    }
+    applySuggestedPaymentIntentionCleanup(claim, claimantResponse);
+    applyRejectionCleanup(claim);
+
     const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
@@ -77,6 +49,65 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
     throw error;
   }
 };
+
+function ensureClaimantResponseExists(claim: Claim): void {
+  if (!claim.claimantResponse) {
+    claim.claimantResponse = new ClaimantResponse();
+  }
+}
+
+function setClaimantResponseValue(
+  claim: Claim,
+  parentPropertyName: string | undefined,
+  propertyName: string,
+  value: unknown,
+): void {
+  const cr: any = claim.claimantResponse as any;
+  logger.info(`Setting claimant response property ${parentPropertyName} ${propertyName} to ${value}`);
+  if (!parentPropertyName) {
+    cr[propertyName] = value;
+    return;
+  }
+
+  if (!cr[parentPropertyName]) {
+    cr[parentPropertyName] = {};
+  }
+
+  cr[parentPropertyName][propertyName] = value;
+}
+
+function applySuggestedPaymentIntentionCleanup(claim: Claim, claimantResponse: ClaimantResponse): void {
+  if (!claimantResponse.suggestedPaymentIntention) {
+    return;
+  }
+
+  // If paying immediately or by date, repaymentPlan must be removed
+  if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByDate) {
+    delete (claim.claimantResponse as any).suggestedPaymentIntention?.repaymentPlan;
+  }
+
+  // If paying immediately or by instalments, paymentDate must be removed
+  if (claimantResponse.isClaimantSuggestedPayImmediately || claimantResponse.isClaimantSuggestedPayByInstalments) {
+    delete (claim.claimantResponse as any).suggestedPaymentIntention?.paymentDate;
+  }
+}
+
+function applyRejectionCleanup(claim: Claim): void {
+  if (claim.hasClaimantRejectedDefendantPaid()) {
+    logger.info(
+      'Removing hasPartPaymentBeenAccepted and rejectionReason fields from redis because of changing hasDefendantPaidYou from Yes to No',
+    );
+    delete (claim.claimantResponse as any)?.hasPartPaymentBeenAccepted;
+    delete (claim.claimantResponse as any)?.rejectionReason;
+  }
+
+  if (claim.hasClaimantSettleTheClaimForDefendantPartlyPaidAmount() || claim.hasClaimantAcceptedDefendantResponse()) {
+    logger.info(
+      'Removing rejectionReason field from redis because of changing hasPartPaymentBeenAccepted from No to Yes',
+    );
+    delete (claim.claimantResponse as any)?.rejectionReason;
+  }
+}
 
 function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
   if (!claim.hasClaimantNotSettled()) {
