@@ -4,9 +4,15 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
+    // ESM-only jsdom deps: transform so Jest can load them
+    '.*/node_modules/(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|cssstyle|@csstools|parse5|jsdom)/.+\\.(js|mjs)$': 'babel-jest',
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|cssstyle|@csstools|parse5|jsdom)/)',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
+    '^otplib$': '<rootDir>/__mocks__/otplib.js',
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
     '^models/(.*)$': '<rootDir>/src/main/common/models/$1',
     '^form/(.*)$': '<rootDir>/src/main/common/form/$1',
