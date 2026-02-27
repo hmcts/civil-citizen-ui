@@ -13,6 +13,8 @@ export interface ClaimSummarySection {
 export interface ClaimSummaryItem {
   id?: string;
   name?: string;
+  category?: string;
+  index?: number;
   hint?: string;
   text?: string;
   href?: string;

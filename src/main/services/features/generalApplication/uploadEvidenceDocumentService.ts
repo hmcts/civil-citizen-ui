@@ -13,6 +13,8 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
 import { t } from 'i18next';
 import {isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
+import { Response } from 'express';
+import { getMulterErrorConstraint, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -81,11 +83,32 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
     }
   } catch(error) {
     logger.error(error);
     throw error;
   }
+};
+
+export const redirectIfMulterError = (req: AppRequest, res: Response, currentUrl: string, fileUploadSource?: string): boolean => {
+  if (!(req as any).multerError || req.body?.action !== 'uploadButton') {
+    return false;
+  }
+  const multerError = (req as any).multerError;
+  const errorConstraint = getMulterErrorConstraint(multerError);
+  const errorStructure: FormValidationError[] = [
+    new FormValidationError({
+      target: { fileUpload: '' },
+      property: 'fileUpload',
+      constraints: { multerError: errorConstraint },
+    }),
+  ];
+  const translatedErrors = translateErrors(errorStructure, t);
+  req.session.fileUpload = JSON.stringify(translatedErrors);
+  req.session.fileUploadSource = fileUploadSource ?? FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
+  res.redirect(`${currentUrl}`);
+  return true;
 };
 
 export const translateErrors = (keys: FormValidationError[], t: (key: string) => string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]) => {

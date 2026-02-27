@@ -1,6 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
+import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { app } from '../../../../../../../main/app';
 import {
   getClaimDetailsById,
@@ -185,7 +186,8 @@ describe('uploadAdditionalDocumentsController', () => {
 
       const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({ indexId: 1 });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
       expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0);
     });
 
@@ -218,7 +220,7 @@ describe('uploadAdditionalDocumentsController', () => {
       (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
       (getSummaryList as jest.Mock).mockReturnValue({});
       (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
-      app.request.session = { fileUpload: JSON.stringify(errors) } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS } as unknown as Session;
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
         .expect((res) => {
@@ -251,6 +253,17 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(uploadSelectedFile).toHaveBeenCalledWith(expect.anything(), claim);
     });
 
+    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
+        .field('action', 'uploadButton')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain('upload-additional-documents');
+    });
+
     it('should redirect to CYA page if documents are uploaded', async () => {
       const additionalDocument = new UploadAdditionalDocument();
       additionalDocument.typeOfDocument = 'testt';
@@ -271,6 +284,17 @@ describe('uploadAdditionalDocumentsController', () => {
 
       expect(res.status).toBe(302);
       expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
+    });
+
+    it('should set fileUpload error in session when no documents are uploaded', async () => {
+      claim.generalApplication.uploadAdditionalDocuments = [];
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+
+      expect(res.status).toBe(302);
+      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
     });
 
     it('should handle errors', async () => {
