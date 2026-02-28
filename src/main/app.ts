@@ -112,6 +112,7 @@ import {contactUsGuard} from 'routes/guards/contactUsGuard';
 import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
 import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
 import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
+import {restrictFormContentType} from 'modules/security/restrictFormContentType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -351,8 +352,8 @@ const checkServiceAvailability = async (_req: express.Request, res: express.Resp
 if (env !== 'test') {
   new CSRFToken().enableFor(app);
   app.use(checkServiceAvailability);
+  app.use(restrictFormContentType);
 }
-
 app.use(routes);
 new ErrorHandler().enableFor(app);
 
