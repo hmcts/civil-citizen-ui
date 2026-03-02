@@ -35,7 +35,7 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
         jsonAddress.LPI.ADDRESS,
         new Point('Point', [jsonAddress.LPI.X_COORDINATE, jsonAddress.LPI.Y_COORDINATE]),
         jsonAddress.LPI.USRN,
-        jsonAddress.country
+        jsonAddress.country,
       );
     } else {
       return new Address(
@@ -56,15 +56,15 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
         jsonAddress.DPA.ADDRESS,
         new Point('Point', [jsonAddress.DPA.X_COORDINATE, jsonAddress.DPA.Y_COORDINATE]),
         jsonAddress.DPA.UDPRN,
-        jsonAddress.country
+        jsonAddress.country,
       );
     }
   });
 
   // Remove duplicates based on formattedAddress
-addresses = addresses.filter((addr: Address, index: number, self: Address[]) =>
-  index === self.findIndex((t: Address) => t.formattedAddress === addr.formattedAddress)
-);
+  addresses = addresses.filter((addr: Address, index: number, self: Address[]) =>
+    index === self.findIndex((t: Address) => t.formattedAddress === addr.formattedAddress),
+  );
 
   return new AddressInfoResponse(addresses, true);
 }
