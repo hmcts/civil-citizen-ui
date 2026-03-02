@@ -5,14 +5,14 @@ import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSu
 
 export default Router().get(POSTCODE_LOOKUP_URL, async (req, res, next: NextFunction) => {
   try {
-    const postcode = String(req.query?.postcode ?? '').trim();
-
-    if (!postcode) {
+    const raw = req.query?.postcode;
+    if (typeof raw !== 'string' || raw.trim().length === 0) {
       return res.status(400).json({
         error: { status: 400, message: 'Postcode not provided' },
       });
     }
 
+    const postcode = raw.trim();
     const response: AddressInfoResponse = await lookupByPostcodeAndDataSet(postcode);
 
     res.status(200).json(response);
