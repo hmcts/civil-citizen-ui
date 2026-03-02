@@ -14,7 +14,6 @@ import {
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import multer from 'multer';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {
@@ -23,15 +22,17 @@ import {
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {
+  createMulterErrorMiddlewareForSingleField,
+  createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
+} from 'common/utils/fileUploadUtils';
+import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
-const fileSize = Infinity;
-const upload = multer({
-  limits: {
-    fileSize: fileSize,
-  },
-});
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadEvidenceDocumentsForApplicationController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -63,14 +64,16 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
         title: '',
         summaryRows: [],
       });
-    if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData);
-      req.session.fileUpload = undefined;
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
-      const index = req.query.id;
-      await removeSelectedDocument(redisKey, Number(index)-1);
+      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
+      const currentPage = isConfirmYouPaidCCJAppType(claim) ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
+      const baseUrl = constructResponseUrlWithIdParams(claimId, currentPage);
+      const redirectUrl = req.query?.lang ? `${baseUrl}?lang=${req.query.lang}` : baseUrl;
+      return res.redirect(redirectUrl);
     }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary, index);
@@ -79,7 +82,7 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
   }
 }) as RequestHandler);
 
-uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const index  = queryParamNumber(req, 'index');
@@ -96,6 +99,10 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
         summaryRows: [],
       });
 
+    if (redirectIfMulterError(req, res, currentUrl)) {
+      return;
+    }
+
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, formattedSummary, claimId);
       return res.redirect(`${currentUrl}`);
@@ -104,18 +111,8 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
     const form = new GenericForm(uploadDoc);
     form.validateSync();
     if (form.hasFieldError('fileUpload') && claim.generalApplication.uploadEvidenceForApplication.length === 0) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl),index));

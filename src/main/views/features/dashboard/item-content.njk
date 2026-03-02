@@ -105,8 +105,8 @@
   {% if content.type === ClaimSummaryType.REMOVE_BUTTON %}
   <div>
     {{ govukButton({
-                     href: content.data.href,
-                     text:  t(content.data.text),
+      href: content.data.href,
+      text:  t(content.data.text),
       name: 'action',
       value: content.data.category+'['+content.data.index+'][removeButton]',
       attributes: {
@@ -221,7 +221,7 @@
     {% endif %}
      <div>
         {{ govukDateInput({
-           id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
+           id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']-group',
            name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
            fieldset: {
              legend: {
@@ -241,14 +241,14 @@
            } if (isDateError == 'true'),
            items: [
              {
-               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
+               id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
                name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
                label: t('COMMON.DAY'),
                value: content.data.dayValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidDayError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]',
-                 'data-id': content.data.category+'[%index%]['+content.data.parentField+']['+content.data.field+'Day]'
+                 'data-id': content.data.category+'[%index%]['+content.data.field+']'
                }
              },
              {

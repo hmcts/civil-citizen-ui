@@ -120,5 +120,20 @@ describe('Send follow query controller', () => {
           expect(spyRemoveSelectedDocument).toHaveBeenCalled();
         });
     });
+
+    it('should redirect when multer error on file upload (file too large)', async () => {
+      queryManagementMock.mockResolvedValue(new QueryManagement());
+      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
+      largeBuffer.fill('x');
+
+      const res = await request(app)
+        .post(QM_FOLLOW_UP_MESSAGE)
+        .field('action', 'uploadButton')
+        .field('messageDetails', 'test')
+        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+
+      expect(res.status).toBe(302);
+    });
+
   });
 });

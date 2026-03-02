@@ -124,25 +124,35 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
 
   it('should add remove button', ()=> {
     //Given
-    const removeButtonxpected = ({
+    const removeButtonExpected = ({
       type: ClaimSummaryType.REMOVE_BUTTON,
       data: {
         category: 'category',
-        classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
         index: 0,
+        text: 'PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION',
+        href: '#',
+        classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
       },
     });
 
     //When
     const removeButton = new UploadDocumentsSectionBuilder()
-      .addRemoveSectionButton(true, 'category', 0 )
+      .addRemoveSectionButton('category', 0)
       .build();
-    const noRemoveButton = new UploadDocumentsSectionBuilder()
-      .addRemoveSectionButton(false, 'category', 0 )
-      .build();
-    //Then
-    expect(removeButton).toEqual([removeButtonxpected]);
-    expect(noRemoveButton).toEqual([]);
 
+    //Then
+    expect(removeButton).toEqual([removeButtonExpected]);
+  });
+
+  it('should add remove button with custom translation key', ()=> {
+    const customText = 'PAGES.SOME.CUSTOM_REMOVE';
+    const built = new UploadDocumentsSectionBuilder()
+      .addRemoveSectionButton('category', 1, customText)
+      .build();
+
+    expect(built).toHaveLength(1);
+    expect(built[0].type).toEqual(ClaimSummaryType.REMOVE_BUTTON);
+    expect(built[0].data.text).toEqual(customText);
+    expect(built[0].data.index).toEqual(1);
   });
 });
