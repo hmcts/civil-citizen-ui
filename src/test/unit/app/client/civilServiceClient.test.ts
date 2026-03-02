@@ -824,7 +824,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
+      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604JE498');
 
       //Then
       expect(redirectUrl).toEqual('https://redirectUrl');
@@ -841,7 +841,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
+      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604JE498');
 
       //Then
       expect(redirectUrl).toEqual(null);
@@ -858,7 +858,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const claim = await civilServiceClient.verifyPin(appReq, '604MC498','100010000');
+      const claim = await civilServiceClient.verifyPin(appReq, '604JE498','100010000');
 
       //Then
       expect(claim).toEqual(new Claim());
