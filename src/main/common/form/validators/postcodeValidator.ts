@@ -5,7 +5,7 @@ import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSu
 
 @ValidatorConstraint({ name: 'PostcodeValidator', async: true })
 export class PostcodeValidator implements ValidatorConstraintInterface {
-  lengthError: boolean = false;
+  lengthError = false;
 
   private async getJudgmentOnlineFlag(): Promise<boolean> {
     return await isJudgmentOnlineLive();

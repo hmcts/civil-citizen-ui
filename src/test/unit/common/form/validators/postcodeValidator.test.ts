@@ -34,8 +34,8 @@ describe('PostcodeValidator', () => {
     jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockResolvedValue(
       new AddressInfoResponse(
         [{ country: 'England', addresses: [] } as any],
-        true
-      )
+        true,
+      ),
     );
 
     const result = await validator.validate('SW1A 1AA'); // 7 chars
@@ -69,8 +69,8 @@ describe('PostcodeValidator', () => {
             country: 'England',
           } as any,
         ],
-        true
-      )
+        true,
+      ),
     );
 
     const result = await validator.validate('SW1A 1AA');
@@ -93,8 +93,8 @@ describe('PostcodeValidator', () => {
             country: 'Scotland',
           } as any,
         ],
-        true
-      )
+        true,
+      ),
     );
 
     const result = await validator.validate('EH1 1AA');

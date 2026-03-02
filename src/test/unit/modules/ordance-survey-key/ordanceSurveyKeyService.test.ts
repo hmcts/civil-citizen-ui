@@ -29,7 +29,7 @@ describe('lookupByPostcodeAndDataSet', () => {
     const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
 
     expect(axios.get).toHaveBeenCalledWith(
-      `${mockApiUrl}/search/places/v1/postcode?dataset=DPA,LPI&postcode=SW1A 1AA"&key=` + mockApiKey
+      `${mockApiUrl}/search/places/v1/postcode?dataset=DPA,LPI&postcode=SW1A 1AA"&key=` + mockApiKey,
     );
 
     expect(result).toEqual(MOCK_API_ADDRESS);
