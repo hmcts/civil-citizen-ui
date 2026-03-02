@@ -3,13 +3,13 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload,
 } from 'models/document/documentType';
 import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
@@ -145,6 +145,13 @@ export const mockReferredDocument = {
   createdDatetime: new Date(0),
 };
 
+export const mockOtherManageDocument = {
+  documentType: 'type',
+  documentName: 'name',
+  documentLink: getMockDocument(),
+  createdDatetime: new Date(0),
+} as UploadOtherDocumentType;
+
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {
     documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
@@ -181,6 +188,7 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     caseDocumentUploadDateRes: new Date('1970-01-01T00:00:00.000Z'),
     trialReadyApplicant: YesNoUpperCamelCase.NO,
     trialReadyRespondent1: YesNoUpperCamelCase.YES,
+    manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
   };
 }
 
@@ -232,7 +240,7 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
   return ccdClaim;
 }
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial)
+function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload)
   : UploadEvidenceElementCCD[] {
 
   const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
@@ -262,6 +270,9 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
     case EvidenceUploadTrial.COSTS:
     case EvidenceUploadTrial.DOCUMENTARY:
       uploadEvidenceElementCCD.value = mockTypeDocument;
+      break;
+    case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
+      uploadEvidenceElementCCD.value = mockOtherManageDocument;
       break;
   }
 
