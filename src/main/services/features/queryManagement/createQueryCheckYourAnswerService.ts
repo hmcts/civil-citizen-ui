@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CASE_DOCUMENT_VIEW_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
@@ -35,7 +35,7 @@ export const getSummarySections = (claimId: string, claim: Claim, lng: string, i
 };
 
 const getMessageSubject = (subject: string, claimId: string, lng: string) => {
-  return [summaryRow(
+  return [summaryRowWithTextValue(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_SUBJECT', {lng}),
     subject,
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),
@@ -44,14 +44,14 @@ const getMessageSubject = (subject: string, claimId: string, lng: string) => {
 
 const getMessageDescription = (messageDetails: string, claimId: string, lng: string, isFollowUp: boolean, queryId: string) => {
   if (isFollowUp) {
-    return [summaryRow(
+    return [summaryRowWithTextValue(
       t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
       messageDetails,
       constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId),
       t('COMMON.BUTTONS.CHANGE', {lng}))];
   }
 
-  return [summaryRow(
+  return [summaryRowWithTextValue(
     t('PAGES.QM.SEND_MESSAGE_CYA.MESSAGE_DETAILS', {lng}),
     messageDetails,
     constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY),

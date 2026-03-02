@@ -71,6 +71,26 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
   return row;
 }
 
+/**
+ * Same as summaryRow but sets value as text (not html) so the govuk template
+ * does not render it with | safe. Use for user-supplied content to prevent HTML injection.
+ */
+export function summaryRowWithTextValue(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string): SummaryRow {
+  const row: SummaryRow = {
+    key: { text: key },
+    value: { text: value },
+  };
+  if (href) {
+    const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;
+    row.actions = {
+      items: [
+        { href, text: hrefText, visuallyHiddenText: accessibilityText },
+      ],
+    };
+  }
+  return row;
+}
+
 export interface TitledSummaryRowElement {
   title?: string,
   value?: string
