@@ -26,8 +26,9 @@ export class Address {
   readonly formattedAddress: string;
   readonly point: Point;
   readonly udprn: string | undefined;
+  readonly country: string;
 
-  constructor(uprn: string, organisationName: string | undefined, departmentName: string | undefined, poBoxNumber: string | undefined, buildingName: string | undefined, subBuildingName: string | undefined, buildingNumber: number | undefined, thoroughfareName: string | undefined, dependentThoroughfareName: string | undefined, dependentLocality: string | undefined, doubleDependentLocality: string | undefined, postTown: string, postcode: string, postcodeType: string, formattedAddress: string, point: Point, udprn: string | undefined) {
+  constructor(uprn: string, organisationName: string | undefined, departmentName: string | undefined, poBoxNumber: string | undefined, buildingName: string | undefined, subBuildingName: string | undefined, buildingNumber: number | undefined, thoroughfareName: string | undefined, dependentThoroughfareName: string | undefined, dependentLocality: string | undefined, doubleDependentLocality: string | undefined, postTown: string, postcode: string, postcodeType: string, formattedAddress: string, point: Point, udprn: string | undefined, country: string) {
     this.uprn = uprn;
     this.organisationName = organisationName;
     this.departmentName = departmentName;
@@ -45,12 +46,14 @@ export class Address {
     this.formattedAddress = formattedAddress;
     this.point = point;
     this.udprn = udprn;
+    this.country = country;
   }
 }
 
 export class AddressInfoResponse {
   addresses: Address[];
   valid: boolean;
+  country?: string;
 
   constructor(addresses: Address[], valid: boolean) {
     this.addresses = addresses;
