@@ -47,15 +47,15 @@ describe('Respond to Claim - Pin Controller', () => {
 
     it('should redirect to claim summary when pin and reference match', async () => {
       nock(civilServiceUrl)
-        .post('/assignment/reference/000MC000')
+        .post('/assignment/reference/000JE000')
         .reply(200, mockFullClaim);
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
+      app.request.session = { firstContact: { claimReference: '000JE000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
-        expect(((app.request.session) as AppSession).firstContact.claimReference).toBe('000MC000');
+        expect(((app.request.session) as AppSession).firstContact.claimReference).toBe('000JE000');
       });
     });
 
@@ -65,11 +65,11 @@ describe('Respond to Claim - Pin Controller', () => {
         'applicant1Represented': 'No',
       };
       nock(civilServiceUrl)
-        .post('/assignment/reference/000MC000')
+        .post('/assignment/reference/000JE000')
         .reply(200, mockFullClaim);
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
+      app.request.session = { firstContact: { claimReference: '000JE000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.PIN.CLAIM_ASSIGNED_TO_LR'));
@@ -78,10 +78,10 @@ describe('Respond to Claim - Pin Controller', () => {
 
     it('should redirect to claim summary when pin and reference match for OCMC', async () => {
       nock(civilServiceUrl)
-        .post('/assignment/reference/000MC000/ocmc')
+        .post('/assignment/reference/000JE000/ocmc')
         .reply(200, 'redirectUrl');
 
-      app.request.cookies = { firstContact: { claimReference: '000MC000' } };
+      app.request.cookies = { firstContact: { claimReference: '000JE000' } };
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '00000001' }).expect((res) => {
         expect(res.header.location).toBe('redirectUrl');
         expect(res.status).toBe(302);
@@ -90,11 +90,11 @@ describe('Respond to Claim - Pin Controller', () => {
 
     it('should redirect unauthorized page', async () => {
       nock(civilServiceUrl)
-        .post('/assignment/reference/000MC000')
+        .post('/assignment/reference/000JE000')
         .reply(401, {});
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
+      app.request.session = { firstContact: { claimReference: '000JE000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1234' }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
@@ -103,11 +103,11 @@ describe('Respond to Claim - Pin Controller', () => {
 
     it('should show error messages when receive 400 status', async () => {
       nock(civilServiceUrl)
-        .post('/assignment/reference/111MC111')
+        .post('/assignment/reference/111JE111')
         .reply(400, {});
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '111MC111' } } as unknown as Session;
+      app.request.session = { firstContact: { claimReference: '111JE111' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1111' }).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.ENTER_VALID_SECURITY_CODE'));
