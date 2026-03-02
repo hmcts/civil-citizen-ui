@@ -3,6 +3,9 @@ import { isJudgmentOnlineLive } from '../../../app/auth/launchdarkly/launchDarkl
 import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
 import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('app');
+
 @ValidatorConstraint({ name: 'PostcodeValidator', async: true })
 export class PostcodeValidator implements ValidatorConstraintInterface {
   lengthError = false;
@@ -40,6 +43,7 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       const country = response.addresses[0].country;
       return country === 'England' || country === 'Wales';
     } catch (err) {
+      logger.info('Failed to fetch postcode info', trimmed, err);
       return false;
     }
   }
