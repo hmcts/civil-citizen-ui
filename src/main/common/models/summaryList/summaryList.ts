@@ -53,7 +53,7 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
       text: key,
     },
     value: {
-      html: value,
+      text: value,
     },
   };
   if (href) {

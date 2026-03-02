@@ -5472,6 +5472,7 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
+    "HTML_NOT_ALLOWED": "HTML tags and special characters are not allowed",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to get from the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",

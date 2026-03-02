@@ -10,13 +10,16 @@ import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseDocument} from 'models/document/caseDocument';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInPastValidator} from 'form/validators/optionalDateNotInPastValidator';
+import {HtmlValidator} from '../../form/validators/htmlValidator';
 
 export class CreateQuery {
   @MaxLength(200, {message: 'ERRORS.QUERY_MANAGEMENT.MORE_THAN_200'})
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
+  @Validate(HtmlValidator)
     messageSubject: string;
 
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_DETAILS'})
+  @Validate(HtmlValidator)
     messageDetails: string;
 
   @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})

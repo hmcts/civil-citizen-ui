@@ -1,5 +1,6 @@
-import {IsNotEmpty, ValidateIf} from 'class-validator';
+import {IsNotEmpty, ValidateIf, Validate} from 'class-validator';
 import {YesNo} from 'form/models/yesNo';
+import {HtmlValidator} from '../../../form/validators/htmlValidator';
 
 export class HasAnythingChangedForm {
   @IsNotEmpty({message: 'ERRORS.VALID_YES_NO_OPTION_TRIAL_ARR'})
@@ -7,6 +8,7 @@ export class HasAnythingChangedForm {
 
   @ValidateIf(o => o.option == YesNo.YES)
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_SUPPORT'})
+  @Validate(HtmlValidator)
     textArea?: string;
 
   constructor(option?: YesNo, textArea?: string) {
