@@ -10,7 +10,6 @@ import {Claim} from 'models/claim';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import multer from 'multer';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
   getSummaryList,
@@ -25,14 +24,17 @@ import {
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  createMulterErrorMiddlewareForSingleField,
+  createUploadOneFileError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
+} from 'common/utils/fileUploadUtils';
+import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
-const upload = multer({
-  limits: {
-    fileSize: Infinity,
-  },
-});
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'respondentUploadEvidenceDocumentsController');
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, appId: string, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -63,12 +65,15 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
         title: '',
         summaryRows: [],
       });
-    if (req?.session?.fileUpload) {
-      form = parseFileUploadToForm(req, uploadEvidenceDocuments);
+    const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD);
+    if (fileUploadErrors?.length) {
+      form = new GenericForm(uploadEvidenceDocuments, fileUploadErrors);
     }
     if (req.query?.id) {
-      const index = req.query.id;
-      await removeDocumentFromRedis(redisKeyForGA, Number(index) - 1);
+      await removeDocumentFromRedis(redisKeyForGA, Number(req.query.id) - 1);
+      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
+      return res.redirect(redirectUrl);
     }
     await getSummaryList(formattedSummary, redisKeyForGA, claimId, req.params.appId);
     await renderView(req, form, claim, claimId, res, req.params.appId, formattedSummary);
@@ -77,7 +82,7 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
   }
 }) as RequestHandler);
 
-respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKeyForGA = generateRedisKeyForGA(req);
@@ -90,6 +95,10 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
         summaryRows: [],
       });
 
+    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD)) {
+      return;
+    }
+
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, formattedSummary, claimId, req.params.appId);
       return res.redirect(`${currentUrl}`);
@@ -100,18 +109,8 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     form.validateSync();
     if (form.hasFieldError('fileUpload') && (gaResponse?.uploadEvidenceDocuments === undefined ||
       gaResponse?.uploadEvidenceDocuments?.length === 0)) {
-      const errors = [{
-        target: {
-          fileUpload: '',
-          typeOfDocument: '',
-        },
-        value: '',
-        property: '',
-        constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
-        },
-      }];
-      req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUpload = JSON.stringify(createUploadOneFileError());
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD;
       return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
@@ -121,9 +120,4 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
   }
 }) as RequestHandler);
 
-function parseFileUploadToForm (req : AppRequest, uploadEvidenceDocuments: UploadGAFiles) : GenericForm<UploadGAFiles>{
-  const parsedData = JSON.parse(req?.session?.fileUpload);
-  req.session.fileUpload = undefined;
-  return new GenericForm(uploadEvidenceDocuments, parsedData);
-}
 export default respondentUploadEvidenceDocumentsController;

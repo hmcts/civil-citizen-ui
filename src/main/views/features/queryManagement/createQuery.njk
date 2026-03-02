@@ -20,7 +20,8 @@
   {% set  idValue = "selectedFile" %}
   {% if form.hasErrors() %}
     {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-    {% if errors.fieldName != 'messageSubject' and errors.fieldName != 'messageDetails' and errors.fieldName != 'isHearingRelated' %}
+    {# Only show the first error on the file upload when it is actually a file-upload error (selectedFile). Do not assign date/day/month/year errors to the upload section. #}
+    {% if errors.fieldName != 'messageSubject' and errors.fieldName != 'messageDetails' and errors.fieldName != 'isHearingRelated' and errors.fieldName != 'date' and errors.fieldName != 'day' and errors.fieldName != 'month' and errors.fieldName != 'year' %}
       {% set idValue = errors.fieldName %}
     {% endif %}
   {% endif %}
