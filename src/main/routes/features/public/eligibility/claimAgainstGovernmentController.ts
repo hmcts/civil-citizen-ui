@@ -25,7 +25,7 @@ claimAgainstGovernmentController.get(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (req
 });
 
 claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (async (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_VARIATION_2'));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GOVERNMENT_DEPARTMENT_REQUIRED'));
   await genericYesNoForm.validate();
 
   if (genericYesNoForm.hasErrors()) {
