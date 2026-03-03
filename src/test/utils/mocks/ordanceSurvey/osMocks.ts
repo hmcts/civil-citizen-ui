@@ -14,6 +14,7 @@ export const MOCK_API_RESPONSE = [
       POSTAL_ADDRESS_CODE: 'D',
       X_COORDINATE: 528370,
       Y_COORDINATE: 179894,
+      COUNTRY_CODE: 'E',
     },
   },
   {
@@ -28,6 +29,7 @@ export const MOCK_API_RESPONSE = [
       X_COORDINATE: 528412,
       Y_COORDINATE: 179898,
       UDPRN: '8400585',
+      COUNTRY_CODE: 'W',
     },
   },
 ];
@@ -73,7 +75,7 @@ export const MOCK_API_ADDRESS: AddressInfoResponse = new AddressInfoResponse(
         'QUEEN ELIZABETH MEMORIAL GATES, PARK LANE, LONDON, CITY OF WESTMINSTER, W1J 7NT',
       point: new Point('Point', [528412, 179898]),
       udprn: '8400585',
-      country: 'England',
+      country: 'Wales',
     }),
   ],
   true,
