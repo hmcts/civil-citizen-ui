@@ -3,7 +3,7 @@ import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurve
 import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('app');
+const logger = Logger.getLogger('PostcodeValidator');
 
 @ValidatorConstraint({ name: 'PostcodeValidator', async: true })
 export class PostcodeValidator implements ValidatorConstraintInterface {
@@ -17,6 +17,7 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
     // Trim value for consistency
     const trimmed = value.trim();
 
+    this.lengthError = false;
     // Check length after JudgmentOnlineLive release
     if (trimmed.length > 8) {
       this.lengthError = true;
@@ -33,11 +34,14 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
 
       // Check country
       const country = response.addresses[0].country;
-      return country === 'England' || country === 'Wales';
+      if (country) {
+        return country === 'England' || country === 'Wales';
+      }
     } catch (err) {
       logger.info('Failed to fetch postcode info', trimmed, err);
       return false;
     }
+    return false;
   }
 
   defaultMessage(): string {

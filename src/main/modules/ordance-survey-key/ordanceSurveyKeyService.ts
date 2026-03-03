@@ -20,6 +20,17 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
   // Map results to Address objects using options object
   let addresses = results.map((jsonAddress: any) => {
     const source = jsonAddress.DPA ?? jsonAddress.LPI;
+    if (!source) return null;
+
+    let country: string;
+    switch (source.COUNTRY_CODE) {
+      case 'E':
+        country = 'England';
+        break;
+      case 'W':
+        country = 'Wales';
+        break;
+    }
 
     return new Address({
       uprn: source.UPRN,
@@ -39,7 +50,7 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
       formattedAddress: source.ADDRESS,
       point: new Point('Point', [source.X_COORDINATE, source.Y_COORDINATE]),
       udprn: source.UDPRN ?? source.USRN,
-      country: jsonAddress.country ?? 'England', // fallback
+      country,
     });
   });
 
