@@ -20,7 +20,7 @@ claimTypeController.get(ELIGIBILITY_CLAIM_TYPE_URL, (req: Request, res: Response
 });
 
 claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: Request, res: Response) => {
-  const claimType = new ClaimType(req.body.claimType);
+  const claimType = new ClaimType(req.body.claimType, 'ERRORS.CLAIM_TYPE_REQUIRED');
   const form = new GenericForm(claimType);
   await form.validate();
   if (form.hasErrors()) {
