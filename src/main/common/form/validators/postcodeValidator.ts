@@ -9,6 +9,9 @@ const logger = Logger.getLogger('PostcodeValidator');
 export class PostcodeValidator implements ValidatorConstraintInterface {
   lengthError = false;
 
+  private readonly UK_POSTCODE_REGEX =
+    /^(([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2}))$/;
+
   async validate(value: string): Promise<boolean> {
     if (!value || value.trim().length === 0) {
       return false;
@@ -21,6 +24,14 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
     // Check length after JudgmentOnlineLive release
     if (trimmed.length > 8) {
       this.lengthError = true;
+      return false;
+    }
+
+    // Normalize postcode for regex (remove spaces, uppercase)
+    const normalised = trimmed.replace(/\s/g, '').toUpperCase();
+
+    // Validate UK postcode format
+    if (!this.UK_POSTCODE_REGEX.test(normalised)) {
       return false;
     }
 
