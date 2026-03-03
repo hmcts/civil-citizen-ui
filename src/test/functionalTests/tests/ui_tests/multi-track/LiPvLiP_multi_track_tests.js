@@ -8,7 +8,7 @@ const partAdmit = 'partial-admission';
 
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@ui-nightly-prod @ui-multi-track');
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey').tag('@civil-citizen-nightly @ui-multi-track');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

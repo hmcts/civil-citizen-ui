@@ -14,7 +14,7 @@ const claimType = 'SmallClaimsThousand';
 const claimAmount = '£1,000';
 let caseData, claimNumber, claimRef, taskListItem, notification, deadline, todayDate, formattedCaseId;
 
-Feature('Case progression - Request for reconsideration').tag('@ui-nightly-prod @ui-rfr');
+Feature('Case progression - Request for reconsideration').tag('@civil-citizen-nightly @ui-rfr');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
