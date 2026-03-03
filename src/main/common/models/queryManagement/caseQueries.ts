@@ -22,6 +22,7 @@ export interface CaseMessage {
   hearingDate?: string;
   createdOn: string;
   createdBy: string;
+  queryRaisedByCaseRoles?: string[];
   parentId?: string;
   isClosed?: YesNoUpperCamelCase;
 }
