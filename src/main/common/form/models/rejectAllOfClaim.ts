@@ -6,8 +6,8 @@ import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 
 export class RejectAllOfClaim {
-  @IsDefined({message: 'ERRORS.OPTION_REQUIRED_RESPONSE'})
-  @IsIn(Object.values(RejectAllOfClaimType), {message: 'ERRORS.OPTION_REQUIRED_RESPONSE'})
+  @IsDefined({message: 'ERRORS.REJECT_ALL_REASON_REQUIRED'})
+  @IsIn(Object.values(RejectAllOfClaimType), {message: 'ERRORS.REJECT_ALL_REASON_REQUIRED'})
     option: string;
 
   howMuchHaveYouPaid?: HowMuchHaveYouPaid;
