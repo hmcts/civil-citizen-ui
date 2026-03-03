@@ -76,5 +76,5 @@ export const MOCK_API_ADDRESS: AddressInfoResponse = new AddressInfoResponse(
       country: 'England',
     }),
   ],
-  true
+  true,
 );
