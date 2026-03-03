@@ -8,7 +8,7 @@ const logger = Logger.getLogger('draftStoreService');
 export const saveDraftGARespondentResponse = async (redisKey: string, response: GaResponse) => {
   try {
     const draftStoreClient = app.locals.draftStoreClient;
-    draftStoreClient.set(redisKey, JSON.stringify(response));
+    await draftStoreClient.set(redisKey, JSON.stringify(response));
     if (response.draftResponseCreatedAt) {
       await draftStoreClient.expireat(redisKey, calculateExpireTimeForDraftClaimInSeconds(response.draftResponseCreatedAt));
     }
@@ -23,7 +23,7 @@ export const getDraftGARespondentResponse = async (redisKey: string): Promise<Ga
   return convertRedisDataToGaRespondentResponse(dataFromRedis);
 };
 
-export const deleteDraftGARespondentResponseFromStore = async (redisKey: string): Promise<void> => 
+export const deleteDraftGARespondentResponseFromStore = async (redisKey: string): Promise<void> =>
   await app.locals.draftStoreClient.del(redisKey);
 
 const convertRedisDataToGaRespondentResponse = (data: string) => {
