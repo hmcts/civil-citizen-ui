@@ -1,5 +1,4 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { isJudgmentOnlineLive } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
 import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 
@@ -10,10 +9,6 @@ const logger = Logger.getLogger('app');
 export class PostcodeValidator implements ValidatorConstraintInterface {
   lengthError = false;
 
-  private async getJudgmentOnlineFlag(): Promise<boolean> {
-    return await isJudgmentOnlineLive();
-  }
-
   async validate(value: string): Promise<boolean> {
     if (!value || value.trim().length === 0) {
       return false;
@@ -22,14 +17,11 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
     // Trim value for consistency
     const trimmed = value.trim();
 
-    // Check length if JudgmentOnlineLive flag is on
-    if (await this.getJudgmentOnlineFlag()) {
-      if (trimmed.length > 8) {
-        this.lengthError = true;
-        return false;
-      }
+    // Check length after JudgmentOnlineLive release
+    if (trimmed.length > 8) {
+      this.lengthError = true;
+      return false;
     }
-    this.lengthError = false;
 
     try {
       // Lookup postcode using Ordnance Survey

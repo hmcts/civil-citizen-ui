@@ -65,7 +65,7 @@ const validDataForPost = {
   contactPerson: 'contactPerson',
 };
 
-const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock; // ✅ added
+const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
 const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
   .mockReturnValue(Promise.resolve(claim));

@@ -18,20 +18,23 @@ describe('lookupByPostcodeAndDataSet', () => {
   });
 
   it('should call OS API with correct URL and return mapped AddressInfoResponse', async () => {
+    // Mock config values
     (config.get as jest.Mock).mockImplementation((key: string) => {
       if (key.includes('ApiKey')) return mockApiKey;
       if (key.includes('ApiUrl')) return mockApiUrl;
       return '';
     });
 
+    // Mock axios.get to return the fake OS API response
     (axios.get as jest.Mock).mockResolvedValue({ data: { results: MOCK_API_RESPONSE } });
 
     const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
 
     expect(axios.get).toHaveBeenCalledWith(
-      `${mockApiUrl}/search/places/v1/postcode?dataset=DPA,LPI&postcode=SW1A 1AA"&key=` + mockApiKey,
+      `${mockApiUrl}/search/places/v1/postcode?dataset=DPA,LPI&postcode=SW1A 1AA&key=` + mockApiKey,
     );
 
+    // Compare the result with our mocked mapped AddressInfoResponse
     expect(result).toEqual(MOCK_API_ADDRESS);
   });
 

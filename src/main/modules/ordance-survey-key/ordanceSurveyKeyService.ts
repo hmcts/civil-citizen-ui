@@ -1,6 +1,7 @@
 import config from 'config';
 import axios from 'axios';
 import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ordanceSurveyKey';
+import {AssertionError} from 'assert';
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
@@ -11,7 +12,9 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
 
   const results = response?.data?.results ?? [];
   if (results.length === 0) {
-    throw new Error('Postcode is incorrect or no results returned');
+    throw new AssertionError({
+      message: 'Postcode is incorrect or no results returned',
+    });
   }
 
   // Map results to Address objects using options object

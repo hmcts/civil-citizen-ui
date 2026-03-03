@@ -16,6 +16,7 @@ import {
   getDefendantInformation,
   saveDefendantProperty,
 } from 'services/features/common/defendantDetailsService';
+import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -26,8 +27,11 @@ jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   }),
 }));
 
+jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+
 const mockDefendantInformation = getDefendantInformation as jest.Mock;
 const mockSaveDefendant = saveDefendantProperty as jest.Mock;
+const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 
 const mockSaveData = {
   title: 'Mr',
@@ -52,6 +56,16 @@ describe('Defendant details controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    mockLookupByPostcode.mockImplementation(async (postcode) => {
+      if (!postcode || postcode === '') {
+        return { valid: false, addresses: [] };
+      }
+      return { valid: true, addresses: [{ country: 'England' }] };
+    });
   });
 
   describe('on GET', () => {
@@ -195,11 +209,11 @@ describe('Defendant details controller', () => {
       const res = await request(app)
         .post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL)
         .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['',''],
+          addressLine1: '',
+          addressLine2: '',
+          addressLine3: '',
+          city: '',
+          postCode: '',
           provideCorrespondenceAddress: '',
           partyName: '',
           contactPerson: '',
@@ -245,11 +259,11 @@ describe('Defendant details controller', () => {
         const res = await request(app)
           .post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL)
           .send({
-            addressLine1: ['',''],
-            addressLine2: ['',''],
-            addressLine3: ['',''],
-            city: ['',''],
-            postCode: ['',''],
+            addressLine1: '',
+            addressLine2: '',
+            addressLine3: '',
+            city: '',
+            postCode: '',
             provideCorrespondenceAddress: '',
             firstName: '',
             lastName: '',
@@ -268,7 +282,7 @@ describe('Defendant details controller', () => {
         mockDefendantInformation.mockImplementation(async () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
-        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
+        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send({});
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
