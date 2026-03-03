@@ -7,6 +7,7 @@ import {
   MEDIATION_EMAIL_CONFIRMATION_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {MediationCarm} from 'models/mediation/mediationCarm';
@@ -80,7 +81,7 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
         .send({alternativeTelephone: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
+          expect(res.text).toContain(t('ERRORS.PHONE_NUMBER_REQUIRED_CARM'));
         });
     });
 
