@@ -3,13 +3,14 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
   UploadDocuments,
   UploadDocumentTypes, UploadEvidenceDocumentType,
-  UploadEvidenceElementCCD, UploadEvidenceExpert, UploadEvidenceWitness,
+  UploadEvidenceElementCCD, UploadEvidenceExpert, UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
+  OtherManageUpload,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
@@ -28,11 +29,12 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     const applicantUploadDocuments = applicantDocuments(ccdClaim);
     const defendantUploadDocuments = defendantDocuments(ccdClaim);
+    const managedDocuments = claimDocuments(ccdClaim);
 
     caseProgression.claimantUploadDocuments =
-      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial);
+      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, managedDocuments);
     caseProgression.defendantUploadDocuments =
-      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial);
+      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, managedDocuments);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
 
@@ -104,7 +106,6 @@ const applicantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
   convertToUploadDocumentTypes(ccdClaim.documentEvidenceForTrial, uploadApplicantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
 
   caseProgression.claimantUploadDocuments.trial = uploadApplicantTrialDocuments;
-
   return caseProgression.claimantUploadDocuments;
 };
 
@@ -138,6 +139,7 @@ const defendantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
   caseProgression.defendantUploadDocuments.expert = uploadDefendantExpertDocuments;
 
   caseProgression.defendantUploadDocuments.trial = [] as UploadDocumentTypes[];
+
   const uploadDefendantTrialDocuments = [] as UploadDocumentTypes[];
   convertToUploadDocumentTypes(ccdClaim.documentCaseSummaryRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.CASE_SUMMARY);
   convertToUploadDocumentTypes(ccdClaim.documentSkeletonArgumentRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.SKELETON_ARGUMENT);
@@ -146,8 +148,13 @@ const defendantDocuments =  (ccdClaim: CCDClaim): UploadDocuments => {
   convertToUploadDocumentTypes(ccdClaim.documentEvidenceForTrialRes, uploadDefendantTrialDocuments, EvidenceUploadTrial.DOCUMENTARY);
 
   caseProgression.defendantUploadDocuments.trial = uploadDefendantTrialDocuments;
-
   return caseProgression.defendantUploadDocuments;
+};
+
+const claimDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
+  const otherManagedDocuments = [] as UploadDocumentTypes[];
+  convertToUploadDocumentTypes(ccdClaim.manageDocuments, otherManagedDocuments, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+  return otherManagedDocuments;
 };
 
 // Judge Final Orders
@@ -180,7 +187,7 @@ const courtOfficerOrders =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[]
 };
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
-  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial) => {
+  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) => {
 
   if(ccdList != null)
   {
@@ -193,23 +200,27 @@ const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiLi
   }
 };
 
-const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert => {
+const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType => {
 
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
-    documentType = documentType as UploadEvidenceDocumentType;
-    documentType = new UploadEvidenceDocumentType(documentType.witnessOptionName, documentType.typeOfDocument, documentType.documentIssuedDate, documentType.documentUpload, documentType.createdDatetime);
+    const document = documentType as UploadEvidenceDocumentType;
+    return new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.WITNESS in documentType)
   {
-    documentType = documentType as UploadEvidenceWitness;
-    documentType = new UploadEvidenceWitness(documentType.witnessOptionName, documentType.witnessOptionUploadDate, documentType.witnessOptionDocument, documentType.createdDatetime);
+    const document = documentType as UploadEvidenceWitness;
+    return new UploadEvidenceWitness(document.witnessOptionName, document.witnessOptionUploadDate, document.witnessOptionDocument, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.EXPERT in documentType)
   {
-    documentType = documentType as UploadEvidenceExpert;
-    documentType = new UploadEvidenceExpert(documentType.expertOptionName, documentType.expertOptionExpertise, documentType.expertOptionExpertises, documentType.expertOptionOtherParty, documentType.expertDocumentQuestion, documentType.expertDocumentAnswer, documentType.expertOptionUploadDate, documentType.expertDocument, documentType.createdDatetime);
+    const document = documentType as UploadEvidenceExpert;
+    return new UploadEvidenceExpert(document.expertOptionName, document.expertOptionExpertise, document.expertOptionExpertises, document.expertOptionOtherParty, document.expertDocumentQuestion, document.expertDocumentAnswer, document.expertOptionUploadDate, document.expertDocument, document.createdDatetime);
   }
-
+  else if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in documentType)
+  {
+    const document = documentType as UploadOtherDocumentType;
+    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
+  }
   return documentType;
 };
