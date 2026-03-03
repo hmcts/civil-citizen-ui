@@ -51,7 +51,7 @@ describe('Bilingual language preference', () => {
         .send({})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.SELECT_WELSH_AND_ENGLISH_OPTION'));
+          expect(res.text).toContain(t('ERRORS.RESPONSE_LANGUAGE_REQUIRED'));
         });
     });
 

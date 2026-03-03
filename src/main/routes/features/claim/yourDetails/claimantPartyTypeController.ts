@@ -16,7 +16,7 @@ claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, (async (req: 
   try {
     const userId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(userId);
-    const form = new GenericForm(new PartyTypeSelection(claimant?.type));
+    const form = new GenericForm(new PartyTypeSelection(claimant?.type, 'ERRORS.CLAIMANT_PARTY_TYPE_REQUIRED'));
     res.render(claimantPartyTypeViewPath, {form, pageTitle});
   } catch (error) {
     next(error);
@@ -27,7 +27,7 @@ claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, (async (req:
   try {
     const userId = req.session?.user?.id;
     const reqBody = req.body as Record<string, string>;
-    const form = new GenericForm(new PartyTypeSelection(reqBody.option as PartyType));
+    const form = new GenericForm(new PartyTypeSelection(reqBody.option as PartyType, 'ERRORS.CLAIMANT_PARTY_TYPE_REQUIRED'));
     form.validateSync();
     if (form.hasErrors()) {
       res.render(claimantPartyTypeViewPath, {form, pageTitle});
