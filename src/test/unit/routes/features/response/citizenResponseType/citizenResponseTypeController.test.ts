@@ -7,10 +7,10 @@ import {
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../../../main/routes/urls';
-import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Party} from '../../../../../../main/common/models/party';
+} from 'routes/urls';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -89,7 +89,7 @@ describe('Citizen response type', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Choose your response');
+          expect(res.text).toContain('Select how you respond to the claim');
         });
     });
 

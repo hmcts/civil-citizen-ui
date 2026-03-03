@@ -49,7 +49,7 @@ describe('Claim Party Type Controller', () => {
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
-      expect(res.text).toContain(TestMessages.VALID_CHOOSE);
+      expect(res.text).toContain(TestMessages.CLAIMANT_PARTY_TYPE_REQUIRED);
     });
 
     it('should render claimant individual details page when radio "An individual" is selected', async () => {
