@@ -13,7 +13,7 @@ const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
-export const uploadSelectedFile = async (req: AppRequest): Promise<void> => {
+export const uploadSelectedFile = async (req: AppRequest, fileUploadSource?: string): Promise<void> => {
   try {
     const uploadDocument = new UploadGAFiles();
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
@@ -27,6 +27,7 @@ export const uploadSelectedFile = async (req: AppRequest): Promise<void> => {
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);
+      req.session.fileUploadSource = fileUploadSource;
     }
   } catch(error) {
     logger.error(error);

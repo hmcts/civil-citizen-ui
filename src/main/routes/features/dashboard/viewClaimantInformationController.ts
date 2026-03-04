@@ -6,6 +6,9 @@ import {
 
 } from '../../urls';
 import { Claim } from 'models/claim';
+import { CCDClaim } from 'models/civilClaimResponse';
+import { Email } from 'models/Email';
+import { PartyPhone } from 'models/PartyPhone';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getAddress } from 'services/features/response/contactThem/contactThemService';
 import { caseNumberPrettify } from 'common/utils/stringUtils';
@@ -24,6 +27,21 @@ async function renderView(res: Response, claim: Claim, claimId: string) {
   const pageTitle = 'PAGES.CONTACT_THEM.PAGE_TITLE_CLAIMANT';
   const otherPartyName = claim?.getClaimantFullName();
   const party = claim?.applicant1;
+
+  if (party) {
+    if (!party.emailAddress?.emailAddress) {
+      const claimantEmail = (claim as unknown as CCDClaim)?.claimantUserDetails?.email;
+      if (claimantEmail) {
+        party.emailAddress = new Email(claimantEmail);
+      }
+    }
+    if (!party.partyPhone?.phone) {
+      const claimantPhone = claim.contactNumberFromClaimantResponse;
+      if (claimantPhone) {
+        party.partyPhone = new PartyPhone(claimantPhone, true);
+      }
+    }
+  }
 
   res.render(viewClaimantInformation, {
     address: getAddress(party),

@@ -102,3 +102,6 @@ export enum EvidenceUploadTrial {
   COSTS='COSTS',
   DOCUMENTARY='DOCUMENTARY'
 }
+export enum OtherManageUpload {
+  OTHER_MANAGE_DOCUMENT = 'other-manage-document',
+}
