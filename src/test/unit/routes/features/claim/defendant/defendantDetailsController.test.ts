@@ -38,7 +38,7 @@ describe('defendantDetailsController', () => {
   beforeEach(() => {
     req = {
       session: {
-       user: {id: 'userId'},
+        user: {id: 'userId'},
       } as any,
       body: {},
     };
