@@ -24,6 +24,7 @@ export interface CaseMessage {
   createdBy: string;
   parentId?: string;
   isClosed?: YesNoUpperCamelCase;
+  senderCaseRole?: string;
 }
 
 export interface FormDocument {
