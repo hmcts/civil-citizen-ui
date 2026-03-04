@@ -23,7 +23,7 @@ singleDefendantController.get(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
 });
 
 singleDefendantController.post(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_VARIATION_4'));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SINGLE_DEFENDANT_REQUIRED'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {

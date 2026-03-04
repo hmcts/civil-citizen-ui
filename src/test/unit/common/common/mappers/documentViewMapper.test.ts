@@ -44,7 +44,7 @@ describe('Test of Document View Mapper', () => {
   it('should map defendant response to Document View', () => {
     //Given
     const claim = new Claim();
-    claim.legacyCaseReference = '000MC001';
+    claim.legacyCaseReference = '000JE001';
     claim.respondent1ResponseDate = new Date();
     const claimId = '1234';
     const fileName = 'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.DOCUMENT_LABEL';
@@ -57,7 +57,7 @@ describe('Test of Document View Mapper', () => {
           CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
             .replace(':documentId',
               getDocumentId(claim, 'Stitched')),
-          'defendant-response-000MC001.pdf'))));
+          'defendant-response-000JE001.pdf'))));
     //When
     const result = mapperDefendantResponseToDocumentView(
       'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',
@@ -73,7 +73,7 @@ describe('Test of Document View Mapper', () => {
   it('should map defendant response(stitched document) to Document View', () => {
     //Given
     const claim = new Claim();
-    claim.legacyCaseReference = '000MC001';
+    claim.legacyCaseReference = '000JE001';
     claim.respondent1ResponseDate = new Date();
     claim.systemGeneratedCaseDocuments = [
       {
@@ -97,7 +97,7 @@ describe('Test of Document View Mapper', () => {
           CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
             .replace(':documentId',
               getDocumentId(claim, 'Stitched')),
-          'defendant-response-000MC001.pdf'))));
+          'defendant-response-000JE001.pdf'))));
     //When
     const result = mapperDefendantResponseToDocumentView(
       'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',
