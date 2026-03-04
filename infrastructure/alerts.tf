@@ -1,11 +1,6 @@
-data "azurerm_key_vault_secret" "civil_ci_alert_slack_webhook" {
-  name         = "civil-ci-alert-slack-group-webhook"
-  key_vault_id = module.key-vault.key_vault_id
-}
-
 locals {
   draft_store_resource_group_name  = "${var.product}-${var.component}-draft-store-cache-${var.env}"
-  civil_ci_alert_slack_webhook_url = data.azurerm_key_vault_secret.civil_ci_alert_slack_webhook.value
+  civil_ci_alert_slack_webhook_url = azurerm_key_vault_secret.civil_secrets["civil-ci-alert-slack-group-webhook"].value
 }
 
 # Resolve the Redis Cache resource ID from the module outputs
