@@ -11,7 +11,8 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {ChooseHowToProceed} from 'common/form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'common/models/chooseHowProceed';
-
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('judgmentAmountSummaryExtendedController');
 const judgmentAmountSummaryExtendedController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 
@@ -52,6 +53,7 @@ judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_UR
   (async () => {
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
+    logger.info(`Before save redisKey: ${claim.id} ${claim.claimantResponse}`);
     await saveDraftClaim(claim.id, claim, true);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
   })();
