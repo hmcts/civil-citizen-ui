@@ -10,7 +10,7 @@ import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/j
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('claimantResponseService');
+const logger = Logger.getLogger('judgmentAmountSummaryController');
 
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
@@ -29,9 +29,10 @@ async function renderView(req: AppRequest, res: Response, claim: Claim, lang: st
 judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const redisId = generateRedisKey(req);
+    const claim = await getCaseDataFromStore(redisId);
     const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-    logger.info(`claimantResponse : ${claimantResponse}`);
+    logger.info(`redisId: ${redisId} claimantResponse : ${claimantResponse}`);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     await renderView(req, res, claim, lang, claimFee);
   } catch (error) {
@@ -41,9 +42,10 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
 
 judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
   const claimId = req.params.id;
-  const claim = await getCaseDataFromStore(generateRedisKey(req));
+  const redisId = generateRedisKey(req);
+  const claim = await getCaseDataFromStore(redisId);
   const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-  logger.info(`claimantResponse : ${claimantResponse}`);
+  logger.info(`redisId: ${redisId} claimantResponse : ${claimantResponse}`);
   res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAYMENT_OPTIONS_URL));
 });
 

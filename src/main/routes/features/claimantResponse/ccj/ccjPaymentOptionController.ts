@@ -12,6 +12,8 @@ import {CcjPaymentOption} from 'form/models/claimantResponse/ccj/ccjPaymentOptio
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ccjPaymentOptionController');
 
 const ccjPaymentOptionController = Router();
 const ccjPaymentOptionViewPath = 'features/claimantResponse/ccj/ccj-payment-options';
@@ -24,7 +26,9 @@ function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
 
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
   try {
-    const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
+    const redisId = generateRedisKey(req as unknown as AppRequest);
+    const claimantResponse = await getClaimantResponse(redisId);
+    logger.info(`redisId: ${redisId} claimantResponse : ${claimantResponse}`);
     renderView(new GenericForm(new CcjPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.type)), res);
   } catch (error) {
     next(error);
@@ -39,7 +43,9 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
     if (ccjPaymentOption.hasErrors()) {
       renderView(ccjPaymentOption, res);
     } else {
-      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), ccjPaymentOption.model, crPropertyName, crParentName);
+      const redisId = generateRedisKey(req as unknown as AppRequest);
+      logger.info(`redisId: ${redisId} claimantResponse : ${ccjPaymentOption.model}`);
+      await saveClaimantResponse(redisId, ccjPaymentOption.model, crPropertyName, crParentName);
       if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_DEFENDANT_PAYMENT_DATE_URL));
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {

@@ -13,7 +13,7 @@ import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draf
 import { AppRequest } from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('claimantResponseService');
+const logger = Logger.getLogger('paidAmountController');
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -49,13 +49,13 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     }
     paidAmount.validateSync();
     const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-    logger.info(`Before Save claimantResponse : ${claimantResponse}`);
+    logger.info(`Before Save redisKey: ${redisKey} claimantResponse : ${claimantResponse}`);
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);
     } else {
       await saveClaimantResponse(redisKey, paidAmount.model, crPropertyName, crParentName);
       const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-      logger.info(`After save claimantResponse : ${claimantResponse}`);
+      logger.info(`After save redisKey: ${redisKey} claimantResponse : ${claimantResponse}`);
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
     }
   } catch (error) {
