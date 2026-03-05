@@ -47,10 +47,9 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     if (req.url.includes(urlFromTaskList)) {
       redirectURL = CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL;
     }
+    paidAmount.validateSync();
     const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
     logger.info(`Before Save claimantResponse : ${claimantResponse}`);
-    res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
-    paidAmount.validateSync();
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);
     } else {
