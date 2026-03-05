@@ -12,6 +12,8 @@ import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimantResponseService');
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -45,11 +47,16 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     if (req.url.includes(urlFromTaskList)) {
       redirectURL = CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL;
     }
+    const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
+    logger.info(`Before Save claimantResponse : ${claimantResponse}`);
+    res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
     paidAmount.validateSync();
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);
     } else {
       await saveClaimantResponse(redisKey, paidAmount.model, crPropertyName, crParentName);
+      const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
+      logger.info(`After save claimantResponse : ${claimantResponse}`);
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
     }
   } catch (error) {
