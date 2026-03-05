@@ -59,12 +59,15 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param doNotThrowError
  */
 export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false) => {
+  logger.info(`Saving draft claim : ${claimId} ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
+  logger.info(`storedClaimResponse : ${claimId} ${storedClaimResponse.case_data? JSON.stringify(storedClaimResponse.case_data) : 'undefined'}`);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
+  logger.info(`Updating claimant response : ${claimId} ${storedClaimResponse.case_data? JSON.stringify(storedClaimResponse.case_data) : 'undefined'}`);
   await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
     await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
@@ -98,6 +101,7 @@ export const updateFieldDraftClaimFromStore = async (claimId: string, req: Reque
   const claim = await getClaimById(claimId, req, true);
   const redisKey = generateRedisKey(<AppRequest>req);
   claim[propertyName] = newValue;
+  logger.info(`updateFieldDraftClaimFromStore : redisKey: ${redisKey} propertyName : ${propertyName} newValue : ${newValue? JSON.stringify(newValue) : 'undefined'}`);
   await saveDraftClaim(redisKey, claim);
 
 };

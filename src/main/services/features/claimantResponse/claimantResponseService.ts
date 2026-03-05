@@ -37,12 +37,15 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
 
     ensureClaimantResponseExists(claim);
     setClaimantResponseValue(claim, parentPropertyName, claimantResponsePropertyName, value);
+    logger.info(`claimant response after property set : ${claimId} ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
 
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     applySuggestedPaymentIntentionCleanup(claim, claimantResponse);
     applyRejectionCleanup(claim);
+    logger.info(`claimant response after cleanups : ${claimId} ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
 
     const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
+    logger.info(`claimant response after re setting claim : ${claimId} ${resetClaim.claimantResponse? JSON.stringify(resetClaim.claimantResponse) : 'undefined'}`);
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
     logger.error(error);
