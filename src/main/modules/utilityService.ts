@@ -3,7 +3,7 @@ import config from 'config';
 import {
   deleteDraftClaimFromStore,
   generateRedisKey,
-  getCaseDataFromStore,
+  getCaseDataFromStore, getDraftClaimFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
@@ -13,6 +13,8 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ccjCheckAnswersService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -52,12 +54,13 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
 };
 
 export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = false): Promise<Claim> => {
-  const userId = (<AppRequest>req)?.session?.user?.id;
   const claimId = req.params?.id;
-  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
-
+  const redisKey = useRedisKey ? generateRedisKey(<AppRequest>req) : claimId;
+  const oldClaim = await getDraftClaimFromStore(redisKey, true);
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
+    claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
+    logger.info(`Setting claimant response: redisKey: ${redisKey} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true);
   } else {
