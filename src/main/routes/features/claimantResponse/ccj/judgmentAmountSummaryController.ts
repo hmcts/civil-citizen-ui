@@ -30,6 +30,8 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
+    logger.info(`claimantResponse : ${claimantResponse}`);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     await renderView(req, res, claim, lang, claimFee);
   } catch (error) {
@@ -40,7 +42,8 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
 judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
   const claimId = req.params.id;
   const claim = await getCaseDataFromStore(generateRedisKey(req));
-  logger.info(claim.claimantResponse);
+  const claimantResponse = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
+  logger.info(`claimantResponse : ${claimantResponse}`);
   res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAYMENT_OPTIONS_URL));
 });
 
