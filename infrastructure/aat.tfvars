@@ -107,4 +107,27 @@ monitor_metric_alerts = {
       }
     ]
   }
+  "aat-civil-citizen-ui-draft-store-cpu-information" = {
+    description  = "AAT Civil Citizen UI draft store CPU usage equal to or above 7%",
+    severity     = 4,
+    enabled      = true,
+    frequency    = "PT1M",
+    autoMitigate = true,
+    window_size  = "PT5M"
+    criteria = [
+      {
+        operator             = "GreaterThanOrEqual",
+        threshold            = 7,
+        metricNamespace      = "Microsoft.Cache/Redis",
+        metricName           = "percentProcessorTime",
+        aggregation          = "Maximum",
+        skipMetricValidation = false,
+      }
+    ]
+    action = [
+      {
+        action_group_name = "civil-ci-slack-alert"
+      }
+    ]
+  }
 }
