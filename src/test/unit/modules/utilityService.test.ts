@@ -6,7 +6,7 @@ import {AppRequest, AppSession} from 'models/AppRequest';
 import {Party} from 'models/party';
 import {getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-import {ClaimantResponse} from "models/claimantResponse";
+import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
