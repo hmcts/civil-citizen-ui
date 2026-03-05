@@ -70,7 +70,7 @@ describe('Claim Details - Reason', () => {
         .send({text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.REASON_REQUIRED'));
+          expect(res.text).toContain(t('ERRORS.REASON_REQUIRED').replace(/'/g, '&#39;'));
         });
     });
 
