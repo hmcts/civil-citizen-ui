@@ -31,8 +31,9 @@ resource "azurerm_monitor_action_group" "civil-ci-action-group" {
   dynamic "webhook_receiver" {
     for_each = local.civil_ci_alert_slack_webhook_url != null ? try(each.value.webhook_receiver, []) : []
     content {
-      name        = webhook_receiver.value.name
-      service_uri = local.civil_ci_alert_slack_webhook_url
+      name                    = webhook_receiver.value.name
+      service_uri             = local.civil_ci_alert_slack_webhook_url
+      use_common_alert_schema = true
     }
   }
 }
