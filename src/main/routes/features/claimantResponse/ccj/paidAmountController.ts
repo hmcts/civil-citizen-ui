@@ -12,7 +12,7 @@ import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {redisDataFlushForDJ} from "routes/guards/redisDataFlushForDJGuard";
+import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
