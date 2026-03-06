@@ -17,12 +17,13 @@ locals {
 # `host_name` is like "<redis-name>.redis.cache.windows.net" — take the first segment as the resource name
 # Then fetch the Redis resource to obtain its ARM ID for alert scopes
 data "azurerm_redis_cache" "draft_store" {
+  count               = local.civil_ci_alert_slack_webhook_url == null ? 0 : 1
   name                = split(".", module.citizen-ui-draft-store.host_name)[0]
   resource_group_name = local.draft_store_resource_group_name
 }
 
 resource "azurerm_monitor_action_group" "civil-ci-action-group" {
-  for_each            = var.monitor_action_group
+  for_each            = local.civil_ci_alert_slack_webhook_url == null ? {} : var.monitor_action_group
   name                = each.key
   resource_group_name = local.draft_store_resource_group_name
   short_name          = try(each.value.short_name, null)
@@ -32,14 +33,14 @@ resource "azurerm_monitor_action_group" "civil-ci-action-group" {
     for_each = local.civil_ci_alert_slack_webhook_url != null ? try(each.value.webhook_receiver, []) : []
     content {
       name                    = webhook_receiver.value.name
-      service_uri             = local.civil_ci_alert_slack_webhook_url
+      service_uri             = azurerm_logic_app_trigger_http_request.civil_ci_alert_trigger[0].callback_url
       use_common_alert_schema = true
     }
   }
 }
 
 resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
-  for_each            = var.monitor_metric_alerts
+  for_each            = local.civil_ci_alert_slack_webhook_url == null ? {} : var.monitor_metric_alerts
   name                = each.key
   resource_group_name = local.draft_store_resource_group_name
   description         = try(each.value.description, null)
@@ -48,7 +49,7 @@ resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
   frequency           = try(each.value.frequency, null)
   window_size         = try(each.value.window_size, null)
   auto_mitigate       = try(each.value.autoMitigate, null)
-  scopes              = [data.azurerm_redis_cache.draft_store.id]
+  scopes              = [data.azurerm_redis_cache.draft_store[0].id]
 
   dynamic "criteria" {
     for_each = try(each.value.criteria, {})
