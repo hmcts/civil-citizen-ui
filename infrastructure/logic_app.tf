@@ -32,6 +32,9 @@ resource "azurerm_logic_app_trigger_http_request" "civil_ci_alert_trigger" {
                         },
                         "description": {
                             "type": "string"
+                        },
+                        "firedDateTime": {
+                            "type": "string"
                         }
                     }
                 }
@@ -49,10 +52,48 @@ resource "azurerm_logic_app_action_http" "civil-ci-slack_webhook" {
   method       = "POST"
   uri          = local.civil_ci_alert_slack_webhook_url
 
-  # This is a very basic example of formatting.
+  # Slack message formatting using blocks for better layout and readability.
   body = <<BODY
 {
-    "text": "Azure Alert: @{triggerBody()?['data']?['essentials']?['alertRule']}\nSeverity: @{triggerBody()?['data']?['essentials']?['severity']}\nDescription: @{triggerBody()?['data']?['essentials']?['description']}"
+    "blocks": [
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": "🚨 Azure Monitor Alert: @{triggerBody()?['data']?['essentials']?['alertRule']}",
+                "emoji": true
+            }
+        },
+        {
+            "type": "section",
+            "fields": [
+                {
+                    "type": "mrkdwn",
+                    "text": "*Severity:*\n@{triggerBody()?['data']?['essentials']?['severity']}"
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": "*Environment:*\n${var.env}"
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "*Description:*\n@{triggerBody()?['data']?['essentials']?['description']}"
+            }
+        },
+        {
+            "type": "context",
+            "elements": [
+                {
+                    "type": "mrkdwn",
+                    "text": "Triggered at @{triggerBody()?['data']?['essentials']?['firedDateTime']}"
+                }
+            ]
+        }
+    ]
 }
 BODY
 
