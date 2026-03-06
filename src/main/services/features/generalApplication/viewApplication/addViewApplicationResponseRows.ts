@@ -69,9 +69,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
     [formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
       hearingDetails?.HearingPreferencesPreferredType,
       value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${fromCcdHearingType(value)}`, {lng})),
-    (hearingDetails?.ReasonForPreferredHearingType
-      ? summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}), hearingDetails.ReasonForPreferredHearingType)
-      : undefined),
+    rowWithTextValue('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', hearingDetails?.ReasonForPreferredHearingType),
     row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
       hearingDetails?.HearingPreferredLocation?.value?.label),
     row('PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.PREFERRED_TELEPHONE_NUMBER',
@@ -122,6 +120,9 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);
+
+  const rowWithTextValue = (title: string, value: string | undefined): SummaryRow | undefined =>
+    value ? summaryRowWithTextValue(t(title, {lng}), value) : undefined;
 
   const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string)): SummaryRow | undefined =>
     value

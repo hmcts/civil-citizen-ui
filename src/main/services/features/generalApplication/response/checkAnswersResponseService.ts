@@ -74,13 +74,9 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         hearingArrangement?.option,
         value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${value}`, {lng}),
         hearingArrangementUrl),
-      (hearingArrangement?.reasonForPreferredHearingType
-        ? summaryRowWithTextValue(
-          t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
-          hearingArrangement.reasonForPreferredHearingType,
-          constructResponseUrlWithIdAndAppIdParams(claimId, appId, hearingArrangementUrl),
-          t('COMMON.BUTTONS.CHANGE', {lng}))
-        : undefined),
+      rowWithTextValue('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+        hearingArrangement?.reasonForPreferredHearingType,
+        hearingArrangementUrl),
       formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
         hearingArrangement?.courtLocation,
         location => location.split(' - ')[0],
@@ -168,6 +164,15 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);
+
+  const rowWithTextValue = (title: string, value: string | undefined, url: string): SummaryRow | undefined =>
+    value
+      ? summaryRowWithTextValue(
+        t(title, {lng}),
+        value,
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, url),
+        t('COMMON.BUTTONS.CHANGE', {lng}))
+      : undefined;
 
   const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string), url: string): SummaryRow | undefined =>
     value
