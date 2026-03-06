@@ -12,7 +12,6 @@ import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 import {DateOfBirth} from 'models/claimantResponse/ccj/dateOfBirth';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
-import {redisDataFlushForDJ} from 'routes/guards/redisDataFlushForDJGuard';
 
 const defendantDOBController = Router();
 const defendantDOBViewPath = 'features/claimantResponse/ccj/defendant-dob';
@@ -27,7 +26,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
   });
 }
 
-defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, redisDataFlushForDJ, async (req, res, next: NextFunction) => {
+defendantDOBController.get(CCJ_DEFENDANT_DOB_URL, async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     const defendantDOB = claimantResponse.ccjRequest ?

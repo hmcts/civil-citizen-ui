@@ -12,6 +12,7 @@ import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
+import {redisDataFlushForDJ} from "routes/guards/redisDataFlushForDJGuard";
 
 const paidAmountController = Router();
 const paidAmountViewPath = 'features/claimantResponse/ccj/paid-amount';
@@ -34,7 +35,7 @@ paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], as
   }
 });
 
-paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req: Request, res: Response, next: NextFunction) => {
+paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], redisDataFlushForDJ, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
