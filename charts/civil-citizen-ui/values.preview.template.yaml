@@ -147,7 +147,7 @@ civil-service:
       DASHBOARD_API_URL: http://${SERVICE_NAME}-civil-service
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
-
+      OTHER_REMEDY_ENABLED: true
     postgresql:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql

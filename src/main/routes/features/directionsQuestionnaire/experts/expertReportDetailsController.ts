@@ -3,7 +3,7 @@ import {
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_GUIDANCE_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
-} from '../../../urls';
+} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
@@ -11,7 +11,7 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
 
@@ -43,7 +43,11 @@ expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res
 expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const expertReportForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
+    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const errorKey = claim.isClaimantIntentionPending()
+      ? 'ERRORS.EXPERT_REPORT_DETAILS_REQUIRED_CLAIMANT'
+      : 'ERRORS.EXPERT_REPORT_DETAILS_REQUIRED';
+    const expertReportForm = new GenericForm(new GenericYesNo(req.body.option, errorKey));
     expertReportForm.validateSync();
     if (expertReportForm.hasErrors()) {
       renderView(expertReportForm, res);

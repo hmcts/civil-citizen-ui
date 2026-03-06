@@ -1,7 +1,7 @@
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
-import {Interest} from '../../../../common/form/models/interest/interest';
+import {Interest} from 'form/models/interest/interest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('Claim - Claim Interest');
@@ -19,7 +19,7 @@ export const getClaimInterest = async (claimId: string): Promise<GenericYesNo> =
 };
 
 export const getClaimInterestForm = (claimInterest: string): GenericYesNo => {
-  return new GenericYesNo(claimInterest, 'ERRORS.VALID_YES_NO_SELECTION_VARIATION_2');
+  return new GenericYesNo(claimInterest, 'ERRORS.CLAIM_INTEREST_REQUIRED');
 };
 
 export const saveClaimInterest = async (claimId: string, claimInterest: YesNo) => {
