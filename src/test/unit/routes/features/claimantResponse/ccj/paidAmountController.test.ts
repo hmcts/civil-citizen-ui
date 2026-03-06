@@ -10,7 +10,7 @@ import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../.
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as utilService from 'modules/utilityService';
 import {Claim} from 'models/claim';
-
+import {CivilServiceClient} from 'client/civilServiceClient';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
@@ -60,6 +60,11 @@ describe('CCJ - Paid amount', () => {
   describe('on POST', () => {
     beforeAll(() => {
       app.locals.draftStoreClient = mockCivilClaim;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockCivilClaim  as unknown as Claim)),
+        );
     });
 
     it('should return error on empty post', async () => {
@@ -146,7 +151,12 @@ describe('CCJ - Paid amount', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention                                                    ;
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockCivilClaim  as unknown as Claim)),
+        );
     });
     // TODO undo when part payment journey is restored
     // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {

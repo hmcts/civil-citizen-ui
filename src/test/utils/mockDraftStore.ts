@@ -142,6 +142,7 @@ const mockCivilClaimantIntention = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(noRespondentTelephoneClaimantIntentionMock))),
   ttl: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
+  del: jest.fn(() => Promise.resolve({})),
 };
 
 const mockResponseFullAdmitPayBySetDate = {
