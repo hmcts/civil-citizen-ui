@@ -15,7 +15,7 @@ def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "DTSCI-3962"
-def generalappCCDBranch = "master"
+def generalappCCDBranch = "DTSCCI-3962-update-case-data"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
