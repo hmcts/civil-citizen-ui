@@ -1,7 +1,7 @@
 import {getLng} from 'common/utils/languageToggleUtils';
 import {escapeHtml} from 'common/utils/escapeHtml';
 import {t} from 'i18next';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
@@ -259,7 +259,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
         t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${hearingPreferredType}`, {lng})),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
         application.case_data.generalAppHearingDetails.ReasonForPreferredHearingType),
     );
     const courtLocationText = application.case_data.generalAppHearingDetails.HearingPreferredLocation

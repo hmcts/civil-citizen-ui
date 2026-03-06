@@ -190,7 +190,7 @@ export const addHearingArrangementsRows = (claimId: string, claim: Claim, lang: 
         constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), changeLabel()),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
         claim.generalApplication.hearingArrangement.reasonForPreferredHearingType,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), changeLabel()),
     );

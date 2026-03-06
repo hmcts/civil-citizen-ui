@@ -2,7 +2,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
-import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { formatDateSlash, formatDateToFullDate } from 'common/utils/dateUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
@@ -74,9 +74,13 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         hearingArrangement?.option,
         value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${value}`, {lng}),
         hearingArrangementUrl),
-      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
-        hearingArrangement?.reasonForPreferredHearingType,
-        hearingArrangementUrl),
+      (hearingArrangement?.reasonForPreferredHearingType
+        ? summaryRowWithTextValue(
+          t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+          hearingArrangement.reasonForPreferredHearingType,
+          constructResponseUrlWithIdAndAppIdParams(claimId, appId, hearingArrangementUrl),
+          t('COMMON.BUTTONS.CHANGE', {lng}))
+        : undefined),
       formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
         hearingArrangement?.courtLocation,
         location => location.split(' - ')[0],
