@@ -42,61 +42,79 @@ export class GaServiceClient {
     }
 
     // Add request interceptor for logging
-    this.client.interceptors.request.use(
-      (config) => {
-        const requestLog = {
-          timestamp: new Date().toISOString(),
-          method: config.method?.toUpperCase(),
-          url: config.url,
-          baseURL: config.baseURL,
-          fullURL: `${config.baseURL}${config.url}`,
-          headers: {
-            ...config.headers,
-            // Mask sensitive headers
-            Authorization: config.headers?.Authorization ? '[REDACTED]' : undefined,
-          },
-          data: config.data,
-        };
-        logger.info('GA Request:', JSON.stringify(requestLog, null, 2));
-        return config;
-      },
-      (error) => {
-        logger.error('GA Request Error:', error);
-        return Promise.reject(error);
-      },
-    );
+    if (this.client && this.client.interceptors) {
+      this.client.interceptors.request.use(
+        (config) => {
+          try {
+            const requestLog = {
+              timestamp: new Date().toISOString(),
+              method: config.method?.toUpperCase(),
+              url: config.url,
+              baseURL: config.baseURL,
+              fullURL: `${config.baseURL}${config.url}`,
+              headers: {
+                ...config.headers,
+                // Mask sensitive headers
+                Authorization: config.headers?.Authorization ? '[REDACTED]' : undefined,
+              },
+              data: config.data,
+            };
+            logger.info('GA Request:', JSON.stringify(requestLog, null, 2));
+          } catch (err) {
+            // Silently fail if logging fails
+          }
+          return config;
+        },
+        (error) => {
+          try {
+            logger.error('GA Request Error:', error);
+          } catch (err) {
+            // Silently fail if logging fails
+          }
+          return Promise.reject(error);
+        },
+      );
 
-    // Add response interceptor for logging
-    this.client.interceptors.response.use(
-      (response) => {
-        const responseLog = {
-          timestamp: new Date().toISOString(),
-          status: response.status,
-          statusText: response.statusText,
-          url: response.config.url,
-          fullURL: `${response.config.baseURL}${response.config.url}`,
-          headers: response.headers,
-          dataSize: response.data ? JSON.stringify(response.data).length : 0,
-          // Only log data for non-document responses
-          data: isDocumentInstance ? '[BINARY DATA]' : response.data,
-        };
-        logger.info('GA Response:', JSON.stringify(responseLog, null, 2));
-        return response;
-      },
-      (error: AxiosError) => {
-        const errorLog = {
-          timestamp: new Date().toISOString(),
-          message: error.message,
-          url: error.config?.url,
-          fullURL: error.config ? `${error.config.baseURL}${error.config.url}` : undefined,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          responseData: error.response?.data,
-        };
-        logger.error('GA Response Error:', JSON.stringify(errorLog, null, 2));
-        return Promise.reject(error);
-      },
-    );
+      // Add response interceptor for logging
+      this.client.interceptors.response.use(
+        (response) => {
+          try {
+            const responseLog = {
+              timestamp: new Date().toISOString(),
+              status: response.status,
+              statusText: response.statusText,
+              url: response.config.url,
+              fullURL: `${response.config.baseURL}${response.config.url}`,
+              headers: response.headers,
+              dataSize: response.data ? JSON.stringify(response.data).length : 0,
+              // Only log data for non-document responses
+              data: isDocumentInstance ? '[BINARY DATA]' : response.data,
+            };
+            logger.info('GA Response:', JSON.stringify(responseLog, null, 2));
+          } catch (err) {
+            // Silently fail if logging fails
+          }
+          return response;
+        },
+        (error: AxiosError) => {
+          try {
+            const errorLog = {
+              timestamp: new Date().toISOString(),
+              message: error.message,
+              url: error.config?.url,
+              fullURL: error.config ? `${error.config.baseURL}${error.config.url}` : undefined,
+              status: error.response?.status,
+              statusText: error.response?.statusText,
+              responseData: error.response?.data,
+            };
+            logger.error('GA Response Error:', JSON.stringify(errorLog, null, 2));
+          } catch (err) {
+            // Silently fail if logging fails
+          }
+          return Promise.reject(error);
+        },
+      );
+    }
   }
 
   getConfig(req: AppRequest) {
