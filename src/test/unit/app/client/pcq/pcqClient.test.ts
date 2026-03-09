@@ -7,10 +7,14 @@ import {
 import {PartyType} from 'common/models/partyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-const mockGet = jest.fn();
-jest.mock('client/axiosWithLogging', () => ({
-  createAxiosInstanceWithLogging: () => ({ get: mockGet }),
-}));
+jest.mock('client/axiosWithLogging', () => {
+  const mockGet = jest.fn();
+  return {
+    createAxiosInstanceWithLogging: () => ({ get: mockGet }),
+    __mockGet: mockGet,
+  };
+});
+const getMockGet = () => (require('client/axiosWithLogging') as { __mockGet: jest.Mock }).__mockGet;
 
 describe('PCQ Client', () => {
 
@@ -18,7 +22,7 @@ describe('PCQ Client', () => {
 
     it('should return true on PCQ health check', async () => {
       //Given
-      mockGet.mockResolvedValue({ data: { status: 'UP' } });
+      getMockGet().mockResolvedValue({ data: { status: 'UP' } });
       //When
       const health = await isPcqHealthy();
       //Then
@@ -26,7 +30,7 @@ describe('PCQ Client', () => {
     });
     it('should return false on PCQ health check', async () => {
       //Given
-      mockGet.mockResolvedValue({ data: {} });
+      getMockGet().mockResolvedValue({ data: {} });
       //When
       const health = await isPcqHealthy();
       //Then
@@ -34,7 +38,7 @@ describe('PCQ Client', () => {
     });
     it('should throw an error on PCQ health check', async () => {
       //Given
-      mockGet.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      getMockGet().mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       //When
       const health = await isPcqHealthy();
       //Then

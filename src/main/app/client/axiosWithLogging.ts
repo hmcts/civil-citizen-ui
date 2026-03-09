@@ -40,6 +40,28 @@ function bodyForLog(data: unknown, responseType?: string): string {
 }
 
 /**
+ * When Axios.create returns undefined (e.g. under jest.mock('axios')), return a delegate
+ * that forwards to the global Axios with config merged in, so tests can mock Axios.get etc.
+ */
+function createFallbackInstance(config: AxiosRequestConfig): AxiosInstance {
+  const merge = (c?: AxiosRequestConfig) => ({ ...config, ...c });
+  return {
+    request: (c) => Axios.request(merge(c)),
+    get: (url, c) => Axios.get(url, merge(c)),
+    delete: (url, c) => Axios.delete(url, merge(c)),
+    head: (url, c) => Axios.head(url, merge(c)),
+    options: (url, c) => Axios.options(url, merge(c)),
+    post: (url, data, c) => Axios.post(url, data, merge(c)),
+    put: (url, data, c) => Axios.put(url, data, merge(c)),
+    patch: (url, data, c) => Axios.patch(url, data, merge(c)),
+    postForm: (url, data, c) => (Axios as unknown as { postForm: typeof Axios.post }).postForm?.(url, data, merge(c)) ?? Axios.post(url, data, merge(c)),
+    getUri: (c) => Axios.getUri(merge(c)),
+    defaults: config as typeof Axios.defaults,
+    interceptors: { request: { use: () => () => {}, eject: () => {} }, response: { use: () => () => {}, eject: () => {} } },
+  } as unknown as AxiosInstance;
+}
+
+/**
  * Creates an Axios instance that logs every request and response.
  * Sensitive headers (e.g. Authorization) are redacted. Large or binary bodies are truncated.
  */
@@ -47,7 +69,11 @@ export function createAxiosInstanceWithLogging(config: AxiosRequestConfig, logge
   const logger = Logger.getLogger(loggerName);
   const instance = Axios.create(config);
 
-  if (instance.interceptors?.request) {
+  if (!instance?.interceptors?.request) {
+    return instance ?? createFallbackInstance(config);
+  }
+
+  if (instance.interceptors.request) {
     instance.interceptors.request.use((req: InternalAxiosRequestConfig) => {
       const url = req.baseURL ? `${req.baseURL}${req.url}` : req.url;
       logger.info('API request', {
