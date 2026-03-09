@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
@@ -166,11 +166,11 @@ module.exports = {
     defendantWelshRequest: 'defendantWelshRequest',
   },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
-  runningEnv: process.env.ENVIRONMENT,
+  runningEnv: process.env.ENVIRONMENT_NAME,
   runWAApiTest: process.env.RUN_WA_API_TEST == 'true' || false,
-  claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
-  defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
-  defendant2SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'LCVTI1I' : 'H2156A0',
+  claimantSolicitorOrgId: process.env.ENVIRONMENT_NAME == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
+  defendant1SolicitorOrgId: process.env.ENVIRONMENT_NAME == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
+  defendant2SolicitorOrgId: process.env.ENVIRONMENT_NAME == 'demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt: 'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt: 'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   eaCourt: 'Derby Combined Court Centre - The Morledge - DE1 2XE',
