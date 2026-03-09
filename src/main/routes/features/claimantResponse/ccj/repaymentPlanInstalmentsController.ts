@@ -11,8 +11,6 @@ import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPla
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('repaymentPlanInstalmentsController');
 
 const repaymentPlanInstalmentsController = Router();
 const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-instalments';
@@ -34,8 +32,6 @@ repaymentPlanInstalmentsController.get(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, async
     const repaymentPlanInstalments = claimantResponse.ccjRequest
       ? claimantResponse.ccjRequest.repaymentPlanInstalments
       : new RepaymentPlanInstalments();
-    const claimantResponseStr = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-    logger.info(`redisId: ${redisId} claimantResponse : ${claimantResponseStr}`);
     renderView(new GenericForm(repaymentPlanInstalments), claim.totalClaimAmount, res);
   } catch (error) {
     next(error);
@@ -61,11 +57,7 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     } else {
       const claimantResponsePropertyName = 'repaymentPlanInstalments';
       const parentPropertyName = 'ccjRequest';
-      const claimantResponseStr = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-      logger.info(`Before Save redisKey: ${redisKey} claimantResponse : ${claimantResponseStr}`);
       await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName, parentPropertyName);
-      const claimantResponseStr1 = claim.claimantResponse? JSON.stringify(claim.claimantResponse) : '';
-      logger.info(`After Save redisKey: ${redisKey} claimantResponse : ${claimantResponseStr1}`);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
     }
   } catch (error) {
