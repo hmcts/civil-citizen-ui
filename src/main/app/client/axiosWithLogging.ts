@@ -49,14 +49,14 @@ export function createAxiosInstanceWithLogging(config: AxiosRequestConfig, logge
 
   if (instance.interceptors?.request) {
     instance.interceptors.request.use((req: InternalAxiosRequestConfig) => {
-    const url = req.baseURL ? `${req.baseURL}${req.url}` : req.url;
-    logger.info('API request', {
-      method: req.method?.toUpperCase(),
-      url,
-      headers: sanitiseHeaders(req.headers as Record<string, unknown>),
-      data: bodyForLog(req.data, req.responseType),
-    });
-    return req;
+      const url = req.baseURL ? `${req.baseURL}${req.url}` : req.url;
+      logger.info('API request', {
+        method: req.method?.toUpperCase(),
+        url,
+        headers: sanitiseHeaders(req.headers as Record<string, unknown>),
+        data: bodyForLog(req.data, req.responseType),
+      });
+      return req;
     }, (err) => {
       logger.error('API request error', err);
       return Promise.reject(err);
@@ -65,28 +65,28 @@ export function createAxiosInstanceWithLogging(config: AxiosRequestConfig, logge
 
   if (instance.interceptors?.response) {
     instance.interceptors.response.use(
-    (response) => {
-      const url = response.config.baseURL ? `${response.config.baseURL}${response.config.url}` : response.config.url;
-      logger.info('API response', {
-        method: response.config.method?.toUpperCase(),
-        url,
-        status: response.status,
-        statusText: response.statusText,
-        data: bodyForLog(response.data, response.config.responseType),
-      });
-      return response;
-    },
-    (err) => {
-      const url = err.config?.baseURL ? `${err.config.baseURL}${err.config?.url}` : err.config?.url;
-      logger.error('API response error', {
-        method: err.config?.method?.toUpperCase(),
-        url,
-        status: err.response?.status,
-        statusText: err.response?.statusText,
-        message: err.message,
-      });
-      return Promise.reject(err);
-    },
+      (response) => {
+        const url = response.config.baseURL ? `${response.config.baseURL}${response.config.url}` : response.config.url;
+        logger.info('API response', {
+          method: response.config.method?.toUpperCase(),
+          url,
+          status: response.status,
+          statusText: response.statusText,
+          data: bodyForLog(response.data, response.config.responseType),
+        });
+        return response;
+      },
+      (err) => {
+        const url = err.config?.baseURL ? `${err.config.baseURL}${err.config?.url}` : err.config?.url;
+        logger.error('API response error', {
+          method: err.config?.method?.toUpperCase(),
+          url,
+          status: err.response?.status,
+          statusText: err.response?.statusText,
+          message: err.message,
+        });
+        return Promise.reject(err);
+      },
     );
   }
 
