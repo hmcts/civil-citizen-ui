@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { testFilesHelper } = require('./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js');
 const testConfig = require('./src/test/config.js');
 const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
