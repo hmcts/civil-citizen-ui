@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>hmcts/.github//renovate/automerge-all", "local>hmcts/.github:renovate-config"],
+  "extends": [
+    "local>hmcts/.github:renovate-config",
+    "local>hmcts/.github//renovate/automerge-minor"
+  ],
   "labels": [
     "dependencies",
     "pr-values:elasticsearch"
@@ -20,6 +23,26 @@
   ],
   "automergeSchedule": ["after 8am and before 10am every weekday"],
   "schedule": ["after 8am and before 10am every weekday"],
-  "prConcurrentLimit": 10,
-  "rebaseWhen": "conflicted"
+  "rebaseWhen": "conflicted",
+  "prConcurrentLimit": 5,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "All non-major updates",
+      "groupSlug": "all-non-major",
+      "automerge": true
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "groupName": "Helm chart updates",
+      "groupSlug": "helm-charts",
+      "automerge": true
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "groupName": "Dockerfile updates",
+      "groupSlug": "dockerfile",
+      "automerge": true
+    }
+  ]
 }
