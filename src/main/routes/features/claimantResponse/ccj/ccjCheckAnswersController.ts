@@ -14,8 +14,6 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 import {getClaimById} from 'modules/utilityService';
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('ccjCheckAnswersController');
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
@@ -54,11 +52,9 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
-      logger.info(`redisId: ${redisKey} claimantResponse : ${claim.claimantResponse}`);
       await renderView(req, res, form, claim);
       return;
     } else {
-      logger.info(`redisId: ${redisKey} claimantResponse : ${form.model}`);
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
