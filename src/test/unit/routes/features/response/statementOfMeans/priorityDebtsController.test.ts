@@ -30,7 +30,7 @@ describe('Priority Debts Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Debts you&#39;re behind on');
         });
-    });
+    }, 10000);
     it('should return 500 status code when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)

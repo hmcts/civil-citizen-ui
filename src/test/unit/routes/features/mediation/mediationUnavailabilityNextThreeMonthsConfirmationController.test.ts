@@ -7,6 +7,7 @@ import {
   MEDIATION_NEXT_3_MONTHS_URL, MEDIATION_UNAVAILABLE_SELECT_DATES_URL, RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
@@ -107,7 +108,7 @@ describe('Mediation Unavailability Next Three Months Confirmation Controller', (
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
+          expect(res.text).toContain(t('ERRORS.MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_REQUIRED'));
         });
     });
 

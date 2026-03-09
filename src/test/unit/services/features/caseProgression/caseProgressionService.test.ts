@@ -19,8 +19,13 @@ import {
   getUploadDocumentsForm,
   readDateParts,
   toNonEmptyTrimmedString,
+  addAnother,
 } from 'services/features/caseProgression/caseProgressionService';
-import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {
+  DateInputFields, ExpertSection, FileOnlySection, ReferredToInTheStatementSection,
+  TypeOfDocumentSection,
+  UploadDocumentsUserForm, WitnessSection, WitnessSummarySection,
+} from 'models/caseProgression/uploadDocumentsUserForm';
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -454,4 +459,54 @@ describe('case Progression service', () => {
     });
   });
 
+  describe('addAnother', () => {
+    it.each([
+      ['action-disclosure', 'documentsForDisclosure', TypeOfDocumentSection],
+      ['action-disclosureList', 'disclosureList', FileOnlySection],
+      ['action-witness', 'witnessStatement', WitnessSection],
+      ['action-witnessSummary', 'witnessSummary', WitnessSummarySection],
+      ['action-noticeOfIntention', 'noticeOfIntention', WitnessSection],
+      ['action-documentsReferred', 'documentsReferred', ReferredToInTheStatementSection],
+      ['action-expertReport', 'expertReport', ExpertSection],
+      ['action-expertStatement', 'expertStatement', ExpertSection],
+      ['action-questionsForExperts', 'questionsForExperts', ExpertSection],
+      ['action-answersForExperts', 'answersForExperts', ExpertSection],
+      ['action-trialCaseSummary', 'trialCaseSummary', FileOnlySection],
+      ['action-trialSkeletonArgument', 'trialSkeletonArgument', FileOnlySection],
+      ['action-trialAuthorities', 'trialAuthorities', FileOnlySection],
+      ['action-trialCosts', 'trialCosts', FileOnlySection],
+      ['action-trialDocumentary', 'trialDocumentary', TypeOfDocumentSection],
+    ])(
+      'adds %p to %p',
+      (action, property, ExpectedClass) => {
+        const uploadDocuments = new UploadDocumentsUserForm();
+        (uploadDocuments as any)[property] = [];
+
+        addAnother(uploadDocuments, action);
+
+        const list = (uploadDocuments as any)[property];
+        expect(list).toHaveLength(1);
+        expect(list[0]).toBeInstanceOf(ExpectedClass);
+      });
+
+    it('creates a new instance on each call', () => {
+      const uploadDocuments = new UploadDocumentsUserForm();
+      uploadDocuments.documentsForDisclosure = [];
+
+      addAnother(uploadDocuments, 'action-disclosure');
+      addAnother(uploadDocuments, 'action-disclosure');
+
+      expect(uploadDocuments.documentsForDisclosure).toHaveLength(2);
+      expect(uploadDocuments.documentsForDisclosure[0]).not.toBe(uploadDocuments.documentsForDisclosure[1]);
+    });
+
+    it('does nothing for an unknown action', () => {
+      const uploadDocuments = new UploadDocumentsUserForm();
+      uploadDocuments.documentsForDisclosure = [];
+
+      addAnother(uploadDocuments, 'action-unknown');
+
+      expect(uploadDocuments.documentsForDisclosure).toHaveLength(0);
+    });
+  });
 });
