@@ -53,7 +53,7 @@
     "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish"
   },
   "dependencies": {
-    "@dr.pogodin/csurf": "^1.12.0",
+    "@dr.pogodin/csurf": "^1.16.8",
     "@hmcts/cookie-manager": "^1.0.0",
     "@hmcts/info-provider": "^1.2.3",
     "@hmcts/nodejs-healthcheck": "^1.8.6",
@@ -181,6 +181,10 @@
   },
   "resolutions": {
     "table/ajv": "^8.18.0",
+    "@tootallnate/once": "^3.0.1",
+    "csurf": "npm:@dr.pogodin/csurf@^1.16.8",
+    "otplib": "^13.0.0",
+    "glob": "^12.0.0",
     "@babel/runtime": "^7.26.10",
     "brace-expansion": "^2.0.2",
     "cookie": "^0.7.2",
