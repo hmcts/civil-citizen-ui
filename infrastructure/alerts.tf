@@ -2,9 +2,10 @@ data "azurerm_key_vault_secrets" "all_secrets" {
   key_vault_id = module.key-vault.key_vault_id
 }
 
-data "azurerm_key_vault_secret" "civil_ci_alert_slack_webhook" {
-  count        = contains(data.azurerm_key_vault_secrets.all_secrets.names, "civil-ci-alert-slack-group-webhook") ? 1 : 0
-  name         = "civil-ci-alert-slack-group-webhook"
+
+data "azurerm_key_vault_secret" "civil-ci-alert-slack-email" {
+  count        = contains(data.azurerm_key_vault_secrets.all_secrets.names, "civil-ci-alert-slack-group-email") ? 1 : 0
+  name         = "civil-ci-alert-slack-group-email"
   key_vault_id = module.key-vault.key_vault_id
 }
 
