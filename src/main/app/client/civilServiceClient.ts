@@ -1,5 +1,6 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import {createAxiosInstanceWithLogging} from './axiosWithLogging';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -81,15 +82,13 @@ export class CivilServiceClient {
 
   constructor(baseURL: string, isDocumentInstance?: boolean) {
     if (isDocumentInstance) {
-      this.client = Axios.create({
+      this.client = createAxiosInstanceWithLogging({
         baseURL,
         responseType: 'arraybuffer',
         responseEncoding: 'binary',
-      });
+      }, 'civilServiceClient');
     } else {
-      this.client = Axios.create({
-        baseURL,
-      });
+      this.client = createAxiosInstanceWithLogging({ baseURL }, 'civilServiceClient');
     }
   }
 

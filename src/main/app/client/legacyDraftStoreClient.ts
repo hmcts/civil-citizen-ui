@@ -1,5 +1,6 @@
 import config from 'config';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import {AxiosInstance, AxiosResponse} from 'axios';
+import {createAxiosInstanceWithLogging} from './axiosWithLogging';
 import {generateServiceToken} from './serviceAuthProviderClient';
 import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
 import {
@@ -19,7 +20,7 @@ const secretsAsHeader = (primarySecret: string, secondarySecret: string): string
 };
 
 const getOcmcDraftClaims = async (userToken: string): Promise<DashboardClaimantItem> => {
-  const client: AxiosInstance = Axios.create({baseURL: draftStoreUrl});
+  const client: AxiosInstance = createAxiosInstanceWithLogging({ baseURL: draftStoreUrl }, 'legacyDraftStoreClient');
   try {
     const _cmcS2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
     const primarySecret = config.get<string>('services.draftStore.legacy.s2s.primarySecret');

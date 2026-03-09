@@ -1,12 +1,14 @@
 import config from 'config';
-import axios from 'axios';
 import {Address, AddressInfoResponse, Point} from 'models/ordanceSurveyKey/ordanceSurveyKey';
+import {createAxiosInstanceWithLogging} from 'client/axiosWithLogging';
 import {AssertionError} from 'assert';
+
+const ordnanceSurveyClient = createAxiosInstanceWithLogging({}, 'ordanceSurveyKeyService');
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
-  const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${postCode}"&key=` + apiKey);
+  const response = await ordnanceSurveyClient.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${postCode}"&key=` + apiKey);
   if (response?.data?.results) {
     let addresses = response.data.results.map((jsonAddress: any) => {
       if (!jsonAddress.DPA) {

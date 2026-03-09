@@ -1,6 +1,7 @@
 import config from 'config';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import {AxiosInstance, AxiosResponse} from 'axios';
 import {authenticator} from 'otplib';
+import {createAxiosInstanceWithLogging} from './axiosWithLogging';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
@@ -12,9 +13,7 @@ export class ServiceAuthProviderClient {
   client: AxiosInstance;
 
   constructor(baseURL: string) {
-    this.client = Axios.create({
-      baseURL,
-    });
+    this.client = createAxiosInstanceWithLogging({ baseURL }, 'serviceAuthProviderClient');
   }
 
   getConfig() {
@@ -42,7 +41,7 @@ export class ServiceAuthProviderClient {
 }
 
 const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
-const client: AxiosInstance = Axios.create({baseURL: serviceAuthProviderUrl});
+const client: AxiosInstance = createAxiosInstanceWithLogging({ baseURL: serviceAuthProviderUrl }, 'serviceAuthProviderClient');
 
 const generateServiceToken = async (microservice: string, s2sSecret: string): Promise<string> => {
 

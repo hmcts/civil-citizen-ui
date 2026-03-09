@@ -1,5 +1,6 @@
 import config from 'config';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import {AxiosInstance, AxiosResponse} from 'axios';
+import {createAxiosInstanceWithLogging} from './axiosWithLogging';
 import {AssertionError} from 'assert';
 import {ServiceAuthProviderClient} from './serviceAuthProviderClient';
 
@@ -12,11 +13,11 @@ export class DmStoreClient {
   client: AxiosInstance;
 
   constructor(baseURL: string) {
-    this.client = Axios.create({
+    this.client = createAxiosInstanceWithLogging({
       baseURL,
       responseType: 'arraybuffer',
       responseEncoding: 'binary',
-    });
+    }, 'dmStoreClient');
   }
 
   async getConfig() {

@@ -1,7 +1,10 @@
-import Axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import config from 'config';
 import jwt_decode from 'jwt-decode';
+import {createAxiosInstanceWithLogging} from '../../client/axiosWithLogging';
 import {UserDetails} from '../../../common/models/AppRequest';
+
+const oidcClient = createAxiosInstanceWithLogging({}, 'oidc');
 
 export const getOidcResponse = async(
   callbackUrl: string,
@@ -19,7 +22,7 @@ export const getOidcResponse = async(
     'Access-Control-Allow-Origin' : '*',
     'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   };
-  const response: AxiosResponse<OidcResponse> = await Axios.post(tokenUrl, data, { headers });
+  const response: AxiosResponse<OidcResponse> = await oidcClient.post(tokenUrl, data, { headers });
   return response.data;
 };
 

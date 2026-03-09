@@ -1,15 +1,17 @@
 import config from 'config';
-import axios from 'axios';
 import {PartyType} from 'common/models/partyType';
+import {createAxiosInstanceWithLogging} from '../axiosWithLogging';
 import {createToken} from './generatePcqToken';
 import {EncryptedPcqParams, PcqParameters} from 'client/pcq/pcqParameters';
 
 const pcqBaseUrl: string = config.get('services.pcq.url');
 const SERVICE_ID = 'civil-citizen-ui';
 
+const pcqClient = createAxiosInstanceWithLogging({ baseURL: pcqBaseUrl }, 'pcqClient');
+
 export const isPcqHealthy = async (): Promise<boolean> => {
   try {
-    const response = await axios.get(pcqBaseUrl + '/health');
+    const response = await pcqClient.get('/health');
     if (response.data.status === 'UP') {
       return true;
     }

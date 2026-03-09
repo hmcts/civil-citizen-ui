@@ -3,6 +3,11 @@ import axios, {AxiosInstance} from 'axios';
 import config from 'config';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
+jest.mock('../../../../main/app/client/serviceAuthProviderClient', () => ({
+  ServiceAuthProviderClient: jest.fn().mockImplementation(() => ({
+    getServiceAuthorisationToken: jest.fn().mockResolvedValue('mock-token'),
+  })),
+}));
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');

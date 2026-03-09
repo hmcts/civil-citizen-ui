@@ -1,4 +1,5 @@
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import {AxiosInstance, AxiosResponse} from 'axios';
+import {createAxiosInstanceWithLogging} from './axiosWithLogging';
 import {AppRequest} from 'common/models/AppRequest';
 import {CCDGaHelpWithFees, CCDGeneralApplication, CCDRespondToApplication, EventDto} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
@@ -30,15 +31,13 @@ export class GaServiceClient {
 
   constructor(baseURL: string, isDocumentInstance?: boolean) {
     if (isDocumentInstance) {
-      this.client = Axios.create({
+      this.client = createAxiosInstanceWithLogging({
         baseURL,
         responseType: 'arraybuffer',
         responseEncoding: 'binary',
-      });
+      }, 'gaServiceClient');
     } else {
-      this.client = Axios.create({
-        baseURL,
-      });
+      this.client = createAxiosInstanceWithLogging({ baseURL }, 'gaServiceClient');
     }
   }
 
