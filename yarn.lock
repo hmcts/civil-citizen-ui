@@ -4291,14 +4291,14 @@ __metadata:
   linkType: hard
 
 "allure-codeceptjs@npm:^3.4.2":
-  version: 3.5.0
-  resolution: "allure-codeceptjs@npm:3.5.0"
+  version: 3.4.3
+  resolution: "allure-codeceptjs@npm:3.4.3"
   dependencies:
-    allure-js-commons: "npm:3.5.0"
-    allure-mocha: "npm:3.5.0"
+    allure-js-commons: "npm:3.4.3"
+    allure-mocha: "npm:3.4.3"
   peerDependencies:
     codeceptjs: ">=2.3.6"
-  checksum: 10/a32cd5117d5afa4e955a6c8c3a9707d7731ff14cdea5b5f6d1f317197e9bcac2092464fadc81ebe9336b69f4a0db765aa2af002f77ceb01671e9776804616f82
+  checksum: 10/6767caa15a321792d97c6cf8cbb9d7a4eb4e4ea116974b2e43bd56bccfc21d583b29171c805c1b6146bea9aa6b9d324b5545ce34b78c5b11d4858bbea354facd
   languageName: node
   linkType: hard
 
@@ -4311,21 +4311,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"allure-js-commons@npm:3.5.0":
-  version: 3.5.0
-  resolution: "allure-js-commons@npm:3.5.0"
-  dependencies:
-    md5: "npm:^2.3.0"
-  peerDependencies:
-    allure-playwright: 3.5.0
-  peerDependenciesMeta:
-    allure-playwright:
-      optional: true
-  checksum: 10/8e0187c33aa9d92adecb1597cb3de894a582d4305e49f8d995a13e76e91e64dd6a4ce649a582518429209ab2d7eb756fb813791266482c37296cfc38d55dfe69
-  languageName: node
-  linkType: hard
-
-"allure-js-commons@npm:^3.4.2":
+"allure-js-commons@npm:3.4.3, allure-js-commons@npm:^3.4.2":
   version: 3.4.3
   resolution: "allure-js-commons@npm:3.4.3"
   dependencies:
@@ -4339,14 +4325,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"allure-mocha@npm:3.5.0":
-  version: 3.5.0
-  resolution: "allure-mocha@npm:3.5.0"
+"allure-mocha@npm:3.4.3":
+  version: 3.4.3
+  resolution: "allure-mocha@npm:3.4.3"
   dependencies:
-    allure-js-commons: "npm:3.5.0"
+    allure-js-commons: "npm:3.4.3"
   peerDependencies:
     mocha: ">=6.2.0"
-  checksum: 10/f320c3a03bda2e83ae9749743b025c4c35d986de0b03f6cbd72ee72524cc87a393aadca68d3a21ed144e7e50149ff8b9b1931ec3c43da04dd7eec5c844f58b73
+  checksum: 10/bbd1985ac4138d2faf9d8bf3e0faa8087be33599b00781b971b516d4c3cad427968f180a6261a6854f30919dafefc835e69d80e1ae71e723e66af2a4f3d6179a
   languageName: node
   linkType: hard
 
@@ -5584,12 +5570,12 @@ __metadata:
     lodash: "npm:^4.17.23"
     luxon: "npm:^3.2.1"
     mini-css-extract-plugin: "npm:^2.7.2"
-    minimatch: "npm:^10.2.1"
+    minimatch: "npm:^10.2.3"
     mocha: "npm:^10.2.0"
     mocha-junit-reporter: "npm:^2.2.1"
     mocha-multi: "npm:1.1.7"
     mochawesome: "npm:7.1.3"
-    multer: "npm:^2.0.2"
+    multer: "npm:^2.1.1"
     nock: "npm:^13.2.9"
     node-cache: "npm:^5.1.2"
     nodemon: "npm:^2.0.22"
@@ -10757,7 +10743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.23":
+"lodash@npm:>= 3.7.0, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.12, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.23":
   version: 4.17.23
   resolution: "lodash@npm:4.17.23"
   checksum: 10/82504c88250f58da7a5a4289f57a4f759c44946c005dd232821c7688b5fcfbf4a6268f6a6cdde4b792c91edd2f3b5398c1d2a0998274432cff76def48735e233
@@ -11136,21 +11122,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.1.1":
+"minimatch@npm:^10.1.1, minimatch@npm:^10.2.3":
   version: 10.2.4
   resolution: "minimatch@npm:10.2.4"
   dependencies:
     brace-expansion: "npm:^5.0.2"
   checksum: 10/aea4874e521c55bb60744685bbffe3d152e5460f84efac3ea936e6bbe2ceba7deb93345fec3f9bb17f7b6946776073a64d40ae32bf5f298ad690308121068a1f
-  languageName: node
-  linkType: hard
-
-"minimatch@npm:^10.2.1":
-  version: 10.2.2
-  resolution: "minimatch@npm:10.2.2"
-  dependencies:
-    brace-expansion: "npm:^5.0.2"
-  checksum: 10/e135be7b502ac97c02bcee42ccc1c55dc26dbac036c0f4acde69e42fe339d7fb53fae711e57b3546cb533426382ea492c73a073c7f78832e0453d120d48dd015
   languageName: node
   linkType: hard
 
@@ -11293,7 +11270,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:>=0.5 0, mkdirp@npm:^0.5.6, mkdirp@npm:~0.5.1":
+"mkdirp@npm:>=0.5 0, mkdirp@npm:~0.5.1":
   version: 0.5.6
   resolution: "mkdirp@npm:0.5.6"
   dependencies:
@@ -11467,18 +11444,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multer@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "multer@npm:2.0.2"
+"multer@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "multer@npm:2.1.1"
   dependencies:
     append-field: "npm:^1.0.0"
     busboy: "npm:^1.6.0"
     concat-stream: "npm:^2.0.0"
-    mkdirp: "npm:^0.5.6"
-    object-assign: "npm:^4.1.1"
     type-is: "npm:^1.6.18"
-    xtend: "npm:^4.0.2"
-  checksum: 10/4bdcb07138cf72f93adc08a0dc27c058faab9f6721067a58f394fa546d73d11b7f100cdd66e733d649d184f9d1b402065f6888b31ec427409f056ee92c4367a6
+  checksum: 10/fb22868caaed37d725715c14c60b740b81665265da3a026bb61954414f65b99f76b360128413b8a2a7cc1a95ecae28a42bf831fe172bb79682d19ec105b556bd
   languageName: node
   linkType: hard
 
@@ -12869,12 +12843,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.14.2":
-  version: 6.14.2
-  resolution: "qs@npm:6.14.2"
+"qs@npm:^6.14.2":
+  version: 6.15.0
+  resolution: "qs@npm:6.15.0"
   dependencies:
     side-channel: "npm:^1.1.0"
-  checksum: 10/682933a85bb4b7bd0d66e13c0a40d9e612b5e4bcc2cb9238f711a9368cd22d91654097a74fff93551e58146db282c56ac094957dfdc60ce64ea72c3c9d7779ac
+  checksum: 10/a3458f2f389285c3512e0ebc55522ee370ac7cb720ba9f0eff3e30fb2bb07631caf556c08e2a3d4481a371ac14faa9ceb7442a0610c5a7e55b23a5bdee7b701c
   languageName: node
   linkType: hard
 
@@ -15453,7 +15427,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:>=13.15.22":
+"validator@npm:^13.15.26":
   version: 13.15.26
   resolution: "validator@npm:13.15.26"
   checksum: 10/22488ae718ca724eda81b7c8bf505005d4d70cb6ff9a319f48fd897a31d40fd9a2971af4a3288667a04c56b4f95912555495519d54a5d8d63c2572bf4970081a
@@ -15948,13 +15922,6 @@ __metadata:
   version: 0.0.7
   resolution: "xpath-builder@npm:0.0.7"
   checksum: 10/1ea071f57ec77449e1aac586d709e132fe365494819128143f9a22143bb20c9138c06dc8ec7381d54204ffff07be74270877f2623f91f9ca52f2bb47b25dadd4
-  languageName: node
-  linkType: hard
-
-"xtend@npm:^4.0.2":
-  version: 4.0.2
-  resolution: "xtend@npm:4.0.2"
-  checksum: 10/ac5dfa738b21f6e7f0dd6e65e1b3155036d68104e67e5d5d1bde74892e327d7e5636a076f625599dc394330a731861e87343ff184b0047fef1360a7ec0a5a36a
   languageName: node
   linkType: hard
 
