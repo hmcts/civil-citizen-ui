@@ -1,11 +1,17 @@
-data "azurerm_key_vault_secret" "civil_ci_alert_slack_webhook" {
-  name         = "civil-ci-alert-slack-group-webhook"
+data "azurerm_key_vault_secrets" "all_secrets" {
+  key_vault_id = module.key-vault.key_vault_id
+}
+
+
+data "azurerm_key_vault_secret" "civil-ci-alert-slack-email" {
+  count        = contains(data.azurerm_key_vault_secrets.all_secrets.names, "civil-ci-alert-slack-group-email") ? 1 : 0
+  name         = "civil-ci-alert-slack-group-email"
   key_vault_id = module.key-vault.key_vault_id
 }
 
 locals {
-  draft_store_resource_group_name  = "${var.product}-${var.component}-draft-store-cache-${var.env}"
-  civil_ci_alert_slack_webhook_url = data.azurerm_key_vault_secret.civil_ci_alert_slack_webhook.value
+  draft_store_resource_group_name = "${var.product}-${var.component}-draft-store-cache-${var.env}"
+  civil_ci_alert_slack_email      = length(data.azurerm_key_vault_secret.civil-ci-alert-slack-email) > 0 ? data.azurerm_key_vault_secret.civil-ci-alert-slack-email[0].value : null
 }
 
 # Resolve the Redis Cache resource ID from the module outputs
@@ -23,11 +29,12 @@ resource "azurerm_monitor_action_group" "civil-ci-action-group" {
   short_name          = try(each.value.short_name, null)
   tags                = var.common_tags
 
-  dynamic "webhook_receiver" {
-    for_each = try(each.value.webhook_receiver, [])
+  dynamic "email_receiver" {
+    for_each = local.civil_ci_alert_slack_email != null ? [1] : []
     content {
-      name        = webhook_receiver.value.name
-      service_uri = local.civil_ci_alert_slack_webhook_url
+      name                    = "slack-email"
+      email_address           = local.civil_ci_alert_slack_email
+      use_common_alert_schema = true
     }
   }
 }
