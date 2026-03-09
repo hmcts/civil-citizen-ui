@@ -57,6 +57,8 @@ function createFallbackInstance(config: AxiosRequestConfig): AxiosInstance {
     postForm: (url, data, c) => (Axios as unknown as { postForm: typeof Axios.post }).postForm?.(url, data, merge(c)) ?? Axios.post(url, data, merge(c)),
     getUri: (c) => Axios.getUri(merge(c)),
     defaults: config as typeof Axios.defaults,
+    // No-op interceptors for fallback when Axios.create returns undefined (e.g. in tests)
+    // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional no-ops for mock interceptors
     interceptors: { request: { use: () => () => {}, eject: () => {} }, response: { use: () => () => {}, eject: () => {} } },
   } as unknown as AxiosInstance;
 }
