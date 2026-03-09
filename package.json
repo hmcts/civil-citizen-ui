@@ -182,6 +182,7 @@
   "resolutions": {
     "table/ajv": "^8.18.0",
     "@tootallnate/once": "^3.0.1",
+    "test-exclude": "^7.0.1",
     "csurf": "npm:@dr.pogodin/csurf@^1.16.8",
     "otplib": "^13.0.0",
     "glob": "^12.0.0",
