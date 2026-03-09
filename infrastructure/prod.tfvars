@@ -19,7 +19,7 @@ monitor_action_group = {
 
 monitor_metric_alerts = {
   "prod-civil-citizen-ui-draft-store-cpu-warning" = {
-    description  = "PROD Civil Citizen UI draft store CPU usage equal to or above 65%",
+    description  = "Production Civil Citizen UI draft store CPU usage equal to or above 65%",
     severity     = 2,
     enabled      = true,
     frequency    = "PT1M",
