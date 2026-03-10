@@ -31,21 +31,20 @@ const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> =
   }
 };
 
-const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string): Promise<void> => {
+const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string, userId?: string): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
 
     ensureClaimantResponseExists(claim);
     setClaimantResponseValue(claim, parentPropertyName, claimantResponsePropertyName, value);
-    logger.info(`claimant response after property set : ${claimId} ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+    logger.info(`claimant response after property set : userId: ${userId} claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
 
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     applySuggestedPaymentIntentionCleanup(claim, claimantResponse);
     applyRejectionCleanup(claim);
-    logger.info(`claimant response after cleanups : ${claimId} ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
-
+    logger.info(`claimant response after cleanups : userId: ${userId} claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
     const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
-    logger.info(`claimant response after re setting claim : ${claimId} ${resetClaim.claimantResponse? JSON.stringify(resetClaim.claimantResponse) : 'undefined'}`);
+    logger.info(`claimant response after re setting claim : userId: ${userId} claimId: ${claimId} claimantResponse: ${resetClaim.claimantResponse? JSON.stringify(resetClaim.claimantResponse) : 'undefined'}`);
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
     logger.error(error);

@@ -14,7 +14,8 @@ export const redisDataFlushForDJ = async (req: AppRequest, res: Response, next: 
     if (claim.refreshDataForDJ) {
       claim = await refreshDraftStoreClaimFrom(req, true);
       claim.refreshDataForDJ = false;
-      await saveDraftClaim(generateRedisKey(req), claim);
+      const userId = (<AppRequest>req).session.user?.id;
+      await saveDraftClaim(generateRedisKey(req), claim, false, userId);
     }
     next();
   } catch (error) {
