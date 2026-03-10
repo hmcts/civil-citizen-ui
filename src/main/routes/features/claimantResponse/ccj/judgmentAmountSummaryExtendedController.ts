@@ -51,7 +51,8 @@ judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_UR
   (async () => {
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
-    await saveDraftClaim(claim.id, claim, true);
+    const userId = (<AppRequest>req).session.user?.id;
+    await saveDraftClaim(claim.id, claim, true, userId);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
   })();
 },
