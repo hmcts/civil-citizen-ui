@@ -10,10 +10,7 @@ maxmemory_delta                 = 1330
 #================================================================================================
 monitor_action_group = {
   "prod-civil-ci-slack-alert" = {
-    short_name = "civilci"
-    webhook_receiver = [
-      { name = "civil-ci-alerts-web-hook" }
-    ]
+    short_name = "cvlci-prod"
   }
 }
 
