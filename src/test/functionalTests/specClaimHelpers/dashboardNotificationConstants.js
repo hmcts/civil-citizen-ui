@@ -153,8 +153,8 @@ module.exports = {
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayBySetDate.Defendant
   defendantResponseFullAdmitPayBySetDateDefendant: (amount, deadline) => {
     return {
-      title: 'Response to the claim',
-      content: [`You have offered to pay £${amount}`, `by ${deadline}.`, 'We will contact you when the claimant responds to your offer.'],
+      title: 'The claimant has been paid the full amount that they were owed',
+      content: [`The claim is now settled and there’s no further action any party needs to take.'],
       nextSteps: 'View your response',
     };
   },
