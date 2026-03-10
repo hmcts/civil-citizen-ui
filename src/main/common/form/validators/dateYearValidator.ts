@@ -1,6 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import validator from 'validator';
-import isInt = validator.isInt;
 import {toNumber} from 'lodash';
 
 /**
@@ -15,7 +14,7 @@ export class DateYearValidator implements ValidatorConstraintInterface {
       return false;
     }
     this.yearExists = true;
-    return !(year.length > 4 || !(isInt(year)) || toNumber(year) < 1000);
+    return !(year.length > 4 || !(validator.isInt(year)) || toNumber(year) < 1000);
   }
 
   defaultMessage() {
