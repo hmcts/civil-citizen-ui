@@ -61,11 +61,13 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   const oldClaim = await getDraftClaimFromStore(redisKey, true);
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
+    logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
     claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
     logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true);
   } else {
+    logger.error(`No claim found in draft store for : userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
     throw new Error('Case not found...');
   }
   const appRequest = <AppRequest>req;
