@@ -5,6 +5,8 @@ capacity = "1"
 #================================================================================================
 # Azure Monitor
 #================================================================================================
+civil_ci_alert_slack_email_secret_name = "civil-ci-alert-slack-group-email"
+
 monitor_action_group = {
   "aat-civil-ci-slack-alert" = {
     short_name = "cvlci-aat"
