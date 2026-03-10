@@ -33,7 +33,7 @@ resource "azurerm_monitor_action_group" "civil-ci-action-group" {
     content {
       name                    = "slack-email"
       email_address           = local.civil_ci_alert_slack_email
-      use_common_alert_schema = true
+      use_common_alert_schema = false
     }
   }
 }
