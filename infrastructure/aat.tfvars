@@ -6,7 +6,7 @@ capacity = "1"
 # Azure Monitor
 #================================================================================================
 monitor_action_group = {
-  "civil-ci-slack-alert" = {
+  "aat-civil-ci-slack-alert" = {
     short_name = "civilci"
     webhook_receiver = [
       { name = "civil-ci-alerts-web-hook" }
@@ -34,7 +34,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
@@ -57,7 +57,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
@@ -80,7 +80,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
@@ -103,7 +103,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
