@@ -86,3 +86,9 @@ variable "monitor_action_group" {
 variable "monitor_metric_alerts" {
   default = {}
 }
+
+variable "civil_ci_alert_slack_email_secret_name" {
+  type        = string
+  description = "The name of the Key Vault secret containing the slack email group"
+  default     = null
+}
