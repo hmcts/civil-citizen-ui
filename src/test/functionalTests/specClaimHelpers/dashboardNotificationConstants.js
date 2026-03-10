@@ -151,10 +151,10 @@ module.exports = {
   },
 
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayBySetDate.Defendant
-  defendantResponseFullAdmitPayBySetDateDefendant: (amount, deadline) => {
+  defendantResponseFullAdmitPayBySetDateDefendant: () => {
     return {
       title: 'The claimant has been paid the full amount that they were owed',
-      content: [`The claim is now settled and there’s no further action any party needs to take.'],
+      content: ['The claim is now settled and there’s no further action any party needs to take.'],
       nextSteps: 'View your response',
     };
   },
@@ -162,10 +162,10 @@ module.exports = {
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayBySetDate.Claimant
   //This might not be strictly correct ^
   //Deadline logic needs adding
-  defendantResponseFullAdmitPayBySetDateClaimant: (amount, deadline) => {
+  defendantResponseFullAdmitPayBySetDateClaimant: () => {
     return {
-      title: 'Response to the claim',
-      content: [`Sir John Doe has offered to pay you £${amount}`, `by ${deadline}`],
+      title: 'The claimant has been paid the full amount that they were owed',
+      content: ['The claim is now settled and there’s no further action any party needs to take.'],
       nextSteps: 'View and respond',
     };
   },

@@ -31,12 +31,12 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
   await api.waitForFinishedBusinessProcess();
-  notification = defendantResponseFullAdmitPayBySetDateDefendant(claimAmountAndFee, date);
+  notification = defendantResponseFullAdmitPayBySetDateDefendant();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await I.click(notification.nextSteps);
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  notification = defendantResponseFullAdmitPayBySetDateClaimant(claimAmountAndFee, date);
+  notification = defendantResponseFullAdmitPayBySetDateClaimant();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await I.click(notification.nextSteps);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateCCJ(claimRef, claimNumber);
