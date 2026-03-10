@@ -14,6 +14,8 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ccjCheckAnswersService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -60,6 +62,7 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
     claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
+    logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true);
   } else {
