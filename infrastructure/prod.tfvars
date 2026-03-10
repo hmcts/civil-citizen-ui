@@ -8,6 +8,8 @@ maxmemory_delta                 = 1330
 #================================================================================================
 # Azure Monitor
 #================================================================================================
+civil_ci_alert_slack_email_secret_name = "civil-ci-alert-slack-group-email"
+
 monitor_action_group = {
   "prod-civil-ci-slack-alert" = {
     short_name = "civilci-prod"
