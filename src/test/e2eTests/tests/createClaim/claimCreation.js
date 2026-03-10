@@ -10,10 +10,10 @@ Before(async ({ I }) => {
     body: {
       status: 200,
       result: {
-        postcode: "W1J 7NT",
-        country_code: "E"
-      }
-    }
+        postcode: 'W1J 7NT',
+        country_code: 'E',
+      },
+    },
   });
 });
 
