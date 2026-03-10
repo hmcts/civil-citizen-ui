@@ -10,7 +10,7 @@ maxmemory_delta                 = 1330
 #================================================================================================
 monitor_action_group = {
   "prod-civil-ci-slack-alert" = {
-    short_name = "cvlci-prod"
+    short_name = "civilci-prod"
   }
 }
 
