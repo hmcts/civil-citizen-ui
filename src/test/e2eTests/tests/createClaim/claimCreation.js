@@ -4,6 +4,19 @@ const {yesAndNoCheckBoxOptionValue} = require('../../commons/eligibleVariables')
 
 Feature('Claim creation journey').tag('@e2e');
 
+Before(async ({ I }) => {
+  I.mockRoute('**/postcode/**', {
+    status: 200,
+    body: {
+      status: 200,
+      result: {
+        postcode: "W1J 7NT",
+        country_code: "E"
+      }
+    }
+  });
+});
+
 Scenario('Claim creation journey with interest with fess reference', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //bilingual-language-preference and open task list
