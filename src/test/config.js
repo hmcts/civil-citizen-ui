@@ -1,4 +1,4 @@
-require('dotenv').config({path: '.env.tests.local'});
+require('dotenv').config({path: '.env'});
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
