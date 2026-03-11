@@ -22,6 +22,15 @@ export const getUserId = async (claimId: string): Promise<string> => {
   }
 };
 
+export const deleteUserId = async (claimId: string): Promise<void> => {
+  try {
+    await app.locals.draftStoreClient.del(claimId + 'userIdForPayment');
+  } catch (err) {
+    logger.error('Error while deleting the userid for payment confirmation ' + err);
+    throw err;
+  }
+};
+
 export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string) => {
   try {
     await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
@@ -40,11 +49,11 @@ export const getPaymentConfirmationUrl = async (userId: string): Promise<string>
   }
 };
 
-export const deletePaymentSessionData = async (key: string): Promise<void> => {
+export const deletePaymentConfirmationUrl = async (userId: string): Promise<void> => {
   try {
-    await app.locals.draftStoreClient.del(key + 'userIdForPayment');
+    await app.locals.draftStoreClient.del(userId + 'userIdForPayment');
   } catch (err) {
-    logger.error('Error while deleting the payment session data ' + err);
+    logger.error('Error while deleting the payment confirmation url ' + err);
     throw err;
   }
 };
