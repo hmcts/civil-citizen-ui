@@ -1,6 +1,6 @@
 import config from 'config';
-import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
-import {TestData} from 'launchdarkly-node-server-sdk/integrations';
+import {init, LDClient, LDFlagValue, LDUser} from '@launchdarkly/node-server-sdk';
+import {TestData} from '@launchdarkly/node-server-sdk/integrations';
 
 let ldClient: LDClient;
 let testData: TestData;
